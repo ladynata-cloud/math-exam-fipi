@@ -1195,6 +1195,47 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+const validationQuartets=[
+ {label:'Равные отношения',values:[3,2,15,10]},
+ {label:'Разные отношения',values:[3,2,16,10]},
+ {label:'Отношение равно 1',values:[2,2,5,5]},
+ {label:'Отношение равно −1',values:[-2,2,-5,5]},
+ {label:'Нулевые числители',values:[0,2,0,5]},
+ {label:'Один нулевой знаменатель',values:[3,0,6,8]},
+];
+function transformedFractions(tag,[a,b,c,d]){
+ switch(tag){
+  case 1:return [[[a+b,b],[c+d,d]]];
+  case 2:return [[[a-b,b],[c-d,d]]];
+  case 3:return [[[b-a,b],[d-c,d]]];
+  case 4:return [[[a,a+b],[c,c+d]]];
+  case 5:return [[[a,a-b],[c,c-d]]];
+  case 6:return [[[a,b-a],[c,d-c]]];
+  case 7:return [[[a+b,a-b],[c+d,c-d]],[[a+b,c+d],[a-b,c-d]]];
+ }
+ throw new Error('Неизвестное преобразование пропорции');
+}
+function inspectFractionPair(parts){
+ const [[a,b],[c,d]]=parts;
+ if(!b||!d)return 'Есть нулевой знаменатель';
+ const truth=a*d===b*c;
+ return (truth?'Равенство верно':'Равенство ложно')+(!a||!c?' (нулевой член)':'');
+}
+function rayInterceptFigure(angle,k,which){
+ const s=svg('svg',{viewBox:'0 0 490 285',role:'img','aria-label':'Два луча и три параллельные секущие. Угол '+angle+'°, коэффициент длин '+k,class:'pm-chart'});
+ const origin=[42,237],theta=angle*Math.PI/180,dist=[1.2,3.2,4.7],scale=Math.min(390/(dist[2]*Math.max(1,k*Math.cos(theta))),187/(dist[2]*k*Math.sin(theta)));
+ function spot(t,top){const d=scale*t*(top?k:1);return top?[origin[0]+d*Math.cos(theta),origin[1]-d*Math.sin(theta)]:[origin[0]+d,origin[1]];}
+ for(const top of [false,true]){const end=spot(5.1,top);ln(s,...origin,...end);}
+ txt(s,origin[0]-13,origin[1]+7,'A');
+ for(const [i,t]of dist.entries()){
+  const p=spot(t,true),q=spot(t,false),o=svg('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:'#9b5720','stroke-width':3,'data-transversal':i+1});s.append(o);
+  for(const [pos,label]of [[p,'B'],[q,'C']]){s.append(svg('circle',{cx:pos[0],cy:pos[1],r:3,fill:'#205b46'}));txt(s,pos[0]+(label==='B'?1:0),pos[1]+(label==='B'?-9:24),label+['₁','₂','₃'][i],{'font-size':16});}
+ }
+ const selected=which===2?[0,2]:[which%2,which%2+1];
+ for(const top of [true,false]){const a=spot(dist[selected[0]],top),b=spot(dist[selected[1]],top);s.append(svg('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#167958','stroke-width':5,'data-measured-branch':top?'B':'C'}));}
+ return s;
+}
+function thalesRows(rows){return table(['Буква','Левая пара','Правая пара'],rows.map(([l,a,b,c,d])=>[l,a+' : '+b,c+' : '+d]));}
 function sourceTerms(item,fresh){
  const M=root.PetersonMath;
  if(item.symbolic)return {names:item.terms,values:[fresh?4:2,fresh?7:3,fresh?12:6,fresh?21:9].map(v=>M.parse(v))};
@@ -1933,6 +1974,10 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.derivedProof)return {title:'Проверь область определения каждой записи',controls:[c('Значения букв',validationQuartets.map((v,i)=>[i,v.label])),c('Что проверить?',[[0,'Сначала рассуждаю'],[1,'Знаменатели и равенство'],[2,'Общее доказательство']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.deriveThree)return {title:'Три производные из одной пропорции',controls:[c('Данные',[[0,'Из учебника'],[1,'Пример с числами 5, 3, 20, 12']]),c('Преобразование',[[0,'Прибавить 1'],[1,'Разность с единицей'],[2,'Доля числителя в сумме']]),c('Проверка',[[0,'Составлю сам'],[1,'Новая запись']])],initial:[0,0,0]};
+ if(lesson?.id==='p18' && task?.parallelIntercept)return {title:'Соответственные отрезки на двух лучах',controls:[c('Угол',[[20,'20°'],[35,'35°'],[50,'50°']]),c('Отношение длин B к C',[[0,'3/2'],[1,'2'],[2,'5/2']]),c('Какие длины измерить?',[[0,'Между 1 и 2'],[1,'Между 2 и 3'],[2,'От 1 до 3']])],initial:[20,1,0]};
+ if(lesson?.id==='p18' && task?.thalesCipher)return {title:'Девять проверок для имени учёного',controls:[c('Буква',task.thalesCipher.map(([l],i)=>[i,l])),c('Проверка',[[0,'Сначала вычислю'],[1,'Сравнение дробей'],[2,'Историческая справка']])],initial:[0,0]};
  if(lesson?.id==='p18' && task?.sourceRearrangement)return {title:'Какие из 24 перестановок сохраняют равенство?',controls:[c('Порядок четырёх мест',quartetOrders.map((v,i)=>[i,v.map(j=>String.fromCharCode(65+j)).join(' · ')])),c('Значения',[[0,'Исходные'],[1,'Новые числа']]),c('Проверка',[[0,'Составлю сам'],[1,'Перекрёстные произведения'],[2,'Все допустимые записи']])],initial:[0,0,0]};
  if(lesson?.id==='p18' && task?.constantRateStory)return {title:'Две величины при одном коэффициенте',controls:[c('Данные',[[0,'Первый пример'],[1,'Другой коэффициент и числа']]),c('Что сравнить?',[[0,'Посчитаю сам'],[1,'Обе величины'],[2,'Отношения']])],initial:[0,0]};
  if(lesson?.id==='p36' && task?.quantifiedEquation){const pair=task.quantifiedEquation==='nonzeroProduct';return {title:'Свидетель и контрпример',controls:[c('Число a',range(-3,3)),...(pair?[c('Число b',range(-2,2))]:[]),c('Проверка',[[0,'Сначала сформулирую'],[1,'Подстановка'],[2,'Общая формулировка']])],initial:pair?[1,1,0]:[1,0]};}
@@ -2085,12 +2130,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2101,8 +2146,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2337,6 +2382,40 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===18 && task.derivedProof){
+  const q=validationQuartets[a].values,[x,y,z,w]=q,pairs=[[[x,y],[z,w]],...transformedFractions(task.derivedProof,q)];
+  say('a = '+x+', b = '+y+', c = '+z+', d = '+w+'.');
+  if(b>=1){show(table(['Запись','Проверяем','Вывод'],pairs.map((pair,i)=>[i===0?'Исходная':'Новая '+i,pair.map(([n,d])=>n+'/'+d).join(' = '),inspectFractionPair(pair)])));
+   const undefinedCase=pairs.some(pair=>pair.some(([,d])=>d===0));say(undefinedCase?'Равносильность этих записей проверяют только на их общей области определения.':'Все знаменатели допустимы. Обоснуй связь для любых допустимых значений.');}
+  if(b===2)say(task.explanation);
+  stepList(['Выпиши все знаменатели.','Сравни результат одинакового обратимого преобразования.','Различи равенство дробей и пропорцию из ненулевых членов.']);
+ }
+ else if(n===18 && task.deriveThree){
+  const t=task.deriveThree,terms=a===0?t.terms:['5','3','20','12'],tag=[1,t.variant==='subtract'?2:3,4][b],spell=(v,w,op)=>'('+v+op+w+')';
+  const [x,y,z,w]=terms;formula(x+' / '+y+' = '+z+' / '+w);
+  if(state.values[2]){const showTerms=tag===1?[spell(x,y,'+'),y,spell(z,w,'+'),w]:tag===2?[spell(x,y,'−'),y,spell(z,w,'−'),w]:tag===3?[spell(y,x,'−'),y,spell(w,z,'−'),w]:[x,spell(x,y,'+'),z,spell(z,w,'+')];
+   formula(showTerms[0]+' / '+showTerms[1]+' = '+showTerms[2]+' / '+showTerms[3]);
+   if(terms.every(v=>Number.isFinite(Number(v)))){const p=transformedFractions(tag,terms.map(Number))[0];show(table(['Левая дробь','Правая дробь'],[[p[0].join('/'),p[1].join('/')]]));say(inspectFractionPair(p)+'.');}
+   else say('Укажи, какие буквы и суммы или разности должны отличаться от нуля.');
+  }
+  stepList(['Выбери преобразование.','Примени его одинаково к обеим частям.','Проверь каждую новую пару дробей.']);
+ }
+ else if(n===18 && task.parallelIntercept){
+  const k=[1.5,2,2.5][b],i=state.values[2],lower=[2,1.5,3.5][i],u=lower*k,span=['₁–₂','₂–₃','₁–₃'][i];show(rayInterceptFigure(a,k,i));
+  show(table(['Отрезок','Длина на схеме'],[['B'+span,num(u)],['C'+span,num(lower)]]));
+  say('Отношение отмеченных длин: '+num(u)+' : '+num(lower)+' = '+num(k)+'.');
+  if(task.parallelIntercept==='measure')say('В книге длины соседних отрезков близки к 40 и 30 мм на B, к 20 и 15 мм на C. На экране схема построена заново.');
+  if(task.parallelIntercept==='sum')say('Если каждая верхняя длина в k раз больше нижней, сумма верхних равна k, умноженному на сумму нижних.');
+  stepList(['Сравни соседние пары.','Измени угол или коэффициент.','Реши, какой вывод требует доказательства.']);
+ }
+ else if(n===18 && task.thalesCipher){
+  const M=root.PetersonMath,[letter,x,y,z,w]=task.thalesCipher[a],left=M.operation('divide',x,y),right=M.operation('divide',z,w);
+  formula(letter+': '+x+' : '+y+' = '+z+' : '+w+' ?');
+  if(b>=1)say('Слева '+M.answer(left)+', справа '+M.answer(right)+'. '+(M.equal(left,right)?'Равенство верно, буква входит в имя.':'Равенство ложно, букву пропусти.'));
+  if(b===2){say(task.explanation);const link=el('a','', 'Биография Фалеса в архиве Университета Сент-Эндрюса');link.href='https://mathshistory.st-andrews.ac.uk/Biographies/Thales/';link.target='_blank';link.rel='noopener noreferrer';show(link);}
+  stepList(['Проверь обе части точно.','Собери буквы истинных строк в имя.','Укажи город и эпоху учёного.']);
  }
  else
  if(n===18 && task.sourceRearrangement){
@@ -31033,6 +31112,15 @@ window.PetersonCourse = {
       "rightTop": "15",
       "rightBottom": "10",
       "caption": "Исходная пропорция 3/2 = 15/10."
+     },
+     "deriveThree": {
+      "terms": [
+       "3",
+       "2",
+       "15",
+       "10"
+      ],
+      "variant": "subtract"
      }
     },
     {
@@ -31081,7 +31169,8 @@ window.PetersonCourse = {
       "subpart": "1",
       "reference": "№100(1)"
      },
-     "finalLabel": "Запиши решение в черновике и покажи учителю."
+     "finalLabel": "Запиши решение в черновике и покажи учителю.",
+     "derivedProof": 1
     },
     {
      "id": "p18-t06",
@@ -31196,7 +31285,8 @@ window.PetersonCourse = {
        ]
       ],
       "caption": "Схема расположения точек по условию."
-     }
+     },
+     "parallelIntercept": "sum"
     },
     {
      "id": "p18-t07",
@@ -31900,6 +31990,637 @@ window.PetersonCourse = {
       ],
       "name": "массовая доля вещества"
      }
+    },
+    {
+     "id": "p18-t22",
+     "title": "К задаче №100(2)",
+     "kind": "manual",
+     "prompt": "Докажи равносильность a/b = c/d и следующей записи: (a−b)/b = (c−d)/d. Назови ограничения для равенств дробей и для пропорций из ненулевых членов.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши ограничения и объясни происхождение каждого.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d. Производное равенство получается вычитанием 1 из обеих частей исходного, а обратное преобразование — прибавлением 1. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a−b, c−d."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Приведи левую часть к основному равенству ad = bc и обоснуй обратный ход.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d. Производное равенство получается вычитанием 1 из обеих частей исходного, а обратное преобразование — прибавлением 1. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a−b, c−d."
+      }
+     ],
+     "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+     "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d. Производное равенство получается вычитанием 1 из обеих частей исходного, а обратное преобразование — прибавлением 1. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a−b, c−d.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 100,
+      "reference": "№100(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "derivedProof": 2
+    },
+    {
+     "id": "p18-t23",
+     "title": "К задаче №100(3)",
+     "kind": "manual",
+     "prompt": "Докажи равносильность a/b = c/d и следующей записи: (b−a)/b = (d−c)/d. Назови ограничения для равенств дробей и для пропорций из ненулевых членов.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши ограничения и объясни происхождение каждого.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d. Вычти обе части исходного равенства из 1. Если это сделать ещё раз, вернёшься к исходному. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и b−a, d−c."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Приведи левую часть к основному равенству ad = bc и обоснуй обратный ход.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d. Вычти обе части исходного равенства из 1. Если это сделать ещё раз, вернёшься к исходному. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и b−a, d−c."
+      }
+     ],
+     "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+     "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d. Вычти обе части исходного равенства из 1. Если это сделать ещё раз, вернёшься к исходному. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и b−a, d−c.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 100,
+      "reference": "№100(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "derivedProof": 3
+    },
+    {
+     "id": "p18-t24",
+     "title": "К задаче №100(4)",
+     "kind": "manual",
+     "prompt": "Докажи равносильность a/b = c/d и следующей записи: a/(a+b) = c/(c+d). Назови ограничения для равенств дробей и для пропорций из ненулевых членов.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши ограничения и объясни происхождение каждого.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a+b, c+d. Раскрой a(c+d) = c(a+b): после сокращения ac остаётся ad = bc. При ненулевых знаменателях все шаги обратимы. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a+b, c+d."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Приведи левую часть к основному равенству ad = bc и обоснуй обратный ход.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a+b, c+d. Раскрой a(c+d) = c(a+b): после сокращения ac остаётся ad = bc. При ненулевых знаменателях все шаги обратимы. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a+b, c+d."
+      }
+     ],
+     "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+     "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a+b, c+d. Раскрой a(c+d) = c(a+b): после сокращения ac остаётся ad = bc. При ненулевых знаменателях все шаги обратимы. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a+b, c+d.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 100,
+      "reference": "№100(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "derivedProof": 4
+    },
+    {
+     "id": "p18-t25",
+     "title": "К задаче №100(5)",
+     "kind": "manual",
+     "prompt": "Докажи равносильность a/b = c/d и следующей записи: a/(a−b) = c/(c−d). Назови ограничения для равенств дробей и для пропорций из ненулевых членов.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши ограничения и объясни происхождение каждого.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a−b, c−d. После перемножения получаем ac − ad = ac − bc. Убираем ac, получаем ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a−b, c−d."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Приведи левую часть к основному равенству ad = bc и обоснуй обратный ход.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a−b, c−d. После перемножения получаем ac − ad = ac − bc. Убираем ac, получаем ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a−b, c−d."
+      }
+     ],
+     "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+     "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a−b, c−d. После перемножения получаем ac − ad = ac − bc. Убираем ac, получаем ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a−b, c−d.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 100,
+      "reference": "№100(5)",
+      "subpart": "5"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "derivedProof": 5
+    },
+    {
+     "id": "p18-t26",
+     "title": "К задаче №100(6)",
+     "kind": "manual",
+     "prompt": "Докажи равносильность a/b = c/d и следующей записи: a/(b−a) = c/(d−c). Назови ограничения для равенств дробей и для пропорций из ненулевых членов.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши ограничения и объясни происхождение каждого.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, b−a, d−c. После перемножения ad − ac = bc − ac. Сокращение одинакового слагаемого даёт ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и b−a, d−c."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Приведи левую часть к основному равенству ad = bc и обоснуй обратный ход.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, b−a, d−c. После перемножения ad − ac = bc − ac. Сокращение одинакового слагаемого даёт ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и b−a, d−c."
+      }
+     ],
+     "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+     "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, b−a, d−c. После перемножения ad − ac = bc − ac. Сокращение одинакового слагаемого даёт ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и b−a, d−c.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 100,
+      "reference": "№100(6)",
+      "subpart": "6"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "derivedProof": 6
+    },
+    {
+     "id": "p18-t27",
+     "title": "К задаче №100(7)",
+     "kind": "manual",
+     "prompt": "Докажи равносильность a/b = c/d и следующей записи: (a+b)/(a−b) = (c+d)/(c−d) ⇔ (a+b)/(c+d) = (a−b)/(c−d). Назови ограничения для равенств дробей и для пропорций из ненулевых членов.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши ограничения и объясни происхождение каждого.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a−b, c−d, c+d. В обоих новых равенствах получаются одинаковые произведения: (a+b)(c−d) = (a−b)(c+d). После раскрытия разность сторон равна 2bc − 2ad. Она равна нулю ровно при ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a+b, c+d, a−b, c−d."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Приведи левую часть к основному равенству ad = bc и обоснуй обратный ход.",
+       "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+       "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a−b, c−d, c+d. В обоих новых равенствах получаются одинаковые произведения: (a+b)(c−d) = (a−b)(c+d). После раскрытия разность сторон равна 2bc − 2ad. Она равна нулю ровно при ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a+b, c+d, a−b, c−d."
+      }
+     ],
+     "hint": "Сначала укажи общую область определения записей. Затем преобразуй обе стороны или примени перекрёстное умножение в обе стороны.",
+     "explanation": "Обе записи как равенства дробей определены, когда ненулевые все выражения: b, d, a−b, c−d, c+d. В обоих новых равенствах получаются одинаковые произведения: (a+b)(c−d) = (a−b)(c+d). После раскрытия разность сторон равна 2bc − 2ad. Она равна нулю ровно при ad = bc. Для пропорций из ненулевых членов в принятом здесь определении также требуются ненулевые a, c и a+b, c+d, a−b, c−d.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 100,
+      "reference": "№100(7)",
+      "subpart": "7"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "derivedProof": 7
+    },
+    {
+     "id": "p18-t28",
+     "title": "К задаче №101(2)",
+     "kind": "manual",
+     "prompt": "Из равенства 4/5 = 12/15 получи три разные производные пропорции. Укажи, какое преобразование ты выбрал.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши пропорцию после одного преобразования.",
+       "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+       "explanation": "Возможны, например, такие записи: 9/5 = 27/15; 1/5 = 3/15; 4/9 = 12/27. Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Найди ещё два варианта и проверь ограничения.",
+       "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+       "explanation": "Возможны, например, такие записи: 9/5 = 27/15; 1/5 = 3/15; 4/9 = 12/27. Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители."
+      }
+     ],
+     "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+     "explanation": "Возможны, например, такие записи: 9/5 = 27/15; 1/5 = 3/15; 4/9 = 12/27. Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 101,
+      "reference": "№101(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "deriveThree": {
+      "terms": [
+       "4",
+       "5",
+       "12",
+       "15"
+      ],
+      "variant": "complement"
+     }
+    },
+    {
+     "id": "p18-t29",
+     "title": "К задаче №101(3)",
+     "kind": "manual",
+     "prompt": "Из равенства m/n = k/p получи три разные производные пропорции. Укажи, какое преобразование ты выбрал.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши пропорцию после одного преобразования.",
+       "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+       "explanation": "Возможны, например, такие записи: (m+n)/n = (k+p)/p; (n−m)/n = (p−k)/p; m/(m+n) = k/(k+p). Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Найди ещё два варианта и проверь ограничения.",
+       "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+       "explanation": "Возможны, например, такие записи: (m+n)/n = (k+p)/p; (n−m)/n = (p−k)/p; m/(m+n) = k/(k+p). Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители."
+      }
+     ],
+     "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+     "explanation": "Возможны, например, такие записи: (m+n)/n = (k+p)/p; (n−m)/n = (p−k)/p; m/(m+n) = k/(k+p). Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 101,
+      "reference": "№101(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "deriveThree": {
+      "terms": [
+       "m",
+       "n",
+       "k",
+       "p"
+      ],
+      "variant": "complement"
+     }
+    },
+    {
+     "id": "p18-t30",
+     "title": "К задаче №101(4)",
+     "kind": "manual",
+     "prompt": "Из равенства x/y = z/t получи три разные производные пропорции. Укажи, какое преобразование ты выбрал.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши пропорцию после одного преобразования.",
+       "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+       "explanation": "Возможны, например, такие записи: (x+y)/y = (z+t)/t; (y−x)/y = (t−z)/t; x/(x+y) = z/(z+t). Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Найди ещё два варианта и проверь ограничения.",
+       "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+       "explanation": "Возможны, например, такие записи: (x+y)/y = (z+t)/t; (y−x)/y = (t−z)/t; x/(x+y) = z/(z+t). Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители."
+      }
+     ],
+     "hint": "К обоим отношениям можно прибавить по единице или вычесть их из единицы. Ещё один вариант — сравнить числитель с суммой членов.",
+     "explanation": "Возможны, например, такие записи: (x+y)/y = (z+t)/t; (y−x)/y = (t−z)/t; x/(x+y) = z/(z+t). Для дробей исключи нули в знаменателях. Если все члены пропорции должны быть ненулевыми, проверь и числители.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 101,
+      "reference": "№101(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "deriveThree": {
+      "terms": [
+       "x",
+       "y",
+       "z",
+       "t"
+      ],
+      "variant": "complement"
+     }
+    },
+    {
+     "id": "p18-t31",
+     "title": "К задаче №102(1)",
+     "kind": "manual",
+     "prompt": "Сними с рисунка книги четыре длины: B₁B₂, B₂B₃, C₁C₂, C₂C₃. Сравни отношения соответствующих длин двух лучей. Если книги под рукой нет, используй авторскую схему с показаниями в модели.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Если B₁B₂ ≈ 40 мм и C₁C₂ ≈ 20 мм, чему примерно равно их отношение?",
+       "answer": "2",
+       "hint": "Измеряй расстояние вдоль каждого луча между соседними точками, а не расстояние между лучами. Сравни отношения, сохраняя порядок.",
+       "explanation": "По исходному печатному рисунку получаются примерно 40 и 30 мм вдоль верхнего луча, 20 и 15 мм вдоль нижнего. Оба отношения около 2. Толщина линий и масштаб печати меняют показания. Измерение предлагает гипотезу."
+      },
+      {
+       "prompt": "Проверь B₂B₃ : C₂C₃ при 30 и 15 мм.",
+       "answer": "2",
+       "hint": "Измеряй расстояние вдоль каждого луча между соседними точками, а не расстояние между лучами. Сравни отношения, сохраняя порядок.",
+       "explanation": "По исходному печатному рисунку получаются примерно 40 и 30 мм вдоль верхнего луча, 20 и 15 мм вдоль нижнего. Оба отношения около 2. Толщина линий и масштаб печати меняют показания. Измерение предлагает гипотезу."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши собственные измерения и объясни возможный разброс.",
+       "hint": "Измеряй расстояние вдоль каждого луча между соседними точками, а не расстояние между лучами. Сравни отношения, сохраняя порядок.",
+       "explanation": "По исходному печатному рисунку получаются примерно 40 и 30 мм вдоль верхнего луча, 20 и 15 мм вдоль нижнего. Оба отношения около 2. Толщина линий и масштаб печати меняют показания. Измерение предлагает гипотезу."
+      }
+     ],
+     "hint": "Измеряй расстояние вдоль каждого луча между соседними точками, а не расстояние между лучами. Сравни отношения, сохраняя порядок.",
+     "explanation": "По исходному печатному рисунку получаются примерно 40 и 30 мм вдоль верхнего луча, 20 и 15 мм вдоль нижнего. Оба отношения около 2. Толщина линий и масштаб печати меняют показания. Измерение предлагает гипотезу.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 102,
+      "reference": "№102(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "parallelIntercept": "measure",
+     "figure": {
+      "type": "parallel-ray-intercepts",
+      "caption": "Авторская схема. Метки B лежат на верхнем луче, C — на нижнем."
+     }
+    },
+    {
+     "id": "p18-t32",
+     "title": "К задаче №102(2)",
+     "kind": "manual",
+     "prompt": "Построй другой угол и три параллельные секущие. Измени угол или расстояния между секущими и сравни отношения соседних отрезков. Сформулируй гипотезу. Дают ли измерения доказательство?",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Проверь два разных угла или два набора расстояний.",
+       "hint": "Измеряй расстояние вдоль каждого луча между соседними точками, а не расстояние между лучами. Сравни отношения, сохраняя порядок.",
+       "explanation": "Пусть длины B₁B₂ и B₂B₃ в k раз больше C₁C₂ и C₂C₃ соответственно. Тогда и отношение сумм равно k. Несколько измерений позволяют предположить общую закономерность; доказательству нужна связь между параллельностью и равенством отношений."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши гипотезу и объясни различие между наблюдением и общим доказательством.",
+       "hint": "Измеряй расстояние вдоль каждого луча между соседними точками, а не расстояние между лучами. Сравни отношения, сохраняя порядок.",
+       "explanation": "Пусть длины B₁B₂ и B₂B₃ в k раз больше C₁C₂ и C₂C₃ соответственно. Тогда и отношение сумм равно k. Несколько измерений позволяют предположить общую закономерность; доказательству нужна связь между параллельностью и равенством отношений."
+      }
+     ],
+     "hint": "Измеряй расстояние вдоль каждого луча между соседними точками, а не расстояние между лучами. Сравни отношения, сохраняя порядок.",
+     "explanation": "Пусть длины B₁B₂ и B₂B₃ в k раз больше C₁C₂ и C₂C₃ соответственно. Тогда и отношение сумм равно k. Несколько измерений позволяют предположить общую закономерность; доказательству нужна связь между параллельностью и равенством отношений.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 102,
+      "reference": "№102(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Запиши своё объяснение для проверки.",
+     "parallelIntercept": "explore"
+    },
+    {
+     "id": "p18-t33",
+     "title": "К задаче №103",
+     "kind": "choice",
+     "prompt": "Проверь девять букв таблицы и восстанови имя античного учёного. Затем укажи его город и историческую эпоху.",
+     "answer": "Фалес",
+     "steps": [
+      {
+       "prompt": "Вычисли левую часть строки Ф (9,6 : 0,3).",
+       "answer": "32",
+       "hint": "Каждая буква задаёт два отношения. Сократи каждую дробь или сравни перекрёстные произведения. Из букв истинных строк составь имя.",
+       "explanation": "Подходят Ф, А, Л, Е, С: получаем Фалес. Античный математик и философ был связан с Милетом в Ионии, на западном побережье Малой Азии, ныне в Турции. Обычно его жизнь относят к концу VII и первой половине VI века до н. э., приблизительно 624–547 гг. до н. э."
+      },
+      {
+       "prompt": "Сколько строк дают равные отношения?",
+       "answer": "5",
+       "hint": "Каждая буква задаёт два отношения. Сократи каждую дробь или сравни перекрёстные произведения. Из букв истинных строк составь имя.",
+       "explanation": "Подходят Ф, А, Л, Е, С: получаем Фалес. Античный математик и философ был связан с Милетом в Ионии, на западном побережье Малой Азии, ныне в Турции. Обычно его жизнь относят к концу VII и первой половине VI века до н. э., приблизительно 624–547 гг. до н. э."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши сведения об учёном и сверь со справкой модели.",
+       "hint": "Каждая буква задаёт два отношения. Сократи каждую дробь или сравни перекрёстные произведения. Из букв истинных строк составь имя.",
+       "explanation": "Подходят Ф, А, Л, Е, С: получаем Фалес. Античный математик и философ был связан с Милетом в Ионии, на западном побережье Малой Азии, ныне в Турции. Обычно его жизнь относят к концу VII и первой половине VI века до н. э., приблизительно 624–547 гг. до н. э."
+      }
+     ],
+     "hint": "Каждая буква задаёт два отношения. Сократи каждую дробь или сравни перекрёстные произведения. Из букв истинных строк составь имя.",
+     "explanation": "Подходят Ф, А, Л, Е, С: получаем Фалес. Античный математик и философ был связан с Милетом в Ионии, на западном побережье Малой Азии, ныне в Турции. Обычно его жизнь относят к концу VII и первой половине VI века до н. э., приблизительно 624–547 гг. до н. э.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 27,
+      "exercise": 103,
+      "reference": "№103"
+     },
+     "finalLabel": "Выбери имя учёного.",
+     "thalesCipher": [
+      [
+       "И",
+       "0.2",
+       "1.3",
+       "4",
+       "2.6"
+      ],
+      [
+       "Ф",
+       "9.6",
+       "0.3",
+       "0.32",
+       "0.01"
+      ],
+      [
+       "П",
+       "60",
+       "1.2",
+       "0.5",
+       "1"
+      ],
+      [
+       "А",
+       "2/3",
+       "5",
+       "0.1",
+       "3/4"
+      ],
+      [
+       "Л",
+       "7/15",
+       "7/9",
+       "0.3",
+       "0.5"
+      ],
+      [
+       "Г",
+       "5.5",
+       "11",
+       "0.77",
+       "0.7"
+      ],
+      [
+       "Е",
+       "13/6",
+       "10",
+       "1.3",
+       "6"
+      ],
+      [
+       "О",
+       "3.131",
+       "31",
+       "9.6",
+       "0.3"
+      ],
+      [
+       "С",
+       "1.5",
+       "0.18",
+       "5",
+       "0.6"
+      ]
+     ],
+     "figure": {
+      "type": "thales-proportions",
+      "rows": [
+       [
+        "И",
+        "0.2",
+        "1.3",
+        "4",
+        "2.6"
+       ],
+       [
+        "Ф",
+        "9.6",
+        "0.3",
+        "0.32",
+        "0.01"
+       ],
+       [
+        "П",
+        "60",
+        "1.2",
+        "0.5",
+        "1"
+       ],
+       [
+        "А",
+        "2/3",
+        "5",
+        "0.1",
+        "3/4"
+       ],
+       [
+        "Л",
+        "7/15",
+        "7/9",
+        "0.3",
+        "0.5"
+       ],
+       [
+        "Г",
+        "5.5",
+        "11",
+        "0.77",
+        "0.7"
+       ],
+       [
+        "Е",
+        "13/6",
+        "10",
+        "1.3",
+        "6"
+       ],
+       [
+        "О",
+        "3.131",
+        "31",
+        "9.6",
+        "0.3"
+       ],
+       [
+        "С",
+        "1.5",
+        "0.18",
+        "5",
+        "0.6"
+       ]
+      ],
+      "caption": "Девять независимых проверок. Два числа в каждой паре раздели в указанном порядке."
+     },
+     "errorCues": [
+      [
+       "Евклид",
+       "Проверь строки Ф и С: они дают одинаковые значения слева и справа."
+      ],
+      [
+       "Пифагор",
+       "Проверь строку П: 60 : 1,2 и 0,5 : 1 имеют разный масштаб."
+      ]
+     ],
+     "choices": [
+      "Евклид",
+      "Фалес",
+      "Пифагор"
+     ]
     }
    ],
    "orderBySource": true

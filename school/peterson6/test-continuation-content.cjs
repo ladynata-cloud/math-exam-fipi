@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,774);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,786);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -861,6 +861,15 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
   for(const [i,y]of expected.entries())assert(M.equal(y,t.steps[i].answer),t.id);
   assert(M.equal(M.operation('divide',s.inputs[1],s.inputs[0]),M.operation('divide',expected[1],expected[0])));
  }
+}
+{
+ const rows=D.lessons.find(l=>l.id==='p18').tasks,group=n=>Array.from(rows.filter(t=>t.source.exercise===n)).sort((a,b)=>Number(a.source.subpart)-Number(b.source.subpart));
+ for(const [n,total]of [[100,7],[101,4],[102,3],[103,1]]){assert.equal(group(n).length,total);assert(group(n).every(t=>t.source.page===27));}
+ for(const [i,t]of group(100).entries()){assert.equal(t.derivedProof,i+1);assert.equal(t.kind,'manual');}
+ for(const [id,t] of group(101).entries()){assert.equal(t.deriveThree.terms.length,4);assert.equal(t.deriveThree.variant,id===0?'subtract':'complement');}
+ assert.deepEqual(group(102).map(t=>t.parallelIntercept),['measure','explore','sum']);assert(group(102).every(t=>t.kind==='manual'));
+ const t=group(103)[0],truth=Array.from(t.thalesCipher).filter(([l,a,b,c,d])=>M.equal(M.operation('multiply',a,d),M.operation('multiply',b,c))).map(v=>v[0]);
+ assert.equal(truth.join(''),'ФАЛЕС');assert.equal(t.answer,'Фалес');
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

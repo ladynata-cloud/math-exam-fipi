@@ -1203,3 +1203,39 @@ test('construct all eight valid source rearrangements and compare rates in all f
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('prove derived proportions on the common domain and measure corresponding ray segments',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [rule,j]of [4,21,22,23,24,25,26].entries()){
+   const c=go(j);
+   for(const i of [0,1,2,3,4,5]){
+    set(c[0],i);set(c[1],1);const rows=[...f.d.querySelectorAll('#model tbody tr')],message=rows.map(row=>row.cells[2].textContent);
+    assert.equal(rows.length,rule===6?3:2);
+    if(i===0||i===1)assert(message.every(m=>m.includes(i===0?'Равенство верно':'Равенство ложно')));
+    if(i===5)assert(message[0].includes('нулевой знаменатель'));
+    if(i===2&&[4,5,6].includes(rule))assert(message[1].includes('нулевой знаменатель'));
+    if(i===3&&[3,6].includes(rule))assert(message.some(m=>m.includes('нулевой знаменатель')));
+   }
+  }
+  for(const j of [3,27,28,29]){
+   const c=go(j);set(c[0],1);
+   for(const op of [0,1,2]){set(c[1],op);set(c[2],1);assert(out().includes('Равенство верно'));}
+  }
+  for(const j of [30,31,5]){
+   const c=go(j);
+   for(const [vi,k]of [1.5,2,2.5].entries()){
+    set(c[0],50);set(c[1],vi);set(c[2],2);
+    const rays=['B','C'].map(v=>f.q('#model [data-measured-branch="'+v+'"]'));
+    const vec=l=>[l.getAttribute('x2')-l.getAttribute('x1'),l.getAttribute('y2')-l.getAttribute('y1')],len=l=>Math.hypot(...vec(l));assert(Math.abs(len(rays[0])/len(rays[1])-k)<1e-9);
+    const cuts=[...f.d.querySelectorAll('#model [data-transversal]')].map(vec);assert.equal(cuts.length,3);for(const t of cuts.slice(1))assert(Math.abs(cuts[0][0]*t[1]-cuts[0][1]*t[0])<1e-8);
+   }
+  }
+  const c=go(32),correct=[];assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,9);
+  for(let i=0;i<9;i++){set(c[0],i);set(c[1],1);if(out().includes('буква входит'))correct.push(f.q(c[0]).selectedOptions[0].textContent);}
+  assert.equal(correct.join(''),'ФАЛЕС');set(c[1],2);assert(f.q('#model .pm-visual a').href.startsWith('https://mathshistory.st-andrews.ac.uk/'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
