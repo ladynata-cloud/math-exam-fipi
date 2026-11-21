@@ -62,6 +62,7 @@ on:
       - 'tools/geometry-textbook/*coordinate_proof_method*'
       - 'geometry-course/textbook/data/coordinate-curves.json'
       - 'geometry-course/textbook/data/circle-intersections.json'
+      - 'geometry-course/textbook/data/circle-equations.json'
       - 'tools/geometry-textbook/*coordinate_curves*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
@@ -106,6 +107,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_proof_method.py --check && python3 tools/geometry-textbook/check_coordinate_proof_method.py
       - run: python3 tools/geometry-textbook/coordinate_curves.py --check && python3 tools/geometry-textbook/check_coordinate_curves.py
       - run: python3 tools/geometry-textbook/circle_intersections.py --check && python3 tools/geometry-textbook/check_circle_intersections.py
+      - run: python3 tools/geometry-textbook/circle_equations.py --check && python3 tools/geometry-textbook/check_circle_equations.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons

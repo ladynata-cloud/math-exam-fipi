@@ -73,6 +73,7 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
+  "geometry-course/textbook/data/circle-equations.json": "23c66b091a73a6ab27c60a3dd199f33a213ed6d1af1b7a3d672a472667f9e6e0",
   "geometry-course/textbook/data/circle-intersections.json": "ea4bf02eed64b3eaf1c16c325cb029bc405b7860a3538e408a32e2e5fc86f359",
   "geometry-course/textbook/data/coordinate-curves.json": "c6afceb8b62420414f4bd31e88a1aa9be4be0055e9b4314037fdc81dd2c2604d",
   "geometry-course/textbook/data/coordinate-proof-method.json": "cb033807782332a0fc1a34b741ad6eece5d91cddf9c905091202347f2a331176",
