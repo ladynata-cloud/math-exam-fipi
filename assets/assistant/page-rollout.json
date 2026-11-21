@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 629,
-    "covered": 627,
+    "total": 630,
+    "covered": 628,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -214,6 +214,12 @@
       "beforeSha256": "249426811967de8efc589e2ecfba7fb0f81d3fc4d22f370fd25704c7ddc2296c",
       "afterSha256": "d8a19f926a3a29f8b237f5e19d349b8f52947aadcd771ea24127682c5691d1f9",
       "placement": "before-head-close"
+    },
+    "books/index.html": {
+      "beforeSha256": "4297c13a48c469ef4f1ce5b2012621c805d4ba2281472da23a0bb3e9ec62bdba",
+      "afterSha256": "5498327dcf803617cfe5443af0c65fae162f3067a461c27a376d2f991df09577",
+      "placement": "before-head-close",
+      "sourceSha": "ac152cc3e5458a29ccf480c0a9cc6e2b5b107c8a"
     },
     "courses/vilenkin-5-part-1/index.html": {
       "beforeSha256": "c24a34c8deb89261c203c4a3a25ac5baf88f7fc23f086797cadf8fdcc1d6d758",
@@ -2293,9 +2299,10 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "55872530edc3ec6e29bf5585b649cd322882e7922dd5b5de4f4dcc49339d4b2c",
-      "afterSha256": "7d039da497be36c544da989a3a34bb8439e70c526f9cc59c710f012c9be4532f",
-      "placement": "before-head-close"
+      "beforeSha256": "faa952fcf0c691926110f4d63828fd46b3f27caa892bfe26f3aa424d40a7ceb6",
+      "afterSha256": "eb0d6b0b236df0df93ee199e96bbbe40ea742197a87c8ac84145a3c9937e2102",
+      "placement": "before-head-close",
+      "sourceSha": "85ceeb823ddf1ab06c9a78e3391858c85712367a"
     },
     "stereo-course/merzlyak-10-base/index.html": {
       "beforeSha256": "5ec4467e0bffdc283921d9bc2aac8449f549474b77be4f7fbba7d29289758cfb",
@@ -3385,6 +3392,7 @@
     "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
     "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
     "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
+    "books/index.html": "index.html",
     "courses/index.html": "sitemap",
     "courses/vilenkin-5-part-1/index.html": "sitemap",
     "courses/vilenkin-5/index.html": "sitemap",
@@ -6722,6 +6730,14 @@
         "trainers/makarychev9-2017/index.html"
       ],
       "reason": "Сверенные пункты 1–4 издания 2017 года и самостоятельная практика."
+    },
+    {
+      "sourceBaseSha": "ac152cc3e5458a29ccf480c0a9cc6e2b5b107c8a",
+      "task": "docs/tasks/MATHEXAM_BOOKS_20261121.md",
+      "addedPages": [
+        "books/index.html"
+      ],
+      "reason": "Каталог авторских книг опубликован с главной страницы и включён в sitemap."
     }
   ]
 }
