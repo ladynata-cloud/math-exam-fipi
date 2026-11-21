@@ -91,6 +91,7 @@ const close=server=>new Promise(resolve=>server.close(resolve));
   // A common explanation is available even before a pupil receives another individual task.
   await tp.locator('#open-common').click();await tp.waitForSelector('#present-work',{state:'attached'});await revealLessonTools(tp);await tp.locator('#present-work').click();await student.waitForSelector('#watch-drawing:not([hidden]) canvas');assert.equal(await student.locator('#watch-caption').innerText(),'Общая доска · только просмотр');
   await secondContext.close();
+  await verifyMakarychevProgram(browser,tp,api,origin,trainerOrigin);
   assert.deepEqual(errors,[]);console.log('LEARNING_CABINET_BROWSER_OK: auth, 8 seats, cloned assignments, live state, control, presentation, concurrent ink and text, authored undo, lost-ACK fencing, cross-device resume, in-lesson analogue, history, mobile, four-screen mode, live reset and archived history, common explanation without personal task');
  }finally{await browser.close();await close(server);await close(trainerServer);store.close();fs.rmSync(tmp,{recursive:true,force:true});}
 })().catch(e=>{console.error(e.stack||e);process.exitCode=1;});
@@ -98,3 +99,54 @@ async function assertValue(locator,value){await locator.page().waitForFunction((
 
 async function draw(page,offset){const box=await page.locator('#drawing-host canvas').boundingBox();await page.mouse.move(box.x+offset,box.y+40);await page.mouse.down();await page.mouse.move(box.x+offset+60,box.y+120,{steps:6});await page.mouse.up();}
 async function revealLessonTools(page){const details=page.locator('.lesson-session-tools');if(await details.count()&&!await details.evaluate(element=>element.open))await details.locator('summary').click();}
+
+
+async function verifyMakarychevProgram(browser,teacher,api,origin,trainerOrigin){
+  const profile={course:'school',goal:null,focus:'',program:{grade:8,courseIds:['makarychev8']}};
+  const created=await api(teacher,'/teacher/students',{
+    opId:require('node:crypto').randomUUID(),name:'Синтетический восьмиклассник',login:'synthetic-m8',password,profile
+  });
+  await teacher.evaluate(()=>LearningApp.refresh());
+  await teacher.evaluate(id=>LearningApp.navigate('preview='+id),created.student.id);
+  const cardSelector='[data-program-course="makarychev8"]';
+  const board=teacher.locator(cardSelector+' [data-program-board]');
+  const boardPath='/trainers/trainer-board.html?trainer='+encodeURIComponent('/trainers/makarychev8.html#home');
+  const cabinetPath=async link=>new URLSearchParams((await link.getAttribute('href')).slice(1)).get('public-practice');
+  assert.equal(await cabinetPath(board),boardPath);
+  const context=await browser.newContext({viewport:{width:390,height:844}});
+  try{
+    const student=await context.newPage();
+    await context.route('https://mathexam.space/**',route=>{
+      const url=new URL(route.request().url());
+      return route.fulfill({status:302,headers:{location:trainerOrigin+url.pathname+url.search}});
+    });
+    await student.goto(origin+'/learning/');
+    await student.locator('[name=login]').fill('synthetic-m8');
+    await student.locator('[name=password]').fill(password);
+    await student.locator('#auth-form [type=submit]').click();
+    await student.locator('#navigation').waitFor();
+    const intro=student.locator('[data-mw-close]');
+    if(await intro.isVisible())await intro.click();
+    const card=student.locator(cardSelector);
+    assert.equal(await cabinetPath(card.locator('[data-program-board]')),boardPath);
+    const personal=card.locator('[data-program-open]');
+    assert.equal(await personal.getAttribute('href'),'https://mathexam.space/school/makarychev8/');
+    const opened=context.waitForEvent('page');await personal.click();
+    const course=await opened;
+    await course.locator('#exercise-number').fill('265');
+    await course.locator('#number-form button').click();
+    await course.getByRole('link',{name:'№ 265б',exact:true}).click();
+    const taskId='ch1-extra-265-b';
+    assert.equal(await course.evaluate(id=>Boolean(MakarychevApp.getState().tasks[id]?.correct),taskId),false);
+    await course.locator('#final-answer').fill('-6;-9');
+    await course.locator('#answer-form button[type=submit]').click();
+    await course.reload();
+    await course.waitForFunction(id=>MakarychevApp.getState().tasks[id]?.independent===true,taskId);
+    await board.click();
+    const classroom=teacher.frameLocator('.public-practice-stage iframe');
+    await classroom.frameLocator('#trainerFrame').locator('#exercise-number').waitFor();
+    assert((await classroom.locator('#trainerFrame').getAttribute('src')).includes('makarychev8.html'));
+    await teacher.locator('[data-cabinet-return]').click();
+    await board.waitFor();
+  }finally{await context.close();}
+}

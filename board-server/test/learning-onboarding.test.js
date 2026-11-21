@@ -102,6 +102,20 @@ test('one confirmed request creates a ready account and two-course program witho
   assert.deepEqual((await f.request('/teacher/students')).data.students.find(s => s.id === result.data.student.id).profile, result.data.profile);
 });
 
+test('assigned Makarychev 8 keeps personal study and opens its registered shared board', async t => {
+  const f = await fixture(t);
+  const body = input({ login: 'synthetic_makarychev8' });
+  body.profile = { course: 'school', goal: null, focus: '', program: { grade: 8, courseIds: ['makarychev8'] } };
+  const response = await f.request('/teacher/students', body);
+  assert.equal(response.status, 201);
+  const [course] = courseProgram.selected(response.data.profile);
+  assert.equal(course.storage, 'browser');
+  assert.equal(course.publicURL, 'https://mathexam.space/school/makarychev8/');
+  const board = new URL(course.boardURL);
+  assert.equal(board.origin + board.pathname, 'https://mathexam.space/trainers/trainer-board.html');
+  assert.equal(board.searchParams.get('trainer'), '/trainers/makarychev8.html#home');
+});
+
 test('college logarithms is assignable without a school grade and supplies course and shared-board destinations', async t => {
   const course = courseProgram.get('college-logarithms');
   assert.equal(course.publicURL, 'https://mathexam.space/trainers/college-logarithms/');
