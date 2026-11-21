@@ -75,7 +75,7 @@ function filesAt(relative) {
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
   "geometry-course/textbook/data/coordinate-additional-curves.json": "fee66bf53ff6b7d72bf4ea1291b3c0d301e88367f00f364df226e0bb3534d0b7",
-  "geometry-course/textbook/data/coordinate-additional-applications.json": "793c3aad326f90cfd4f219052f8da559e7e64bb383befaf279acaaa1307dbe97",
+  "geometry-course/textbook/data/coordinate-additional-applications.json": "9605c0578794ed4ced607dcd172cfbc23c348764863ba3a94110eed9e4cb151c",
   "geometry-course/textbook/data/coordinate-additional-figures.json": "f56367e0be6b845b59f84fa65d7ab70dd4691d5ff5faebc656ddb845438afd91",
   "geometry-course/textbook/data/coordinate-additional-vectors.json": "d1497cb4b710ad23f8cddcbdf9cbcf4eabaeab04fe5459bed358a88f58c8b07b",
   "geometry-course/textbook/data/coordinate-chapter-review.json": "562215271ad7d51a10e4def267c4e10cad8f22c034a3dd050635d01bf8fde4a7",

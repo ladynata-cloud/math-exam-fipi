@@ -72,6 +72,19 @@ def median_formula():
         [view('Медиана к горизонтальному основанию',pts,[('A','H')]),view('Длины медианы и боковых сторон',pts,[('A','H'),('B','H'),('H','C')]),view('Две равные медианы',new,[('A','U'),('B','V')])],
         [('Каков квадрат AH в числовом примере A=(2;4)?','20','Сложи 2² и 4².'),('Чему равно 4AU² в новом равнобедренном треугольнике?','97','Для AU смещение (9/2;2); умножь сумму квадратов на 4.')],(96,))
 
+
+def locus_labels(card):
+    model=card['visualization']['model']
+    for name,label in model['labels'].items():
+        if label=='O=A':
+            model['labels'][name]='A'
+            model.setdefault('labelOffsets',{})[name]=[-3.4,-3.8]
+        elif label in ('B','S','K','P'):
+            model.setdefault('labelOffsets',{})[name]={'B':[1.1,5.8],'S':[0,-5.5],'K':[0,-5.5],'P':[2.8,3.7]}[label]
+    card['visualization']['caption']='Начало координат — точка A. На каждом чертеже B задаёт длину AB; сравни расстояния от проверяемой точки до A и B.'
+    model['description']=card['visualization']['caption']
+    return card
+
 def recovered_loci(part):
     # A and B are distinct in the school problem. The ratio form uses a=AB>0.
     if part=='а':
@@ -86,7 +99,7 @@ def recovered_loci(part):
              ('Измени расстояние между заданными точками','Для a=3 центр S=(−3;0), радиус 6. У верхней точки M=(−3;6) квадраты AM²=45, BM²=72 дают 2·45−72=18=2·9.','Положение центра и радиус масштабируются вместе с AB.')],
             [initial,correct,fresh],[('При AB=2 какую абсциссу имеет центр?','-2','Центр — отражение B относительно A.'),('Каков радиус при новой длине AB=3?','6','Удвой AB.')])
         c['answer']=dict(mode='exact',accepted=['-1;2','-1; 2','(-1;2)','(-1; 2)'],prompt='При A=(0;0), B=(a;0) введи xS/a и R/a через точку с запятой.',feedback='Центр расположен по другую сторону от A относительно B, поэтому его абсцисса отрицательна. Радиус равен 2a.')
-        return c
+        return locus_labels(c)
     def actual(a,title,m):
         return shape(title,{'A':(0,0),'B':(a,0),'M':m},edges=[('A','M'),('B','M'),('S','M')],circles=[('S',(a/2,0),5*a*a/4)])
     actual2=actual(2,'По условию с двумя коэффициентами 2',(0,2))
@@ -102,7 +115,7 @@ def recovered_loci(part):
         [bare,actual2,actual4,key],[('При AB=2 какую абсциссу имеет центр окружности из условия?','1','Середина точек с абсциссами 0 и 2 имеет абсциссу 1.'),('При AB=4 чему равен квадрат правильного радиуса?','20','Вычисли 5·4²/4.')])
     c['answer']=dict(mode='exact',prompt='При A=(0;0), B=(a;0) введи xS/a и R²/a² через точку с запятой. Укажи результат для условия на с. 270.',accepted=['1/2;5/4','1/2; 5/4','½;5/4','½; 5/4','0,5;1,25','0,5; 1,25','0.5;1.25','0.5; 1.25'],feedback='В условии оба квадрата имеют коэффициент 2. Приведи равенство к (x−a/2)²+y²=5a²/4. Указываются координата центра и именно квадрат радиуса в долях a².')
     c['review']['reviewer']+=' №1097б: расхождение условия на с. 270 и ответа на с. 399 независимо проверено преобразованием, симметрией и контрольными точками.'
-    return c
+    return locus_labels(c)
 
 
 def build():return {'bookId':BOOK,'lessons':[two_positions(),trapezoid(),parallelogram(),median_formula(),recovered_loci('а'),recovered_loci('б')]}
