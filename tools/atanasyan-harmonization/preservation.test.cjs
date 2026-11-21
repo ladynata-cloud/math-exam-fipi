@@ -75,6 +75,7 @@ function filesAt(relative) {
 const approvedAreaFiles = {
   "geometry-course/textbook/data/circle-line-positions.json": "7d939bca6eb5642d3b76bf7bc24c932ac399ba6fd31dbf51636c6fe1212d009e",
   "geometry-course/textbook/data/triangle-sine-area.json": "329c77274a12acbab05da2084cfb72e09f7af67f4bb63773c241c7e8c6effcfa",
+  "geometry-course/textbook/data/disks-and-annuli.json": "3d19a60d3ca784466510ca0ce746af0edaa480a894079281f4f1b36631f30263",
   "geometry-course/textbook/data/areas-of-inscribed-disks.json": "84cb78f59290d47af5275ea48a96002746a758543f17b0249e079030c155463b",
   "geometry-course/textbook/data/disk-area-table.json": "ff200cd841da36ce563e4f5c0a84bab3ddaef25766e08e86fa74189fb455e121",
   "geometry-course/textbook/data/radian-constructions.json": "cb2c85ecd3a1662a30275ac85967e8ab524d88e160f7af2e7e35976c4f3b9de2",
@@ -140,7 +141,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "e553e6e837a999b5db6cfaaed1dfc47deb2cdf36e84b17fb0a6bd89f1afb5627",
+  "geometry-course/textbook/assets/additional-lessons.js": "2d4aaa8b6ad12b07458149553db766b04b2e1053b3353db30333e0b429619fa8",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
