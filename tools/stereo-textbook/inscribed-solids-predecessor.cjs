@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const heightAndMidpointProofs = makeReviewedIncrement(require('./height-and-midpoint-proofs.json'));
+const vectorChapterSelfcheck = makeReviewedIncrement(require('./vector-chapter-selfcheck.json'));
+const heightAndMidpointProofs = makeReviewedIncrement(require('./height-and-midpoint-proofs.json'), vectorChapterSelfcheck);
 const centroidsInTetrahedra = makeReviewedIncrement(require('./centroids-in-tetrahedra.json'), heightAndMidpointProofs);
 const fieldsAndMidpointVectors = makeReviewedIncrement(require('./fields-and-midpoint-vectors.json'), centroidsInTetrahedra);
 const parallelepipedDirectedBases = makeReviewedIncrement(require('./parallelepiped-directed-bases.json'), fieldsAndMidpointVectors);
