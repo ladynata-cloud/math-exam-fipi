@@ -1195,6 +1195,22 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+function claimExample(key,index){
+ const n=[1,4,7][index],[a,b]=[[8,2],[3,3],[2,8]][index],M=root.PetersonMath,frac=(x,y)=>M.answer(M.operation('divide',x,y));
+ switch(key){
+  case '76-1':return ['a = '+n, n+'/8 = '+frac(n,8)+'; 2/'+n+' = '+frac(2,n)+'.', n===4?'Этот пример подходит. Для слова «каждое» одного совпадения мало.':'Получен контрпример.'];
+  case '76-2':return ['n = '+n,n+'² − 16 = '+(n*n-16)+'.',n===4?'Свидетель найден: для существования этого достаточно.':'Эта подстановка не подходит; это ещё не опровергает существование.'];
+  case '76-3':{const v=[0,.5,3][index];return ['b = '+num(v),'b² + 9 = '+num(v*v+9)+'.','Общий довод: квадрат неотрицателен, значит сумма не меньше девяти.'];}
+  case '76-4':{const c=['0','1/2','3'][index];return ['c = '+c,'c/5 = '+frac(c,5)+'; c/6 = '+frac(c,6)+'.',index===0?'На границе 0/1 обе стороны равны. Строгое неравенство здесь ложно.':'У положительной дроби c разность c/30 положительна.'];}
+  case '77-1':return ['Сравни '+a+' и '+b,frac(a,b)+' × '+b+' = '+a+'.','Частное показывает множитель перехода к первому числу. Для обратного направления нужен обратный множитель.'];
+  case '77-2':return ['Возьми '+a+' и '+b,frac(a,b)+' и '+frac(b,a)+'.',a===b?'Отношение и обратное равны 1. Этого примера достаточно.':'Для этой пары отношения различны. Это не исключает другую пару.'];
+  case '77-3':{const s=['1/50','1','4'][index];return ['Масштаб '+s,'Отрезок длиной 50 мм на изображении имеет '+M.answer(M.operation('multiply',50,s))+' мм.',index===0?'Уменьшение соответствует данному примеру.':'Это контрпример к слову «всегда меньше».'];}
+  case '77-4':{const [a,b,c,d]=[[2,3,8,12],[3,5,9,15],[4,7,12,21]][index];return [a+'/'+b+' = '+c+'/'+d,a+' × '+d+' = '+b+' × '+c+' = '+a*d+'.','Общее доказательство получается умножением обеих частей a/b = c/d на bd.'];}
+  case '77-5':{const [n,d]=[[2,3],[3,3],[5,3]][index];return ['Дробь '+n+'/'+d,'Её значение '+frac(n,d)+'.',n<d?'Числитель меньше знаменателя, значение меньше единицы.':n===d?'Значение 1, но такая дробь не является правильной.':'Значение больше 1, и дробь неправильная.'];}
+  case '77-6':return ['Натуральное n = '+n,n+' = '+n+'/1.','При любом натуральном n деление на единицу даёт то же число.'];
+ }
+ throw new Error('Неизвестное сравнение.');
+}
 function pentagonShape(){
  const b=[-.375,Math.sqrt(1.5**2-.375**2)],d=[3.55,Math.sqrt(2**2-1.05**2)],dx=d[0]-b[0],dy=d[1]-b[1],distance=Math.hypot(dx,dy);
  const along=(9-4+distance**2)/(2*distance),height=Math.sqrt(9-along**2);
@@ -1707,6 +1723,11 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p17' && task?.proportionClaim)return {title:'Подстановка и утверждение для всех чисел',controls:[c('Пример',[[0,'Первый'],[1,'Второй'],[2,'Третий']]),c('Разбор',[[0,'Сначала проверю'],[1,'Вычисления'],[2,'Что показывает пример']])],initial:[0,0]};
+ if(lesson?.id==='p17' && task?.twoPercentBases)return {title:'Что здесь принято за сто процентов?',controls:[c('Пара чисел',[[0,'28 и 35'],[1,'30 и 50'],[2,'36 и 48']]),c('Направление',[[0,'От большего к меньшему'],[1,'От меньшего к большему']]),c('Сравнение',[[0,'Сначала проверю'],[1,'Отношение и изменение']])],initial:[0,0,0]};
+ if(lesson?.id==='p17' && task?.percentTransform)return {title:'Доля результата и процент изменения',controls:[c('Исходное число',[60,120,300]),c('Разбор',[[0,'Сначала посчитаю'],[1,'Новое значение'],[2,'Изменение']])],initial:[60,0]};
+ if(lesson?.id==='p17' && task?.motionPercent==='meeting')return {title:'Что значит «быстрее»?',controls:[c('Изменяем',[[0,'Время пути'],[1,'Скорость']]),c('Маршрут и изменение',[[0,'36 км, 40%'],[1,'54 км, 40%'],[2,'30 км, 25%']]),c('Проверка',[[0,'Сначала решу'],[1,'Таблица скоростей'],[2,'Момент встречи']])],initial:[0,0,0]};
+ if(lesson?.id==='p17' && task?.motionPercent)return {title:task.motionPercent==='motorcycle'?'Общий план для двух скоростей':'Разность скоростей при движении в одном направлении',controls:[c('Данные',[[0,'Из задачи'],[1,'Второй пример'],[2,'Третий пример']]),c('Проверка',[[0,'Сначала решу'],[1,'Промежуточные величины'],[2,'Результат']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.similarPentagon)return {title:'Один множитель для пяти сторон',controls:[c('Увеличение',[[0,'Как в задаче'],[1,'Другая копия']]),c('Длины на чертеже',[[0,'Только данные'],[1,'Сверить все стороны']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.alloyParts)return {title:'Семь равных долей сплава',controls:[c('Масса',[[0,'Как в задаче'],[1,'Другая масса']]),c('Показать',[[0,'Только доли'],[1,'Масса одной доли'],[2,'Обе массы']])],initial:[0,0]};
  if(lesson?.id==='p17' && task?.circleRatio)return {title:'Диаметр и приближённая длина окружности',controls:[c('Данные',[[0,'Как в задаче'],[1,'Новая длина']]),c('Результат',[[0,'Сначала вычислю'],[1,'Без округления в модели'],[2,'С округлением до десятых']])],initial:[0,0]};
@@ -1832,7 +1853,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.squareGridStudy && index<3)hiddenControl=3;
@@ -1842,8 +1863,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2078,6 +2099,48 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===17 && task.proportionClaim){
+  const items=claimExample(task.proportionClaim,a);say(items[0]);if(b>=1)say(items[1]);if(b===2)say(items[2]);
+  stepList(['Прочти область допустимых чисел.','Проверь выбранную подстановку.','Объясни, когда достаточно примера и когда нужен общий довод.']);
+ }
+ else if(n===17 && task.twoPercentBases){
+  const [small,big]=[[28,35],[30,50],[36,48]][a],old=b===0?big:small,next=b===0?small:big,M=root.PetersonMath;
+  show(changeBars(old,next,['Основание','Сравниваемое']));say('Основание сравнения: '+old+'. Разность по модулю '+(big-small)+'.');
+  if(state.values[2]===1){const r=M.operation('divide',next,old),delta=M.operation('divide',big-small,old);say('Процентное отношение '+M.answer(M.operation('multiply',100,r))+'%. Величина изменения '+M.answer(M.operation('multiply',100,delta))+'%.');}
+  stepList(['Выбери число, принятое за 100%.','Различай новое значение и разность.','Поменяй направление и проверь другое основание.']);
+ }
+ else if(n===17 && task.percentTransform){
+  const M=root.PetersonMath,r=M.parse(task.percentTransform),now=M.operation('multiply',a,r),newPct=M.operation('multiply',100,r),absDiff=M.operation('multiply',100,(r.n>=r.d?M.operation('subtract',r,1):M.operation('subtract',1,r)));
+  say('Исходное число '+a+'. Множитель из задачи '+M.answer(r)+'.');
+  if(b>=1){show(changeBars(a,now.n/now.d));say('Новое число '+M.answer(now)+'; оно составляет '+M.answer(newPct)+'% исходного.');}
+  if(b===2)say((r.n>r.d?'Увеличение':'Уменьшение')+' на '+M.answer(absDiff)+'%.');
+  stepList(['Вырази преобразование дробью.','Сравни результат с 100%.','Назови отдельно направление и величину изменения.']);
+ }
+ else if(n===17 && task.motionPercent==='meeting'){
+  const M=root.PetersonMath,[distance,pct]=[[36,40],[54,40],[30,25]][b],ratio=M.operation('divide',pct,100);
+  const busSpeed=M.operation('divide',distance,40),carTime=a===0?M.operation('multiply',40,M.operation('subtract',1,ratio)):M.operation('divide',40,M.operation('add',1,ratio));
+  const carSpeed=M.operation('divide',distance,carTime),meeting=M.operation('divide',distance,M.operation('add',busSpeed,carSpeed)),mode=state.values[2];
+  say('Длина маршрута '+distance+' км. Автобус проходит его за 40 минут. Дано для автомобиля: '+(a===0?'время меньше':'скорость больше')+' на '+pct+'%.');
+  if(mode>=1)show(table(['Транспорт','Время всего пути, мин','Скорость, км/мин'],[['Автобус','40',M.answer(busSpeed)],['Автомобиль',M.answer(carTime),M.answer(carSpeed)]]));
+  if(mode===2)say('Время до встречи '+M.answer(meeting)+' мин. Скорости складываются, а расстояние одинаково в обоих слагаемых и сокращается.');
+  stepList(['Определи, меняют скорость или время.','Вырази обе скорости в одних единицах.','Раздели расстояние на сумму скоростей.']);
+ }
+ else if(n===17 && task.motionPercent==='motorcycle'){
+  const [plan,pct]=[[100,20],[80,20],[60,25]][a],forward=plan*(100+pct)/100,back=plan*(100-pct)/100;
+  say('Плановая скорость '+plan+' км/ч. Отклонения вверх и вниз: по '+pct+'%.');
+  if(b>=1){show(changeBars(forward,back,['Туда','Обратно']));say('Туда '+num(forward)+' км/ч, обратно '+num(back)+' км/ч.');}
+  if(b===2)say('Обратная скорость меньше в '+root.PetersonMath.answer(root.PetersonMath.operation('divide',forward,back))+' раза.');
+  stepList(['Возьми один и тот же план за 100%.','Найди обе фактические скорости.','Сравни большую скорость с меньшей.']);
+ }
+ else if(n===17 && task.motionPercent==='catchup'){
+  const M=root.PetersonMath,[pct,hours,separation]=[[250,'1.5','16.5'],[250,'2','20'],[150,'2','18']][a];
+  const gain=M.operation('divide',separation,hours),walk=M.operation('divide',gain,M.operation('divide',pct,100)),bike=M.operation('add',walk,gain);
+  say('Опережение за '+num(M.parse(hours).n/M.parse(hours).d)+' ч равно '+num(M.parse(separation).n/M.parse(separation).d)+' км. Скорость велосипедиста выше на '+pct+'%.');
+  if(b>=1)say('Разность скоростей '+M.answer(gain)+' км/ч.');
+  if(b===2){say('Скорость пешехода '+M.answer(walk)+' км/ч, велосипедиста '+M.answer(bike)+' км/ч.');show(changeBars(walk.n/walk.d,bike.n/bike.d,['Пешеход','Велосипедист']));}
+  stepList(['Сравни путь участников в одно и то же время.','Отдели избыток скорости от полной скорости.','Проверь расстояние между ними.']);
  }
  else
  if(n===17 && task.similarPentagon){
@@ -27721,6 +27784,1100 @@ window.PetersonCourse = {
      },
      "finalLabel": "Сохрани своё обоснование для проверки.",
      "oddExpressions": 2
+    },
+    {
+     "id": "p17-t60",
+     "title": "К задаче №76(1)",
+     "kind": "choice",
+     "prompt": "Для каждого натурального a выполняется a/8 = 2/a. Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Ложно: есть натуральное число, для которого a/8 ≠ 2/a.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "При a = 4 равенство есть, но при a = 1 левая сторона 1/8, правая 2. Пример с a = 1 опровергает утверждение для всех."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "При a = 4 равенство есть, но при a = 1 левая сторона 1/8, правая 2. Пример с a = 1 опровергает утверждение для всех."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "При a = 4 равенство есть, но при a = 1 левая сторона 1/8, правая 2. Пример с a = 1 опровергает утверждение для всех.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 76,
+      "reference": "№76(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "76-1",
+     "errorCues": [
+      [
+       "Верно: достаточно проверить a = 4.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Ложно: ни для одного натурального a равенство не выполняется.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Верно: достаточно проверить a = 4.",
+      "Ложно: ни для одного натурального a равенство не выполняется.",
+      "Ложно: есть натуральное число, для которого a/8 ≠ 2/a."
+     ]
+    },
+    {
+     "id": "p17-t61",
+     "title": "К задаче №76(2)",
+     "kind": "choice",
+     "prompt": "Есть натуральное n, для которого n² − 16 = 0. Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Верно: n = 4 подходит.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Для существования достаточно одного подходящего натурального числа: 4² − 16 = 0."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Для существования достаточно одного подходящего натурального числа: 4² − 16 = 0."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "Для существования достаточно одного подходящего натурального числа: 4² − 16 = 0.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 76,
+      "reference": "№76(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "76-2",
+     "errorCues": [
+      [
+       "Ложно: n = 1 не подходит.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Верно: подходят все натуральные n.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Верно: n = 4 подходит.",
+      "Ложно: n = 1 не подходит.",
+      "Верно: подходят все натуральные n."
+     ]
+    },
+    {
+     "id": "p17-t62",
+     "title": "К задаче №76(3)",
+     "kind": "choice",
+     "prompt": "Есть дробь b, для которой b² + 9 = 0. Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Ложно: для каждой дроби b выражение b² + 9 отлично от нуля.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Квадрат неотрицателен. После прибавления девяти значение не меньше 9. Нужное равенство невозможно."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Квадрат неотрицателен. После прибавления девяти значение не меньше 9. Нужное равенство невозможно."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "Квадрат неотрицателен. После прибавления девяти значение не меньше 9. Нужное равенство невозможно.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 76,
+      "reference": "№76(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "76-3",
+     "errorCues": [
+      [
+       "Верно: подойдёт b = 3.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Ложно: существует дробь, которая не подходит, и этого достаточно.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Верно: подойдёт b = 3.",
+      "Ложно: для каждой дроби b выражение b² + 9 отлично от нуля.",
+      "Ложно: существует дробь, которая не подходит, и этого достаточно."
+     ]
+    },
+    {
+     "id": "p17-t63",
+     "title": "К задаче №77(1)",
+     "kind": "choice",
+     "prompt": "Показывает ли отношение двух положительных чисел, во сколько раз одно из них больше или меньше другого? Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Да: частное показывает множитель перехода от второго к первому.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Например, 8/2 = 4 и 2/8 = 1/4. Укажи направление сравнения; делитель должен быть ненулевым."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Например, 8/2 = 4 и 2/8 = 1/4. Укажи направление сравнения; делитель должен быть ненулевым."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "Например, 8/2 = 4 и 2/8 = 1/4. Укажи направление сравнения; делитель должен быть ненулевым.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 77,
+      "reference": "№77(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "77-1",
+     "errorCues": [
+      [
+       "Нет: отношение показывает только разность.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Да: при перестановке чисел получится то же отношение.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Нет: отношение показывает только разность.",
+      "Да: при перестановке чисел получится то же отношение.",
+      "Да: частное показывает множитель перехода от второго к первому."
+     ]
+    },
+    {
+     "id": "p17-t64",
+     "title": "К задаче №77(2)",
+     "kind": "choice",
+     "prompt": "Может ли отношение двух положительных чисел быть таким же, как обратное отношение этих чисел? Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Да: для равных ненулевых чисел оба отношения равны 1.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Например, 3 : 3 = 1. В обратном направлении снова 1. Одного такого примера достаточно."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Например, 3 : 3 = 1. В обратном направлении снова 1. Одного такого примера достаточно."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "Например, 3 : 3 = 1. В обратном направлении снова 1. Одного такого примера достаточно.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 77,
+      "reference": "№77(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "77-2",
+     "errorCues": [
+      [
+       "Нет: обратная дробь обязательно отличается.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Да: так происходит с любой парой чисел.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Да: для равных ненулевых чисел оба отношения равны 1.",
+      "Нет: обратная дробь обязательно отличается.",
+      "Да: так происходит с любой парой чисел."
+     ]
+    },
+    {
+     "id": "p17-t65",
+     "title": "К задаче №77(3)",
+     "kind": "choice",
+     "prompt": "Разберись с высказыванием «масштаб изображения всегда меньше 1». Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Ложно: встречаются масштабы, равные 1 и большие 1.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Для увеличенного изображения, например 3 : 1, масштаб равен 3. Одного примера достаточно, чтобы опровергнуть слово «всегда»."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Для увеличенного изображения, например 3 : 1, масштаб равен 3. Одного примера достаточно, чтобы опровергнуть слово «всегда»."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "Для увеличенного изображения, например 3 : 1, масштаб равен 3. Одного примера достаточно, чтобы опровергнуть слово «всегда».",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 77,
+      "reference": "№77(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "77-3",
+     "errorCues": [
+      [
+       "Верно: изображения всегда уменьшают.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Ложно: масштаб никогда не бывает меньше 1.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Верно: изображения всегда уменьшают.",
+      "Ложно: встречаются масштабы, равные 1 и большие 1.",
+      "Ложно: масштаб никогда не бывает меньше 1."
+     ]
+    },
+    {
+     "id": "p17-t66",
+     "title": "К задаче №77(4)",
+     "kind": "choice",
+     "prompt": "Всегда ли у пропорции равны произведения крайних и средних членов? Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Да: из a/b = c/d при b,d ≠ 0 следует ad = bc.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Умножь равенство на bd. Слева останется ad, справа bc. Это доказывает утверждение для любой пропорции."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Умножь равенство на bd. Слева останется ad, справа bc. Это доказывает утверждение для любой пропорции."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "Умножь равенство на bd. Слева останется ad, справа bc. Это доказывает утверждение для любой пропорции.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 77,
+      "reference": "№77(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "77-4",
+     "errorCues": [
+      [
+       "Нет: равны произведения числителей и знаменателей.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Да: это доказывает проверка одной пропорции.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Нет: равны произведения числителей и знаменателей.",
+      "Да: это доказывает проверка одной пропорции.",
+      "Да: из a/b = c/d при b,d ≠ 0 следует ad = bc."
+     ]
+    },
+    {
+     "id": "p17-t67",
+     "title": "К задаче №77(5)",
+     "kind": "choice",
+     "prompt": "Существует ли правильная дробь, равная 1? Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Нет: любая правильная дробь меньше 1.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Её числитель меньше положительного знаменателя. При равенстве числителя и знаменателя дробь уже не правильная."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Её числитель меньше положительного знаменателя. При равенстве числителя и знаменателя дробь уже не правильная."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "Её числитель меньше положительного знаменателя. При равенстве числителя и знаменателя дробь уже не правильная.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 77,
+      "reference": "№77(5)",
+      "subpart": "5"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "77-5",
+     "errorCues": [
+      [
+       "Да: например, 3/3.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Нет: правильная дробь обязательно больше 1.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Нет: любая правильная дробь меньше 1.",
+      "Да: например, 3/3.",
+      "Нет: правильная дробь обязательно больше 1."
+     ]
+    },
+    {
+     "id": "p17-t68",
+     "title": "К задаче №77(6)",
+     "kind": "choice",
+     "prompt": "Входит ли каждое натуральное число во множество дробей? Обоснуй ответ. Если утверждение ложно, сформулируй отрицание.",
+     "answer": "Да: каждое натуральное n представимо дробью n/1.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Определи, о существовании или обо всех значениях идёт речь.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Например, 5 = 5/1. Правило n = n/1 подходит для любого натурального числа."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свидетельство, контрпример или рассуждение для любого числа.",
+       "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+       "explanation": "Например, 5 = 5/1. Правило n = n/1 подходит для любого натурального числа."
+      }
+     ],
+     "hint": "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод.",
+     "explanation": "Например, 5 = 5/1. Правило n = n/1 подходит для любого натурального числа.",
+     "skills": [
+      "proportion",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 77,
+      "reference": "№77(6)",
+      "subpart": "6"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "proportionClaim": "77-6",
+     "errorCues": [
+      [
+       "Нет: дробь всегда меньше 1.",
+       "Найди слова «для всех» или «существует». Для опровержения общего утверждения нужен контрпример; для опровержения существования нужен общий довод."
+      ],
+      [
+       "Да: достаточно предъявить только одно натуральное число.",
+       "Сохрани исходный квантор или правильно замени его при отрицании."
+      ]
+     ],
+     "choices": [
+      "Нет: дробь всегда меньше 1.",
+      "Да: каждое натуральное n представимо дробью n/1.",
+      "Да: достаточно предъявить только одно натуральное число."
+     ]
+    },
+    {
+     "id": "p17-t69",
+     "title": "К задаче №76(4)",
+     "kind": "manual",
+     "prompt": "Проверь утверждение учебника: «для любой дроби c верно c/5 > c/6». Запиши, что выходит при c > 0 и при c = 0, и сформулируй отрицание для множества, включающего нуль.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Приведи вычитание дробей к знаменателю 30.",
+       "hint": "Сравни c/5 − c/6 с нулём. Проверь границу c = 0 отдельно от положительных дробей.",
+       "explanation": "Разность равна c/30. Для положительного c она положительна. Нулевой числитель даёт дробь 0/1 = 0: тогда обе части равны 0. Если множество включает нуль, отрицание общего утверждения: существует c с c/5 ≤ c/6. При явно положительных дробях неравенство верно для всех."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Приведи граничный пример и укажи, когда строгое неравенство верно.",
+       "hint": "Сравни c/5 − c/6 с нулём. Проверь границу c = 0 отдельно от положительных дробей.",
+       "explanation": "Разность равна c/30. Для положительного c она положительна. Нулевой числитель даёт дробь 0/1 = 0: тогда обе части равны 0. Если множество включает нуль, отрицание общего утверждения: существует c с c/5 ≤ c/6. При явно положительных дробях неравенство верно для всех."
+      }
+     ],
+     "hint": "Сравни c/5 − c/6 с нулём. Проверь границу c = 0 отдельно от положительных дробей.",
+     "explanation": "Разность равна c/30. Для положительного c она положительна. Нулевой числитель даёт дробь 0/1 = 0: тогда обе части равны 0. Если множество включает нуль, отрицание общего утверждения: существует c с c/5 ≤ c/6. При явно положительных дробях неравенство верно для всех.",
+     "skills": [
+      "ratio",
+      "fraction-add"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 76,
+      "reference": "№76(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Сохрани собственное обоснование.",
+     "proportionClaim": "76-4"
+    },
+    {
+     "id": "p17-t70",
+     "title": "К задаче №78",
+     "kind": "number",
+     "prompt": "Сравни 28 и 35 в обоих направлениях. На шагах укажи оба процентных отношения и уменьшение. В конце запиши, на сколько процентов 35 больше 28.",
+     "answer": "25",
+     "steps": [
+      {
+       "prompt": "Сколько процентов число 28 составляет от 35?",
+       "answer": "80",
+       "hint": "Вопрос «A по сравнению с B» означает, что за 100% взято B. Разность всё время равна 7, меняется только величина, с которой её сравнивают.",
+       "explanation": "28/35 = 80%, а 35/28 = 125%. Первое число меньше второго на 7/35 = 20%, второе больше первого на 7/28 = 25%."
+      },
+      {
+       "prompt": "Сколько процентов 35 составляет от 28?",
+       "answer": "125",
+       "hint": "Вопрос «A по сравнению с B» означает, что за 100% взято B. Разность всё время равна 7, меняется только величина, с которой её сравнивают.",
+       "explanation": "28/35 = 80%, а 35/28 = 125%. Первое число меньше второго на 7/35 = 20%, второе больше первого на 7/28 = 25%."
+      },
+      {
+       "prompt": "На сколько процентов 28 меньше 35?",
+       "answer": "20",
+       "hint": "Вопрос «A по сравнению с B» означает, что за 100% взято B. Разность всё время равна 7, меняется только величина, с которой её сравнивают.",
+       "explanation": "28/35 = 80%, а 35/28 = 125%. Первое число меньше второго на 7/35 = 20%, второе больше первого на 7/28 = 25%."
+      }
+     ],
+     "hint": "Вопрос «A по сравнению с B» означает, что за 100% взято B. Разность всё время равна 7, меняется только величина, с которой её сравнивают.",
+     "explanation": "28/35 = 80%, а 35/28 = 125%. Первое число меньше второго на 7/35 = 20%, второе больше первого на 7/28 = 25%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 78,
+      "reference": "№78"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "twoPercentBases": true,
+     "errorCues": [
+      [
+       "20",
+       "Для этого направления разность 7 сравнивай с 28."
+      ],
+      [
+       "125",
+       "Это доля нового числа в процентах исходного, вычти 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t71",
+     "title": "К задаче №79(1)",
+     "kind": "number",
+     "prompt": "Положительное число изменили: его удвоили. Скажи, выросло оно или уменьшилось. В итоговом поле введи величину изменения в процентах без знака.",
+     "answer": "100",
+     "steps": [
+      {
+       "prompt": "Какая доля исходного числа получилась после операции?",
+       "answer": "2",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 2 исходного, то есть 200%. Разность с 100% по модулю равна 100%."
+      },
+      {
+       "prompt": "Сколько процентов исходного получилось?",
+       "answer": "200",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 2 исходного, то есть 200%. Разность с 100% по модулю равна 100%."
+      }
+     ],
+     "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+     "explanation": "После операции осталось 2 исходного, то есть 200%. Разность с 100% по модулю равна 100%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 79,
+      "reference": "№79(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "percentTransform": "2",
+     "errorCues": [
+      [
+       "0",
+       "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%."
+      ],
+      [
+       "200",
+       "Не смешивай долю результата и величину изменения, отсчитанную от 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t72",
+     "title": "К задаче №79(2)",
+     "kind": "number",
+     "prompt": "Положительное число изменили: его увеличили в 3,5 раза. Скажи, выросло оно или уменьшилось. В итоговом поле введи величину изменения в процентах без знака.",
+     "answer": "250",
+     "steps": [
+      {
+       "prompt": "Какая доля исходного числа получилась после операции?",
+       "answer": "7/2",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 7/2 исходного, то есть 350%. Разность с 100% по модулю равна 250%."
+      },
+      {
+       "prompt": "Сколько процентов исходного получилось?",
+       "answer": "350",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 7/2 исходного, то есть 350%. Разность с 100% по модулю равна 250%."
+      }
+     ],
+     "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+     "explanation": "После операции осталось 7/2 исходного, то есть 350%. Разность с 100% по модулю равна 250%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 79,
+      "reference": "№79(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "percentTransform": "7/2",
+     "errorCues": [
+      [
+       "0",
+       "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%."
+      ],
+      [
+       "350",
+       "Не смешивай долю результата и величину изменения, отсчитанную от 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t73",
+     "title": "К задаче №79(3)",
+     "kind": "number",
+     "prompt": "Положительное число изменили: его уменьшили в 4 раза. Скажи, выросло оно или уменьшилось. В итоговом поле введи величину изменения в процентах без знака.",
+     "answer": "75",
+     "steps": [
+      {
+       "prompt": "Какая доля исходного числа получилась после операции?",
+       "answer": "1/4",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 1/4 исходного, то есть 25%. Разность с 100% по модулю равна 75%."
+      },
+      {
+       "prompt": "Сколько процентов исходного получилось?",
+       "answer": "25",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 1/4 исходного, то есть 25%. Разность с 100% по модулю равна 75%."
+      }
+     ],
+     "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+     "explanation": "После операции осталось 1/4 исходного, то есть 25%. Разность с 100% по модулю равна 75%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 79,
+      "reference": "№79(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "percentTransform": "1/4",
+     "errorCues": [
+      [
+       "0",
+       "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%."
+      ],
+      [
+       "25",
+       "Не смешивай долю результата и величину изменения, отсчитанную от 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t74",
+     "title": "К задаче №79(4)",
+     "kind": "number",
+     "prompt": "Положительное число изменили: его уменьшили на четверть. Скажи, выросло оно или уменьшилось. В итоговом поле введи величину изменения в процентах без знака.",
+     "answer": "25",
+     "steps": [
+      {
+       "prompt": "Какая доля исходного числа получилась после операции?",
+       "answer": "3/4",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 3/4 исходного, то есть 75%. Разность с 100% по модулю равна 25%."
+      },
+      {
+       "prompt": "Сколько процентов исходного получилось?",
+       "answer": "75",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 3/4 исходного, то есть 75%. Разность с 100% по модулю равна 25%."
+      }
+     ],
+     "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+     "explanation": "После операции осталось 3/4 исходного, то есть 75%. Разность с 100% по модулю равна 25%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 79,
+      "reference": "№79(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "percentTransform": "3/4",
+     "errorCues": [
+      [
+       "0",
+       "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%."
+      ],
+      [
+       "75",
+       "Не смешивай долю результата и величину изменения, отсчитанную от 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t75",
+     "title": "К задаче №79(5)",
+     "kind": "number",
+     "prompt": "Положительное число изменили: взяли его треть. Скажи, выросло оно или уменьшилось. В итоговом поле введи величину изменения в процентах без знака.",
+     "answer": "200/3",
+     "steps": [
+      {
+       "prompt": "Какая доля исходного числа получилась после операции?",
+       "answer": "1/3",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 1/3 исходного, то есть 100/3%. Разность с 100% по модулю равна 200/3%."
+      },
+      {
+       "prompt": "Сколько процентов исходного получилось?",
+       "answer": "100/3",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 1/3 исходного, то есть 100/3%. Разность с 100% по модулю равна 200/3%."
+      }
+     ],
+     "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+     "explanation": "После операции осталось 1/3 исходного, то есть 100/3%. Разность с 100% по модулю равна 200/3%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 79,
+      "reference": "№79(5)",
+      "subpart": "5"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "percentTransform": "1/3",
+     "errorCues": [
+      [
+       "0",
+       "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%."
+      ],
+      [
+       "100/3",
+       "Не смешивай долю результата и величину изменения, отсчитанную от 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t76",
+     "title": "К задаче №79(6)",
+     "kind": "number",
+     "prompt": "Положительное число изменили: взяли две его пятых. Скажи, выросло оно или уменьшилось. В итоговом поле введи величину изменения в процентах без знака.",
+     "answer": "60",
+     "steps": [
+      {
+       "prompt": "Какая доля исходного числа получилась после операции?",
+       "answer": "2/5",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 2/5 исходного, то есть 40%. Разность с 100% по модулю равна 60%."
+      },
+      {
+       "prompt": "Сколько процентов исходного получилось?",
+       "answer": "40",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 2/5 исходного, то есть 40%. Разность с 100% по модулю равна 60%."
+      }
+     ],
+     "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+     "explanation": "После операции осталось 2/5 исходного, то есть 40%. Разность с 100% по модулю равна 60%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 79,
+      "reference": "№79(6)",
+      "subpart": "6"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "percentTransform": "2/5",
+     "errorCues": [
+      [
+       "0",
+       "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%."
+      ],
+      [
+       "40",
+       "Не смешивай долю результата и величину изменения, отсчитанную от 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t77",
+     "title": "К задаче №79(7)",
+     "kind": "number",
+     "prompt": "Положительное число изменили: его разделили пополам. Скажи, выросло оно или уменьшилось. В итоговом поле введи величину изменения в процентах без знака.",
+     "answer": "50",
+     "steps": [
+      {
+       "prompt": "Какая доля исходного числа получилась после операции?",
+       "answer": "1/2",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 1/2 исходного, то есть 50%. Разность с 100% по модулю равна 50%."
+      },
+      {
+       "prompt": "Сколько процентов исходного получилось?",
+       "answer": "50",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 1/2 исходного, то есть 50%. Разность с 100% по модулю равна 50%."
+      }
+     ],
+     "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+     "explanation": "После операции осталось 1/2 исходного, то есть 50%. Разность с 100% по модулю равна 50%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 79,
+      "reference": "№79(7)",
+      "subpart": "7"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "percentTransform": "1/2",
+     "errorCues": [
+      [
+       "0",
+       "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%."
+      ],
+      [
+       "1/2",
+       "Не смешивай долю результата и величину изменения, отсчитанную от 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t78",
+     "title": "К задаче №79(8)",
+     "kind": "number",
+     "prompt": "Положительное число изменили: его умножили на 5. Скажи, выросло оно или уменьшилось. В итоговом поле введи величину изменения в процентах без знака.",
+     "answer": "400",
+     "steps": [
+      {
+       "prompt": "Какая доля исходного числа получилась после операции?",
+       "answer": "5",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 5 исходного, то есть 500%. Разность с 100% по модулю равна 400%."
+      },
+      {
+       "prompt": "Сколько процентов исходного получилось?",
+       "answer": "500",
+       "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+       "explanation": "После операции осталось 5 исходного, то есть 500%. Разность с 100% по модулю равна 400%."
+      }
+     ],
+     "hint": "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%.",
+     "explanation": "После операции осталось 5 исходного, то есть 500%. Разность с 100% по модулю равна 400%.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 79,
+      "reference": "№79(8)",
+      "subpart": "8"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "percentTransform": "5",
+     "errorCues": [
+      [
+       "0",
+       "Сначала вырази результат как долю от исходного числа. Прибавку или потерю сравнивают с исходными 100%."
+      ],
+      [
+       "500",
+       "Не смешивай долю результата и величину изменения, отсчитанную от 100%."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t79",
+     "title": "К задаче №80",
+     "kind": "number",
+     "prompt": "Скорость мотоцикла от M к N была на 20% выше запланированной, обратно — на 20% ниже того же плана. Во сколько раз обратная скорость меньше прямой?",
+     "answer": "3/2",
+     "steps": [
+      {
+       "prompt": "Скорость туда в процентах от плана?",
+       "answer": "120",
+       "hint": "У обеих скоростей одно основание: одна и та же плановая скорость. Для ответа «во сколько раз меньше» дели большую скорость на меньшую.",
+       "explanation": "Пусть план равен 100 км/ч. Туда — 120 км/ч, обратно — 80 км/ч. Отношение равно 120/80 = 3/2 и не зависит от выбранной плановой скорости."
+      },
+      {
+       "prompt": "Скорость обратно в процентах от плана?",
+       "answer": "80",
+       "hint": "У обеих скоростей одно основание: одна и та же плановая скорость. Для ответа «во сколько раз меньше» дели большую скорость на меньшую.",
+       "explanation": "Пусть план равен 100 км/ч. Туда — 120 км/ч, обратно — 80 км/ч. Отношение равно 120/80 = 3/2 и не зависит от выбранной плановой скорости."
+      }
+     ],
+     "hint": "У обеих скоростей одно основание: одна и та же плановая скорость. Для ответа «во сколько раз меньше» дели большую скорость на меньшую.",
+     "explanation": "Пусть план равен 100 км/ч. Туда — 120 км/ч, обратно — 80 км/ч. Отношение равно 120/80 = 3/2 и не зависит от выбранной плановой скорости.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 80,
+      "reference": "№80"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "motionPercent": "motorcycle",
+     "errorCues": [
+      [
+       "2/3",
+       "Это отношение меньшей скорости к большей, а спрашивают, во сколько раз она меньше."
+      ],
+      [
+       "40",
+       "Это разница в процентных пунктах относительно плана, а не отношение скоростей."
+      ]
+     ]
+    },
+    {
+     "id": "p17-t80",
+     "title": "К задаче №81",
+     "kind": "choice",
+     "prompt": "Автобус проходит 36 км за 40 минут. Про автомобиль сказано «на 40% быстрее». Они одновременно движутся навстречу из конечных пунктов. Разбери обе трактовки, сопоставь с ответом книги и объясни, нужно ли расстояние 36 км.",
+     "answer": "Время автомобиля меньше на 40% — 15 мин; скорость больше на 40% — 16⅔ мин.",
+     "steps": [
+      {
+       "prompt": "Если время автомобиля меньше на 40%, сколько минут занимает весь его путь?",
+       "answer": "24",
+       "hint": "Переведи слово «быстрее» в явное условие. Уменьшение времени и увеличение скорости на один процентный показатель дают разные времена.",
+       "explanation": "Автобус за минуту проходит 1/40 маршрута. Если время автомобиля меньше на 40%, оно равно 24 мин: 1/(1/40 + 1/24) = 15 мин. В ответах на с. 128 учебника указано 15 мин. Если скорость автомобиля выше на 40%, суммарная скорость составляет 2,4/40 маршрута в минуту и встреча произойдёт через 50/3 мин. Длина 36 км в обоих вычислениях сокращается."
+      },
+      {
+       "prompt": "Через сколько минут они встретятся при таком условии о времени?",
+       "answer": "15",
+       "hint": "Переведи слово «быстрее» в явное условие. Уменьшение времени и увеличение скорости на один процентный показатель дают разные времена.",
+       "explanation": "Автобус за минуту проходит 1/40 маршрута. Если время автомобиля меньше на 40%, оно равно 24 мин: 1/(1/40 + 1/24) = 15 мин. В ответах на с. 128 учебника указано 15 мин. Если скорость автомобиля выше на 40%, суммарная скорость составляет 2,4/40 маршрута в минуту и встреча произойдёт через 50/3 мин. Длина 36 км в обоих вычислениях сокращается."
+      },
+      {
+       "prompt": "Если скорость автомобиля больше на 40%, во сколько раз сумма скоростей больше скорости автобуса?",
+       "answer": "12/5",
+       "hint": "Переведи слово «быстрее» в явное условие. Уменьшение времени и увеличение скорости на один процентный показатель дают разные времена.",
+       "explanation": "Автобус за минуту проходит 1/40 маршрута. Если время автомобиля меньше на 40%, оно равно 24 мин: 1/(1/40 + 1/24) = 15 мин. В ответах на с. 128 учебника указано 15 мин. Если скорость автомобиля выше на 40%, суммарная скорость составляет 2,4/40 маршрута в минуту и встреча произойдёт через 50/3 мин. Длина 36 км в обоих вычислениях сокращается."
+      },
+      {
+       "prompt": "Когда они встретятся при этом условии о скорости, мин?",
+       "answer": "50/3",
+       "hint": "Переведи слово «быстрее» в явное условие. Уменьшение времени и увеличение скорости на один процентный показатель дают разные времена.",
+       "explanation": "Автобус за минуту проходит 1/40 маршрута. Если время автомобиля меньше на 40%, оно равно 24 мин: 1/(1/40 + 1/24) = 15 мин. В ответах на с. 128 учебника указано 15 мин. Если скорость автомобиля выше на 40%, суммарная скорость составляет 2,4/40 маршрута в минуту и встреча произойдёт через 50/3 мин. Длина 36 км в обоих вычислениях сокращается."
+      }
+     ],
+     "hint": "Переведи слово «быстрее» в явное условие. Уменьшение времени и увеличение скорости на один процентный показатель дают разные времена.",
+     "explanation": "Автобус за минуту проходит 1/40 маршрута. Если время автомобиля меньше на 40%, оно равно 24 мин: 1/(1/40 + 1/24) = 15 мин. В ответах на с. 128 учебника указано 15 мин. Если скорость автомобиля выше на 40%, суммарная скорость составляет 2,4/40 маршрута в минуту и встреча произойдёт через 50/3 мин. Длина 36 км в обоих вычислениях сокращается.",
+     "skills": [
+      "ratio",
+      "percent-ratio"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 81,
+      "reference": "№81"
+     },
+     "finalLabel": "Выбери обоснованный вывод.",
+     "motionPercent": "meeting",
+     "errorCues": [
+      [
+       "Обе трактовки дают 15 мин.",
+       "Увеличение скорости в 1,4 раза не равносильно уменьшению времени в 0,6 раза."
+      ],
+      [
+       "Обе трактовки дают 16⅔ мин.",
+       "Если полное время автомобиля 24 мин, автобус и автомобиль за 15 мин вместе проезжают весь маршрут."
+      ]
+     ],
+     "choices": [
+      "Обе трактовки дают 15 мин.",
+      "Время автомобиля меньше на 40% — 15 мин; скорость больше на 40% — 16⅔ мин.",
+      "Обе трактовки дают 16⅔ мин."
+     ]
+    },
+    {
+     "id": "p17-t81",
+     "title": "К задаче №82",
+     "kind": "number",
+     "prompt": "Пешеход и велосипедист одновременно стартовали в одном направлении. Скорость велосипедиста на 250% больше, и за 1,5 часа расстояние между ними выросло до 16,5 км. Найди обе скорости. В итоге укажи скорость велосипедиста в км/ч.",
+     "answer": "77/5",
+     "steps": [
+      {
+       "prompt": "Во сколько раз скорость велосипедиста больше скорости пешехода?",
+       "answer": "7/2",
+       "hint": "«На 250% больше» означает исходные 100% плюс ещё 250%. При движении в одну сторону расстояние растёт с разностью скоростей.",
+       "explanation": "Разность скоростей равна 16,5/1,5 = 11 км/ч. Если скорость пешехода v, скорость велосипедиста 3,5v, а разность 2,5v. Получаем v = 4,4 км/ч, скорость велосипедиста 15,4 км/ч."
+      },
+      {
+       "prompt": "Разность скоростей, км/ч?",
+       "answer": "11",
+       "hint": "«На 250% больше» означает исходные 100% плюс ещё 250%. При движении в одну сторону расстояние растёт с разностью скоростей.",
+       "explanation": "Разность скоростей равна 16,5/1,5 = 11 км/ч. Если скорость пешехода v, скорость велосипедиста 3,5v, а разность 2,5v. Получаем v = 4,4 км/ч, скорость велосипедиста 15,4 км/ч."
+      },
+      {
+       "prompt": "Скорость пешехода, км/ч?",
+       "answer": "22/5",
+       "hint": "«На 250% больше» означает исходные 100% плюс ещё 250%. При движении в одну сторону расстояние растёт с разностью скоростей.",
+       "explanation": "Разность скоростей равна 16,5/1,5 = 11 км/ч. Если скорость пешехода v, скорость велосипедиста 3,5v, а разность 2,5v. Получаем v = 4,4 км/ч, скорость велосипедиста 15,4 км/ч."
+      }
+     ],
+     "hint": "«На 250% больше» означает исходные 100% плюс ещё 250%. При движении в одну сторону расстояние растёт с разностью скоростей.",
+     "explanation": "Разность скоростей равна 16,5/1,5 = 11 км/ч. Если скорость пешехода v, скорость велосипедиста 3,5v, а разность 2,5v. Получаем v = 4,4 км/ч, скорость велосипедиста 15,4 км/ч.",
+     "skills": [
+      "ratio",
+      "linear-equation"
+     ],
+     "source": {
+      "part": 2,
+      "page": 21,
+      "type": "textbook",
+      "exercise": 82,
+      "reference": "№82"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "motionPercent": "catchup",
+     "errorCues": [
+      [
+       "11",
+       "Это разность двух скоростей."
+      ],
+      [
+       "4,4",
+       "Это скорость пешехода. Велосипедист быстрее."
+      ]
+     ]
     }
    ],
    "orderBySource": true

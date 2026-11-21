@@ -1040,3 +1040,20 @@ test('measure five corresponding sides and three different chord constructions b
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('distinguish percent of time from percent of speed and test the zero boundary of a quantified comparison',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p17/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(59);set(c[1],2);assert(out().includes('контрпример'));set(c[0],1);set(c[1],2);assert(out().includes('одного совпадения мало'));
+  c=go(68);set(c[1],2);assert(out().includes('Строгое неравенство здесь ложно'));set(c[0],1);set(c[1],2);assert(out().includes('разность c/30 положительна'));
+  c=go(69);set(c[2],1);assert(out().includes('отношение 80%'));assert(out().includes('изменения 20%'));set(c[1],1);set(c[2],1);assert(out().includes('отношение 125%'));assert(out().includes('изменения 25%'));
+  c=go(74);set(c[1],2);assert(out().includes('Уменьшение на 200/3%'));set(c[0],120);set(c[1],2);assert(out().includes('Новое число 40'));
+  c=go(78);set(c[1],2);assert(out().includes('3/2 раза'));set(c[0],2);set(c[1],2);assert(out().includes('5/3 раза'));
+  c=go(79);set(c[2],2);assert(out().includes('встречи 15 мин'));set(c[0],1);set(c[2],2);assert(out().includes('встречи 50/3 мин'));set(c[1],1);set(c[2],2);assert(out().includes('встречи 50/3 мин'));
+  set(c[1],2);set(c[2],2);assert(out().includes('встречи 160/9 мин'));set(c[0],0);set(c[2],2);assert(out().includes('встречи 120/7 мин'));
+  c=go(80);set(c[1],2);assert(out().includes('пешехода 22/5 км/ч, велосипедиста 77/5'));set(c[0],2);set(c[1],2);assert(out().includes('пешехода 6 км/ч, велосипедиста 15'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

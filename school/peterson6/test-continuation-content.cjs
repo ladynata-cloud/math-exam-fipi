@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,652);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,674);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -743,6 +743,22 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  assert.equal(Number(get(71)[0].answer),ratio*100);assert.equal(Number(get(72)[0].answer),80*2/5);assert.equal(Number(get(72)[1].answer),18*5/2);
  for(const [i,value]of [10*22/7,60*7/22].entries())assert(M.equal(get(73)[i].answer,(Math.round(value*10)/10).toString()));
  assert([...get(74),...get(75)].every(t=>t.kind==='manual'&&!t.answer));
+}
+{
+ const bank=D.lessons.find(l=>l.id==='p17').tasks,of=n=>bank.filter(t=>t.source.exercise===n);
+ for(const [n,k]of [[76,4],[77,6],[78,1],[79,8],[80,1],[81,1],[82,1]]){
+  assert.equal(of(n).length,k);assert(of(n).every(t=>t.source.page===21));
+ }
+ for(const [j,r]of [2,3.5,.25,.75,1/3,.4,.5,5].entries()){
+  const expected=of(79)[j],v=M.parse(expected.answer);assert(Math.abs(v.n/v.d-100*Math.abs(r-1))<1e-8);
+ }
+ const r=of(81)[0];assert.match(r.explanation,/с\. 128/);
+ for(const s of [18,36,54]){
+  const bus=s/40,carA=s/24,carB=bus*1.4;
+  assert(Math.abs(s/(bus+carA)-15)<1e-9);assert(Math.abs(s/(bus+carB)-50/3)<1e-9);
+ }
+ for(const [i,raw]of ['24','15','12/5','50/3'].entries())assert(M.equal(r.steps[i].answer,raw));
+ const bike=M.parse(of(82)[0].answer),walk=bike.n/bike.d/3.5;assert(Math.abs((bike.n/bike.d-walk)*1.5-16.5)<1e-8);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
