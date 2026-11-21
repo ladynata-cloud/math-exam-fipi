@@ -2,7 +2,7 @@
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
   "registeredAt": "2026-11-21T16:44:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 524, points 52–62 and all chapter V self-checks, with 861 reviewed cards. Later exercise positions remain drafts.",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 528, points 52–62 and all chapter V self-checks, with 865 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1387,6 +1387,19 @@
       ],
       "evidence": "tools/stereo-textbook/prism-applications.json",
       "mathematicalReport": "tools/stereo-textbook/prism-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T16:44:00Z",
+      "scope": "Angles and normal cross-sections of right and oblique triangular prisms, exercises 525–528",
+      "cardIds": [
+        "ex-main-0525",
+        "ex-main-0526",
+        "ex-main-0527",
+        "ex-main-0528"
+      ],
+      "evidence": "tools/stereo-textbook/normal-prism-applications.json",
+      "mathematicalReport": "tools/stereo-textbook/normal-prism-applications.test.cjs"
     }
   ],
   "cards": [
@@ -4833,6 +4846,22 @@
     {
       "id": "ex-main-0524",
       "sha256": "b78e2035dc554fae1932fd4c0ddbed29c8e69fba9d920b5cdb07fc85f8b36153"
+    },
+    {
+      "id": "ex-main-0525",
+      "sha256": "abbcb5034a26fc38ebc64875bea9d8b743ba65577bdfd308b50a8aebbcf0d0c2"
+    },
+    {
+      "id": "ex-main-0526",
+      "sha256": "cae76823242eea25272658418e14333a33822f995ad1020e9e0390838a2f4f61"
+    },
+    {
+      "id": "ex-main-0527",
+      "sha256": "fa96224870bd724d6659caba2bd64c487f0d318320c61a7b414a109c95c85c56"
+    },
+    {
+      "id": "ex-main-0528",
+      "sha256": "1b9e8ef478557dbcb132b3dd19d6982c27f17cdcd046568c32b6ff4e674f6b6c"
     }
   ]
 }

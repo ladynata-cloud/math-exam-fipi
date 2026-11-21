@@ -130,6 +130,14 @@ const misconceptions = new Map([
   ['ex-main-0522/step-4', '176'], // Used the squared base area.
   ['ex-main-0523/step-2', '16'], // Treated the common leg as the hypotenuse.
   ['ex-main-0524/step-2', '3'], // Confused shortest base leg with the side face area.
+  ['ex-main-0525/step-3', '2*sqrt(2)'], // Gave the height alone.
+  ['ex-main-0525/step-4', '4*sqrt(6)'], // Scaled volume linearly.
+  ['ex-main-0526/step-3', '24'], // Kept the completed parallelepiped.
+  ['ex-main-0527/step-2', '24'], // Missed the half in the triangle base.
+  ['ex-main-0528/step-2', '5.1'], // Confused a face area with a section length.
+  ['ex-main-0528/step-3', '10.8'], // Returned semiperimeter instead of area.
+  ['ex-main-0528/step-4', '12.24'], // Forgot the edge length.
+  ['ex-main-0528/step-5', '6.12'], // Used the old edge length.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
