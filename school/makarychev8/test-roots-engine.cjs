@@ -1,6 +1,6 @@
 'use strict';
 // Root-specific mathematical input and geometric contracts, independent of content answers.
-const assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
+const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 const C=require('./check.js'),G=require('./task-graphs.js');
 let checks=0;
 function ok(value,message){assert(value,message);checks++;}
@@ -116,4 +116,37 @@ for(const v of ['1;','1;2;3','1/0;2','garbage;1'])ok(C.rootLineCount(v)===null,'
 G.render(host,{type:'root-line'},'');ok(host.querySelectorAll('[data-root-curve="sqrt"]').length===1&&!host.querySelector('[data-root-curve="line"]'),'given root but no prefilled example line');
 G.render(host,{type:'root-line'},'1;0');ok(host.querySelectorAll('[data-root-curve="line"]').length===1,'learner example line appears from its coefficients');
 dom.window.close();delete global.document;
-console.log(JSON.stringify({status:'PASS',checks,contracts:['radical notation','required form','arithmetic versus equation roots','zero/domain','absolute value','ordered construction','blank learner graph','root domain and coordinates','hyperbola pole','source figure labels','bounded curve labels','cropped views retain true zero axes','mixed-number graph input','shifted root endpoints','absolute value graphs','excluded zero holes','number line scales','free rational/irrational examples','strict intervals and distinctness','exact equation root classification','arbitrary line examples and tangency']}));
+
+// New root input kinds must retain current-main attempt/history semantics.
+// Exercise the actual UI handlers, including persisted drafts and a real reload.
+function lessonApp(id,saved){
+ const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://roots.test/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;
+ w.scrollTo=()=>{};if(saved)w.localStorage.setItem('mathexam.makarychev8.2024.v1',JSON.stringify(saved));
+ for(const file of ['../peterson6/math.js','task-graphs.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+file,'utf8'));
+ const lesson=w.MakarychevCourse.lessons.find(l=>l.tasks.some(t=>t.id===id)),index=lesson.tasks.findIndex(t=>t.id===id),task=lesson.tasks[index];
+ w.history.replaceState(null,'','#lesson/'+lesson.id+'/'+index);w.MakarychevApp.route();const d=w.document;
+ return {w,d,task,api:w.MakarychevApp,close:()=>w.close(),record:()=>w.MakarychevApp.getState().tasks[id],answer(value){const el=d.querySelector('#final-answer');el.value=value;el.dispatchEvent(new w.Event('input',{bubbles:true}));d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}};
+}
+const formatCases=[
+ ['roots-353-e',['1;','1/;2','1;2;3']],
+ ['roots-288-main',['0;1;','0;1/']],
+ ['roots-287-build',['0;1;','0;1;2;3;4;garbage']],
+ ['roots-268-a',['abc','1/']],
+ ['roots-268-b',['sqrt(','√','abc']],
+ ['roots-461-a',['1/','text']],
+ ['roots-452-a',['1/3;1/','0;1;2;3;']]
+];
+for(const [id,invalid]of formatCases){let rt=lessonApp(id);
+ for(const value of invalid){rt.answer(value);const s=rt.record();ok(s.attempts===0,id+' malformed input is not a mathematical attempt');ok(s.firstAttempt===null&&!s.events.some(e=>e.type==='answer'),id+' no fabricated first answer/history');ok(!s.assisted&&!s.correct&&s.value===value,id+' malformed draft retained without help');ok(/уточнение записи/.test(rt.d.querySelector('#answer-form').textContent),id+' useful format feedback');}
+ const saved=rt.api.getState();rt.close();rt=lessonApp(id,saved);ok(rt.d.querySelector('#final-answer').value===invalid.at(-1)&&rt.record().attempts===0,id+' malformed draft survives reload');
+ rt.answer(rt.task.answer);ok(rt.record().correct&&rt.record().independent&&rt.record().attempts===1,id+' correction retains first independent success');rt.close();
+}
+for(const [id,wrong]of [['roots-353-e','1;0'],['roots-288-main','0;0'],['roots-287-build','0;0;0;0;0;0'],['roots-268-a','π'],['roots-268-a','√2'],['roots-268-b','4'],['roots-461-a','2'],['roots-452-a','0;0;0;0;0']]){
+ const rt=lessonApp(id);rt.answer(wrong);let s=rt.record();ok(!s.correct&&s.attempts===1&&s.firstAttempt.value===wrong,id+' well-formed wrong mathematics counts');ok(s.events.filter(e=>e.type==='answer').length===1,id+' first wrong answer is recorded');rt.answer(rt.task.answer);s=rt.record();ok(s.correct&&!s.independent&&s.attempts===2&&s.firstAttempt.value===wrong,id+' correction cannot erase a mathematical attempt');rt.close();
+}
+{
+ const rt=lessonApp('roots-288-main');rt.d.querySelector('[data-action="guided"]').click();
+ const step=(index,value)=>{const el=rt.d.querySelector('[data-step-input="'+index+'"]');el.value=value;el.dispatchEvent(new rt.w.Event('input',{bubbles:true}));rt.d.querySelector('[data-step-form="'+index+'"]').dispatchEvent(new rt.w.Event('submit',{bubbles:true,cancelable:true}));};
+ step(0,'-2');step(1,'1/');let s=rt.record();ok(s.step===1&&s.values[0]==='-2'&&s.values[1]==='1/','unfinished numeric step retains earlier accepted work');ok(s.stepAttempts[1]===undefined&&s.events.filter(e=>e.type==='step').length===1,'unfinished step adds no mathematical history');step(1,'-1');s=rt.record();ok(s.step===2&&s.stepAttempts[1]===1&&s.events.filter(e=>e.type==='step').length===2,'corrected step has one genuine attempt');rt.close();
+}
+console.log(JSON.stringify({status:'PASS',checks,contracts:['radical notation','required form','arithmetic versus equation roots','zero/domain','absolute value','ordered construction','blank learner graph','root domain and coordinates','hyperbola pole','source figure labels','bounded curve labels','cropped views retain true zero axes','mixed-number graph input','shifted root endpoints','absolute value graphs','excluded zero holes','number line scales','free rational/irrational examples','strict intervals and distinctness','exact equation root classification','arbitrary line examples and tangency','malformed root input preserves first attempt','well-formed mistakes retain history','guided draft and reload']}));
