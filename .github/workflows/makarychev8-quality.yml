@@ -35,6 +35,8 @@ jobs:
           python school/makarychev8/test-roots-source.py
           python school/makarychev8/test-exercises-110-133.py
           python school/makarychev8/test-exercises-134-149.py
+          python school/makarychev8/test-exercises-150-180.py
+          python school/makarychev8/test-exercises-181-200.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -61,6 +63,8 @@ jobs:
         run: |
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-roots-engine.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-board.cjs
+      - name: Numbered fractions, self-drawn graphs and saved notes
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-fractions.cjs
       - name: Square roots, accepted work and narrow screens
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-roots.cjs
       - name: Chromium source exercises and responsive layout

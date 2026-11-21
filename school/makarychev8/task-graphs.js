@@ -34,6 +34,7 @@ function curveValue(curve,x){
  if(curve.kind==='line')return curve.k*x+curve.b;
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
  if(curve.kind==='square')return x*x;
+ if(curve.kind==='cube')return x*x*x;
  if(curve.kind==='sqrt-shift')return x>=curve.h?Math.sqrt(x-curve.h)+(curve.k||0):NaN;
  if(curve.kind==='sqrt-abs')return Math.sqrt(Math.abs(x));
  if(curve.kind==='abs-ratio')return x===0?NaN:(curve.scale??1)*Math.abs(x)/x;
@@ -137,6 +138,17 @@ function numberLine(config){
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(config.type==='number-line'){host.className='task-graphs number-line';host.append(numberLine(config));if(config.caption){const caption=document.createElement('p');caption.className='small';caption.textContent=config.caption;host.append(caption);}
+ }else if(config.type==='line-example'){
+  host.className='task-graphs root-graph';
+  const line=parseLine(value);
+  const caption=document.createElement('p');caption.className='small';
+  caption.textContent=line?'Сравни наклон и пересечение с осью y с условием.':'Введи коэффициенты k и b, чтобы построить свою прямую.';
+  const plane={...config,type:'root-plane',curves:line?[{kind:'line',...line}]:[]};
+  if(line){
+   const bound=Math.max(6,Math.abs(line.b),Math.abs(line.b+line.k),Math.abs(line.b-line.k));
+   plane.xRange=[-3,3];plane.yRange=[-bound,bound];
+  }
+  host.append(rootGraph(plane,''),caption);
  }else if(config.type==='root-line'){
   host.className='task-graphs root-graph';const line=parseLine(value),plane={...config,type:'root-plane',curves:[{kind:'sqrt'},...(line?[{kind:'line',...line}]:[])]};host.append(rootGraph(plane,''));
   const caption=document.createElement('p');caption.className='small';caption.textContent='Показана часть графиков. Введи k; b, чтобы добавить свою прямую y=kx+b. Число пересечений проверяется по уравнению.';host.append(caption);
@@ -144,13 +156,16 @@ function render(host,config,value){
   host.className='task-graphs root-graph';host.append(rootGraph(config,value));
   const caption=document.createElement('p');caption.className='small';
   caption.textContent=['root-build','curve-build'].includes(config.type)?'Введи ординаты точек ниже — они появятся на твоём чертеже.':(config.caption||'На рисунке показана часть графика. Проверяй выводы по формуле.');host.append(caption);
- }else if(config.type==='choices'){
+ }else if(config.type==='choices'||config.type==='hyperbola-choices'){
   host.className='task-graphs alternatives';
-  alternatives.forEach((g,i)=>{
+  const inverse=config.type==='hyperbola-choices';
+  const graphs=inverse?config.coefficients.map(k=>({k})):alternatives;
+  graphs.forEach((g,i)=>{
    const fig=document.createElement('figure'),caption=document.createElement('figcaption'),zoom=document.createElement('button');zoom.type='button';zoom.className='graph-zoom';zoom.textContent='График '+(i+1)+' ↗';zoom.setAttribute('aria-label','Увеличить график '+(i+1));caption.append(zoom);
-   const label='График '+(i+1)+': y='+g.k+'x'+(g.b<0?'':'+')+g.b+(g.holes.length?', выколотая точка при x='+g.holes[0]:', без выколотых точек');
-   fig.append(caption,graph(g.k,g.b,g.holes,3,label));host.append(fig);
-   zoom.onclick=()=>{const dialog=document.createElement('dialog'),title=document.createElement('p'),close=document.createElement('button');dialog.className='graph-dialog';dialog.setAttribute('aria-label','Увеличенный график '+(i+1));title.textContent='График '+(i+1);close.type='button';close.textContent='Вернуться к выбору';dialog.append(title,graph(g.k,g.b,g.holes,3,label),close);host.append(dialog);close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.remove();zoom.focus();},{once:true});dialog.showModal();};
+   const label=inverse?'График '+(i+1)+': при x = 2 значение y примерно '+(g.k/2).toLocaleString('ru',{maximumSignificantDigits:3})+'.':'График '+(i+1)+': y='+g.k+'x'+(g.b<0?'':'+')+g.b+(g.holes.length?', выколотая точка при x='+g.holes[0]:', без выколотых точек');
+   const draw=()=>inverse?rootGraph({label,curves:[{kind:'hyperbola',k:g.k}],xRange:[-6,6],yRange:[-6,6],xTickStep:2,yTickStep:2},''):graph(g.k,g.b,g.holes,3,label);
+   fig.append(caption,draw());host.append(fig);
+   zoom.onclick=()=>{const dialog=document.createElement('dialog'),title=document.createElement('p'),close=document.createElement('button');dialog.className='graph-dialog';dialog.setAttribute('aria-label','Увеличенный график '+(i+1));title.textContent='График '+(i+1);close.type='button';close.textContent='Вернуться к выбору';dialog.append(title,draw(),close);host.append(dialog);close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.remove();zoom.focus();},{once:true});dialog.showModal();};
   });
  }else if(config.type==='pair'||config.type==='pair-reference'){
   host.className='task-graphs construction';

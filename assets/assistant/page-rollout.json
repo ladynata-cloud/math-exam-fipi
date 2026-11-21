@@ -2234,10 +2234,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "df661a303e82089235044e5c1d373357958317b2467f0e0e6a74361e0cff0831",
-      "afterSha256": "a53aa4164874dead5317af90b2c4f427decc8cc4e59696088d3ff0d0351528e4",
+      "beforeSha256": "6fc2579d5d48cb62d1d1ab914c7219e4eff389eb7bccb4769ffa061ebe62d7b7",
+      "afterSha256": "776cd752bfffb7a972ddfc0144d590e6cec3f2b24d7aca7a8c6f38ea1b774ae2",
       "placement": "before-head-close",
-      "sourceSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60"
+      "sourceSha": "ea563c469d1a2d7b2a2eb8afb959d951625e39f0"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6515,6 +6515,26 @@
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval.",
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "d0575a63a6351578f6d7faa236fe57d2739c4fe3",
+      "task": "docs/tasks/MAKARYCHEV8_150_180.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "ea563c469d1a2d7b2a2eb8afb959d951625e39f0",
+      "task": "docs/tasks/MAKARYCHEV8_181_200.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
