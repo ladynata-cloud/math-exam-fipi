@@ -52,7 +52,10 @@ async function waitForHttp(url, child, diagnostics) {
 }
 
 async function contextFor(browser, siteOrigin, tag, failures) {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    ignoreHTTPSErrors: siteOrigin.startsWith('https://')
+  });
   const personal = JSON.stringify({
     version: 1,
     tasks: { 'p08-t01': { value: '0,86', values: ['0,5'], step: 1, guided: true, assisted: true, hint: false,
@@ -317,14 +320,24 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await teacher.goto(siteOrigin + '/trainers/trainer-board.html?server=' + encodeURIComponent(boardOrigin), { waitUntil: 'domcontentloaded' });
   await teacher.locator('#openShare').click();
   await teacher.locator('#createRoom').click();
-  await teacher.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' && document.querySelector('#studentLink')?.value.includes('role=student'), null, { polling: 50 });
+  try {
+    await teacher.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' && document.querySelector('#studentLink')?.value.includes('role=student'), null, { polling: 50, timeout: 20000 });
+  } catch (error) {
+    const status = await teacher.evaluate(() => ({
+      share: document.querySelector('#shareStatus')?.textContent,
+      mirror: document.querySelector('#mirrorStatus')?.textContent,
+      mirrorState: document.querySelector('#mirrorStatus')?.dataset.mirrorStatus
+    }));
+    error.message += '\nRoom status: ' + JSON.stringify(status);
+    throw error;
+  }
   const studentLink = await teacher.locator('#studentLink').inputValue();
   await teacher.locator('#sharePanel [data-close-panel]').click();
   assert.equal(new URL(teacher.url()).searchParams.has('token'), false, 'teacher credentials are not exposed in address');
   await student.goto(studentLink, { waitUntil: 'domcontentloaded' });
   await teacher.locator('#chooseTrainer').click();
   await teacher.locator('#pickerSearch').fill('peterson6');
-  await teacher.locator('#pickerResults .picker-item').filter({ hasText: /Петерсон/ }).click();
+  await teacher.locator('#pickerResults').getByRole('button', { name: /^Петерсон · 6 класс · части 1–3/ }).click();
   await Promise.all([waitConnected(teacher), waitConnected(student)]);
   let teacherFrame = await courseFrame(teacher), studentFrame = await courseFrame(student);
   await synchronized(teacherFrame, studentFrame, 'initial home');
@@ -643,15 +656,26 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const server = staticServer();
   let browser, child, watchdog, serverErrors = '';
   try {
-    await new Promise((resolveListen, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolveListen); });
-    const siteOrigin = 'http://127.0.0.1:' + server.address().port;
-    const boardPort = await freePort(), boardOrigin = 'http://127.0.0.1:' + boardPort;
-    const env = { ...process.env, HOST: '127.0.0.1', PORT: String(boardPort), NODE_ENV: 'test', CORS_ALLOWED_ORIGINS: siteOrigin };
-    for (const key of Object.keys(env)) if (/^(LEARNING_|PROGRESS_|GROUP_LESSON_)/.test(key)) delete env[key];
-    child = spawn(process.execPath, ['index.js'], { cwd: join(ROOT, 'board-server'), env, stdio: ['ignore', 'ignore', 'pipe'] });
-    child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); });
-    await waitForHttp(boardOrigin + '/health', child, () => serverErrors);
-    browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
+    let siteOrigin = process.env.PETERSON6_SITE, boardOrigin = process.env.PETERSON6_BOARD_SERVER;
+    if (siteOrigin || boardOrigin) {
+      assert.equal(process.env.MATHEXAM_PUBLISHED_SMOKE, '1', 'published room needs explicit opt-in');
+      assert.equal(siteOrigin, 'https://mathexam.space');
+      assert.equal(boardOrigin, 'https://mathexam-board-ladynata.msk1.amvera.tech');
+    } else {
+      await new Promise((resolveListen, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolveListen); });
+      siteOrigin = 'http://127.0.0.1:' + server.address().port;
+      const boardPort = await freePort();
+      boardOrigin = 'http://127.0.0.1:' + boardPort;
+      const env = { ...process.env, HOST: '127.0.0.1', PORT: String(boardPort), NODE_ENV: 'test', CORS_ALLOWED_ORIGINS: siteOrigin };
+      for (const key of Object.keys(env)) if (/^(LEARNING_|PROGRESS_|GROUP_LESSON_)/.test(key)) delete env[key];
+      child = spawn(process.execPath, ['index.js'], { cwd: join(ROOT, 'board-server'), env, stdio: ['ignore', 'ignore', 'pipe'] });
+      child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); });
+      await waitForHttp(boardOrigin + '/health', child, () => serverErrors);
+    }
+    const launchArgs = ['--no-sandbox', '--disable-dev-shm-usage'];
+    const networkProxy = process.env.HTTPS_PROXY || process.env.https_proxy;
+    if (networkProxy) launchArgs.push('--proxy-server=' + networkProxy, '--ignore-certificate-errors');
+    browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: launchArgs, timeout: 15000 });
     await Promise.race([
       run(browser, siteOrigin, boardOrigin, []),
       new Promise((_, reject) => { watchdog = setTimeout(() => reject(new Error('Browser gate exceeded 420 seconds at ' + phase)), 420000); })
@@ -660,6 +684,6 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
     clearTimeout(watchdog);
     await browser?.close();
     if (child && child.exitCode === null) child.kill('SIGTERM');
-    await new Promise(resolveClose => server.close(resolveClose));
+    if (server.listening) await new Promise(resolveClose => server.close(resolveClose));
   }
 })().catch(error => { console.error('PETERSON6_BOARD_BROWSER_FAILED at ' + phase + '\n' + (error.stack || error)); process.exitCode = 1; });
