@@ -125,6 +125,6 @@
         q('Чему равна вся дробь?',value,fmt(numer)+' / ('+fmt(den)+') = '+fmt(value)+'.','Дели разность сверху на разность снизу.',value===0?1:-value,value===0?'Нулевой числитель при ненулевом знаменателе даёт ноль.':'Проверь знаки двух окончательных разностей.')
       ],expr+' − '+fmt(nn),expr+' − '+fmt(dd),'Один раз вычисли общую часть',{kind:'substitute',x,p,nn,dd});
     }));
-  window.MathExamTopicEdition={trainerId:'makarychev8-2018',storePrefix:'math:makarychev8-2018:v1:',authors:'Макарычев и др. · углублённый уровень · 2018',grade:()=>'8 класс',unit:'упражнение',figure,
+  window.MathExamTopicEdition={register,q,trainerId:'makarychev8-2018',storePrefix:'math:makarychev8-2018:v1:',authors:'Макарычев и др. · углублённый уровень · 2018',grade:()=>'8 класс',unit:'упражнение',figure,
     source:(book,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000056.pdf#page='+(page+1),nextId:l=>sequence[sequence.indexOf(l.id)+1]};
 })();

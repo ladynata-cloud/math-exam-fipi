@@ -14,17 +14,25 @@ for(const [i,row] of book.mapping.entries()){
  if(i){assert(row.bookOnly&&!row.boardPath&&!row.externalPath);}else{assert.equal(row.coverage,'partial');assert.equal(row.boardPath,book.exercises[0].path);}
 }
 const keys='abcdefgh',letters='абвгдежз',planned=[];
-for(const [n,count] of [[1,1],[2,8],[3,1],[4,4],[5,4],[6,6]]){
+for(const [n,count] of [[1,1],[2,8],[3,1],[4,4],[5,4],[6,6],[7,4],[8,2],[9,2],[10,2]]){
  for(let j=0;j<count;j++)planned.push([String(n)+(count===1?'':keys[j]),String(n)+(count===1?'':letters[j])]);
 }
 assert.deepEqual(Array.from(book.exercises,r=>[r.path.split('/').pop(),r.printed]),planned.map(([id,label])=>['69-'+id,label]));
-const html=read(folder+'index.html'),scripts=['trainers/tyurin-statistics/content.js',folder+'fractions.js','trainers/tyurin-statistics/app.js'].map(read);
+const html=read(folder+'index.html'),scripts=['trainers/tyurin-statistics/content.js',folder+'fractions.js',folder+'sets-motion.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,saved){
  const dom=new JSDOM(html,{url:'https://example.test'+entry.path,runScripts:'outside-only'}),w=dom.window;w.TextEncoder=TextEncoder;w.Math.random=()=>0;
  const id=entry.path.split('/').pop(),key='math:makarychev8-2018:v1:'+id;if(saved)w.localStorage.setItem(key,saved);for(const code of scripts)w.eval(code);return {w,d:w.document,dom,key,l:w.MathExamTopicPractice.lessons.get(id)};
 }
 function values(d){
  const {a,b,c,x,y,kind,sub,den,whole,num,s,u,v}=d;
+ if(d.family==='sequence'){const n=Math.floor((d.limit-d.begin)/d.step)+1;return [d.begin,d.begin+(n-1)*d.step,n];}
+ if(d.family==='coprime'){
+   const candidates=Array.from({length:den-1},(_,i)=>i+1).filter(k=>{const common=Array.from({length:Math.min(k,den)-1},(_,a)=>a+2).some(div=>k%div===0&&den%div===0);return common===d.reducible;});
+   return [den-1,candidates.length,candidates[0]??0];
+ }
+ if(d.family==='river'){const v=d.boat-d.flow,t=d.distance/v;return [v,t,t*60];}
+ if(d.family==='money')return [d.sum/100,100*d.change/d.sum,d.sum+d.change];
+
  if(kind==='form')return [1,c+a,c/b+a];
  if(kind==='class')return [1,-a,3];
  if(kind==='mixed'){const numerator=whole*den+num;return [whole*den,numerator,(sub===5?x:1)*(whole+num/den)];}
@@ -42,6 +50,10 @@ function values(d){
  assert.equal(kind,'substitute');const base=x*(x+d.p),n=base-d.nn,denom=base-d.dd;assert.notEqual(denom,0);return [base,denom,n/denom];
 }
 function checkPrinted(i,l){
+ if(i>=24){
+   const facts=['10 дробей','3, 6, 9, 12, 15, 18','составные 9 и 15','4, 7, 10, 13, 16, 19','1, 2, 4, 7, 8, 11, 13, 14','3, 5, 6, 9, 10, 12','2/3 часа, или 40 минут','3/2 часа, или 90 минут','20 %','6 %'];
+   assert(l.printedGuide.includes(facts[i-24]),l.id);return;
+ }
  const variants=['позиции 1, 3 и 6','9/7','17/5','−3/4','1/3','x/5','17y/7','(a + b)/3','(x − 5)/(y + 5)','Четвёртое включает |x|','5/(x + 3)','(y − 1)/(y² + 1)','(a + 25)/7','(a² + a + 1)/(b² − b + 7)','52','30','1/3','83'];
  if(i<18){assert(l.printedGuide.includes(variants[i]),l.id);return;}
  const xs=[7,3,0,-2,1/2,19/10],x=xs[i-18],value=(x+8)*(x-3)/((x+6)*(x-1));
@@ -56,7 +68,7 @@ let total=0;
 for(const [i,entry] of book.exercises.entries()){
  assert.equal(entry.path,entry.boardPath);
  let {w,d,dom,key,l}=open(entry);const id='69-'+planned[i][0],course=w.MathExamTopicEdition;
- assert.equal(d.querySelector('#lesson').value,id);assert.equal(d.querySelectorAll('#lesson option').length,24);
+ assert.equal(d.querySelector('#lesson').value,id);assert.equal(d.querySelectorAll('#lesson option').length,34);
  assert.equal(d.querySelector('#back').hash,'#book/source-69');assert.equal(d.querySelector('#source').hash,'#page='+(entry.page+1));
  assert.equal(d.querySelector('#related').hash,'#lesson/domain');assert.equal(d.querySelector('#board').href.includes(encodeURIComponent(entry.path)),true);
  assert.equal(l.title,entry.title);assert.equal(l.printedReference,'Упражнение №'+entry.printed);assert.equal(l.page,i<10?7:8);checkPrinted(i,l);
@@ -78,4 +90,4 @@ for(const [i,entry] of book.exercises.entries()){
  const saved=w.localStorage.getItem(key);dom.window.close();({w,d,dom,key,l}=open(entry,saved));assert.equal(d.querySelectorAll('#work ol li').length,3);
  click(d,'again');const restored=JSON.parse(w.localStorage.getItem(key));assert.deepEqual(restored.results,[]);assert.notEqual(restored.variant,fresh.variant);dom.window.close();
 }
-assert.equal(total,792);console.log('Makarychev advanced 8 (2018): 54 printed points, 8 additional sets, 24 genuine exercises/parts, 792 independent answers, personal results and reload verified.');
+assert.equal(total,1122);console.log('Makarychev advanced 8 (2018): 54 printed points, 8 additional sets, 34 genuine exercises/parts, 1122 independent answers, personal results and reload verified.');
