@@ -892,6 +892,51 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function appliedBoundsView(host,g,value){
+ host.className='task-graphs quantity-model';const raw=g.partial?.[0],q=M.parse(raw);
+ const say=(text,state)=>{const p=boundNote(host,text);if(state)p.dataset.appliedBounds=state;};
+ if(g.proposal)intervalNumberLine(host,{mode:'operation',givenRows:[],proposal:g.proposal,points:q?[q]:[]},value);
+ if(!q){say('Выбери собственное значение на первом шаге. Модель проверит его по исходным данным.');return;}
+ const v=q.n/q.d,fmt=expr=>sourceFractionTrial({symbols:['v'],original:expr,reduced:'0'},raw,true).original;
+ const diff=(n,d=1)=>BigInt(q.n)*BigInt(d)-BigInt(n)*BigInt(q.d);
+ if(g.mode==='load'){
+  if(q.d!==1||v<0||v>12){say('Груз состоит из 12 штук. Количество железных должно быть целым от 0 до 12.','domain');return;}
+  const svg=node('svg',{viewBox:'0 0 280 82',role:'img','aria-label':'Двенадцать заготовок, различаемые цветом и буквами Ж или М'});
+  for(let i=0;i<12;i++){const x=4+(i%6)*46,y=3+Math.floor(i/6)*38,iron=i<v;svg.append(node('rect',{x,y,width:36,height:28,rx:3,fill:iron?'#407268':'#945625'}),node('text',{x:x+18,y:y+18,fill:'white','text-anchor':'middle','font-size':13},iron?'Ж':'М'));}
+  host.append(svg);say('Железных '+v+', медных '+(12-v)+'. Масса '+(2400+300*v)+' кг при пределе 4000 кг.',v<=5?'yes':'no');return;
+ }
+ if(g.mode==='triangle'){
+  if(q.d!==1||v<=0){say('Выбери положительное целое число сантиметров.','domain');return;}
+  if(v<=10){say('Две боковые стороны суммарно '+(2*v)+' см, а основание 20 см. Невырожденный треугольник не складывается.','degenerate');return;}
+  const h=Math.sqrt((v-10)*(v+10)),s=Math.min(10,90/h),svg=node('svg',{viewBox:'0 0 281 115',role:'img','aria-label':'Равнобедренный треугольник с основанием 20 и двумя выбранными сторонами'});
+  svg.append(node('polygon',{points:(140-10*s)+',99 '+(140+10*s)+',99 140,'+(99-h*s),fill:'#e8f1ee',stroke:'#286a5d','stroke-width':2}));host.append(svg);
+  say('Боковые стороны по '+v+' см, основание 20 см. Периметр '+(2*v+20)+' см при пределе 46 см.',v<=13?'yes':'no');return;
+ }
+ if(v<=0){say('Скорость или длина дневного перехода должна быть положительной.','domain');return;}
+ if(g.mode==='hike'){
+  if(diff(5)<=0n){say('После уменьшения на 5 км дневной путь должен остаться положительным.','domain');return;}
+  const up=fmt(['*','6',['+','v','5']]),down=fmt(['*','8',['-','v','5']]);
+  say('Шесть более длинных переходов дают '+up+' км, восемь коротких — '+down+' км. Первый путь должен превысить 90, второй быть меньше 90.',diff(10)>0n&&diff(65,4)<0n?'yes':'no');return;
+ }
+ if(g.mode==='train'){
+  if(diff(60)<=0n){say('По условию вторая скорость выше 60 км/ч.','domain');return;}
+  const time=fmt(['/','60','v']),mean=fmt(['/', ['*','120','v'], ['+','60','v']]);
+  const svg=node('svg',{viewBox:'0 0 292 80',role:'img','aria-label':'Два равных участка по 60 км, под каждым время на него'});
+  [[8,'60 км','1 ч'],[150,'60 км',time+' ч']].forEach(([x,km,hrs],i)=>{svg.append(node('rect',{x,y:12,width:134,height:20,fill:i?'#925224':'#176e62'}),node('text',{x:x+67,y:26,fill:'white','text-anchor':'middle','font-size':12},km));if(hrs.length<15)svg.append(node('text',{x:x+67,y:52,'text-anchor':'middle','font-size':13},hrs));});host.append(svg);
+  say('Берём по 60 км на каждую половину. Времена 1 ч и '+time+' ч. Частное всего пути 120 км и суммы времён равно '+mean+' км/ч.',diff(90)<=0n?'yes':'no');return;
+ }
+ const motor=g.mode==='motor',slow=motor?12:4,gap=motor?20:8,finish=motor?60:24;
+ const svg=node('svg',{viewBox:'0 0 300 84',role:'img','aria-label':motor?'Схема дороги: старт в деревне, ферма и станция':'Схема дороги: точка старта, положение первого через два часа и город'});
+ const pos=z=>19+260*z/finish;svg.append(node('line',{x1:19,x2:279,y1:44,y2:44,stroke:'#526b65','stroke-width':2}));
+ [[0,motor?'Деревня':'Старт'],[gap,motor?'Ферма':'8 км'],[finish,motor?'Станция':'Город']].forEach(([x,s],i)=>{svg.append(node('circle',{cx:pos(x),cy:44,r:3,fill:'#345750'}),node('text',{x:pos(x),y:65,'text-anchor':i===0?'start':i===2?'end':'middle','font-size':12},s));});
+ if(diff(slow)<=0n){host.append(svg);say('Стартующий сзади движется не быстрее того, кто уже впереди. На схеме до конца дороги они не встретятся.','no');return;}
+ const time=fmt(['/',String(gap),['-','v',String(slow)]]);
+ const dist=fmt(['/', ['*',String(gap),'v'], ['-','v',String(slow)]]);
+ const meet=gap*v/(v-slow),limit=motor?18:6;const status=diff(limit)>0n?'yes':diff(limit)===0n?'boundary':'no';
+ if(status!=='no')svg.append(node('path',{d:'M'+pos(meet)+' 42 l-4 -10 h8 z',fill:'#9b4a1e','data-meeting':'on-road'}));host.append(svg);
+ say('Встреча через '+time+' ч от старта догоняющего, в '+dist+' км от его старта. '+(status==='yes'?'Это раньше конечного пункта.':status==='boundary'?'Это ровно в конечном пункте; по условию нужно раньше.':'Эта точка дальше конечного пункта.'),status);
+}
+
 function solutionAudit(host,g,value){
  host.className='task-graphs quantity-model';
  const q=M.parse(g.partial?.[0]);
@@ -1034,9 +1079,9 @@ function systemReviewView(host,g,value){
  if(g.mode==='parameters'){
   const cfg=g.settings||(g.which===995?{coefficient:-1,offset:0,radius:2,low:-6,high:6}:{coefficient:3,offset:0,radius:4,low:null,high:0});
   const mid=BigInt(cfg.coefficient)*n+BigInt(cfg.offset)*d,rad=BigInt(cfg.radius),roots=[mid-rad*d,mid+rad*d];
-  const inside=(cfg.low===null||roots[0]>BigInt(cfg.low)*d)&&roots[1]<BigInt(cfg.high)*d;
+  const inside=(cfg.low===null||roots[0]>BigInt(cfg.low)*d)&&(cfg.high===null||roots[1]<BigInt(cfg.high)*d);
   const svg=node('svg',{viewBox:'0 0 306 110',role:'img','aria-label':'Положение двух корней на оси x и границы условия'}),limit=Math.max(10,Math.abs(cfg.low||0)+4,Math.abs(cfg.high)+4),px=u=>153+Math.max(-limit,Math.min(limit,u))*132/limit;
-  const y=58;svg.append(node('line',{x1:12,x2:294,y1:y,y2:y,stroke:'#536a62'}));const l=cfg.low??-limit,r=cfg.high;
+  const y=58;svg.append(node('line',{x1:12,x2:294,y1:y,y2:y,stroke:'#536a62'}));const l=cfg.low??-limit,r=cfg.high??limit;
   svg.append(node('line',{x1:px(l),x2:px(r),y1:y,y2:y,stroke:'#7e5791','stroke-width':4}));
   for(const bound of [cfg.low,cfg.high].filter(v=>v!==null))svg.append(node('circle',{cx:px(bound),cy:y,r:4,fill:'white',stroke:'#734484','stroke-width':2}),node('text',{x:px(bound),y:82,'font-size':13,'text-anchor':'middle'},String(bound)));
   roots.forEach((k,i)=>{const u=Number(k)/q.d,h=i?28:41,pos=px(u),color=i?'#8a4010':'#07685d';svg.append(node('line',{x1:pos,x2:pos,y1:h+4,y2:y,stroke:color,'stroke-dasharray':'2 2'}));
@@ -1075,7 +1120,7 @@ function systemTrialView(host,g,value){
   intervalNumberLine(host,{mode:'operation',givenRows:lines,rowLabels:lines.map((_,i)=>'Твоя строка '+(i+1)+': '),enteredRows:g.rangeRows,proposal:g.proposal,points:x?[x]:[]},value);
   if(lines.length)boundNote(host,'Прямые идут в порядке строк задачи. Последней показана твоя запись общего решения, если она уже введена.');
  }
- if(g.exampleProbes?.length)for(const v of g.exampleProbes){const raw=M.answer(v),bad=g.rows.findIndex(r=>!linearTrial(r,raw).holds);boundNote(host,'Твой пример '+raw+(bad===-1?' выполняет обе строки.':' не выполняет строку '+(bad+1)+'.')).dataset.systemExample=bad===-1?'yes':'no';}
+ if(g.exampleProbes?.length)for(const v of g.exampleProbes){const raw=M.answer(v);if(g.integerResult&&v.d!==1){boundNote(host,'Твоя точка '+raw+' не является целым числом.').dataset.systemExample='no';continue;}const bad=g.rows.findIndex(r=>!linearTrial(r,raw).holds);boundNote(host,'Твой пример '+raw+(bad===-1?' выполняет все строки.':' не выполняет строку '+(bad+1)+'.')).dataset.systemExample=bad===-1?'yes':'no';}
 }
 
 
@@ -1819,6 +1864,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-applied-bounds'){appliedBoundsView(host,config,value);return;}
  if(config.type==='source-solution-audit'){solutionAudit(host,config,value);return;}
  if(config.type==='interval-set-review'){intervalSetReview(host,config,value);return;}
  if(config.type==='geometry-bound-review'){geometryBoundView(host,config,value);return;}
