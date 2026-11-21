@@ -51,7 +51,9 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--nikolsky9-linear')?{
+const catalogue=process.argv.includes('--makarychev7-2018')?{
+  directory:'makarychev8-2018',entries:[[91,61,57]],uniqueLessons:56,search:'makarychev8-2018',match:'углублённый уровень',lesson:'91-18',chart:'svg[aria-label*="Изменение величины по этапам"]',storage:'math:makarychev8-2018:v1:'
+}:process.argv.includes('--nikolsky9-linear')?{
   directory:'nikolsky-algebra-7-9',entries:[[57,78,135]],uniqueLessons:134,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:'57-3-l',chart:'svg[aria-label*="Открытые границы и области решения"]',storage:'math:nikolsky-algebra-7-9:v1:'
 }:process.argv.includes('--nikolsky8-inequalities')?{
   directory:'nikolsky-algebra-7-9',entries:[[75,69,88]],uniqueLessons:87,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:process.argv.includes('--tallest')?'75-18':'75-5-f',chart:process.argv.includes('--tallest')?'svg[aria-label*="Пересечение выбранного ряда и шеренги"]':'svg[aria-label*="Числовая прямая с точками сравнения"]',storage:'math:nikolsky-algebra-7-9:v1:'
