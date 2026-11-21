@@ -210,6 +210,17 @@ const misconceptions = new Map([
   ['ex-main-0556-b/step-2', '0.912673'], // Used the air fraction.
   ['ex-main-0556-b/step-3', '8.9'], // Used the material density for the shell.
   ['ex-main-0556-b/step-4', '0.777'], // Reused the preceding diameter ratio.
+  ['theory-063/step-2', '-5'], // Gave a signed displacement as a length.
+  ['theory-064/step-1', '3'], // Submitted an offset instead of the destination.
+  ['ex-main-0557-a/step-2', '2'], // Selected the wrong opposite side.
+  ['ex-main-0557-a/step-3', '2'], // Halved BC instead of BD.
+  ['ex-main-0557-b/step-1', '-4'], // Reversed the sign of a length.
+  ['ex-main-0557-b/step-3', '5'], // Used the full third side.
+  ['ex-main-0557-b/step-4', '7'], // Forgot the midpoint on the new edge.
+  ['ex-main-0558-a/step-2', '9'], // Confused two horizontal directions.
+  ['ex-main-0558-b/step-1', '17'], // Used a space diagonal for a face.
+  ['ex-main-0558-b/step-2', 'sqrt(145)'], // Gave the length where its square was requested.
+  ['ex-main-0558-b/step-3', '15'], // Reused a side face diagonal.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 

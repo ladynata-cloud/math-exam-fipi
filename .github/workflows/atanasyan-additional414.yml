@@ -61,6 +61,7 @@ jobs:
           node tools/stereo-textbook/inscribed-volume-applications.test.cjs
           node tools/stereo-textbook/sphere-volume-angles.test.cjs
           node tools/stereo-textbook/volume-chapter-end.test.cjs
+          node tools/stereo-textbook/vector-basics.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -182,6 +183,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: volumeChapterEnd
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/volume-chapter-end
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check spatial vector arrows, their lengths, translations, and tetrahedron and box exercises
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorBasics
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-basics
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -239,5 +245,6 @@ jobs:
             artifacts/inscribed-volume-applications/
             artifacts/sphere-volume-angles/
             artifacts/volume-chapter-end/
+            artifacts/vector-basics/
           retention-days: 14
           if-no-files-found: error

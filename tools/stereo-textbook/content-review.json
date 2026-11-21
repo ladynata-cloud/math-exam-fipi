@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T18:18:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 556, points 52–62 and all chapter V self-checks, with 897 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T18:28:00Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–64 and source exercises 557–558, with 903 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1486,6 +1486,21 @@
       ],
       "evidence": "tools/stereo-textbook/volume-chapter-end.json",
       "mathematicalReport": "tools/stereo-textbook/volume-chapter-end.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T18:28:00Z",
+      "scope": "Introduction to spatial vectors, points 63–64 and both printed parts of exercises 557–558",
+      "cardIds": [
+        "ex-main-0557-a",
+        "ex-main-0557-b",
+        "ex-main-0558-a",
+        "ex-main-0558-b",
+        "theory-063",
+        "theory-064"
+      ],
+      "evidence": "tools/stereo-textbook/vector-basics.json",
+      "mathematicalReport": "tools/stereo-textbook/vector-basics.test.cjs"
     }
   ],
   "cards": [
@@ -5076,6 +5091,30 @@
     {
       "id": "ex-main-0556-b",
       "sha256": "2021187572ebb735297928adf0524cc1630fda942970ae6d3b6b2df107d337c6"
+    },
+    {
+      "id": "ex-main-0557-a",
+      "sha256": "01e423592f02a7c1022d1e1a29e12ed4e8b8c1a8cb91af4fec657553ee08f91b"
+    },
+    {
+      "id": "ex-main-0557-b",
+      "sha256": "ddac15e981872eb985070e1063c910ca64f7e42ef144132dc5296356af4632f6"
+    },
+    {
+      "id": "ex-main-0558-a",
+      "sha256": "74060e57166cc7530366af054f14ecbae81525e810a316a0e28b2f5c24110581"
+    },
+    {
+      "id": "ex-main-0558-b",
+      "sha256": "1b3140e29e89d0604bc8e03667724c2801a04e4b906384413baae79a1567b55d"
+    },
+    {
+      "id": "theory-063",
+      "sha256": "a94edcb779916138ffad8988c324694300256ec6bc7233896974cdf9ea02a694"
+    },
+    {
+      "id": "theory-064",
+      "sha256": "1d827d3f9e3ece6a8e7aad20fb86a91501786ee3c80c86be480cfe796c47f9d3"
     }
   ]
 }

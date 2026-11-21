@@ -12521,6 +12521,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -12540,6 +12544,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -23693,7 +23701,10 @@
           144,
           145
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-064",
@@ -23710,7 +23721,10 @@
         "pdfPages": [
           145
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-065",
