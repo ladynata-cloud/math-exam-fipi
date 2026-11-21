@@ -2252,10 +2252,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "35951181a792f1821af24e65a067a88322d9d5db6dd5738f43bfff3d8f0ac923",
-      "afterSha256": "ae15648b2ad865a6161ebc937a47ed0cc171886e8905116b76ef4262875ac442",
+      "beforeSha256": "38974150e59034a4688242aaa451e00c5c45b490ad0705e974163d452dde5b1e",
+      "afterSha256": "3c6da9d9134d7126cde10df7f3ac0ae620db3acf77facaf35a83a93323608b18",
       "placement": "before-head-close",
-      "sourceSha": "8e6640f97780fd10eedbdd25edd7d2d1d3f514f1"
+      "sourceSha": "f9d064a6860b3f2750b6830aadbf7bfd5bff212f"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6983,6 +6983,51 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "previousBaseSha": "2dcdaa2b0b0c0ab7d3bcd13eb32d88788ffc3416",
+      "sourceBaseSha": "a7dbcc7b0a2be11d7dbf6e969ff5f905bcbfef01",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
+    },
+    {
+      "previousBaseSha": "5a8d6abefb5e478fa54a590d77291f17042b0c3a",
+      "sourceBaseSha": "adcd6cfa74d06cf43243b322d05a2f6c284969ad",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
+    },
+    {
+      "previousBaseSha": "e89ab009af3fd8ee60057b2f4dc2af8e1c4d5f07",
+      "sourceBaseSha": "83e8c66a2cc3ea90936fd1fa61a01e9c0f7b7563",
+      "task": "docs/tasks/MAKARYCHEV8_696_701.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
+    },
+    {
+      "previousBaseSha": "fd208141310c8ed2d5b724b2f1e2657074717aaa",
+      "sourceBaseSha": "c255c9bcdb571ec505a029692e170707184bcc20",
+      "task": "docs/tasks/MAKARYCHEV8_696_701.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
+    },
+    {
+      "previousBaseSha": "8e6640f97780fd10eedbdd25edd7d2d1d3f514f1",
+      "sourceBaseSha": "f9d064a6860b3f2750b6830aadbf7bfd5bff212f",
+      "task": "docs/tasks/MAKARYCHEV8_696_701.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
