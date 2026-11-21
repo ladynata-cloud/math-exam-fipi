@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "dbc46ead1ab85d7f4e40b5b5d478a2d9bef433f4a5e527e6c7d63196f94c2451",
-      "afterSha256": "1e6a605a7a68cdacfff243e79b110dc8154bae60b4001e0309058821fd560a17",
+      "beforeSha256": "8edabcc6b01b372c84b99be8f8fab87d15c146246a011c1d923beb12896634bb",
+      "afterSha256": "f3b7b428f2d442bf73e9ee8925f9390f30659bf60abff4c908b4a3500da2c715",
       "placement": "before-head-close",
-      "sourceSha": "2090e98ae3755b42352a77f3be88b005603b395e"
+      "sourceSha": "debfc46ef4462352a20fe53dc9ba0396d79653aa"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6885,6 +6885,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, II часть, §26, с. 15–16. Исходные №5.57–5.60: Проверены индивидуальные мобильные уроки и исследование в новой комнате, где каждая точка обозначает одну собаку, включая две перезагрузки и исправление без подсказки."
+    },
+    {
+      "previousBaseSha": "2090e98ae3755b42352a77f3be88b005603b395e",
+      "sourceBaseSha": "debfc46ef4462352a20fe53dc9ba0396d79653aa",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин 5, ч.2, §26, с.16. Проверены шесть номеров №5.61–5.66, новые данные, наглядность на 320/375, вход двух участников, возврат управления и обе перезагрузки в №5.63. Исходные величины не округляются."
     }
   ],
   "coverageUpdates": [
