@@ -517,6 +517,16 @@ async function run(browser, origin, backend, failures) {
   const ownPlace=await same(studentFrame,teacherFrame,'the fourth digit from the right belongs to the same private choice');assert.equal(ownPlace.scene.model.place,3);assert(ownPlace.scene.model.seen);
   await narrow(student,studentFrame,'self-check-with-selected-number');await ownership(teacher,student,false);
 
+  phase = 'two positions at a fixed distance on a line';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-55"]').click();await studentFrame.locator('h1').filter({hasText:'№1.55'}).waitFor();
+  await solve(teacherFrame);await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'first centimetre to millimetre conversion');
+  await ownership(teacher,student,true);await solve(studentFrame);await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('[data-v5-param=side]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('110');await studentFrame.locator('[data-v5-predict] button').click();
+  const longSide=await same(studentFrame,teacherFrame,'K on the far side of N creates the sum');assert.equal(longSide.scene.model.side,1);assert(longSide.scene.model.seen);
+  await studentFrame.locator('[data-v5-param=side]').selectOption({value:'0'});await studentFrame.locator('[data-v5-prediction]').fill('42');await studentFrame.locator('[data-v5-predict] button').click();await same(studentFrame,teacherFrame,'near-side distance is a difference');
+  await narrow(student,studentFrame,'two-possible-distances');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();

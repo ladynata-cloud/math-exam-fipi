@@ -106,3 +106,5 @@ html[data-vilenkin5-readonly=true] #main[data-v5-quality] input,html[data-vilenk
 }
 .v5q-model svg.v5q-printed-line-figure text{font-size:18px}
 .v5q-model svg.v5q-printed-compass-figure text{font-size:16px}
+
+.v5q-model svg.v5q-distance-line text{font-size:16px}

@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:47},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:55},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -626,8 +626,28 @@ function printedChecksRegression(){
   equal(resumed.errors,[]);resumed.close();
 }
 
+
+function printedLengthUnitsRegression(){
+  const f=boot(),ids=Array.from({length:8},(_,i)=>'v5f-printed-1-'+(48+i)),tasks=ids.map(id=>f.M.generate(id,0)),expected=[[69,183,90],'5 см 2 мм; 30 см 8 мм',[36,41,1207],'2 дм 7 см; 50 дм 1 см; 4 дм 5 см',[7700,3004,6020],'9 км 678 м; 6 км 9 м; 24 км 700 м',[100,1000,100,100000],[42,110]];
+  equal(plain(tasks.map(t=>t.answer)),expected);ok(f.M.accepts('05см02мм;30см8мм',tasks[1]));ok(!f.M.accepts('5 мм 2 см; 30 см 8 мм',tasks[1]));
+  const scale={'мм':1,'см':10,'дм':100,'м':1000,'км':1000000};
+  for(let seed=0;seed<=75;seed++)for(const [i,id]of ids.entries()){
+    const t=f.M.generate(id,seed),d=t.data;equal(f.C.byId[id].source.page,19);
+    if(d.kind==='combine')d.rows.forEach((parts,j)=>equal(parts.reduce((sum,[u,n])=>sum+scale[u]*n,0),t.answer[j]*scale[d.target]));
+    if(d.kind==='decompose')d.pairs.forEach(([n,left],j)=>{equal(n*scale[d.large]+left*scale[d.small],d.values[j]*scale[d.small]);ok(left<d.factor);});
+    if(d.kind==='links')d.units.forEach(([a,b],j)=>equal(d.counts[j]*scale[a],t.answer[j]*scale[b]));
+    if(d.kind==='two'){equal(d.small+d.shift,d.orig);equal(d.orig+d.shift,d.large);for(const side of [0,1])equal(f.w.Vilenkin5Numbered.explore(f.C.byId[id],{side},t).answer,side?d.large:d.small);}
+  }
+  for(const [i,id]of ids.entries()){
+    const t=tasks[i];f.route('#lesson/'+id);
+    for(const [j,q]of t.steps.entries()){f.submit(value(f.M,q));ok(f.snapshot().scene.correct,id+' / '+j);f.click('[data-cmd=next]');}
+    f.submit(i===7?'110;42':value(f.M,t));ok(f.snapshot().scene.correct,id+' final');f.click('[data-cmd=mode][data-value=practice]');ok(f.M.generate(id,f.snapshot().scene.seed).conditionKey!==t.conditionKey);
+  }
+  equal(f.errors,[]);f.close();
+}
+
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();compassAndCompoundRegression();printedChecksRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();printedCalculationsRegression();printedPageFifteenRegression();printedSegmentRegression();compassAndCompoundRegression();printedChecksRegression();printedLengthUnitsRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);
