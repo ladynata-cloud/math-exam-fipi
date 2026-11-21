@@ -1363,3 +1363,19 @@ test('bound each natural-root search, compare all six word models and reject eac
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('follow both original cycle directions and distinguish divisor, dividend, minuend and subtrahend',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(47);set(c[1],2);assert(out().includes('x = 27/2'));set(c[0],20);set(c[1],2);assert(out().includes('x = 27'));
+  for(const j of [48,49]){c=go(j);assert.equal(f.d.querySelectorAll('#task-figure [data-directed-step]').length,6);assert.equal(f.d.querySelectorAll('#model [data-position]').length,6);
+   set(c[1],6);assert(out().includes('вернулась'));set(c[0],1);set(c[1],6);assert(out().includes('отличается от старта'));
+  }
+  const answers=['3/5','17/10','26/5','39/10','-1/2','-7/5','2/25','9/20','15','-3/50','9/25','-80'];
+  const fresh=['21/10','7/5','33/5','73/10','-9/5','-32/5','4/25','9/10','15/2','-3/25','18/25','-40'];
+  for(const [i,ans]of answers.entries()){c=go(50+i);set(c[1],2);assert(out().includes('x = '+ans+'.'),[i,out()]);set(c[0],1);set(c[1],2);assert(out().includes('x = '+fresh[i]+'.'),[i,out()]);}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

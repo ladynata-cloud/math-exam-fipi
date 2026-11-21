@@ -1195,6 +1195,39 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+const cycleKeys={'+':'add','−':'subtract','×':'multiply','÷':'divide'};
+function cycleValues(t,start){
+ const M=root.PetersonMath,values=[M.parse(start)];
+ for(const [sign,v]of t.ops)values.push(M.operation(cycleKeys[sign],values.at(-1),v));
+ return values;
+}
+function cycleDiagram(t,start,shown){
+ const M=root.PetersonMath,s=svg('svg',{viewBox:'0 0 400 176',role:'img','aria-label':(t.side?'Правая':'Левая')+' цепочка со стрелками и шестью действиями',class:'pm-chart'});
+ const grid=[[50,39],[193,39],[342,39],[342,138],[193,138],[50,138]],loc=(t.side?[0,5,4,3,2,1]:[0,1,2,3,4,5]).map(i=>grid[i]);
+ const vals=cycleValues(t,start);
+ for(let i=0;i<6;i++){
+  const [x,y]=loc[i],[x2,y2]=loc[(i+1)%6],dx=Math.sign(x2-x),dy=Math.sign(y2-y),u=x+dx*35,v=y+dy*18,u2=x2-dx*35,v2=y2-dy*18;
+  ln(s,u,v,u2,v2,{stroke:'#246454','stroke-width':2});const size=6;
+  s.append(svg('path',{d:'M'+(u2-dx*size-dy*size)+' '+(v2-dy*size+dx*size)+' L'+u2+' '+v2+' L'+(u2-dx*size+dy*size)+' '+(v2-dy*size-dx*size),fill:'none',stroke:'#246454','stroke-width':2,'data-directed-step':i+1}));
+  const [sign,k]=t.ops[i];txt(s,(u+u2)/2+(dy?(x>190?-27:26):0),(v+v2)/2+(dy?0:-7),sign+' '+k,{'font-size':13});
+ }
+ for(const [i,p]of loc.entries()){
+  s.append(svg('rect',{x:p[0]-33,y:p[1]-17,width:66,height:34,rx:5,fill:i===0?'#ffecd5':'#edf7ee',stroke:'#436951','data-position':i}));
+  txt(s,p[0],p[1]+5,i<=shown?M.answer(vals[i]):'?',{'font-size':16});
+ }
+ return s;
+}
+function componentValues(t,fresh){
+ const M=root.PetersonMath,op=M.operation;
+ const k=M.parse(t.known),r=op('multiply',t.result,fresh?2:1);
+ const operations={
+  unknownAdd:()=>op('subtract',r,k),unknownMinuend:()=>op('add',r,k),unknownSubtrahend:()=>op('subtract',k,r),
+  unknownFactor:()=>op('divide',r,k),unknownDividend:()=>op('multiply',r,k),unknownDivisor:()=>op('divide',k,r),
+ };
+ const solved=operations[t.rule]();
+ const labels={unknownAdd:'x + '+M.answer(k),unknownMinuend:'x − ('+M.answer(k)+')',unknownSubtrahend:M.answer(k)+' − x',unknownFactor:'('+M.answer(k)+') × x',unknownDividend:'x : ('+M.answer(k)+')',unknownDivisor:M.answer(k)+' : x'};
+ return {result:r,solved,expr:labels[t.rule]+' = '+M.answer(r)};
+}
 function situationConfig(tag){
  if(tag==='milk'||tag==='honey')return {title:'Перелить из одной ёмкости в другую',controls:[c('Условие',[[0,'Исходное'],[1,'Другое переливание']]),c('Состояние',[[0,'До переливания'],[1,'После переливания']]),c('Что показать?',[[0,'Сначала составлю уравнение'],[1,'Оба объёма'],[2,'Проверка отношения']])],initial:[0,0,0]};
  if(tag==='grains')return {title:'Два запаса по дням',controls:[c('Начальные запасы',[[0,'150 и 120 кг'],[1,'160 и 120 кг']]),c('Дней прошло',range(0,21)),c('Сравнение',[[0,'Сначала предположу'],[1,'Остатки']])],initial:[0,0,0]};
@@ -2094,6 +2127,9 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p37' && task?.papyrusBlock)return {title:'Повторяющийся блок и две трети',controls:[c('Правая часть',[10,20,30]),c('Этап',[[0,'Условие'],[1,'Значение блока B'],[2,'Найти x и проверить']])],initial:[10,0]};
+ if(lesson?.id==='p37' && task?.directedCycle)return {title:'Двигайся по стрелкам от стартового числа',controls:[c('Старт',[[0,'Из книги'],[1,'Новые данные']]),c('Сколько действий выполнить?',range(0,6))],initial:[0,0]};
+ if(lesson?.id==='p37' && task?.operationRole)return {title:'Неизвестный компонент действия',controls:[c('Условие',[[0,'Исходное'],[1,'Удвоить результат']]),c('Разбор',[[0,'Сначала решу'],[1,'Правило'],[2,'Проверка ответа']])],initial:[0,0]};
  if(lesson?.id==='p37' && task?.equationSituation)return situationConfig(task.equationSituation);
  if(lesson?.id==='p37' && task?.linearEquationStudy){
   const item=task.linearEquationStudy,inputs=linearBalanceCandidates(item);
@@ -2270,12 +2306,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2286,7 +2322,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -2522,6 +2558,25 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===37 && task.papyrusBlock){
+  const M=root.PetersonMath,block=M.operation('multiply',a,'9/4'),x=M.operation('multiply',block,'3/5');formula('(B + B/3)/3 = '+a);say('B = x + (2/3)x.');
+  if(b>=1){show(table(['Операция','Получилось'],[['Умножить обе части на 3',String(a*3)],['Разделить результат на 4/3',M.answer(block)]]));say('Повторяющийся блок B = '+M.answer(block)+'.');}
+  if(b===2)say('Из B = (5/3)x получается x = '+M.answer(x)+'.');
+  stepList(['Обозначь повторяющуюся сумму.','Отмени последнее умножение на 1/3.','Вернись от блока к исходной букве.']);
+ }
+ else if(n===37 && task.directedCycle){
+  const M=root.PetersonMath,t=task.directedCycle,x=M.operation('multiply',t.start,a?2:1),vals=cycleValues(t,x);show(cycleDiagram(t,x,b));
+  if(b>0){const [op,v]=t.ops[b-1];formula(M.answer(vals[b-1])+' '+op+' ('+v+') = '+M.answer(vals[b]));}
+  if(b===6)say(M.equal(vals[6],vals[0])?'Цепочка вернулась в исходное число.':'Итог '+M.answer(vals[6])+' отличается от старта '+M.answer(x)+'.');
+  stepList(['Найди направление первой стрелки.','Используй результат одного действия как вход следующего.','Проверь последнее число против начального.']);
+ }
+ else if(n===37 && task.operationRole){
+  const M=root.PetersonMath,t=task.operationRole,caseData=componentValues(t,a===1);formula(a===0?t.printed:caseData.expr);
+  if(b>=1)say(task.hint);
+  if(b===2)say('x = '+M.answer(caseData.solved)+'. В исходном действии получится '+M.answer(caseData.result)+'.');
+  stepList(['Назови роль неизвестного числа.','Примени обратное действие в нужном порядке.','Проверь найденное число подстановкой.']);
  }
  else
  if(n===37 && task.equationSituation){
@@ -63929,6 +63984,960 @@ window.PetersonCourse = {
       [
        "1/4",
        "Это значение выключает знаменатель исходной дроби."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t48",
+     "title": "К задаче №97",
+     "kind": "number",
+     "prompt": "Реши уравнение из задачи о папирусе: [(x + (2/3)x) + (1/3)(x + (2/3)x)] × (1/3) = 10. Назови повторяющийся блок, чтобы не потерять скобки.",
+     "answer": "27/2",
+     "steps": [
+      {
+       "prompt": "Какой коэффициент у x в блоке B?",
+       "answer": "5/3",
+       "hint": "Сначала собери повторяющийся блок x + (2/3)x. Затем прибавь треть именно этого блока и только после этого умножь на заключительную треть.",
+       "explanation": "Пусть B = x + (2/3)x = (5/3)x. Внешнее выражение (B + B/3)/3 = (4/9)B = (20/27)x. Следовательно x = 10 × 27/20 = 27/2. При этом B = 45/2 и всё выражение действительно равно 10."
+      },
+      {
+       "prompt": "Какой коэффициент у B в (B + B/3)/3?",
+       "answer": "4/9",
+       "hint": "Сначала собери повторяющийся блок x + (2/3)x. Затем прибавь треть именно этого блока и только после этого умножь на заключительную треть.",
+       "explanation": "Пусть B = x + (2/3)x = (5/3)x. Внешнее выражение (B + B/3)/3 = (4/9)B = (20/27)x. Следовательно x = 10 × 27/20 = 27/2. При этом B = 45/2 и всё выражение действительно равно 10."
+      },
+      {
+       "prompt": "Какой общий коэффициент у x?",
+       "answer": "20/27",
+       "hint": "Сначала собери повторяющийся блок x + (2/3)x. Затем прибавь треть именно этого блока и только после этого умножь на заключительную треть.",
+       "explanation": "Пусть B = x + (2/3)x = (5/3)x. Внешнее выражение (B + B/3)/3 = (4/9)B = (20/27)x. Следовательно x = 10 × 27/20 = 27/2. При этом B = 45/2 и всё выражение действительно равно 10."
+      }
+     ],
+     "hint": "Сначала собери повторяющийся блок x + (2/3)x. Затем прибавь треть именно этого блока и только после этого умножь на заключительную треть.",
+     "explanation": "Пусть B = x + (2/3)x = (5/3)x. Внешнее выражение (B + B/3)/3 = (4/9)B = (20/27)x. Следовательно x = 10 × 27/20 = 27/2. При этом B = 45/2 и всё выражение действительно равно 10.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 97,
+      "reference": "№97"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "papyrusBlock": true,
+     "errorCues": [
+      [
+       "9/2",
+       "Заключительная треть относится ко всей сумме двух блоков."
+      ],
+      [
+       "20/27",
+       "Это коэффициент при x. Раздели правую часть на него."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t49",
+     "title": "К задаче №98, левая схема",
+     "kind": "manual",
+     "prompt": "Восстанови пять пустых мест в левой замкнутой схеме. Стартовое число 5. Используй порядок стрелок на авторском рисунке и проверь последнее действие.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "После стрелки 1 (× 5/6) какое число запишешь?",
+       "answer": "25/6",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта 5 последовательно получаем 25/6, 5/2, -1/2, -1/3, 5/3. Последняя стрелка возвращает к 5."
+      },
+      {
+       "prompt": "После стрелки 2 (÷ 5/3) какое число запишешь?",
+       "answer": "5/2",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта 5 последовательно получаем 25/6, 5/2, -1/2, -1/3, 5/3. Последняя стрелка возвращает к 5."
+      },
+      {
+       "prompt": "После стрелки 3 (× -1/5) какое число запишешь?",
+       "answer": "-1/2",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта 5 последовательно получаем 25/6, 5/2, -1/2, -1/3, 5/3. Последняя стрелка возвращает к 5."
+      },
+      {
+       "prompt": "После стрелки 4 (÷ 3/2) какое число запишешь?",
+       "answer": "-1/3",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта 5 последовательно получаем 25/6, 5/2, -1/2, -1/3, 5/3. Последняя стрелка возвращает к 5."
+      },
+      {
+       "prompt": "После стрелки 5 (+ 2) какое число запишешь?",
+       "answer": "5/3",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта 5 последовательно получаем 25/6, 5/2, -1/2, -1/3, 5/3. Последняя стрелка возвращает к 5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь замыкание и объясни, почему знак меняется именно на этих шагах.",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта 5 последовательно получаем 25/6, 5/2, -1/2, -1/3, 5/3. Последняя стрелка возвращает к 5."
+      }
+     ],
+     "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+     "explanation": "От старта 5 последовательно получаем 25/6, 5/2, -1/2, -1/3, 5/3. Последняя стрелка возвращает к 5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 98,
+      "reference": "№98, левая схема",
+      "subpart": "левая схема",
+      "readingKey": "1"
+     },
+     "finalLabel": "Запиши вычисления для проверки.",
+     "directedCycle": {
+      "side": 0,
+      "start": "5",
+      "ops": [
+       [
+        "×",
+        "5/6"
+       ],
+       [
+        "÷",
+        "5/3"
+       ],
+       [
+        "×",
+        "-1/5"
+       ],
+       [
+        "÷",
+        "3/2"
+       ],
+       [
+        "+",
+        "2"
+       ],
+       [
+        "×",
+        "3"
+       ]
+      ]
+     },
+     "figure": {
+      "type": "equation-cycle",
+      "side": 0,
+      "start": "5",
+      "ops": [
+       [
+        "×",
+        "5/6"
+       ],
+       [
+        "÷",
+        "5/3"
+       ],
+       [
+        "×",
+        "-1/5"
+       ],
+       [
+        "÷",
+        "3/2"
+       ],
+       [
+        "+",
+        "2"
+       ],
+       [
+        "×",
+        "3"
+       ]
+      ],
+      "caption": "Стрелки задают порядок действий. Справа и слева схемы обходятся в разных направлениях."
+     }
+    },
+    {
+     "id": "p37-t50",
+     "title": "К задаче №98, правая схема",
+     "kind": "manual",
+     "prompt": "Восстанови пять пустых мест в правой замкнутой схеме. Стартовое число -5. Используй порядок стрелок на авторском рисунке и проверь последнее действие.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "После стрелки 1 (× 16) какое число запишешь?",
+       "answer": "-80",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта -5 последовательно получаем -80, -72, 12, 12/5, 4. Последняя стрелка возвращает к -5."
+      },
+      {
+       "prompt": "После стрелки 2 (+ 8) какое число запишешь?",
+       "answer": "-72",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта -5 последовательно получаем -80, -72, 12, 12/5, 4. Последняя стрелка возвращает к -5."
+      },
+      {
+       "prompt": "После стрелки 3 (÷ -6) какое число запишешь?",
+       "answer": "12",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта -5 последовательно получаем -80, -72, 12, 12/5, 4. Последняя стрелка возвращает к -5."
+      },
+      {
+       "prompt": "После стрелки 4 (× 1/5) какое число запишешь?",
+       "answer": "12/5",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта -5 последовательно получаем -80, -72, 12, 12/5, 4. Последняя стрелка возвращает к -5."
+      },
+      {
+       "prompt": "После стрелки 5 (× 5/3) какое число запишешь?",
+       "answer": "4",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта -5 последовательно получаем -80, -72, 12, 12/5, 4. Последняя стрелка возвращает к -5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь замыкание и объясни, почему знак меняется именно на этих шагах.",
+       "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+       "explanation": "От старта -5 последовательно получаем -80, -72, 12, 12/5, 4. Последняя стрелка возвращает к -5."
+      }
+     ],
+     "hint": "Иди строго по направлению стрелок. Вписывай новое число только после выполнения действия над предыдущим.",
+     "explanation": "От старта -5 последовательно получаем -80, -72, 12, 12/5, 4. Последняя стрелка возвращает к -5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 98,
+      "reference": "№98, правая схема",
+      "subpart": "правая схема",
+      "readingKey": "2"
+     },
+     "finalLabel": "Запиши вычисления для проверки.",
+     "directedCycle": {
+      "side": 1,
+      "start": "-5",
+      "ops": [
+       [
+        "×",
+        "16"
+       ],
+       [
+        "+",
+        "8"
+       ],
+       [
+        "÷",
+        "-6"
+       ],
+       [
+        "×",
+        "1/5"
+       ],
+       [
+        "×",
+        "5/3"
+       ],
+       [
+        "−",
+        "9"
+       ]
+      ]
+     },
+     "figure": {
+      "type": "equation-cycle",
+      "side": 1,
+      "start": "-5",
+      "ops": [
+       [
+        "×",
+        "16"
+       ],
+       [
+        "+",
+        "8"
+       ],
+       [
+        "÷",
+        "-6"
+       ],
+       [
+        "×",
+        "1/5"
+       ],
+       [
+        "×",
+        "5/3"
+       ],
+       [
+        "−",
+        "9"
+       ]
+      ],
+      "caption": "Стрелки задают порядок действий. Справа и слева схемы обходятся в разных направлениях."
+     }
+    },
+    {
+     "id": "p37-t51",
+     "title": "К задаче №99а",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши x + 0,9 = 1,5.",
+     "answer": "3/5",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Слагаемое",
+        "Уменьшаемое",
+        "Вычитаемое"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Слагаемое",
+       "hint": "Из суммы вычти известное слагаемое.",
+       "explanation": "Из суммы вычти известное слагаемое. Получаем x = 3/5. Подстановка в исходную запись возвращает 1,5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Из суммы вычти известное слагаемое.",
+       "explanation": "Из суммы вычти известное слагаемое. Получаем x = 3/5. Подстановка в исходную запись возвращает 1,5."
+      }
+     ],
+     "hint": "Из суммы вычти известное слагаемое.",
+     "explanation": "Из суммы вычти известное слагаемое. Получаем x = 3/5. Подстановка в исходную запись возвращает 1,5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 99,
+      "reference": "№99а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownAdd",
+      "known": "0.9",
+      "result": "1.5",
+      "printed": "x + 0,9 = 1,5"
+     },
+     "errorCues": [
+      [
+       "-3/5",
+       "Проверь знак и порядок чисел. Из суммы вычти известное слагаемое."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t52",
+     "title": "К задаче №99б",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши 2 − x = 0,3.",
+     "answer": "17/10",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Слагаемое",
+        "Уменьшаемое",
+        "Вычитаемое"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Вычитаемое",
+       "hint": "Из уменьшаемого вычти разность.",
+       "explanation": "Из уменьшаемого вычти разность. Получаем x = 17/10. Подстановка в исходную запись возвращает 0,3."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Из уменьшаемого вычти разность.",
+       "explanation": "Из уменьшаемого вычти разность. Получаем x = 17/10. Подстановка в исходную запись возвращает 0,3."
+      }
+     ],
+     "hint": "Из уменьшаемого вычти разность.",
+     "explanation": "Из уменьшаемого вычти разность. Получаем x = 17/10. Подстановка в исходную запись возвращает 0,3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 99,
+      "reference": "№99б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownSubtrahend",
+      "known": "2",
+      "result": "0.3",
+      "printed": "2 − x = 0,3"
+     },
+     "errorCues": [
+      [
+       "-17/10",
+       "Проверь знак и порядок чисел. Из уменьшаемого вычти разность."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t53",
+     "title": "К задаче №99в",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши x − 3,8 = 1,4.",
+     "answer": "26/5",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Слагаемое",
+        "Уменьшаемое",
+        "Вычитаемое"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Уменьшаемое",
+       "hint": "К разности прибавь вычитаемое.",
+       "explanation": "К разности прибавь вычитаемое. Получаем x = 26/5. Подстановка в исходную запись возвращает 1,4."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "К разности прибавь вычитаемое.",
+       "explanation": "К разности прибавь вычитаемое. Получаем x = 26/5. Подстановка в исходную запись возвращает 1,4."
+      }
+     ],
+     "hint": "К разности прибавь вычитаемое.",
+     "explanation": "К разности прибавь вычитаемое. Получаем x = 26/5. Подстановка в исходную запись возвращает 1,4.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 99,
+      "reference": "№99в",
+      "subpart": "в"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownMinuend",
+      "known": "3.8",
+      "result": "1.4",
+      "printed": "x − 3,8 = 1,4"
+     },
+     "errorCues": [
+      [
+       "-26/5",
+       "Проверь знак и порядок чисел. К разности прибавь вычитаемое."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t54",
+     "title": "К задаче №99г",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши −0,5 + x = 3,4.",
+     "answer": "39/10",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Слагаемое",
+        "Уменьшаемое",
+        "Вычитаемое"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Слагаемое",
+       "hint": "Вычти из суммы известное отрицательное слагаемое, сохраняя знак.",
+       "explanation": "Вычти из суммы известное отрицательное слагаемое, сохраняя знак. Получаем x = 39/10. Подстановка в исходную запись возвращает 3,4."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Вычти из суммы известное отрицательное слагаемое, сохраняя знак.",
+       "explanation": "Вычти из суммы известное отрицательное слагаемое, сохраняя знак. Получаем x = 39/10. Подстановка в исходную запись возвращает 3,4."
+      }
+     ],
+     "hint": "Вычти из суммы известное отрицательное слагаемое, сохраняя знак.",
+     "explanation": "Вычти из суммы известное отрицательное слагаемое, сохраняя знак. Получаем x = 39/10. Подстановка в исходную запись возвращает 3,4.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 99,
+      "reference": "№99г",
+      "subpart": "г"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownAdd",
+      "known": "-0.5",
+      "result": "3.4",
+      "printed": "−0,5 + x = 3,4"
+     },
+     "errorCues": [
+      [
+       "-39/10",
+       "Проверь знак и порядок чисел. Вычти из суммы известное отрицательное слагаемое, сохраняя знак."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t55",
+     "title": "К задаче №99д",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши 0,8 − x = 1,3.",
+     "answer": "-1/2",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Слагаемое",
+        "Уменьшаемое",
+        "Вычитаемое"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Вычитаемое",
+       "hint": "Разность больше уменьшаемого, значит вычитаемое отрицательно.",
+       "explanation": "Разность больше уменьшаемого, значит вычитаемое отрицательно. Получаем x = -1/2. Подстановка в исходную запись возвращает 1,3."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Разность больше уменьшаемого, значит вычитаемое отрицательно.",
+       "explanation": "Разность больше уменьшаемого, значит вычитаемое отрицательно. Получаем x = -1/2. Подстановка в исходную запись возвращает 1,3."
+      }
+     ],
+     "hint": "Разность больше уменьшаемого, значит вычитаемое отрицательно.",
+     "explanation": "Разность больше уменьшаемого, значит вычитаемое отрицательно. Получаем x = -1/2. Подстановка в исходную запись возвращает 1,3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 99,
+      "reference": "№99д",
+      "subpart": "д"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownSubtrahend",
+      "known": "0.8",
+      "result": "1.3",
+      "printed": "0,8 − x = 1,3"
+     },
+     "errorCues": [
+      [
+       "1/2",
+       "Проверь знак и порядок чисел. Разность больше уменьшаемого, значит вычитаемое отрицательно."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t56",
+     "title": "К задаче №99е",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши x − 3,6 = −5.",
+     "answer": "-7/5",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Слагаемое",
+        "Уменьшаемое",
+        "Вычитаемое"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Уменьшаемое",
+       "hint": "К отрицательной разности прибавь 3,6.",
+       "explanation": "К отрицательной разности прибавь 3,6. Получаем x = -7/5. Подстановка в исходную запись возвращает -5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "К отрицательной разности прибавь 3,6.",
+       "explanation": "К отрицательной разности прибавь 3,6. Получаем x = -7/5. Подстановка в исходную запись возвращает -5."
+      }
+     ],
+     "hint": "К отрицательной разности прибавь 3,6.",
+     "explanation": "К отрицательной разности прибавь 3,6. Получаем x = -7/5. Подстановка в исходную запись возвращает -5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 99,
+      "reference": "№99е",
+      "subpart": "е"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownMinuend",
+      "known": "3.6",
+      "result": "-5",
+      "printed": "x − 3,6 = −5"
+     },
+     "errorCues": [
+      [
+       "7/5",
+       "Проверь знак и порядок чисел. К отрицательной разности прибавь 3,6."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t57",
+     "title": "К задаче №100а",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши 3x = 0,24.",
+     "answer": "2/25",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Множитель",
+        "Делимое",
+        "Делитель"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Множитель",
+       "hint": "Раздели произведение на известный ненулевой множитель.",
+       "explanation": "Раздели произведение на известный ненулевой множитель. Получаем x = 2/25. Подстановка в исходную запись возвращает 0,24."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Раздели произведение на известный ненулевой множитель.",
+       "explanation": "Раздели произведение на известный ненулевой множитель. Получаем x = 2/25. Подстановка в исходную запись возвращает 0,24."
+      }
+     ],
+     "hint": "Раздели произведение на известный ненулевой множитель.",
+     "explanation": "Раздели произведение на известный ненулевой множитель. Получаем x = 2/25. Подстановка в исходную запись возвращает 0,24.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 100,
+      "reference": "№100а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownFactor",
+      "known": "3",
+      "result": "0.24",
+      "printed": "3x = 0,24"
+     },
+     "errorCues": [
+      [
+       "-2/25",
+       "Проверь знак и порядок чисел. Раздели произведение на известный ненулевой множитель."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t58",
+     "title": "К задаче №100б",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши x : 0,9 = 0,5.",
+     "answer": "9/20",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Множитель",
+        "Делимое",
+        "Делитель"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Делимое",
+       "hint": "Умножь частное на делитель.",
+       "explanation": "Умножь частное на делитель. Получаем x = 9/20. Подстановка в исходную запись возвращает 0,5."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Умножь частное на делитель.",
+       "explanation": "Умножь частное на делитель. Получаем x = 9/20. Подстановка в исходную запись возвращает 0,5."
+      }
+     ],
+     "hint": "Умножь частное на делитель.",
+     "explanation": "Умножь частное на делитель. Получаем x = 9/20. Подстановка в исходную запись возвращает 0,5.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 100,
+      "reference": "№100б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownDividend",
+      "known": "0.9",
+      "result": "0.5",
+      "printed": "x : 0,9 = 0,5"
+     },
+     "errorCues": [
+      [
+       "-9/20",
+       "Проверь знак и порядок чисел. Умножь частное на делитель."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t59",
+     "title": "К задаче №100в",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши 6 : x = 0,4.",
+     "answer": "15",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Множитель",
+        "Делимое",
+        "Делитель"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Делитель",
+       "hint": "Раздели делимое на частное. Найденный делитель не должен быть нулём.",
+       "explanation": "Раздели делимое на частное. Найденный делитель не должен быть нулём. Получаем x = 15. Подстановка в исходную запись возвращает 0,4."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Раздели делимое на частное. Найденный делитель не должен быть нулём.",
+       "explanation": "Раздели делимое на частное. Найденный делитель не должен быть нулём. Получаем x = 15. Подстановка в исходную запись возвращает 0,4."
+      }
+     ],
+     "hint": "Раздели делимое на частное. Найденный делитель не должен быть нулём.",
+     "explanation": "Раздели делимое на частное. Найденный делитель не должен быть нулём. Получаем x = 15. Подстановка в исходную запись возвращает 0,4.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 100,
+      "reference": "№100в",
+      "subpart": "в"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownDivisor",
+      "known": "6",
+      "result": "0.4",
+      "printed": "6 : x = 0,4"
+     },
+     "errorCues": [
+      [
+       "-15",
+       "Проверь знак и порядок чисел. Раздели делимое на частное. Найденный делитель не должен быть нулём."
+      ],
+      [
+       "0",
+       "Исходный делитель не может быть нулём."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t60",
+     "title": "К задаче №100г",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши −5x = 0,3.",
+     "answer": "-3/50",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Множитель",
+        "Делимое",
+        "Делитель"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Множитель",
+       "hint": "Для положительного произведения оба множителя одного знака. Известный множитель отрицателен, поэтому x тоже отрицателен.",
+       "explanation": "Для положительного произведения оба множителя одного знака. Известный множитель отрицателен, поэтому x тоже отрицателен. Получаем x = -3/50. Подстановка в исходную запись возвращает 0,3."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Для положительного произведения оба множителя одного знака. Известный множитель отрицателен, поэтому x тоже отрицателен.",
+       "explanation": "Для положительного произведения оба множителя одного знака. Известный множитель отрицателен, поэтому x тоже отрицателен. Получаем x = -3/50. Подстановка в исходную запись возвращает 0,3."
+      }
+     ],
+     "hint": "Для положительного произведения оба множителя одного знака. Известный множитель отрицателен, поэтому x тоже отрицателен.",
+     "explanation": "Для положительного произведения оба множителя одного знака. Известный множитель отрицателен, поэтому x тоже отрицателен. Получаем x = -3/50. Подстановка в исходную запись возвращает 0,3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 100,
+      "reference": "№100г",
+      "subpart": "г"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownFactor",
+      "known": "-5",
+      "result": "0.3",
+      "printed": "−5x = 0,3"
+     },
+     "errorCues": [
+      [
+       "3/50",
+       "Проверь знак и порядок чисел. Для положительного произведения оба множителя одного знака. Известный множитель отрицателен, поэтому x тоже отрицателен."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t61",
+     "title": "К задаче №100д",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши x : (−1,2) = −0,3.",
+     "answer": "9/25",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Множитель",
+        "Делимое",
+        "Делитель"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Делимое",
+       "hint": "Умножение двух отрицательных чисел даёт положительное делимое.",
+       "explanation": "Умножение двух отрицательных чисел даёт положительное делимое. Получаем x = 9/25. Подстановка в исходную запись возвращает -0,3."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Умножение двух отрицательных чисел даёт положительное делимое.",
+       "explanation": "Умножение двух отрицательных чисел даёт положительное делимое. Получаем x = 9/25. Подстановка в исходную запись возвращает -0,3."
+      }
+     ],
+     "hint": "Умножение двух отрицательных чисел даёт положительное делимое.",
+     "explanation": "Умножение двух отрицательных чисел даёт положительное делимое. Получаем x = 9/25. Подстановка в исходную запись возвращает -0,3.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 100,
+      "reference": "№100д",
+      "subpart": "д"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownDividend",
+      "known": "-1.2",
+      "result": "-0.3",
+      "printed": "x : (−1,2) = −0,3"
+     },
+     "errorCues": [
+      [
+       "-9/25",
+       "Проверь знак и порядок чисел. Умножение двух отрицательных чисел даёт положительное делимое."
+      ]
+     ]
+    },
+    {
+     "id": "p37-t62",
+     "title": "К задаче №100е",
+     "kind": "number",
+     "prompt": "Определи неизвестный компонент и реши −0,8 : x = 0,01.",
+     "answer": "-80",
+     "steps": [
+      {
+       "kind": "choice",
+       "choices": [
+        "Множитель",
+        "Делимое",
+        "Делитель"
+       ],
+       "prompt": "Какую роль играет неизвестное число в исходной записи?",
+       "answer": "Делитель",
+       "hint": "Малое положительное частное получается делением отрицательного числа на отрицательный делитель большого модуля.",
+       "explanation": "Малое положительное частное получается делением отрицательного числа на отрицательный делитель большого модуля. Получаем x = -80. Подстановка в исходную запись возвращает 0,01."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Назови обратное действие и объясни порядок операндов.",
+       "hint": "Малое положительное частное получается делением отрицательного числа на отрицательный делитель большого модуля.",
+       "explanation": "Малое положительное частное получается делением отрицательного числа на отрицательный делитель большого модуля. Получаем x = -80. Подстановка в исходную запись возвращает 0,01."
+      }
+     ],
+     "hint": "Малое положительное частное получается делением отрицательного числа на отрицательный делитель большого модуля.",
+     "explanation": "Малое положительное частное получается делением отрицательного числа на отрицательный делитель большого модуля. Получаем x = -80. Подстановка в исходную запись возвращает 0,01.",
+     "skills": [
+      "linear-equation",
+      "bracket-evaluate"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 24,
+      "exercise": 100,
+      "reference": "№100е",
+      "subpart": "е"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "operationRole": {
+      "rule": "unknownDivisor",
+      "known": "-0.8",
+      "result": "0.01",
+      "printed": "−0,8 : x = 0,01"
+     },
+     "errorCues": [
+      [
+       "80",
+       "Проверь знак и порядок чисел. Малое положительное частное получается делением отрицательного числа на отрицательный делитель большого модуля."
+      ],
+      [
+       "0",
+       "Исходный делитель не может быть нулём."
       ]
      ]
     }
