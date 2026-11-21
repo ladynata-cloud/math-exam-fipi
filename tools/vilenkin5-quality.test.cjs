@@ -102,6 +102,45 @@ async function replacementImportRegression(){
   const beforeCancel=f.saved();equal(await importProgress(f,original,false),1);equal(f.saved(),beforeCancel,'cancelled replacement leaves both stores intact');equal(f.errors,[]);f.close();
   const corrupt=boot('#lesson/'+id,{[KEY]:'{damaged'});equal(await importProgress(corrupt,original),1);equal(corrupt.w.localStorage.getItem(KEY),'{damaged','an explicit import does not silently replace a damaged original');equal(plain(corrupt.Q.exportState()),original.vilenkin5Quality,'validated imported records remain exportable in memory');equal(corrupt.errors,[]);corrupt.close();
 }
+function decimalStepInstructions(){
+  const id='v5f-decimal-portion', f=boot('#lesson/'+id);
+  const task=f.M.generate(id,f.snapshot().scene.seed), divisor=task.data.y;
+  const first=f.$('label[for=answer]').textContent;
+  ok(first.includes('из 1, 10, 100, 1000 наименьший'));
+  equal(f.$('#task-panel h2 + p').textContent,first);
+  // A denominator of 4, 5, or 8 is a legitimate multiplier outside the requested set.
+  f.submit(String(divisor.d));
+  ok(f.$('.feedback').textContent.includes('тоже целый'));
+  equal(f.snapshot().scene.attempt,0);
+  equal(f.snapshot().scene.firstWrong,null);
+  f.submit(String(task.steps[0].answer*10));
+  if(task.steps[0].answer<1000){
+    ok(f.$('.feedback').textContent.includes('меньший множитель'));
+    equal(f.snapshot().scene.attempt,1);
+  }
+  f.submit(value(f.M,task.steps[0]));f.click('[data-cmd=next]');
+  ok(f.$('.v6-history').textContent.includes(first));
+  f.submit(value(f.M,task.steps[1]));f.click('[data-cmd=next]');
+  f.submit(f.M.fmt(task.data.x));
+  ok(f.$('.feedback').textContent.includes('прежнее делимое'));
+  const restored=boot('#lesson/'+id,f.saved());
+  equal(restored.snapshot().scene.step,2);
+  equal(restored.$('#answer').value,f.M.fmt(task.data.x));
+  ok(restored.$('.feedback').textContent.includes('прежнее делимое'));
+  restored.submit(value(restored.M,task.steps[2]));
+  equal(restored.$('.v5q-outcome').textContent,'Решено после исправления');
+  equal(f.errors,[]);equal(restored.errors,[]);restored.close();f.close();
+
+  const product=boot('#lesson/v5f-decimal-small-product');
+  const generated=product.M.generate('v5f-decimal-small-product',product.snapshot().scene.seed);
+  ok(product.$('label[for=answer]').textContent.includes('в сотых'));
+  product.submit(value(product.M,generated.steps[0]));product.click('[data-cmd=next]');
+  const second=product.$('label[for=answer]').textContent;
+  ok(second.includes('со знаменателем 100')&&second.includes('со знаменателем 10.'));
+  product.submit(value(product.M,generated.steps[1]));product.click('[data-cmd=next]');
+  ok(product.$('label[for=answer]').textContent.includes('до сокращения'));
+  equal(product.errors,[]);product.close();
+}
 async function run(){
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
@@ -250,6 +289,7 @@ async function run(){
   board.Q.setReadOnly(true);ok(board.$('#answer').disabled);const shared=board.snapshot();board.submit('99');equal(board.snapshot(),shared);board.Q.setReadOnly(false);ok(!board.$('#answer').disabled);
   board.route('#teacher');equal(board.w.location.hash,'#course/vilenkin5');equal(board.snapshot().scene,null);equal(board.errors,[]);board.close();
   await personalContextRegression();await replacementImportRegression();
+  decimalStepInstructions();
   console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_PASS',checks,lessons:134,points:51,modelKinds:[...modelKinds].sort()}));
 }
 run().catch(error=>{console.error(error);process.exitCode=1;});
