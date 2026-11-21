@@ -2240,10 +2240,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "df661a303e82089235044e5c1d373357958317b2467f0e0e6a74361e0cff0831",
-      "afterSha256": "a53aa4164874dead5317af90b2c4f427decc8cc4e59696088d3ff0d0351528e4",
+      "beforeSha256": "b7bcda4e1bf9217fc21368f055b4c5a8e93a36c0fa99904b8087c38bdbb489f8",
+      "afterSha256": "4fdd4a3dd0345d90c6660e95c9dffb2ccc1fa4575ebb070c518cdd114b9fd90c",
       "placement": "before-head-close",
-      "sourceSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60"
+      "sourceSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6546,6 +6546,15 @@
       ],
       "bindingScope": "Per-page sourceSha for the reviewed Vilenkin 5 laboratory cache version.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60",
+      "sourceBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
