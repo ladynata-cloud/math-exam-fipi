@@ -4,13 +4,15 @@
 // No production account, room, saved plan or pupil attempt is touched.
 const assert = require('node:assert/strict');
 const { spawn } = require('node:child_process');
-const { createReadStream, mkdirSync, statSync } = require('node:fs');
+const { createReadStream, mkdirSync, readFileSync, statSync } = require('node:fs');
 const { createServer } = require('node:http');
 const { createServer: createNetServer } = require('node:net');
 const { extname, join, resolve, sep } = require('node:path');
 const { chromium } = require('playwright');
 const { verifyControlWork } = require('./geometry7-control-room.cjs');
 
+const correctionScenario = process.argv.includes('--answer-correction');
+const correction = require('./geometry-textbook/answer-correction-room.cjs');
 const ROOT = resolve(__dirname, '..');
 const SHOTS = process.env.EGE_BAZA_BOARD_SHOTS;
 const wait = ms => new Promise(done => setTimeout(done, ms));
@@ -35,7 +37,11 @@ function staticServer() {
       if (statSync(file).isDirectory()) file = join(file, 'index.html');
       response.setHeader('Content-Type', (types[extname(file)] || 'application/octet-stream') + '; charset=utf-8');
       response.setHeader('Cache-Control', 'no-store');
-      createReadStream(file).pipe(response);
+      if (correctionScenario && path === '/geometry-course/textbook/data/course.json') {
+        response.end(correction.fixtureBytes(readFileSync(file, 'utf8')));
+      } else {
+        createReadStream(file).pipe(response);
+      }
     } catch (_) { response.writeHead(404).end(); }
   });
 }
@@ -97,6 +103,10 @@ async function run(browser,origin,serverOrigin,errors){
  await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin));await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
  await teacher.waitForFunction(()=>document.querySelector('#shareStatus')?.textContent==='подключено'&&document.querySelector('#studentLink')?.value.includes('role=student'));
  const link=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(link);
+ if(correctionScenario){
+  await correction.verify({origin,teacher,student,connected,frameFor,handoff,sync});
+  assert.deepEqual(errors,[]);await ts.context.close();await ss.context.close();return;
+ }
  const nativeFiles=process.argv.includes('--control-work-only')?[]:['atanasyan-grade7.html','geometry7-rebuild.html','geometry7-practice.html','atanasyan-grade7.html?scope=book'];
  for(const route of nativeFiles){
   const file=route.split('?')[0], wholeBook=route.endsWith('?scope=book');
@@ -133,7 +143,7 @@ async function run(browser,origin,serverOrigin,errors){
 }
 (async()=>{const server=staticServer();let browser,child,watchdog,logs='';try{
   let origin=process.env.GEOMETRY7_SITE,serverOrigin=process.env.GEOMETRY7_SERVER;
-  if(origin){assert.equal(process.env.MATHEXAM_PUBLISHED_SMOKE,'1');assert.equal(origin,'https://mathexam.space');assert.equal(serverOrigin,'https://mathexam-board-ladynata.msk1.amvera.tech');}
+  if(origin){assert(!correctionScenario,'The exact-response fixture is local only');assert.equal(process.env.MATHEXAM_PUBLISHED_SMOKE,'1');assert.equal(origin,'https://mathexam.space');assert.equal(serverOrigin,'https://mathexam-board-ladynata.msk1.amvera.tech');}
   else{await new Promise((done,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',done);});origin='http://127.0.0.1:'+server.address().port;
   const port=await freePort();serverOrigin='http://127.0.0.1:'+port;const env={...process.env,HOST:'127.0.0.1',PORT:String(port),NODE_ENV:'test',CORS_ALLOWED_ORIGINS:origin};
   for(const key of Object.keys(env))if(/^(LEARNING_|PROGRESS_|GROUP_LESSON_)/.test(key))delete env[key];

@@ -25,6 +25,13 @@ def before_quantity_check(path, raw):
     """Recover the exact runtime immediately preceding the numeric self-check."""
     if path.name != 'engine.js' or path.parent.name != 'assets':
         return raw
+    correction = json.loads(PATCH.with_name('answer-correction-amendment.json').read_text())
+    binding = correction['files']['geometry-course/textbook/assets/engine.js']
+    if sha(raw) == binding['afterSHA256']:
+        before, after = (correction['edit'][key].encode() for key in ('before', 'after'))
+        assert raw.count(after) == 1
+        raw = raw.replace(after, before, 1)
+        assert sha(raw) == binding['beforeSHA256']
     amendment = json.loads(PATCH.with_name('quantity-amendment.json').read_text())
     if sha(raw) != amendment['afterSha256']:
         return raw

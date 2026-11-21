@@ -1,4 +1,4 @@
-// Reviewed source SHA-256: 50d8ef944320f6c5f135597caf39899e1c75906e25e01453871ef75714ad6959
+// Reviewed source SHA-256: 297b11f23024aa55961c3ff304cc277f5e3bbbad1630573cf10f5a02996d9faf
 /* Board-only projection. Shared feedback is serialized by the room v1 contract.
  * The personal numerical self-check has transient feedback and is omitted here.
  * Board changes are marked ATANASYAN_GRADE7_BOARD. */
@@ -228,7 +228,7 @@ function createApp(root,options){
     if(!save())return;
     if(lesson.answer.mode==='manual'){setDisplayText(feedback,lastSavePersisted?'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.':'Рассуждение остаётся только в открытой странице: скопируй его перед закрытием. Его обоснованность нужно обсудить с учителем.');return;}
     const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
-    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;save();
+    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;save();
    });if(options.boardSession){check.type='button';check.addEventListener('click',()=>form.dispatchEvent(new win.Event('submit',{bubbles:true,cancelable:true})));}form.append(label,input,check,feedback);main.append(form);
   }
   const help=el('details',undefined,{'data-main-help':''}),summary=el('summary','Хочешь подсказку?'),helpBody=el('div');summary.addEventListener('click',event=>{if(!help.open&&!assisted())event.preventDefault();});help.addEventListener('toggle',()=>{if(help.isConnected&&help.open)assisted();});help.append(summary,helpBody);mountHelp(lesson.help,helpBody);

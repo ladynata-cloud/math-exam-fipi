@@ -267,7 +267,7 @@ function createApp(root,options){
     if(!save())return;
     if(lesson.answer.mode==='manual'){setDisplayText(feedback,lastSavePersisted?'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.':'Рассуждение остаётся только в открытой странице: скопируй его перед закрытием. Его обоснованность нужно обсудить с учителем.');return;}
     const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
-    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;save();
+    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;save();
    });form.append(label,input,check,feedback);main.append(form);
    mountQuantityCheck(lesson,form,input,el);
   }

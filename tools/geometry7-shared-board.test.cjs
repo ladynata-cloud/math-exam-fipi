@@ -5,13 +5,14 @@ const {resolve}=require('node:path');
 const {JSDOM}=require('jsdom');
 const {test}=require('node:test');
 const ROOT=resolve(__dirname,'..');
-function fixture(scope = ''){
+function fixture(scope = '', prepare){
  const dom=new JSDOM(readFileSync(resolve(ROOT,'trainers/atanasyan-grade7.html'),'utf8'),{url:'https://local.example/trainers/atanasyan-grade7.html'+scope,runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window;w.TextEncoder=TextEncoder;w.HTMLElement.prototype.scrollIntoView=()=>{};
  let config;w.MathExamBoard={register:c=>{config=c;return {destroy(){}};}};
  Object.defineProperty(w,'localStorage',{get(){throw Error('Private storage access');}});
  for(const p of ['geometry-course/textbook/assets/math-text.js','geometry-course/textbook/assets/planar-viewer.js','geometry-course/textbook/assets/grade7-board-engine.js','geometry-course/textbook/assets/grade7-board-session.js'])w.eval(readFileSync(resolve(ROOT,p),'utf8'));
  const bundle=w.JSON.parse(readFileSync(resolve(ROOT,'geometry-course/textbook/data/course.json'),'utf8'));
+ if(prepare)prepare(bundle);
  const app=w.AtanasyanGrade7Board.boot(bundle,w.document.getElementById('textbook-app'));
  return {dom,w,app,get config(){return config;},close(){app.app.destroy();app.session.destroy();w.close();}};
 }
@@ -25,6 +26,36 @@ test('grade 7 textbook: all 619 cards, private isolation, catalog and reasoning 
  s=f.config.getState();assert(f.w.__atanasyanGrade7Board.validateState(s),JSON.stringify(s));f.config.applyState(s);assert.deepEqual(JSON.parse(JSON.stringify(f.config.getState())),JSON.parse(JSON.stringify(s)));
  }
  }finally{f.close();}
+});
+
+test('an exact response corrected on the other side of a reloaded room keeps its help history',()=>{
+ const id='atanasyan-7-9-main-92-part-1';
+ const exact=book=>{book.lessons.find(x=>x.id===id).answer={mode:'exact',prompt:'Сколько будет 3+4?',accepted:['7'],feedback:'Проверь сумму.'};};
+ for(const useHelp of [false,true]){
+  const teacher=fixture('',exact),pupil=fixture('',exact);
+  try{
+   const submit=(f,value)=>{
+    const doc=f.w.document,input=doc.getElementById('final-answer');input.value=value;
+    input.dispatchEvent(new f.w.Event('input',{bubbles:true}));doc.querySelector('[data-final-form] button').click();
+   };
+   teacher.app.app.open(id);submit(teacher,'6');
+   const wrong=teacher.config.getState();
+   assert.equal(wrong.view.feedback.final,'wrong');assert.equal(wrong.work.checked,false);
+   assert.equal(wrong.work.assisted,false);
+   if(useHelp)teacher.w.document.querySelector('[data-main-help] > summary').click();
+   const saved=JSON.stringify(teacher.config.getState());
+   pupil.config.applyState(pupil.w.JSON.parse(saved));
+   assert.equal(pupil.w.document.getElementById('final-answer').value,'6');
+   assert.equal(pupil.config.getState().work.assisted,useHelp);
+   submit(pupil,'7');
+   const corrected=pupil.config.getState();
+   assert.equal(corrected.view.feedback.final,useHelp?'assisted':'independent');
+   assert.equal(corrected.work.checked,true);assert.equal(corrected.work.assisted,useHelp);
+   teacher.config.applyState(teacher.w.JSON.parse(JSON.stringify(corrected)));
+   assert.equal(teacher.config.getState().view.feedback.final,corrected.view.feedback.final);
+   assert.match(teacher.w.document.querySelector('[data-final-feedback]').textContent,useHelp?/после обращения к помощи/:/самостоятельно/);
+  }finally{teacher.close();pupil.close();}
+ }
 });
 test('personal textbook opens the current exercise on the board', async () => {
  const dom = new JSDOM(readFileSync(resolve(ROOT,'geometry-course/textbook/index.html'),'utf8'), {

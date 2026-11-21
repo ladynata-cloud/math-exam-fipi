@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "sourceCommit": "7a37406d65b2589930422fc2367d9c0c89d5efd0",
+  "task": "ATANASYAN_INDEPENDENT_ANSWER_CORRECTION",
+  "edit": {
+    "before": "if(correct)state.checked=true;else state.assisted=true;save();",
+    "after": "if(correct)state.checked=true;save();"
+  },
+  "files": {
+    "geometry-course/textbook/assets/engine.js": {
+      "beforeSHA256": "50d8ef944320f6c5f135597caf39899e1c75906e25e01453871ef75714ad6959",
+      "afterSHA256": "297b11f23024aa55961c3ff304cc277f5e3bbbad1630573cf10f5a02996d9faf"
+    },
+    "geometry-course/textbook/assets/grade7-board-engine.js": {
+      "beforeSHA256": "a3a6d5cb1a39e2b189a648ef7085e174b184f510f7bc66b85181c2fdf675e4dd",
+      "afterSHA256": "9e174e21c14af6ae1803e380778f2bb78b813c84d764823447edab2ace87cd00"
+    }
+  }
+}

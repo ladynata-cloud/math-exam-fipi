@@ -6,6 +6,8 @@ on:
       - 'geometry-course/grade7/**'
       - 'geometry-course/trainers/**'
       - 'geometry-course/textbook/assets/grade7-board*'
+      - 'geometry-course/textbook/assets/engine.js'
+      - 'tools/geometry-textbook/answer-correction*'
       - 'trainers/geometry7*'
       - 'trainers/geometry-7/control-work*'
       - 'trainers/geometry-7/control-work-gifs/**'
@@ -24,6 +26,8 @@ on:
       - 'geometry-course/grade7/**'
       - 'geometry-course/trainers/**'
       - 'geometry-course/textbook/assets/grade7-board*'
+      - 'geometry-course/textbook/assets/engine.js'
+      - 'tools/geometry-textbook/answer-correction*'
       - 'trainers/geometry7*'
       - 'trainers/geometry-7/control-work*'
       - 'trainers/geometry-7/control-work-gifs/**'
@@ -74,7 +78,9 @@ jobs:
       - name: Real rooms, roles, late join, reload and transport reconnect
         env:
           EGE_BAZA_BOARD_SHOTS: ${{ runner.temp }}/g7-evidence/rooms
-        run: node tools/geometry7-shared-board-room.browser.cjs
+        run: |
+          node tools/geometry7-shared-board-room.browser.cjs
+          node tools/geometry7-shared-board-room.browser.cjs --answer-correction
       - name: Browser evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

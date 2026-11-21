@@ -14,7 +14,8 @@ const supplements = [
   require('./preservation-supplement-651.json'),
   require('./preservation-supplement-651-ci.json'),
   require('./preservation-supplement-651-legacy-segments.json'),
-  require('./preservation-supplement-693-board.json')
+  require('./preservation-supplement-693-board.json'),
+  require('../geometry-textbook/answer-correction-amendment.json')
 ];
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 assert.equal(baseline.schemaVersion, 1);
