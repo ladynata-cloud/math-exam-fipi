@@ -154,7 +154,7 @@ const server=http.createServer((req,res)=>{
     await page.locator('#answer').focus();await page.keyboard.type('65');assert.equal(await page.locator('#answer').inputValue(),'65');
     await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>document.body.style.zoom='2');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'200% zoom overflow');
     await page.close();page=await newLearnerPage();await page.setViewportSize({width:320,height:840});
-    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3],['v5f-printed-1-8',15],['v5f-printed-1-9',4],['v5f-printed-1-10',6],['v5f-printed-1-11',2],['v5f-printed-1-12',2],['v5f-printed-1-13',8],['v5f-printed-1-14',9],['v5f-printed-1-15',6],['v5f-printed-1-16',5],['v5f-printed-1-17',8],['v5f-printed-1-18',12],['v5f-printed-1-19',9]]){
+    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3],['v5f-printed-1-8',15],['v5f-printed-1-9',4],['v5f-printed-1-10',6],['v5f-printed-1-11',2],['v5f-printed-1-12',2],['v5f-printed-1-13',8],['v5f-printed-1-14',9],['v5f-printed-1-15',6],['v5f-printed-1-16',5],['v5f-printed-1-17',8],['v5f-printed-1-18',12],['v5f-printed-1-19',9],['v5f-printed-1-20',6],['v5f-printed-1-21',4],['v5f-printed-1-22',2],['v5f-printed-1-23',2],['v5f-printed-1-24',3]]){
       await go('#lesson/'+id);
       const survey=page.locator('#task-panel table').first();
       assert.equal(await survey.locator('tbody tr').count(),rows);
@@ -171,9 +171,9 @@ const server=http.createServer((req,res)=>{
       }
       await survey.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,id+'-mobile.png')});
       await page.locator('[data-cmd=mode][data-value=practice]').click();
-      assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос|Новое авторское задание|Новые вымышленные наблюдения/);
+      assert.match(await page.locator('#task-panel .question').innerText(),/Новый авторский опрос|Новое авторское задание|Новые вымышленные наблюдения|Вымышленные данные исследовательской игры/);
       assert(await page.locator('#task-panel table').isVisible());
     }
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:19,screenshots:43,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:24,screenshots:48,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

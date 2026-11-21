@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:19},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:24},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -413,8 +413,42 @@ function printedClassesRegression(){
   units.steps.forEach(s=>{f.submit(String(s.answer));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');});f.submit('27 000 000 823');ok(f.snapshot().scene.correct);
   equal(f.errors,[]);f.close();
 }
+function printedTextNumbersRegression(){
+  const f=boot(),ids=[20,21,22,23,24].map(n=>'v5f-printed-1-'+n),[passage,rank,between,short,long]=ids.map(id=>f.M.generate(id,0));
+  equal(plain(passage.data.values),[3,29765,149600000,384400,4600000000,3500000000]);equal(passage.steps.length,6);
+  equal(rank.data.values[0],29805674231);equal(plain(rank.steps.slice(1).map(s=>s.answer)),[6,4,8,9,1,9,0,4,3]);
+  equal(plain(between.answer),[5,8]);equal(plain(short.data.values),[4444,30303030]);equal(plain(long.data.values),[329329,329329329,329329329329]);
+  const fingerprints=ids.map(()=>new Set()),M=f.M,numbered=f.w.Vilenkin5Numbered;
+  for(let seed=1;seed<=96;seed++){
+    const tasks=ids.map((id,i)=>{const t=M.generate(id,seed);fingerprints[i].add(t.conditionKey);return t;});
+    const [p,r,b,a,l]=tasks;
+    ok(p.data.values[5]<p.data.values[4]);equal(p.steps.length,6);ok(p.prompt.includes('Вымышленные данные'));
+    const placeDigits=String(r.data.values[0]).split('').reverse().map(Number);
+    for(let i=1;i<=4;i++){const digit=Number(r.steps[i].prompt.match(/цифра (\d)/)[1]);equal(placeDigits[r.steps[i].answer-1],digit);equal(placeDigits.filter(n=>n===digit).length,1);}
+    equal(plain(r.answer),[1,10,8,4,2].map(pos=>placeDigits[pos-1]));
+    for(let i=0;i<b.data.pairs.length;i++){
+      const [lo,hi]=b.data.pairs[i],inside=Array.from({length:hi-lo+1},(_,n)=>lo+n).filter(n=>n>lo&&n<hi);
+      equal(b.steps[i].answer,inside.length);
+      for(let pos=0;pos<=11;pos++)equal(numbered.explore(f.C.byId[ids[2]],{row:i,position:pos},b).answer,inside.filter(n=>n<=lo+pos).length);
+    }
+    for(const t of [a,l])for(const [i,block]of t.data.source.entries()){
+      let accum=0;for(let k=0;k<t.data.times[i];k++)accum=accum*10**String(block).length+block;
+      equal(t.data.values[i],accum);equal(t.steps[i*2].answer,accum);ok(M.accepts(f.w.Vilenkin5PrintedDigits.words(accum),t.steps[i*2+1]));
+    }
+  }
+  fingerprints.forEach(s=>ok(s.size>=70));
+  f.route('#lesson/'+ids[2]);f.submit('6');ok(f.snapshot().scene.message.includes('шаги'));
+  f.submit('5');f.click('[data-cmd=next]');f.submit('8');f.click('[data-cmd=next]');f.submit('5;8');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[3]);f.submit('16');ok(f.snapshot().scene.message.includes('произведение'));
+  for(const [i,id] of ids.entries()){
+    f.route('#lesson/'+id);
+    f.click('[data-cmd=mode][data-value=practice]');const practice=f.snapshot().scene,task=M.generate(id,practice.seed);ok(task.conditionKey!==M.generate(id,0).conditionKey);
+    f.submit(value(M,task));ok(f.snapshot().scene.correct, id+' accepts a new mathematical problem');
+  }
+  equal(f.errors,[]);f.close();
+}
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);

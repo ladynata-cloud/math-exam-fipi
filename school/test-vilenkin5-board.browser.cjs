@@ -414,7 +414,7 @@ async function run(browser, origin, backend, failures) {
   const readFormat=await same(teacherFrame,studentFrame,'spoken form requested without an error');assert.equal(readFormat.scene.attempt,0);
   await teacherFrame.locator('#answer').fill('двадцать семь');await teacherFrame.locator('#answer-form button').click();
   await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'spoken form accepted then digit places');
-  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption('8');await studentFrame.locator('[data-v5-param=place]').selectOption('5');
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption({value:'8'});await studentFrame.locator('[data-v5-param=place]').selectOption({value:'5'});
   await studentFrame.locator('[data-v5-prediction]').fill('300000');await studentFrame.locator('[data-v5-predict] button').click();
   const digits=await same(studentFrame,teacherFrame,'three hundred thousands in printed 300007');assert.equal(digits.scene.model.row,8);assert.equal(digits.scene.model.place,5);assert(digits.scene.model.seen);
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(studentFrame,teacherFrame,'printed numeral and place value restored');
@@ -429,6 +429,18 @@ async function run(browser, origin, backend, failures) {
   const corrected=await same(studentFrame,teacherFrame,'student corrects the class after the teacher');assert(corrected.scene.correct);assert.equal(corrected.scene.answers[0],'3 | 042');
   assert.deepEqual(corrected.scene.hintLevels,{});
   await ownership(teacher,student,false);
+
+  phase = 'strictly between two numbers on an open interval';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-22"]').click();await studentFrame.locator('h1').filter({hasText:'№1.22'}).waitFor();
+  await teacherFrame.locator('#answer').fill('6');await teacherFrame.locator('#answer-form button').click();
+  const offByOne=await same(teacherFrame,studentFrame,'difference counts steps rather than interior points');assert.match(offByOne.scene.message,/шаги/);
+  await teacherFrame.locator('#answer').fill('5');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await same(teacherFrame,studentFrame,'first open interval solved');await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=row]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=position]').fill('9');await studentFrame.locator('[data-v5-param=position]').press('Tab');
+  await studentFrame.locator('[data-v5-prediction]').fill('8');await studentFrame.locator('[data-v5-predict] button').click();
+  const marked=await same(studentFrame,teacherFrame,'right endpoint does not add an interior point');assert.equal(marked.scene.model.position,9);assert(marked.scene.model.seen);
+  await narrow(student,studentFrame,'open-interval');await ownership(teacher,student,false);
 
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
