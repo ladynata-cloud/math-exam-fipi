@@ -334,6 +334,26 @@ async function run(browser, origin, backend, failures) {
   await narrow(teacher,teacherFrame,'printed-survey');
   await ownership(teacher,student,false);
 
+  phase = 'choice of schedule and an open addition table';
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-3"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№1.3'}).waitFor();
+  await same(teacherFrame,studentFrame,'three days and three club choices');
+  await ownership(teacher,student,true);
+  for(const [key,n] of [['day0',3],['day1',1],['day2',2]])await studentFrame.locator('[data-v5-param='+key+']').selectOption({value:String(n)});
+  const planned=await same(studentFrame,teacherFrame,'second valid schedule is shared');
+  assert.deepEqual([planned.scene.model.day0,planned.scene.model.day1,planned.scene.model.day2],[3,1,2]);
+  await studentFrame.locator('[data-v5-prediction]').fill('3');await studentFrame.locator('[data-v5-predict] button').click();
+  await same(studentFrame,teacherFrame,'pupil tests three different clubs');
+  assert.match(await teacherFrame.locator('.v5q-model-feedback').innerText(),/подтвердился/);
+  await ownership(teacher,student,false);
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-4"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№1.4'}).waitFor();
+  for(let i=0;i<4;i++){await solve(teacherFrame);await teacherFrame.locator('[data-cmd=next]').click();await same(teacherFrame,studentFrame,'determined sum cell '+i);}
+  await teacherFrame.locator('#answer').fill('50;13;63');await teacherFrame.locator('#answer-form button').click();
+  const ownSum=await same(teacherFrame,studentFrame,'noncanonical valid source table row');
+  assert.equal(ownSum.scene.correct,true);assert.equal(ownSum.scene.answers[4],'50;13;63');
+  assert.match(await studentFrame.locator('#task-panel table tbody tr').nth(4).innerText(),/5\s+50\s+13\s+63/);
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

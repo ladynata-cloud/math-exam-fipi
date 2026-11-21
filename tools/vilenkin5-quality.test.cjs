@@ -144,13 +144,13 @@ function decimalStepInstructions(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),['v5f-printed-1-1','v5f-printed-1-2']);
+  equal(plain(path.numbered),[1,2,3,4,5].map(n=>'v5f-printed-1-'+n));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
   equal(plain(animals.steps.map(s=>s.answer)),[[1,1],10,2,47,5,9,39]);equal(animals.answer,39);
   equal(plain(reading.steps.map(s=>s.answer)),[[4,12],[7,28],[9,45],[8,48],[4,28],32,4,0]);equal(reading.answer,161);
-  const fingerprints=path.numbered.map(()=>new Set());
+  const fingerprints=path.numbered.slice(0,2).map(()=>new Set());
   for(let seed=1;seed<=180;seed++){
     const a=f.M.generate(path.numbered[0],seed),r=f.M.generate(path.numbered[1],seed);
     const c=a.data.counts,b=r.data.books;
@@ -172,7 +172,7 @@ function numberedTablesRegression(){
   const reload=boot('#lesson/'+path.numbered[1],f.saved());equal(reload.snapshot().scene.step,1);equal(reload.snapshot().scene.answers[0],'4;12');reload.close();
   const opt=f.$('[data-v5-param=group]');opt.value='5';opt.dispatchEvent(new f.w.Event('change',{bubbles:true}));equal(f.snapshot().scene.model.group,5);
   f.input('[data-v5-prediction]','0');f.$('[data-v5-predict]').dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));ok(f.snapshot().scene.model.seen);
-  for(const id of path.numbered){
+  for(const id of path.numbered.slice(0,2)){
     const full=boot('#lesson/'+id);const task=full.M.generate(id,0);
     for(const s of task.steps){full.submit(Array.isArray(s.answer)?s.answer.join(';'):String(s.answer));ok(full.snapshot().scene.correct);full.click('[data-cmd=next]');}
     full.submit(String(task.answer));ok(full.snapshot().scene.correct);
@@ -182,8 +182,43 @@ function numberedTablesRegression(){
   }
   equal(f.errors,[]);f.close();
 }
+function scheduleAndEqualityRegression(){
+  const f=boot(),ids=f.C.pathById.vilenkin5.numbered.slice(2),[schedule,columns,equalities]=ids;
+  const [calendar,tbl,calc]=ids.map(id=>f.M.generate(id,0));
+  equal(plain(calendar.answer),[1,2,3]);equal(plain(calendar.alternatives),[[3,1,2]]);
+  equal(plain(tbl.data.columns),[[25,11,null],[null,11,30],[14,null,55],[25,28,null],[null,null,63],[15,null,null],[null,22,null],[null,null,null]]);
+  equal(plain(tbl.steps.slice(0,4).map(step=>step.answer)),[36,19,41,53]);
+  equal(plain(calc.steps.map(step=>step.answer)),[46,18,69,18,81,17]);equal(plain(calc.answer),[1,2,5]);
+  const marks=new Set();
+  for(let seed=0;seed<100;seed++){
+    const task=f.M.generate(schedule,seed),forbidden=task.data.forbidden;let okPlans=0;
+    for(let a=1;a<=3;a++)for(let b=1;b<=3;b++)for(let c=1;c<=3;c++){
+      const values=[a,b,c],valid=new Set(values).size===3&&values.every((club,i)=>forbidden[club-1]!==i+1);
+      equal(f.M.accepts(values.join(';'),task),valid);okPlans+=Number(valid);
+    }
+    equal(okPlans,2);marks.add(task.conditionKey);
+    const col=f.M.generate(columns,seed),sum=col.data.columns[4][2];
+    ok(f.M.accepts('0;'+sum+';'+sum,col));ok(f.M.accepts(sum+';0;'+sum,col));
+    ok(!f.M.accepts('0;'+sum+';'+(sum+1),col));ok(!f.M.accepts('-1;'+(sum+1)+';'+sum,col));
+    const sums=f.M.generate(equalities,seed),wrong=sums.data.calculations.flatMap(([x,op,y,g],i)=>(op==='+'?x+y:x-y)!==g?[i+1]:[]);
+    equal(plain(sums.answer),plain(wrong));ok(f.M.accepts(wrong.reverse().join(';'),sums));
+  }
+  ok(marks.size>25,'calendar repeats offer genuinely different data');
+  f.route('#lesson/'+schedule);f.submit('1;2');f.click('[data-cmd=next]');
+  f.submit('3;1;2');equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('тоже подходит'));
+  f.submit('1;2;3');f.click('[data-cmd=next]');f.submit('3;1;2');f.click('[data-cmd=next]');f.submit('2');f.click('[data-cmd=next]');
+  f.submit('1;1;2');ok(f.snapshot().scene.message.includes('дважды'));f.submit('3;1;2');ok(f.snapshot().scene.correct,'accept other full schedule');
+  f.route('#lesson/'+columns);
+  const answers=['36','19','41','53','50;13;63','15;0;15','3;22;25','0;0;0'];
+  answers.forEach((answer,i)=>{if(i===4){f.submit('50;13;60');ok(f.snapshot().scene.message.includes('Сохрани'));f.submit('50;14;63');ok(f.snapshot().scene.message.includes('Заново сложи'));}f.submit(answer);ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');});
+  f.submit('5;58;63');ok(f.snapshot().scene.correct);equal([...f.$('#task-panel table').tBodies[0].rows[4].cells].map(c=>c.textContent),['5','50','13','63']);
+  const restored=boot('#lesson/'+columns,f.saved());equal(restored.snapshot().scene.savedInput,'5;58;63');ok(restored.snapshot().scene.correct);restored.close();
+  f.route('#lesson/'+equalities);
+  for(const step of calc.steps){f.submit(String(step.answer));f.click('[data-cmd=next]');}
+  f.submit('5;1;2');ok(f.snapshot().scene.correct);equal(f.errors,[]);f.close();
+}
 async function run(){
-  numberedTablesRegression();
+  numberedTablesRegression();scheduleAndEqualityRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);

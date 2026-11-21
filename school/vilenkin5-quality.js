@@ -156,9 +156,9 @@
   }
   function inputIssue(value,target){
     if(!text(value)||!value.trim())return 'Сначала запиши ответ. Пустое поле не считается ошибкой.';
-    if(target.answerFormat==='v5-pair'){
-      const parts=value.split(';');
-      if(parts.length!==2||parts.some(part=>!M.parse(part)))return 'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.';
+    if(['v5-pair','v5-triple'].includes(target.answerFormat)){
+      const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
+      if(parts.length!==(pair?2:3)||parts.some(part=>{const n=M.parse(part);return !n||(!pair&&n.d!==1);}))return pair?'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.':'Запиши три целых числа через точку с запятой, например 2; 5; 7.';
     }
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
     if(clarification)return clarification.text;
@@ -219,7 +219,7 @@
     if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
     if(['table-read','table-total'].includes(lesson.fullKey)&&C.pathById.vilenkin5.numbered?.length){
       const numbered=C.pathById.vilenkin5.numbered.map(id=>'<a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a>');
-      head.insertAdjacentHTML('beforeend','<p>Задания к таблицам на с. 9 первой части. '+numbered.join(' · ')+'</p>');
+      head.insertAdjacentHTML('beforeend','<p>Задания к таблицам в первой части. '+numbered.join(' · ')+'</p>');
     }
     const modes={learn:'1 · Разберись',practice:'2 · Потренируйся',check:'3 · Проверь себя'};
     head.querySelectorAll('[data-cmd=mode]').forEach(b=>{b.textContent=modes[b.dataset.value];b.classList.add('v5q-mode');b.classList.toggle('is-current',b.dataset.value===session.mode);b.setAttribute('aria-pressed',String(b.dataset.value===session.mode));});

@@ -1,6 +1,7 @@
 /* Individual source exercises, Vilenkin et al., part 1, 3rd revised edition, 2023. */
 (function (root) {
   'use strict';
+  const tables=typeof module!=='undefined'&&module.exports?require('./vilenkin5-numbered-tables.js'):root.Vilenkin5NumberedTables;
   const lessons = [
     {number:'1.1', key:'printed-1-1', title:'Читаем таблицу о домашних животных',
       explanation:'Подпись строки показывает, что именно считали. При подсчёте группы складывай численности подходящих животных. Строка о семьях без питомца не прибавляет ни одного животного.',
@@ -10,7 +11,7 @@
       explanation:'Каждая запись в списке принадлежит одному читателю. Посчитай одинаковые записи. Чтобы получить число книг в группе, умножь число читателей на результат одного из них.',
       worked:['Трое прочитали по 2 книги, двое — по 5.','Читателей 3 + 2 = 5. В первой группе прочитано 3 × 2 = 6 книг, во второй 2 × 5 = 10.','Всего 16 книг. Пять читателей и шестнадцать книг отвечают на разные вопросы.'],
       misconception:'Сумма частот всегда равна числу прочитанных книг.', reflect:'Какая сумма позволяет проверить, что ни одна запись не пропущена?'}
-  ];
+  ].concat(tables.lessons);
   const pets = ['Кошка','Собака','Хомяк','Черепаха','Морская свинка','Кролик','Птицы','Рыбки','Змеи','Нет животных'];
   const mammal = [0,1,2,4,5], fourLegs = [...mammal,3];
   const sourceCounts = [19,11,3,8,5,1,5,9,0,5];
@@ -59,17 +60,21 @@
       table:{caption:'Анкеты читателей. Каждая запись — ответ одного ученика',headers:['Записи','Число прочитанных книг'],rows:Array.from({length:Math.ceil(books.length/8)},(_,i)=>[`${i*8+1}–${Math.min((i+1)*8,books.length)}`,books.slice(i*8,(i+1)*8).join(', ')])},data:{books}};
   }
   function generate(lesson,seed,M){
-    const random=M.rng(seed+9153), t=lesson.number==='1.1'?animalSurvey(seed,random):readingSurvey(seed,random);
-    return {...t,conditionKey:(t.data.counts||t.data.books).join(','),prompt:(seed===0?'Данные печатного номера. ':'Новый авторский опрос. ')+t.prompt,v5Full:true,v6Full:true,model:{kind:'v5-numbered'},data:{...t.data,number:lesson.number}};
+    const random=M.rng(seed+9153);
+    const generators={'1.1':animalSurvey,'1.2':readingSurvey,...tables.generators};
+    const t=generators[lesson.number](seed,random,step);
+    return {...t,conditionKey:t.conditionKey||(t.data.counts||t.data.books).join(','),prompt:(seed===0?'Данные печатного номера. ':t.data.counts||t.data.books?'Новый авторский опрос. ':'Новое авторское задание. ')+t.prompt,v5Full:true,v6Full:true,model:{kind:'v5-numbered'},data:{...t.data,number:lesson.number}};
   }
   function install(C,M){
     const path=C.pathById.vilenkin5;
     const ids=lessons.map(l=>'v5f-'+l.key);
     lessons.forEach((l,i)=>{
-      const lesson={id:ids[i],title:'№'+l.number+' · '+l.title,number:l.number,grade:5,v5Course:true,fullKey:l.key,point:1,minutes:15,area:'Номера учебника',requires:['v5f-table-read'],related:['v5f-table-total'],next:ids[i+1]||'v5f-table-total',explanation:l.explanation,worked:l.worked,misconception:l.misconception,reflect:[l.reflect],claim:l.misconception,claimTrue:false,source:{book:'Виленкин и соавторы · 5 класс · 2023',part:1,point:1,page:9}};
+      const lesson={id:ids[i],title:'№'+l.number+' · '+l.title,number:l.number,grade:5,v5Course:true,fullKey:l.key,point:1,minutes:15,area:'Номера учебника',requires:['v5f-table-read'],related:['v5f-table-total'],next:ids[i+1]||'v5f-table-total',explanation:l.explanation,worked:l.worked,misconception:l.misconception,reflect:[l.reflect],claim:l.misconception,claimTrue:false,source:{book:'Виленкин и соавторы · 5 класс · 2023',part:1,point:1,page:l.page||9}};
       C.byId[lesson.id]=lesson;C.lessons.push(lesson);
     });
     path.numbered=ids;
+    const accepts=M.accepts;
+    M.accepts=(input,target)=>target.columnRules?Boolean(tables.columnFits(tables.fields(input,M),target.columnRules)):accepts(input,target);
     const previous=M.generate;
     M.generate=(id,seed)=>ids.includes(id)?generate(C.byId[id],seed,M):previous(id,seed);
   }
@@ -80,6 +85,19 @@
   }
   function taskTable(task,scene) {
     const {caption,headers,rows,columnWidths}=task.table;
+    if(scene.mode==='learn'&&task.data.columns){
+      const filled=task.data.columns.map((column,i)=>{
+        const draft=scene.answers?.[i];
+        if(!draft)return rows[i];
+        const entries=draft.split(';').map(cell=>cell.trim());
+        return [i+1,...(i<4?column.map(value=>value??entries[0]):entries)];
+      });
+      return table('Твоя таблица. Каждая строка на экране — один столбец учебника.',headers,filled,columnWidths);
+    }
+    if(scene.mode==='learn'&&task.data.calculations){
+      const checked=rows.map((row,i)=>[...row,scene.answers?.[i]||'—']);
+      return table(caption,[...headers,'Ответ'],checked,[16,53,31]);
+    }
     let output=table(caption,headers,rows,columnWidths);
     if(scene.mode==='learn'&&task.data.books){
       const values=task.data.books.includes(8)?[3,4,5,6,7,8]:[3,4,5,6,7];
@@ -92,6 +110,7 @@
     return output;
   }
   function explore(lesson,state,task) {
+    if(tables.generators[lesson.number])return tables.explore(lesson,state,task,table);
     if(lesson.number==='1.1'){
       const groups=[['Четыре ноги',fourLegs],['Две ноги',[6]],['Нет ног',[7,8]],['Есть шерсть',mammal]];
       const [group,indexes]=groups[state.group];
@@ -102,7 +121,8 @@
     const result=state.weight?matches*n:matches;
     return {title:'Отметь одинаковые анкеты',controls:[{key:'group',title:'Книг у одного читателя',values:[3,4,5,6,7,8].map((v,i)=>[i,v])},{key:'weight',title:'Что считаем',values:[[0,'Читателей'],[1,'Книги всей группы']]}],visual:'<p>'+rows.map(v=>v===n?'<mark>'+v+'</mark>':String(v)).join(', ')+'</p>',question:state.weight?'Сколько книг прочитали все отмеченные ученики?':'Сколько читателей дали выбранный ответ?',answer:result,why:state.weight?'В группе '+matches+' чел. По '+n+' книг у каждого. Получается '+matches+' × '+n+' = '+result+'.':'Число '+n+' встретилось '+matches+' раз. Каждая отметка — один ученик.'};
   }
-  const api={install,generate,taskTable,explore};
+  const bounds={'1.1':{group:[0,3,0]},'1.2':{group:[0,5,0],weight:[0,1,0]},...tables.bounds};
+  const api={install,generate,taskTable,explore,bounds,mistake:tables.mistake};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
   else {root.Vilenkin5Numbered=api;install(root.WorkshopCurriculum,root.WorkshopMath);}
 })(typeof window!=='undefined'?window:globalThis);

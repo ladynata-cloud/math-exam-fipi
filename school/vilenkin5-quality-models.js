@@ -36,7 +36,7 @@
       return {...Object.fromEntries(config.controls.map(c => [c.k,c.def])),...(d.show?{show:d.show}:{})};
     }
     const common = {prediction:'',first:'',seen:false,notice:''};
-    if (d.kind==='numbered') return lesson.number==='1.1'?{...common,group:0}:{...common,group:0,weight:0};
+    if (d.kind==='numbered') return {...common,...Object.fromEntries(Object.entries(root.Vilenkin5Numbered.bounds[lesson.number]).map(([key,rule])=>[key,rule[2]]))};
     if (d.kind === 'arithmetic') return {seed:17,level:d.skill === 'multiply'?3:2,step:0,draft:'',helped:false,notice:''};
     if (d.kind === 'fraction') return {...common,an:d.op === 'subtract'?5:d.op === 'divide'?3:2,ad:d.op === 'subtract'?4:d.op === 'divide'?2:3,bn:1,bd:4,factor:2};
     if (d.kind === 'decimal') return {...common,a:lesson.fullKey==='decimal-divide-zero'?408:d.op === 'subtract'?300:d.op === 'divide'?150:d.op === 'round'?347:68,b:lesson.fullKey==='decimal-divide-zero'?4:d.naturalSecond?(d.powerOfTen?10:3):d.op === 'subtract'?48:d.op === 'divide'?25:57,places:1,factor:d.naturalSecond?1:10};
@@ -71,7 +71,7 @@
     }
     if (!text(s.prediction)||!text(s.first)||!text(s.notice,800)||typeof s.seen!=='boolean'||!s.seen&&s.first) throw new TypeError('Invalid model prediction');
     const check=(key,min,max)=>{if(!integer(s[key],min,max))throw new TypeError('Invalid model parameter '+key);};
-    if(d.kind==='numbered'){check('group',0,lesson.number==='1.1'?3:5);if(lesson.number==='1.2')check('weight',0,1);}
+    if(d.kind==='numbered')for(const [key,[min,max]] of Object.entries(root.Vilenkin5Numbered.bounds[lesson.number]))check(key,min,max);
     if(d.kind==='fraction'){check('an',0,12);check('ad',2,12);check('bn',d.op==='divide'?1:0,12);check('bd',2,12);check('factor',1,6);if(d.op==='subtract'&&s.an*s.bd<s.bn*s.ad)throw new TypeError('Use nonnegative fraction difference');}
     if(d.kind==='decimal'){check('a',0,999);if(d.naturalSecond){if(d.powerOfTen){if(![10,100,1000].includes(s.b))throw new TypeError('Invalid power of ten');}else check('b',1,12);}else check('b',d.op==='divide'?1:0,999);check('places',0,1);if(![1,10,100].includes(s.factor))throw new TypeError('Invalid scale');if(d.op==='subtract'&&s.a<s.b)throw new TypeError('Use nonnegative decimal difference');}
     if(d.kind==='angle'){check('angle',0,180);check('target',10,170);check('start',0,10);}
