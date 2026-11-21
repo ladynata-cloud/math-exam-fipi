@@ -683,5 +683,36 @@
       source:{type:'authored',reference:'Авторская тренировка по подстановке'},skills:[graphicPractice.id]};
   }
 
-  return { mount, experiment, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const balancePractice={id:'models-of-systems',title:'Проверить две величины по двум условиям',
+    description:'Составь систему по новому сюжету и проверь оба числа в предметной модели.'};
+  function practiceBalance(seed,level){
+    const x=3+seed%11,y=2+Math.floor(seed/3)%9;
+    let labels,prompt,unit,checks,restriction='natural';
+    const row=(label,a,b,rhs)=>({label,coeff:[String(a),String(b)],rhs:String(rhs)});
+    if(level===1){
+     const price=3+seed%3,other=price+2,total=x*price+y*other;
+     labels=['малые альбомы','большие альбомы'];unit='шт.';
+     prompt='Продали '+(x+y)+' альбомов — маленькие по '+price+' р. и большие по '+other+' р. Получили '+total+' р. Сколько маленьких и больших альбомов?';
+     checks=[row('Число альбомов',1,1,x+y),row('Выручка, р.',price,other,total)];
+    }else if(level===2){
+     const width=x,length=x+y;
+     labels=['ширина','длина'];unit='см';restriction='positive';
+     const perimeter=2*(width+length);
+     prompt='Периметр прямоугольника '+perimeter+' см, длина на '+y+' см больше ширины. Определи ширину и длину.';
+     checks=[row('Периметр, см',2,2,perimeter),row('Разность сторон, см',-1,1,y)];
+    }else{
+     const first=5*x,second=5*y,total=first+second,after=6*x+4*y;
+     labels=['в первой коробке','во второй коробке'];unit='шт.';
+     prompt='Первоначально в двух коробках '+total+' деталей. В первую добавили 20% её количества, из второй убрали 20% её количества, и всего стало '+after+'. Сколько деталей было в каждой сначала?';
+     checks=[row('Первоначально всего',1,1,total),row('Всего после изменения','6/5','4/5',after)];
+    }
+    const answer=(level===2?[x,x+y]:level===3?[5*x,5*y]:[x,y]).join(';'),hint='Обозначь два искомых количества разными буквами. Проверь свою пару и по сумме, и по второму отношению.';
+    return {title:balancePractice.title,prompt,kind:'graph-values',answer,hint,correction:hint,finalLabel:'Первое и второе число',
+     explanation:'Для пары '+answer+' выполнены обе строки таблицы.',graph:{type:'story-balance',labels,checks,restriction,mode:'pair',unit},
+     steps:[{prompt:'Запиши правые части двух уравнений в порядке таблицы.',kind:'graph-values',answer:checks.map(r=>r.rhs).join(';'),hint,explanation:'Исходные значения справа: '+checks.map(r=>r.rhs).join(';')+'.'},
+       {prompt:'Сколько единиц первой величины получается из системы?',kind:'number',answer:answer.split(';')[0],hint,explanation:'Первое значение '+answer.split(';')[0]+'.'}],
+     source:{type:'authored',reference:'Тренировка по составлению систем'},skills:[systemPractice.id]};
+  }
+
+  return { mount, experiment, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

@@ -459,9 +459,9 @@ function pointGroups(input){
 function planeResponse(value,q){
  const groups=pointGroups(value);if(!groups)return 'format';
  const key=p=>p.map(v=>v.n+'/'+v.d).join(';');
- if(q.kind==='three-solutions'){
-  if(groups.length!==1||groups[0].length!==3)return 'count';
-  if(new Set(groups[0].map(key)).size!==3)return 'duplicate';
+ if(q.kind==='three-solutions'||q.kind==='equation-point-example'){
+  if(groups.length!==1||groups[0].length!==(q.kind==='equation-point-example'?1:3))return 'count';
+  if(new Set(groups[0].map(key)).size!==groups[0].length)return 'duplicate';
   for(const [i,[x,y]] of groups[0].entries()){
    const nx=BigInt(x.n),dx=BigInt(x.d),ny=BigInt(y.n),dy=BigInt(y.d);
    const sum=q.terms.reduce((s,[k,a,b])=>s+BigInt(k)*nx**BigInt(a)*ny**BigInt(b)*dx**BigInt(2-a)*dy**BigInt(2-b),0n);
@@ -589,6 +589,17 @@ function exampleEquationsStatus(input){
  if(!parts[0].n)return 'linear';
  return 'correct';
 }
+function squaredBinomial(value,expected){
+ const status=factoredPair(value,expected),v=normalize(value);
+ if(status==='different')return status;
+ if(status==='factored'&&v.startsWith('(')&&v.endsWith(')^2')){
+  let depth=0;for(let i=0;i<v.length-2;i++){
+    if(v[i]==='(')depth++;else if(v[i]===')'&&!--depth&&i!==v.length-3)return 'form';
+  }
+  return 'square';
+ }
+ return 'form';
+}
 function progressionFactors(input){
  const pieces=String(input).split(';');
  if(pieces.length!==4||pieces.some(p=>!p.trim()))return 'format';
@@ -604,7 +615,8 @@ function progressionFactors(input){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
- if(['three-solutions','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
+ if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
  if(target.kind==='line-pair-equation')return equationPlaneStatus(user,target.answer)==='correct';
  if(target.kind==='algebra-pairs')return sameAlgebraPairs(user,target.answer);
  if(target.kind==='open-intervals')return intervalMatch(user,target.answer);
@@ -671,5 +683,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

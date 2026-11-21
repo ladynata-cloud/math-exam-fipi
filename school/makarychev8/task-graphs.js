@@ -471,6 +471,42 @@ function inequalityIntervals(host,config){
  host.append(svg,note);
 }
 
+function balanceScene(host,config,value){
+ host.className='task-graphs quantity-model';
+ const intro=document.createElement('p');intro.className='small';
+ intro.textContent='x — '+config.labels[0]+', y — '+config.labels[1]+'. Подставь свою пару и проверь оба условия.';host.append(intro);
+ const fields=String(value||'').split(';'),raw=fields.map(v=>M.parse(v)),chosen=M.parse(String(value||''));
+ let pair=null;
+ if(config.mode==='pair'&&fields.length===2&&raw.every(Boolean))pair=raw;
+ if(config.mode==='step')pair=config.trial?.split(';').map(v=>M.parse(v));
+ if(config.mode==='digits'&&chosen?.d===1&&chosen.n>=10&&chosen.n<=99)pair=[M.parse(String(Math.floor(chosen.n/10))),M.parse(String(chosen.n%10))];
+ if(['x','y'].includes(config.mode)&&chosen&&config.derive){
+  const [slope,offset]=config.derive,n=BigInt(slope)*BigInt(chosen.n)+BigInt(offset)*BigInt(chosen.d);
+  const derived=M.parse(n+'/'+chosen.d);if(derived)pair=config.mode==='x'?[chosen,derived]:[derived,chosen];
+ }
+ if(!pair&&config.trial)pair=config.trial.split(';').map(v=>M.parse(v));
+ if(!pair||pair.length!==2||pair.some(v=>!v))pair=null;
+ if(pair){
+  const values=pair.map(r=>r.n/r.d),valid=config.restriction==='digits'?values.every(Number.isInteger)&&values[0]>=1&&values[0]<=9&&values[1]>=0&&values[1]<=9:
+    values.every(v=>v>0&&(config.restriction!=='natural'||Number.isInteger(v)));
+  const text=document.createElement('p');text.className='small';text.dataset.balanceDomain=valid?'yes':'no';
+  text.textContent='x = '+M.answer(pair[0])+', y = '+M.answer(pair[1])+(config.unit?' ('+config.unit+')':'')+'. '+(valid?'Величины допустимы по смыслу.':config.restriction==='natural'?'Для количества требуются положительные целые числа.':'Проверь допустимые значения величин.');
+  host.append(text);
+ }
+ for(const check of config.checks){
+  const p=document.createElement('p');p.className='small';p.dataset.balanceRow='';
+  p.textContent=check.label+': ('+check.coeff[0]+')x + ('+check.coeff[1]+')y = '+check.rhs+'.';
+  if(pair){
+   const [a,b]=check.coeff.map(k=>M.parse(k)),[x,y]=pair,target=M.parse(check.rhs);
+   const n=BigInt(a.n)*BigInt(x.n)*BigInt(b.d)*BigInt(y.d)+BigInt(b.n)*BigInt(y.n)*BigInt(a.d)*BigInt(x.d),d=BigInt(a.d)*BigInt(x.d)*BigInt(b.d)*BigInt(y.d);
+   const gcd=(u,v)=>v?gcd(v,u%v):u,g=gcd(n<0n?-n:n,d),num=n/g,den=d/g;
+   p.dataset.balanceCheck=num*BigInt(target.d)===den*BigInt(target.n)?'yes':'no';
+   p.append(' Получено '+(den===1n?num.toString():num+'/'+den)+'.');
+  }
+  host.append(p);
+ }
+}
+
 function equationExamples(host,value){
  host.className='task-graphs quantity-model';
  const parts=String(value||'').split(';').map(x=>x.trim());
@@ -717,6 +753,7 @@ function render(host,config,value){
  if(config.type==='abs-line-choice'){absLineChoice(host,config);return;}
  if(config.type==='system-pair-audit'){systemPairModel(host,config);return;}
  if(config.type==='inequality-intervals'){inequalityIntervals(host,config);return;}
+ if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='rate-table'){rateTable(host,config,value);return;}
  if(config.type==='leg-trial'){legTrial(host,value);return;}
