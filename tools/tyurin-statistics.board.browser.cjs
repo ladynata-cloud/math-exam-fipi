@@ -49,9 +49,9 @@ async function healthy(url, child, logs) {
 }
 
 const catalogue=process.argv.includes('--makarychev9-2017-supplement')?{
-  directory:'makarychev9-2017',entries:[[50,36,55]],search:'makarychev9-2017',match:'36 пунктов',lesson:process.argv.includes('--graph')?'50-213':'50-202',onlySelected:true,chart:process.argv.includes('--graph')?'svg[aria-label*="Обе ветви"]':'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
+  directory:'makarychev9-2017',entries:[[50,36,62]],search:'makarychev9-2017',match:'36 пунктов',lesson:process.argv.includes('--parameter')?'50-216':process.argv.includes('--graph')?'50-213':'50-202',onlySelected:true,chart:process.argv.includes('--parameter')?'svg[aria-label*="Парабола при найденном"]':process.argv.includes('--graph')?'svg[aria-label*="Обе ветви"]':'svg[aria-label*="Сечение"]',storage:'math:makarychev9-2017:v1:'
 }:process.argv.includes('--makarychev9-2017')?{
-  directory:'makarychev9-2017',entries:[[50,36,55]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
+  directory:'makarychev9-2017',entries:[[50,36,62]],search:'makarychev9-2017',match:'36 пунктов',lesson:'50-4',chart:'svg[aria-label*="раскрытия скобок"]',storage:'math:makarychev9-2017:v1:'
 }:process.argv.includes('--merzlyak9-2014')?{
   directory:'merzlyak9-2014',entries:[[55,26,26]],search:'merzlyak9-2014',match:'все параграфы',lesson:'55-13',chart:'svg[aria-label*="штриховая"]',storage:'math:merzlyak9-2014:v1:'
 }:{
@@ -78,7 +78,7 @@ async function run(browser, origin, serverOrigin) {
       }
     }
     phase='joint room';
-    await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin));
+    await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin),{waitUntil:'domcontentloaded'});
     await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
     try {
       await teacher.waitForFunction(()=>document.querySelector('#studentLink')?.value.includes('role=student'));
@@ -86,7 +86,7 @@ async function run(browser, origin, serverOrigin) {
       const status=await teacher.locator('#shareStatus').innerText();
       throw new Error('Unable to open the test room: '+status,{cause:error});
     }
-    const invite=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(invite);
+    const invite=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(invite,{waitUntil:'domcontentloaded'});
     await teacher.locator('#chooseTrainer').click();await teacher.locator('#pickerSearch').fill(catalogue.search);
     await teacher.locator('#pickerResults .picker-item').filter({hasText:catalogue.match}).first().click();
     const connected=p=>p.waitForFunction(()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='connected');
@@ -102,12 +102,12 @@ async function run(browser, origin, serverOrigin) {
     await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();
     await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
     await s.locator('[data-action=hint]').click();await t.locator('#work ol li').nth(1).waitFor();
-    await teacher.reload();
+    await teacher.reload({waitUntil:'domcontentloaded'});
     await connected(teacher);
     await value(teacher,'answer','1234');
     await t.locator('#work ol li').nth(1).waitFor();
     await s.locator('#answer').fill('4321');await value(teacher,'answer','4321');
-    await student.reload();
+    await student.reload({waitUntil:'domcontentloaded'});
     await connected(student);
     await value(student,'answer','4321');
     await s.locator('#work ol li').nth(1).waitFor();

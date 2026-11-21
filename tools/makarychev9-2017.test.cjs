@@ -249,21 +249,29 @@ const extra={
   '207':(r,data)=>{const z=data.rows[1],df=z[1]-r[1],d=(z[1]+z[2])-(r[1]+r[2]);return [df,d,Math.sign(d)];},
   '208':r=>{const [L,R,m,b,v]=r,ys=[m*L+b,m*R+b];return [Math.max(...ys),Number(v>=Math.min(...ys)&&v<=Math.max(...ys)),1];},
   '209a':r=>{const [k,N]=r;let roots=[];for(let x=0;x<=N;x++)if(Math.sqrt(x)+k*x*x===N)roots.push(x);return [0,roots[0],roots.length];},
+  '214a':([b,c])=>{const roots=Array.from({length:81},(_,i)=>i-40).filter(x=>x*x+b*x+c===0);return [roots[0],roots[1],roots[1]-roots[0]];},
+  '215a':([u,v,A])=>{const f=x=>(x-u)*(x-v),constant=f(0),linear=f(1)-constant-1;return [linear,constant,A*linear];},
+  '215b':([h,r])=>{const u=h-Math.sqrt(r),v=h+Math.sqrt(r);return [Math.round(u+v),Math.round(u*v),-Math.round(u+v)];},
+  '216':([a,b])=>{const parameter=Array.from({length:81},(_,i)=>i-40).find(p=>-2*p-2*a===0);const root=Array.from({length:41},(_,i)=>i-20).find(x=>x!==0&&2*parameter*x*x-b*x-2*parameter-2*a===0);return [parameter,2*parameter,root];},
   '210':r=>{const [h,p,q]=r,x=Array.from({length:41},(_,i)=>h+i-20),sets=[x.map(v=>(v-h)**2+p),x.map(v=>-((v-h)**2)-q),x.map(v=>(v-h)**2)];return [Math.min(...sets[0]),Math.max(...sets[1]),sets.filter(values=>values.every(y=>y>0)||values.every(y=>y<0)).length];},
   '211':r=>{const [a,k,d]=r,values=Array.from({length:d*d+2},(_,i)=>a-i).map(x=>[x,Math.sqrt(a-x)]);return [values[0][0],values.find(pair=>pair[1]===k)[0],values.find(pair=>pair[0]===a-d*d)[1]];},
   '212':r=>{const [h,k,d]=r,values=Array.from({length:2*d+1},(_,i)=>[h-d+i,k+Math.abs(i-d)]);const min=values.reduce((p,q)=>q[1]<p[1]?q:p);assert.equal(values[0][1],values.at(-1)[1]);return [min[0],min[1],values[0][1]];},
   '213':r=>{const [a,u,k]=r,values=Array.from({length:2*(u+1)+1},(_,i)=>i-u-1).filter(x=>x!==0).map(x=>[x,a/Math.abs(x)]);return [values.find(pair=>pair[0]===-u)[1],values.find(pair=>pair[0]>0&&pair[1]===k)[0],values.filter(pair=>pair[1]===0).length];},
   '209b':r=>{const [c,N]=r;let roots=[];for(let x=-40;x<=40;x++)if(x*x*x+c*x===N)roots.push(x);return [Math.sign(roots[0]),roots[0],roots.length-1];}
 };
+for(const key of ['214b','214c','214d']) extra[key]=([a,b,c])=>{
+ const delta=b*b-4*a*c,left=(-b-Math.sqrt(delta))/(2*a),right=(-b+Math.sqrt(delta))/(2*a),t=Math.sqrt(a);
+ return [t,Math.round((left+right)*t/2),Math.round(((right-left)*t/2)**2)];
+};
 const pathKeys=Object.keys(extra).sort((a,b)=>parseInt(a)-parseInt(b)||a.localeCompare(b));
-assert.deepEqual(pathKeys,['200a','200b','200c','201','202','203','204','205','206a','206b','206c','207','208','209a','209b','210','211','212','213']);
+assert.deepEqual(pathKeys,['200a','200b','200c','201','202','203','204','205','206a','206b','206c','207','208','209a','209b','210','211','212','213','214a','214b','214c','214d','215a','215b','216']);
 for(const name of pathKeys) {
   const id='50-'+name,key='math:makarychev9-2017:v1:'+id;
   let dom=open(id),w=dom.window;
   const lesson=w.MathExamTopicPractice.lessons.get(id);
-  const printedPage=parseInt(name)>=205?69:68;
+  const printedPage=parseInt(name)>=214?70:parseInt(name)>=205?69:68;
   assert.equal(lesson.page,printedPage);assert.equal(w.document.querySelector('#lesson').value,id);
-  assert.match(w.document.querySelector('#edition').textContent,/Упражнение №2(?:0[0-9]|1[0-3])/);
+  assert.match(w.document.querySelector('#edition').textContent,/Упражнение №2(?:0[0-9]|1[0-6])/);
   assert(w.document.querySelector('#work').textContent.includes(lesson.printedGuide));
   assert.equal(new URL(w.document.querySelector('#source').href).hash,'#page='+(printedPage+1));
   assert.equal(new URL(w.document.querySelector('#board').href).searchParams.get('trainer'),'/trainers/makarychev9-2017/index.html#lesson/'+id);
@@ -298,4 +306,4 @@ for(const name of pathKeys) {
   click(w,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
   dom.window.close();
 }
-console.log('Source 50: 1188 topic checks and 627 printed-exercise checks; all 55 pupil journeys preserve saved, corrected and assisted work.');
+console.log('Source 50: 1188 topic checks and 858 printed-exercise checks; all 62 pupil journeys preserve saved, corrected and assisted work.');
