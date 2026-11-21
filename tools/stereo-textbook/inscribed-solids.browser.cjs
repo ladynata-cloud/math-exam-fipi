@@ -38,7 +38,8 @@ const groups = {
   diagonalPaths: {manifests:[require('./prism-diagonals-and-vector-paths.json')],count:7},
   signedVectorCombinations: {manifests:[require('./signed-vector-combinations.json')],count:6},
   prismVectorEquations: {manifests:[require('./prism-vector-equations.json')],count:6},
-  pyramidVectorMidpoints: {manifests:[require('./pyramid-vector-midpoints.json')],count:6}
+  pyramidVectorMidpoints: {manifests:[require('./pyramid-vector-midpoints.json')],count:6},
+  midlinesVectorCoefficients: {manifests:[require('./midlines-vector-coefficients.json')],count:6}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

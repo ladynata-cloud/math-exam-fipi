@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T19:39:22Z",
-  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–581, with 969 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T20:00:18Z",
+  "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–585, with 975 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1648,6 +1648,21 @@
       ],
       "evidence": "tools/stereo-textbook/pyramid-vector-midpoints.json",
       "mathematicalReport": "tools/stereo-textbook/pyramid-vector-midpoints.test.cjs"
+    },
+    {
+      "reviewer": "Codex: printed page 149 and key 268; directed midpoint identities, algebraic expansion and a prism identity",
+      "reviewedAt": "2026-11-21T20:00:18Z",
+      "scope": "Exercises 582–585: directed differences, midpoints, signed expansion and diagonal vectors in a parallelepiped",
+      "cardIds": [
+        "ex-main-0582-a",
+        "ex-main-0582-b",
+        "ex-main-0583",
+        "ex-main-0584-a",
+        "ex-main-0584-b",
+        "ex-main-0585"
+      ],
+      "evidence": "tools/stereo-textbook/midlines-vector-coefficients.json",
+      "mathematicalReport": "tools/stereo-textbook/midlines-vector-coefficients.test.cjs"
     }
   ],
   "cards": [
@@ -5526,6 +5541,30 @@
     {
       "id": "ex-main-0581-c",
       "sha256": "16273fa21320e76b8e22fe7568dcd84b3b5ca75b481ac4c961eedf88ccd1aacb"
+    },
+    {
+      "id": "ex-main-0582-a",
+      "sha256": "da865eba227ff144ef40f0ae0d929aa2dadcbca771e4aa5ec8ebf0fd82f248a2"
+    },
+    {
+      "id": "ex-main-0582-b",
+      "sha256": "b512d242b5ff6d32d2aaad967aabe1ef5109b8c94ae0705c725516089f2872a6"
+    },
+    {
+      "id": "ex-main-0583",
+      "sha256": "05195e299d2e2b088246230e6641a0e25ada44b7bf7f638a0b7b93e34328399f"
+    },
+    {
+      "id": "ex-main-0584-a",
+      "sha256": "355d6cd1fcc9033c8562de37dd54af74c4dd0f938c710f0c89267b8fea85d95f"
+    },
+    {
+      "id": "ex-main-0584-b",
+      "sha256": "e18c28fffc8dc34b107201f6bdceba88fe260a29699291c8efa22cb2cf0d9cc6"
+    },
+    {
+      "id": "ex-main-0585",
+      "sha256": "9b82b09854fd255978c6fa4866d35c49b31014672a86da6457cd69cfe72104c6"
     }
   ]
 }

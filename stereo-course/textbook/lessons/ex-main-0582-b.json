@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0582-b",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Половина стороны в обратном направлении",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "582",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      149
+    ],
+    "pdfPages": [
+      151
+    ],
+    "subpart": "б"
+  },
+  "statement": {
+    "text": "ABCD — параллелограмм, E и F — середины AB и BC. Точка O произвольна.",
+    "goal": "Вырази OA−OE через DC."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "E и F делят AB и BC пополам. В книге эти отрезки названы основаниями; в порядке вершин ABCD это соседние стороны.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          1.5,
+          3,
+          0
+        ],
+        "C": [
+          6.5,
+          3,
+          0
+        ],
+        "D": [
+          5,
+          0,
+          0
+        ],
+        "O": [
+          2,
+          -2,
+          4
+        ],
+        "E": [
+          0.75,
+          1.5,
+          0.0
+        ],
+        "F": [
+          4.0,
+          3.0,
+          0.0
+        ]
+      },
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "O",
+        "E",
+        "F"
+      ],
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "E",
+          "F"
+        ],
+        [
+          "O",
+          "A"
+        ]
+      ],
+      "arrows": [
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "E"
+        ],
+        [
+          "E",
+          "A"
+        ],
+        [
+          "D",
+          "C"
+        ]
+      ],
+      "faces": [],
+      "views": {
+        "neutral": {
+          "label": "E и F делят AB и BC пополам. В книге эти отрезки названы основаниями; в порядке вершин ABCD это соседние стороны.",
+          "segments": [
+            [
+              "A",
+              "E"
+            ],
+            [
+              "E",
+              "B"
+            ],
+            [
+              "B",
+              "F"
+            ],
+            [
+              "F",
+              "C"
+            ]
+          ]
+        },
+        "diff": {
+          "label": "Разность стрелок с общим началом соединяет их концы. Первой буквой станет конец вычитаемого.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "E"
+            ],
+            [
+              "E",
+              "A"
+            ],
+            [
+              "D",
+              "C"
+            ]
+          ]
+        },
+        "compare": {
+          "label": "Длина EA равна половине AB. Стороны AB и DC задают одинаковый вектор.",
+          "segments": [
+            [
+              "E",
+              "A"
+            ],
+            [
+              "A",
+              "B"
+            ],
+            [
+              "D",
+              "C"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Какая стрелка дополняет OE до OA?",
+      "text": "Из E надо пройти в A. Тогда OE+EA=OA.",
+      "view": "diff"
+    },
+    {
+      "id": "h2",
+      "question": "Почему можно сравнивать с DC?",
+      "text": "Из D к C идём точно так же, как из A к B.",
+      "view": "compare"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Оставь одну стрелку",
+      "prompt": "Назови OA−OE.",
+      "explanation": "После вычитания остаётся EA.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Разность с общим началом соединяет концы в нужном порядке."
+        }
+      ],
+      "view": "diff",
+      "input": {
+        "prompt": "Оставь одну стрелку",
+        "accepted": [
+          "EA",
+          "ЕА"
+        ],
+        "feedback": "Вычитаемая стрелка заканчивается в E."
+      }
+    },
+    {
+      "id": "step-2",
+      "title": "Соответствующая сторона",
+      "prompt": "Какая стрелка из A равна DC?",
+      "explanation": "Перенос из D в A переводит C в B, поэтому DC=AB.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Равные векторы задают один и тот же перенос."
+        }
+      ],
+      "view": "neutral",
+      "input": {
+        "prompt": "Соответствующая сторона",
+        "accepted": [
+          "AB",
+          "АВ"
+        ],
+        "feedback": "Эта стрелка начинается в A и заканчивается в B."
+      }
+    },
+    {
+      "id": "step-3",
+      "title": "Учитывай половину",
+      "prompt": "Найди k в EA=k·DC.",
+      "explanation": "EA смотрит против DC. По длине это половина, значит EA=−½DC.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "E — середина стороны AB.",
+          "theoryId": "theory-067"
+        }
+      ],
+      "view": "compare",
+      "input": {
+        "prompt": "Учитывай половину",
+        "accepted": [
+          "-1/2",
+          "-0,5",
+          "-0.5"
+        ],
+        "feedback": "Условие содержит EA, а не AE."
+      }
+    },
+    {
+      "id": "step-4",
+      "title": "Новая сторона",
+      "prompt": "Если |DC|=14, чему равен модуль OA−OE?",
+      "explanation": "|EA|=14/2=7, где бы ни находилась O.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Положение O сократилось в разности."
+        }
+      ],
+      "view": "diff",
+      "input": {
+        "prompt": "Новая сторона",
+        "accepted": [
+          "7"
+        ],
+        "feedback": "Число 14 относится к целой стороне."
+      }
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "-1/2",
+      "-0.5",
+      "-0,5"
+    ],
+    "prompt": "Введи коэффициент при DC.",
+    "feedback": "OA−OE=EA=−½DC."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: printed page 149 and key 268; directed midpoint identities, algebraic expansion and a prism identity",
+    "at": "2026-11-21T20:00:18Z"
+  }
+}

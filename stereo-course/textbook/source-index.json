@@ -13170,6 +13170,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -13188,7 +13192,10 @@
           151
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0584",
@@ -13209,6 +13216,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -13227,7 +13238,10 @@
           151
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0586",

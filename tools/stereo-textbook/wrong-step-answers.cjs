@@ -4,6 +4,30 @@ const assert = require('node:assert/strict');
 
 // Numerical mistakes linked to the actual diagram or unit choice at each step.
 const misconceptions = new Map([
+  ['ex-main-0582-a/step-1', 'AC'],
+  ['ex-main-0582-a/step-2', '0.5'],
+  ['ex-main-0582-a/step-3', '2'],
+  ['ex-main-0582-a/step-4', '-8'],
+  ['ex-main-0582-b/step-1', 'AE'],
+  ['ex-main-0582-b/step-2', 'BA'],
+  ['ex-main-0582-b/step-3', '0.5'],
+  ['ex-main-0582-b/step-4', '28'],
+  ['ex-main-0583/step-1', 'MN'],
+  ['ex-main-0583/step-2', '2'],
+  ['ex-main-0583/step-3', '0.5'],
+  ['ex-main-0583/step-4', '2'],
+  ['ex-main-0584-a/step-1', '-3'],
+  ['ex-main-0584-a/step-2', '-10'],
+  ['ex-main-0584-a/step-3', '-1'],
+  ['ex-main-0584-a/step-4', '-19'],
+  ['ex-main-0584-b/step-1', '-6'],
+  ['ex-main-0584-b/step-2', '-14'],
+  ['ex-main-0584-b/step-3', '8'],
+  ['ex-main-0584-b/step-4', '5'],
+  ['ex-main-0585/step-1', 'C1C'],
+  ['ex-main-0585/step-2', '2'],
+  ['ex-main-0585/step-3', 'DA'],
+  ['ex-main-0585/step-4', '7'],
   ['ex-main-0423/step-2', '4*sqrt(10)'], // Apothem of the other face.
   ['ex-main-0423/step-3', '3*sqrt(17)'],
   ['ex-main-0430-b/step-4', '5/4'], // Centre on the opposite side of the base plane.
