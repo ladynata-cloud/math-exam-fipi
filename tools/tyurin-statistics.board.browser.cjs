@@ -52,7 +52,7 @@ const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
 const catalogue=process.argv.includes('--nikolsky8-inequalities')?{
-  directory:'nikolsky-algebra-7-9',entries:[[75,69,25]],uniqueLessons:24,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:'75-5-f',chart:'svg[aria-label*="Числовая прямая с точками сравнения"]',storage:'math:nikolsky-algebra-7-9:v1:'
+  directory:'nikolsky-algebra-7-9',entries:[[75,69,88]],uniqueLessons:87,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:process.argv.includes('--tallest')?'75-18':'75-5-f',chart:process.argv.includes('--tallest')?'svg[aria-label*="Пересечение выбранного ряда и шеренги"]':'svg[aria-label*="Числовая прямая с точками сравнения"]',storage:'math:nikolsky-algebra-7-9:v1:'
 }:process.argv.includes('--nikolsky7-natural')?{
   directory:'nikolsky-algebra-7-9',entries:[[99,77,35]],uniqueLessons:34,search:'nikolsky-algebra-7-9',match:'числа, делимость и неравенства',lesson:'99-19-c',chart:'svg[aria-label*="Пятёрки из кратных"]',storage:'math:nikolsky-algebra-7-9:v1:'
 }:process.argv.includes('--alimov9-division')?{

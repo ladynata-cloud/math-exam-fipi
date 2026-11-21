@@ -6,13 +6,27 @@
   const bar=(x,y,w,fill)=>'<rect x="'+x+'" y="'+y+'" width="'+Math.max(w,1)+'" height="12" rx="2" fill="'+fill+'"/>';
   function figure(data){
     const m=data.marks;let title,body='';
-    if(data.chart==='orderedPoints'){
+    if(data.chart==='minimax'){
+      title='Пересечение выбранного ряда и шеренги';
+      const largest=m.map(row=>Math.max(...row)),smallest=m[0].map((_,j)=>Math.min(...m.map(row=>row[j])));
+      const r=largest.indexOf(Math.min(...largest)),c=smallest.indexOf(Math.max(...smallest));
+      m.forEach((row,i)=>row.forEach((v,j)=>{const x=16+78*j,y=7+32*i,color=i===r&&j===c?'#f6d6a2':i===r?'#c6e0d0':j===c?'#e3cddc':'#e9eeea';
+        body+='<rect x="'+x+'" y="'+y+'" width="68" height="26" fill="'+color+'"/>'+text(x+20,y+18,v);}));
+    }else if(data.chart==='mediant'){
+      title='Знаменатели граничных дробей и их медианты';
+      body=text(12,26,m[0]+'/'+m[1])+text(180,26,m[2]+'/'+m[3])+line(41,34,100,62)+line(189,34,140,62)+text(96,86,m[4]+'/'+m[5]);
+    }else if(data.chart==='openFractions'){
+      title='Открытые границы и несократимые дроби';
+      body=line(24,52,251,52);
+      m.forEach((v,i)=>{const x=29+54*i;body+='<circle cx="'+x+'" cy="52" r="5" stroke="#345f50" fill="'+(i===0||i===4?'white':i===2?'#bb8790':'#527c69')+'"/>'+text(x-6,78,v);});
+    }else if(data.chart==='orderedPoints'){
       title='Числовая прямая с точками сравнения';
       const min=Math.min(...m),max=Math.max(...m),left=37,right=240;
       body+=line(10,58,267,58);
       m.forEach((v,i)=>{
         const x=min===max?136:left+(right-left)*(v-min)/(max-min);
-        const lab=Number(v.toFixed(4)).toLocaleString('ru-RU',{useGrouping:false,maximumFractionDigits:4}),y=[22,94,38][i];
+        const precision=max!==min&&max-min<0.001?6:4;
+        const lab=Number(v.toFixed(precision)).toLocaleString('ru-RU',{useGrouping:false,maximumFractionDigits:precision}),y=[22,94,38][i];
         body+=line(x,58,x,i===1?77:43)+'<circle cx="'+x+'" cy="58" r="4" fill="'+['#276948','#9a5559','#885d80'][i]+'"/><text text-anchor="middle" x="'+x+'" y="'+y+'">'+['A','B','C'][i]+' '+lab+'</text>';
       });
     }else if(data.chart==='line'){
