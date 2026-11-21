@@ -398,6 +398,29 @@ function quadraticEvidence(host,config,value){
  host.append(caption);
 }
 
+function vietaRelations(host,config,value){
+ host.className='task-graphs quantity-model';
+ const parts=String(value).split(';');
+ const hasPair=parts.length===2&&parts.every(part=>M?.parse(part));
+ const description=document.createElement('p');description.className='small';
+ if(!hasPair){
+  description.textContent='Две независимые проверки: сумма корней S = −b/a и произведение P = c/a. После ответа модель сопоставит их с твоей парой.';
+  host.append(description);return;
+ }
+ for(const [i,key,title] of [[0,'sum','Сумма'],[1,'product','Произведение']]){
+  const same=M.equal(parts[i],config[key]);
+  const row=document.createElement('p');row.className='small';row.dataset.vietaRelation=key;row.dataset.match=String(same);
+  row.textContent=title+': '+parts[i].trim()+' — '+(same?'совпадает':key==='sum'?'проверь обратный знак и деление на a':'проверь свободный член и деление на a')+'.';
+  host.append(row);
+ }
+ const values=parts.map(p=>number(p)),[s,p]=values;
+ if(values.every(n=>n!==null)){
+  const discriminant=s*s-4*p;
+  description.textContent='Из введённых S и P получится t² − St + P = 0. У полученного уравнения '+(discriminant<0?'нет действительных корней.':discriminant===0?'один двукратный корень.':'два различных действительных корня.');
+  host.append(description);
+ }
+}
+
 function appliedShape(host,config,value){
  host.className='task-graphs quantity-model';
  const svg=node('svg',{viewBox:'0 0 300 175',role:'img'}),caption=document.createElement('p');
@@ -444,6 +467,7 @@ function appliedShape(host,config,value){
  }else{
   const x=58,y=22,w=182,h=Math.min(107,w*config.h/config.w);
   rect(x,y,w,h);
+  if(config.diagonal){line(x,y+h,x+w,y,{'stroke-dasharray':'5 3'});label(x+w*.7,y+h*.67,config.diagonal);}
   if(scene==='square-cut'){line(x+h,y,x+h,y+h,{'stroke-dasharray':'5 3'});label(x+(w+h)/2,y+h/2+5,'120 см');}
   if(scene==='seats'){
    for(let row=0;row<4;row++)for(let col=0;col<7;col++)svg.append(node('circle',{cx:x+18+col*24,cy:y+18+row*23,r:4,fill:'#286477'}));
@@ -457,6 +481,7 @@ function appliedShape(host,config,value){
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(['quadratic-discriminant','quadratic-parameter','quadratic-reciprocals','check-common-point'].includes(config.type)){quadraticEvidence(host,config,value);return;}
+ if(config.type==='vieta-relations'){vietaRelations(host,config,value);return;}
  if(config.type==='applied-shape'){appliedShape(host,config,value);return;}
  if(config.type==='quadratic-story'){quadraticStory(host,config,value);return;}
  if(config.type==='quadratic-example'){quadraticExample(host,value);return;}

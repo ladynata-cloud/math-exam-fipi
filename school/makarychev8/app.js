@@ -41,13 +41,15 @@ function textbookFormula(expression){
 const extraPractice=window.MakarychevModels?.quadraticPractice;
 const formulaPractice=window.MakarychevModels?.formulaPractice;
 const storyPractice=window.MakarychevModels?.storyPractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice].filter(Boolean)];
+const vietaPractice=window.MakarychevModels?.vietaPractice;
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
 function taskSignature(t){return t.prompt+(t.mathExpression?'\u241f'+JSON.stringify(t.mathExpression):'')+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
 function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
+ if(id===vietaPractice?.id)return window.MakarychevModels.practiceVieta(seed,level);
  if(id===storyPractice?.id)return window.MakarychevModels.practiceStory(seed,level);
  if(id===formulaPractice?.id)return window.MakarychevModels.practiceFormula(seed,level);
  return M.generate(id,seed,level);
@@ -355,7 +357,7 @@ if(formula){
 if(t.kind==='proof-chain')proofControls(t,s,host);
 stepChoiceControls(host,t);
 if(t.graph){
- const modelInput=['domain-fraction','integer-pairs','train-meeting','natural-values','work-hours','equal-distances','shared-hyperbola-line','quadratic-story','quadratic-example','quadratic-parameter','quadratic-discriminant','quadratic-reciprocals','check-common-point'].includes(t.graph.type)&&!s.attempts&&!s.hint&&!s.guided?'':s.value;
+ const modelInput=['domain-fraction','integer-pairs','train-meeting','natural-values','work-hours','equal-distances','shared-hyperbola-line','quadratic-story','quadratic-example','quadratic-parameter','quadratic-discriminant','vieta-relations','quadratic-reciprocals','check-common-point'].includes(t.graph.type)&&!s.attempts&&!s.hint&&!s.guided?'':s.value;
  let graph=t.graph.revealAfterSubmit?{...t.graph,showSolution:s.correct}:t.graph;
  if(modelInput&&graph.scene==='walk'){
   const exact=window.MakarychevCheck.signedSquare(modelInput);

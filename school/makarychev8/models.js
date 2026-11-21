@@ -495,5 +495,27 @@
           explanation:meeting?x+' участникам доступны по '+(x-1)+' партнёров.':'Короткая сторона равна '+x+'.'}]};
   }
 
-  return { mount, experiment, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  const vietaPractice={id:'vieta-roots',title:'Сумма и произведение корней',
+    description:'Подбери корни по двум соотношениям или восстанови коэффициент у нового уравнения.'};
+  function practiceVieta(seed,level){
+    const r=2+seed%7,s=(seed%2?1:-1)*(r+1+seed%5),a=level===1?1:2+seed%5,b=-a*(r+s),c=a*r*s;
+    const term=(n,symbol)=>n===0?'':(n<0?' − ':' + ')+(symbol&&Math.abs(n)===1?'':Math.abs(n))+symbol;
+    const expression=(a===1?'':a)+'x²'+term(b,'x')+term(c,'')+' = 0';
+    const prompt=level===1?'Найди сумму и произведение корней уравнения '+expression:
+      level===2?'Подбери корни и проверь оба соотношения Виета: '+expression:
+      'Один корень уравнения '+a+'x² + bx'+term(c,'')+' = 0 равен '+r+'. Найди второй корень и b.';
+    const answer=level===1?[r+s,r*s]:level===2?[r,s]:[s,b];
+    const hint='У ax² + bx + c = 0 сумма корней равна −b/a, а произведение c/a. Проверить нужно оба отношения.';
+    return {title:'Восстанови связь между коэффициентами и корнями',prompt,kind:level===2?'set':'graph-values',answer:answer.join(';'),
+      finalLabel:level===1?'Сумма; произведение':level===2?'Оба корня':'Второй корень; коэффициент b',hint,correction:hint,
+      explanation:'Корни '+r+' и '+s+' дают сумму '+(r+s)+' и произведение '+r*s+'. Коэффициент b = '+b+'.',
+      graph:level===1?{type:'vieta-relations',sum:String(r+s),product:String(r*s)}:undefined,
+      source:{type:'authored',reference:'Новая пара корней и коэффициентов'},skills:[formulaPractice.id],
+      steps:[
+        {prompt:'Укажи старший и свободный коэффициенты.',kind:'graph-values',answer:[a,c].join(';'),hint:'Посмотри на член с x² и слагаемое без x.',explanation:'a = '+a+', c = '+c+'.'},
+        {prompt:'Чему равно произведение корней?',kind:'number',answer:String(r*s),hint:'Раздели свободный член на старший коэффициент.',explanation:c+' : '+a+' = '+r*s+'.'}
+      ]};
+  }
+
+  return { mount, experiment, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

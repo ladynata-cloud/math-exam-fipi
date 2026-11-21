@@ -162,9 +162,9 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–577 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–597 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–577 разобраны полностью/);
+ assert.match(overview.textContent,/№1–597 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
 });
@@ -247,5 +247,25 @@ test('new applied conditions have the stated physical answers at each difficulty
    assert(q.steps.every(step=>checker.check(step.answer,step)));
   }
   assert(prompts.size>=12);
+ }
+});
+
+test('Vieta practice recovers the coefficients from both new roots',()=>{
+ const {practiceVieta}=require('./models.js'),checker=require('./check.js');
+ for(const level of [1,2,3]){
+  const prompts=new Set();
+  for(let seed=0;seed<40;seed++){
+   const task=practiceVieta(seed,level);prompts.add(task.prompt);
+   const [a,c]=task.steps[0].answer.split(';').map(Number),[p,q]=task.answer.split(';').map(Number);
+   if(level===1){assert.equal(a,1);assert.equal(q,c);assert(p*p-4*q>=0);}
+   if(level===2){assert.equal(p*q,c/a);assert(p!==q);}
+   if(level===3){
+    const given=Number(task.prompt.match(/равен (-?\d+)/)[1]);
+    assert.equal(given*p,c/a);assert.equal(given+p,-q/a);
+   }
+   assert(checker.check(task.answer,task));
+   assert(task.steps.every(step=>checker.check(step.answer,step)));
+  }
+  assert(prompts.size>=15);
  }
 });
