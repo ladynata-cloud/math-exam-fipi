@@ -57,11 +57,11 @@
     return {prefix:seed?'Новые вымышленные наблюдения для тренировки. ':'Вымышленные наблюдения для разбора. ',prompt,inputPrompt:'Коды всех самых частых групп',answer:stats.answers[0],answerFormat:'unordered',steps,errors:[],table:{caption:'Учебные наблюдения. Для собственных записей используй дневник выше.',headers:['Сентябрь','Условия в выбранное время'],rows:observations.map((n,i)=>[i+1,describe(n)]),columnWidths:[28,72]},data:{observations},conditionKey:observations.join(',')};
   }
   function defaults() {
-    return {...Object.fromEntries(keys.map(k=>[k,0])),day:1,sky:0,rain:false,temp:'',question:0,response:'',verdict:0,helped:false,corrected:false};
+    return {...Object.fromEntries(keys.map(k=>[k,0])),day:1,sky:0,rain:false,temp:'',question:0,response:'',verdict:0,entry:0,expanded:false,helped:false,corrected:false};
   }
   const integer=(n,min,max)=>Number.isInteger(n)&&n>=min&&n<=max;
   function validate(s) {
-    if(keys.some(k=>!integer(s[k],0,10206))||!integer(s.day,1,15)||!integer(s.sky,0,2)||typeof s.rain!=='boolean'||typeof s.temp!=='string'||s.temp.length>8||!integer(s.question,0,4)||typeof s.response!=='string'||s.response.length>40||!integer(s.verdict,0,2)||typeof s.helped!=='boolean'||typeof s.corrected!=='boolean')throw new TypeError('Invalid weather diary');
+    if(keys.some(k=>!integer(s[k],0,10206))||!integer(s.day,1,15)||!integer(s.sky,0,2)||typeof s.rain!=='boolean'||typeof s.temp!=='string'||s.temp.length>8||!integer(s.question,0,4)||typeof s.response!=='string'||s.response.length>40||!integer(s.verdict,0,3)||!integer(s.entry,0,2)||typeof s.expanded!=='boolean'||typeof s.helped!=='boolean'||typeof s.corrected!=='boolean')throw new TypeError('Invalid weather diary');
     return s;
   }
   function parseTemp(value) {
@@ -88,25 +88,27 @@
         '<label>Температура, °C <input '+field+'temp inputmode="text" maxlength="8" placeholder="Например, 9,5"></label><button type="submit">Записать этот день</button><p role="status" '+field+'note></p></form>'+
         '<h3>Таблица частот</h3><p>Заполнено '+stats.days+' из 15 дней. '+(complete?'Можно отвечать на вопросы.':'Пока это промежуточные частоты.')+'</p>'+
         '<table class="v5q-place-table"><thead><tr><th scope="col">Группа</th><th scope="col">Дней</th></tr></thead><tbody>'+frequencies+'</tbody></table>'+
-        '<details><summary>Посмотреть записи за 15 дней</summary><table class="v5q-place-table"><thead><tr><th scope="col">Сентябрь</th><th scope="col">Мои наблюдения</th></tr></thead><tbody>'+entries+'</tbody></table></details>'+
+        '<details '+field+'entries'+(s.expanded?' open':'')+'><summary>Посмотреть записи за 15 дней</summary><table class="v5q-place-table"><thead><tr><th scope="col">Сентябрь</th><th scope="col">Мои наблюдения</th></tr></thead><tbody>'+entries+'</tbody></table></details>'+
         (complete?'<h3>Выводы по моим наблюдениям</h3><form '+field+'review><label>Выбери вопрос <select '+field+'question>'+options(prompts.map((p,i)=>[i,p.slice(0,2)+' '+['Самые частые группы','Солнечные и пасмурные','Холодные дни','Дождь и холод','Солнце и тепло'][i]]),s.question)+'</select></label><label>'+prompts[s.question]+' <input '+field+'response autocomplete="off" maxlength="40"></label><button>Проверить вывод</button> <button type="button" class="quiet" '+field+'hint>Нужна подсказка</button><p role="status" '+field+'result></p></form>':'')+'</section>';
       const day=select('['+field+'day]'),sky=select('['+field+'sky]'),rain=select('['+field+'rain]'),temp=select('['+field+'temp]'),note=select('['+field+'note]');
       temp.value=s.temp;
-      day.onchange=()=>{s.day=Number(day.value);const d=record(s[keys[s.day-1]]);s.sky=d?.sky??0;s.rain=d?.rain??false;s.temp=d?String(d.temp).replace('.',','):'';publish();draw();select('['+field+'day]').focus();};
-      sky.onchange=()=>{s.sky=Number(sky.value);publish();};rain.onchange=()=>{s.rain=rain.checked;publish();};temp.oninput=()=>{s.temp=temp.value.slice(0,8);publish();};
+      const entryNote=()=>{note.textContent=s.entry===1?'Запиши температуру от −100 до +70 °C с точностью до десятых. Дату пока не записали.':s.entry===2?'Запись за '+s.day+' сентября сохранена.':'';};entryNote();
+      const details=select('['+field+'entries]');details.ontoggle=()=>{if(details.open!==s.expanded){s.expanded=details.open;publish();}};
+      day.onchange=()=>{s.day=Number(day.value);s.entry=0;const d=record(s[keys[s.day-1]]);s.sky=d?.sky??0;s.rain=d?.rain??false;s.temp=d?String(d.temp).replace('.',','):'';publish();draw();select('['+field+'day]').focus();};
+      sky.onchange=()=>{s.sky=Number(sky.value);s.entry=0;publish();entryNote();};rain.onchange=()=>{s.rain=rain.checked;s.entry=0;publish();entryNote();};temp.oninput=()=>{s.temp=temp.value.slice(0,8);s.entry=0;publish();entryNote();};
       select('['+field+'form]').onsubmit=e=>{
         e.preventDefault();const n=parseTemp(s.temp);
-        if(n===null){note.textContent='Запиши температуру от −100 до +70 °C с точностью до десятых. Дату пока не записали.';temp.focus();return;}
+        if(n===null){s.entry=1;publish();entryNote();temp.focus();return;}
         const key=keys[s.day-1],entry=code(s.sky,s.rain,n);
         if(s[key]!==entry)clearReview();
-        s[key]=entry;publish();draw();select('['+field+'note]').textContent='Запись за '+s.day+' сентября сохранена.';
+        s[key]=entry;s.entry=2;publish();draw();
       };
       if(!complete)return;
       const q=select('['+field+'question]'),response=select('['+field+'response]'),result=select('['+field+'result]');
       response.value=s.response;q.onchange=()=>{s.question=Number(q.value);clearReview();publish();draw();select('['+field+'question]').focus();};
-      const feedback=()=>{result.textContent=s.verdict===2?(s.helped?'Верно после подсказки.':s.corrected?'Верно после исправления.':'Верно по твоим записям.'):(s.verdict===1?'Проверь свой вывод. ':'')+((s.helped||s.verdict===1)?hints[s.question]:'');};feedback();
+      const feedback=()=>{result.textContent=s.verdict===3?'Сначала запиши свой вывод.':s.verdict===2?(s.helped?'Верно после подсказки.':s.corrected?'Верно после исправления.':'Верно по твоим записям.'):(s.verdict===1?'Проверь свой вывод. ':'')+((s.helped||s.verdict===1)?hints[s.question]:'');};feedback();
       response.oninput=()=>{s.response=response.value.slice(0,40);s.verdict=0;publish();feedback();};
-      select('['+field+'review]').onsubmit=e=>{e.preventDefault();if(!s.response.trim()){result.textContent='Сначала запиши свой вывод.';return;}s.verdict=root.WorkshopMath.accepts(s.response,{v6Full:true,answer:stats.answers[s.question],answerFormat:s.question===0?'unordered':''})?2:1;if(s.verdict===1)s.corrected=true;publish();feedback();};
+      select('['+field+'review]').onsubmit=e=>{e.preventDefault();if(!s.response.trim()){s.verdict=3;publish();feedback();return;}s.verdict=root.WorkshopMath.accepts(s.response,{v6Full:true,answer:stats.answers[s.question],answerFormat:s.question===0?'unordered':''})?2:1;if(s.verdict===1)s.corrected=true;publish();feedback();};
       select('['+field+'hint]').onclick=()=>{s.helped=true;publish();feedback();};
     }
     draw();return ()=>host.replaceChildren();

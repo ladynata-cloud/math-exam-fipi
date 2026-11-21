@@ -94,3 +94,5 @@ html[data-vilenkin5-readonly=true] #main[data-v5-quality] input,html[data-vilenk
 [data-v5-weather-form],[data-v5-weather-review]{display:grid;gap:14px;margin:16px 0}
 [data-v5-weather-form] label:has([data-v5-weather-rain]){flex-direction:row;align-items:center;min-height:44px}
 [data-v5-weather-form] input[type=checkbox]{width:22px;height:22px;min-height:22px;flex:none}
+
+.v5q-place-table .v5q-unit{white-space:nowrap}
