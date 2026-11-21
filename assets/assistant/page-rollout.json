@@ -2240,10 +2240,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "b7bcda4e1bf9217fc21368f055b4c5a8e93a36c0fa99904b8087c38bdbb489f8",
-      "afterSha256": "4fdd4a3dd0345d90c6660e95c9dffb2ccc1fa4575ebb070c518cdd114b9fd90c",
+      "beforeSha256": "02eba7a2afca91fd723b1fd8906a1b68bc1bbfcdf92a4a1b56f66a821043835b",
+      "afterSha256": "da995145c6c635ea6243d900b8fae67903a1006623ceeb365cdf6e32246321e0",
       "placement": "before-head-close",
-      "sourceSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520"
+      "sourceSha": "2dcdaa2b0b0c0ab7d3bcd13eb32d88788ffc3416"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -6550,6 +6550,15 @@
     {
       "previousBaseSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60",
       "sourceBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
+      "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "previousBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
+      "sourceBaseSha": "2dcdaa2b0b0c0ab7d3bcd13eb32d88788ffc3416",
       "task": "docs/tasks/MAKARYCHEV8_134_149.md",
       "changedPaths": [
         "school/makarychev8/index.html"
