@@ -159,6 +159,7 @@ const server=http.createServer((req,res)=>{
       const survey=page.locator('#task-panel table').first();
       assert.equal(await survey.locator('tbody tr').count(),rows);
       assert(await survey.locator('caption').isVisible());
+      assert(await page.locator('#task-panel .v5q-table-scroll').evaluateAll(boxes=>boxes.every(box=>box.scrollWidth<=box.clientWidth+1)),'all source-table columns fit at 320px');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'numbered table at 320px');
       await survey.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,id+'-mobile.png')});
       await page.locator('[data-cmd=mode][data-value=practice]').click();

@@ -39,7 +39,7 @@
     steps[0].clarifications=[err([2,counts[6]],'Если считать только строки с животными, седьмыми действительно стоят птицы. В этом вопросе заголовок считается строкой 1. Прочитай строку с меткой 7.')];
     return {prompt:'з. Сколько всего млекопитающих указано в таблице опроса? В разборе сначала пройди подпункты а–ж.',inputPrompt:'Количество млекопитающих',answer:fur,steps,
       errors:[err(four,'Не все четвероногие здесь млекопитающие. Проверь черепах.'),err(mammal.length,'Это число видов. Сложи численности животных этих видов.')],
-      table:{caption:'Результаты опроса о питомцах',headers:['Строка','Кого считали','Количество'],rows:pets.map((pet,i)=>[i+2,pet,counts[i]])},data:{counts}};
+      table:{caption:'Результаты опроса о питомцах',headers:['№','Группа','Сколько'],columnWidths:[14,52,34],rows:pets.map((pet,i)=>[i+2,pet,counts[i]])},data:{counts}};
   }
   function readingSurvey(seed,random) {
     const books=seed===0?sourceBooks.slice():[];
@@ -56,7 +56,7 @@
     steps.push(step('б. Сколько учеников прочитали восемь книг?',freq[5]||0,'Проверь, встречается ли результат 8. Отсутствующему результату соответствует частота ноль.',[err(8,'Восемь — результат, который ищут. Ответ показывает, сколько раз он встретился.')]));
     return {prompt:'в. Сколько книг прочитали все ученики вместе? В разборе заполни частоты и ответь на а и б.',inputPrompt:'Общее число книг',answer:bookTotal,steps,
       errors:[err(books.length,'Ты сложил численности читателей. Для каждой группы умножь частоту на число книг и сложи произведения.'),err(total(values),'Каждый результат учтён один раз. В списке один и тот же результат может принадлежать нескольким ученикам.')],
-      table:{caption:'Анкеты читателей. Каждая запись — ответ одного ученика',headers:['Записи','Число прочитанных книг'],rows:Array.from({length:Math.ceil(books.length/8)},(_,i)=>[`${i*8+1}–${Math.min((i+1)*8,books.length)}`,books.slice(i*8,(i+1)*8).join(' · ')])},data:{books}};
+      table:{caption:'Анкеты читателей. Каждая запись — ответ одного ученика',headers:['Записи','Число прочитанных книг'],rows:Array.from({length:Math.ceil(books.length/8)},(_,i)=>[`${i*8+1}–${Math.min((i+1)*8,books.length)}`,books.slice(i*8,(i+1)*8).join(', ')])},data:{books}};
   }
   function generate(lesson,seed,M){
     const random=M.rng(seed+9153), t=lesson.number==='1.1'?animalSurvey(seed,random):readingSurvey(seed,random);
@@ -74,12 +74,13 @@
     M.generate=(id,seed)=>ids.includes(id)?generate(C.byId[id],seed,M):previous(id,seed);
   }
   const escape = value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function table(caption,headers,rows) {
-    return '<div class="v5q-table-scroll"><table class="v5q-place-table"><caption>'+escape(caption)+'</caption><thead><tr>'+headers.map(title=>'<th scope="col">'+escape(title)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map((value,i)=>i===0?'<th scope="row">'+escape(value)+'</th>':'<td>'+escape(value)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+  function table(caption,headers,rows,columnWidths=[]) {
+    const columns=columnWidths.length?'<colgroup>'+columnWidths.map(width=>'<col style="width:'+width+'%">').join('')+'</colgroup>':'';
+    return '<div class="v5q-table-scroll"><table class="v5q-place-table"><caption>'+escape(caption)+'</caption>'+columns+'<thead><tr>'+headers.map(title=>'<th scope="col">'+escape(title)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map((value,i)=>i===0?'<th scope="row">'+escape(value)+'</th>':'<td>'+escape(value)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
   }
   function taskTable(task,scene) {
-    const {caption,headers,rows}=task.table;
-    let output=table(caption,headers,rows);
+    const {caption,headers,rows,columnWidths}=task.table;
+    let output=table(caption,headers,rows,columnWidths);
     if(scene.mode==='learn'&&task.data.books){
       const values=task.data.books.includes(8)?[3,4,5,6,7,8]:[3,4,5,6,7];
       const solved=values.map((n,i)=>{
@@ -99,7 +100,7 @@
     }
     const n=state.group+3,rows=task.data.books, matches=rows.filter(v=>v===n).length;
     const result=state.weight?matches*n:matches;
-    return {title:'Отметь одинаковые анкеты',controls:[{key:'group',title:'Книг у одного читателя',values:[3,4,5,6,7,8].map((v,i)=>[i,v])},{key:'weight',title:'Что считаем',values:[[0,'Читателей'],[1,'Книги всей группы']]}],visual:'<p>'+rows.map(v=>v===n?'<mark>'+v+'</mark>':String(v)).join(' · ')+'</p>',question:state.weight?'Сколько книг прочитали все отмеченные ученики?':'Сколько читателей дали выбранный ответ?',answer:result,why:state.weight?'В группе '+matches+' чел. По '+n+' книг у каждого. Получается '+matches+' × '+n+' = '+result+'.':'Число '+n+' встретилось '+matches+' раз. Каждая отметка — один ученик.'};
+    return {title:'Отметь одинаковые анкеты',controls:[{key:'group',title:'Книг у одного читателя',values:[3,4,5,6,7,8].map((v,i)=>[i,v])},{key:'weight',title:'Что считаем',values:[[0,'Читателей'],[1,'Книги всей группы']]}],visual:'<p>'+rows.map(v=>v===n?'<mark>'+v+'</mark>':String(v)).join(', ')+'</p>',question:state.weight?'Сколько книг прочитали все отмеченные ученики?':'Сколько читателей дали выбранный ответ?',answer:result,why:state.weight?'В группе '+matches+' чел. По '+n+' книг у каждого. Получается '+matches+' × '+n+' = '+result+'.':'Число '+n+' встретилось '+matches+' раз. Каждая отметка — один ученик.'};
   }
   const api={install,generate,taskTable,explore};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
