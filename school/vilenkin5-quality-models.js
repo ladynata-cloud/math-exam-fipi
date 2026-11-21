@@ -201,7 +201,7 @@
         const c=corner||(d.key==='rays'&&s.kind==='angle'&&s.angle===90?[180,220,-1]:null);if(!c)return;
         const path=root.document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d','M '+(c[0]+11)+' '+c[1]+' v '+(c[2]*11)+' H '+c[0]);path.setAttribute('class','v5q-right-angle');path.setAttribute('data-v5-right-angle','');target.append(path);
       };
-      const dispose=root.mountLab(host,d.key,{state:s,onChange:value=>{s=normalize(lesson,value);markRightAngle();publish();}});markRightAngle();
+      const dispose=root.mountLab(host,d.key,{state:s,variant:lesson.fullKey==='project-room'?'floor':undefined,onChange:value=>{s=normalize(lesson,value);markRightAngle();publish();}});markRightAngle();
       if(d.show==='perimeter'){host.querySelector('h3').textContent='Периметр — длина границы';host.querySelector('.g5-lab-question').textContent='Сложи длины четырёх сторон. Почему всю сумму двух разных сторон умножаем на два?';}
       return dispose;
     }

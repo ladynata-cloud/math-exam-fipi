@@ -202,6 +202,35 @@ async function run(){
   ok(f.$('#model [role=status]').textContent.includes('Прогноз подтвердился'));
   ok(f.$('#model .g5-lab-equation').textContent.endsWith('= '+perimeterAnswer+' см'));
   f.route('#lesson/v5f-area-grid');ok(f.$('#model [data-v5-right-angle]'),'rectangle right-angle marker');
+  // The final project joins a measurable cutout to a minimum purchase.
+  f.route('#lesson/v5f-project-room');
+  const project='#model .g5-lab-inquiry',modelInput=project+' input';
+  const checkModel=()=>f.$(project).dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));
+  const numberOfPacks=model=>Math.ceil(2*(model.a*model.b-model.p*model.p)/5);
+  ok(f.$('#model .g5-lab-visual').hidden===false,'the plan is visible before a prediction');
+  ok(f.$('#model svg').getAttribute('aria-label').includes('печь 2 на 2 м'));
+  equal(numberOfPacks(f.snapshot().scene.model),28);
+  f.input(modelInput,'27');checkModel();
+  ok(f.$(project+' [role=status]').textContent.includes('упаковок не хватит'));
+  equal(f.snapshot().scene.attempt,0,'a model prediction never counts as an exercise attempt');
+  const projectCopy=boot('#lesson/v5f-project-room',f.saved());
+  equal(projectCopy.$(modelInput).value,'27');
+  ok(projectCopy.$(project+' [role=status]').textContent.includes('27 уп. покрывают 67,5 м²'));
+  projectCopy.close();
+  f.input('#g5-lab-garden-2','1');
+  equal(f.$(modelInput).value,'','new dimensions clear the previous prediction');
+  ok(f.$('#model svg').getAttribute('aria-label').includes('печь 1 на 1 м'));
+  f.input('#g5-lab-garden-2','3');
+  f.input(modelInput,'29');checkModel();
+  ok(f.$(project+' [role=status]').textContent.includes('под печью'));
+  f.input('#g5-lab-garden-1','7');
+  const exactModel=f.snapshot().scene.model;equal(numberOfPacks(exactModel),30);
+  f.input(modelInput,'30');checkModel();
+  ok(f.$(project+' [role=status]').textContent.includes('Прогноз подтвердился'));
+  f.input('#g5-lab-garden-0','9');
+  f.$(project+' button[type="button"]').click();
+  ok(f.$(project+' [role=status]').textContent.includes('Объяснение открыто без прогноза'));
+  equal(f.snapshot().scene.model.inquiryFirst,'');equal(f.snapshot().scene.attempt,0);
   // A real investigation writes digits into their exact place and resumes after reload.
   f.route('#lesson/v5f-division-column');
   const arithmetic=f.w.ArithmeticPractice.generate('divide',2,17);

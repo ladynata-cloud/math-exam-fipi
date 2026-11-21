@@ -288,6 +288,26 @@ async function run(browser, origin, backend, failures) {
     await teacherFrame.locator('[data-cmd="next"]').click(); await same(teacherFrame, studentFrame, 'shared check next ' + i);
   }
 
+  phase = 'final project, floor cutout and whole packages';
+  await lesson(teacherFrame, 'v5f-project-room');
+  await same(teacherFrame, studentFrame, 'floor plan before making a prediction');
+  const forecast = '#model .g5-lab-inquiry';
+  assert(await studentFrame.locator('#model .g5-lab-visual').isVisible());
+  await teacherFrame.locator(forecast + ' input').fill('27');
+  await teacherFrame.locator(forecast + ' button[type="submit"]').click();
+  const tooFew = await same(teacherFrame, studentFrame, 'insufficient coverage explained');
+  assert.equal(tooFew.scene.model.inquiryFirst, '27'); assert.equal(tooFew.scene.attempt, 0);
+  assert.match(await studentFrame.locator(forecast + ' [role=status]').innerText(), /не хватит/);
+  await ownership(teacher, student, true);
+  await studentFrame.locator('#g5-lab-garden-2').press('ArrowRight');
+  const adjusted = await same(studentFrame, teacherFrame, 'larger stove and new forecast');
+  assert.equal(adjusted.scene.model.p, 3); assert.equal(adjusted.scene.model.inquiryFirst, '');
+  await studentFrame.locator(forecast + ' input').fill('26');
+  await studentFrame.locator(forecast + ' button[type="submit"]').click();
+  await same(studentFrame, teacherFrame, 'pupil solves revised purchase');
+  assert.match(await teacherFrame.locator(forecast + ' [role=status]').innerText(), /Прогноз подтвердился/);
+  await ownership(teacher, student, false);
+
   phase = 'both-part route coverage, late join and shared handwritten board';
   for (const id of ['v5f-table-read', 'v5f-place-build', 'v5f-remainder-find', 'v5f-area-grid', 'v5f-fraction-parts', 'v5f-decimal-divide', 'v5f-angle-build']) {
     await lesson(teacherFrame, id); await same(teacherFrame, studentFrame, id);
