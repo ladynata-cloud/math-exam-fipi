@@ -836,6 +836,27 @@ function linearTrial(config,raw){
  const holds={'<':delta<0n,'>':delta>0n,'≤':delta<=0n,'≥':delta>=0n}[config.operator];
  return {left:left.label,right:right.label,sign,holds};
 }
+function proofReviewModel(host,g){
+ host.className='task-graphs quantity-model';
+ const raw=g.trial||'',good=admissibleSample(raw,g.domain,g.symbols.length);
+ if(!raw){boundNote(host,'Выбери числа на первом шаге. Для полного доказательства затем обоснуй знак при всех допустимых значениях.');return;}
+ if(!good){boundNote(host,{positive:'Все введённые числа должны быть положительными.','root-sum-one':'Нужны три числа с суммой 1; каждое не меньше −1/4.','above-one':'Для этой задачи a должно быть строго больше 1.'}[g.domain]).dataset.proofDomain='invalid';return;}
+ const vals=String(raw).split(';').map(s=>M.parse(s)),nums=vals.map(v=>v.n/v.d),fmt=v=>v.toLocaleString('ru-RU',{maximumSignificantDigits:8});
+ let left,right,relation,note;
+ if(g.mode==='four-roots'){
+  const [a,b,c,d]=nums;left=Math.sqrt((a+c)*(b+d));right=Math.sqrt(a*b)+Math.sqrt(c*d);
+  const [p,q,r,s]=vals;const equal=BigInt(p.n)*BigInt(s.n)*BigInt(q.d)*BigInt(r.d)===BigInt(q.n)*BigInt(r.n)*BigInt(p.d)*BigInt(s.d);
+  relation=equal?'=':'>';note=equal?'Здесь ad = bc, квадрат разности корней равен нулю.':'Здесь ad ≠ bc, поэтому квадрат разности корней положителен.';
+ }else if(g.mode==='three-roots'){
+  left=nums.reduce((sum,v)=>sum+Math.sqrt(1+4*v),0);right=5;relation='<';note='По отдельности сравни √(1+4t) с 1+2t. Каждая разность квадратов равна 4t². Все три t одновременно нулём при сумме 1 быть не могут.';
+ }else{
+  const [a]=nums;left=1/Math.sqrt(a);right=2/(Math.sqrt(a+1)+Math.sqrt(a-1));relation='<';note='Сопряжённая сумма положительна. Её квадрат меньше 4a, так как √(a²−1) < a. При близких числах округлённые записи могут совпасть.';
+ }
+ const svg=node('svg',{viewBox:'0 0 310 100',role:'img','aria-label':'Длины отрезков пропорциональны численным значениям сторон при твоей подстановке.'});
+ const top=Math.max(left,right,1e-100);for(const [i,v]of [left,right].entries()){const y=28+i*40,end=23+244*v/top,color=i?'#925323':'#087267';svg.append(node('line',{x1:23,x2:280,y1:y,y2:y,stroke:'#d7dedb'}),node('line',{x1:23,x2:end,y1:y,y2:y,stroke:color,'stroke-width':5}),node('text',{x:23,y:y-7,'font-size':12},i?'Правая сторона':'Левая сторона'),i?node('rect',{x:end-3,y:y-3,width:6,height:6,fill:color}):node('circle',{cx:end,cy:y,r:4,fill:color}));}host.append(svg);
+ const line=document.createElement('p');line.className='small';line.dataset.proofComparison=relation;line.textContent='При твоих значениях левая сторона ≈ '+fmt(left)+', правая ≈ '+fmt(right)+'.';host.append(line);boundNote(host,note);
+}
+
 function systemReviewView(host,g,value){
  host.className='task-graphs quantity-model';
  const q=M.parse(g.partial?.[0]),say=(text,key,v)=>{const p=boundNote(host,text);if(key)p.dataset[key]=String(v);};
@@ -1148,6 +1169,14 @@ function admissibleSample(raw,domain,count){
   if(xs.length!==2)return false;
   const delta=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);return domain==='lt-pair'?delta<0n:delta>0n;
  }
+ if(domain==='above-one')return xs.length===1&&a.n>a.d;
+ if(domain==='ride-plan')return xs.length===2&&BigInt(a.n)>2n*BigInt(a.d)&&b.n>0;
+ if(domain==='product-nine')return xs.length===3&&xs.every(v=>v.n>0)&&xs.reduce((p,v)=>p*BigInt(v.n),1n)===9n*xs.reduce((p,v)=>p*BigInt(v.d),1n);
+ if(domain==='root-sum-one'){
+  if(xs.length!==3||xs.some(v=>4n*BigInt(v.n)<-BigInt(v.d)))return false;
+  const den=xs.reduce((p,v)=>p*BigInt(v.d),1n);
+  return xs.reduce((sum,v)=>sum+BigInt(v.n)*(den/BigInt(v.d)),0n)===den;
+ }
  if(domain==='nonnegative')return xs.every(v=>v.n>=0);
  if(xs.some(v=>v.n<=0))return false;
  if(domain==='positive')return true;
@@ -1186,7 +1215,7 @@ function inequalityScene(host,config,value){
  const add=(txt,key,state)=>{const p=document.createElement('p');p.className='small';p.textContent=txt;if(key)p.dataset[key]=state;host.append(p);};
  if(!input){add('На числовой прямой большее значение располагается правее. Подставь число в первом шаге и сравни обе стороны.');return;}
  if(config.sourceDomain&&!admissibleSample(input,config.sourceDomain,config.symbols.length)){
-  const constraints={'lt-pair':'первое число должно быть меньше второго','gt-pair':'первое число должно быть больше второго','natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b'};
+  const constraints={'lt-pair':'первое число должно быть меньше второго','gt-pair':'первое число должно быть больше второго','natural-gt':'нужны натуральные a > b','natural-lt':'нужны натуральные a < b','positive':'каждая величина должна быть положительна','nonnegative':'нужны неотрицательные величины','positive-unequal':'нужны положительные и разные a и b','product-nine':'нужны положительные a,b,c с произведением 9','ride-plan':'плановая скорость должна превышать 2, а расстояние быть положительным'};
   add('Подстановка вне условия: '+constraints[config.sourceDomain]+'.','inequalityDomain','invalid');return;
  }
  if(config.compareSquares)add('На оси показаны квадраты двух неотрицательных сторон.');
@@ -1600,6 +1629,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-proof-review'){proofReviewModel(host,config);return;}
  if(config.type==='source-system-review'){systemReviewView(host,config,value);return;}
  if(config.type==='source-system-rays'){systemTrialView(host,config,value);return;}
  if(config.type==='linear-ray-trial'){linearTrialGraph(host,config,value);return;}
