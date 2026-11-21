@@ -1379,3 +1379,17 @@ test('follow both original cycle directions and distinguish divisor, dividend, m
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('traverse all ordered fraction routes and continue mixed numbers, expression chains and comparison signs',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [j,expected]of ['-17/12','-3/4','-3/2','5/8'].entries()){const c=go(62+j);assert.equal(f.d.querySelectorAll('#task-figure svg rect').length,7);set(c[0],2);set(c[1],2);set(c[2],1);assert(out().includes('Результат: '+expected+'.'),out());set(c[1],1);assert.equal(f.q(c[2]).value,'0');set(c[0],5);set(c[2],1);assert(out().includes('Результат: '));}
+  let c=go(66);set(c[2],1);assert(out().includes('7/3'));set(c[0],3);set(c[1],5);set(c[2],1);assert(out().includes('16/5'));
+  c=go(67);set(c[0],7);set(c[2],1);assert(out().includes('256/15 = 17 и 1/15'));set(c[1],5);set(c[2],1);assert(out().includes('320/15 = 21 и 1/3'));
+  for(const [j,k]of [[0,'-14/3'],[1,'-35/6'],[2,'-15'],[3,'7/5'],[4,'-5'],[5,'1']]){c=go(68+j);const last=f.q(c[1]).options.length-1;set(c[1],last);assert(out().includes('Итог: '+k+'.'),out());set(c[0],1);set(c[1],last);assert(out().includes('Итог: '));assert(!out().includes('Итог: '+k+'.'));}
+  const signs=['<','>','>','<','<','<','>','<'];for(const [i,sign]of signs.entries()){c=go(74+i);set(c[1],2);assert(out().includes(' '+sign+' '));set(c[0],1);set(c[1],2);assert(out().includes(' '+(sign==='<'?'>':'<')+' '));set(c[0],2);set(c[1],2);assert(out().includes('Сравнение: '));}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

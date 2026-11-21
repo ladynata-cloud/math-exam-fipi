@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,916);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,936);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -935,6 +935,14 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  for(const [i,t]of group(98).entries()){const v=t.directedCycle;let n=M.parse(v.start);const vals=v.ops.map(([k,x])=>n=M.operation({'+':'add','−':'subtract','×':'multiply','÷':'divide'}[k],n,x));assert(M.equal(vals[5],v.start));assert.equal(t.steps.length,6);for(let k=0;k<5;k++)assert(M.equal(vals[k],t.steps[k].answer));assert.equal(v.side,i);}
  const keys=[['3/5','17/10','26/5','39/10','-1/2','-7/5'],['2/25','9/20','15','-3/50','9/25','-80']];
  for(const [j,n]of [99,100].entries())group(n).forEach((t,i)=>{assert(M.equal(t.answer,keys[j][i]),t.id);assert.equal(t.steps[0].kind,'choice');});
+}
+{
+ const rows=D.lessons.find(l=>l.id==='p37').tasks,groups=n=>Array.from(rows.filter(t=>t.source.exercise===n));
+ for(const [n,k]of [[101,4],[102,2],[103,6],[104,8]]){assert.equal(groups(n).length,k);assert(groups(n).every(t=>t.source.page===24));}
+ const expected101=[['0','-3/4','-2/3','5/6','1/12','1/6','-3/4','-3/2','-17/12'],['7/3','3/2','3/4','1/3','-1/2','-5/4','5/6','0','-3/4'],['1','0','-1/2','-3/2','0','3/4','3','0','-3/2'],['2','-6/5','1/4','-4/3','4/5','-1/6','5','-3','5/8']];
+ for(const [j,t]of groups(101).entries()){assert.equal(t.kind,'manual');assert.equal(t.steps.length,9);assert.deepEqual(Array.from(t.steps,s=>M.answer(s.answer)),expected101[j]);}
+ const seq=groups(102)[1];assert.deepEqual(Array.from(seq.steps,s=>M.answer(s.answer)),['4/3','8/5','16/7','32/9','64/11','64/11','128/13','128/13','256/15','256/15']);assert.equal(seq.steps.filter(s=>s.answerFormat==='mixed-number').length,3);
+ assert.deepEqual(Array.from(groups(103),t=>M.answer(t.answer)),['-14/3','-35/6','-15','7/5','-5','1']);assert.deepEqual(Array.from(groups(104),t=>t.answer),['<','>','>','<','<','<','>','<']);
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
