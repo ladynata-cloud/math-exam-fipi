@@ -170,7 +170,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:24},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
+  equal(plain(path.numbered),Array.from({length:29},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -447,8 +447,42 @@ function printedTextNumbersRegression(){
   }
   equal(f.errors,[]);f.close();
 }
+function printedTreeRegression(){
+  const f=boot(),ids=[25,26,27,28,29].map(n=>'v5f-printed-1-'+n),generate=(id,s=0)=>f.M.generate(id,s),[tree,zero,packs,distinct,neighbors]=ids.map(id=>generate(id));
+  equal(plain(tree.data.numbers),[333,335,353,355,533,535,553,555]);equal(tree.answer,8);
+  equal(plain(zero.data.numbers),[600,606,660,666]);equal(zero.data.sum,2532);equal(zero.data.divisor,422);equal(zero.answer,6);
+  equal(plain(packs.steps.map(s=>s.answer)),[10,100,100000,10,10000]);equal(plain(distinct.answer),[6,3]);equal(plain(distinct.data.alphabet),[0,2,7]);
+  equal(plain(neighbors.answer),[3999,1000,7990,5009]);
+  const seeds=ids.map(()=>new Set());
+  for(let seed=1;seed<65;seed++){
+    const ts=ids.map((id,i)=>{const t=generate(id,seed);seeds[i].add(t.conditionKey);return t;});
+    for(let i=0;i<2;i++){
+      const t=ts[i],{width,digits}=t.data,valid=[];
+      for(let n=10**(width-1);n<10**width;n++)if([...String(n)].every(v=>digits.includes(+v)))valid.push(n);
+      equal(plain(t.data.numbers),valid);
+      if(i)equal(t.answer,valid.reduce((a,b)=>a+b,0)/t.data.divisor);else equal(t.answer,valid.length);
+      for(const [pos,prefix] of t.data.levels.flat().entries()){
+        const view=f.w.Vilenkin5Numbered.explore(f.C.byId[ids[i]],{prefix:pos},t);
+        equal(view.answer,valid.filter(n=>String(n).startsWith(prefix)).length);
+      }
+    }
+    ts[2].data.values.forEach(([n,u],i)=>equal(ts[2].steps[i].answer*u,n));
+    equal(plain(ts[3].answer),[String(ts[3].data.n).length,new Set(String(ts[3].data.n)).size]);
+    ts[4].data.moves.forEach(([n,delta],i)=>equal(ts[4].answer[i],n+delta));
+  }
+  seeds.forEach(s=>ok(s.size>6));
+  f.route('#lesson/'+ids[1]);f.submit('2');ok(f.snapshot().scene.message.includes('первом разряде'));
+  for(const row of zero.steps){f.submit(value(f.M,row));ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');}
+  f.submit('6');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[2]);f.submit('0');ok(f.snapshot().scene.message.includes('полных группах'));
+  f.route('#lesson/'+ids[3]);f.submit('6');f.click('[data-cmd=next]');f.submit('7;0;2');f.click('[data-cmd=next]');f.submit('6');equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('всего написанных знаков'));
+  f.submit('3');f.click('[data-cmd=next]');f.submit('6;3');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+ids[4]);f.submit('4001');ok(f.snapshot().scene.message.includes('противоположное'));
+  for(const row of neighbors.steps){f.submit(value(f.M,row));f.click('[data-cmd=next]');}f.submit('3999;1000;7990;5009');ok(f.snapshot().scene.correct);
+  equal(f.errors,[]);f.close();
+}
 async function run(){
-  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();
+  circlePointsRegression();numberedTablesRegression();scheduleAndEqualityRegression();orderAndJourneyRegression();weatherDiaryRegression();pointEndRegression();printedDigitsRegression();printedClassesRegression();printedTextNumbersRegression();printedTreeRegression();
   const f=boot();
   equal(f.C.pathById.vilenkin5.ids.length,134);
   equal(f.$('#main').querySelectorAll('.v5-unit-card').length,53);

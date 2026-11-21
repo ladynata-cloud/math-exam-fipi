@@ -98,3 +98,5 @@ html[data-vilenkin5-readonly=true] #main[data-v5-quality] input,html[data-vilenk
 .v5q-place-table .v5q-unit{white-space:nowrap}
 
 .v5q-model svg.v5q-mass-view text{font-size:15px}
+
+.v5q-model svg.v5q-choice-tree text{font-size:16px}

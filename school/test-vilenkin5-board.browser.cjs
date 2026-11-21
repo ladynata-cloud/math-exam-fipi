@@ -442,6 +442,17 @@ async function run(browser, origin, backend, failures) {
   const marked=await same(studentFrame,teacherFrame,'right endpoint does not add an interior point');assert.equal(marked.scene.model.position,9);assert(marked.scene.model.seen);
   await narrow(student,studentFrame,'open-interval');await ownership(teacher,student,false);
 
+  phase = 'leading digit and binary choice tree';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('.v5-hero').waitFor();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-1-26"]').click();await studentFrame.locator('h1').filter({hasText:'№1.26'}).waitFor();
+  await teacherFrame.locator('#answer').fill('2');await teacherFrame.locator('#answer-form button').click();const leading=await same(teacherFrame,studentFrame,'zero cannot begin a three-digit numeral');assert.match(leading.scene.message,/первом разряде/);
+  await teacherFrame.locator('#answer').fill('1');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await same(teacherFrame,studentFrame,'first digit fixed');await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=prefix]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('4');await studentFrame.locator('[data-v5-predict] button').click();
+  const tree=await same(studentFrame,teacherFrame,'four endings under prefix six');assert(tree.scene.model.seen);assert.equal(tree.scene.model.prefix,1);
+  await studentFrame.locator('#answer').fill('666;606;660;600');await studentFrame.locator('#answer-form button').click();const perm=await same(studentFrame,teacherFrame,'list in a different valid order');assert(perm.scene.correct);
+  await narrow(student,studentFrame,'leading-choice-tree');await ownership(teacher,student,false);
+
   phase = 'circle, disk and radius in the second printed volume';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
   await teacherFrame.locator('a[href="#lesson/v5f-printed-5-1"]').click();
