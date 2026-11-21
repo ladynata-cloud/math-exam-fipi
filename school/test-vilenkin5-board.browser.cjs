@@ -1175,6 +1175,19 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('#answer-form button').click();const correctedDictation=await same(teacherFrame,studentFrame,'exact dictation corrected independently');
   assert(correctedDictation.scene.correct);assert.equal(correctedDictation.scene.attempt,2);assert.deepEqual(correctedDictation.scene.hintLevels,{});await narrow(student,studentFrame,'dictated-fraction');
 
+  phase = 'source 5.54: February is not one twelfth of the year in days';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-54"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.54'}).waitFor();
+  await teacherFrame.locator('#answer').fill('366');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('1/12');await teacherFrame.locator('#answer-form button').click();
+  const calendarWrong=await same(teacherFrame,studentFrame,'three months use one year in days');assert.match(calendarWrong.scene.message,/разное число дней/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=pick]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=modeIndex]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('335/366');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('29/366');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const calendarReturn=await same(studentFrame,teacherFrame,'calendar for March and February draft restored');assert.equal(calendarReturn.scene.savedInput,'29/366');assert.equal(calendarReturn.scene.model.pick,1);assert(calendarReturn.scene.model.seen);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'pupil reloads the leap year');
+  await teacherFrame.locator('#answer-form button').click();const correctedFebruary=await same(teacherFrame,studentFrame,'the learner used 29 days');assert(correctedFebruary.scene.correct);assert.equal(correctedFebruary.scene.attempt,2);assert.deepEqual(correctedFebruary.scene.hintLevels,{});await narrow(student,studentFrame,'fraction-of-leap-year');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
