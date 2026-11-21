@@ -25370,7 +25370,11 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-5-02",
@@ -25387,7 +25391,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-03",
@@ -25404,7 +25411,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-04",
@@ -25421,7 +25431,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-05",
@@ -25438,7 +25451,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-06",
@@ -25455,7 +25471,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-07",
@@ -25472,7 +25491,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-08",
@@ -25489,7 +25511,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-09",
@@ -25506,7 +25531,11 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-5-10",
@@ -25523,7 +25552,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-11",
@@ -25540,7 +25572,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-12",
@@ -25557,7 +25592,11 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-5-13",
@@ -25574,7 +25613,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-14",
@@ -25591,7 +25633,10 @@
         "pdfPages": [
           140
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-6-01",

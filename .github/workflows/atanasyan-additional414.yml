@@ -52,6 +52,7 @@ jobs:
           node tools/stereo-textbook/cone-nets-and-frusta.test.cjs
           node tools/stereo-textbook/sphere-measures.test.cjs
           node tools/stereo-textbook/sphere-applications.test.cjs
+          node tools/stereo-textbook/volume-selfcheck.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -128,6 +129,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: sphereApplications
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-applications
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify all printed chapter V volume review questions including subparts on phone, tablet and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: volumeSelfcheck
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/volume-selfcheck
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -176,5 +182,6 @@ jobs:
             artifacts/cone-nets-and-frusta/
             artifacts/sphere-measures/
             artifacts/sphere-applications/
+            artifacts/volume-selfcheck/
           retention-days: 14
           if-no-files-found: error

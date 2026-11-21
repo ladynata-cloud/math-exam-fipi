@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T16:26:00Z",
-  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 517 and points 52–62, with 837 reviewed cards. Later exercise positions remain drafts.",
+  "registeredAt": "2026-11-21T16:34:00Z",
+  "scope": "Introduction and chapters I–IV, plus chapter V through exercise 517, points 52–62 and the 14 chapter V self-checks, with 854 reviewed cards. Later exercise positions remain drafts.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1345,6 +1345,32 @@
       ],
       "evidence": "tools/stereo-textbook/sphere-applications.json",
       "mathematicalReport": "tools/stereo-textbook/sphere-applications.test.cjs"
+    },
+    {
+      "reviewer": "Codex: source comparison, coordinate verification and worked-example review",
+      "reviewedAt": "2026-11-21T16:34:00Z",
+      "scope": "Chapter V printed review questions 1–14, including the distinct printed subparts of questions 1, 9 and 12",
+      "cardIds": [
+        "ex-selfcheck-v-01-a",
+        "ex-selfcheck-v-01-b",
+        "ex-selfcheck-v-02",
+        "ex-selfcheck-v-03",
+        "ex-selfcheck-v-04",
+        "ex-selfcheck-v-05",
+        "ex-selfcheck-v-06",
+        "ex-selfcheck-v-07",
+        "ex-selfcheck-v-08",
+        "ex-selfcheck-v-09-a",
+        "ex-selfcheck-v-09-b",
+        "ex-selfcheck-v-10",
+        "ex-selfcheck-v-11",
+        "ex-selfcheck-v-12-a",
+        "ex-selfcheck-v-12-b",
+        "ex-selfcheck-v-13",
+        "ex-selfcheck-v-14"
+      ],
+      "evidence": "tools/stereo-textbook/volume-selfcheck.json",
+      "mathematicalReport": "tools/stereo-textbook/volume-selfcheck.test.cjs"
     }
   ],
   "cards": [
@@ -4695,6 +4721,74 @@
     {
       "id": "ex-main-0517",
       "sha256": "01ec5d9821cb79ac6216124d2a2037db22714d9ef771127a3609da068d8d234a"
+    },
+    {
+      "id": "ex-selfcheck-v-01-a",
+      "sha256": "efcacbfc8c7896cb12e8ee81526f41455ec9d820d7a3f8e7cab638f9ecdd3630"
+    },
+    {
+      "id": "ex-selfcheck-v-01-b",
+      "sha256": "4308da2066f18b49ae938899723d075eff87e3cfcf4b2dabf97762245271c2e5"
+    },
+    {
+      "id": "ex-selfcheck-v-02",
+      "sha256": "02e23c7e911407405290c2e8e53cd0da8d099256cc45deff01bbe5a967bca6a1"
+    },
+    {
+      "id": "ex-selfcheck-v-03",
+      "sha256": "d41f5f6832b8138f9b8cb66d896a26daf3f427b730238dc6b26a36d6fec1918e"
+    },
+    {
+      "id": "ex-selfcheck-v-04",
+      "sha256": "69dec5fe6814aa00cf50d07bc67a54c68f911cf7d39498993cdafa404f160268"
+    },
+    {
+      "id": "ex-selfcheck-v-05",
+      "sha256": "2ec7218d4305ef2a4451d33ae1e062f6ed6d6c096bae9c447d2ee625cc80b8eb"
+    },
+    {
+      "id": "ex-selfcheck-v-06",
+      "sha256": "b561157e4cf28e341c87069d0767c78a5f93c4c7bdf5ab5c66e2c4ff5d467a63"
+    },
+    {
+      "id": "ex-selfcheck-v-07",
+      "sha256": "8051b0ccfc570287041795ea4dca1bd0c9e5ec64b8480039a5d403458b3eedde"
+    },
+    {
+      "id": "ex-selfcheck-v-08",
+      "sha256": "75c6e5d465c48e5fc3cb4359e9bad330b3ce3a840d7a051fa75ce88ca40b7b4b"
+    },
+    {
+      "id": "ex-selfcheck-v-09-a",
+      "sha256": "e64c0a3f82c12d24dd81ffb78792742c624420f8352e234f17ad3acd10c942cc"
+    },
+    {
+      "id": "ex-selfcheck-v-09-b",
+      "sha256": "254797f9404c1d39268bc02e8cbbee4227b77a3adbd5c4f5cb78dae2a40fe5c2"
+    },
+    {
+      "id": "ex-selfcheck-v-10",
+      "sha256": "0d36b04fa4049a6e22a9195469fd0241370110b9d5bf47e48f7b8f7cc874741e"
+    },
+    {
+      "id": "ex-selfcheck-v-11",
+      "sha256": "8ea307559b562a8a5d14d03c34f274ee57da37a9f23b61ee8dc48bd94ec39a36"
+    },
+    {
+      "id": "ex-selfcheck-v-12-a",
+      "sha256": "eee30efc3393c306c73b17372b1633a7d83f0abc84ccbf2233ce7c21f934fc66"
+    },
+    {
+      "id": "ex-selfcheck-v-12-b",
+      "sha256": "38a37f8a81cf8d4d10e8bc3ca4a59b3798d2a38ac571c4c843540893ae37301c"
+    },
+    {
+      "id": "ex-selfcheck-v-13",
+      "sha256": "ac95de078e8a59343f3e4d198ac446169a7d3f11b64ff3d7e761540cf64efd33"
+    },
+    {
+      "id": "ex-selfcheck-v-14",
+      "sha256": "c45cacae81e8d5c14f2f6967a627c93fd7d06e5dd047f334b35a468865ccf2e6"
     }
   ]
 }

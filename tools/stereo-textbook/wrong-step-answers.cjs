@@ -106,6 +106,21 @@ const misconceptions = new Map([
   ['ex-main-0515/step-1', '3/4'], // Returned the water fraction.
   ['ex-main-0516/step-3', '32'], // Counted only the seam allowance.
   ['ex-main-0517/step-3', '2'], // Computed lateral surface alone.
+  ['ex-selfcheck-v-01-a/step-3', '12'], // Counted the full body instead of its difference.
+  ['ex-selfcheck-v-02/step-3', '1/8'], // Scaled the equal height as well.
+  ['ex-selfcheck-v-03/step-3', '1/2'], // Treated circular area as linear in diameter.
+  ['ex-selfcheck-v-04/step-2', '1/4'], // Omitted the doubled height.
+  ['ex-selfcheck-v-05/step-2', '4'], // Used the side as a perpendicular height.
+  ['ex-selfcheck-v-06/step-2', '8'], // Scaled all three dimensions when heights are equal.
+  ['ex-selfcheck-v-07/step-3', '4'], // Used the entire excess for a single cone.
+  ['ex-selfcheck-v-08/step-3', '1'], // Assumed swapping a radius with a height preserves volume.
+  ['ex-selfcheck-v-09-b/step-2', '1/4'], // Computed areas, not volumes.
+  ['ex-selfcheck-v-10/step-2', '3'], // Divided radii only.
+  ['ex-selfcheck-v-11/step-3', 'sqrt(3)'], // Returned the radius ratio.
+  ['ex-selfcheck-v-12-a/step-2', '1/8'], // Cubed the radius ratio.
+  ['ex-selfcheck-v-12-b/step-2', '324'], // Scaled the area by the volume ratio.
+  ['ex-selfcheck-v-13/step-2', '8'], // Left the given volume ratio unchanged.
+  ['ex-selfcheck-v-14/step-2', '9/4'], // Left the given surface ratio unchanged.
   ['ex-main-0464-c/step-4', '2.25'], // One of the six equilateral triangles.
 ]);
 
