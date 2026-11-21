@@ -1195,6 +1195,52 @@ function ratioCandidates(task){
  }
  return [...values].sort((a,b)=>{const x=M.parse(a),y=M.parse(b);return x.n/x.d-y.n/y.d;});
 }
+const cutPatterns={
+ pentomino:{w:4,h:4,outside:new Set(['3,3']),dots:new Set(),plans:[['1133','1133','1223','2220'],['1112','1122','3322','3330'],['2133','1133','1123','2220']]},
+ dotTrios:{w:6,h:4,outside:new Set(),dots:new Set(['1,0','1,1','3,1','4,1','5,1','5,2','1,3','3,3']),plans:[['777811','668821','564223','554433'],['778811','766821','564223','554433'],['111222','333444','555666','777888']]},
+};
+function cellPieces(plan){
+ const parts=[];
+ plan.forEach((row,y)=>[...row].forEach((val,x)=>{if(val!=='0')(parts[Number(val)-1]??=[]).push([x,y]);}));return parts;
+}
+function shapeSignature(cells){
+ function normalized(items){const minX=Math.min(...items.map(p=>p[0])),minY=Math.min(...items.map(p=>p[1]));return items.map(([x,y])=>(x-minX)+','+(y-minY)).sort().join('|');}
+ let pts=cells;const keys=[];
+ for(let turn=0;turn<4;turn++){keys.push(normalized(pts),normalized(pts.map(([x,y])=>[-x,y])));pts=pts.map(([x,y])=>[-y,x]);}
+ return keys.sort()[0];
+}
+function connectedCells(cells){
+ const known=new Set([cells[0].join(',')]);let length;
+ do{length=known.size;for(const [x,y]of cells){if([[x-1,y],[x+1,y],[x,y-1],[x,y+1]].some(p=>known.has(p.join(','))))known.add(x+','+y);}}while(known.size!==length);
+ return known.size===cells.length;
+}
+function cutGridFigure(design,plan,selected){
+ const d=cutPatterns[design],unit=44,w=unit*d.w+16,h=unit*d.h+16;
+ const s=svg('svg',{viewBox:'0 0 '+w+' '+h,role:'img','aria-label':'Фигура '+(design==='pentomino'?'А':'Б')+(plan?' с вариантом разрезов':' без разрезов'),class:'pm-chart'});
+ const colors=['#def3ed','#fff1d4','#e3e5fa','#d6ebfb','#ffe2d2','#ead8ef','#dceaca','#e6e1d6'];
+ for(let y=0;y<d.h;y++)for(let x=0;x<d.w;x++){
+  if(d.outside.has(x+','+y))continue;
+  const group=plan?Number(plan[y][x]):0,X=8+x*unit,Y=8+y*unit,isDot=d.dots.has(x+','+y);
+  s.append(svg('rect',{x:X,y:Y,width:unit,height:unit,fill:group?(!selected||selected===group?colors[group-1]:'#fff'):'#fff',stroke:'#507165','stroke-width':1,'data-cell':x+','+y,'data-group':group,'data-dot':Number(isDot)}));
+  const sides=[[-1,0,X,Y,X,Y+unit],[1,0,X+unit,Y,X+unit,Y+unit],[0,-1,X,Y,X+unit,Y],[0,1,X,Y+unit,X+unit,Y+unit]];
+  for(const [dx,dy,x1,y1,x2,y2] of sides){const nx=x+dx,ny=y+dy,outer=nx<0||nx>=d.w||ny<0||ny>=d.h||d.outside.has(nx+','+ny);if(outer||plan&&Number(plan[ny][nx])!==group)ln(s,x1,y1,x2,y2,{stroke:'#215344','stroke-width':3});}
+  if(isDot)s.append(svg('circle',{cx:X+unit/2,cy:Y+unit/2,r:7,fill:'#fff',stroke:'#1b302b','stroke-width':2.5}));
+  if(group)txt(s,X+5,Y+12,String(group),{'font-size':10,'text-anchor':'start'});
+ }return s;
+}
+function sectionTriangle(variant,part){
+ const A=[40,228],C=[365,228],B=variant?[128,40]:[270,48],t=[1/3,1/2,2/3][part],at=(x,y)=>x.map((v,i)=>v+(y[i]-v)*t),M=at(A,B),N=at(C,B);
+ const s=svg('svg',{viewBox:'0 0 410 260',role:'img','aria-label':'Треугольник ABC с сечением MN параллельно AC',class:'pm-chart'});
+ for(const [label,x,y]of [['AB',A,B],['BC',B,C],['AC',A,C],['MN',M,N]])s.append(svg('line',{x1:x[0],y1:x[1],x2:y[0],y2:y[1],stroke:label==='MN'?'#a85a20':'#205b46','stroke-width':label==='MN'?4:3,'data-segment':label}));
+ for(const [name,pt,dx,dy]of [['A',A,-7,20],['B',B,0,-8],['C',C,8,20],['M',M,-15,-2],['N',N,15,-2]]){
+  s.append(svg('circle',{cx:pt[0],cy:pt[1],r:3,fill:'#205b46','data-triangle-point':name}));txt(s,pt[0]+dx,pt[1]+dy,name,{'font-size':17});
+ }
+ const dist=(l,r)=>Math.hypot(l[0]-r[0],l[1]-r[1])/20;
+ return {svg:s,AM:dist(A,M),MB:dist(M,B),BN:dist(B,N),NC:dist(N,C)};
+}
+function scoreFigure(rows){
+ return table(['Строка','Буква','Баллы'],rows.map(([l,...marks],i)=>[i+1,l,marks.join(' · ')]));
+}
 const operationSigns=['+','−','×','÷'];
 const operationKeys=['add','subtract','multiply','divide'];
 function wholeFromExtraValues(t,variant){
@@ -1989,6 +2035,13 @@ function configFor(lesson,task){
  }
  if(lesson?.id==='p35' && task?.likeTermsStudy)return {title:'Собери слагаемые с одинаковыми буквами и степенями',controls:[c('Буквенная часть',likeTermOptions(task.likeTermsStudy)),c('Пример',[[0,'Из задачи'],[1,task.likeTermsStudy.substitutions?'Другие значения':'Другое число']]),c('Проверка',[[0,'Сначала посчитаю'],[1,'Сумма группы'],[2,'Подстановка']])],initial:[0,0,0]};
  if(lesson?.id==='p17' && task?.proportionReading)return {title:'Сравни два отношения',controls:[c('Числа',[[0,'Из книги'],[1,'Изменить третье число']]),c('Способ',[[0,'Сначала решу'],[1,'Два частных'],[2,'Два произведения']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.tariffStudy)return {title:'Постоянная прибавка от первого тарифа',controls:[c('Первый тариф',[6000,8000]),c('Разряд',range(1,9)),c('Сравнение',[[0,'Сначала решу'],[1,'Сумма и отношение'],[2,'Процент изменения']])],initial:[8000,1,0]};
+ if(lesson?.id==='p18' && task?.scoreRanking)return {title:'Средние баллы и порядок коэффициентов',controls:[c('Строка',task.scoreRanking.map(([l],i)=>[i,(i+1)+' · '+l])),c('Таблица',[[0,'Из упражнения'],[1,'Другие баллы первой строки']]),c('Проверка',[[0,'Сначала решу'],[1,'Коэффициент'],[2,'Порядок всех строк']])],initial:[0,0,0]};
+ if(lesson?.id==='p18' && task?.triangleSection)return {title:'Сечение треугольника параллельно основанию',controls:[c('Треугольник',[[0,'Вершина справа'],[1,'Вершина слева']]),c('Доля AM от AB',[[0,'1/3'],[1,'1/2'],[2,'2/3']]),c('Измерения',[[0,'Только чертёж'],[1,'Четыре длины'],[2,'Пропорции']])],initial:[0,0,0]};
+ if(lesson?.id==='p18' && task?.classParts)return {title:'Раздели класс на равные двенадцатые',controls:[c('Сверх четверти класса',[3,4,5]),c('Этап',[[0,'Сначала решу'],[1,'Доли'],[2,'Группы целиком']])],initial:[3,0]};
+ if(lesson?.id==='p18' && task?.simpleMonths)return {title:'Ежемесячный простой процент',controls:[c('Вклад',[[0,'Исходный'],[1,'Новые суммы']]),c('Этап',[[0,'Условие'],[1,'Прибавка за месяц'],[2,'Обе ставки']])],initial:[0,0]};
+ if(lesson?.id==='p18' && task?.gridDivision)return {title:'Исследуй форму и площадь разрезов',controls:[c('Разрез',[[0,'Только фигура'],[1,'Первый вариант'],[2,'Второй вариант'],[3,'Проверить спорный разрез']]),c('Выделить часть',[[0,'Все'],...range(1,task.gridDivision==='pentomino'?3:8).map(v=>[v,'Часть '+v])]),c('Проверка',[[0,'Мой прогноз'],[1,'Размеры и условия']])],initial:[0,0,0]};
+ if(lesson?.id==='p18' && task?.fiveMultiples)return {title:'Пять чисел из одного набора цифр',controls:[c('Карточки',[[0,'С нулём'],[1,'Без нуля']]),c('Первое число',range(1,19)),c('Проверка',[[0,'Сначала составлю'],[1,'Проверить каждую цифру']])],initial:[0,10,0]};
  if(lesson?.id==='p18' && task?.missingOperation)return {title:'Подбери действие по точному ответу',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новые числа']]),c('Операция',operationSigns.map((v,i)=>[i,v])),c('Сравнение',[[0,'Проверю сам'],[1,'Вычислить']])],initial:[0,0,0]};
  if(lesson?.id==='p18' && task?.wholeFromExtras)return {title:'Известное количество и оставшаяся доля',controls:[c('Добавки',[[0,'Исходные'],[1,'Вдвое больше']]),c('Этап',[[0,'Условие'],[1,'Остаток доли'],[2,'Целое и его части']])],initial:[0,0]};
  if(lesson?.id==='p18' && task?.outputRates)return {title:'Процент всегда относится к своей базе',controls:[c('Набор чисел',[[0,'Исходные'],[1,'Другой пример']]),c('Этап',[[0,'Предскажу'],[1,'Промежуточные числа'],[2,'Сравнение']])],initial:[0,0]};
@@ -2148,12 +2201,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if(task.quantifiedEquation && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -2164,8 +2217,8 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
-  if((task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
+  if((task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
   if((task.scaleExamples||task.ladderStudy) && index===0)hiddenControl=1;
@@ -2400,6 +2453,59 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if(mode===1)formula('Сумма коэффициентов группы «'+label(group.symbol)+'»: '+M.answer(group.total)+'.');
   else if(mode===2){formula('Значение всего выражения: '+M.answer(example.result)+'.');}
   stepList(['Сохрани знак перед каждым слагаемым.','Проверь все буквы и их степени.','Числа при одинаковой буквенной части можно сложить, саму буквенную часть оставь.']);
+ }
+ else
+ if(n===18 && task.tariffStudy){
+  const increment=a/4,salary=a+(b-1)*increment,mode=state.values[2];
+  say('Первый разряд: '+num(a)+' руб. Постоянная прибавка: '+num(increment)+' руб.');
+  if(mode>=1){show(table(['Разряд','Шагов','Тариф, руб.'],[[b,b-1,num(salary)]]));say('Отношение выбранного тарифа к первому: '+root.PetersonMath.answer(root.PetersonMath.operation('divide',salary,a))+'.');}
+  if(mode===2)say('Превышение над первым тарифом: '+num((b-1)*25)+'% начальной суммы.');
+  stepList(['Вычисли четверть начальной ставки.','Сосчитай промежутки между разрядами.','Сравни общий прирост с начальной суммой.']);
+ }
+ else if(n===18 && task.scoreRanking){
+  const scores=task.scoreRanking.map(([letter,...marks],i)=>({letter,marks:b&&i===0?[34,96,83,87]:marks,i})),M=root.PetersonMath,mode=state.values[2];
+  for(const row of scores){row.sum=row.marks.reduce((x,y)=>x+y,0);row.mean=M.operation('divide',row.sum,4);row.index=M.operation('divide',row.mean,75);}
+  const picked=scores[a];say('Строка '+(a+1)+', буква '+picked.letter+', баллы '+picked.marks.join(', ')+'. Общее среднее 75.');
+  if(mode>=1)say('Средний балл '+M.answer(picked.mean)+', коэффициент '+M.answer(picked.index)+'.');
+  if(mode===2){const order=[...scores].sort((a,b)=>b.sum-a.sum);show(table(['Строка','Буква','Коэффициент'],order.map(x=>[x.i+1,x.letter,M.answer(x.index)])));if(b===0)say('Слово: '+order.map(x=>x.letter).join('')+'.');}
+  stepList(['Вычисли среднее четырёх результатов.','Раздели на одно общее среднее.','Отсортируй по убыванию и прочти буквы.']);
+ }
+ else if(n===18 && task.triangleSection){
+  const but=sectionTriangle(a,b),mode=state.values[2],r=['1/2','1','2'][b],upper=['2/3','1/2','1/3'][b];show(but.svg);
+  if(mode>=1)show(table(['Отрезок','Длина на схеме'],['AM','MB','BN','NC'].map(k=>[k,num(but[k])])));
+  if(mode===2){formula('AM/MB = NC/BN = '+r);formula('MB/AB = BN/CB = '+upper);say('Проверка чертежа даёт примеры. Общий вывод опирается на подобие треугольников BMN и BAC.');}
+  stepList(['Проверь, что MN и AC параллельны.','Сравни соответствующие куски боковых сторон.','Получи отношения с полной стороной и объясни общий случай.']);
+ }
+ else if(n===18 && task.classParts){
+  say('Экскурсия — 2/3 класса. Кино — 1/4 класса и ещё '+a+' чел.');
+  if(b>=1)show(table(['Часть','Из 12 равных долей'],[['Экскурсия','8'],['Кино, известная четверть','3'],['Остаток','1']]));
+  if(b===2)say('В классе '+12*a+' чел. Экскурсия '+8*a+', кино '+4*a+'.');
+  stepList(['Перейди к двенадцатым.','Найди незанятую долю.','Восстанови обе группы и проверь их сумму.']);
+ }
+ else if(n===18 && task.simpleMonths){
+  const [start,end,months]=a?[1000,1040,4]:[5000,5225,6],gain=(end-start)/months,monthly=gain*100/start;
+  say('Первоначально '+num(start)+' руб., через '+months+' мес. — '+num(end)+' руб. Проценты простые.');
+  if(b>=1)say('Весь доход '+num(end-start)+' руб., за один месяц '+num(gain)+' руб.');
+  if(b===2)say('Месячная ставка '+num(monthly)+'%, простая годовая ставка '+num(monthly*12)+'%.');
+  stepList(['Вычти первоначальный вклад.','Раздели прибавку на число месяцев.','Отнеси месячную прибавку к первоначальному вкладу и умножь ставку на 12.']);
+ }
+ else if(n===18 && task.gridDivision){
+  const design=task.gridDivision,d=cutPatterns[design],plan=a?d.plans[a-1]:null,mode=state.values[2];show(cutGridFigure(design,plan,b));
+  if(!plan)say('Линии внутри пока только делят фигуру на клетки. Выбери разрез и проверь свои наблюдения.');
+  if(plan&&mode){const pieces=cellPieces(plan),first=shapeSignature(pieces[0]),congruent=design==='pentomino';
+   const checks=pieces.map((cells,i)=>{const dots=cells.filter(v=>d.dots.has(v.join(','))).length,ok=connectedCells(cells)&&cells.length===(congruent?5:3)&&(congruent?shapeSignature(cells)===first:dots===1);return {i,cells,dots,ok};});
+   const selected=b?checks.filter(r=>r.i===b-1):checks;show(table(['Часть','Клеток',congruent?'Та же форма и связность':'Кружков'],selected.map(({i,cells,dots,ok})=>[i+1,cells.length,congruent?(ok?'Да':'Нет'):dots])));
+   say(checks.every(r=>r.ok)?'Этот разрез выполняет оба условия.':'Для этого разреза одинакового числа клеток недостаточно: нарушена форма, связность или количество кружков.');
+  }
+  stepList(['Проверь количество клеток.','Выдели по очереди каждую связную часть.','Для A сравни формы, для B сосчитай кружки.']);
+ }
+ else if(n===18 && task.fiveMultiples){
+  const values=[1,2,3,4,5].map(v=>v*b),digits=values.join(''),required=a?'123456789':'0123456789',missing=[...required].filter(x=>!digits.includes(x)),extra=[...new Set([...digits].filter((x,i)=>!required.includes(x)||digits.indexOf(x)!==i))];
+  say('Карточки: '+required+'. Начальное число '+b+'.');show(table(['Множитель','Число'],values.map((x,i)=>[i+1,x])));
+  if(state.values[2]){if(missing.length)say('Нужно ещё использовать: '+missing.join(', ')+'.');if(extra.length)say('Лишняя или повторная цифра: '+extra.join(', ')+'.');
+   const ok=!missing.length&&!extra.length&&(a||values.every(x=>x>=10&&x<100));say(ok?'Каждая доступная карточка использована ровно один раз, раскладка подходит.':'Раскладка не подходит.');
+  }
+  stepList(['Запиши пять последовательных кратных k.','Проверь диапазон чисел для выбранного набора.','Сосчитай вхождения каждой цифры.']);
  }
  else
  if(n===18 && task.missingOperation){
@@ -34117,9 +34223,1097 @@ window.PetersonCourse = {
        "75% относятся к пику, а не к исходной величине."
       ]
      ]
+    },
+    {
+     "id": "p18-t59",
+     "title": "К задаче №112",
+     "kind": "number",
+     "prompt": "Первый тариф — 8000 руб. Каждый следующий разряд добавляет 25% тарифа первого разряда. Найди девятый тариф, отношение девятого к первому и процент превышения. В ответе укажи девятый тариф в рублях.",
+     "answer": "24000",
+     "steps": [
+      {
+       "prompt": "Сколько рублей в постоянной прибавке?",
+       "answer": "2000",
+       "hint": "Каждый шаг добавляет четверть именно первого тарифа. Между первым и девятым разрядами восемь шагов.",
+       "explanation": "Четверть 8000 руб. — 2000 руб. Восьмь одинаковых прибавок дают 8000 + 8 × 2000 = 24 000 руб. Девятый тариф втрое больше первого, то есть выше на 200% первого. Если считать снижение от девятого к первому, оно составляет 2/3, или 66⅔%."
+      },
+      {
+       "prompt": "Сколько шагов от 1-го разряда до 9-го?",
+       "answer": "8",
+       "hint": "Каждый шаг добавляет четверть именно первого тарифа. Между первым и девятым разрядами восемь шагов.",
+       "explanation": "Четверть 8000 руб. — 2000 руб. Восьмь одинаковых прибавок дают 8000 + 8 × 2000 = 24 000 руб. Девятый тариф втрое больше первого, то есть выше на 200% первого. Если считать снижение от девятого к первому, оно составляет 2/3, или 66⅔%."
+      },
+      {
+       "prompt": "Во сколько раз девятый тариф больше первого?",
+       "answer": "3",
+       "hint": "Каждый шаг добавляет четверть именно первого тарифа. Между первым и девятым разрядами восемь шагов.",
+       "explanation": "Четверть 8000 руб. — 2000 руб. Восьмь одинаковых прибавок дают 8000 + 8 × 2000 = 24 000 руб. Девятый тариф втрое больше первого, то есть выше на 200% первого. Если считать снижение от девятого к первому, оно составляет 2/3, или 66⅔%."
+      },
+      {
+       "prompt": "На сколько процентов девятый тариф выше первого?",
+       "answer": "200",
+       "hint": "Каждый шаг добавляет четверть именно первого тарифа. Между первым и девятым разрядами восемь шагов.",
+       "explanation": "Четверть 8000 руб. — 2000 руб. Восьмь одинаковых прибавок дают 8000 + 8 × 2000 = 24 000 руб. Девятый тариф втрое больше первого, то есть выше на 200% первого. Если считать снижение от девятого к первому, оно составляет 2/3, или 66⅔%."
+      }
+     ],
+     "hint": "Каждый шаг добавляет четверть именно первого тарифа. Между первым и девятым разрядами восемь шагов.",
+     "explanation": "Четверть 8000 руб. — 2000 руб. Восьмь одинаковых прибавок дают 8000 + 8 × 2000 = 24 000 руб. Девятый тариф втрое больше первого, то есть выше на 200% первого. Если считать снижение от девятого к первому, оно составляет 2/3, или 66⅔%.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 112,
+      "reference": "№112"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "tariffStudy": true,
+     "errorCues": [
+      [
+       "300",
+       "300% — уровень относительно первого тарифа. Требуется сумма в рублях."
+      ],
+      [
+       "26000",
+       "От первого до девятого разряда восемь прибавок."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t60",
+     "title": "К задаче №113",
+     "kind": "choice",
+     "prompt": "В таблице приведены четыре балла каждой строки и буква из печатного упражнения. Среднее по всем участникам — 75. Вычисли семь коэффициентов успеха, расставь их по убыванию и прочитай слово. Объясни его смысл.",
+     "answer": "Рейтинг",
+     "steps": [
+      {
+       "prompt": "Каков средний балл первой строки?",
+       "answer": "45",
+       "hint": "Для каждой строки сложи четыре оценки и раздели на 4. Коэффициент — её средний балл, делённый на средний балл всех участников, равный 75.",
+       "explanation": "По строкам коэффициенты равны 0,60; 1,20; 0,80; 0,96; 1,04; 1,32; 0,98. Убывающий порядок 6, 2, 5, 7, 4, 3, 1 даёт РЕЙТИНГ — упорядоченный по выбранному показателю список."
+      },
+      {
+       "prompt": "Каков коэффициент первой строки?",
+       "answer": "3/5",
+       "hint": "Для каждой строки сложи четыре оценки и раздели на 4. Коэффициент — её средний балл, делённый на средний балл всех участников, равный 75.",
+       "explanation": "По строкам коэффициенты равны 0,60; 1,20; 0,80; 0,96; 1,04; 1,32; 0,98. Убывающий порядок 6, 2, 5, 7, 4, 3, 1 даёт РЕЙТИНГ — упорядоченный по выбранному показателю список."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Опиши смысл коэффициента больше 1.",
+       "hint": "Для каждой строки сложи четыре оценки и раздели на 4. Коэффициент — её средний балл, делённый на средний балл всех участников, равный 75.",
+       "explanation": "По строкам коэффициенты равны 0,60; 1,20; 0,80; 0,96; 1,04; 1,32; 0,98. Убывающий порядок 6, 2, 5, 7, 4, 3, 1 даёт РЕЙТИНГ — упорядоченный по выбранному показателю список."
+      }
+     ],
+     "hint": "Для каждой строки сложи четыре оценки и раздели на 4. Коэффициент — её средний балл, делённый на средний балл всех участников, равный 75.",
+     "explanation": "По строкам коэффициенты равны 0,60; 1,20; 0,80; 0,96; 1,04; 1,32; 0,98. Убывающий порядок 6, 2, 5, 7, 4, 3, 1 даёт РЕЙТИНГ — упорядоченный по выбранному показателю список.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 113,
+      "reference": "№113"
+     },
+     "finalLabel": "Выбери расшифрованное слово.",
+     "scoreRanking": [
+      [
+       "Г",
+       34,
+       56,
+       83,
+       7
+      ],
+      [
+       "Е",
+       95,
+       100,
+       96,
+       69
+      ],
+      [
+       "Н",
+       21,
+       75,
+       99,
+       45
+      ],
+      [
+       "И",
+       98,
+       60,
+       48,
+       82
+      ],
+      [
+       "Й",
+       100,
+       82,
+       56,
+       74
+      ],
+      [
+       "Р",
+       100,
+       96,
+       100,
+       100
+      ],
+      [
+       "Т",
+       57,
+       100,
+       93,
+       44
+      ]
+     ],
+     "figure": {
+      "type": "seven-score-rows",
+      "rows": [
+       [
+        "Г",
+        34,
+        56,
+        83,
+        7
+       ],
+       [
+        "Е",
+        95,
+        100,
+        96,
+        69
+       ],
+       [
+        "Н",
+        21,
+        75,
+        99,
+        45
+       ],
+       [
+        "И",
+        98,
+        60,
+        48,
+        82
+       ],
+       [
+        "Й",
+        100,
+        82,
+        56,
+        74
+       ],
+       [
+        "Р",
+        100,
+        96,
+        100,
+        100
+       ],
+       [
+        "Т",
+        57,
+        100,
+        93,
+        44
+       ]
+      ],
+      "caption": "Буквы соответствуют третьим буквам фамилий в учебнике. Все значения взяты из печатного упражнения."
+     },
+     "errorCues": [
+      [
+       "Баллы",
+       "Собери семь букв в порядке убывания коэффициентов."
+      ],
+      [
+       "Разряд",
+       "Строки упорядочиваются по коэффициентам теста, а не по тарифам."
+      ]
+     ],
+     "choices": [
+      "Рейтинг",
+      "Баллы",
+      "Разряд"
+     ]
+    },
+    {
+     "id": "p18-t61",
+     "title": "К задаче №114а",
+     "kind": "manual",
+     "prompt": "Для (16) : (8) = (2) : (1) запиши все перестановки, сохраняющие исходные пары произведений.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько вариантов у пары крайних?",
+       "answer": "2",
+       "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+       "explanation": "Перекрёстные пары — 16 и 1, 8 и 2. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей."
+      },
+      {
+       "prompt": "Сколько различных записей нужно перечислить?",
+       "answer": "8",
+       "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+       "explanation": "Перекрёстные пары — 16 и 1, 8 и 2. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей."
+      }
+     ],
+     "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+     "explanation": "Перекрёстные пары — 16 и 1, 8 и 2. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 114,
+      "reference": "№114а",
+      "subpart": "а"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "16",
+       "8",
+       "2",
+       "1"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t62",
+     "title": "К задаче №114б",
+     "kind": "manual",
+     "prompt": "Для (0.3) : (1.2) = (2) : (8) запиши все перестановки, сохраняющие исходные пары произведений.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько вариантов у пары крайних?",
+       "answer": "2",
+       "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+       "explanation": "Перекрёстные пары — 0.3 и 8, 1.2 и 2. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей."
+      },
+      {
+       "prompt": "Сколько различных записей нужно перечислить?",
+       "answer": "8",
+       "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+       "explanation": "Перекрёстные пары — 0.3 и 8, 1.2 и 2. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей."
+      }
+     ],
+     "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+     "explanation": "Перекрёстные пары — 0.3 и 8, 1.2 и 2. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 114,
+      "reference": "№114б",
+      "subpart": "б"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "0.3",
+       "1.2",
+       "2",
+       "8"
+      ],
+      "symbolic": false
+     }
+    },
+    {
+     "id": "p18-t63",
+     "title": "К задаче №114в",
+     "kind": "manual",
+     "prompt": "Для (m) : (n) = (x) : (y) запиши все перестановки, сохраняющие исходные пары произведений. Рассмотри ненулевые буквы.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько вариантов у пары крайних?",
+       "answer": "2",
+       "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+       "explanation": "Перекрёстные пары — m и y, n и x. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей. Для всех перестановок нужны ненулевые буквы."
+      },
+      {
+       "prompt": "Сколько различных записей нужно перечислить?",
+       "answer": "8",
+       "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+       "explanation": "Перекрёстные пары — m и y, n и x. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей. Для всех перестановок нужны ненулевые буквы."
+      }
+     ],
+     "hint": "Выбери пару крайних, затем независимо выбери порядок двух крайних и двух средних членов.",
+     "explanation": "Перекрёстные пары — m и y, n и x. Их можно обменять ролями, а также поменять порядок внутри каждой пары. Всего получается 8 формальных записей. Для всех перестановок нужны ненулевые буквы.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 114,
+      "reference": "№114в",
+      "subpart": "в"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "sourceRearrangement": {
+      "terms": [
+       "m",
+       "n",
+       "x",
+       "y"
+      ],
+      "symbolic": true
+     }
+    },
+    {
+     "id": "p18-t64",
+     "title": "К задаче №115а",
+     "kind": "manual",
+     "prompt": "Построй несколько производных пропорций из 5/7 = 10/14. Подпиши буквенное преобразование рядом с числовым примером.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши одно числовое преобразование и рядом его буквенную формулу.",
+       "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+       "explanation": "Например, (12)/7 = (24)/14, (2)/7 = (4)/14, 5/12 = 10/24. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Выбери ещё два преобразования, поясни допустимость знаменателей.",
+       "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+       "explanation": "Например, (12)/7 = (24)/14, (2)/7 = (4)/14, 5/12 = 10/24. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов."
+      }
+     ],
+     "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+     "explanation": "Например, (12)/7 = (24)/14, (2)/7 = (4)/14, 5/12 = 10/24. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 115,
+      "reference": "№115а",
+      "subpart": "а"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "deriveThree": {
+      "terms": [
+       "5",
+       "7",
+       "10",
+       "14"
+      ],
+      "variant": "complement"
+     }
+    },
+    {
+     "id": "p18-t65",
+     "title": "К задаче №115б",
+     "kind": "manual",
+     "prompt": "Построй несколько производных пропорций из 3/2 = 18/12. Подпиши буквенное преобразование рядом с числовым примером.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши одно числовое преобразование и рядом его буквенную формулу.",
+       "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+       "explanation": "Например, (5)/2 = (30)/12, (1)/2 = (6)/12, 3/5 = 18/30. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Выбери ещё два преобразования, поясни допустимость знаменателей.",
+       "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+       "explanation": "Например, (5)/2 = (30)/12, (1)/2 = (6)/12, 3/5 = 18/30. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов."
+      }
+     ],
+     "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+     "explanation": "Например, (5)/2 = (30)/12, (1)/2 = (6)/12, 3/5 = 18/30. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 115,
+      "reference": "№115б",
+      "subpart": "б"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "deriveThree": {
+      "terms": [
+       "3",
+       "2",
+       "18",
+       "12"
+      ],
+      "variant": "subtract"
+     }
+    },
+    {
+     "id": "p18-t66",
+     "title": "К задаче №115в",
+     "kind": "manual",
+     "prompt": "Построй несколько производных пропорций из 2/5 = 6/15. Подпиши буквенное преобразование рядом с числовым примером.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши одно числовое преобразование и рядом его буквенную формулу.",
+       "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+       "explanation": "Например, (7)/5 = (21)/15, (3)/5 = (9)/15, 2/7 = 6/21. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Выбери ещё два преобразования, поясни допустимость знаменателей.",
+       "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+       "explanation": "Например, (7)/5 = (21)/15, (3)/5 = (9)/15, 2/7 = 6/21. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов."
+      }
+     ],
+     "hint": "Применяй к обоим отношениям одинаковое действие. После числового результата запиши закон с буквами a, b, c, d.",
+     "explanation": "Например, (7)/5 = (21)/15, (3)/5 = (9)/15, 2/7 = 6/21. Сначала добавили по 1, затем взяли разность с единицей в одинаковом порядке, затем разделили числители на суммы членов.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 115,
+      "reference": "№115в",
+      "subpart": "в"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "deriveThree": {
+      "terms": [
+       "2",
+       "5",
+       "6",
+       "15"
+      ],
+      "variant": "complement"
+     }
+    },
+    {
+     "id": "p18-t67",
+     "title": "К задаче №116(1)",
+     "kind": "number",
+     "prompt": "Реши уравнение 6x/25 = 0,4/0,15.",
+     "answer": "100/9",
+     "steps": [
+      {
+       "prompt": "Каково правое отношение?",
+       "answer": "8/3",
+       "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+       "explanation": "Правая часть 8/3. Значит, 6x = 200/3 и x = 100/9."
+      },
+      {
+       "prompt": "Чему равно 6x?",
+       "answer": "200/3",
+       "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+       "explanation": "Правая часть 8/3. Значит, 6x = 200/3 и x = 100/9."
+      }
+     ],
+     "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+     "explanation": "Правая часть 8/3. Значит, 6x = 200/3 и x = 100/9.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 116,
+      "reference": "№116(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       [
+        "6",
+        "0"
+       ],
+       "25",
+       "0.4",
+       "0.15"
+      ],
+      "root": "100/9",
+      "printed": "6x/25 = 0,4/0,15"
+     },
+     "errorCues": [
+      [
+       "9/100",
+       "При проверке сохрани порядок деления."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t68",
+     "title": "К задаче №116(2)",
+     "kind": "number",
+     "prompt": "Реши уравнение (1⅑) : (0,8y) = (1/7) : 3,6.",
+     "answer": "35",
+     "steps": [
+      {
+       "prompt": "Вычисли правое отношение.",
+       "answer": "5/126",
+       "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+       "explanation": "Исключи y = 0. Поскольку справа 5/126, неизвестный знаменатель равен (10/9) : (5/126) = 28. Тогда y = 35."
+      },
+      {
+       "prompt": "Чему равно 0,8y?",
+       "answer": "28",
+       "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+       "explanation": "Исключи y = 0. Поскольку справа 5/126, неизвестный знаменатель равен (10/9) : (5/126) = 28. Тогда y = 35."
+      }
+     ],
+     "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+     "explanation": "Исключи y = 0. Поскольку справа 5/126, неизвестный знаменатель равен (10/9) : (5/126) = 28. Тогда y = 35.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 116,
+      "reference": "№116(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "y",
+      "terms": [
+       "10/9",
+       [
+        "0.8",
+        "0"
+       ],
+       "1/7",
+       "3.6"
+      ],
+      "root": "35",
+      "printed": "(1⅑) : (0,8y) = (1/7) : 3,6"
+     },
+     "errorCues": [
+      [
+       "0",
+       "Проверь нулевой знаменатель и значения обеих частей."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t69",
+     "title": "К задаче №116(3)",
+     "kind": "number",
+     "prompt": "Реши уравнение 1,25 : 0,06 = (z − 6) : 2,4.",
+     "answer": "56",
+     "steps": [
+      {
+       "prompt": "Запиши левое отношение точной дробью.",
+       "answer": "125/6",
+       "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+       "explanation": "Левое отношение 125/6. После умножения на 12/5 получаем z − 6 = 50 и z = 56."
+      },
+      {
+       "prompt": "Найди числитель z − 6.",
+       "answer": "50",
+       "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+       "explanation": "Левое отношение 125/6. После умножения на 12/5 получаем z − 6 = 50 и z = 56."
+      }
+     ],
+     "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+     "explanation": "Левое отношение 125/6. После умножения на 12/5 получаем z − 6 = 50 и z = 56.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 116,
+      "reference": "№116(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "z",
+      "terms": [
+       "1.25",
+       "0.06",
+       [
+        "1",
+        "-6"
+       ],
+       "2.4"
+      ],
+      "root": "56",
+      "printed": "1,25 : 0,06 = (z − 6) : 2,4"
+     },
+     "errorCues": [
+      [
+       "1/56",
+       "При проверке сохрани порядок деления."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t70",
+     "title": "К задаче №116(4)",
+     "kind": "number",
+     "prompt": "Реши уравнение 7/(2 + t) = 4,2/t.",
+     "answer": "3",
+     "steps": [
+      {
+       "prompt": "Какова свободная часть после раскрытия 4,2(2 + t)?",
+       "answer": "42/5",
+       "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+       "explanation": "Исключаем t = −2 и t = 0. Получаем 7t = 8,4 + 4,2t, то есть 2,8t = 8,4, откуда t = 3."
+      },
+      {
+       "prompt": "Сколько t останется, если из 7t вычесть 4,2t?",
+       "answer": "14/5",
+       "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+       "explanation": "Исключаем t = −2 и t = 0. Получаем 7t = 8,4 + 4,2t, то есть 2,8t = 8,4, откуда t = 3."
+      }
+     ],
+     "hint": "До преобразования выпиши запрещённые знаменатели. Перемножь члены крест-накрест или найди известное отношение.",
+     "explanation": "Исключаем t = −2 и t = 0. Получаем 7t = 8,4 + 4,2t, то есть 2,8t = 8,4, откуда t = 3.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 29,
+      "exercise": 116,
+      "reference": "№116(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "t",
+      "terms": [
+       "7",
+       [
+        "1",
+        "2"
+       ],
+       "4.2",
+       [
+        "1",
+        "0"
+       ]
+      ],
+      "root": "3",
+      "printed": "7/(2 + t) = 4,2/t"
+     },
+     "errorCues": [
+      [
+       "0",
+       "Проверь нулевой знаменатель и значения обеих частей."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t71",
+     "title": "К задаче №117(1)",
+     "kind": "manual",
+     "prompt": "Сними с рисунка книги длины AM, MB, BN и NC. Затем для другого треугольника ABC построй MN параллельно AC. Как связаны AM : MB и NC : BN?",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Сравни две пары и опиши порядок от основания к вершине.",
+       "hint": "На обеих боковых сторонах выбирай соответствующие куски, двигаясь от основания к вершине. Не меняй порядок только на одной стороне.",
+       "explanation": "На печатной схеме AM около 14 мм, MB около 30 мм, BN около 20 мм, NC около 9 мм. Получаются близкие отношения. По гипотезе AM/MB = NC/BN, значит после прибавления 1 имеем AB/MB = CB/BN, а после обращения — MB/AB = BN/CB. Линейка не доказывает общий результат."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свою пропорцию и объясни границу измерительного вывода.",
+       "hint": "На обеих боковых сторонах выбирай соответствующие куски, двигаясь от основания к вершине. Не меняй порядок только на одной стороне.",
+       "explanation": "На печатной схеме AM около 14 мм, MB около 30 мм, BN около 20 мм, NC около 9 мм. Получаются близкие отношения. По гипотезе AM/MB = NC/BN, значит после прибавления 1 имеем AB/MB = CB/BN, а после обращения — MB/AB = BN/CB. Линейка не доказывает общий результат."
+      }
+     ],
+     "hint": "На обеих боковых сторонах выбирай соответствующие куски, двигаясь от основания к вершине. Не меняй порядок только на одной стороне.",
+     "explanation": "На печатной схеме AM около 14 мм, MB около 30 мм, BN около 20 мм, NC около 9 мм. Получаются близкие отношения. По гипотезе AM/MB = NC/BN, значит после прибавления 1 имеем AB/MB = CB/BN, а после обращения — MB/AB = BN/CB. Линейка не доказывает общий результат.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 30,
+      "exercise": 117,
+      "reference": "№117(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "triangleSection": "measure",
+     "figure": {
+      "type": "parallel-triangle",
+      "caption": "Авторский чертёж. MN параллельно стороне AC."
+     }
+    },
+    {
+     "id": "p18-t72",
+     "title": "К задаче №117(2)",
+     "kind": "manual",
+     "prompt": "Предположив AM : MB = NC : BN, получи пропорции с полными сторонами AB и CB. Поясни, какой шаг является выводом из гипотезы и что ещё нужно доказать.",
+     "answer": "",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Сравни две пары и опиши порядок от основания к вершине.",
+       "hint": "На обеих боковых сторонах выбирай соответствующие куски, двигаясь от основания к вершине. Не меняй порядок только на одной стороне.",
+       "explanation": "На печатной схеме AM около 14 мм, MB около 30 мм, BN около 20 мм, NC около 9 мм. Получаются близкие отношения. По гипотезе AM/MB = NC/BN, значит после прибавления 1 имеем AB/MB = CB/BN, а после обращения — MB/AB = BN/CB. Линейка не доказывает общий результат."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши свою пропорцию и объясни границу измерительного вывода.",
+       "hint": "На обеих боковых сторонах выбирай соответствующие куски, двигаясь от основания к вершине. Не меняй порядок только на одной стороне.",
+       "explanation": "На печатной схеме AM около 14 мм, MB около 30 мм, BN около 20 мм, NC около 9 мм. Получаются близкие отношения. По гипотезе AM/MB = NC/BN, значит после прибавления 1 имеем AB/MB = CB/BN, а после обращения — MB/AB = BN/CB. Линейка не доказывает общий результат."
+      }
+     ],
+     "hint": "На обеих боковых сторонах выбирай соответствующие куски, двигаясь от основания к вершине. Не меняй порядок только на одной стороне.",
+     "explanation": "На печатной схеме AM около 14 мм, MB около 30 мм, BN около 20 мм, NC около 9 мм. Получаются близкие отношения. По гипотезе AM/MB = NC/BN, значит после прибавления 1 имеем AB/MB = CB/BN, а после обращения — MB/AB = BN/CB. Линейка не доказывает общий результат.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 30,
+      "exercise": 117,
+      "reference": "№117(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "triangleSection": "derive",
+     "figure": {
+      "type": "parallel-triangle",
+      "caption": "Авторский чертёж. MN параллельно стороне AC."
+     }
+    },
+    {
+     "id": "p18-t73",
+     "title": "К задаче №118",
+     "kind": "number",
+     "prompt": "На экскурсию поехали две трети класса. В кино пошли остальные: четверть полного класса и ещё трое. Сколько всего учеников?",
+     "answer": "36",
+     "steps": [
+      {
+       "prompt": "Какую долю составляют две трети и четверть вместе?",
+       "answer": "11/12",
+       "hint": "Из одной целой доли вычти две трети и одну четверть. Полученная доля соответствует трём ученикам.",
+       "explanation": "2/3 + 1/4 = 11/12 класса. На 1/12 приходятся 3 человека, значит, всего 36. На экскурсию поехали 24, в кино пошли 9 + 3 = 12."
+      },
+      {
+       "prompt": "Какой доле соответствуют трое?",
+       "answer": "1/12",
+       "hint": "Из одной целой доли вычти две трети и одну четверть. Полученная доля соответствует трём ученикам.",
+       "explanation": "2/3 + 1/4 = 11/12 класса. На 1/12 приходятся 3 человека, значит, всего 36. На экскурсию поехали 24, в кино пошли 9 + 3 = 12."
+      }
+     ],
+     "hint": "Из одной целой доли вычти две трети и одну четверть. Полученная доля соответствует трём ученикам.",
+     "explanation": "2/3 + 1/4 = 11/12 класса. На 1/12 приходятся 3 человека, значит, всего 36. На экскурсию поехали 24, в кино пошли 9 + 3 = 12.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 30,
+      "exercise": 118,
+      "reference": "№118"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "classParts": true,
+     "errorCues": [
+      [
+       "12",
+       "Это число пошедших в кино. Нужно число учеников всего класса."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t74",
+     "title": "К задаче №119",
+     "kind": "number",
+     "prompt": "По правилу простых процентов 5000 руб. за шесть месяцев превратились в 5225 руб. Найди месячную и годовую ставки. В ответе укажи годовую ставку в процентах.",
+     "answer": "9",
+     "steps": [
+      {
+       "prompt": "Сколько рублей прибавилось за полгода?",
+       "answer": "225",
+       "hint": "При простых процентах месячная прибавка считается от первоначальных 5000 руб. Проценты за каждый из шести месяцев равны.",
+       "explanation": "Доход 5225 − 5000 = 225 руб. За месяц 37,5 руб., то есть 0,75% от 5000. За 12 месяцев простая ставка даёт 9% от первоначального вклада."
+      },
+      {
+       "prompt": "Каков доход за один месяц?",
+       "answer": "75/2",
+       "hint": "При простых процентах месячная прибавка считается от первоначальных 5000 руб. Проценты за каждый из шести месяцев равны.",
+       "explanation": "Доход 5225 − 5000 = 225 руб. За месяц 37,5 руб., то есть 0,75% от 5000. За 12 месяцев простая ставка даёт 9% от первоначального вклада."
+      },
+      {
+       "prompt": "Какова месячная ставка в процентах?",
+       "answer": "3/4",
+       "hint": "При простых процентах месячная прибавка считается от первоначальных 5000 руб. Проценты за каждый из шести месяцев равны.",
+       "explanation": "Доход 5225 − 5000 = 225 руб. За месяц 37,5 руб., то есть 0,75% от 5000. За 12 месяцев простая ставка даёт 9% от первоначального вклада."
+      }
+     ],
+     "hint": "При простых процентах месячная прибавка считается от первоначальных 5000 руб. Проценты за каждый из шести месяцев равны.",
+     "explanation": "Доход 5225 − 5000 = 225 руб. За месяц 37,5 руб., то есть 0,75% от 5000. За 12 месяцев простая ставка даёт 9% от первоначального вклада.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 30,
+      "exercise": 119,
+      "reference": "№119"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "simpleMonths": true,
+     "errorCues": [
+      [
+       "0.75",
+       "Это ставка за один месяц. Требуется простая годовая ставка."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t75",
+     "title": "К задаче №120",
+     "kind": "number",
+     "prompt": "Неизвестное число удвоили и вычли 6. Полученный результат относится к 9 так же, как 4 относится к 4,5. Найди задуманное число.",
+     "answer": "7",
+     "steps": [
+      {
+       "prompt": "Упрости отношение 4 : 4,5.",
+       "answer": "8/9",
+       "hint": "Переведи текст в пропорцию (2x − 6)/9 = 4/4,5. После восстановления числителя отмени вычитание и удвоение в обратном порядке.",
+       "explanation": "Справа 8/9. Значит, 2x − 6 = 8, тогда 2x = 14 и x = 7."
+      },
+      {
+       "prompt": "Чему равна разность 2x − 6?",
+       "answer": "8",
+       "hint": "Переведи текст в пропорцию (2x − 6)/9 = 4/4,5. После восстановления числителя отмени вычитание и удвоение в обратном порядке.",
+       "explanation": "Справа 8/9. Значит, 2x − 6 = 8, тогда 2x = 14 и x = 7."
+      }
+     ],
+     "hint": "Переведи текст в пропорцию (2x − 6)/9 = 4/4,5. После восстановления числителя отмени вычитание и удвоение в обратном порядке.",
+     "explanation": "Справа 8/9. Значит, 2x − 6 = 8, тогда 2x = 14 и x = 7.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 30,
+      "exercise": 120,
+      "reference": "№120"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "affineRatios": {
+      "letter": "x",
+      "terms": [
+       [
+        "2",
+        "-6"
+       ],
+       "9",
+       "4",
+       "4.5"
+      ],
+      "root": "7",
+      "printed": "(2x − 6)/9 = 4/4,5"
+     },
+     "errorCues": [
+      [
+       "1",
+       "Проверь знак при отмене вычитания 6."
+      ]
+     ]
+    },
+    {
+     "id": "p18-t76",
+     "title": "К задаче №121(1)",
+     "kind": "manual",
+     "prompt": "Разрежь по границам клеток фигуру A на три одинаковые по форме части. Изучи разные варианты в модели или запиши свой способ.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько клеток во всей фигуре?",
+       "answer": "15",
+       "hint": "Сначала найди площадь одной части. Соседние клетки кусочка должны иметь общую сторону. Затем отдельно проверь форму или число точек.",
+       "explanation": "Фигура содержит 15 клеток, значит в каждой из трёх частей по 5 клеток. Разбиение считается подходящим, если пять клеток каждой части совмещаются с двумя другими поворотом или отражением."
+      },
+      {
+       "prompt": "Какова площадь одной части в клетках?",
+       "answer": "5",
+       "hint": "Сначала найди площадь одной части. Соседние клетки кусочка должны иметь общую сторону. Затем отдельно проверь форму или число точек.",
+       "explanation": "Фигура содержит 15 клеток, значит в каждой из трёх частей по 5 клеток. Разбиение считается подходящим, если пять клеток каждой части совмещаются с двумя другими поворотом или отражением."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь и зарисуй каждую границу разреза.",
+       "hint": "Сначала найди площадь одной части. Соседние клетки кусочка должны иметь общую сторону. Затем отдельно проверь форму или число точек.",
+       "explanation": "Фигура содержит 15 клеток, значит в каждой из трёх частей по 5 клеток. Разбиение считается подходящим, если пять клеток каждой части совмещаются с двумя другими поворотом или отражением."
+      }
+     ],
+     "hint": "Сначала найди площадь одной части. Соседние клетки кусочка должны иметь общую сторону. Затем отдельно проверь форму или число точек.",
+     "explanation": "Фигура содержит 15 клеток, значит в каждой из трёх частей по 5 клеток. Разбиение считается подходящим, если пять клеток каждой части совмещаются с двумя другими поворотом или отражением.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 30,
+      "exercise": 121,
+      "reference": "№121(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "gridDivision": "pentomino",
+     "figure": {
+      "type": "cut-cell-figure",
+      "design": "pentomino",
+      "caption": "Клетки исходной фигуры. Границы своего разреза проверь в модели."
+     }
+    },
+    {
+     "id": "p18-t77",
+     "title": "К задаче №121(2)",
+     "kind": "manual",
+     "prompt": "Разрежь фигуру B по границам клеток на восемь равновеликих частей. В каждой должен оказаться ровно один кружок. Изучи разные варианты в модели или запиши свой способ.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько клеток во всей фигуре?",
+       "answer": "24",
+       "hint": "Сначала найди площадь одной части. Соседние клетки кусочка должны иметь общую сторону. Затем отдельно проверь форму или число точек.",
+       "explanation": "В прямоугольнике 24 клетки. Каждая из восьми частей должна содержать три клетки и ровно один кружок. Формы разных частей могут различаться. Проверь обе границы каждого своего кусочка."
+      },
+      {
+       "prompt": "Какова площадь одной части в клетках?",
+       "answer": "3",
+       "hint": "Сначала найди площадь одной части. Соседние клетки кусочка должны иметь общую сторону. Затем отдельно проверь форму или число точек.",
+       "explanation": "В прямоугольнике 24 клетки. Каждая из восьми частей должна содержать три клетки и ровно один кружок. Формы разных частей могут различаться. Проверь обе границы каждого своего кусочка."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь и зарисуй каждую границу разреза.",
+       "hint": "Сначала найди площадь одной части. Соседние клетки кусочка должны иметь общую сторону. Затем отдельно проверь форму или число точек.",
+       "explanation": "В прямоугольнике 24 клетки. Каждая из восьми частей должна содержать три клетки и ровно один кружок. Формы разных частей могут различаться. Проверь обе границы каждого своего кусочка."
+      }
+     ],
+     "hint": "Сначала найди площадь одной части. Соседние клетки кусочка должны иметь общую сторону. Затем отдельно проверь форму или число точек.",
+     "explanation": "В прямоугольнике 24 клетки. Каждая из восьми частей должна содержать три клетки и ровно один кружок. Формы разных частей могут различаться. Проверь обе границы каждого своего кусочка.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 30,
+      "exercise": 121,
+      "reference": "№121(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "gridDivision": "dotTrios",
+     "figure": {
+      "type": "cut-cell-figure",
+      "design": "dotTrios",
+      "caption": "Клетки исходной фигуры. Границы своего разреза проверь в модели."
+     }
+    },
+    {
+     "id": "p18-t78",
+     "title": "К задаче №122",
+     "kind": "manual",
+     "prompt": "Разложи карточки с десятью различными цифрами в пять двузначных чисел с отношениями 1 : 2 : 3 : 4 : 5. Затем убери карточку 0 и снова получи пять чисел в том же отношении. Найди обе раскладки.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Каково наименьшее число первой раскладки?",
+       "answer": "18",
+       "hint": "Если наименьшее число k, то остальные равны 2k, 3k, 4k и 5k. Проверь длину записи и следи, чтобы каждая карточка использовалась один раз.",
+       "explanation": "С нулём все пять чисел двузначные, значит k от 10 до 19. Подходит k = 18: 18, 36, 54, 72, 90. Без нуля осталось девять цифр, и k \u003c 10. При k = 9 получаются 9, 18, 27, 36, 45. Обе группы используют каждую доступную цифру ровно один раз."
+      },
+      {
+       "prompt": "Каково наименьшее число второй раскладки?",
+       "answer": "9",
+       "hint": "Если наименьшее число k, то остальные равны 2k, 3k, 4k и 5k. Проверь длину записи и следи, чтобы каждая карточка использовалась один раз.",
+       "explanation": "С нулём все пять чисел двузначные, значит k от 10 до 19. Подходит k = 18: 18, 36, 54, 72, 90. Без нуля осталось девять цифр, и k \u003c 10. При k = 9 получаются 9, 18, 27, 36, 45. Обе группы используют каждую доступную цифру ровно один раз."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Запиши все пять чисел в обоих случаях и проверь использованные цифры.",
+       "hint": "Если наименьшее число k, то остальные равны 2k, 3k, 4k и 5k. Проверь длину записи и следи, чтобы каждая карточка использовалась один раз.",
+       "explanation": "С нулём все пять чисел двузначные, значит k от 10 до 19. Подходит k = 18: 18, 36, 54, 72, 90. Без нуля осталось девять цифр, и k \u003c 10. При k = 9 получаются 9, 18, 27, 36, 45. Обе группы используют каждую доступную цифру ровно один раз."
+      }
+     ],
+     "hint": "Если наименьшее число k, то остальные равны 2k, 3k, 4k и 5k. Проверь длину записи и следи, чтобы каждая карточка использовалась один раз.",
+     "explanation": "С нулём все пять чисел двузначные, значит k от 10 до 19. Подходит k = 18: 18, 36, 54, 72, 90. Без нуля осталось девять цифр, и k \u003c 10. При k = 9 получаются 9, 18, 27, 36, 45. Обе группы используют каждую доступную цифру ровно один раз.",
+     "skills": [
+      "ratio",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 30,
+      "exercise": 122,
+      "reference": "№122"
+     },
+     "finalLabel": "Запиши исследование для проверки.",
+     "fiveMultiples": true
     }
    ],
-   "orderBySource": true
+   "orderBySource": true,
+   "completeSourceSection": {
+    "first": 96,
+    "last": 122,
+    "firstPage": 26,
+    "lastPage": 30
+   }
   },
   {
    "id": "p19",

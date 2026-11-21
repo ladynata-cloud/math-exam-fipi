@@ -1265,3 +1265,27 @@ test('repair oral proportions, check six different equations and distinguish bot
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('complete the tariff, seven exact rankings, parallel-section triangle, cell cuttings and digit sets',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p18/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  let c=go(58);set(c[1],9);set(c[2],2);assert(out().includes('200%'));assert(f.q('#model tbody').textContent.replace(/\s/g,'').includes('24000'));
+  c=go(59);assert.equal(f.d.querySelectorAll('#task-figure tr').length,8);set(c[2],2);assert(out().includes('РЕЙТИНГ'));set(c[1],1);set(c[2],2);assert.notEqual(f.q('#model tbody').rows[6].cells[1].textContent,'Г');
+  for(const j of [70,71]){
+   c=go(j);for(const shape of [0,1])for(const [i,t]of [1/3,1/2,2/3].entries()){
+    set(c[0],shape);set(c[1],i);set(c[2],2);const get=p=>{const n=f.q('#model [data-triangle-point="'+p+'"]');return [Number(n.getAttribute('cx')),Number(n.getAttribute('cy'))];},len=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]),[A,B,C,K,N]=['A','B','C','M','N'].map(get);
+    assert(Math.abs(len(A,K)/len(A,B)-t)<1e-9);assert(Math.abs(len(C,N)/len(C,B)-t)<1e-9);assert.equal(K[1],N[1]);
+   }
+  }
+  c=go(72);set(c[0],4);set(c[1],2);assert(out().includes('В классе 48 чел.'));
+  c=go(73);set(c[1],2);assert(out().includes('годовая ставка 9%'));set(c[0],1);set(c[1],2);assert(out().includes('годовая ставка 12%'));
+  for(const [j,area,nDot]of [[75,15,0],[76,24,8]]){
+   c=go(j);assert.equal(f.d.querySelectorAll('#task-figure [data-cell]').length,area);assert.equal(f.d.querySelectorAll('#task-figure [data-dot="1"]').length,nDot);
+   for(const which of [1,2,3]){set(c[0],which);set(c[2],1);assert.equal(out().includes('выполняет оба условия'),which<3);assert.equal(f.d.querySelectorAll('#model [data-cell]').length,area);}
+  }
+  c=go(77);for(const [mode,k]of [[0,18],[1,9]]){set(c[0],mode);set(c[1],k);set(c[2],1);assert(out().includes('раскладка подходит'));const tr=[...f.d.querySelectorAll('#model tbody tr')].map(r=>Number(r.cells[1].textContent));assert.deepEqual(tr,[1,2,3,4,5].map(i=>i*k));}
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
