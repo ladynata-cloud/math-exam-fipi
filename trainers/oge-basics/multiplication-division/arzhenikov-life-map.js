@@ -109,11 +109,16 @@
     const stop = event.target.closest('a.wm-stop');
     if (!stop || event.defaultPrevented || event.ctrlKey || event.metaKey ||
         event.shiftKey || event.altKey || event.button !== 0) return;
-    chosen = stop.hash;
-    if (location.hash === chosen) {
-      focusTask();
+    if (stop.getAttribute('aria-current') === 'location') {
+      // The bare city URL already shows this place. Keep the live controls
+      // when making its address explicit so the next key goes to the pupil's choice.
+      if (location.hash !== stop.hash) history.pushState(history.state, '', stop.hash);
+      event.preventDefault();
       chosen = '';
+      focusTask();
+      return;
     }
+    chosen = stop.hash;
   });
   window.addEventListener('hashchange', () => {
     if (chosen && chosen === location.hash) focusTask();
