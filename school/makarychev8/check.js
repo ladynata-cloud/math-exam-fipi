@@ -189,6 +189,24 @@ function equivalentCommonFactor(input, expected){
   return Boolean(scale)&&[...factor].every(([key,v])=>candidate.has(key)&&candidate.get(key)*reference===scale*v);
  }catch(_){return false;}
 }
+function proofOrder(value, count){
+ const raw=String(value).trim();
+ if(!raw)return [];
+ const tokens=raw.split(/\s*(?:;|,|→|->)\s*|\s+/);
+ if(tokens.some(token=>!/^\d+$/.test(token)))return null;
+ const order=tokens.map(Number);
+ return order.some(n=>n<1||n>count)||new Set(order).size!==order.length?null:order;
+}
+function separatedRational(input, expected){
+ const raw=normalize(input);
+ let depth=0;
+ for(let i=0;i<raw.length;i++){
+  if(raw[i]==='(')depth++;
+  else if(raw[i]===')')depth--;
+  else if(i&&!depth&&(raw[i]==='+'||raw[i]==='-'))return sameReducedExpression(raw,expected);
+ }
+ return false;
+}
 function setEntries(value){
  let body=String(value).trim();
  if(body.startsWith('{')&&body.endsWith('}'))body=body.slice(1,-1);
@@ -239,6 +257,8 @@ function rootLineCount(user){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='separated-rational')return separatedRational(user,target.answer);
+ if(target.kind==='proof-chain')return (target.proofOrders||[target.answer]).includes(proofOrder(user,target.proofClaims.length)?.join(';'));
  if(target.kind==='common-factor')return equivalentCommonFactor(user,target.answer);
  if(target.kind==='domain-fraction')return inspectDomainFraction(user,target.exclusions).status==='correct';
  if(target.kind==='integer-pairs'){
@@ -287,5 +307,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });

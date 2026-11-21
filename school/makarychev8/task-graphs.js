@@ -241,8 +241,29 @@ function renderDomainFraction(host,config){
  count.className='small';count.textContent='Всего различных действительных нулей у твоего знаменателя: '+analysis.count+'.';
  host.append(list,count);
 }
+function renderNaturalValues(host,config){
+ host.className='task-graphs natural-model';
+ const heading=document.createElement('p');heading.textContent='Подстановка выбранных n';host.append(heading);
+ if(!config.rows?.length){
+  const guide=document.createElement('p');guide.className='small';guide.textContent='После проверки появится значение выражения для каждого числа из твоего ответа.';host.append(guide);return;
+ }
+ const list=document.createElement('ul');
+ for(const {term,pair} of config.rows){
+  const row=document.createElement('li');
+  if(!pair)row.textContent='n = '+term+': это не положительное целое число.';
+  else{
+   const [top,bottom]=pair;
+   const value=top%bottom===0n?String(top/bottom):top+'/'+bottom;
+   const property=top<=0n?'не положительное число':top%bottom===0n?'натуральное число':'нецелое число';
+   row.textContent='n = '+term+': '+top+' : '+bottom+' = '+value+' ('+property+').';
+  }
+  list.append(row);
+ }
+ host.append(list);
+}
 function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
+ if(config.type==='natural-values'){renderNaturalValues(host,config);return;}
  if(config.type==='domain-fraction'){renderDomainFraction(host,config);return;}
  if(config.type==='train-meeting'){renderTrainMeeting(host,value);return;}
  if(config.type==='integer-pairs'){renderIntegerPairs(host,config,value);return;}

@@ -79,7 +79,7 @@ async function verify(width, url) {
   }
   assert.deepEqual(stats.errors, []);
   assert.equal(stats.cards, 286);
-  for (let n = 110; n <= 220; n++) {
+  for (let n = 110; n <= 230; n++) {
     if ((n - 110) % 24 === 0) {
       await page.close();
       page = await freshPage();
@@ -87,6 +87,32 @@ async function verify(width, url) {
     await openNumber(page, n);
     assert(await page.locator('#number-result a.button:not(.quiet)').count() > 0, 'source number ' + n);
   }
+  await openNumber(page, 223, '№ 223');
+  const claims=page.locator('#answer-form .reasoning-choices button');
+  assert.equal(await claims.count(),6);
+  await claims.nth(2).click();await claims.nth(3).click();
+  assert.equal(await page.locator('#final-answer').inputValue(),'3;4');
+  await page.locator('#answer-form button[type=submit]').click();
+  assert.match(await page.locator('#answer-form .feedback').innerText(),/звено 2/);
+  await page.reload();
+  assert.equal(await claims.nth(2).getAttribute('aria-pressed'),'true');
+  await claims.nth(3).click();await claims.nth(0).click();await claims.nth(4).click();await claims.nth(1).click();
+  await page.locator('#answer-form button[type=submit]').click();
+  const proof=await page.evaluate(()=>MakarychevApp.getState().tasks['ch1-extra-223-proof']);
+  assert.equal(proof.correct,true);assert.equal(proof.assisted,false);assert.equal(proof.independent,false);
+  await openNumber(page, 224, '№ 224в');
+  await page.locator('[data-action=guided]').click();
+  const scope=page.locator('[data-step-form="0"]');
+  await scope.getByRole('button',{name:'a ≠ b и a ≠ −b',exact:true}).click();
+  assert.equal(await scope.locator('[data-step-input]').inputValue(),'a ≠ b и a ≠ −b');
+  await scope.getByRole('button',{name:'Проверить шаг',exact:true}).click();
+  assert.equal(await page.locator('.step.completed').count(),1);
+  await openNumber(page, 227, '№ 227в');
+  await submit(page,'1;2;6');
+  assert.match(await page.locator('.natural-model li').last().innerText(),/0 : 36 = 0/);
+  assert.match(await page.locator('#answer-form .feedback').innerText(),/равен нулю/);
+  await submit(page,'3;2;1');
+  assert.equal(await page.evaluate(()=>MakarychevApp.getState().tasks['ch1-extra-227-c'].correct),true);
   await openNumber(page, 215, '№ 215в');
   assert.match(await page.locator('main > .eyebrow').innerText(), /Дополнительно к §1 · с. 56/i);
   assert.equal(await page.locator('.exclusion-model li').count(), 0);
@@ -176,7 +202,7 @@ async function verify(width, url) {
   assert.equal(await page.locator('#notebook').inputValue(), 'Проверка своих точек');
   assert.deepEqual(errors, []);
   await page.close();
-  return { width, cards: stats.cards, figures: stats.figures, searches: 111 };
+  return { width, cards: stats.cards, figures: stats.figures, searches: 121 };
 }
 
 (async () => {

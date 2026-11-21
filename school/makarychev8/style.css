@@ -79,3 +79,9 @@
   max-width: min(100%, calc(100vw - 108px));
  }
 }
+
+.reasoning-choices{display:grid;gap:8px;border:0;padding:0;min-width:0;margin:10px 0}
+.reasoning-choices legend{font-weight:650;margin-bottom:6px}
+.reasoning-choices button{white-space:normal;overflow-wrap:anywhere;text-align:left;line-height:1.4;min-height:44px}
+.reasoning-choices button[aria-pressed=true]{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green);background:var(--pale)}
+.reasoning-choices p{margin:0}
