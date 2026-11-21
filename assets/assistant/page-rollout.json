@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 623,
-    "covered": 621,
+    "total": 624,
+    "covered": 622,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -35,7 +35,8 @@
     "trainers/index.html",
     "trainers/long-division-claude.html",
     "trainers/oge-basics/multiplication-division/division-checkpoint.html",
-    "trainers/oge-basics/multiplication-division/division-path.html"
+    "trainers/oge-basics/multiplication-division/division-path.html",
+    "trainers/tyurin-statistics/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -3994,7 +3995,8 @@
     "trainers/geometry-7/control-work.html": "sitemap",
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": "sitemap",
     "trainers/practice-topics/index.html": "sitemap",
-    "trainers/vilenkin6-percent/index.html": "sitemap"
+    "trainers/vilenkin6-percent/index.html": "sitemap",
+    "trainers/tyurin-statistics/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",

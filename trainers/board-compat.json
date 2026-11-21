@@ -1176,6 +1176,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общий урок: 134 занятия, текущие шаги, ответы, модели, записи и GIF. Личный прогресс не читается и не изменяется."
+    },
+    {
+      "trainerId": "tyurin-statistics",
+      "file": "trainers/tyurin-statistics/index.html",
+      "title": "Тюрин · вероятность и статистика · 7–11 классы",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
     }
   ]
 }
