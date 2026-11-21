@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 631,
-    "covered": 629,
+    "total": 632,
+    "covered": 630,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -40,7 +40,8 @@
     "trainers/school-workshop-check/index.html",
     "trainers/tyurin-statistics/index.html",
     "trainers/makarychev9-2017/index.html",
-    "trainers/makarychev7-2014/index.html"
+    "trainers/makarychev7-2014/index.html",
+    "trainers/alimov-2012/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4027,7 +4028,8 @@
     "trainers/peterson6-workshop/index.html": "sitemap",
     "trainers/merzlyak9-2014/index.html": "school/index.html",
     "trainers/makarychev9-2017/index.html": "school/index.html",
-    "trainers/makarychev7-2014/index.html": "school/index.html"
+    "trainers/makarychev7-2014/index.html": "school/index.html",
+    "trainers/alimov-2012/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6757,6 +6759,14 @@
         "trainers/makarychev7-2014/index.html"
       ],
       "reason": "Практикумы по п. 9 и 10 издания 2014 года."
+    },
+    {
+      "sourceBaseSha": "2fb6615ec5504151a525d5fef617304da8eaf512",
+      "task": "docs/tasks/WORKSHOP_ALIMOV_2012.md",
+      "addedPages": [
+        "trainers/alimov-2012/index.html"
+      ],
+      "reason": "Самостоятельные разборы всех подпунктов №1–3 на с. 6 издания 2012 года."
     }
   ]
 }
