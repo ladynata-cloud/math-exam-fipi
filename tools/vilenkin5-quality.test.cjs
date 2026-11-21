@@ -779,7 +779,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:125},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50'));
+  equal(plain(path.numbered),Array.from({length:129},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1300,6 +1300,27 @@ function exactPrintedMistakeRegression(){
   f.close();
 }
 
+function printedSourceScalesRegression(){
+  const f=boot(),N=f.w.Vilenkin5Numbered,ids=[126,127,128,129].map(i=>'v5f-printed-1-'+i),src=ids.map(id=>f.M.generate(id,0));
+  equal(plain(src[0].steps.map(s=>s.answer)),[[26,25,10,34],[33,32,17,41],[24,23,8,32],[30,29,14,38],[19,18,3,27],[28,27,12,36]]);
+  equal(plain(src[1].answer),[-4,10,-18,12,4,4]);equal(plain(src[2].answer),[22,25,30,35,37]);equal(plain(src[3].steps.map(q=>q.answer)),[[1,3,4],[5],[1,4],[2,5],[1],[2,3,5]]);
+  equal(plain(src[3].answer),[5,2,3,4,1]);equal(f.C.byId[ids[0]].source.page,28);for(const id of ids.slice(1))equal(f.C.byId[id].source.page,29);
+  for(let seed=0;seed<56;seed++){const a=ids.map(id=>f.M.generate(id,seed)),model=(i,state)=>N.explore(f.C.byId[ids[i]],state,a[i]);for(const t of a)for(const q of [...t.steps,t]){const answer=Array.isArray(q.answer)?q.answer.join(';'):String(q.answer);ok(f.M.accepts(answer,q));}
+    const th=a[0].data.thermo;for(let i=0;i<4;i++)for(let row=0;row<6;row++)for(const phase of [0,1]){const shifts=row?th.deltas[row-1]:[];equal(model(0,{which:i,row,phase}).answer,th.levels[i]+shifts.slice(0,phase?shifts.length:1).reduce((p,q)=>p+q,0));}
+    const mv=a[1].data.moves;for(let row=0;row<6;row++)for(const scale of [0,1,5])equal(model(1,{row,scale}).answer,mv.moves[row].reduce((p,q)=>p+q,0)*(scale||mv.size));
+    const arc=a[2].data.arcScale;for(let i=0;i<5;i++)for(const ask of [0,1])equal(model(2,{which:i,ask}).answer,ask?arc.base+arc.positions[i]*arc.unit:arc.positions[i]);
+    const h=a[3].data.ranking.levels;for(let i=0;i<h.length;i++){const low=h.filter(n=>n<h[i]).length,high=h.filter(n=>n>h[i]).length;equal(model(3,{ref:i,upper:0}).answer,low);equal(model(3,{ref:i,upper:1}).answer,high);equal(low+high,4);}
+  }
+  f.route('#lesson/'+ids[1]);f.submit('-2');ok(f.snapshot().scene.message.includes('делениях'));f.submit('4');ok(f.snapshot().scene.message.includes('направление'));f.submit('-4');ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});
+  const sendForecast=value=>{f.input('[data-v5-prediction]',value);f.$('[data-v5-predict]').dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));};
+  const select=(key,value)=>{const el=f.$('[data-v5-param="'+key+'"]');el.value=String(value);el.dispatchEvent(new f.w.Event('change',{bubbles:true}));};
+  select('row',5);select('scale',3);sendForecast('2');
+  let scaleModel=f.snapshot().scene.model;equal(scaleModel.first,'2');ok(!scaleModel.seen);ok(scaleModel.notice.includes('Исправь прогноз'));ok(!scaleModel.notice.includes('undefined'));ok(!f.$('[data-v5-prediction]').disabled);
+  sendForecast('6');scaleModel=f.snapshot().scene.model;equal(scaleModel.first,'2');equal(scaleModel.prediction,'6');ok(scaleModel.seen);ok(scaleModel.notice.includes('самостоятельно'));
+  select('scale',4);scaleModel=f.snapshot().scene.model;equal(scaleModel.first,'');ok(!scaleModel.seen);f.click('[data-v5-reveal]');scaleModel=f.snapshot().scene.model;ok(scaleModel.seen);ok(scaleModel.notice.includes('по твоему запросу'));
+  f.route('#lesson/'+ids[3]);f.submit('4;1;3');ok(f.snapshot().scene.correct);f.click('[data-cmd=next]');f.submit('5');ok(f.snapshot().scene.correct);f.close();
+}
+
 function printedPointFourAssessmentRegression(){
   const f=boot(),id='v5f-printed-check-4',G=f.w.Vilenkin5PrintedCheck4,N=f.w.Vilenkin5Numbered,lesson=f.C.byId[id],source=f.M.generate(id,0);
   equal(lesson.source.point,4);equal(lesson.source.page,27);ok(!f.C.pathById.vilenkin5.numbered.includes(id));ok(f.C.pathById.vilenkin5.printedChecks.includes(id));equal(source.table.rows.length,7);
@@ -1758,7 +1779,7 @@ async function run(){
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
     printedSegmentRegression,compassAndCompoundRegression,printedChecksRegression,printedLengthUnitsRegression,
-    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,originalChainsRegression,everydayReasoningRegression,numberingAndPathsRegression,pageTwentyOneFirstRegression,sixMeasurementsRegression,comparisonsAndMixedMeasuresRegression,perimeterAndMassRegression,exactPrintedMistakeRegression,mountainsAndTravelRegression,printedPointThreeChecksRegression,printedPlaneIntersectionRegression,printedOpenLineConstructionsRegression,printedPlaneRegionsRegression,chosenRayNamesRegression,printedOralSubtractionRegression,printedLengthPolygonRegression,printedPage25FirstRegression,printedPage25ConstructionsRegression,printedPage26FreeRegression,closingPlanePointCalculationRegression,printedPointFourAssessmentRegression,
+    buildablePathsRegression,pageNineteenBoundariesRegression,pageTwentyReviewRegression,originalChainsRegression,everydayReasoningRegression,numberingAndPathsRegression,pageTwentyOneFirstRegression,sixMeasurementsRegression,comparisonsAndMixedMeasuresRegression,perimeterAndMassRegression,exactPrintedMistakeRegression,mountainsAndTravelRegression,printedPointThreeChecksRegression,printedPlaneIntersectionRegression,printedOpenLineConstructionsRegression,printedPlaneRegionsRegression,chosenRayNamesRegression,printedOralSubtractionRegression,printedLengthPolygonRegression,printedPage25FirstRegression,printedPage25ConstructionsRegression,printedPage26FreeRegression,closingPlanePointCalculationRegression,printedPointFourAssessmentRegression,printedSourceScalesRegression,
   ]){
     check();
     await tick(); // Let closed lesson windows finish disposal before loading the next group.
