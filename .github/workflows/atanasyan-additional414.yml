@@ -61,6 +61,20 @@ jobs:
           node tools/stereo-textbook/inscribed-volume-applications.test.cjs
           node tools/stereo-textbook/sphere-volume-angles.test.cjs
           node tools/stereo-textbook/volume-chapter-end.test.cjs
+          node tools/stereo-textbook/vector-basics.test.cjs
+          node tools/stereo-textbook/vector-pairs.test.cjs
+          node tools/stereo-textbook/vector-properties.test.cjs
+          node tools/stereo-textbook/spatial-vector-sums.test.cjs
+          node tools/stereo-textbook/opposite-and-difference-vectors.test.cjs
+          node tools/stereo-textbook/vector-origin-and-paths.test.cjs
+          node tools/stereo-textbook/prism-diagonals-and-vector-paths.test.cjs
+          node tools/stereo-textbook/signed-vector-combinations.test.cjs
+          node tools/stereo-textbook/prism-vector-equations.test.cjs
+          node tools/stereo-textbook/pyramid-vector-midpoints.test.cjs
+          node tools/stereo-textbook/midlines-vector-coefficients.test.cjs
+          node tools/stereo-textbook/collinearity-vector-conditions.test.cjs
+          node tools/stereo-textbook/coplanar-vector-directions.test.cjs
+          node tools/stereo-textbook/parallelepiped-directed-bases.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -182,6 +196,76 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: volumeChapterEnd
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/volume-chapter-end
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check spatial vector arrows, their lengths, translations, and tetrahedron and box exercises
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorBasics
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-basics
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check same, opposite and equal arrows on two source solids and the square midpoint section
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorPairs
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-pairs
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check vector directions, relative positions of flats and five prescribed affine displacements
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorProperties
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-properties
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check polygon, scalar and parallelogram rules with all named sum vectors and three proofs in a tetrahedron
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialVectorSums
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-vector-sums
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check source opposites, edge versus diagonal convention and every possible difference endpoint
+        env:
+          TEXTBOOK_PRACTICE_GROUP: oppositeDifference
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/opposite-and-difference-vectors
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check arbitrary origins, every valid marked-point difference and closed spatial vector paths
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorOriginPaths
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-origin-and-paths
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check magnitudes of reflected prism diagonals and the exact result of each spatial path
+        env:
+          TEXTBOOK_PRACTICE_GROUP: diagonalPaths
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-diagonals-and-vector-paths
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all sign assignments and equivalent sums for arbitrary source vertices
+        env:
+          TEXTBOOK_PRACTICE_GROUP: signedVectorCombinations
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/signed-vector-combinations
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check arbitrary origins and all vertex solutions to equations in a parallelepiped and a triangular prism
+        env:
+          TEXTBOOK_PRACTICE_GROUP: prismVectorEquations
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-vector-equations
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check pairs of vectors in two pyramids, central symmetry and signed ratios in a cube
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramidVectorMidpoints
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-vector-midpoints
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check directed midpoint differences, ordered vector coefficients and the diagonal identity
+        env:
+          TEXTBOOK_PRACTICE_GROUP: midlinesVectorCoefficients
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/midlines-vector-coefficients
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check affine division, the counterexample to printed exercise 587, and collinearity arguments
+        env:
+          TEXTBOOK_PRACTICE_GROUP: collinearityVectorConditions
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/collinearity-vector-conditions
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check oblique vector bases, all four translated triples, midpoints and a changing parallelogram
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coplanarVectorDirections
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coplanar-vector-directions
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all five translated edge paths and both coefficient triples in the printed parallelepiped exercises
+        env:
+          TEXTBOOK_PRACTICE_GROUP: parallelepipedDirectedBases
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/parallelepiped-directed-bases
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -239,5 +323,19 @@ jobs:
             artifacts/inscribed-volume-applications/
             artifacts/sphere-volume-angles/
             artifacts/volume-chapter-end/
+            artifacts/vector-basics/
+            artifacts/vector-pairs/
+            artifacts/vector-properties/
+            artifacts/spatial-vector-sums/
+            artifacts/opposite-and-difference-vectors/
+            artifacts/vector-origin-and-paths/
+            artifacts/prism-diagonals-and-vector-paths/
+            artifacts/signed-vector-combinations/
+            artifacts/prism-vector-equations/
+            artifacts/pyramid-vector-midpoints/
+            artifacts/midlines-vector-coefficients/
+            artifacts/collinearity-vector-conditions/
+            artifacts/coplanar-vector-directions/
+            artifacts/parallelepiped-directed-bases/
           retention-days: 14
           if-no-files-found: error

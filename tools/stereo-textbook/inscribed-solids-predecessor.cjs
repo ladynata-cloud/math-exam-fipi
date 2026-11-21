@@ -2,7 +2,21 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const volumeChapterEnd = makeReviewedIncrement(require('./volume-chapter-end.json'), closedSections);
+const parallelepipedDirectedBases = makeReviewedIncrement(require('./parallelepiped-directed-bases.json'), closedSections);
+const coplanarVectorDirections = makeReviewedIncrement(require('./coplanar-vector-directions.json'), parallelepipedDirectedBases);
+const collinearityVectorConditions = makeReviewedIncrement(require('./collinearity-vector-conditions.json'), coplanarVectorDirections);
+const midlinesVectorCoefficients = makeReviewedIncrement(require('./midlines-vector-coefficients.json'), collinearityVectorConditions);
+const pyramidVectorMidpoints = makeReviewedIncrement(require('./pyramid-vector-midpoints.json'), midlinesVectorCoefficients);
+const prismVectorEquations = makeReviewedIncrement(require('./prism-vector-equations.json'), pyramidVectorMidpoints);
+const signedVectorCombinations = makeReviewedIncrement(require('./signed-vector-combinations.json'), prismVectorEquations);
+const diagonalPaths = makeReviewedIncrement(require('./prism-diagonals-and-vector-paths.json'), signedVectorCombinations);
+const vectorOriginPaths = makeReviewedIncrement(require('./vector-origin-and-paths.json'), diagonalPaths);
+const oppositeDifference = makeReviewedIncrement(require('./opposite-and-difference-vectors.json'), vectorOriginPaths);
+const spatialVectorSums = makeReviewedIncrement(require('./spatial-vector-sums.json'), oppositeDifference);
+const vectorProperties = makeReviewedIncrement(require('./vector-properties.json'), spatialVectorSums);
+const vectorPairs = makeReviewedIncrement(require('./vector-pairs.json'), vectorProperties);
+const vectorBasics = makeReviewedIncrement(require('./vector-basics.json'), vectorPairs);
+const volumeChapterEnd = makeReviewedIncrement(require('./volume-chapter-end.json'), vectorBasics);
 const sphereVolumeAngles = makeReviewedIncrement(require('./sphere-volume-angles.json'), volumeChapterEnd);
 const inscribedVolumeApplications = makeReviewedIncrement(require('./inscribed-volume-applications.json'), sphereVolumeAngles);
 const cylinderApplications = makeReviewedIncrement(require('./cylinder-applications.json'), inscribedVolumeApplications);
@@ -26,3 +40,4 @@ const latest = makeReviewedIncrement(require('./round-bodies.json'), volumes);
 const later = makeReviewedIncrement(require('./circumspheres.json'), latest);
 module.exports = makeReviewedIncrement(require('./inscribed-solids.json'), later);
 module.exports.volumeSelfcheck = volumeSelfcheck;
+module.exports.spatialVectorSums = spatialVectorSums;

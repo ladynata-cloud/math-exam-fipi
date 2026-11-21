@@ -1,0 +1,470 @@
+{
+  "parts": {
+    "592": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "593": [
+      null
+    ],
+    "594": [
+      null
+    ],
+    "theory-68": [
+      null
+    ],
+    "theory-69": [
+      null
+    ],
+    "theory-70": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "592": {
+      "id": "source-main-0592",
+      "kind": "exercise",
+      "title": "Задача № 592",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "592",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "593": {
+      "id": "source-main-0593",
+      "kind": "exercise",
+      "title": "Задача № 593",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "593",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "594": {
+      "id": "source-main-0594",
+      "kind": "exercise",
+      "title": "Задача № 594",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "594",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          153
+        ],
+        "pdfPages": [
+          155
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-68": {
+      "id": "source-theory-068",
+      "kind": "theory",
+      "title": "68. Компланарные векторы",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "68",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          150,
+          151
+        ],
+        "pdfPages": [
+          152,
+          153
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-69": {
+      "id": "source-theory-069",
+      "kind": "theory",
+      "title": "69. Правило параллелепипеда",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "69",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          151,
+          152
+        ],
+        "pdfPages": [
+          153,
+          154
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-70": {
+      "id": "source-theory-070",
+      "kind": "theory",
+      "title": "70. Разложение вектора по трём некомпланарным векторам",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "70",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          152,
+          153
+        ],
+        "pdfPages": [
+          154,
+          155
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "theory-068": {
+      "raw": "49328fc0b64941d068f64b09f2879be93c5d5a36535b17b2b3037bead70c80db",
+      "authored": "7b600fea3068d0233f8ee982fa3364ffe7a5863cc6f396cf555cc9ecd0193782",
+      "integrated": "a6de81f1c7fbdd7f38748abe5a67f04a96bcf9f6cb7af6ab442ffb2496633b1f"
+    },
+    "theory-069": {
+      "raw": "936c60681e720a06c1e18673c6d4088fa627ea5d883f64b198f3ee530983daa8",
+      "authored": "8a2f5ee85556c65d8fce5b99fa7948f81270fd9ce5a8e501eb75034df294756a",
+      "integrated": "fd76760d43872e0b15eb6c52d3e7e2eb81d9a0247e4881a840979a4ad1b02bdb"
+    },
+    "theory-070": {
+      "raw": "18bb8b458d2b70fe46bd69465027365c061ab351142e0a1fc12d96ca502615ee",
+      "authored": "bbb030874829318f5d74ab2d3ac715d817838e1dfb72ed5ac212dc9561c78474",
+      "integrated": "b94b61e94f5877efc3356e946d137de8fca28791f8f0d301dc83cf0694b5b668"
+    },
+    "ex-main-0592-a": {
+      "raw": "f35bb9ee2d8cdb268516060fd5850afd8328551c458c7e229ae86702497eaeff",
+      "authored": "7f47aa72abd44ac692867dc6709875ab516b929f2e14d1efedff709874465658",
+      "integrated": "b6891922ed1487e3887cb0a53d2b822caf91e5afb07184e4e03584fa64f26f4d"
+    },
+    "ex-main-0592-b": {
+      "raw": "62fa7418f8b8a382415a49699f4d6471c13a62377ad5c43556433f496b03eccb",
+      "authored": "b404856c9aec92529640e333decd212c8bfee8758e7be8abfbfe2fd176687b2b",
+      "integrated": "9182140b6f5ae186118851cb385d006484da6e246c639396778569935b621f1d"
+    },
+    "ex-main-0592-c": {
+      "raw": "f44ab56789423026e5e7f85d4b0fddf1fd63066d215655d8c3445376d7c00634",
+      "authored": "fb828cfea3e18d504f4c666542c09ec03246e1dada8fd626c7d4a96bbde474fd",
+      "integrated": "693eda35361af82615e5c4c984a9b3768272b70bbf1b275c3277e2d63f35753e"
+    },
+    "ex-main-0592-d": {
+      "raw": "d880b9e26bfea7e6c8d0f26dd93223f57c9d011e553cda9240485daf2e522313",
+      "authored": "d95e3e0ad633a394d91ddb559c9ab5265d8b8a031b5a8f581d07b72c05920503",
+      "integrated": "6b7a2ebf255ca8dac8659df8cf06f91952d57934ea114ec35bf897596ec127f7"
+    },
+    "ex-main-0593": {
+      "raw": "b6778cf390e3f22b260df4fa9d2b2f29bd09ecf25fadffce30543cd8336a9817",
+      "authored": "6163621d2db9e515b7dfca685052ee7fd7fdb8faba9b8f6b7b0f54e35638b001",
+      "integrated": "c9f69a5384d71d87430335ee554fa958a781db056b3f0abcd0a65e2594092233"
+    },
+    "ex-main-0594": {
+      "raw": "082de03f6a8811bb579c12b2224ba488deb5da376e95e7165428060b9b347d02",
+      "authored": "674c7a8092062cad91f9d191a5b461a7dbb368dbad1cf02f900837c51a080a45",
+      "integrated": "a673b024e93c4ba7e98b384c795b6851c5b777c2ec666e5ce1a11ce4c910101f"
+    }
+  },
+  "cases": [
+    [
+      "theory-068|condition",
+      "coplanar-vector-directions-theory-068-condition"
+    ],
+    [
+      "theory-068|help:h1",
+      "coplanar-vector-directions-theory-068-help-h1"
+    ],
+    [
+      "theory-068|help:h2",
+      "coplanar-vector-directions-theory-068-help-h2"
+    ],
+    [
+      "theory-068|step-1",
+      "coplanar-vector-directions-theory-068-step-1"
+    ],
+    [
+      "theory-068|step-2",
+      "coplanar-vector-directions-theory-068-step-2"
+    ],
+    [
+      "theory-068|step-3",
+      "coplanar-vector-directions-theory-068-step-3"
+    ],
+    [
+      "theory-068|step-4",
+      "coplanar-vector-directions-theory-068-step-4"
+    ],
+    [
+      "theory-069|condition",
+      "coplanar-vector-directions-theory-069-condition"
+    ],
+    [
+      "theory-069|help:h1",
+      "coplanar-vector-directions-theory-069-help-h1"
+    ],
+    [
+      "theory-069|help:h2",
+      "coplanar-vector-directions-theory-069-help-h2"
+    ],
+    [
+      "theory-069|step-1",
+      "coplanar-vector-directions-theory-069-step-1"
+    ],
+    [
+      "theory-069|step-2",
+      "coplanar-vector-directions-theory-069-step-2"
+    ],
+    [
+      "theory-069|step-3",
+      "coplanar-vector-directions-theory-069-step-3"
+    ],
+    [
+      "theory-069|step-4",
+      "coplanar-vector-directions-theory-069-step-4"
+    ],
+    [
+      "theory-070|condition",
+      "coplanar-vector-directions-theory-070-condition"
+    ],
+    [
+      "theory-070|help:h1",
+      "coplanar-vector-directions-theory-070-help-h1"
+    ],
+    [
+      "theory-070|help:h2",
+      "coplanar-vector-directions-theory-070-help-h2"
+    ],
+    [
+      "theory-070|step-1",
+      "coplanar-vector-directions-theory-070-step-1"
+    ],
+    [
+      "theory-070|step-2",
+      "coplanar-vector-directions-theory-070-step-2"
+    ],
+    [
+      "theory-070|step-3",
+      "coplanar-vector-directions-theory-070-step-3"
+    ],
+    [
+      "theory-070|step-4",
+      "coplanar-vector-directions-theory-070-step-4"
+    ],
+    [
+      "ex-main-0592-a|condition",
+      "coplanar-vector-directions-ex-main-0592-a-condition"
+    ],
+    [
+      "ex-main-0592-a|help:h1",
+      "coplanar-vector-directions-ex-main-0592-a-help-h1"
+    ],
+    [
+      "ex-main-0592-a|help:h2",
+      "coplanar-vector-directions-ex-main-0592-a-help-h2"
+    ],
+    [
+      "ex-main-0592-a|step-1",
+      "coplanar-vector-directions-ex-main-0592-a-step-1"
+    ],
+    [
+      "ex-main-0592-a|step-2",
+      "coplanar-vector-directions-ex-main-0592-a-step-2"
+    ],
+    [
+      "ex-main-0592-a|step-3",
+      "coplanar-vector-directions-ex-main-0592-a-step-3"
+    ],
+    [
+      "ex-main-0592-a|step-4",
+      "coplanar-vector-directions-ex-main-0592-a-step-4"
+    ],
+    [
+      "ex-main-0592-b|condition",
+      "coplanar-vector-directions-ex-main-0592-b-condition"
+    ],
+    [
+      "ex-main-0592-b|help:h1",
+      "coplanar-vector-directions-ex-main-0592-b-help-h1"
+    ],
+    [
+      "ex-main-0592-b|help:h2",
+      "coplanar-vector-directions-ex-main-0592-b-help-h2"
+    ],
+    [
+      "ex-main-0592-b|step-1",
+      "coplanar-vector-directions-ex-main-0592-b-step-1"
+    ],
+    [
+      "ex-main-0592-b|step-2",
+      "coplanar-vector-directions-ex-main-0592-b-step-2"
+    ],
+    [
+      "ex-main-0592-b|step-3",
+      "coplanar-vector-directions-ex-main-0592-b-step-3"
+    ],
+    [
+      "ex-main-0592-b|step-4",
+      "coplanar-vector-directions-ex-main-0592-b-step-4"
+    ],
+    [
+      "ex-main-0592-c|condition",
+      "coplanar-vector-directions-ex-main-0592-c-condition"
+    ],
+    [
+      "ex-main-0592-c|help:h1",
+      "coplanar-vector-directions-ex-main-0592-c-help-h1"
+    ],
+    [
+      "ex-main-0592-c|help:h2",
+      "coplanar-vector-directions-ex-main-0592-c-help-h2"
+    ],
+    [
+      "ex-main-0592-c|step-1",
+      "coplanar-vector-directions-ex-main-0592-c-step-1"
+    ],
+    [
+      "ex-main-0592-c|step-2",
+      "coplanar-vector-directions-ex-main-0592-c-step-2"
+    ],
+    [
+      "ex-main-0592-c|step-3",
+      "coplanar-vector-directions-ex-main-0592-c-step-3"
+    ],
+    [
+      "ex-main-0592-c|step-4",
+      "coplanar-vector-directions-ex-main-0592-c-step-4"
+    ],
+    [
+      "ex-main-0592-d|condition",
+      "coplanar-vector-directions-ex-main-0592-d-condition"
+    ],
+    [
+      "ex-main-0592-d|help:h1",
+      "coplanar-vector-directions-ex-main-0592-d-help-h1"
+    ],
+    [
+      "ex-main-0592-d|help:h2",
+      "coplanar-vector-directions-ex-main-0592-d-help-h2"
+    ],
+    [
+      "ex-main-0592-d|step-1",
+      "coplanar-vector-directions-ex-main-0592-d-step-1"
+    ],
+    [
+      "ex-main-0592-d|step-2",
+      "coplanar-vector-directions-ex-main-0592-d-step-2"
+    ],
+    [
+      "ex-main-0592-d|step-3",
+      "coplanar-vector-directions-ex-main-0592-d-step-3"
+    ],
+    [
+      "ex-main-0592-d|step-4",
+      "coplanar-vector-directions-ex-main-0592-d-step-4"
+    ],
+    [
+      "ex-main-0593|condition",
+      "coplanar-vector-directions-ex-main-0593-condition"
+    ],
+    [
+      "ex-main-0593|help:h1",
+      "coplanar-vector-directions-ex-main-0593-help-h1"
+    ],
+    [
+      "ex-main-0593|help:h2",
+      "coplanar-vector-directions-ex-main-0593-help-h2"
+    ],
+    [
+      "ex-main-0593|step-1",
+      "coplanar-vector-directions-ex-main-0593-step-1"
+    ],
+    [
+      "ex-main-0593|step-2",
+      "coplanar-vector-directions-ex-main-0593-step-2"
+    ],
+    [
+      "ex-main-0593|step-3",
+      "coplanar-vector-directions-ex-main-0593-step-3"
+    ],
+    [
+      "ex-main-0593|step-4",
+      "coplanar-vector-directions-ex-main-0593-step-4"
+    ],
+    [
+      "ex-main-0594|condition",
+      "coplanar-vector-directions-ex-main-0594-condition"
+    ],
+    [
+      "ex-main-0594|help:h1",
+      "coplanar-vector-directions-ex-main-0594-help-h1"
+    ],
+    [
+      "ex-main-0594|help:h2",
+      "coplanar-vector-directions-ex-main-0594-help-h2"
+    ],
+    [
+      "ex-main-0594|step-1",
+      "coplanar-vector-directions-ex-main-0594-step-1"
+    ],
+    [
+      "ex-main-0594|step-2",
+      "coplanar-vector-directions-ex-main-0594-step-2"
+    ],
+    [
+      "ex-main-0594|step-3",
+      "coplanar-vector-directions-ex-main-0594-step-3"
+    ],
+    [
+      "ex-main-0594|step-4",
+      "coplanar-vector-directions-ex-main-0594-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "1d7f3775d96dd04b2ece16400c1952ee4785f7e8f914a98de0fd00fd9e61cb96",
+      "afterSHA256": "309d973c07f796c41604dda6b9fa417fd11931bbdc070b49e58ba5ff7efabbb4"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "598bdb2a77a8c00bc77d144b1a0f00a8c30255a0f648719342f03c01ddd2a115",
+      "afterSHA256": "07202a211c88a8e407bad5bc22df317ba24a652dc47fc83294b24dfaf8a2da7d"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T20:18:12Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–591, with 985 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "7606941a605cb6a92f5b3155a7b848ad6825ca2d1e1f9cb0e3109b98b40ee92c",
+    "index": "264406c0f3cae38b337564b526d28bfc517576d4f841e6f45c937ea3c9236014",
+    "registry": "143c2be62466d24b6f697d576ebe14c47da0e1ff2205d716f3c309ff1cda469d",
+    "cases": "c7c3759705983125094baef36bc24fb9202c6fb9cfc47956aae51f1fcc338ebf"
+  }
+}

@@ -12521,6 +12521,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -12540,6 +12544,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -12564,6 +12572,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -12585,6 +12598,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -12604,6 +12621,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -12629,6 +12651,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -12648,6 +12675,13 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в",
@@ -12677,6 +12711,13 @@
         "в",
         "г",
         "д"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
       ]
     },
     {
@@ -12699,6 +12740,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -12718,6 +12764,12 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в",
@@ -12746,6 +12798,13 @@
         "в",
         "г",
         "д"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
       ]
     },
     {
@@ -12767,6 +12826,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -12785,7 +12848,10 @@
           150
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0570",
@@ -12804,6 +12870,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -12825,6 +12895,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -12851,6 +12926,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -12870,6 +12951,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -12895,6 +12981,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -12913,7 +13004,10 @@
           151
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0576",
@@ -12932,6 +13026,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -12956,6 +13054,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -12974,7 +13077,10 @@
           151
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0579",
@@ -12992,7 +13098,10 @@
           151
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0580",
@@ -13010,7 +13119,10 @@
           151
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0581",
@@ -13029,6 +13141,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -13053,6 +13170,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -13071,7 +13192,10 @@
           151
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0584",
@@ -13092,6 +13216,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -13110,7 +13238,10 @@
           151
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0586",
@@ -13128,7 +13259,10 @@
           152
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0587",
@@ -13146,7 +13280,10 @@
           152
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0588",
@@ -13169,6 +13306,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -13187,7 +13330,10 @@
           152
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0590",
@@ -13205,7 +13351,10 @@
           152
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0591",
@@ -13224,6 +13373,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -13249,6 +13402,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -13267,7 +13426,10 @@
           155
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0594",
@@ -13285,7 +13447,10 @@
           155
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0595",
@@ -13304,6 +13469,13 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в",
@@ -13328,6 +13500,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -23693,7 +23869,10 @@
           144,
           145
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-064",
@@ -23710,7 +23889,10 @@
         "pdfPages": [
           145
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-065",
@@ -23729,7 +23911,10 @@
           147,
           148
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-066",
@@ -23748,7 +23933,10 @@
           148,
           149
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-067",
@@ -23767,7 +23955,10 @@
           149,
           150
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-068",
@@ -23786,7 +23977,10 @@
           152,
           153
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-069",
@@ -23805,7 +23999,10 @@
           153,
           154
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-070",
@@ -23824,7 +24021,10 @@
           154,
           155
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-071",

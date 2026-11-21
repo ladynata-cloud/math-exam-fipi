@@ -1,0 +1,278 @@
+{
+  "parts": {
+    "573": [
+      "а",
+      "б",
+      "в"
+    ],
+    "574": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "previousCatalog": {
+    "573": {
+      "id": "source-main-0573",
+      "kind": "exercise",
+      "title": "Задача № 573",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "573",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "574": {
+      "id": "source-main-0574",
+      "kind": "exercise",
+      "title": "Задача № 574",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "574",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0573-a": {
+      "raw": "b69c248719ab2980ea9abf92eb33a7d2eedd9b95f6afd44abb2f58e39a3a3c5b",
+      "authored": "087eebc55282da303e3a63562f7d5334f31732643fbc892e4e621244bc4801ad",
+      "integrated": "9187cfa0ae414597d6941a083b33057dd3d3fe09be8e89d90f4469a4004ec16f"
+    },
+    "ex-main-0573-b": {
+      "raw": "cd363c465d4d4ccefc8d367896607e65bb69f2c2052c1aebb64ebc26821cdc8a",
+      "authored": "ff60fd084fab115be769f79b07e14a967adad96f4a1301bc2f940f8c70c81d57",
+      "integrated": "92ae414c9a8279a0e54084bcbdca159b48d67fbd918355a453a9c395db3b8bf2"
+    },
+    "ex-main-0573-c": {
+      "raw": "ce36cc70dc117c5aaaf850731378f72a5470534c8082ba3b31b6f034bebaf746",
+      "authored": "c03c8623daf248da6caf48eb52e34708cab2d6582bc758926a9524dfcf8c0027",
+      "integrated": "272b884585c83eaa391a6a1e3a3f70833f7897e3c48ab95b89e9fd373671d771"
+    },
+    "ex-main-0574-a": {
+      "raw": "32936905f098fd5de1ce669266b05b47aeab806cba71863e1bb891ce467c4272",
+      "authored": "dd4d93750006ec577d0e0c08a24eedf701d68fa83274f801ca40f472170a8d7c",
+      "integrated": "38d905486b665db4b4fbbe3603207745f855c0ccf6162783f42708246b1b0884"
+    },
+    "ex-main-0574-b": {
+      "raw": "fe94a20d83fd9e8777bee69d1a0c733d93f47db60d2fd1ffb885df5ba9d691a0",
+      "authored": "918f75e5481f7e1052c5d09ef5386bb0faf8063ba1a2487920bc200d87120700",
+      "integrated": "dad66eb0a5ba33bdff21655b323a6e81d8c589f938c7e3f1764f358eabe7e139"
+    },
+    "ex-main-0574-c": {
+      "raw": "74422111407208f20d9ba5cdce94840d167b4115dc7a4812c7658951e84b0538",
+      "authored": "fcd1cb1d770ce03065fdd8a56184f4827ba046c6811d3979c6e656a844563962",
+      "integrated": "8d89a11045a7bf881439a8100edc8de432fc31b6c48d9eaf531a32a9d23e5684"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0573-a|condition",
+      "signed-vector-combinations-ex-main-0573-a-condition"
+    ],
+    [
+      "ex-main-0573-a|help:h1",
+      "signed-vector-combinations-ex-main-0573-a-help-h1"
+    ],
+    [
+      "ex-main-0573-a|help:h2",
+      "signed-vector-combinations-ex-main-0573-a-help-h2"
+    ],
+    [
+      "ex-main-0573-a|step-1",
+      "signed-vector-combinations-ex-main-0573-a-step-1"
+    ],
+    [
+      "ex-main-0573-a|step-2",
+      "signed-vector-combinations-ex-main-0573-a-step-2"
+    ],
+    [
+      "ex-main-0573-a|step-3",
+      "signed-vector-combinations-ex-main-0573-a-step-3"
+    ],
+    [
+      "ex-main-0573-a|step-4",
+      "signed-vector-combinations-ex-main-0573-a-step-4"
+    ],
+    [
+      "ex-main-0573-b|condition",
+      "signed-vector-combinations-ex-main-0573-b-condition"
+    ],
+    [
+      "ex-main-0573-b|help:h1",
+      "signed-vector-combinations-ex-main-0573-b-help-h1"
+    ],
+    [
+      "ex-main-0573-b|help:h2",
+      "signed-vector-combinations-ex-main-0573-b-help-h2"
+    ],
+    [
+      "ex-main-0573-b|step-1",
+      "signed-vector-combinations-ex-main-0573-b-step-1"
+    ],
+    [
+      "ex-main-0573-b|step-2",
+      "signed-vector-combinations-ex-main-0573-b-step-2"
+    ],
+    [
+      "ex-main-0573-b|step-3",
+      "signed-vector-combinations-ex-main-0573-b-step-3"
+    ],
+    [
+      "ex-main-0573-b|step-4",
+      "signed-vector-combinations-ex-main-0573-b-step-4"
+    ],
+    [
+      "ex-main-0573-c|condition",
+      "signed-vector-combinations-ex-main-0573-c-condition"
+    ],
+    [
+      "ex-main-0573-c|help:h1",
+      "signed-vector-combinations-ex-main-0573-c-help-h1"
+    ],
+    [
+      "ex-main-0573-c|help:h2",
+      "signed-vector-combinations-ex-main-0573-c-help-h2"
+    ],
+    [
+      "ex-main-0573-c|step-1",
+      "signed-vector-combinations-ex-main-0573-c-step-1"
+    ],
+    [
+      "ex-main-0573-c|step-2",
+      "signed-vector-combinations-ex-main-0573-c-step-2"
+    ],
+    [
+      "ex-main-0573-c|step-3",
+      "signed-vector-combinations-ex-main-0573-c-step-3"
+    ],
+    [
+      "ex-main-0573-c|step-4",
+      "signed-vector-combinations-ex-main-0573-c-step-4"
+    ],
+    [
+      "ex-main-0574-a|condition",
+      "signed-vector-combinations-ex-main-0574-a-condition"
+    ],
+    [
+      "ex-main-0574-a|help:h1",
+      "signed-vector-combinations-ex-main-0574-a-help-h1"
+    ],
+    [
+      "ex-main-0574-a|help:h2",
+      "signed-vector-combinations-ex-main-0574-a-help-h2"
+    ],
+    [
+      "ex-main-0574-a|step-1",
+      "signed-vector-combinations-ex-main-0574-a-step-1"
+    ],
+    [
+      "ex-main-0574-a|step-2",
+      "signed-vector-combinations-ex-main-0574-a-step-2"
+    ],
+    [
+      "ex-main-0574-a|step-3",
+      "signed-vector-combinations-ex-main-0574-a-step-3"
+    ],
+    [
+      "ex-main-0574-a|step-4",
+      "signed-vector-combinations-ex-main-0574-a-step-4"
+    ],
+    [
+      "ex-main-0574-b|condition",
+      "signed-vector-combinations-ex-main-0574-b-condition"
+    ],
+    [
+      "ex-main-0574-b|help:h1",
+      "signed-vector-combinations-ex-main-0574-b-help-h1"
+    ],
+    [
+      "ex-main-0574-b|help:h2",
+      "signed-vector-combinations-ex-main-0574-b-help-h2"
+    ],
+    [
+      "ex-main-0574-b|step-1",
+      "signed-vector-combinations-ex-main-0574-b-step-1"
+    ],
+    [
+      "ex-main-0574-b|step-2",
+      "signed-vector-combinations-ex-main-0574-b-step-2"
+    ],
+    [
+      "ex-main-0574-b|step-3",
+      "signed-vector-combinations-ex-main-0574-b-step-3"
+    ],
+    [
+      "ex-main-0574-b|step-4",
+      "signed-vector-combinations-ex-main-0574-b-step-4"
+    ],
+    [
+      "ex-main-0574-c|condition",
+      "signed-vector-combinations-ex-main-0574-c-condition"
+    ],
+    [
+      "ex-main-0574-c|help:h1",
+      "signed-vector-combinations-ex-main-0574-c-help-h1"
+    ],
+    [
+      "ex-main-0574-c|help:h2",
+      "signed-vector-combinations-ex-main-0574-c-help-h2"
+    ],
+    [
+      "ex-main-0574-c|step-1",
+      "signed-vector-combinations-ex-main-0574-c-step-1"
+    ],
+    [
+      "ex-main-0574-c|step-2",
+      "signed-vector-combinations-ex-main-0574-c-step-2"
+    ],
+    [
+      "ex-main-0574-c|step-3",
+      "signed-vector-combinations-ex-main-0574-c-step-3"
+    ],
+    [
+      "ex-main-0574-c|step-4",
+      "signed-vector-combinations-ex-main-0574-c-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "203d4ee8b80018245f57f344651e32f53bdac37226658794fa8b7fb41829b180",
+      "afterSHA256": "ee7b80b8ca0c8a9514e676713bd44e26dfb5119627137dcea1e52e19b4b86db7"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "090e372d0f61731601c5971487cc4ea1cae4f3118e90892c6477755875f30b11",
+      "afterSHA256": "219c81c01c7332f495159655bccc44c8d9effc5f939f1913c7264d569463f207"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T19:08:00Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–572, with 951 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "e969fec06b2d54afafccd37abc3b3c256a3449c11e8515d6451d958909b96e21",
+    "index": "85673ee1d2751017ffb880274c8d3e013221426ab74f5edc115a9382dc9ab36a",
+    "registry": "bbb1966b7d245af831bbda7462964061eb8f44578065e80b0cbbba22c579b7c7",
+    "cases": "5054e15c46e5ce34841a087f9c4dbdcfc6575f3182a36531b330f63661fa12d9"
+  }
+}

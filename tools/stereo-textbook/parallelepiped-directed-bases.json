@@ -1,0 +1,312 @@
+{
+  "parts": {
+    "595": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ],
+    "596": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "595": {
+      "id": "source-main-0595",
+      "kind": "exercise",
+      "title": "Задача № 595",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "595",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "596": {
+      "id": "source-main-0596",
+      "kind": "exercise",
+      "title": "Задача № 596",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "596",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          154
+        ],
+        "pdfPages": [
+          156
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0595-a": {
+      "raw": "1dcf9e3bff79c72b8878d615795ace8233ffe818ee711990f909bf8c664f7332",
+      "authored": "44f5ae40881ef700596b3dc0ef556583a2c1f5fe8d5e1fe50cbf1c4a643ec880",
+      "integrated": "4693ff1216e895a4c79988dde6c5420e11d04fff4470734415335f852a30369b"
+    },
+    "ex-main-0595-b": {
+      "raw": "f499fbddd2ede00ba8f5d060d5288d7c606c5c35b844d07deb4ec95f23b75aa6",
+      "authored": "d3c519b4ac5c750328bc1625e45707534d64244349799fe8cb3fb1ce69327f33",
+      "integrated": "47dc0ee576897d8a38447558cae5fc0f6d579ff698c473c74930ed3bd05734d3"
+    },
+    "ex-main-0595-c": {
+      "raw": "6d96dba009f3b4db6726f48a3a425fc6f3b1dadb784fa0f7e75f85160eb76296",
+      "authored": "ea3512c51ef6d283ff500e3bd1cb98368108cbe7975a608427b70f9aa971eb52",
+      "integrated": "6e66e21e31d8b17accc4a1904f1cebd556f0db042a54e71e731a26d118607113"
+    },
+    "ex-main-0595-d": {
+      "raw": "45549ec7586cf36bca9a01209a69b367a9f9ce07e7e2d0e71e2b955d12d6c2b3",
+      "authored": "6f7156b0b4cdf0203df152cd4434f5fffa6579a48739b7957989187d25bda17f",
+      "integrated": "2f16d85fcb22a1d5e1a47d8ff70f7f8b3f3683c83992ef5799260d58fed40282"
+    },
+    "ex-main-0595-e": {
+      "raw": "a3c034cd455a4785fd2d655555590e5a78e8adb6291749084814cda017a72819",
+      "authored": "b7155a3d84bc1388bdebf595e5b915b985e37c0820328ed8fb22c551e721261d",
+      "integrated": "74591a4c937b33c816cb054c49d9b00b17e3b8a988dc2e6344a6a5fbf081db3c"
+    },
+    "ex-main-0596-a": {
+      "raw": "1cccd227ff7f62051f6bcf3da41b90d94ac134f13adeb602c22d891346385f71",
+      "authored": "e32d0246c3a86cddc0481fd5a5b25b8affe8a67bc02e720c5bbb5d184d12efa7",
+      "integrated": "61c437ac95d76359e30086e35f5de1cbe1260c7717438434664d83f341fe8d24"
+    },
+    "ex-main-0596-b": {
+      "raw": "152b418fc396a63aa896559215a3b412c0f5706797d10d84991d0fb5f1f00c6e",
+      "authored": "ba121838433c48ae2a2dea087240ab7871682cf05cf350fae685a3d9439905b3",
+      "integrated": "3836ef6a01fc798706f5f08599819aa197057f6f029e92c370a9e306451742e0"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0595-a|condition",
+      "parallelepiped-directed-bases-ex-main-0595-a-condition"
+    ],
+    [
+      "ex-main-0595-a|help:h1",
+      "parallelepiped-directed-bases-ex-main-0595-a-help-h1"
+    ],
+    [
+      "ex-main-0595-a|help:h2",
+      "parallelepiped-directed-bases-ex-main-0595-a-help-h2"
+    ],
+    [
+      "ex-main-0595-a|step-1",
+      "parallelepiped-directed-bases-ex-main-0595-a-step-1"
+    ],
+    [
+      "ex-main-0595-a|step-2",
+      "parallelepiped-directed-bases-ex-main-0595-a-step-2"
+    ],
+    [
+      "ex-main-0595-a|step-3",
+      "parallelepiped-directed-bases-ex-main-0595-a-step-3"
+    ],
+    [
+      "ex-main-0595-a|step-4",
+      "parallelepiped-directed-bases-ex-main-0595-a-step-4"
+    ],
+    [
+      "ex-main-0595-b|condition",
+      "parallelepiped-directed-bases-ex-main-0595-b-condition"
+    ],
+    [
+      "ex-main-0595-b|help:h1",
+      "parallelepiped-directed-bases-ex-main-0595-b-help-h1"
+    ],
+    [
+      "ex-main-0595-b|help:h2",
+      "parallelepiped-directed-bases-ex-main-0595-b-help-h2"
+    ],
+    [
+      "ex-main-0595-b|step-1",
+      "parallelepiped-directed-bases-ex-main-0595-b-step-1"
+    ],
+    [
+      "ex-main-0595-b|step-2",
+      "parallelepiped-directed-bases-ex-main-0595-b-step-2"
+    ],
+    [
+      "ex-main-0595-b|step-3",
+      "parallelepiped-directed-bases-ex-main-0595-b-step-3"
+    ],
+    [
+      "ex-main-0595-b|step-4",
+      "parallelepiped-directed-bases-ex-main-0595-b-step-4"
+    ],
+    [
+      "ex-main-0595-c|condition",
+      "parallelepiped-directed-bases-ex-main-0595-c-condition"
+    ],
+    [
+      "ex-main-0595-c|help:h1",
+      "parallelepiped-directed-bases-ex-main-0595-c-help-h1"
+    ],
+    [
+      "ex-main-0595-c|help:h2",
+      "parallelepiped-directed-bases-ex-main-0595-c-help-h2"
+    ],
+    [
+      "ex-main-0595-c|step-1",
+      "parallelepiped-directed-bases-ex-main-0595-c-step-1"
+    ],
+    [
+      "ex-main-0595-c|step-2",
+      "parallelepiped-directed-bases-ex-main-0595-c-step-2"
+    ],
+    [
+      "ex-main-0595-c|step-3",
+      "parallelepiped-directed-bases-ex-main-0595-c-step-3"
+    ],
+    [
+      "ex-main-0595-c|step-4",
+      "parallelepiped-directed-bases-ex-main-0595-c-step-4"
+    ],
+    [
+      "ex-main-0595-d|condition",
+      "parallelepiped-directed-bases-ex-main-0595-d-condition"
+    ],
+    [
+      "ex-main-0595-d|help:h1",
+      "parallelepiped-directed-bases-ex-main-0595-d-help-h1"
+    ],
+    [
+      "ex-main-0595-d|help:h2",
+      "parallelepiped-directed-bases-ex-main-0595-d-help-h2"
+    ],
+    [
+      "ex-main-0595-d|step-1",
+      "parallelepiped-directed-bases-ex-main-0595-d-step-1"
+    ],
+    [
+      "ex-main-0595-d|step-2",
+      "parallelepiped-directed-bases-ex-main-0595-d-step-2"
+    ],
+    [
+      "ex-main-0595-d|step-3",
+      "parallelepiped-directed-bases-ex-main-0595-d-step-3"
+    ],
+    [
+      "ex-main-0595-d|step-4",
+      "parallelepiped-directed-bases-ex-main-0595-d-step-4"
+    ],
+    [
+      "ex-main-0595-e|condition",
+      "parallelepiped-directed-bases-ex-main-0595-e-condition"
+    ],
+    [
+      "ex-main-0595-e|help:h1",
+      "parallelepiped-directed-bases-ex-main-0595-e-help-h1"
+    ],
+    [
+      "ex-main-0595-e|help:h2",
+      "parallelepiped-directed-bases-ex-main-0595-e-help-h2"
+    ],
+    [
+      "ex-main-0595-e|step-1",
+      "parallelepiped-directed-bases-ex-main-0595-e-step-1"
+    ],
+    [
+      "ex-main-0595-e|step-2",
+      "parallelepiped-directed-bases-ex-main-0595-e-step-2"
+    ],
+    [
+      "ex-main-0595-e|step-3",
+      "parallelepiped-directed-bases-ex-main-0595-e-step-3"
+    ],
+    [
+      "ex-main-0595-e|step-4",
+      "parallelepiped-directed-bases-ex-main-0595-e-step-4"
+    ],
+    [
+      "ex-main-0596-a|condition",
+      "parallelepiped-directed-bases-ex-main-0596-a-condition"
+    ],
+    [
+      "ex-main-0596-a|help:h1",
+      "parallelepiped-directed-bases-ex-main-0596-a-help-h1"
+    ],
+    [
+      "ex-main-0596-a|help:h2",
+      "parallelepiped-directed-bases-ex-main-0596-a-help-h2"
+    ],
+    [
+      "ex-main-0596-a|step-1",
+      "parallelepiped-directed-bases-ex-main-0596-a-step-1"
+    ],
+    [
+      "ex-main-0596-a|step-2",
+      "parallelepiped-directed-bases-ex-main-0596-a-step-2"
+    ],
+    [
+      "ex-main-0596-a|step-3",
+      "parallelepiped-directed-bases-ex-main-0596-a-step-3"
+    ],
+    [
+      "ex-main-0596-a|step-4",
+      "parallelepiped-directed-bases-ex-main-0596-a-step-4"
+    ],
+    [
+      "ex-main-0596-b|condition",
+      "parallelepiped-directed-bases-ex-main-0596-b-condition"
+    ],
+    [
+      "ex-main-0596-b|help:h1",
+      "parallelepiped-directed-bases-ex-main-0596-b-help-h1"
+    ],
+    [
+      "ex-main-0596-b|help:h2",
+      "parallelepiped-directed-bases-ex-main-0596-b-help-h2"
+    ],
+    [
+      "ex-main-0596-b|step-1",
+      "parallelepiped-directed-bases-ex-main-0596-b-step-1"
+    ],
+    [
+      "ex-main-0596-b|step-2",
+      "parallelepiped-directed-bases-ex-main-0596-b-step-2"
+    ],
+    [
+      "ex-main-0596-b|step-3",
+      "parallelepiped-directed-bases-ex-main-0596-b-step-3"
+    ],
+    [
+      "ex-main-0596-b|step-4",
+      "parallelepiped-directed-bases-ex-main-0596-b-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "309d973c07f796c41604dda6b9fa417fd11931bbdc070b49e58ba5ff7efabbb4",
+      "afterSHA256": "06933277466476333b7778840348339f89ff3aadab13a4b72713c8847c0c23a8"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "07202a211c88a8e407bad5bc22df317ba24a652dc47fc83294b24dfaf8a2da7d",
+      "afterSHA256": "d83c24abbd62f69d582414b20ac3c19da1bc07f52425b3b7bdfae46d7231bee2"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T20:40:53Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–594, with 994 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "802e6b15cecbaad6a80bacd0174160d2d054affa133031647e401b9198cb0a46",
+    "index": "96a8aae04ae3177278efdded07ee0792fa63d679719f7f7a070c5dd1ecc389e8",
+    "registry": "422f4817ccb19f48d57fbba692c872f59f18e8aefc41150ed83ea8864bbda3e7",
+    "cases": "6a1c5775239161d94a324aed18b6fd725d9be53d5984e6b5b8f66c014634f0ca"
+  }
+}

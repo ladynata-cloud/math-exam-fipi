@@ -1,0 +1,9 @@
+{
+  "sourceCommit": "ce26c7c6e8ded8775cce9dfee44c03bff48f7c68",
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "06933277466476333b7778840348339f89ff3aadab13a4b72713c8847c0c23a8",
+      "afterSHA256": "6157ab47cc89964e209e1cb816955a5cd1cecb087be08dc28e0a66ed87786792"
+    }
+  }
+}
