@@ -162,9 +162,9 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–556 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–577 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–556 разобраны полностью/);
+ assert.match(overview.textContent,/№1–577 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
 });
@@ -224,5 +224,28 @@ test('quadratic formula accepts exactly equivalent radical pairs, while simplifi
     assert(Math.abs(a*number*number+b*number+c)<1e-8);
    }
   }
+ }
+});
+
+test('new applied conditions have the stated physical answers at each difficulty',()=>{
+ const {practiceStory}=require('./models.js');
+ const checker=require('./check.js');
+ for(const level of [1,2,3]){
+  const prompts=new Set();
+  for(let seed=0;seed<37;seed++){
+   const q=practiceStory(seed,level);prompts.add(q.prompt);
+   const fields=Array.from(q.prompt.matchAll(/\d+/g),m=>Number(m[0]));
+   if(level===1){
+    const [area,difference]=fields,side=(Math.sqrt(difference**2+4*area)-difference)/2;
+    assert.equal(Number(q.answer),2*(2*side+difference));
+   }else if(level===2){
+    assert.equal(Number(q.answer)*(Number(q.answer)-1)/2,fields[0]);
+   }else{
+    const [perimeter,difference]=fields,short=(perimeter/2-difference)/2;
+    assert.equal(Number(q.answer),short*(short+difference));
+   }
+   assert(q.steps.every(step=>checker.check(step.answer,step)));
+  }
+  assert(prompts.size>=12);
  }
 });

@@ -34,8 +34,6 @@ sourceSequence.splice(sourceSequence.indexOf('p21-source-533-d'),0,'p21-t02');
 const sourceIndex=new Map(formulaLesson.tasks.map((t,i)=>[t.id,i]));
 formulaLesson.studyOrder=[...sourceSequence.map(id=>sourceIndex.get(id)),...formulaLesson.tasks.map((t,i)=>t.source.type==='authored'?i:null).filter(i=>i!==null)];
 const wordLesson=lessons.find(l=>l.id==='p22');
-for(const t of wordLesson.tasks.filter(t=>t.source.type==='textbook'))t.skills=['quadratic-story-problems','quadratic-formula'];
-wordLesson.tasks.find(t=>t.id==='p22-t02').graph={type:'applied-shape',scene:'rectangle',label1:'x + 4',label2:'x',w:5,h:3};
 wordLesson.tasks.push(...read('exercises-557-577.json'));
 wordLesson.studyOrder=wordLesson.tasks.map((_,i)=>i).sort((a,b)=>{
  const x=wordLesson.tasks[a].source,y=wordLesson.tasks[b].source;
