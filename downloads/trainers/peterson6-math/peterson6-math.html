@@ -87,7 +87,7 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .pm-visual .pm-chart.pcm-segment, .pm-visual .pm-chart.pcm-group-rule { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-ratio-triangle, .pm-visual .pm-chart.pcm-ratio-triangle { min-width: 0; }
 .pm-task-figure .pm-chart.pcm-dissection, .pm-visual .pm-chart.pcm-dissection { min-width: 0; }
-.pm-task-figure .pm-chart.pcm-tangent-nest, .pm-task-figure .pm-chart.pcm-five-lines, .pm-task-figure .pm-chart.pcm-city-scale, .pm-task-figure .pm-chart.pcm-flat-scale, .pm-task-figure .pm-chart.pcm-parcel-scale { min-width: 0; }
+.pm-task-figure .pm-chart.pcm-tangent-nest, .pm-task-figure .pm-chart.pcm-five-lines, .pm-task-figure .pm-chart.pcm-city-scale, .pm-task-figure .pm-chart.pcm-flat-scale, .pm-task-figure .pm-chart.pcm-parcel-scale, .pm-task-figure .pm-chart.pcm-plan-garden, .pm-task-figure .pm-chart.pcm-road-triangle { min-width: 0; }
 
 .pm-visual .pm-table.pcm-route-table { width: 100%; min-width: 0; table-layout: fixed; }
 .pcm-route-table :is(th, td) { white-space: normal; overflow-wrap: anywhere; }
@@ -1093,6 +1093,55 @@ function exponentDiagram(variables){
  }
  return wrap;
 }
+function gardenScale(placement,gate){
+ const pic=svg('svg',{viewBox:'0 0 242 173',role:'img',class:'pm-chart pcm-group-rule pcm-plan-garden','aria-label':placement===undefined?'Прямоугольный участок длиной 40 м и шириной 30 м.':'Участок, дом и ворота на длинной нижней стороне.'});
+ const x=21,y=19,s=20.5,gardenW=8,gardenH=6,home=2;
+ pic.append(svg('rect',{x,y,width:s*gardenW,height:s*gardenH,fill:'#e4eee3',stroke:'#346550','stroke-width':1.7}));
+ if(placement===undefined){
+  txt(pic,x+4*s,y-5,'40 м',{'font-size':13});txt(pic,x+8*s+9,y+3*s,'30 м',{'font-size':13,'text-anchor':'start'});
+  txt(pic,x+4*s,y+3*s,'Участок',{'font-size':17});
+  return pic;
+ }
+ const [dx,dy]=[[3,2],[2,2],[3,1]][placement];
+ pic.append(svg('rect',{x:x+dx*s,y:y+dy*s,width:home*s,height:home*s,fill:'#efd5b6',stroke:'#865335','stroke-width':1.5,'data-home':placement}));
+ const gateCenter=gate===0?4:gate===1?2:6;
+ ln(pic,x+(gateCenter-.4)*s,y+6*s,x+(gateCenter+.4)*s,y+6*s,{stroke:'#bc7134','stroke-width':5,'data-gate-center':gateCenter});
+ txt(pic,x+4*s,y-5,'8 см',{'font-size':13});txt(pic,x+8*s+10,y+3*s,'6 см',{'font-size':13,'text-anchor':'start'});
+ txt(pic,x+(dx+1)*s,y+(dy+1)*s+5,'дом',{'font-size':13});txt(pic,x+gateCenter*s,y+6*s+20,'ворота',{'font-size':13});
+ return pic;
+}
+function roadTriangle(horizontal,height,showHeight=true){
+ const pic=svg('svg',{viewBox:'0 0 246 133',role:'img',class:'pm-chart pcm-group-rule pcm-road-triangle','aria-label':'Прямоугольный треугольник. Основание a горизонтально, катет h вертикален.'});
+ const x=16,y=88,end=206,top=horizontal===undefined?38:y-(end-x)*height/horizontal;
+ pic.append(svg('polygon',{points:x+','+y+' '+end+','+y+' '+end+','+top,fill:'#e7ede1',stroke:'#496953','stroke-width':1.2}));
+ ln(pic,x,y,end,top,{stroke:'#9d552c','stroke-width':3,'data-run':'horizontal','data-rise':y-top});
+ const corner=Math.min(8,(y-top)*.45);
+ pic.append(svg('polyline',{points:(end-corner)+','+y+' '+(end-corner)+','+(y-corner)+' '+end+','+(y-corner),fill:'none',stroke:'#496953'}));
+ txt(pic,107,110,horizontal===undefined?'a':('a = '+num(horizontal)+' м'),{'font-size':14});
+ txt(pic,215,(top+y)/2+3,'h',{'font-size':14});if(height!==undefined&&showHeight)txt(pic,119,23,'h = '+num(height)+' м',{'font-size':14});
+ return pic;
+}
+function gearPairFigure(first,second){
+ const pic=svg('svg',{viewBox:'0 0 245 155',role:'img',class:'pm-chart pcm-group-rule','aria-label':'Две шестерни, у первой '+first+' зубьев, у второй '+second+'.'});
+ const scale=Math.min(99/(first+second),49/Math.max(first,second)),r1=first*scale,r2=second*scale;
+ const start=(245-2*(r1+r2))/2,contact=start+2*r1,cy=65;
+ for(const [teeth,r,cx,color]of [[first,r1,start+r1,'#72a889'],[second,r2,contact+r2,'#dba77a']]){
+  const points=[];
+  for(let tooth=0;tooth<teeth;tooth++)for(const [offset,factor]of [[0,.97],[.23,1.025],[.58,1.025],[.84,.97]]){
+   const angle=2*Math.PI*(tooth+offset)/teeth;
+   points.push((cx+r*factor*Math.cos(angle)).toFixed(2)+','+(cy+r*factor*Math.sin(angle)).toFixed(2));
+  }
+  pic.append(svg('polygon',{points:points.join(' '),fill:color,stroke:'#315640','stroke-width':.45,'data-teeth':teeth}));
+  pic.append(svg('circle',{cx,cy,r:Math.min(5,r/3),fill:'#fff',stroke:'#586650','stroke-width':1}));
+ }
+ txt(pic,15,139,'Первая: '+first,{'font-size':14,'text-anchor':'start'});txt(pic,230,139,'Вторая: '+second,{'font-size':14,'text-anchor':'end'});return pic;
+}
+const sequenceChecks={
+ divide:{examples:[['10 → 2 → 0,4 → 0,08 → 0,16 → 0,032','0,08 : 5 = 0,016; здесь напечатано 0,16.'],['25 → 5 → 1 → 0,3 → 0,06','1 : 5 = 0,2; здесь указано 0,3.']]},
+ sum:{examples:[['0,5 → 1 → 1,5 → 2,5 → 4 → 6,5 → 10 → 16,5','4 + 6,5 = 10,5; здесь напечатано 10.'],['1 → 2 → 3 → 5 → 9 → 14','3 + 5 = 8; здесь указано 9.']]},
+ alternating:{examples:[['3 → 0,5 → 6 → 0,8 → 12 → 1,1 → 18 → 1,4','Нечётные места: 3, 6, 12, 18. Удвоение даёт 24 вместо 18.'],['2 → 1 → 4 → 1,2 → 7 → 1,4','Нечётные места: 2, 4, 7. Удвоение даёт 8 вместо 7.']]},
+ denominator:{examples:[['5/8 → 6/13 → 7/19 → 8/26 → 9/32 → 10/41 → 11/51 → 12/62','26 + 8 = 34: после 8/26 по этому правилу идёт 9/34.'],['2/5 → 3/7 → 4/10 → 5/13 → 6/18','10 + 4 = 14: после 4/10 по этому правилу идёт 5/14.']]},
+};
 const scaleReadings={
  'enlarge-reduce':{titles:['Увеличить в 5 раз','Уменьшить в 100 раз'],scales:[[5,1],[1,100]],drawing:[5,2],units:'см'},
  plan400:{titles:['3 см на плане','7 см на плане'],scales:[[1,400],[1,400]],drawing:[3,7],units:'м'},
@@ -1297,6 +1346,13 @@ function configFor(lesson,task){
  if(lesson?.id==='p34' && Object.hasOwn(trickInputs,task?.numberTrick)){const options=trickInputs[task.numberTrick];return {title:'Пройди арифметический фокус по действиям',controls:[c('Исходное число',options),c('Выполнено действий',range(0,numberTrail(task.numberTrick,0).length-1))],initial:[0,0]};}
  if(lesson?.id==='p34' && task?.coefficientStudy)return {title:'Где кончается степень?',controls:[c('Выражение',[[0,'Из упражнения'],[1,'Новый пример']]),c('Как проверить?',[[0,'Сначала решу'],[1,'Числовая часть'],[2,'Буквенная часть']])],initial:[0,0]};
  if(lesson?.id==='p34' && task?.coefficientContrast)return {title:'Один набор, разные признаки',controls:[c('Признак',[[0,'Нецелый коэффициент'],[1,'Только одна буква'],[2,'Два числовых множителя']]),c('Показ сравнения',[[0,'Сначала выберу сам'],[1,'Сверю свойство']])],initial:[0,0]};
+ if(lesson?.id==='p16' && task?.gardenPlan)return {title:'Дом и ворота на плане',controls:[c('Дом',[[0,'В центре'],[1,'Сдвинут влево'],[2,'Сдвинут вверх']]),c('Ворота',[[0,'В середине стороны'],[1,'Левее середины'],[2,'Правее середины']])],initial:[1,1]};
+ if(lesson?.id==='p16' && task?.classroomPlan){const measure=range(20,160).map(v=>[v,num(v/10)+' м']);return {title:'От измеренной стены к плану',controls:[c('Длина кабинета',measure),c('Ширина кабинета',measure)],initial:[84,62]};}
+ if(lesson?.id==='p16' && task?.scaleTransfer)return {title:'Сохрани отношение длин',controls:[c('Исходные данные',[[0,'Из задачи'],[1,'Другие длины']]),c('Проверка',[[0,'Сначала решу'],[1,'Покажи перевод']])],initial:[0,0]};
+ if(lesson?.id==='p16' && Object.hasOwn(sequenceChecks,task?.patternStudy))return {title:'Какой переход нарушил правило?',controls:[c('Ряд',[[0,'Из книги'],[1,'Новый ряд']]),c('Проверка',[[0,'Сначала найду'],[1,'Сверю переход']])],initial:[0,0]};
+ if(lesson?.id==='p16' && task?.gearRatio){const gears=range(3,24).map(n=>n*5);return {title:'Подбери зубчатые колёса',controls:[c('Зубцов у первой',gears),c('Зубцов у второй',gears),c('Цель',[[0,'Как в задаче'],[1,'Обратное отношение']])],initial:[15,15,0]};}
+ if(lesson?.id==='p16' && task?.commissionStudy)return {title:'Рубли и процентная ставка',controls:[c('Продажи',[[0,'Из задачи'],[1,'Другие цены']]),c('Что сравнить?',[[0,'Сначала вычислю'],[1,'Процент'],[2,'Сумму платежа']])],initial:[0,0]};
+ if(lesson?.id==='p16' && task?.roadSlope)return {title:'Горизонталь и перепад высоты',controls:[c('Участок дороги',[[0,'Из задачи'],[1,'Новые данные']]),c('Расчёт',[[0,'Сначала решу'],[1,'Сверю ответ']])],initial:[0,0]};
  if(lesson?.id==='p16' && Number.isInteger(task?.cityMap))return {title:'Измеряем расстояние от Москвы',controls:[c('Город',mapCities.map(([name],i)=>[i,name])),c('Линейка',[[0,'Сначала измерю'],[1,'Сниму показание'],[2,'Сверю расстояние']])],initial:[task.cityMap,0]};
  if(lesson?.id==='p16' && task?.parcelScale)return {title:'План участка с вырезом',controls:[c('Размеры участка',[[0,'По рисунку книги'],[1,'Новый участок']]),c('Что сравнить?',[[0,'Сначала измерю'],[1,'Площадь и вырез'],[2,'Периметр']])],initial:[0,0]};
  if(lesson?.id==='p16' && task?.flatScale)return {title:'Измеряем помещения на плане',controls:[c('Помещение',flats.map((room,i)=>[i,room.name])),c('Масштаб рисунка',[[0,'1 : 200 (из упражнения)'],[1,'1 : 300 (другой дом)']]),c('Расчёт',[[0,'Сначала решу'],[1,'Сверю размеры и площадь']])],initial:[0,0,0]};
@@ -1382,16 +1438,16 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.flatScale || task.oralStudy || task.lineRelation || task.letterStudy || task.steamerStudy) && index<2)hiddenControl=2;
-  if((task.linearStudy || task.regroupStudy || task.logicalPower || task.squareSum || task.numberTrick || task.coefficientStudy || task.coefficientContrast || Number.isInteger(task.cityMap) || task.parcelScale || task.scaleReading || task.midpointStudy || task.neighborStudy || task.moneyStudy || task.travelStudy || task.chainStudy || task.rateStudy) && index===0)hiddenControl=1;
+  if((task.scaleTransfer || task.patternStudy || task.commissionStudy || task.roadSlope || task.linearStudy || task.regroupStudy || task.logicalPower || task.squareSum || task.numberTrick || task.coefficientStudy || task.coefficientContrast || Number.isInteger(task.cityMap) || task.parcelScale || task.scaleReading || task.midpointStudy || task.neighborStudy || task.moneyStudy || task.travelStudy || task.chainStudy || task.rateStudy) && index===0)hiddenControl=1;
   if(hiddenControl!==null){state.values[hiddenControl]=0;selects[hiddenControl].value='0';}
   draw();});wrap.append(lab,select);controls.append(wrap);return select;});
  let explanations=[];
@@ -1462,6 +1518,53 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   show(table(['Запись','Коэффициент'],rows));say('Выбранный признак: '+['нецелый коэффициент','одна различная буква','два отдельно записанных числовых множителя'][a]+'.');
   if(b===1)say('По этому признаку выделяется '+rows[focused][0]+'. Своё объяснение запиши в тетради.');
   stepList(['Сначала сформулируй точное свойство.','Сверь по нему каждую из пяти записей.','Испытай другой признак.']);
+ }
+ else
+ if(n===16 && task.gardenPlan){
+  show(gardenScale(a,b));const centered=a===0,gate=b===0;
+  say(centered?'До дома слева и справа по 3 см, сверху и снизу по 2 см.':'Дом смещён. Отметь равные расстояния до каждой пары противоположных сторон.');
+  say(gate?'Центр ворот находится в 4 см от каждого конца длинной стороны.':'Середина ворот смещена относительно середины длинной стороны.');
+  stepList(['Переведи метры в сантиметры плана.','Установи дом по центру обоих направлений.','От центра длинной стороны отложи по 0,4 см.']);
+ }
+ else if(n===16 && task.classroomPlan){
+  const measure={length:a/10,width:b/10};
+  show(table(['Что измеряем','В кабинете','На плане 1 : 100'],[['Длина',num(measure.length)+' м',num(measure.length)+' см'],['Ширина',num(measure.width)+' м',num(measure.width)+' см']]));
+  say('В модели длины выбраны с точностью до дециметра. Точные собственные измерения запиши в тетради.');stepList(['Выбери начало измерений.','Отдельно измерь стены и положение дверного проёма.','Проверь масштаб одной стены обратным переводом.']);
+ }
+ else if(n===16 && task.scaleTransfer){
+  const isRoom=task.scaleTransfer==='room';
+  const [width,length,plan]=a===0?[4.2,6,4]:[3.5,7,6];const mapLength=a===0?12:21;
+  if(isRoom){formula('Комната '+num(length)+' × '+num(width)+' м. Длинная сторона на плане '+num(plan)+' см.');
+   if(b===1)formula('Ширина на плане '+num(plan)+' × '+num(width)+' / '+num(length)+' = '+num(plan*width/length)+' см.');}
+  else{formula('Карта 1 : 100 000; на ней '+num(mapLength)+' см.');
+   if(b===1)formula('В действительности '+num(mapLength)+' км. На карте 1 : 300 000 это '+num(mapLength/3)+' см.');}
+  stepList(['Запиши соответствующие длины в две строки.','Сохрани одно и то же отношение.','Измени числа и повтори расчёт.']);
+ }
+ else if(n===16 && Object.hasOwn(sequenceChecks,task.patternStudy)){
+  const example=sequenceChecks[task.patternStudy].examples[a];say(example[0]);if(b===1)say(example[1]);
+  stepList(['Опиши правило для соседних или чередующихся позиций.','Найди первое место, где написано другое значение.','Полностью исправленная последовательность может иметь другой дальнейший хвост.']);
+ }
+ else if(n===16 && task.gearRatio){
+  const target=task.gearRatio,ratio=state.values[2]===0?target:[target[1],target[0]];
+  show(gearPairFigure(a,b));formula('Нужно '+ratio[0]+' : '+ratio[1]+'. Выбрано '+a+' : '+b+'.');
+  const left=a*ratio[1],right=b*ratio[0];formula('Перекрёстные произведения: '+left+' и '+right+'.');
+  say(left===right?'Шестерёнки выполняют условие. Запиши свой пример.':'Отношение пока другое. Измени одно из колёс.');
+  stepList(['Первое число относится к первому колесу.','Измени оба размера в одинаковое число раз.','Переверни целевое отношение и найди другую пару.']);
+ }
+ else if(n===16 && task.commissionStudy){
+  const details=a===0?[[4000,240],[18000,900]]:[[6000,360],[4000,200]];
+  show(table(['Магазин','Цена, ₽','Сбор, ₽'],details.map(([price,fee],i)=>[String(i+1),num(price),num(fee)])));
+  if(b===1)for(const [i,[price,fee]]of details.entries())formula('Магазин '+(i+1)+': '+num(100*fee/price)+' %.');
+  if(b===2)say('Больше в рублях: '+(details[0][1]>details[1][1]?'первый':'второй')+' магазин.');
+  stepList(['Сначала назови величину сравнения.','Ставку считают на каждые 100 рублей цены.','Фактический платёж получается из цены и ставки.']);
+ }
+ else if(n===16 && task.roadSlope){
+  const down=task.roadSlope==='а',horizontal=down?(a===0?400:250):(a===0?1200:800);
+  const rate=down?(a===0?20:12):(a===0?2.5:3.75),h=horizontal*rate/100;
+  show(roadTriangle(horizontal,h,!down||b===1));
+  if(down)say('Крутизна '+num(rate)+' %.');else say('Перепад высоты '+num(h)+' м.');
+  if(b===1){if(down)formula('h = '+num(horizontal)+' × '+num(rate)+' / 100 = '+num(h)+' м');else formula('100 × '+num(h)+' / '+num(horizontal)+' = '+num(rate)+' %');}
+  stepList(['Горизонтальная проекция — знаменатель отношения.','Работай с одинаковыми единицами.','Отношение длин переведи в проценты или обратно.']);
  }
  else
  if(n===16 && Number.isInteger(task.cityMap)){
@@ -20284,6 +20387,905 @@ window.PetersonCourse = {
       "caption": "Разделение квартиры на шесть неперекрывающихся прямоугольников. Числа на шкалах показывают сантиметры плана. Метки помещений соответствуют списку под схемой."
      },
      "flatScale": true
+    },
+    {
+     "id": "p16-t25",
+     "title": "К задаче №37",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "Построй план участка 40 × 30 м при масштабе 1 : 500. В середине размести дом 10 × 10 м. На середине одной длинной стороны участка отметь ворота шириной 4 м. Сохрани размеры и свой чертёж.",
+     "steps": [
+      {
+       "prompt": "Длина большой стороны на плане, в см?",
+       "answer": "8",
+       "hint": "Масштаб 1 : 500 даёт 5 м в одном сантиметре плана. Проверь расстояния до противоположных сторон участка.",
+       "explanation": "План участка 8 × 6 см, дома 2 × 2 см. Если дом в центре, слева и справа до него по 3 см, сверху и снизу по 2 см. Ворота занимают 0,8 см на длинной стороне; их края в 3,6 и 4,4 см от одного её конца."
+      },
+      {
+       "prompt": "Длина короткой стороны на плане, в см?",
+       "answer": "6",
+       "hint": "Масштаб 1 : 500 даёт 5 м в одном сантиметре плана. Проверь расстояния до противоположных сторон участка.",
+       "explanation": "План участка 8 × 6 см, дома 2 × 2 см. Если дом в центре, слева и справа до него по 3 см, сверху и снизу по 2 см. Ворота занимают 0,8 см на длинной стороне; их края в 3,6 и 4,4 см от одного её конца."
+      },
+      {
+       "prompt": "Какова сторона квадратного дома на плане, в см?",
+       "answer": "2",
+       "hint": "Масштаб 1 : 500 даёт 5 м в одном сантиметре плана. Проверь расстояния до противоположных сторон участка.",
+       "explanation": "План участка 8 × 6 см, дома 2 × 2 см. Если дом в центре, слева и справа до него по 3 см, сверху и снизу по 2 см. Ворота занимают 0,8 см на длинной стороне; их края в 3,6 и 4,4 см от одного её конца."
+      },
+      {
+       "prompt": "Какова ширина ворот на плане, в см?",
+       "answer": "4/5",
+       "hint": "Масштаб 1 : 500 даёт 5 м в одном сантиметре плана. Проверь расстояния до противоположных сторон участка.",
+       "explanation": "План участка 8 × 6 см, дома 2 × 2 см. Если дом в центре, слева и справа до него по 3 см, сверху и снизу по 2 см. Ворота занимают 0,8 см на длинной стороне; их края в 3,6 и 4,4 см от одного её конца."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Проверь, что центр дома совпадает с центром участка, а ворота находятся на длинной стороне.",
+       "hint": "Масштаб 1 : 500 даёт 5 м в одном сантиметре плана. Проверь расстояния до противоположных сторон участка.",
+       "explanation": "План участка 8 × 6 см, дома 2 × 2 см. Если дом в центре, слева и справа до него по 3 см, сверху и снизу по 2 см. Ворота занимают 0,8 см на длинной стороне; их края в 3,6 и 4,4 см от одного её конца."
+      }
+     ],
+     "hint": "Масштаб 1 : 500 даёт 5 м в одном сантиметре плана. Проверь расстояния до противоположных сторон участка.",
+     "explanation": "План участка 8 × 6 см, дома 2 × 2 см. Если дом в центре, слева и справа до него по 3 см, сверху и снизу по 2 см. Ворота занимают 0,8 см на длинной стороне; их края в 3,6 и 4,4 см от одного её конца.",
+     "skills": [
+      "scale",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 37,
+      "reference": "№37"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gardenPlan": true,
+     "figure": {
+      "type": "garden-ground",
+      "caption": "Исходные границы участка. Дом и ворота размести на собственном чертеже, расположение проверь в модели."
+     }
+    },
+    {
+     "id": "p16-t26",
+     "title": "К задаче №38",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "Измерь кабинет математики и начерти его план в масштабе 1 : 100. Запиши реальные размеры и размеры на бумаге. Если кабинета сейчас нет перед глазами, потренируйся на авторском примере, а в записи уточни, что именно ты измерял.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Запиши длину и ширину или размеры отдельных выступов своего кабинета.",
+       "hint": "Удобное свойство масштаба 1 : 100: один реальный метр даёт один сантиметр на плане.",
+       "explanation": "Измерь каждую реальную границу кабинета и выбери одну стену для начала. Если кабинет 8,4 × 6,2 м, его план 8,4 × 6,2 см. Для своего кабинета подставь собственные размеры. Дверь и доску отметь относительно выбранной стены."
+      },
+      {
+       "prompt": "В авторском примере длина кабинета 8,4 м. Сколько см на плане?",
+       "answer": "42/5",
+       "hint": "Удобное свойство масштаба 1 : 100: один реальный метр даёт один сантиметр на плане.",
+       "explanation": "Измерь каждую реальную границу кабинета и выбери одну стену для начала. Если кабинет 8,4 × 6,2 м, его план 8,4 × 6,2 см. Для своего кабинета подставь собственные размеры. Дверь и доску отметь относительно выбранной стены."
+      },
+      {
+       "prompt": "В том же примере ширина 6,2 м. Сколько см на плане?",
+       "answer": "31/5",
+       "hint": "Удобное свойство масштаба 1 : 100: один реальный метр даёт один сантиметр на плане.",
+       "explanation": "Измерь каждую реальную границу кабинета и выбери одну стену для начала. Если кабинет 8,4 × 6,2 м, его план 8,4 × 6,2 см. Для своего кабинета подставь собственные размеры. Дверь и доску отметь относительно выбранной стены."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Построй свой план, укажи масштаб и измерь для проверки одну стену обратно.",
+       "hint": "Удобное свойство масштаба 1 : 100: один реальный метр даёт один сантиметр на плане.",
+       "explanation": "Измерь каждую реальную границу кабинета и выбери одну стену для начала. Если кабинет 8,4 × 6,2 м, его план 8,4 × 6,2 см. Для своего кабинета подставь собственные размеры. Дверь и доску отметь относительно выбранной стены."
+      }
+     ],
+     "hint": "Удобное свойство масштаба 1 : 100: один реальный метр даёт один сантиметр на плане.",
+     "explanation": "Измерь каждую реальную границу кабинета и выбери одну стену для начала. Если кабинет 8,4 × 6,2 м, его план 8,4 × 6,2 см. Для своего кабинета подставь собственные размеры. Дверь и доску отметь относительно выбранной стены.",
+     "skills": [
+      "scale",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 38,
+      "reference": "№38"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "classroomPlan": true
+    },
+    {
+     "id": "p16-t27",
+     "title": "К задаче №39",
+     "kind": "number",
+     "answer": "14/5",
+     "prompt": "Комната имеет размеры 4,2 м и 6 м. Большая сторона изображена на плане отрезком 4 см. Какова длина изображения меньшей стороны в сантиметрах?",
+     "steps": [
+      {
+       "prompt": "Какую долю большей стороны составляет меньшая?",
+       "answer": "7/10",
+       "hint": "Раздели 4,2 на 6.",
+       "explanation": "4,2/6 = 0,7."
+      },
+      {
+       "prompt": "Вычисли ту же долю от четырёх сантиметров.",
+       "answer": "14/5",
+       "hint": "У длин одного плана одинаковый масштабный множитель. Сопоставь длину с длиной, ширину с шириной.",
+       "explanation": "6 м изображены 4 см: каждому метру отвечает 4/6 см. Для ширины 4,2 м получаем 4,2 × 4/6 = 2,8 см. Ширина меньше длины, поэтому ответ меньше 4 см."
+      }
+     ],
+     "hint": "У длин одного плана одинаковый масштабный множитель. Сопоставь длину с длиной, ширину с шириной.",
+     "explanation": "6 м изображены 4 см: каждому метру отвечает 4/6 см. Для ширины 4,2 м получаем 4,2 × 4/6 = 2,8 см. Ширина меньше длины, поэтому ответ меньше 4 см.",
+     "skills": [
+      "scale",
+      "proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 39,
+      "reference": "№39"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "scaleTransfer": "room",
+     "errorCues": [
+      [
+       "4,2",
+       "Это реальная ширина в метрах. Нужна длина её изображения."
+      ],
+      [
+       "40/7",
+       "Искомый отрезок должен быть короче 4 см."
+      ]
+     ]
+    },
+    {
+     "id": "p16-t28",
+     "title": "К задаче №40",
+     "kind": "number",
+     "answer": "4",
+     "prompt": "На первой карте 1 : 100 000 города разделяют 12 см. Каков отрезок между теми же городами на второй карте масштаба 1 : 300 000, в сантиметрах?",
+     "steps": [
+      {
+       "prompt": "Реальное расстояние в километрах?",
+       "answer": "12",
+       "hint": "Местность остаётся той же. Сначала вычисли реальное расстояние, затем длину на второй карте.",
+       "explanation": "Первая карта: 1 см означает 1 км; 12 см означают 12 км. На второй карте 1 см означает 3 км, значит 12 : 3 = 4 см."
+      },
+      {
+       "prompt": "Сколько километров показывает один сантиметр второй карты?",
+       "answer": "3",
+       "hint": "Местность остаётся той же. Сначала вычисли реальное расстояние, затем длину на второй карте.",
+       "explanation": "Первая карта: 1 см означает 1 км; 12 см означают 12 км. На второй карте 1 см означает 3 км, значит 12 : 3 = 4 см."
+      },
+      {
+       "prompt": "Какова длина отрезка второй карты в сантиметрах?",
+       "answer": "4",
+       "hint": "Местность остаётся той же. Сначала вычисли реальное расстояние, затем длину на второй карте.",
+       "explanation": "Первая карта: 1 см означает 1 км; 12 см означают 12 км. На второй карте 1 см означает 3 км, значит 12 : 3 = 4 см."
+      }
+     ],
+     "hint": "Местность остаётся той же. Сначала вычисли реальное расстояние, затем длину на второй карте.",
+     "explanation": "Первая карта: 1 см означает 1 км; 12 см означают 12 км. На второй карте 1 см означает 3 км, значит 12 : 3 = 4 см.",
+     "skills": [
+      "scale",
+      "inverse-proportion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 40,
+      "reference": "№40"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "scaleTransfer": "two-maps",
+     "errorCues": [
+      [
+       "36",
+       "У второй карты знаменатель втрое больше, значит тот же отрезок будет короче."
+      ],
+      [
+       "12",
+       "Сохраняется реальное расстояние, а не число сантиметров на двух картах."
+      ]
+     ]
+    },
+    {
+     "id": "p16-t29",
+     "title": "К задаче №41(1)",
+     "kind": "number",
+     "answer": "0.16",
+     "prompt": "Рассмотри ряд 10, 2, 0,4, 0,08, 0,16, 0,032. Предложи закономерность и назови первое напечатанное число, которое по ней не следует из предыдущих нужных членов. Различай ошибочный переход и полное продолжение от начала.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Сначала опиши правило своими словами.",
+       "hint": "Каждое следующее число должно быть предыдущим, делённым на 5.",
+       "explanation": "После 0,08 по правилу нужно 0,016. Напечатано 0,16. Последнее 0,032 действительно равно 0,16 : 5. При восстановлении всего ряда от начала последним стало бы 0,0032."
+      },
+      {
+       "prompt": "Какое значение должно стоять в месте первого нарушения?",
+       "answer": "0.016",
+       "hint": "Каждое следующее число должно быть предыдущим, делённым на 5.",
+       "explanation": "После 0,08 по правилу нужно 0,016. Напечатано 0,16. Последнее 0,032 действительно равно 0,16 : 5. При восстановлении всего ряда от начала последним стало бы 0,0032."
+      },
+      {
+       "prompt": "Какое фактическое число напечатано на этом месте?",
+       "answer": "0.16",
+       "hint": "Каждое следующее число должно быть предыдущим, делённым на 5.",
+       "explanation": "После 0,08 по правилу нужно 0,016. Напечатано 0,16. Последнее 0,032 действительно равно 0,16 : 5. При восстановлении всего ряда от начала последним стало бы 0,0032."
+      }
+     ],
+     "hint": "Каждое следующее число должно быть предыдущим, делённым на 5.",
+     "explanation": "После 0,08 по правилу нужно 0,016. Напечатано 0,16. Последнее 0,032 действительно равно 0,16 : 5. При восстановлении всего ряда от начала последним стало бы 0,0032.",
+     "skills": [
+      "fraction-add",
+      "decimal-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 41,
+      "reference": "№41(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "patternStudy": "divide",
+     "errorCues": [
+      [
+       "0,032",
+       "Посмотри на предыдущую часть ряда: первое нарушение произошло раньше."
+      ],
+      [
+       "0,016",
+       "Это исправленное значение. В последнем поле укажи число, которое действительно напечатано."
+      ]
+     ]
+    },
+    {
+     "id": "p16-t30",
+     "title": "К задаче №41(2)",
+     "kind": "number",
+     "answer": "10",
+     "prompt": "Рассмотри ряд 1/2, 1, 1 1/2, 2 1/2, 4, 6 1/2, 10, 16 1/2. Предложи закономерность и назови первое напечатанное число, которое по ней не следует из предыдущих нужных членов. Различай ошибочный переход и полное продолжение от начала.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Сначала опиши правило своими словами.",
+       "hint": "Начиная с третьего, складывай два непосредственно предыдущих числа.",
+       "explanation": "4 + 6,5 = 10,5; напечатано 10. Последнее число получено из напечатанных 6,5 и 10."
+      },
+      {
+       "prompt": "Какое значение должно стоять в месте первого нарушения?",
+       "answer": "10.5",
+       "hint": "Начиная с третьего, складывай два непосредственно предыдущих числа.",
+       "explanation": "4 + 6,5 = 10,5; напечатано 10. Последнее число получено из напечатанных 6,5 и 10."
+      },
+      {
+       "prompt": "Какое фактическое число напечатано на этом месте?",
+       "answer": "10",
+       "hint": "Начиная с третьего, складывай два непосредственно предыдущих числа.",
+       "explanation": "4 + 6,5 = 10,5; напечатано 10. Последнее число получено из напечатанных 6,5 и 10."
+      }
+     ],
+     "hint": "Начиная с третьего, складывай два непосредственно предыдущих числа.",
+     "explanation": "4 + 6,5 = 10,5; напечатано 10. Последнее число получено из напечатанных 6,5 и 10.",
+     "skills": [
+      "fraction-add",
+      "decimal-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 41,
+      "reference": "№41(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "patternStudy": "sum",
+     "errorCues": [
+      [
+       "16,5",
+       "Посмотри на предыдущую часть ряда: первое нарушение произошло раньше."
+      ],
+      [
+       "10,5",
+       "Это исправленное значение. В последнем поле укажи число, которое действительно напечатано."
+      ]
+     ]
+    },
+    {
+     "id": "p16-t31",
+     "title": "К задаче №41(3)",
+     "kind": "number",
+     "answer": "18",
+     "prompt": "Рассмотри ряд 3, 0,5, 6, 0,8, 12, 1,1, 18, 1,4. Предложи закономерность и назови первое напечатанное число, которое по ней не следует из предыдущих нужных членов. Различай ошибочный переход и полное продолжение от начала.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Сначала опиши правило своими словами.",
+       "hint": "Раздели позиции на нечётные и чётные: правила этих двух рядов разные.",
+       "explanation": "На нечётных местах 3, 6, 12, 18; удвоение даёт 24 вместо 18. На чётных местах 0,5, 0,8, 1,1, 1,4; прибавляют 0,3."
+      },
+      {
+       "prompt": "Какое значение должно стоять в месте первого нарушения?",
+       "answer": "24",
+       "hint": "Раздели позиции на нечётные и чётные: правила этих двух рядов разные.",
+       "explanation": "На нечётных местах 3, 6, 12, 18; удвоение даёт 24 вместо 18. На чётных местах 0,5, 0,8, 1,1, 1,4; прибавляют 0,3."
+      },
+      {
+       "prompt": "Какое фактическое число напечатано на этом месте?",
+       "answer": "18",
+       "hint": "Раздели позиции на нечётные и чётные: правила этих двух рядов разные.",
+       "explanation": "На нечётных местах 3, 6, 12, 18; удвоение даёт 24 вместо 18. На чётных местах 0,5, 0,8, 1,1, 1,4; прибавляют 0,3."
+      }
+     ],
+     "hint": "Раздели позиции на нечётные и чётные: правила этих двух рядов разные.",
+     "explanation": "На нечётных местах 3, 6, 12, 18; удвоение даёт 24 вместо 18. На чётных местах 0,5, 0,8, 1,1, 1,4; прибавляют 0,3.",
+     "skills": [
+      "fraction-add",
+      "decimal-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 41,
+      "reference": "№41(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "patternStudy": "alternating",
+     "errorCues": [
+      [
+       "1,4",
+       "Посмотри на предыдущую часть ряда: первое нарушение произошло раньше."
+      ],
+      [
+       "24",
+       "Это исправленное значение. В последнем поле укажи число, которое действительно напечатано."
+      ]
+     ]
+    },
+    {
+     "id": "p16-t32",
+     "title": "К задаче №41(4)",
+     "kind": "number",
+     "answer": "9/32",
+     "prompt": "Рассмотри ряд 5/8, 6/13, 7/19, 8/26, 9/32, 10/41, 11/51, 12/62. Предложи закономерность и назови первое напечатанное число, которое по ней не следует из предыдущих нужных членов. Различай ошибочный переход и полное продолжение от начала.",
+     "steps": [
+      {
+       "kind": "instruction",
+       "prompt": "Сначала опиши правило своими словами.",
+       "hint": "Числитель увеличивается на 1. Для нового знаменателя прибавь к прежнему знаменателю прежний числитель.",
+       "explanation": "После 8/26 числитель должен быть 9, а знаменатель 26 + 8 = 34. Поэтому непосредственно в этом переходе 9/32 нарушает правило. Следующая запись 10/41 согласуется с напечатанными 9 и 32."
+      },
+      {
+       "prompt": "Какое значение должно стоять в месте первого нарушения?",
+       "answer": "9/34",
+       "hint": "Числитель увеличивается на 1. Для нового знаменателя прибавь к прежнему знаменателю прежний числитель.",
+       "explanation": "После 8/26 числитель должен быть 9, а знаменатель 26 + 8 = 34. Поэтому непосредственно в этом переходе 9/32 нарушает правило. Следующая запись 10/41 согласуется с напечатанными 9 и 32."
+      },
+      {
+       "prompt": "Какое фактическое число напечатано на этом месте?",
+       "answer": "9/32",
+       "hint": "Числитель увеличивается на 1. Для нового знаменателя прибавь к прежнему знаменателю прежний числитель.",
+       "explanation": "После 8/26 числитель должен быть 9, а знаменатель 26 + 8 = 34. Поэтому непосредственно в этом переходе 9/32 нарушает правило. Следующая запись 10/41 согласуется с напечатанными 9 и 32."
+      }
+     ],
+     "hint": "Числитель увеличивается на 1. Для нового знаменателя прибавь к прежнему знаменателю прежний числитель.",
+     "explanation": "После 8/26 числитель должен быть 9, а знаменатель 26 + 8 = 34. Поэтому непосредственно в этом переходе 9/32 нарушает правило. Следующая запись 10/41 согласуется с напечатанными 9 и 32.",
+     "skills": [
+      "fraction-add",
+      "decimal-divide"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 41,
+      "reference": "№41(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "patternStudy": "denominator",
+     "errorCues": [
+      [
+       "10/41",
+       "Посмотри на предыдущую часть ряда: первое нарушение произошло раньше."
+      ],
+      [
+       "9/34",
+       "Это исправленное значение. В последнем поле укажи число, которое действительно напечатано."
+      ]
+     ]
+    },
+    {
+     "id": "p16-t33",
+     "title": "К задаче №42(1)",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В наборе есть колёса с 15, 20, 25 и далее через пять до 120 зубцов. Подбери два, чтобы отношение числа зубцов первого к числу зубцов второго было равно 5. Проверь числовой ответ своим способом.",
+     "steps": [
+      {
+       "prompt": "Если у второго колеса 15 зубцов, сколько нужно у первого?",
+       "answer": "75",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 75 и 15 зубцов: 75/15 = 5. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Укажи подходящую пару из набора и проверь её отношение.",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 75 и 15 зубцов: 75/15 = 5. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      }
+     ],
+     "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+     "explanation": "Например, 75 и 15 зубцов: 75/15 = 5. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе.",
+     "skills": [
+      "ratio",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 42,
+      "reference": "№42(1)",
+      "subpart": "1"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gearRatio": [
+      5,
+      1
+     ]
+    },
+    {
+     "id": "p16-t34",
+     "title": "К задаче №42(2)",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В наборе есть колёса с 15, 20, 25 и далее через пять до 120 зубцов. Подбери два, чтобы отношение числа зубцов первого к числу зубцов второго было равно 1/2. Проверь числовой ответ своим способом.",
+     "steps": [
+      {
+       "prompt": "Если у второго колеса 30 зубцов, сколько нужно у первого?",
+       "answer": "15",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 15 и 30 зубцов: 15/30 = 1/2. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Укажи подходящую пару из набора и проверь её отношение.",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 15 и 30 зубцов: 15/30 = 1/2. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      }
+     ],
+     "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+     "explanation": "Например, 15 и 30 зубцов: 15/30 = 1/2. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе.",
+     "skills": [
+      "ratio",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 42,
+      "reference": "№42(2)",
+      "subpart": "2"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gearRatio": [
+      1,
+      2
+     ]
+    },
+    {
+     "id": "p16-t35",
+     "title": "К задаче №42(3)",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В наборе есть колёса с 15, 20, 25 и далее через пять до 120 зубцов. Подбери два, чтобы отношение числа зубцов первого к числу зубцов второго было равно 1/4. Проверь числовой ответ своим способом.",
+     "steps": [
+      {
+       "prompt": "Если у второго колеса 60 зубцов, сколько нужно у первого?",
+       "answer": "15",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 15 и 60 зубцов: 15/60 = 1/4. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Укажи подходящую пару из набора и проверь её отношение.",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 15 и 60 зубцов: 15/60 = 1/4. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      }
+     ],
+     "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+     "explanation": "Например, 15 и 60 зубцов: 15/60 = 1/4. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе.",
+     "skills": [
+      "ratio",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 42,
+      "reference": "№42(3)",
+      "subpart": "3"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gearRatio": [
+      1,
+      4
+     ]
+    },
+    {
+     "id": "p16-t36",
+     "title": "К задаче №42(4)",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В наборе есть колёса с 15, 20, 25 и далее через пять до 120 зубцов. Подбери два, чтобы отношение числа зубцов первого к числу зубцов второго было равно 1/6. Проверь числовой ответ своим способом.",
+     "steps": [
+      {
+       "prompt": "Если у второго колеса 90 зубцов, сколько нужно у первого?",
+       "answer": "15",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 15 и 90 зубцов: 15/90 = 1/6. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Укажи подходящую пару из набора и проверь её отношение.",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 15 и 90 зубцов: 15/90 = 1/6. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      }
+     ],
+     "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+     "explanation": "Например, 15 и 90 зубцов: 15/90 = 1/6. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе.",
+     "skills": [
+      "ratio",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 42,
+      "reference": "№42(4)",
+      "subpart": "4"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gearRatio": [
+      1,
+      6
+     ]
+    },
+    {
+     "id": "p16-t37",
+     "title": "К задаче №42(5)",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В наборе есть колёса с 15, 20, 25 и далее через пять до 120 зубцов. Подбери два, чтобы отношение числа зубцов первого к числу зубцов второго было равно 2/3. Проверь числовой ответ своим способом.",
+     "steps": [
+      {
+       "prompt": "Если у второго колеса 30 зубцов, сколько нужно у первого?",
+       "answer": "20",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 20 и 30 зубцов: 20/30 = 2/3. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Укажи подходящую пару из набора и проверь её отношение.",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 20 и 30 зубцов: 20/30 = 2/3. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      }
+     ],
+     "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+     "explanation": "Например, 20 и 30 зубцов: 20/30 = 2/3. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе.",
+     "skills": [
+      "ratio",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 42,
+      "reference": "№42(5)",
+      "subpart": "5"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gearRatio": [
+      2,
+      3
+     ]
+    },
+    {
+     "id": "p16-t38",
+     "title": "К задаче №42(6)",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В наборе есть колёса с 15, 20, 25 и далее через пять до 120 зубцов. Подбери два, чтобы отношение числа зубцов первого к числу зубцов второго было равно 2/5. Проверь числовой ответ своим способом.",
+     "steps": [
+      {
+       "prompt": "Если у второго колеса 50 зубцов, сколько нужно у первого?",
+       "answer": "20",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 20 и 50 зубцов: 20/50 = 2/5. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Укажи подходящую пару из набора и проверь её отношение.",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 20 и 50 зубцов: 20/50 = 2/5. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      }
+     ],
+     "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+     "explanation": "Например, 20 и 50 зубцов: 20/50 = 2/5. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе.",
+     "skills": [
+      "ratio",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 42,
+      "reference": "№42(6)",
+      "subpart": "6"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gearRatio": [
+      2,
+      5
+     ]
+    },
+    {
+     "id": "p16-t39",
+     "title": "К задаче №42(7)",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В наборе есть колёса с 15, 20, 25 и далее через пять до 120 зубцов. Подбери два, чтобы отношение числа зубцов первого к числу зубцов второго было равно 5/6. Проверь числовой ответ своим способом.",
+     "steps": [
+      {
+       "prompt": "Если у второго колеса 30 зубцов, сколько нужно у первого?",
+       "answer": "25",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 25 и 30 зубцов: 25/30 = 5/6. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Укажи подходящую пару из набора и проверь её отношение.",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 25 и 30 зубцов: 25/30 = 5/6. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      }
+     ],
+     "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+     "explanation": "Например, 25 и 30 зубцов: 25/30 = 5/6. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе.",
+     "skills": [
+      "ratio",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 42,
+      "reference": "№42(7)",
+      "subpart": "7"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gearRatio": [
+      5,
+      6
+     ]
+    },
+    {
+     "id": "p16-t40",
+     "title": "К задаче №42(8)",
+     "kind": "manual",
+     "answer": "",
+     "prompt": "В наборе есть колёса с 15, 20, 25 и далее через пять до 120 зубцов. Подбери два, чтобы отношение числа зубцов первого к числу зубцов второго было равно 3/4. Проверь числовой ответ своим способом.",
+     "steps": [
+      {
+       "prompt": "Если у второго колеса 40 зубцов, сколько нужно у первого?",
+       "answer": "30",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 30 и 40 зубцов: 30/40 = 3/4. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Укажи подходящую пару из набора и проверь её отношение.",
+       "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+       "explanation": "Например, 30 и 40 зубцов: 30/40 = 3/4. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе."
+      }
+     ],
+     "hint": "Можно брать шестерёнки с числом зубцов от 15 до 120 с шагом 5. Отношение сравнивает первую шестерёнку со второй.",
+     "explanation": "Например, 30 и 40 зубцов: 30/40 = 3/4. Для другой пары проверь равенство перекрёстных произведений и наличие обоих колёс в наборе.",
+     "skills": [
+      "ratio",
+      "fraction-reduce"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 42,
+      "reference": "№42(8)",
+      "subpart": "8"
+     },
+     "finalLabel": "Сохрани свои измерения, рисунок или объяснение в записи.",
+     "gearRatio": [
+      3,
+      4
+     ]
+    },
+    {
+     "id": "p16-t41",
+     "title": "К задаче №43",
+     "kind": "choice",
+     "answer": "Ставка выше в первом, сумма больше во втором",
+     "prompt": "С вещи ценой 4000 ₽ первый комиссионный магазин удержал 240 ₽. Второй удержал 900 ₽ с вещи за 18 000 ₽. Сравни и процентную ставку, и реальные суммы удержания в этих двух продажах.",
+     "steps": [
+      {
+       "prompt": "Процент первого магазина?",
+       "answer": "6",
+       "hint": "Для процента раздели сбор на стоимость именно этой вещи. При сравнении сумм в рублях сравнивай сами сборы.",
+       "explanation": "В первом магазине 240/4000 = 6 %, во втором 900/18 000 = 5 %. Ставка выше в первом магазине. За указанные вещи второй получил большую сумму в рублях: 900 > 240."
+      },
+      {
+       "prompt": "Процент второго магазина?",
+       "answer": "5",
+       "hint": "Для процента раздели сбор на стоимость именно этой вещи. При сравнении сумм в рублях сравнивай сами сборы.",
+       "explanation": "В первом магазине 240/4000 = 6 %, во втором 900/18 000 = 5 %. Ставка выше в первом магазине. За указанные вещи второй получил большую сумму в рублях: 900 > 240."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Какую величину сравнивают для ставки?",
+       "answer": "Сбор за каждые 100 ₽ цены",
+       "choices": [
+        "Сумму в кассе",
+        "Сбор за каждые 100 ₽ цены",
+        "Цену первой вещи"
+       ],
+       "hint": "Для процента раздели сбор на стоимость именно этой вещи. При сравнении сумм в рублях сравнивай сами сборы.",
+       "explanation": "В первом магазине 240/4000 = 6 %, во втором 900/18 000 = 5 %. Ставка выше в первом магазине. За указанные вещи второй получил большую сумму в рублях: 900 > 240."
+      }
+     ],
+     "hint": "Для процента раздели сбор на стоимость именно этой вещи. При сравнении сумм в рублях сравнивай сами сборы.",
+     "explanation": "В первом магазине 240/4000 = 6 %, во втором 900/18 000 = 5 %. Ставка выше в первом магазине. За указанные вещи второй получил большую сумму в рублях: 900 > 240.",
+     "skills": [
+      "percent-ratio",
+      "ratio"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 43,
+      "reference": "№43"
+     },
+     "finalLabel": "Выбери верное сравнение.",
+     "commissionStudy": true,
+     "errorCues": [
+      [
+       "И ставка, и сумма выше во втором",
+       "Сумма 900 ₽ больше. Делишь ли ты её на стоимость второй вещи?"
+      ],
+      [
+       "И ставка, и сумма выше в первом",
+       "6 % больше 5 %, но за данные вещи в рублях удержано 240 и 900."
+      ]
+     ],
+     "choices": [
+      "И ставка, и сумма выше во втором",
+      "Ставка выше в первом, сумма больше во втором",
+      "И ставка, и сумма выше в первом"
+     ]
+    },
+    {
+     "id": "p16-t42",
+     "title": "К задаче №44а",
+     "kind": "number",
+     "answer": "80",
+     "prompt": "Крутизна — отношение перепада высоты к горизонтальной длине, выраженное в процентах. Знак показывает 20 %, горизонтальная длина участка 400 м. Найди высоту спуска в метрах.",
+     "steps": [
+      {
+       "prompt": "Сколько метров спуска приходится на 100 горизонтальных метров?",
+       "answer": "20",
+       "hint": "20 % высоты здесь означает 20 м на каждые 100 м горизонтального хода.",
+       "explanation": "h/a = 20/100. При a = 400 м высота h = 80 м."
+      },
+      {
+       "prompt": "Какова высота при 400 м горизонтального хода?",
+       "answer": "80",
+       "hint": "20 % высоты здесь означает 20 м на каждые 100 м горизонтального хода.",
+       "explanation": "h/a = 20/100. При a = 400 м высота h = 80 м."
+      }
+     ],
+     "hint": "20 % высоты здесь означает 20 м на каждые 100 м горизонтального хода.",
+     "explanation": "h/a = 20/100. При a = 400 м высота h = 80 м.",
+     "skills": [
+      "percent-ratio",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 44,
+      "reference": "№44а",
+      "subpart": "а"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "roadSlope": "а",
+     "figure": {
+      "type": "road-ratio",
+      "caption": "Схема. Буквой a обозначена горизонтальная длина, h — вертикальный перепад; длину наклонной дороги в знаменатель не подставляют."
+     },
+     "errorCues": [
+      [
+       "0,2",
+       "Это отношение без перевода в запрошенную величину."
+      ]
+     ]
+    },
+    {
+     "id": "p16-t43",
+     "title": "К задаче №44б",
+     "kind": "number",
+     "answer": "5/2",
+     "prompt": "Крутизна — отношение перепада высоты к горизонтальной длине, выраженное в процентах. Горизонтальная протяжённость 1,2 км, а перепад высот 30 м. Найди крутизну в процентах.",
+     "steps": [
+      {
+       "prompt": "Сколько метров горизонтального хода?",
+       "answer": "1200",
+       "hint": "Приведи обе длины к метрам. Делить надо на горизонтальную длину.",
+       "explanation": "1,2 км = 1200 м, 30/1200 × 100 = 2,5 %."
+      },
+      {
+       "prompt": "Запиши долю h/a.",
+       "answer": "1/40",
+       "hint": "Приведи обе длины к метрам. Делить надо на горизонтальную длину.",
+       "explanation": "1,2 км = 1200 м, 30/1200 × 100 = 2,5 %."
+      },
+      {
+       "prompt": "Сколько это процентов?",
+       "answer": "5/2",
+       "hint": "Приведи обе длины к метрам. Делить надо на горизонтальную длину.",
+       "explanation": "1,2 км = 1200 м, 30/1200 × 100 = 2,5 %."
+      }
+     ],
+     "hint": "Приведи обе длины к метрам. Делить надо на горизонтальную длину.",
+     "explanation": "1,2 км = 1200 м, 30/1200 × 100 = 2,5 %.",
+     "skills": [
+      "percent-ratio",
+      "unit-conversion"
+     ],
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 13,
+      "exercise": 44,
+      "reference": "№44б",
+      "subpart": "б"
+     },
+     "finalLabel": "Введи числовой ответ.",
+     "roadSlope": "б",
+     "figure": {
+      "type": "road-ratio",
+      "caption": "Схема. Буквой a обозначена горизонтальная длина, h — вертикальный перепад; длину наклонной дороги в знаменатель не подставляют."
+     },
+     "errorCues": [
+      [
+       "0,025",
+       "Это отношение без перевода в запрошенную величину."
+      ]
+     ]
     }
    ],
    "orderBySource": true

@@ -757,3 +757,51 @@ test('complete the coefficient chapter with quantifiers, signed squares and reve
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('place a garden, find the first broken transition, check gear pairs and measure a road horizontally',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p16/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,value)=>f.event(id,String(value),'change'), result=()=>f.q('#model .pm-result').textContent;
+  let ids=go(24);
+  assert.equal(f.d.querySelector('#task-figure [data-home]'),null);
+  set(ids[0],0);set(ids[1],0);const border=f.q('#model svg rect'),house=f.q('#model [data-home="0"]');
+  const value=(e,attr)=>Number(e.getAttribute(attr));
+  for(const [start,size] of [['x','width'],['y','height']])
+   assert.equal(value(house,start)+value(house,size)/2,value(border,start)+value(border,size)/2);
+  assert.equal(f.q('#model [data-gate-center]').dataset.gateCenter,'4');
+  ids=go(25);set(ids[0],104);set(ids[1],73);
+  assert(f.q('#model table').textContent.includes('10,4 м10,4 см'));assert(f.q('#model table').textContent.includes('7,3 м7,3 см'));
+  for(const [i,source,fresh] of [[26,'2,8 см','3 см'],[27,'4 см','7 см'],[28,'0,016','0,2'],[29,'10,5','3 + 5 = 8'],[30,'24 вместо 18','8 вместо 7'],[31,'9/34','5/14']]){
+   ids=go(i);set(ids[1],1);assert(result().includes(source),source);
+   set(ids[0],1);assert.equal(f.q(ids[1]).value,'0');set(ids[1],1);assert(result().includes(fresh),fresh);
+  }
+  for(const [i,[a,b]] of [[5,1],[1,2],[1,4],[1,6],[2,3],[2,5],[5,6],[3,4]].entries()){
+   ids=go(32+i);const choices=[...f.q(ids[0]).options].map(o=>Number(o.value));
+   assert.deepEqual(choices,Array.from({length:22},(_,j)=>15+5*j));
+   // Generate admissible pairs independently by multiplying the reduced integer ratio.
+   const valid=Array.from({length:120},(_,i)=>[a*(i+1),b*(i+1)]).filter(([x,y])=>choices.includes(x)&&choices.includes(y));
+   assert(valid.length>1);
+   assert(result().includes('Отношение пока другое'));
+   for(const [x,y] of valid){
+    set(ids[0],x);set(ids[1],y);assert(result().includes('выполняют условие'));
+    const shapes=[...f.d.querySelectorAll('#model polygon[data-teeth]')];
+    assert.deepEqual(shapes.map(n=>n.getAttribute('points').split(' ').length),[x*4,y*4]);
+   }
+   set(ids[2],1);assert(result().includes('Отношение пока другое'));
+   set(ids[0],valid[0][1]);set(ids[1],valid[0][0]);assert(result().includes('выполняют условие'));
+  }
+  ids=go(40);set(ids[1],2);assert(result().includes('второй магазин'));
+  set(ids[0],1);set(ids[1],2);assert(result().includes('первый магазин'));
+  for(const [i,marks,output]of [[41,[.20,.12],['80 м','30 м']],[42,[.025,.0375],['2,5 %','3,75 %']]]){
+   ids=go(i);
+   for(const [sample,expected]of marks.entries()){
+    set(ids[0],sample);
+    const road=f.q('#model [data-run]'),run=value(road,'x2')-value(road,'x1'),rise=value(road,'y1')-value(road,'y2');
+    assert(Math.abs(rise/run-expected)<1e-9);
+    set(ids[1],1);assert(result().includes(output[sample]));
+   }
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

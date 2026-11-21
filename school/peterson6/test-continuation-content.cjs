@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,450);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,469);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -222,7 +222,7 @@ const p33=D.lessons.find(l=>l.id==='p33');
  assert.deepEqual(extra.slice(1,4).map(t=>Number(t.steps[1].answer)),[3*400/100,3*500000/100000,12/3]);
 }
 {
- const scale=D.lessons.find(l=>l.id==='p16'),extra=Array.from(scale.tasks).slice(14);
+ const scale=D.lessons.find(l=>l.id==='p16'),extra=Array.from(scale.tasks).slice(14,24);
  assert.deepEqual(extra.map(t=>t.source.exercise),[33,33,33,33,33,33,33,33,34,35]);
  assert.deepEqual(extra.slice(0,8).map(t=>t.source.subpart),['1','2','3','4','5','6','7','8']);
  assert(extra.every(t=>t.kind==='manual'&&t.source.page===12));
@@ -307,6 +307,37 @@ const p33=D.lessons.find(l=>l.id==='p33');
  assert.equal(40-7*(Number(end.find(t=>t.source.exercise===40&&t.source.subpart==='а').answer)-16),12);
  for(const x of [.2,1,1.5,6])assert(Math.abs(Math.sqrt(x*x+2*x+1)-1-x)<1e-12);
 }
+{
+ const scale = D.lessons.find(lesson => lesson.id === 'p16');
+ const additions = scale.tasks.filter(task => task.source.exercise >= 37 && task.source.exercise <= 44);
+ const printed = [[37,''],[38,''],[39,''],[40,''],[41,'1234'],[42,'12345678'],[43,''],[44,'аб']];
+ assert.deepEqual(Array.from(additions, task => [task.source.exercise, task.source.subpart || '', task.source.page]),
+  printed.flatMap(([number, letters]) => (letters ? Array.from(letters) : ['']).map(letter => [number,letter,13])));
+ const actual = value => { const part = M.parse(value); return part.n / part.d; };
+ const at = (number, letter = '') => additions.find(task => task.source.exercise === number && (task.source.subpart || '') === letter);
+ assert.deepEqual(Array.from(at(37).steps.filter(step => step.answer), step => actual(step.answer)), [40,30,10,4].map(m => 100 * m / 500));
+ assert.deepEqual(Array.from(at(38).steps.filter(step => step.answer), step => actual(step.answer)), [8.4,6.2]);
+ assert.equal(actual(at(39).answer), 42 * 4 / 60);
+ assert.equal(actual(at(40).answer), 12 * 100000 / 300000);
+ for (const [i,[printedValue, corrected]] of [[.16,.08/5],[10,4+6.5],[18,12*2],[9/32,9/(26+8)]].entries()) {
+  const task = at(41,String(i+1));
+  assert.equal(actual(task.answer), printedValue);
+  assert.equal(actual(task.steps[1].answer), corrected);
+ }
+ for (const [i,[numerator,denominator]] of [[5,1],[1,2],[1,4],[1,6],[2,3],[2,5],[5,6],[3,4]].entries()) {
+  const task = at(42,String(i+1)), anchor = Number(task.steps[0].prompt.match(/колеса (\d+) зубцов/)[1]);
+  assert.equal(task.kind, 'manual');
+  assert.deepEqual(Array.from(task.gearRatio), [numerator,denominator]);
+  assert.equal(actual(task.steps[0].answer)*denominator, anchor*numerator);
+  assert.equal(actual(task.steps[0].answer)%5,0);
+  assert(actual(task.steps[0].answer)>=15 && actual(task.steps[0].answer)<=120);
+ }
+ assert.deepEqual(Array.from(at(43).steps.slice(0,2), step => actual(step.answer)), [100*240/4000,100*900/18000]);
+ assert.equal(at(43).answer, 'Ставка выше в первом, сумма больше во втором');
+ assert.equal(actual(at(44,'а').answer), 400*20/100);
+ assert.equal(actual(at(44,'б').answer), 100*30/(1.2*1000));
+}
+
 const printedColumns=['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб'];
 for(const [i,letters] of printedColumns.entries()) {
  const rows=p33.tasks.filter(t=>t.source.exercise===i+1);
