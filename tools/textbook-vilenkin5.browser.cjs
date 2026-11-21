@@ -25,7 +25,8 @@ await openOriginalLab('v5f-decimal-divide');await change('factor',100);assert.ma
 await openOriginalLab('v5f-angle-build');await page.locator('[data-param=angle]').focus();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('[data-param=angle]').inputValue(),'31');await page.keyboard.press('ArrowRight');assert.equal(await page.locator('[data-param=angle]').inputValue(),'32');
 // Sixth -> fifth -> same original step and draft. Assistance must not count as independence.
 await page.goto(origin+'/school/index.html?course=vilenkin6#lesson/v6f-fraction-add');await page.locator('#answer').fill('мой ход');await page.locator('[data-cmd=prerequisite][data-value=v5f-fraction-add]').click();assert.match(await page.locator('h1').innerText(),/дроб/);await page.locator('[data-cmd=return]').click();assert.equal(await page.locator('#answer').inputValue(),'мой ход');assert.match(page.url(),/v6f-fraction-add/);
-await go('lesson/v5f-decimal-add');await page.locator('[data-cmd=hint]').click();await page.locator('[data-cmd=hint]').click();assert.match(await page.locator('#help').innerText(),/Подсказка 2 из 3/);
+// All guided tasks above are complete. Open a fresh practice variant before requesting help.
+await go('lesson/v5f-decimal-add');await page.locator('[data-cmd=mode][data-value=practice]').click();await page.locator('[data-cmd=hint]').click();await page.locator('[data-cmd=hint]').click();assert.match(await page.locator('#help').innerText(),/Подсказка 2 из 3/);
 await page.locator('[data-cmd=mode][data-value=check]').click();for(let i=0;i<3;i++){await page.locator('#answer').fill(await answerFor());await page.locator('#answer-form button').click();assert.equal(await page.locator('.feedback.error').count(),0);await page.locator('[data-cmd=next]').click();}
 await go('course/vilenkin5');assert.equal(await page.locator('.v5-achievement.unlocked').count(),1);
 // A sentinel and older V6 record survive navigation and reload.
