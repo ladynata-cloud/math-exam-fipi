@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const collinearityVectorConditions = makeReviewedIncrement(require('./collinearity-vector-conditions.json'));
+const coplanarVectorDirections = makeReviewedIncrement(require('./coplanar-vector-directions.json'));
+const collinearityVectorConditions = makeReviewedIncrement(require('./collinearity-vector-conditions.json'), coplanarVectorDirections);
 const midlinesVectorCoefficients = makeReviewedIncrement(require('./midlines-vector-coefficients.json'), collinearityVectorConditions);
 const pyramidVectorMidpoints = makeReviewedIncrement(require('./pyramid-vector-midpoints.json'), midlinesVectorCoefficients);
 const prismVectorEquations = makeReviewedIncrement(require('./prism-vector-equations.json'), pyramidVectorMidpoints);

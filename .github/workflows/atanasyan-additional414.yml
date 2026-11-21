@@ -73,6 +73,7 @@ jobs:
           node tools/stereo-textbook/pyramid-vector-midpoints.test.cjs
           node tools/stereo-textbook/midlines-vector-coefficients.test.cjs
           node tools/stereo-textbook/collinearity-vector-conditions.test.cjs
+          node tools/stereo-textbook/coplanar-vector-directions.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -254,6 +255,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: collinearityVectorConditions
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/collinearity-vector-conditions
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check oblique vector bases, all four translated triples, midpoints and a changing parallelogram
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coplanarVectorDirections
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coplanar-vector-directions
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -323,5 +329,6 @@ jobs:
             artifacts/pyramid-vector-midpoints/
             artifacts/midlines-vector-coefficients/
             artifacts/collinearity-vector-conditions/
+            artifacts/coplanar-vector-directions/
           retention-days: 14
           if-no-files-found: error
