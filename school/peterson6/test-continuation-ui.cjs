@@ -1393,3 +1393,23 @@ test('traverse all ordered fraction routes and continue mixed numbers, expressio
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('finish the printed equation section including forbidden denominators, finite roots, exact stocks and Diophantus',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const go=i=>{f.nav('#lesson/p37/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  const choose=(id,label)=>set(id,[...f.q(id).options].find(o=>o.textContent===label).value);
+  let c=go(93);choose(c[1],'-7/10');set(c[2],2);assert(out().includes('не допускается'));choose(c[1],'11');set(c[2],2);assert(out().includes('Это корень'));set(c[0],1);choose(c[1],'12');set(c[2],2);assert(out().includes('Это корень'));
+  c=go(92);set(c[2],4);assert(out().includes('Все рациональные числа'));set(c[0],1);set(c[2],4);assert(out().includes('Корней нет'));
+  for(const [i,x,y]of [[94,3,4],[95,5,4]]){c=go(i);set(c[1],x);set(c[2],2);assert(out().includes('Число подходит.'));set(c[0],1);set(c[1],y);set(c[2],2);assert(out().includes('Число подходит.'));}
+  c=go(96);set(c[1],1);set(c[2],2);assert(out().includes('3 к 1'));let tableRows=[...f.d.querySelectorAll('#model tbody tr')];assert.deepEqual(tableRows.map(x=>x.cells[1].textContent),['18','6']);
+  c=go(97);set(c[1],2);assert(out().includes('840'));set(c[0],1);set(c[1],2);assert(out().includes('795'));
+  c=go(98);set(c[1],8);set(c[2],2);assert(out().includes('17,5'));assert.deepEqual([...f.d.querySelectorAll('#model tbody tr')].map(r=>r.cells[1].textContent),['40','40']);set(c[0],1);set(c[2],2);assert(out().includes('14 т.'));
+  for(const [j,ans]of ['-17/6','-221/40','-23/15','3','-16','2'].entries()){c=go(99+j);set(c[1],f.q(c[1]).options.length-1);assert(out().includes('значение: '+ans+'.'),out());}
+  c=go(105);assert.equal(f.d.querySelectorAll('#task-figure .pcm-printed-fraction').length,2);set(c[1],3);assert(out().includes('Результат: 3.'));set(c[0],100);set(c[1],3);assert(out().includes('Результат: 3/2.'));
+  c=go(108);set(c[1],3);assert(out().includes('155 цифр'));set(c[0],2);set(c[1],2);assert(out().includes('4194304'));
+  c=go(109);set(c[1],2);assert(out().includes('84 лет'));assert.deepEqual([...f.d.querySelectorAll('#model tbody tr')].map(r=>r.cells[2].textContent),['14','21','33','38','80','84']);set(c[0],14);set(c[1],2);assert(out().includes('168 лет'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
