@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8df2d927655d5985dcde0b317c896445b6e94b67f5ab50713231316b756c92d1",
-      "afterSha256": "c9a9f0e7988f701304a64d478be1ebd7c0847cc6ff1c43a4a2cd9c40c04301a8",
+      "beforeSha256": "d7f18d8129a833228cf9062ec67752384e369aa1490da4fe841d0b363371527e",
+      "afterSha256": "cdddc23fb884ed05cc732b956167921b2eb1d4469cfa641a672fb7cfc3f38cd8",
       "placement": "before-head-close",
-      "sourceSha": "288d962db62c38ca1a6aefcb6aaa739bd0781428"
+      "sourceSha": "1651124225904deea4bbc4df73a6230ed2259546"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6705,6 +6705,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также двадцать номеров второй части, включая объём слоя и сравнение длины двух рядов кубиков, возможность самостоятельно исправить прогноз и записать точную дробь, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "288d962db62c38ca1a6aefcb6aaa739bd0781428",
+      "sourceBaseSha": "1651124225904deea4bbc4df73a6230ed2259546",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены входы ученика после исправления дробных откликов в №5.16 и 5.17, включая произвольный ответ и повторную попытку с учителем."
     }
   ],
   "coverageUpdates": [
