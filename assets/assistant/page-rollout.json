@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8d75e774397a19d82ab8cb7a26a6d10cc41a7ab6639c0e7f1003eccc418932b9",
-      "afterSha256": "599c7e96554420131d1ae4ecc43ee9facafac98b7638c41802e92c0aa33be8ee",
+      "beforeSha256": "324e99e6ca698cf04fc84c2a4d374c2bc71d5ec820ed7733e5096ee6ee12861a",
+      "afterSha256": "37244cdf0c511a51281ccbc7d14c042bb7ff1ba233597890902893fb4c8e2993",
       "placement": "before-head-close",
-      "sourceSha": "c0fc9b9dc4641bb5b57b762659d94479e6329e25"
+      "sourceSha": "a80aac50cefdc4b2101dff08ebea6b47ffab7c12"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6714,6 +6714,15 @@
         "school/index.html"
       ],
       "boundary": "Сверен вход в 76 печатных номеров и две проверочные первой части Виленкина, а также двадцать один номер второй части, включая авторскую модель вложенных квадратов, собственную формулировку правила и проверку суммы кубов до семи, с обеими ролями."
+    },
+    {
+      "previousBaseSha": "c0fc9b9dc4641bb5b57b762659d94479e6329e25",
+      "sourceBaseSha": "a80aac50cefdc4b2101dff08ebea6b47ffab7c12",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверен вход в №5.1–5.23 второй части. В №5.22 показаны отдельно 3626 г при окраске одной стороны крышки и 4130 г при окраске обеих, включая пояснение к печатному ключу на с. 172."
     }
   ],
   "coverageUpdates": [
