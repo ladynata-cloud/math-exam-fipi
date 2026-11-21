@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "1c3feba9c7c39e5a5a3f59f85c34a7e8e698498e22755e155d6587bb5427855a",
-      "afterSha256": "b1a84eb3f3d7a0eb6c1a7283ec3fbb6b34c85523665b83d9575c5080ca32745b",
+      "beforeSha256": "8caa67018e76c59a2f6d7c6b95c060928f18497fcf7453e1bd3ea1fa3893cf73",
+      "afterSha256": "38f07cba3af56c55f8bf569d0f3f0874a5f0701246afb467c537e44e6b40a4c1",
       "placement": "before-head-close",
-      "sourceSha": "c9f2e71aa306c8ddfa136d627b35c3d8a06db711"
+      "sourceSha": "6a59d3de39c42767bb5c830d0b845767ec86d580"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6750,6 +6750,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, часть 2, №5.28. Открытый вопрос о сравнении часов с собственным наблюдением."
+    },
+    {
+      "previousBaseSha": "c9f2e71aa306c8ddfa136d627b35c3d8a06db711",
+      "sourceBaseSha": "6a59d3de39c42767bb5c830d0b845767ec86d580",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Построение окружности, сравнение внутренней области с границей и сохранение своей перестановки точки."
     }
   ],
   "coverageUpdates": [
