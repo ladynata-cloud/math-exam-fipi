@@ -73,6 +73,7 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
+  "geometry-course/textbook/data/coordinate-tables.json": "d5661a1ea96d1f5b1a1929353c038a62cfc33b34035b07b340ab687121f89ed9",
   "geometry-course/textbook/data/coordinate-positions.json": "805d924552d8bf07225755d6ea5679d3c1ea6f63d079b7d53cdb40f95b980e90",
   "geometry-course/textbook/data/vector-length-problems.json": "42dd51007d5a151c356399a661b0bc6ad3d5b0d84fe7d2dba664563f21547316",
   "geometry-course/textbook/data/vector-extra-problems.json": "ad3db9e607fceb082635834128979a184590b15a191f75d5440aa1c314f08a27",
@@ -89,7 +90,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "6e9e40091eeb1dcb4d84814287c2101def21b9efbda4b69074198549296a550b",
+  "geometry-course/textbook/assets/additional-lessons.js": "3ac2d5b1c1455357dd0ca31b93361cf5d541c54f9fda69743afcbd917f09abb6",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
