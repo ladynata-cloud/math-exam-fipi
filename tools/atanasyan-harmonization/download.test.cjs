@@ -32,6 +32,12 @@ for (const unit of course.units) {
 const textbook = require(root + '/geometry-course/textbook/data/course.json');
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 assert.deepEqual(embedded('textbook/index.html', 'geometry-offline-textbook'), textbook);
+const {unitFiles,append}=require('../../geometry-course/textbook/assets/additional-lessons.js');
+const completeTextbook=unitFiles.reduce((course,file)=>{
+  const unit=JSON.parse(source(file.slice(1)));
+  assert.deepEqual(embedded('textbook/index.html','geometry-offline-'+path.basename(file,'.json')),unit);
+  return append(course,unit);
+},textbook);
 assert.deepEqual(embedded('first-steps/index.html', 'geometry-offline-first-steps'), first);
 assert.equal(textbook.lessons.length, 1425);
 assert.equal(first.lessons.length, 255);
@@ -78,5 +84,5 @@ for (const entrypoint of ['index.html', 'geometry-course.html']) {
   assert(!/href="(?:\.\/)?ichenskaya-7-works\//.test(read(entrypoint)), 'an uncopied adjacent bank must not be offered as an offline course');
 }
 console.log('ATANASYAN_HARMONIZATION_DOWNLOAD_OK ' + JSON.stringify({topics: 63, textbookCards: 1425, firstSteps: 255, legacy: 70, localResources: resources, zipFiles: files.length}));
-module.exports = {folder, root, course, textbook, first};
+module.exports = {folder, root, course, textbook, first, completeTextbook};
 if (require.main === module) fs.rmSync(folder, {recursive: true, force: true});
