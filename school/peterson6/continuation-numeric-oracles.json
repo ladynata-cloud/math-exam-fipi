@@ -1,5 +1,5 @@
 {
-  "method": "Fixed expected values independently recomputed from selected textbook conditions by the author of the other part during cross-review; not generated from the course answers.",
+  "method": "Fixed expected values computed from the textbook conditions. The initial October set was cross-reviewed by the author of the other part. The November additions are also checked against the independent equations in test-continuation-content.cjs.",
   "date": "2026-10-26",
   "answers": {
     "p15-t01": "1/2",
@@ -97,6 +97,10 @@
     "p57-t02": "9/5",
     "p57-t04": "108",
     "p58-t01": "3",
-    "p58-t02": "6"
+    "p58-t02": "6",
+    "p15-t29": "1"
+  },
+  "additions": {
+    "2026-11-21": "Part 2 exercises 9–11 on p. 7 and 15(2) on p. 8, part 3 exercises 4–6 on p. 5."
   }
 }

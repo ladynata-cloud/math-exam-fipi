@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,237);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,244);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -73,6 +73,20 @@ assert.deepEqual(keys(constructions[0]),['6']);
 assert.deepEqual(keys(constructions[1]),['2','10']);
 assert.deepEqual(keys(constructions[2]),['3/5','4/5']);
 assert.deepEqual(keys(constructions[3]),['3','20','40']);
+const trigonometry=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>[14,15].includes(t.source.exercise));
+assert.deepEqual(Array.from(trigonometry,t=>[t.source.exercise,t.source.subpart,t.source.page]),[
+ [14,'1',7],[14,'2',7],[15,'1',8],[15,'2',8],[15,'3',8],[15,'4',8],[15,'5',8],
+]);
+assert.deepEqual(keys(trigonometry[1]),['BC/AB','AC/AB','BC/AC','AC/AB','BC/AB','AC/BC']);
+assert.deepEqual(keys(trigonometry[5]),['4/5','3/5','4/3','1']);
+for(const [v,h,c] of [[3,4,5],[5,12,13],[8,15,17]]) {
+ assert.equal(v*v+h*h,c*c);
+ for(const [opposite,adjacent] of [[v,h],[h,v]]) {
+  assert(Math.abs((opposite/c)**2+(adjacent/c)**2-Number(trigonometry[3].answer))<1e-12);
+  assert(Math.abs((opposite/c)/(adjacent/c)-opposite/adjacent)<1e-12);
+ }
+}
+assert(Math.abs(82.789/110.386-3/4)<1e-5,'relative legs measured from the printed exercise 15 diagram');
 const applications=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise>=9&&t.source.exercise<=11);
 assert.deepEqual(Array.from(applications,t=>[t.source.exercise,t.source.subpart,t.source.page]),[
  [9,'1',7],[9,'2',7],[10,'1',7],[10,'2',7],[10,'3',7],

@@ -586,6 +586,33 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await manualWithoutCredit(teacherFrame, 'p15-t25', 0);
   await ownership(teacher, student, false);
 
+  phase = 'measure the triangle and compare the two acute angles';
+  await lesson(teacherFrame, 'p15', 31);
+  await synchronized(teacherFrame,studentFrame,'unmarked source before opening the model');
+  assert.equal(await studentFrame.locator('#task-figure [data-ruler]').count(),1);
+  assert.equal(await studentFrame.locator('#task-figure [data-role]').count(),0);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-trig-scale','#task-figure svg');
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Острый угол').selectOption('1');
+  await teacherFrame.getByLabel('Прямоугольный треугольник').selectOption('1');
+  await teacherFrame.getByLabel('Числитель синуса выбранного угла').selectOption('3');
+  const trigMistake = await synchronized(teacherFrame,studentFrame,'hypotenuse used as numerator');
+  assert.deepEqual(trigMistake.view.model.values,[1,1,3]);
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/гипотенуза.*в знаменателе/);
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Числитель синуса выбранного угла').selectOption('1');
+  await synchronized(studentFrame,teacherFrame,'chosen B uses AC as opposite');
+  assert.equal(await teacherFrame.locator('#model [data-role=opposite]').getAttribute('data-side'),'AC');
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-trig-roles','#model svg');
+  await studentFrame.getByLabel('Прямоугольный треугольник').selectOption('2');
+  await studentFrame.locator('#notebook').fill('Для B: sin B = 15/17, cos B = 8/17, tg B = 15/8. Квадраты дают 1.');
+  await studentFrame.locator('[data-action="record-manual"]').click();
+  const study = await synchronized(studentFrame,teacherFrame,'new 8-15-17 example and learner reasoning');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await courseFrame(teacher);
+  await waitSnapshot(teacherFrame,study,'triangle selection and note survive reload');
+  await manualWithoutCredit(teacherFrame,'p15-t32',0);
+  await ownership(teacher,student,false);
+
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
   await teacherFrame.locator('#book-part').selectOption('2');

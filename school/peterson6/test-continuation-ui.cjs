@@ -194,6 +194,53 @@ test('ratio constructions preserve scale, right angles and the angular partition
  } finally { f.close(); }
 });
 
+test('right triangle uses one measurable scale, swaps legs and withholds credit on an investigation',()=>{
+ const f=fixture(null,null,true);
+ try {
+  for(let i=25;i<32;i++) {
+   f.nav('#lesson/p15/'+i);
+   assert.equal(f.d.querySelectorAll('#task-figure svg line[data-side]').length,3);
+   assert.equal(f.d.querySelector('#task-figure [data-angle]'),null);
+   assert.equal(f.d.querySelectorAll('#task-figure [data-ruler]').length,i<27?0:1);
+  }
+  const model=f.q('[data-lesson-help="model"]');
+  if(!model.open)f.click('[data-lesson-help="model"] > summary');
+  const selectors=[...f.d.querySelectorAll('#model select')].map(select=>'#'+select.id);
+  assert.equal(selectors.length,3);
+  for(const [index,[v,h,c]] of [[3,4,5],[5,12,13],[8,15,17]].entries()) {
+   f.event(selectors[1],String(index),'change');
+   for(const picked of [0,1]) {
+    f.event(selectors[0],String(picked),'change');
+    f.event(selectors[2],'0','change');
+    assert.equal(f.d.querySelector('#model [data-role]'),null);
+    assert.equal(f.d.querySelectorAll('#model .pm-equation').length,0);
+    f.event(selectors[2],'3','change');
+    assert.match(f.q('#model .pm-result').textContent,/гипотенуза.*в знаменателе/);
+    f.event(selectors[2],picked===0?'1':'2','change');
+    assert.match(f.q('#model .pm-result').textContent,/касается угла/);
+    f.event(selectors[2],picked===0?'2':'1','change');
+    const diagram=f.q('#model svg'),ruler=diagram.querySelector('[data-ruler]');
+    const dist=line=>Math.hypot(Number(line.getAttribute('x2'))-Number(line.getAttribute('x1')),Number(line.getAttribute('y2'))-Number(line.getAttribute('y1')));
+    for(const [name,n] of [['AC',h],['BC',v],['AB',c]])
+     assert(Math.abs(dist(diagram.querySelector('[data-side="'+name+'"]'))/dist(ruler)-n)<1e-10);
+    assert.equal(diagram.querySelector('[data-role=opposite]').dataset.side,picked===0?'BC':'AC');
+    assert.equal(diagram.querySelector('[data-role=adjacent]').dataset.side,picked===0?'AC':'BC');
+    assert.equal(diagram.querySelector('[data-role=hypotenuse]').dataset.side,'AB');
+    assert.equal(diagram.querySelector('[data-angle]').dataset.angle,picked===0?'A':'B');
+    const fractions=[...f.d.querySelectorAll('#model .pm-equation')].map(e=>[...e.querySelectorAll('.pm-fraction')].map(m=>[...m.children].map(el=>el.textContent).join('/')));
+    const [opp,adj]=picked===0?[v,h]:[h,v];
+    assert.deepEqual(fractions.map(parts=>parts[1]),[opp+'/'+c,adj+'/'+c,opp+'/'+adj]);
+   }
+  }
+  assert.equal(f.d.querySelector('#answer-form'),null);
+  assert.equal(f.state().tasks['p15-t32'].correct,false);
+  f.nav('#lesson/p15/28');f.event('#final-answer','7/5');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/сложении самих дробей/);
+  f.event('#final-answer','1');f.submit('#answer-form');
+  assert.match(f.q('.task-heading').textContent,/Исправлено без подсказки/);
+ } finally {f.close();}
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {
