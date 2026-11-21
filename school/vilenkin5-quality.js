@@ -160,13 +160,19 @@
       const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
       if(parts.length!==(pair?2:3)||parts.some(part=>{const n=M.parse(part);return !n||(!pair&&n.d!==1);}))return pair?'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.':'Запиши три целых числа через точку с запятой, например 2; 5; 7.';
     }
+    if(['v5-segments','v5-line-points','v5-equal-segments'].includes(target.answerFormat)&&!root.Vilenkin5PrintedSegments.canonical(value,target.answerFormat))return target.answerFormat==='v5-equal-segments'?'Введи два равенства с парами букв, например AB=CD; KL=MN.':target.answerFormat==='v5-segments'?'У каждого отрезка две разные буквы. Между парами поставь пробел, например AB CD.':'Введи буквы подписанных точек, например A, B.';
+    if(target.answerFormat==='v5-length-pairs'&&root.Vilenkin5PrintedLengthUnits.readLengths(value)===null)return 'У каждой строки укажи обе единицы, например 2 см 5 мм. Ответы разных строк отдели точкой с запятой.';
     if(target.answerFormat==='v5-classes'&&!/^[0-9\s|]+$/.test(value))return 'Введи цифры с границами между классами. Границей может быть пробел или вертикальная черта.';
     if(target.answerFormat==='v5-natural')return root.Vilenkin5PrintedDigits.natural(value)===null?'Запиши целое число цифрами. Между классами можно оставить пробел, справа от старшего класса должно быть по три цифры. Пока это черновик.':'';
     if(target.answerFormat==='v5-reading'&&!/^[а-яёА-ЯЁ.,!?\s-]+$/.test(value))return 'Прочитай число и запиши словами. Цифрами здесь уже дано условие.';
     if(target.answerFormat==='v5-list'){
       const parts=value.split(';');
-      if(parts.length!==target.answer.length||parts.some(part=>M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
+      if(parts.length!==target.answer.length||parts.some(part=>root.Vilenkin5PrintedDigits.natural(part)===null&&M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
     }
+    if(target.answerFormat==='v5-unit-fraction'&&!M.parse(root.Vilenkin5PartsOfUnits.normalized(value)))return 'Запиши число. Для доли подходят десятичная, обыкновенная и смешанная дроби. Пока это черновик.';
+    if(target.answerFormat==='v5-ray-label'&&!root.Vilenkin5PrintedRay.read(value))return 'Запиши одну букву с луча. Число можно заменить буквой без потери попытки.';
+    if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
+    if(target.answerFormat==='v5-object-shape'&&!root.Vilenkin5RoundObjects.read(value))return 'В ответе к рисунку нужно название формы: окружность, круг, цилиндр или шар. Свои предметы запиши в «Мои четыре примера». Написанное можно уточнить.';
     if(target.answerFormat==='v5-arc'&&!/^[ABCDKMPST]{3}$/.test(root.Vilenkin5Numbered.readArc(value)))return 'Нужны три буквы. Сначала запиши начало дуги, затем промежуточную метку и конец.';
     if(target.answerFormat==='v5-point-set'&&!root.Vilenkin5Numbered.readPointSet(value))return 'Введи буквы точек с рисунка. Запись можно поправить без потери попытки.';
     const clarification=target.clarifications?.find(item=>M.equal(value,item.value));
@@ -213,7 +219,11 @@
     const cleanInput=event=>{if('value'in event.target&&event.target.type!=='number'&&event.target.type!=='range'){const safe=safeDraft(event.target.value);if(safe!==event.target.value)event.target.value=safe;}};
     host.addEventListener('input',cleanInput,true);
     const d=detail(session),captured=session;
-    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onChange:value=>{
+    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onDrawing:value=>{
+      if(readOnly||captured!==connection?.getSession?.()||!['learn','practice'].includes(session.mode))return;
+      const next=root.Vilenkin5PrintedBuildablePaths.selection(session.task,value);
+      if(next!==null&&M.generate(session.id,next).conditionKey!==session.task.conditionKey)connection?.chooseSourceDrawing?.(next);
+    },onChange:value=>{
       if(readOnly||captured!==connection?.getSession?.())return;
       d.model=Models.normalize(lesson,value);connection.save?.();
     }});
@@ -226,13 +236,26 @@
     active=session;host.dataset.v5Quality='lesson';root.document.body.classList.add('v5-quality-active');
     const head=host.querySelector('.lesson-head'),task=host.querySelector('#task-panel'),model=host.querySelector('#model'),theory=host.querySelector('.v6-theory'),claim=host.querySelector('#claim-feedback')?.closest('section'),d=detail(session);
     if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
+    if(lesson.fullKey==='printed-check-2-2'&&['learn','practice'].includes(session.mode)){
+      const choose=root.document.createElement('form');
+      choose.setAttribute('data-v5-print-number','');
+      choose.innerHTML='<label>Трёхзначное число для моей работы <input type="text" inputmode="numeric" maxlength="3" autocomplete="off"></label> <button class="button quiet">Начать с этим числом</button><p data-v5-own-note aria-live="polite">Можно оставить предложенное число. При смене числа решение начинается с первого шага.</p>';
+      choose.querySelector('input').value=String(session.task.data.original);head.append(choose);
+      choose.onsubmit=event=>{
+        event.preventDefault();if(readOnly)return;
+        const value=choose.querySelector('input').value.trim(),note=choose.querySelector('[data-v5-own-note]');
+        if(!/^[1-9][0-9]{2}$/.test(value)){note.textContent='Введи ровно три цифры. Первая цифра должна быть от 1 до 9.';return;}
+        if(Number(value)===session.task.data.original){note.textContent='Это число уже выбрано. Можно продолжить текущий шаг.';return;}
+        connection?.choosePrintedNumber?.(Number(value));
+      };
+    }
     if(['table-read','table-total','circle-shapes','circle-radius'].includes(lesson.fullKey)&&C.pathById.vilenkin5.numbered?.length){
       const numbered=C.pathById.vilenkin5.numbered.filter(id=>C.byId[id].point===lesson.point).map(id=>'<a href="#lesson/'+id+'">'+esc(C.byId[id].title)+'</a>');
       if(numbered.length)head.insertAdjacentHTML('beforeend','<p>Задания из этого пункта учебника. '+numbered.join(' · ')+'</p>');
     }
     const modes={learn:'1 · Разберись',practice:'2 · Потренируйся',check:'3 · Проверь себя'};
     head.querySelectorAll('[data-cmd=mode]').forEach(b=>{b.textContent=modes[b.dataset.value];b.classList.add('v5q-mode');b.classList.toggle('is-current',b.dataset.value===session.mode);b.setAttribute('aria-pressed',String(b.dataset.value===session.mode));});
-    head.insertAdjacentHTML('beforeend','<p class="v5q-source">Часть '+lesson.source.part+' · '+(lesson.point<=51?'пункт '+lesson.point:'дополнительный практикум')+' · '+(lesson.source.page!=='—'?'страница '+lesson.source.page:'переход в шестой класс')+'</p>');
+    head.insertAdjacentHTML('beforeend','<p class="v5q-source">Часть '+lesson.source.part+' · '+(lesson.point<=51?'пункт '+lesson.point:'дополнительный практикум')+' · '+(lesson.source.page!=='—'?(lesson.source.pageEnd?'страницы '+lesson.source.page+'–'+lesson.source.pageEnd:'страница '+lesson.source.page):'переход в шестой класс')+'</p>');
     if(theory){const box=root.document.createElement('details');box.className='v5q-theory';box.innerHTML='<summary>Правило и разобранный пример</summary>';theory.before(box);box.append(theory);}
     if(claim){const box=root.document.createElement('details');box.className='v5q-theory';box.innerHTML='<summary>Объясни правило своими словами</summary>';claim.before(box);box.append(claim);if(d.claim)claim.querySelector('#claim-feedback').textContent=(String(lesson.claimTrue)===d.claim?'Да, верно определено. ':'Посмотри ещё раз на объяснение. ')+lesson.explanation;}
     const workspace=root.document.createElement('div');workspace.className='v5q-workspace';head.after(workspace);if(model)workspace.append(model);workspace.append(task);if(!model)workspace.classList.add('v5q-solo');
@@ -256,9 +279,16 @@
     if(['check','review'].includes(session.mode))task.insertAdjacentHTML('afterbegin','<div class="v5q-check-trail" aria-label="Проверка: вопрос '+(session.checkIndex+1)+' из 3">'+[0,1,2].map(i=>'<span class="'+(i===session.checkIndex?'is-current':i<session.checkIndex?'is-complete':'')+'">'+(i+1)+'</span>').join('')+'<b>Вопрос '+(session.checkIndex+1)+' из 3</b></div>');
     if(d.firstWrong)task.insertAdjacentHTML('beforeend','<details class="v5q-error-note"><summary>Моя первая ошибка</summary><p>В шаге '+(d.firstWrong.step+1)+' был ответ <strong>'+esc(d.firstWrong.value)+'</strong>. Объясни, что нужно изменить в рассуждении.</p></details>');
     if(session.correct){const status=memoryOnly?'Совместный разбор':session.assisted?'Решено с помощью':session.exposed?'Работа со знакомым условием':session.attempt>1?'Решено после исправления':session.mode==='learn'?'Шаг понятен':'Получилось самостоятельно';task.insertAdjacentHTML('beforeend','<p class="v5q-outcome">'+status+'</p>');}
-    const extra=root.document.createElement('section');extra.className='v5q-notes';extra.innerHTML='<details><summary>Мои рассуждения и проверка</summary><label>Объясни способ своими словами. Как проверить результат?<textarea id="v5-quality-note" maxlength="2000" rows="3"></textarea></label><p class="tiny">Твои записи сохраняются. Свободное объяснение проверяется вместе с учителем.</p></details><div data-v5-media-host></div>';
-    workspace.after(extra);const note=extra.querySelector('textarea');note.value=d.note;note.oninput=()=>{if(readOnly)return;d.note=safeDraft(note.value,2000);if(note.value!==d.note)note.value=d.note;connection.save?.();};
-    const panels={notes:extra.querySelector('details'),theory:host.querySelector('.v5q-theory'),claim:claim?.closest('details'),error:host.querySelector('.v5q-error-note'),history:host.querySelector('.v6-history')};
+    const ownSituations=lesson.number==='1.72';
+    const extra=root.document.createElement('section');extra.className='v5q-notes';extra.innerHTML=ownSituations?'<h2>Твои два примера</h2><label>Что ты захочешь узнать в магазине? А на спортивной площадке? Запиши для каждого места свой вопрос и математический способ его проверить.<textarea id="v5-quality-note" maxlength="2000" rows="5"></textarea></label><p class="tiny">Сверь свою запись: указаны оба места, величины и способ проверки. Можно привести любые подходящие примеры. Текст сохраняется. Тренажёр отдельно проверяет только расчёты ниже.</p><div data-v5-media-host></div>':'<details><summary>Мои рассуждения и проверка</summary><label>Объясни способ своими словами. Как проверить результат?<textarea id="v5-quality-note" maxlength="2000" rows="3"></textarea></label><p class="tiny">Твои записи сохраняются. Свободное объяснение проверяется вместе с учителем.</p></details><div data-v5-media-host></div>';
+    if(lesson.number==='5.9'&&lesson.v5Course){
+      extra.querySelector('summary').textContent='Мои четыре примера';
+      extra.querySelector('label').firstChild.textContent='Запиши по одному своему примеру для окружности, круга, цилиндра и шара. Укажи, какую часть предмета ты рассматриваешь.';
+      extra.querySelector('.tiny').textContent='Сверь четыре примера с моделями. Твоя запись сохранится отдельно от проверяемых ответов о рисунках.';
+      const input=extra.querySelector('textarea');input.rows=5;input.placeholder='Окружность — …\nКруг — …\nЦилиндр — …\nШар — …';
+    }
+    if(ownSituations) workspace.before(extra); else workspace.after(extra);const note=extra.querySelector('textarea');note.value=d.note;note.oninput=()=>{if(readOnly)return;d.note=safeDraft(note.value,2000);if(note.value!==d.note)note.value=d.note;connection.save?.();};
+    const panels={notes:note.closest('details'),theory:host.querySelector('.v5q-theory'),claim:claim?.closest('details'),error:host.querySelector('.v5q-error-note'),history:host.querySelector('.v6-history')};
     for(const [key,panel]of Object.entries(panels))if(panel){panel.open=!!d.panels?.[key];panel.addEventListener('toggle',()=>{if(readOnly||session!==connection?.getSession?.()||applying)return;d.panels=d.panels||{};if(d.panels[key]===panel.open)return;d.panels[key]=panel.open;connection.save?.();});}
     mathText(host);enforceReadOnly();
     root.dispatchEvent(new root.CustomEvent('vilenkin5:scene-rendered',{detail:{id:lesson.id,mode:session.mode}}));
