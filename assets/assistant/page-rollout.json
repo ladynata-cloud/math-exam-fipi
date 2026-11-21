@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 627,
-    "covered": 625,
+    "total": 628,
+    "covered": 626,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -34,6 +34,7 @@
     "pedagogam/raboty/istochniki.html",
     "trainers/index.html",
     "trainers/long-division-claude.html",
+    "trainers/merzlyak9-2014/index.html",
     "trainers/oge-basics/multiplication-division/division-checkpoint.html",
     "trainers/oge-basics/multiplication-division/division-path.html",
     "trainers/school-workshop-check/index.html",
@@ -4013,7 +4014,8 @@
     "trainers/school-workshop-check/index.html": "school/index.html",
     "trainers/tyurin-statistics/index.html": "school/index.html",
     "school/peterson6/textbook/index.html": "sitemap",
-    "trainers/peterson6-workshop/index.html": "sitemap"
+    "trainers/peterson6-workshop/index.html": "sitemap",
+    "trainers/merzlyak9-2014/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6637,6 +6639,14 @@
         "trainers/tyurin-statistics/index.html"
       ],
       "reason": "New canonical practice entry discovered from the verified edition cards and included in the navigator."
+    },
+    {
+      "sourceBaseSha": "2d344c04e318527b2bc8b6636d7b4ffddf941edd",
+      "task": "docs/tasks/MERZLYAK9_2014_20261121.md",
+      "addedPages": [
+        "trainers/merzlyak9-2014/index.html"
+      ],
+      "reason": "New canonical interactive entry for all 26 verified textbook sections."
     }
   ]
 }
