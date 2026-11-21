@@ -838,3 +838,22 @@ test('finish the scale chapter in source order with changed cross products and g
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('keep unlike powers apart, cancel entire groups and substitute a fresh pair of values',()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#lesson/p34/66');assert.equal(f.q('.navigation a').hash,'#lesson/p35/0');
+  const go=i=>{f.nav('#lesson/p35/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(n=>'#'+n.id);};
+  const set=(id,v)=>f.event(id,String(v),'change'),result=()=>f.q('#model .pm-result').textContent;
+  for(const index of [0,1,2,3]){const previous=go(index);assert.equal(previous.length,2);assert.equal(f.q(previous[0]).value,'3');}
+  let ids=go(10);assert.deepEqual([...f.d.querySelectorAll('#model [data-symbol]')].map(e=>e.dataset.symbol),['x²y','xy²']);
+  assert.match(f.q('#model [data-symbol="x²y"]').textContent,/−3\/10; 5/);set(ids[2],1);assert(result().includes('47/10'));
+  set(ids[0],1);assert.equal(f.q(ids[2]).value,'0');set(ids[2],1);assert(result().includes('-11/10'));
+  set(ids[1],1);set(ids[2],1);assert(result().includes('-1/10'));
+  ids=go(17);set(ids[2],1);assert(result().includes('0.'));set(ids[0],1);set(ids[2],1);assert(result().includes('1/2'));
+  ids=go(18);set(ids[2],2);assert(result().includes('выражения: -6'));set(ids[1],1);set(ids[2],2);assert(result().includes('выражения: 12'));
+  ids=go(19);set(ids[2],2);assert(result().includes('выражения: 16/5'));set(ids[1],1);set(ids[2],2);assert(result().includes('выражения: 36/5'));
+  ids=go(23);set(ids[2],1);assert(result().includes('0.'));set(ids[0],1);set(ids[2],1);assert(result().includes('-2.'));
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

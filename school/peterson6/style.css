@@ -32,3 +32,8 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .pcm-factor-strip { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; margin-block: .6rem; }
 .pcm-factor-chip { padding: .2rem .45rem; border: 1px solid #5c8069; border-radius: .35rem; color: #244d39; background: #e4f0e7; font-weight: 650; }
 .pcm-factor-chip[data-sign=negative] { color: #743e20; background: #f7e9d9; border-color: #aa7952; }
+
+.pcm-like-groups { display: grid; gap: .45rem; }
+.pcm-coefficient-group { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .8rem; border: 1px solid #b9cabe; border-radius: .5rem; padding: .45rem .6rem; }
+.pcm-coefficient-group[data-selected="true"] { border: 2px solid #45725c; background: #e7f1e9; }
+.pcm-coefficient-group strong { min-width: 3.2ch; }

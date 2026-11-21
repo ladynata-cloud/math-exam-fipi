@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,505);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,526);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -383,6 +383,40 @@ const p33=D.lessons.find(l=>l.id==='p33');
  const printed=[(4.5+3+5/6)*.6,3.7/(1+2/9-.4),(4/(4/7)*.3)/(2.88/4.8),(.5+1/18)/((1+1/6-7/18)/2.8)];
  for(const [i,val]of printed.entries()){const r=M.parse(source(55,String(i+1)).answer);assert(Math.abs(r.n/r.d-val)<1e-9);}
  assert.equal(source(55).source.readingKey,5);assert.equal(source(55).answer,'0');assert.equal(2-2,0);
+}
+
+{
+ const printed=D.lessons.find(l=>l.id==='p35');
+ const cases=[
+  [42,'абвгде',[(x)=>-4*x+x+2*x,x=>3*x-7*x-x,x=>-.3*x-x+2.1*x,x=>x-1.6*x-.9*x,x=>1.8*x-2*x+x-.4*x-1.3*x,x=>(-4/5)*x+.2*x-(5/6)*x+x+x/3]],
+  [43,'абвг',[(a,b)=>4*a-b/7+2.3*b-3*a/7,(x,y)=>-.3*x**2*y+x*y**2+5*x**2*y-2.1*x*y**2,a=>-5*a**2+9*a-4+a**2+7-18*a,(n,m)=>2*n**3*m+4.3*n*m**3-.5*n**2*m**2+3.6*n*m**3]],
+  [44,'абв',[y=>-3*y+12-y-5,k=>2*k-k**2-3*k+4,(x,y)=>.6*x-x+1.6*y+.4*x]],
+  [45,'абвг',[(c,d)=>-7*c+3*d+8*c-5*d,m=>-9+2*m-4-m+8,(k,n)=>3*k/5-2*n/7-3*k-5*n/7+.4*k,p=>-1+p**2-3*p+.2-.5*p**2+.8+2.4*p]],
+  [46,'аб',[(m,c)=>-2*m/3+4*c+m/2-2.5*c+m/6,(x,y)=>1.8*x**2+.6*y**2-5.1*y**2+3.2*x**2+4.5*y**2]],
+  [47,'абвгде',[y=>-(y-16)+4*(2*y-3),(a,b)=>5*(a-2*b)+3*(-a+3*b),(m,n)=>4*(m+5*n)-5*(m-3*n),(b,x)=>-b*(1+x)+b*(1-x),(p,k)=>1.6*(2*p-k)-.8*(4*p-5*k),(c,d)=>-.2*(5*c+3*d)-.5*(-4*c+.8*d)]]
+ ];
+ const keys=[['n','x','a','c','y','b'],['ab','xy','a','nm'],['y','k','xy'],['cd','m','kn','p'],['mc','xy'],['y','ab','mn','bx','pk','cd']];
+ const value=raw=>{const v=M.parse(raw);return v.n/v.d;};
+ function grouped(groups,letters){
+  return groups.reduce((total,[variables,items])=>{
+   let term=items.reduce((s,v)=>s+value(v),0);
+   for(const [_,letter,power]of variables.matchAll(/([a-z])([²³]?)/g))term*=letters[letter]**(power==='²'?2:power==='³'?3:1);
+   return total+term;
+  },0);
+ }
+ for(const [j,[n,labels,forms]]of cases.entries()){
+  const cards=printed.tasks.filter(t=>t.source.exercise===n);assert.deepEqual(Array.from(cards,t=>t.source.subpart).sort(),[...labels].sort());
+  for(const [i,letter]of [...labels].entries()){
+   const card=cards.find(t=>t.source.subpart===letter);assert.equal(card.source.page,12);const study=card.likeTermsStudy;
+   if(!study){const existing={'p35-t01':'−n','p35-t02':'−4y+7','p35-t03':'c−2d','p35-t04':'2,4k'};assert.equal(card.answer,existing[card.id]);continue;}
+   for(const [x,y]of [[-3,2],[-1,-3],[0,4],[1,-2],[4,3]]){
+    const vars=Object.fromEntries([...keys[j][i]].map((v,index)=>[v,index?y:x]));
+    assert(Math.abs(grouped(study.groups,vars)-forms[i](x,y))<1e-9,card.source.reference);
+   }
+   if(n===46){const original=study.substitutions[0];assert(Math.abs(grouped(study.groups,Object.fromEntries(Object.entries(original).map(([letter,v])=>[letter,value(v)])))-value(card.answer))<1e-9);}
+   if(n===43)assert.equal(card.kind,'manual');
+  }
+ }
 }
 
 const printedColumns=['абв','абвгдежзи','абвгдежз','абвгдежз','абвг','аб','абвгдежзи','аб','аб','аб'];
