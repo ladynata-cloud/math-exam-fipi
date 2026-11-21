@@ -156,6 +156,7 @@
   }
   function inputIssue(value,target){
     if(!text(value)||!value.trim())return 'Сначала запиши ответ. Пустое поле не считается ошибкой.';
+    if(target.answerFormat==='v5-fraction-reading'&&!/[а-яё]/i.test(value))return 'Числа уже записаны в условии. Произнеси дробь вслух и введи словами вместе с названием целого. Пока это черновик.';
     if(['v5-pair','v5-triple'].includes(target.answerFormat)){
       const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
       if(parts.length!==(pair?2:3)||parts.some(part=>{const n=M.parse(part);return !n||(!pair&&n.d!==1);}))return pair?'Введи два числа через точку с запятой, например 2; 8. После этого проверим оба ответа.':'Запиши три целых числа через точку с запятой, например 2; 5; 7.';

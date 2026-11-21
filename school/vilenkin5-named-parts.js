@@ -19,15 +19,30 @@
     {whole:'кубического метра',den:1000000,label:'кубический сантиметр',short:'см³',forms:['кубический сантиметр','кубического сантиметра','см³','куб см','куб. см','сантиметр кубический','миллилитр','мл'],proof:'На метре 100 см. Куб с ребром 1 м содержит 100 · 100 · 100 = 1 000 000 кубических сантиметров.',near:['сантиметр','см','мм³'],hint:'Считаются кубики. Нужны три множителя, по одному для каждого направления.'},
     {whole:'гектара',den:100,label:'ар (сотка)',short:'а',forms:['ар','ара','а','сотка','сотки','100 м²','сто квадратных метров','100 квадратных метров'],proof:'В гектаре 10 000 м². Сотая часть гектара занимает 100 м². Эта единица называется ар, или сотка.',near:['метр','м²','гектар','га'],hint:'Одна сотая от 10 000 м² — площадка 10 м на 10 м.'}
   ];
+  const otherUnits=[
+    ['метра',100,'сантиметр',['сантиметр','см'],'1 м = 100 см.','дециметр','Дециметров в метре десять.'],
+    ['метра',1000,'миллиметр',['миллиметр','мм'],'1 м = 1000 мм.','сантиметр','Сантиметров в метре сто.'],
+    ['тонны',10,'центнер',['центнер','ц','100 кг'],'1 т = 10 ц.','килограмм','В тонне тысяча килограммов и десять центнеров.'],
+    ['тонны',1000,'килограмм',['килограмм','кг'],'1 т = 1000 кг.','центнер','Центнеров в тонне десять.'],
+    ['килограмма',1000,'грамм',['грамм','г'],'1 кг = 1000 г.','килограмм','Ищем меньшую единицу массы.'],
+    ['часа',60,'минута',['минута','мин','мин.'],'1 час = 60 мин.','секунда','В одном часе гораздо больше шестидесяти секунд.'],
+    ['гектара',10000,'квадратный метр',['квадратный метр','м²','кв. м'],'1 га = 10 000 м².','ар','Аров в гектаре сто, квадратных метров десять тысяч.'],
+    ['кубического метра',1000,'кубический дециметр',['кубический дециметр','дм³','куб. дм','литр','л'],'1 м³ = 10 · 10 · 10 дм³. Один кубический дециметр равен одному литру.','мл','Миллилитров в кубическом метре миллион.']
+  ];
+  for(const [whole,den,label,forms,proof,near,hint] of otherUnits)units.push({whole,den,label,forms,proof,near:[near],hint});
   const normal=x=>String(x).toLowerCase().replaceAll('ё','е').replace(/м\^?2/gu,'м²').replace(/м\^?3/gu,'м³').replace(/(\d)([а-я])/gu,'$1 $2').replace(/[.]/g,'').replace(/\s+/g,' ').trim();
   function textAnswer(raw,row){const x=normal(raw),u=typeof row==='number'?units[row]:units.find(item=>item.label===row);if(!u)return false;if(x===normal(u.label))return true;return u.forms.some(f=>{const m=normal(f);return x===m||(!u.amount&&!/^\d/.test(m)&&x==='1 '+m);});}
   function rowTask(seed,r,step){
-    const order=Array.from({length:8},(_,i)=>i);if(seed)for(let i=7;i>0;i--){const j=r(0,i);[order[i],order[j]]=[order[j],order[i]];}
+    const order=Array.from({length:8},(_,i)=>i);
+    if(seed){
+      const extras=Array.from({length:8},(_,i)=>8+i);for(let i=7;i>0;i--){const j=r(0,i);[extras[i],extras[j]]=[extras[j],extras[i]];}
+      const count=3+seed%4;for(let i=0;i<count;i++)order[(seed+i)%8]=extras[i];for(let i=7;i>0;i--){const j=r(0,i);[order[i],order[j]]=[order[j],order[i]];}
+    }
     const parts=order.map((id,i)=>{const u=units[id];return {...step('абвгдежз'[i]+'. Как называется или как выражается в меньших единицах 1/'+u.den+' '+u.whole+'?'+(u.amount?' Запиши массу в килограммах вместе с единицей.':''),u.label,u.proof,u.near.map(value=>({value,text:u.hint}))),answerFormat:'v5-named-unit',unitRow:id};});
     const final=parts.pop();return {...final,steps:parts,inputPrompt:'Название единицы или величина с единицей',why:units[final.unitRow].proof,data:{namedUnits:order},conditionKey:'unit-names/'+order.join('/')};
   }
   function unitCard(u){
-    const count=u.den.toLocaleString('ru-RU');return '<figure style="margin:.4em 0;padding:.6em;background:#eaf3ef;border:1px solid #73928d"><figcaption>Всё целое — '+({метра:'1 м',тонны:'1 т',рубля:'1 рубль',суток:'одни сутки',минуты:'1 мин',гектара:'1 га','квадратного метра':'1 м²','кубического метра':'1 м³'}[u.whole])+'.</figcaption><p>Его разделили на '+count+' равных частей. Рассматриваем одну такую часть.</p></figure>';
+    const count=u.den.toLocaleString('ru-RU');return '<figure style="margin:.4em 0;padding:.6em;background:#eaf3ef;border:1px solid #73928d"><figcaption>Всё целое — '+({часа:'1 час',килограмма:'1 кг',метра:'1 м',тонны:'1 т',рубля:'1 рубль',суток:'одни сутки',минуты:'1 мин',гектара:'1 га','квадратного метра':'1 м²','кубического метра':'1 м³'}[u.whole])+'.</figcaption><p>Его разделили на '+count+' равных частей. Рассматриваем одну такую часть.</p></figure>';
   }
   function quarters(seed,r,step){
     const side=seed?4*r(1,6):8,area=side*side,one=area/4;
@@ -53,7 +68,7 @@
     const n=s?.mode==='learn'?Math.min(s.step,3):3;return square(t.data.quarterPicture.side,n===1?0:1,n,n===3?25:0);
   }
   function explore(t,s){
-    if(t.data.namedUnits){const u=units[s.row];return {title:'Соедини долю с целой величиной',controls:[{key:'row',title:'Что измеряем',values:units.map((v,i)=>[i,v.whole])}],visual:unitCard(u)+'<p>'+u.proof+'</p>',question:'Сколько таких одинаковых долей нужно взять, чтобы получить целую величину?',answer:u.den,why:'В целой величине '+u.den+' равных долей по 1/'+u.den+'.'};}
+    if(t.data.namedUnits){const u=units[t.data.namedUnits[s.row]];return {title:'Соедини долю с целой величиной',controls:[{key:'row',title:'Выбери величину',values:t.data.namedUnits.map((id,i)=>[i,'1/'+units[id].den+' '+units[id].whole])}],visual:unitCard(u),question:'Сколько таких одинаковых долей нужно взять, чтобы получить целую величину?',answer:u.den,why:u.proof};}
     const side=t.data.quarterPicture.side;return {title:'Выбери деление и закрась доли',controls:[{key:'kind',title:'Как разделить',values:[[0,'Четыре полосы'],[1,'Две прямые через центр']]},...(s.kind?[{key:'angle',title:'Поворот прямых, градусы',min:0,max:45,step:1}]:[]),{key:'count',title:'Сколько четвертей выделить',values:[[1,'Одну'],[2,'Две'],[3,'Три']]}],visual:square(side,s.kind,s.count,s.kind?s.angle:0),question:'Какова площадь выделенной части в см²?',answer:side*side*s.count/4,why:'Четыре площади равны. Поворот меняет расположение линий, но каждая часть по-прежнему занимает четверть квадрата.'};
   }
   const api={lessons,generators:{'5.43':rowTask,'5.44':quarters},bounds:{'5.43':{row:[0,7,0]},'5.44':{kind:[0,1,1],angle:[0,45,0],count:[1,3,1]}},textAnswer,taskDrawing:visual,explore};
