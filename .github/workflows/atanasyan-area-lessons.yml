@@ -42,6 +42,8 @@ on:
       - 'tools/geometry-textbook/*vector_chapter_review*'
       - 'geometry-course/textbook/data/coordinate-coefficients.json'
       - 'tools/geometry-textbook/*coordinate_coefficients*'
+      - 'geometry-course/textbook/data/coordinate-relations.json'
+      - 'tools/geometry-textbook/*coordinate_relations*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
@@ -74,6 +76,7 @@ jobs:
       - run: python3 tools/geometry-textbook/vector_extra_problems.py --check && python3 tools/geometry-textbook/check_vector_extra_problems.py
       - run: python3 tools/geometry-textbook/vector_chapter_review.py --check && python3 tools/geometry-textbook/check_vector_chapter_review.py
       - run: python3 tools/geometry-textbook/coordinate_coefficients.py --check && python3 tools/geometry-textbook/check_coordinate_coefficients.py
+      - run: python3 tools/geometry-textbook/coordinate_relations.py --check && python3 tools/geometry-textbook/check_coordinate_relations.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons
