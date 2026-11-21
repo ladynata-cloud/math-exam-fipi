@@ -8,11 +8,12 @@ assert.equal(book.source.sha256,'1404107938af90df5b120e6c0d34c6c8ad2c39e7660cad1
 const pages=[5, 9, 11, 14, 16, 20, 21, 22, 24, 27, 31, 36, 37, 40, 44, 47, 51, 54, 57, 59, 60, 61, 65, 69, 73, 74, 78, 81, 82, 86, 89, 93, 95, 98, 101, 104, 108, 110, 112, 114, 117, 122, 125, 128, 132, 133, 137, 140, 141, 141, 144, 147, 149, 150, 154, 155, 159, 162, 164, 168, 171, 172, 175, 177, 178, 181, 183, 186, 189, 190, 192, 195, 203, 205, 207, 209, 211, 217, 219, 222, 223, 224, 229, 231, 232, 234, 237, 241, 243, 247, 251, 252, 254, 257, 263, 265, 268, 270, 273, 276, 278, 283, 285, 288, 291, 294, 298, 302, 304, 309, 312, 314, 315, 317, 320, 323, 325, 327, 328, 331, 332, 334, 339];
 assert.deepEqual(Array.from(book.mapping,r=>r.page),pages);
 const ids=["1-1", "1-2", "1-3", "1-4", "2-1", "2-2", "2-3", "2-4", "3", "4", "5", "6", "7-1", "7-2", "7-3", "7-4", "7-5", "7-6"],printed=["1 (1)", "1 (2)", "1 (3)", "1 (4)", "2 (1)", "2 (2)", "2 (3)", "2 (4)", "3", "4", "5", "6", "7 (1)", "7 (2)", "7 (3)", "7 (4)", "7 (5)", "7 (6)"];
+ids.push("8-1","8-2","8-3","8-4","8-5","8-6","9","10","11","12","13","14");printed.push("8 (1)","8 (2)","8 (3)","8 (4)","8 (5)","8 (6)","9","10","11","12","13","14");
 for(const [i,r] of book.mapping.entries()){
  assert.equal(r.sourcePath,'https://pdf.my-uchebnik.ru/pdf/algebra/00000023.pdf#page='+(r.page+1));
- if(i){assert(r.bookOnly);assert(!r.boardPath&&!r.externalPath);}else{assert.equal(r.coverage,'partial');assert.equal(r.boardPath,book.exercises[0].path);}
+ if(i){assert(r.bookOnly);assert(!r.boardPath&&!r.externalPath);}else{assert.equal(r.coverage,'module');assert.equal(r.boardPath,book.exercises[0].path);}
 }
-const scripts=['trainers/tyurin-statistics/content.js',dir+'irrationality.js','trainers/tyurin-statistics/app.js'].map(read);
+const scripts=['trainers/tyurin-statistics/content.js',dir+'irrationality.js',dir+'decimal-bounds.js','trainers/tyurin-statistics/app.js'].map(read);
 function open(entry,stash){
  const dom=new JSDOM(read(dir+'index.html'),{url:'https://math.example'+entry.path,runScripts:'outside-only'}),w=dom.window,doc=w.document;
  w.Math.random=()=>0;w.TextEncoder=TextEncoder;const id=entry.path.split('/').at(-1),key='math:vilenkin-analysis-2014:v1:'+id;
@@ -25,6 +26,17 @@ function solve(i,s){
  if(i===8||i===9)return [n**(i===8?2:3),1,1];
  if(i===10){const p=n,r=p+1,d=(2*p+r)**2-8*p*r;return [d,Math.sqrt(d),r/2];}
  if(i===11)return [0,3,2*n];
+ if(i>=18&&i<24){
+  const p=5.1+s/5,a=Math.sqrt(s+1),b=Math.sqrt(s+2),r=Math.sqrt;
+  const x=[a+b,a-b,r(2+r(p)),r(r(p)-2),r((3+a)*(2+r(3))),r(3+a)/Math.PI][i-18];
+  return [x-Math.floor(x),Math.floor(x*10000)/10000,Math.ceil(x*10000)/10000];
+ }
+ if(i===24){const m=2+s%3,k=s+2,e=k*10**(-m);let n=1;while(k/10**n>=e-1e-12)n++;return [n-1,n,10];}
+ if(i===25){const a=Math.hypot(3*(s+1),4*(s+1)),b=Math.hypot(5*(s+2),12*(s+2));return [a,a*b,2*a+2*b];}
+ if(i===26)return [3+s%3,1+s%8,0];
+ if(i===27){const a=(25+s)/100,b=a+2*(s+1)/1000,m=(b+a)/2;return [m,b-m,(m+a)/2];}
+ if(i===28){const d=3+s%6;return [d,d/9,(9*(20+s)+d)/9];}
+ if(i===29){const d=2+s%4,p=6+s%3,w=7+s%3;return [d,d/90,(90*w+9*p+d)/90];}
  const j=i-11,negative=j%2===0,whole=j<=2?n:0,units=j<=4?1009+11*s:21+s,tail=3+s%5;
  const value=(negative?-1:1)*((whole*10000+units)*100+tail)/1e6;
  return [value-Math.floor(value),Math.floor(value*1e4)/1e4,Math.ceil(value*1e4)/1e4];
@@ -33,10 +45,10 @@ const action=(doc,k)=>doc.querySelector('[data-action="'+k+'"]').click();
 function send(doc,v){const a=doc.querySelector('#answer'),E=doc.defaultView.Event;a.value=String(v);a.dispatchEvent(new E('input',{bubbles:true}));doc.querySelector('#work form').dispatchEvent(new E('submit',{bubbles:true,cancelable:true}));}
 assert.equal(book.exercises.length,ids.length);
 for(const [i,r] of book.exercises.entries()){
- const id='30-'+ids[i];assert.equal(r.path,'/'+dir+'index.html#lesson/'+id);assert.equal(r.boardPath,r.path);assert.equal(r.printed,printed[i]);assert.equal(r.page,8);
+ const id='30-'+ids[i];assert.equal(r.path,'/'+dir+'index.html#lesson/'+id);assert.equal(r.boardPath,r.path);assert.equal(r.printed,printed[i]);assert.equal(r.page,i<18?8:9);
  let {dom,w,doc,key,l}=open(r);
- assert.equal(doc.querySelector('#lesson').value,id);assert.equal(doc.querySelectorAll('#lesson option').length,18);
- assert.equal(doc.querySelector('#source').href,'https://pdf.my-uchebnik.ru/pdf/algebra/00000023.pdf#page=9');assert.equal(doc.querySelector('#back').hash,'#book/source-30');
+ assert.equal(doc.querySelector('#lesson').value,id);assert.equal(doc.querySelectorAll('#lesson option').length,30);
+ assert.equal(doc.querySelector('#source').href,'https://pdf.my-uchebnik.ru/pdf/algebra/00000023.pdf#page='+(r.page+1));assert.equal(doc.querySelector('#back').hash,'#book/source-30');
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),r.path);assert.equal(w.MathExamTopicEdition.nextId(l),ids[i+1]&&'30-'+ids[i+1]);assert.equal(r.title,l.title);
  const variants=new Set();for(let s=1;s<=11;s++){
   const d=l.make(s),answers=solve(i,s);variants.add(JSON.stringify(d.rows));
@@ -53,4 +65,4 @@ for(const [i,r] of book.exercises.entries()){
  assert.deepEqual(JSON.parse(w.localStorage.getItem(key)).results,['fixed','first','help']);action(doc,'again');assert.equal(JSON.parse(w.localStorage.getItem(key)).variant,7);
  assert.equal(w.localStorage.getItem('math:peterson8-2017:v1:71-2'),'preserved');dom.window.close();
 }
-console.log('Vilenkin advanced grade 10: 121 numbered source topics and two supplements, 18 exact practice entries, 594 independent answers.');
+console.log('Vilenkin advanced grade 10: 121 numbered source topics and two supplements, 30 exact practice entries through exercise 14, 990 independent answers.');

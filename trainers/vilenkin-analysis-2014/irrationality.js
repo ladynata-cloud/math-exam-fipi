@@ -112,5 +112,5 @@
     return '<svg viewBox="0 0 280 120" role="img" aria-label="'+title+'"><g font-size="12" font-family="sans-serif" fill="#244c3e">'+body+'</g></svg>';
   }
   window.MathExamTopicEdition={trainerId:'vilenkin-analysis-2014',storePrefix:'math:vilenkin-analysis-2014:v1:',authors:'Виленкин, Ивашев-Мусатов, Шварцбурд · 2014',grade:()=>'10 класс · углублённый уровень',unit:'упражнение',figure,
-    source:(_,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000023.pdf#page='+(page+1),nextId:l=>ids[ids.indexOf(l.id)+1]};
+    lesson,question:q,data,source:(_,page)=>'https://pdf.my-uchebnik.ru/pdf/algebra/00000023.pdf#page='+(page+1),nextId:l=>ids[ids.indexOf(l.id)+1]};
 })();
