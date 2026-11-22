@@ -67,6 +67,7 @@ jobs:
           node tools/nikolsky-algebra-7-9-linear.test.cjs
           node tools/nikolsky-algebra-7-9-inequalities.test.cjs
           node tools/mordkovich-2019-source90.test.cjs
+          node tools/mordkovich-2019-source67.test.cjs
           node tools/dorofeev-algebra-7-9.test.cjs
           node tools/dorofeev-algebra-7-9-source72.test.cjs
           node tools/dorofeev-algebra-7-9-source53.test.cjs
@@ -103,6 +104,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --nikolsky9-linear --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --nikolsky8-inequalities --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich7-workbook-2019 --printed-identity
+          node tools/tyurin-statistics.board.browser.cjs --mordkovich8-workbook-2019 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev7 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev8 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev9 --printed-identity
