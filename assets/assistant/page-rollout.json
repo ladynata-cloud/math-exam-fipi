@@ -3362,10 +3362,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "school/peterson6/textbook/index.html": {
-      "beforeSha256": "07e11c8195722d72ced11da4a105d2485ffd5a87637d0840ee20d8506e3154e2",
-      "afterSha256": "28fcd50d9a8753f329c07d2df80d84f111271773e3146118a64e9b5d3c323c15",
+      "beforeSha256": "886309fa7adbdb2108cb2a2be71d3958ad084599ae60200e705189ea775a04e1",
+      "afterSha256": "0e2042bbd607ae455eb825a37fce911b9999d1ea31fdd1bcd7ecec31a81a650b",
       "placement": "before-head-close",
-      "sourceSha": "7803ba7e6dace730a9e2e98dee93ebe7dcb227f9"
+      "sourceSha": "9b7e0b7947f0b5024bb242589f0c3664eb63f757"
     },
     "trainers/peterson6-workshop/index.html": {
       "beforeSha256": "aff5a4686e3a522eb30af65b8e89b325a77ea2798f61c203c7ca06a2755d2aea",
@@ -7636,6 +7636,15 @@
       ],
       "task": "docs/tasks/VERIFIED_BOOK_ROUTES_20261121.md",
       "boundary": "На общей школьной странице сохранены два тома Виленкина и учебник с задачником Мордковича и Николаева для 9 класса, включая первые 24 по задачнику и 10 заданий по теории."
+    },
+    {
+      "previousBaseSha": "7803ba7e6dace730a9e2e98dee93ebe7dcb227f9",
+      "sourceBaseSha": "9b7e0b7947f0b5024bb242589f0c3664eb63f757",
+      "task": "docs/tasks/PETERSON6_FIRST_VOLUME_COMPANION_20261121.md",
+      "changedPaths": [
+        "school/peterson6/textbook/index.html"
+      ],
+      "boundary": "Проверен вход в печатные №49–54 с пространственными моделями параллелепипеда, отрицаниями, утверждениями и числовыми границами. Уточнённый банк первой части загружается по его точной версии."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
