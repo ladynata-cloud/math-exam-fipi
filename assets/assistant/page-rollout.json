@@ -2240,10 +2240,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "53883419ee9e3b64b6a4db78817f17a0f2986b1de544c629c560a5b1bad85ee1",
-      "afterSha256": "c10e48e6eb88b2b88abff6ffb6013408ba3cd48e08b4e6fd0dd43daf37434abc",
+      "beforeSha256": "979fd6528cfcf28cda6265b1ce06ac388e7f74ef44126fb7985b51d658839f67",
+      "afterSha256": "7465fe042a4fbc5e3ec4d4deeaf9d72c47cee7ec3426ad88cd438aeaada0fef7",
       "placement": "before-head-close",
-      "sourceSha": "9f67f1da172c31d5b341d1dbbe45a2693dda870b"
+      "sourceSha": "37880afbcf8c0546ae795ec068c523f674e66776"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7665,6 +7665,15 @@
         "school/index.html"
       ],
       "boundary": "Два тома Виленкина содержат упражнения №1–180 и №1–116, включая двадцать числовых выражений, луч и разрядные границы первой части, работу с контрольными заданиями и отмеченными точками второй части."
+    },
+    {
+      "previousBaseSha": "9f67f1da172c31d5b341d1dbbe45a2693dda870b",
+      "sourceBaseSha": "37880afbcf8c0546ae795ec068c523f674e66776",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "task": "docs/tasks/WORKSHOP_RUBIN_CHULKOV_7_2015.md",
+      "boundary": "На общей школьной странице сохранены два тома Виленкина и добавлена точная карта издания Рубина и Чулкова для 7 класса, с заданиями №1а–з в проверяемом общем тренажёре."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
