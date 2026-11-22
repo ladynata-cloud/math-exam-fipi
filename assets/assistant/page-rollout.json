@@ -2716,10 +2716,10 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/index.html": {
-      "beforeSha256": "b4de97ac3d1d929e11f9f38b94158681fe47be9cef9b3d92b57f4613da681148",
-      "afterSha256": "f47f418b8185d328842ab2d835259edd37e5a74e4598bb3510e11ed537e1ab82",
+      "beforeSha256": "ea88fae8bb68fb1cb7c5f7465b9e3d13933fac7372cc198e39f41db4aa46ecb6",
+      "afterSha256": "7862fc4c856949a79b7ef3e772484ef5fb672e6e989d542dcc972632916748a9",
       "placement": "before-head-close",
-      "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
+      "sourceSha": "edcd9019bd0ab9e7b14d43843e578ff04178c3be"
     },
     "trainers/oge-basics/multiplication-division.html": {
       "beforeSha256": "d07e510baad0f61e76f0f8af9efb3f5141028982554cae7e78d0de0dca7e4f58",
@@ -6794,6 +6794,16 @@
         "trainers/oge-basics/multiplication-division/index.html"
       ],
       "reason": "Bind reviewed contextual Arzhenikov search entrances to their exact published source commit. Preserve every other source binding and the global base.",
+      "bindingScope": "Per-page sourceSha; HTML and navigator runtime are unchanged by this metadata update."
+    },
+    {
+      "sourceBaseSha": "edcd9019bd0ab9e7b14d43843e578ff04178c3be",
+      "previousSourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151",
+      "task": "docs/tasks/SEO_ARZHENIKOV_TRAINERS_20261123.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html"
+      ],
+      "reason": "Bind the cloud-browser correction that keeps the Arzhenikov entrance visible in the arithmetic section when minimal navigation is enabled. Preserve every other source binding and the global base.",
       "bindingScope": "Per-page sourceSha; HTML and navigator runtime are unchanged by this metadata update."
     }
   ],
