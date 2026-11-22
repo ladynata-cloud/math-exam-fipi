@@ -2,7 +2,11 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const coordinatesChapterSevenSelfCheck = makeReviewedIncrement(require('./coordinates-chapter-seven-self-check.json'), closedSections);
+const coordinateChapterSevenEnd = makeReviewedIncrement(require('./coordinate-chapter-seven-end.json'), closedSections);
+const additionalDirectedAndPlaneAngles = makeReviewedIncrement(require('./additional-directed-and-plane-angles.json'), coordinateChapterSevenEnd);
+const additionalCoordinateDistances = makeReviewedIncrement(require('./additional-coordinate-distances.json'), additionalDirectedAndPlaneAngles);
+const additionalCoordinateCombinations = makeReviewedIncrement(require('./additional-coordinate-combinations.json'), additionalCoordinateDistances);
+const coordinatesChapterSevenSelfCheck = makeReviewedIncrement(require('./coordinates-chapter-seven-self-check.json'), additionalCoordinateCombinations);
 const isometriesOfSpaceSectionEnd = makeReviewedIncrement(require('./isometries-of-space-section-end.json'), coordinatesChapterSevenSelfCheck);
 const spatialSymmetriesAndFixedSets = makeReviewedIncrement(require('./spatial-symmetries-and-fixed-sets.json'), isometriesOfSpaceSectionEnd);
 const cubeProofsAndScalarProductSectionEnd = makeReviewedIncrement(require('./cube-proofs-and-scalar-product-section-end.json'), spatialSymmetriesAndFixedSets);
@@ -63,5 +67,3 @@ const volumes = makeReviewedIncrement(require('./box-volumes.json'), prismVolume
 const latest = makeReviewedIncrement(require('./round-bodies.json'), volumes);
 const later = makeReviewedIncrement(require('./circumspheres.json'), latest);
 module.exports = makeReviewedIncrement(require('./inscribed-solids.json'), later);
-module.exports.volumeSelfcheck = volumeSelfcheck;
-module.exports.spatialVectorSums = spatialVectorSums;

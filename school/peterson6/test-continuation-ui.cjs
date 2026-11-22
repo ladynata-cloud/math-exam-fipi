@@ -1815,3 +1815,99 @@ test('complete four decimal speed columns, twelve cipher values and the issued t
   f.nav('#lesson/p21/34');assert.equal(f.d.querySelectorAll('#task-figure tbody tr')[2].cells[1].textContent,'11/12');f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'1','change');assert.match(f.q('#model .pm-result').textContent,/КО□ФФИЦИЕНТ/);f.event(stage,'2','change');assert.match(f.q('#model .pm-result').textContent,/КОЭФФИЦИЕНТ/);f.event(data,'1','change');f.event(stage,'2','change');assert.match(f.q('#model .pm-result').textContent,/ЦЕНА/);assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('exhaust fourth natural numbers, reverse both proofs, cover all ten invariant checks and solve every problem twice',()=>{
+ const f=fixture(null,null,true);try{
+  const source=['2, 8, 18','5, 45','вычти n','поменяй знак','отношение 6','отношение 3','произведение 12','отношение 7','отношение 5','отношение 8','Сумма дня и ночи','отношение 9','отношение 4','произведение 24','120 руб.','3 дня.','204 км.','36 л.'];
+  for(let i=0;i<source.length;i++){
+   f.nav('#lesson/p21/'+(35+i));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(source[i]),[i,f.q('#model').textContent]);
+   const old=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,old);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('all four source equations, ruler estimates and both percentage baselines keep their parameters on repeat',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=['70.','3,6.','10.','1,2.','3,8 м','6,7 м','28%','20%'],other=['14.','3.','20.','3.','4,6 м','8,1 м','25%','40%'];
+  for(let i=0;i<expected.length;i++){f.nav('#lesson/p21/'+(53+i));if(i===4||i===5)assert.equal(f.d.querySelectorAll('#task-figure svg').length,1);f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(expected[i]),[i,f.q('#model').textContent]);if(i===4||i===5)assert.equal(f.d.querySelectorAll('#model [data-facade-height]').length,1);
+   f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(other[i]),[i,f.q('#model').textContent]);}
+ }finally{f.close();}
+});
+
+test('repeat both readings for five quantities, compare solution methods, check forbidden denominators and both equivalences',()=>{
+ const f=fixture(null,null,true);try{
+  const first=['(3; 15)','(3; 15)','(3; 2)','(3; 2)','(3; 2)','1296 руб.','15 дней.','0,4.','10/3.','вычитанием 2','ad = bc'];
+  const next=['(6; 30)','(6; 30)','(4; 1,5)','(4; 1,5)','(4; 1,5)','972 руб.','20 дней.','1.','4.','вычитанием 2','ad = bc'];
+  first.forEach((v,i)=>{f.nav('#lesson/p21/'+(61+i));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(v));if(i<5)assert.equal(f.d.querySelectorAll('#model [data-proportion-reading]').length,2);
+   const old=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(next[i]));assert.notEqual(f.q('#model').textContent,old);});
+ }finally{f.close();}
+});
+
+test('prove five pan weighings sort each of twenty-four hidden orders and include the entire final textbook page',()=>{
+ const f=fixture(null,null,true);try{
+  const src=['Ответ 8.','Ответ 10.','Ответ 4.','20, 3,2, 5.'];const fresh=['Ответ 9.','Ответ 14,4.','Ответ 8.','18, 2, 4,5.'];
+  src.forEach((v,i)=>{f.nav('#lesson/p21/'+(72+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(v));f.event(d,'1','change');assert.equal(f.q(st).value,'0');f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(fresh[i]));});
+  f.nav('#lesson/p21/76');f.click('[data-lesson-help="model"] > summary');const [set,step]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);const orders=[];
+  for(let i=0;i<24;i++){f.event(set,String(i),'change');assert.equal(f.q(step).value,'0');assert.equal(f.d.querySelectorAll('#model [data-weighed]').length,0);f.event(step,'5','change');const rows=[...f.d.querySelectorAll('#model .pcm-route-table tbody tr')];assert.equal(rows.length,5);const final=rows[4].cells[2].textContent.replaceAll(' ','');assert.equal([...new Set(final)].sort().join(''),'ABCD');orders.push(final);for(const row of rows){const pair=row.cells[0].textContent.match(/[A-D]/g),lighter=row.cells[1].textContent,heavy=pair.find(x=>x!==lighter);assert(final.indexOf(lighter)<final.indexOf(heavy));}}
+  assert.equal(new Set(orders).size,24);['= 33.','= 66.','= 33.'].forEach((v,i)=>{f.nav('#lesson/p21/'+(77+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(v));f.event(d,'1','change');f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(['= 40.','= 79.','= 40.'][i]));});
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('read every issued Fahrenheit and Celsius value on paired scales before rounding',()=>{
+ const f=fixture(null,null,true);try{
+  const cases=[[0,'−18 °C'],[4,'232,8 °C'],[5,'−15 °C'],[6,'0 °C'],[7,'43 °C'],[8,'−20 °C'],[9,'−23 °C'],[10,'−184 °C'],[11,'32 °F'],[12,'50 °F'],[13,'77 °F'],[14,'212 °F'],[15,'−40 °F'],[16,'22 °F'],[17,'−460 °F']];
+  for(const [i,v] of cases){f.nav('#lesson/p40/'+i);f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);assert.equal(f.d.querySelectorAll('#model [data-scale-output]').length,0);f.event(stage,'2','change');const got=f.q('#model .pm-result').textContent.replaceAll('-','−');assert(got.includes(v),[i,got]);assert.equal(f.d.querySelectorAll('#model [data-scale-output]').length,1);
+   const old=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,old);}
+ }finally{f.close();}
+});
+
+test('read the entire printed table, separate reciprocal branches, count true vertical intersections and compare every linear and quadratic family',()=>{
+ const f=fixture(null,null,true);try{
+  for(const [slot,expected,count] of [[1,'−2x',1],[2,'|x|',1],[18,'1/x',2],[19,'x²',1]]){f.nav('#lesson/p40/'+slot);assert(f.d.querySelectorAll('#task-figure tbody tr').length>=9);f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,count);assert(f.q('#model .pm-result').textContent.includes(expected));const old=f.q('#model').textContent;f.event(d,'1','change');f.event(st,'2','change');assert.notEqual(f.q('#model').textContent,old);}
+  for(let i=0;i<3;i++){f.nav('#lesson/p40/'+(20+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-vertical-crossing]').length,[1,2,1][i]);f.event(d,'1','change');assert.equal(f.q(st).value,'0');f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-vertical-crossing]').length,[1,4,1][i]);}
+  for(const [i,count] of [[3,3],[23,3],[24,2],[25,2],[26,2],[27,3],[28,2],[29,2]]){f.nav('#lesson/p40/'+i);f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-curve-probe]').length,count);assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,count);const rows=f.q('#model table').textContent;f.event(d,'1','change');f.event(st,'2','change');assert.notEqual(f.q('#model table').textContent,rows);}
+ }finally{f.close();}
+});
+
+test('verify all printed signed operations, own function examples, parameters and bracketed expressions on a second set',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=['1/5','-2/3','7/2','-1','-1/2','7/3','1/25','5','x = 0','отличен от нуля','y = kx²','y = kx + b','-36/25','-5/12','51/50','-441/100'];
+  expected.forEach((v,i)=>{f.nav('#lesson/p40/'+(30+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(v),[i,f.q('#model').textContent]);const old=f.q('#model').textContent;f.event(d,'1','change');assert.equal(f.q(st).value,'0');f.event(st,'2','change');assert.notEqual(f.q('#model').textContent,old);if(i>=12)assert(f.q('#model .pm-result').textContent.includes(['-4/5','-6/5','93/100','-441/25'][i-12]));});
+ }finally{f.close();}
+});
+
+test('printed fraction reductions, truth values, all four interval endpoints and two equal-distance problems',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const answers=['−3x/10','(3y² − 2)/(3y)','−5/n','−1/(5bm)','Ложно','Истинно','Истинно','Ложно','-5 ≤ x ≤ 5','x < -2 или x > 2','-2 < x < 4','x ≤ -3 или x ≥ -1','69/5','40'];
+  const lesson=f.w.PetersonCourse.lessons.find(l=>l.id==='p40');
+  for(const [i,answer] of answers.entries()){
+   f.nav('#lesson/p40/'+(i+46));const task=lesson.tasks[i+46];assert.equal(task.answer,answer);
+   f.click('[data-lesson-help="model"] > summary');const [d,step]=Array.from(f.d.querySelectorAll('#model select'),e=>'#'+e.id);
+   f.event(step,'2','change');const first=f.q('#model .pm-result').textContent;
+   if(i>=8&&i<12){const graph=f.q('#model svg');assert.equal(graph.querySelectorAll('circle').length,2);assert.equal(graph.querySelector('circle').getAttribute('fill'),[8,11].includes(i)?'#086751':'#fff');assert(first.endsWith(answer));}
+   f.event(d,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.notEqual(f.q('#model .pm-result').textContent,first);
+  }
+  f.nav('#lesson/p40/58');f.event('#final-answer','18/5');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/первоначальная скорость/);
+ }finally{f.close();}
+});
+
+test('source graph section ends with inverse substitutions, three actual lines and both strict natural-number bounds',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const lesson=f.w.PetersonCourse.lessons.find(l=>l.id==='p40');
+  const answers=['-4','19/5','-52/5','138/5','7','-4','Прямые параллельны','Все проходят через начало координат, наклоны различны','−a/6','−(4b + c²)/(2c)','an/x','−c/2','2','1','Да','Нет'];
+  for(const [i,answer] of answers.entries()){
+   const task=lesson.tasks[i+60];assert.equal(task.answer,answer);f.nav('#lesson/p40/'+(i+60));f.click('[data-lesson-help="model"] > summary');
+   const [d,stage]=Array.from(f.d.querySelectorAll('#model select'),e=>'#'+e.id);
+   if(i===6||i===7)assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,0);
+   f.event(stage,'2','change');
+   if(i===6||i===7){assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,3);assert.equal(f.d.querySelectorAll('#model [data-line-point]').length,6);}
+   const original=f.q('#model').textContent;f.event(d,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,original);
+  }
+  assert.deepEqual(Array.from(new Set(Array.from(lesson.tasks,t=>t.source.exercise))).sort((a,b)=>a-b),Array.from({length:23},(_,i)=>208+i));
+  f.nav('#lesson/p40/72');f.event('#final-answer','6');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/скорость пешком/);
+ }finally{f.close();}
+});

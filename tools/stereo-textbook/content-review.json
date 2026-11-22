@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T23:52:06Z",
-  "scope": "Chapters I–VI, chapter VII points 71–84, numbered exercises through 730, and all 17 questions on printed page 186 (39 cards); additional questions from 731 are inventoried separately.",
+  "registeredAt": "2026-11-22T00:24:09Z",
+  "scope": "Chapters I–VI, chapter VII points 71–84 and questions 1–17, and every numbered exercise through 763 are reviewed. The four final review problems 764–767 and the advanced problems 768–815 remain separate source positions before chapter VIII.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2309,6 +2309,101 @@
       ],
       "evidence": "tools/stereo-textbook/coordinates-chapter-seven-self-check.json",
       "mathematicalReport": "tools/stereo-textbook/coordinates-chapter-seven-self-check.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, chapter VII printed page 187, PDF page 189, coordinate data and subparts checked against the page image.",
+      "reviewedAt": "2026-11-22T00:00:16Z",
+      "scope": "All 17 source-specific cases in exercises 731–738 on printed page 187. Exact fractional components, projection minima, coplanarity normals, a parallelogram and its translated spatial vertices were independently computed.",
+      "cardIds": [
+        "ex-main-0731-a",
+        "ex-main-0731-b",
+        "ex-main-0732-a",
+        "ex-main-0732-b",
+        "ex-main-0732-c",
+        "ex-main-0732-d",
+        "ex-main-0733-a",
+        "ex-main-0733-b",
+        "ex-main-0734-a",
+        "ex-main-0734-b",
+        "ex-main-0734-c",
+        "ex-main-0735",
+        "ex-main-0736",
+        "ex-main-0737",
+        "ex-main-0738-a",
+        "ex-main-0738-b",
+        "ex-main-0738-c"
+      ],
+      "evidence": "tools/stereo-textbook/additional-coordinate-combinations.json",
+      "mathematicalReport": "tools/stereo-textbook/additional-coordinate-combinations.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, chapter VII printed pages 187 and 188, PDF pages 189 and 190, coordinate data and subparts checked against the page image.",
+      "reviewedAt": "2026-11-22T00:06:15Z",
+      "scope": "Exercises 739–748 on printed pages 187–188, including both signs of the ordinate, the radical in problem 742, all axis intersections and the general proof using four interchangeable tetrahedron vertices.",
+      "cardIds": [
+        "ex-main-0739",
+        "ex-main-0740",
+        "ex-main-0741",
+        "ex-main-0742",
+        "ex-main-0743",
+        "ex-main-0744",
+        "ex-main-0745",
+        "ex-main-0746",
+        "ex-main-0747",
+        "ex-main-0748"
+      ],
+      "evidence": "tools/stereo-textbook/additional-coordinate-distances.json",
+      "mathematicalReport": "tools/stereo-textbook/additional-coordinate-distances.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, chapter VII printed page 188, PDF page 190, coordinate data and subparts checked against the page image.",
+      "reviewedAt": "2026-11-22T00:17:53Z",
+      "scope": "Exercises 749–756 on printed page 188, every directed pair, both rhombohedron diagonals, four lines in the rhombus plane and two distinct cube face normals.",
+      "cardIds": [
+        "ex-main-0749-a",
+        "ex-main-0749-b",
+        "ex-main-0749-c",
+        "ex-main-0749-d",
+        "ex-main-0749-e",
+        "ex-main-0750-a",
+        "ex-main-0750-b",
+        "ex-main-0750-c",
+        "ex-main-0751-a",
+        "ex-main-0751-b",
+        "ex-main-0751-c",
+        "ex-main-0751-d",
+        "ex-main-0752-a",
+        "ex-main-0752-b",
+        "ex-main-0753-a",
+        "ex-main-0753-b",
+        "ex-main-0754",
+        "ex-main-0755-a",
+        "ex-main-0755-b",
+        "ex-main-0755-c",
+        "ex-main-0755-d",
+        "ex-main-0756-a",
+        "ex-main-0756-b"
+      ],
+      "evidence": "tools/stereo-textbook/additional-directed-and-plane-angles.json",
+      "mathematicalReport": "tools/stereo-textbook/additional-directed-and-plane-angles.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, chapter VII printed pages 188–189, PDF pages 190–191, coordinate data and subparts checked against the page image.",
+      "reviewedAt": "2026-11-22T00:24:09Z",
+      "scope": "The last seven numbered exercises of chapter VII. Every case on pages 188–189, including the inverse images of the whole translated plane, the two perpendicular directions, the signed rays and the general dihedral-angle formulas.",
+      "cardIds": [
+        "ex-main-0757",
+        "ex-main-0758",
+        "ex-main-0759",
+        "ex-main-0760",
+        "ex-main-0761-a",
+        "ex-main-0761-b",
+        "ex-main-0762",
+        "ex-main-0763-a",
+        "ex-main-0763-b"
+      ],
+      "evidence": "tools/stereo-textbook/coordinate-chapter-seven-end.json",
+      "mathematicalReport": "tools/stereo-textbook/coordinate-chapter-seven-end.test.cjs"
     }
   ],
   "cards": [
@@ -7823,6 +7918,242 @@
     {
       "id": "ex-selfcheck-vii-17",
       "sha256": "38ff7c8db4f9263593e4b2d5ffcd3f707d1078904e6693971c1981f741698b73"
+    },
+    {
+      "id": "ex-main-0731-a",
+      "sha256": "3d58fe193e4db28ecd97ee042649750abc57f119181c74ac7fc8e2ab67c08c09"
+    },
+    {
+      "id": "ex-main-0731-b",
+      "sha256": "729557ca9635520175850158737b21cf50539aea154201169de8c31b600e382f"
+    },
+    {
+      "id": "ex-main-0732-a",
+      "sha256": "d1d3b31691be9612fd211b4199c44ffbc844ce0be0ad53d4e22d46aad2fae787"
+    },
+    {
+      "id": "ex-main-0732-b",
+      "sha256": "2aec492ab328d0debaa0a1e6e27fb0cb229d6c1752264dbdd6aadd80aa1773e5"
+    },
+    {
+      "id": "ex-main-0732-c",
+      "sha256": "0843897307edd02f764d05b1e52f8a6f48628000094ff8642d773fbcccfbb947"
+    },
+    {
+      "id": "ex-main-0732-d",
+      "sha256": "f6468726ff96990dd4056d4ffa8ccd661369478e53a497e0c81ce90fcffd4582"
+    },
+    {
+      "id": "ex-main-0733-a",
+      "sha256": "af42a927c66d8adae88ff3e53e1cf35c6018a70fcf19bf21ee441a9c393134b7"
+    },
+    {
+      "id": "ex-main-0733-b",
+      "sha256": "87ca92218645c1ba0b31924ac23d29fae9eff4883048ddf3491b669807e365ae"
+    },
+    {
+      "id": "ex-main-0734-a",
+      "sha256": "4d51f897b2402547c8cb0f1d2c0b420570369a27c2c25d98bf176edc10e08559"
+    },
+    {
+      "id": "ex-main-0734-b",
+      "sha256": "927ed67dfdce1f00f9761d0514a6ee9c4a4e3508a64b7bbfaa13767ca82d48b8"
+    },
+    {
+      "id": "ex-main-0734-c",
+      "sha256": "76a2357c9ba324089b37abc503235ab6523a2cd3e2a696536ee40596f2577e27"
+    },
+    {
+      "id": "ex-main-0735",
+      "sha256": "8f34e627f5758e6ce8223872459da649f75dfc9b309154d4daa8b3b2515679ef"
+    },
+    {
+      "id": "ex-main-0736",
+      "sha256": "139e2db8abca27c5026d3bff0a72e4fbe34aebdfb17845784622e46650080fcb"
+    },
+    {
+      "id": "ex-main-0737",
+      "sha256": "6b1826a3537b8cc781e6051717e675493e9530d71cd38acab3e136037e68da37"
+    },
+    {
+      "id": "ex-main-0738-a",
+      "sha256": "0623be0147e4c377668f2b29c2f0f445c3bd75acad63d6e4ea80dcd5ded7e2be"
+    },
+    {
+      "id": "ex-main-0738-b",
+      "sha256": "a51a646ae840b334654f36ab627660a87e37354d178b2822e7d305f308e10c69"
+    },
+    {
+      "id": "ex-main-0738-c",
+      "sha256": "443376ce6d73ce0c50a9562fe095eb235c4ea4acf9f24fbdd916c18a1aa70f7b"
+    },
+    {
+      "id": "ex-main-0739",
+      "sha256": "a2781f01968ce165b560a928afb80537c8211e2718c590045b791053fc514a0b"
+    },
+    {
+      "id": "ex-main-0740",
+      "sha256": "b5f13538aafd77471fc9fbb8ae40485aa9c11b4cf49a9d9d4cad3fdf410e4f24"
+    },
+    {
+      "id": "ex-main-0741",
+      "sha256": "90a24cdf8e9dcfc453fd44214032fd647b853d7d64bf19c42765117410a50279"
+    },
+    {
+      "id": "ex-main-0742",
+      "sha256": "5e4468e2de28f29ba57b7190c507ca7287bd24e9afab43153785d4f1053b9db4"
+    },
+    {
+      "id": "ex-main-0743",
+      "sha256": "1f62cfe13a36b0d4a2692902b00f7a269c51611c33a5fdf80b661a9bec81ac0b"
+    },
+    {
+      "id": "ex-main-0744",
+      "sha256": "bc1abf21788b73fa35b818c24c1e6292b2c69f9b6a02cc53215cb124f996822d"
+    },
+    {
+      "id": "ex-main-0745",
+      "sha256": "634eddaa25c8d41d1f4be5bd65a3d41a76776894db984c815f22cda3f605c9b2"
+    },
+    {
+      "id": "ex-main-0746",
+      "sha256": "ec68c7f30a772dd139d7cd8eebb026ba7c3cd06f230a4512f755b1fb30d34070"
+    },
+    {
+      "id": "ex-main-0747",
+      "sha256": "8c9d0d547473cd2644a72319cb8692bf45c47ac5e97660b73c48a32649cc5bfd"
+    },
+    {
+      "id": "ex-main-0748",
+      "sha256": "0859159275d89c162a0967e0313a18394007a8d2040842a45df887fe90c6787a"
+    },
+    {
+      "id": "ex-main-0749-a",
+      "sha256": "119d5fa29a7fccb8c3187e0be1462b095a1cadd24dfd156496ee64aec846ffc1"
+    },
+    {
+      "id": "ex-main-0749-b",
+      "sha256": "d56aac7e23d315b95cede1ba72955657aa10f3ba4c49c0f588fef733632b05d9"
+    },
+    {
+      "id": "ex-main-0749-c",
+      "sha256": "0ed3c66c6f17c569503f5c2f936f554ed9f3cfbcbe02a78866e1109ef4c82df1"
+    },
+    {
+      "id": "ex-main-0749-d",
+      "sha256": "f6afeb97c5f6c3f1644d418c9470f52d88f9938257605c22b0cb42a9936799a9"
+    },
+    {
+      "id": "ex-main-0749-e",
+      "sha256": "ffa41d819c29b0e12546ae22e3ce1884ef3c754ba6b3aa68c20ef6fad2386755"
+    },
+    {
+      "id": "ex-main-0750-a",
+      "sha256": "c54cc0b5425154bfc87a63db996463119fa5d0f063a8a314c6b8aedee1e0db61"
+    },
+    {
+      "id": "ex-main-0750-b",
+      "sha256": "b81bc120e53e6c241b3b2fd755cb4107aad13cc7d51bf224d2b34031f37c9091"
+    },
+    {
+      "id": "ex-main-0750-c",
+      "sha256": "5270e949dc4bb3d59cdc94a49aa5c0f833605f7dfc04def8a0ae7730dbc7cc3e"
+    },
+    {
+      "id": "ex-main-0751-a",
+      "sha256": "b0c839e9c87845c73516dc5cf75064aca07dd68b543f39112adfc40740e39f30"
+    },
+    {
+      "id": "ex-main-0751-b",
+      "sha256": "57512a7d5c467d9a4654d473dc6a13333dcc5895465d65d6ec92e1436b360f48"
+    },
+    {
+      "id": "ex-main-0751-c",
+      "sha256": "b1564fffdd26a87242589d87ced97927a4355a43ee6b4afcbf62d233ce3a6c08"
+    },
+    {
+      "id": "ex-main-0751-d",
+      "sha256": "4ee04e2e1a9244a161ae63ba4fb169e373dd5bf7b6e834f0f87e586e24a7aa40"
+    },
+    {
+      "id": "ex-main-0752-a",
+      "sha256": "ffa6fb55459e908abd0ffc70ddbde58ec8e75b479d4a736db1a9f2637b6ad2f9"
+    },
+    {
+      "id": "ex-main-0752-b",
+      "sha256": "da89ebcd4098399e3d8264658213f2ee972ca99b443fdc3297fcbb4eeab3a585"
+    },
+    {
+      "id": "ex-main-0753-a",
+      "sha256": "a3d5faec5119a546602ebcee2d0f94e676675b912f409d833ff182c2b32b4803"
+    },
+    {
+      "id": "ex-main-0753-b",
+      "sha256": "6e8cc191d9daba05c7e1ca1e915ef7962c76a819851742e571b7dfdc3d1ab6e9"
+    },
+    {
+      "id": "ex-main-0754",
+      "sha256": "90d0a490f5ee18fb1a1388895832084caacc56a77032b448fa4e016e56985429"
+    },
+    {
+      "id": "ex-main-0755-a",
+      "sha256": "c47b7d04d5c12cdb04fc751f18a08bbf0630b2e60f699a3377d5fcdb302fb6f0"
+    },
+    {
+      "id": "ex-main-0755-b",
+      "sha256": "2ae62404aef648899e3eac2d61e53b331f007c4802c86ab478c0c3e543ced627"
+    },
+    {
+      "id": "ex-main-0755-c",
+      "sha256": "0bb31a659069ad7a73171a8b97aa1f90755fe9e2f3546a00b02da5100d71dd02"
+    },
+    {
+      "id": "ex-main-0755-d",
+      "sha256": "a06e28c5f06b6375ecf484c79c5046fc5e79b182d556a61324b145079a540987"
+    },
+    {
+      "id": "ex-main-0756-a",
+      "sha256": "094f388d8d7c572b39ddbd9617ddee88031a48142114ab2a63ca1e91c509deb5"
+    },
+    {
+      "id": "ex-main-0756-b",
+      "sha256": "ac3304ab6baef098fc1b0b8eae689dff68c6596bd3ad45812f919f923b928dd3"
+    },
+    {
+      "id": "ex-main-0757",
+      "sha256": "5cb62fbc501ea1028e6f8482133b0fb1bc5b2322997f07d8820a3377d59e7ca8"
+    },
+    {
+      "id": "ex-main-0758",
+      "sha256": "34fcb2fd2bd7f03dd6ede83d4e3bd221541ba48d60d9bcf06ced3ff48956e51b"
+    },
+    {
+      "id": "ex-main-0759",
+      "sha256": "fc09ed4e6e857892c4fd9149353dae556436266556e71325fc1f4b35eabd0bea"
+    },
+    {
+      "id": "ex-main-0760",
+      "sha256": "1d0ff2dd7c6ad796afe448a7ce0fb7a20d0295a53e036a1fc80fe694ebc826e1"
+    },
+    {
+      "id": "ex-main-0761-a",
+      "sha256": "a9e30855621f0e4777363f8056f4db41d0eb0dec2d0b7a27581ad8d8b423bff3"
+    },
+    {
+      "id": "ex-main-0761-b",
+      "sha256": "5dd0b10b824b628599094c9b13098c668b211fcc2ddb57b24ed9fb62bfab133b"
+    },
+    {
+      "id": "ex-main-0762",
+      "sha256": "62f6286e95094a6001531c9f6a3f8d8e181b2edac72d2dd52e4c3aa93e4af713"
+    },
+    {
+      "id": "ex-main-0763-a",
+      "sha256": "bf3aaefcc810e391ee5b361db5c61e97c8f0364a57e9edede8d78dd6a793259d"
+    },
+    {
+      "id": "ex-main-0763-b",
+      "sha256": "6bb7aa2a1f27d5ef024806bf1fb2d7b4cd856d6c5a621b875634b4dcc857c2aa"
     }
   ]
 }
