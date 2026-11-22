@@ -3330,10 +3330,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "2a358f90088cebaab253bb0bac3aeccbebbc4abb7ebcc2c004194670d72d603c",
-      "afterSha256": "f50f699ecc2b32f9e80dd3174d1a226e4782547037a2340fee6d182254208a4f",
+      "beforeSha256": "b2373b6e85a4c50037786e42ff03e99122f5c9fb7d382dbecfc8f54542542edc",
+      "afterSha256": "18f0321800161105e98211b89b7b4a6df803852fee76341b12f73d7ac4a447f7",
       "placement": "before-head-close",
-      "sourceSha": "316f81cde90e1dc9de21cd951ee2d503a72ff0bc"
+      "sourceSha": "0f53fb5889e43479b3dbb27723bbc460d642c6ed"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6754,6 +6754,16 @@
         "trainers/college-stereometry/index.html"
       ],
       "reason": "Bind the reviewed seven-lesson course entrance; preserve every unrelated navigator receipt."
+    },
+    {
+      "sourceBaseSha": "0f53fb5889e43479b3dbb27723bbc460d642c6ed",
+      "previousSourceSha": "316f81cde90e1dc9de21cd951ee2d503a72ff0bc",
+      "task": "docs/tasks/ARZHENIKOV_JOURNEYS_20261123.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Bind the reviewed Arzhenikov investigations, zoomable journeys, historical sources and offline entrance; preserve all other page receipts. The GitHub integration source tree exactly matches the locally reviewed source tree.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
   "coverageUpdates": [
