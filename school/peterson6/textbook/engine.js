@@ -77,6 +77,11 @@ function sanitize(part,input){
   if(Array.isArray(input.filterItems)&&input.filterItems.length<=allowed.length)clean.filterItems=[...new Set(input.filterItems.filter(v=>allowed.includes(v)))].sort((a,b)=>a-b);
   if(input.filterEmpty===true&&!clean.filterItems?.length)clean.filterEmpty=true;
  }
+ if(part.id.startsWith('049-')){
+  if(['front','side','base'].includes(input.boxFace))clean.boxFace=input.boxFace;
+  if(!part.expression&&['abc','xyh'].includes(input.boxNames))clean.boxNames=input.boxNames;
+  if(Array.isArray(input.boxEntries)&&input.boxEntries.length===2)clean.boxEntries=input.boxEntries.map((v,i)=>typeof v==='string'?cut(v,i===1&&!part.expression?360:90):'');
+ }
  if(Object.hasOwn(commonInputs,part.id)){
   const ns=commonInputs[part.id],allowed=[2,3,5,7,11,13,17,19,23,29,31,37],nFields=part.id.startsWith('045')||part.id.startsWith('046')?4:2;
   if(Number.isInteger(input.primeRow)&&input.primeRow>=0&&input.primeRow<ns.length)clean.primeRow=input.primeRow;

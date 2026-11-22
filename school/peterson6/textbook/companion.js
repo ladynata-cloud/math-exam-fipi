@@ -474,6 +474,55 @@
   }
 
   const filterDivisors={42:[2,5,10,100,25,4],43:[3,9,6,15,18,90]},printedSet=[315,79,8181,490,102],digits=Array.from({length:10},(_,i)=>i);
+  function boxTask(part){
+    if(part.id==='049-1-obhardyom')return 'У прямоугольного параллелепипеда три измерения: ширина 4,3 см, длина 6,1 см и высота 8,5 см. Найди объём в кубических сантиметрах. Округли окончательный результат до десятых.';
+    if(part.id==='049-1-poverhnostsoft')return 'У прямоугольного параллелепипеда ширина 4,3 см, длина 6,1 см и высота 8,5 см. Найди площадь всей поверхности в квадратных сантиметрах. Округли итог до десятых.';
+    return part.id==='049-2'?'Введи буквы для длины, ширины и высоты прямоугольного параллелепипеда. Вырази через них его объём и объясни построение формулы.':'Введи обозначения для трёх измерений прямоугольного параллелепипеда. Построй формулу площади всей его поверхности и объясни происхождение каждого слагаемого.';
+  }
+  function boxDrawing(part,work){
+    const named=!part.expression,letters=work.boxNames==='xyh'?['x','y','h']:['a','b','c'],dims=named?letters:['6,1 см','4,3 см','8,5 см'];
+    const mode=work.boxFace||'front',paint=key=>key===mode?'#a9d7bd':'#eff3ef';
+    const front='<polygon points="42,57 151.8,57 151.8,210 42,210" fill="'+paint('front')+'"/>';
+    const side='<polygon points="151.8,57 189.6,34.4 189.6,187.4 151.8,210" fill="'+paint('side')+'"/>';
+    const top='<polygon points="42,57 79.8,34.4 189.6,34.4 151.8,57" fill="'+paint('base')+'"/>';
+    const captions=['передняя и задняя грани','левая и правая грани','верхняя и нижняя грани'],active=['front','side','base'].indexOf(mode),products=[[0,2],[1,2],[0,1]],pair=products[active];
+    return '<figure style="margin:.6em 0"><svg role="img" aria-label="Прямоугольный параллелепипед; выделена одна из пары равных граней" viewBox="0 0 256 241" style="display:block;width:100%;max-width:350px"><g stroke="#324e41" stroke-width="2" stroke-linejoin="round">'+top+side+front+'</g><path d="M42 210 L79.8 187.4 H189.6 M79.8 187.4 V34.4" fill="none" stroke="#5b7164" stroke-dasharray="4 4"/><g font-size="13" fill="#1e3528" text-anchor="middle"><text x="94" y="230">'+dims[0]+'</text><text x="198" y="209">'+dims[1]+'</text><text x="220" y="112">'+dims[2]+'</text></g></svg><figcaption data-box-caption>Выделена одна грань. Равная ей противоположная грань — вторая в паре: '+captions[active]+'. Измерения каждой: '+dims[pair[0]]+' и '+dims[pair[1]]+'.</figcaption></figure>';
+  }
+  function boxView(part,work,interactive){
+    const modes=[['front','Передняя и задняя'],['side','Боковые'],['base','Основания']],face=work.boxFace||'front',fields=part.expression?['Точное значение','Мой результат до десятых']:['Моя формула','Почему она работает'];
+    const names=part.expression?'':'<label>Мои обозначения <select data-box-names><option value="abc">a, b, c</option><option value="xyh"'+(work.boxNames==='xyh'?' selected':'')+'>x, y, h</option></select></label>';
+    return '<section data-box-host><h3>Исследуй три пары граней</h3>'+boxDrawing(part,work)+(interactive?'<div style="display:flex;flex-wrap:wrap;gap:.25em">'+modes.map(([value,label])=>'<button data-box-face="'+value+'" type="button" class="secondary" aria-pressed="'+(face===value)+'">'+label+'</button>').join('')+'</div>'+names+fields.map((label,i)=>'<label style="display:block">'+label+' <input data-box-field="'+i+'" maxlength="'+(i===1&&!part.expression?360:90)+'" style="display:block;box-sizing:border-box;width:100%;max-width:100%" value="'+U.esc((work.boxEntries||[])[i]||'')+'"></label>').join('')+'<button type="button" class="secondary" data-box-use>Перенести мой результат</button>':'')+'</section>';
+  }
+  function mountBox(main,part,work,save){
+    let host=main.querySelector('[data-box-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=boxView(part,work,true);host=main.querySelector('[data-box-host]');
+      for(const b of host.querySelectorAll('[data-box-face]'))b.onclick=()=>{work.boxFace=b.dataset.boxFace;save();draw();host.querySelector('[data-box-face="'+work.boxFace+'"]').focus({preventScroll:true});};
+      const names=host.querySelector('[data-box-names]');if(names)names.onchange=()=>{work.boxNames=names.value;save();draw();host.querySelector('[data-box-names]').focus({preventScroll:true});};
+      const entries=work.boxEntries||['',''],use=host.querySelector('[data-box-use]'),enable=()=>{use.disabled=entries.some(x=>!x.trim());};enable();
+      for(const f of host.querySelectorAll('[data-box-field]'))f.oninput=()=>{entries[Number(f.dataset.boxField)]=f.value.slice(0,f.maxLength);work.boxEntries=entries;enable();save();};
+      use.onclick=()=>{const ans=main.querySelector('#answer');ans.value=part.expression?entries[1]:entries[0]+' | '+entries[1];ans.dispatchEvent(new Event('input',{bubbles:true}));ans.focus();};
+    }draw();
+  }
+  function boxResponse(number,part,input,correct,work){
+    if(number!==49)return null;const M=root.PetersonBook.M;
+    if(part.expression){
+      const volume=part.id==='049-1-obhardyom',target=volume?'222.955':'229.26',exact=work.boxEntries?.[0];
+      if(correct)return null;
+      if(M.equal(input,target))return {ok:false,text:'Это точное значение. Чтобы получить десятые, посмотри на следующую цифру — сотые.'};
+      if(M.equal(input,'114.63')||M.equal(input,'114.6'))return {ok:false,text:'Сейчас учтена одна грань из каждой пары. У каждой есть равная противоположная грань.'};
+      if(volume&&(M.equal(input,'26.23')||M.equal(input,'26.2')))return {ok:false,text:'Это площадь основания в см². Чтобы получить объём в см³, учти высоту 8,5 см.'};
+      if(M.equal(input,volume?'229.3':'223'))return {ok:false,text:volume?'Ты получил площадь поверхности. Для объёма умножь площадь основания на высоту.':'Это объём. Для поверхности сложи площади всех шести граней.'};
+      return {ok:false,text:exact&&M.equal(exact,target)?'Точное значение найдено. Посмотри на цифру сотых и округли один раз в конце.':volume?'Сначала перемножь длину и ширину, затем учти высоту. Не округляй промежуточную площадь.':'Найди площади трёх разных граней. Учти обе грани каждой пары и только затем округли.'};
+    }
+    const [raw,explain]=input.split('|').map(s=>s.trim());if(!explain)return null;
+    const volume=part.id==='049-2',q=raw.toLowerCase().replace(/[\s*·×]/g,'').replace(/^[vs]=/,'');
+    if(q==='ab'||q==='xy')return {ok:false,text:'Получилась площадь одного основания. Вспомни, где в твоей формуле участвует высота.'};
+    if(['ab+ac+bc','xy+xh+yh'].includes(q))return {ok:false,text:'Каждой выбранной грани соответствует равная противоположная. Учти обе грани во всех трёх парах.'};
+    if(volume&&['abc','xyh'].includes(q)||!volume&&['2(ab+ac+bc)','2(xy+xh+yh)','2ab+2ac+2bc','2xy+2xh+2yh'].includes(q))return {ok:true,text:'Формула согласуется с геометрической моделью. Объяснение сохранено для проверки.'};
+    return null;
+  }
+
   const commonInputs=root.PetersonBook.commonInputs;
   function commonQuestion(number,part){
     if(number===45)return 'Найди все положительные делители 12 и 15. Запиши оба множества в фигурных скобках и их пересечение. Выбери в пересечении наибольшее число. Объясни с помощью простых множителей, почему это НОД(12, 15).';
@@ -1169,6 +1218,7 @@
 
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
+    if(number===49)return boxTask(part);
     if(number>=45&&number<=48)return commonQuestion(number,part);
     if(number>=42&&number<=44)return filterQuestion(number,part);
     if(number===41)return 'Число a задано произведением 2 · 3 · 7. Найди a и запиши множество D(a) всех его положительных делителей. Покажи, как убедился в полноте множества.';
@@ -1243,6 +1293,7 @@
     if(item.number===37)drawing=geometryFigure(part,{},false);
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
+    if(item.number===49)drawing=boxView(part,{},false);
     if(item.number>=45&&item.number<=48)drawing=commonFactorView(item.number,part,{},false);
     if(item.number>=42&&item.number<=44)drawing=filterView(item.number,part,{},false);
     if(item.number===35||item.number===36)drawing=part.id.endsWith('pravilo')?logicConstruction(item.number,part,false):divisionView(part,{},false);
@@ -1257,7 +1308,7 @@
     if(part.id==='282-3') drawing=coordinateTriangle();
     if(item.number===293) drawing=part.id==='293-a'?squares():triangles();
     const mode=hasCompletePrompt(item,part)?'Всё условие для этого подпункта приведено здесь.':'Для этого подпункта используй формулировку, таблицу или рисунок из своего учебника.';
-    return ref+'<p class="small">'+mode+'</p><p class="problem">'+U.fmt(prompt)+'</p>'+(part.expression?'<div class="math-line" aria-label="Выражение">'+U.expression(part.expression)+'</div>':'')+drawing;
+    return ref+'<p class="small">'+mode+'</p><p class="problem">'+U.fmt(prompt)+'</p>'+(part.expression&&item.number!==49?'<div class="math-line" aria-label="Выражение">'+U.expression(part.expression)+'</div>':'')+drawing;
   }
   function pane(item,part) {
     const link=pdfUrl?'<p><a href="'+U.esc(pdfUrl)+'#page='+item.page+'" target="_blank" rel="noopener noreferrer">Открыть с. '+item.page+' в моём PDF ↗</a></p>':'';
@@ -1274,5 +1325,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse};
 })(globalThis);

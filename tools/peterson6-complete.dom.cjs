@@ -839,3 +839,24 @@ test('all nine printed common-divisor and common-multiple investigations retain 
  }
  const re=await surface(t,BOOK+'#n/48/048-g',storage(s));assert.match(element(re,'[data-factor-chain="2"]').textContent,/3 · 37/);assert.equal(element(re,'[data-common-entry="1"]').value,'11100');
 });
+test('printed cuboid dimensions support face pairs, separate units, rounding and symbolic proofs',async t=>{
+ const s=await surface(t,BOOK+'#n/49/049-1-obhardyom'),ps=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[48].parts;
+ for(const [i,p] of ps.entries()){
+  await route(s,'#n/49/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);assert.equal(element(s,'[data-box-host] svg').querySelectorAll('polygon').length,3);
+  for(const [btn,cap] of [['base',/верхняя и нижняя/],['side',/левая и правая/],['front',/передняя и задняя/]]){click(s,'[data-box-face="'+btn+'"]');assert.match(element(s,'[data-box-caption]').textContent,cap);}
+  let right;
+  if(i<2){const exact=i?'229,26':'222,955',wrong=i?'114,63':'26,23';right=i?'229,3':'223,0';
+   input(s,'[data-box-field="0"]',exact);input(s,'[data-box-field="1"]',wrong);click(s,'[data-box-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,i?/грань из каждой пары/:/площадь основания/);
+   input(s,'[data-box-field="1"]',right);click(s,'[data-box-use]');submit(s,'#answer-form');assert(bookWork(s,p.id).correct&&!bookWork(s,p.id).independent&&!bookWork(s,p.id).assisted);
+  }else{
+   const name=element(s,'[data-box-names]');name.value='xyh';name.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.match(element(s,'[data-box-caption]').textContent,/x и h/);
+   input(s,'[data-box-field="0"]',i===2?'xy':'xy+xh+yh');input(s,'[data-box-field="1"]','Учитываю три заданные длины и объясняю действия.');click(s,'[data-box-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,i===2?/Высота|высота/:/всех трёх парах/);
+   right=i===2?'V=xyh':'S=2(xy+xh+yh)';input(s,'[data-box-field="0"]',right);click(s,'[data-box-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Формула согласуется/);assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct);
+  }
+  for(let j=0;j<32;j++){const sample=s.w.PetersonAnalogues.create(49,p,j);
+   if(i<2){const [a,b,c]=[...sample.prompt.matchAll(/(\d+[,\.]\d|\d+) см(?:,|\.)/g)].map(x=>Math.round(Number(x[1].replace(',','.'))*10)),n=i===0?a*b*c:2*(a*b+a*c+b*c),den=i===0?1000:100;assert.equal(s.w.PetersonBook.M.equal(sample.answer,String(Math.floor((10*n+den/2)/den)/10)),true);}
+   else{const names=sample.prompt.match(/обозначены ([a-z]), ([a-z]), ([a-z])/).slice(1);const [x,y,z]=names;assert.equal(sample.answer,i===2?names.join(''):'2('+x+y+'+'+x+z+'+'+y+z+')');}
+  }
+ }
+ const re=await surface(t,BOOK+'#n/49/049-3',storage(s));assert.equal(element(re,'[data-box-names]').value,'xyh');assert.equal(element(re,'[data-box-field="0"]').value,'S=2(xy+xh+yh)');
+});
