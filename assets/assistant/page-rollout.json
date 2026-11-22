@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8c22cc38e22548febc539f3387e46680c4ee52915bd851006dbfd6b9c41b2d97",
-      "afterSha256": "a0398ff0feaed9b80110c185437b2595cbba6ec407dbc9f3ffbc8694a7dcef1b",
+      "beforeSha256": "b990277a97dc67e81598fefce9712484aa060adceb58468853abbc53860064e3",
+      "afterSha256": "5162ee2c3400503a45052407abd85fa77b0d88eacd9c0e52a048f20cbe81e9df",
       "placement": "before-head-close",
-      "sourceSha": "ac29dc4e9560030c4a94f05504996a88cf02ff98"
+      "sourceSha": "a6c5836b47a647db1d5f30523134ff2fc413a748"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6957,6 +6957,15 @@
         "school/index.html"
       ],
       "boundary": "Часть 2, страница 18, №5.83–5.85. Сверены доли объёма, площади и массы. Для площади принимаются 13,5 и 27/2. На двух мобильных ширинах и в двух ролях проверены шаги и сохранение модели квадрата."
+    },
+    {
+      "previousBaseSha": "ac29dc4e9560030c4a94f05504996a88cf02ff98",
+      "sourceBaseSha": "a6c5836b47a647db1d5f30523134ff2fc413a748",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, страница 18: проверены №5.86–5.89, четыре предметные модели, переход между двумя отрезами одного рулона, передача управления и восстановление у двух участников."
     }
   ],
   "coverageUpdates": [
