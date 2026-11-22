@@ -19,7 +19,8 @@ for(const row of book.mapping){
   if(row.sectionLabel==='§ 1.1')assert.equal(row.boardPath,row.externalPath);
   else assert(row.bookOnly&&!row.boardPath&&!row.externalPath);
 }
-const ids=Array.from('abcdefgh',letter=>'1-'+letter),printed=ids.map(()=>10);
+const ids=['abcdefgh','abcdef','abcdefgh','abcdefgh'].flatMap((letters,i)=>Array.from(letters,letter=>(i+1)+'-'+letter));
+const printed=ids.map(id=>/^4-[efgh]$/.test(id)?11:10);
 const dir='trainers/rubin-chulkov7-2015/';
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
@@ -43,7 +44,23 @@ function expected(i,s){
     case '1-f': return [-n,-100*n,101*s+200.5];
     case '1-g': return [(n+4)/n,0,0];
     case '1-h': return [n,n,1];
-    default: throw Error('Unknown exercise');
+    case '2-a':case '2-b':case '2-c':case '2-d':case '2-e':case '2-f': {
+      const sub=i-8,a=3*s+2,b=s+1;
+      const middle=[b,2*s+1,4*s+3,2*s+1,b/2,(4*s+3)/(a*b)];
+      const end=[4*s+3,4*s+2,(4*s+3)/4,a*a-b*b,3*a-b/2,a/b-b/a];
+      return [(s+sub)%3+1,middle[sub],end[sub]];
+    }
+    default: {
+      const [exercise,letter]=ids[i].split('-'),part='abcdefgh'.indexOf(letter);
+      if(exercise==='3'){
+        const value=[s+2,s+.5,3*s+4,-s-.25,-s-.1,-s-1.12,.002*s+.001,-.002*s-.001][part];
+        return [value,2*value,2*value-3];
+      }
+      assert.equal(exercise,'4');
+      const pairs=[[s+1,s+1],[s+3,1],[-4*s-1,-2*s],[(2*s+1)/4,-s-1.5],[-.04*(s+3),-s-.5],[-s-4,-s-.5],[-.07*(s+1),-.02*(s+1)],[4-.07*(s+1),-.01*(s+1)]];
+      const [p,q]=pairs[part],n=2*p-7*q,d=p+4;
+      return [n,d,n/d];
+    }
   }
 }
 assert.equal(book.exercises.length,ids.length);
@@ -105,6 +122,6 @@ async function checkExercises() {
     // Allow jsdom to release closed windows before opening the next lesson.
     await new Promise(resolve=>setImmediate(resolve));
   }
-  console.log('Source 94: 30 paragraphs, 30 revision topics, 30 answer sections, eight student routes, 264 independently checked answers and eight saved drafts.');
+  console.log('Source 94: 30 paragraphs, 30 revision topics, 30 answer sections, 30 student routes, 990 independently checked answers and 30 saved drafts.');
 }
 checkExercises().catch(error=>{console.error(error);process.exitCode=1;});

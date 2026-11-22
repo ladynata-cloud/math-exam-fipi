@@ -940,6 +940,13 @@
   }
 
   const finalFunctionSkills=[
+   {id:'build-reciprocal-family',title:'Четыре гиперболы на одной плоскости',description:'Выбери общую абсциссу и построй все восемь симметричных точек.'},
+   {id:'compare-reciprocal-size',title:'Модуль коэффициента гиперболы',description:'Сопоставь удаление от оси при одинаковой абсциссе.'},
+   {id:'construct-reciprocal-line',title:'Две кривые по своим точкам',description:'Построй различные ветви гиперболы и подходящую прямую.'},
+   {id:'intersect-reciprocal-line',title:'Общие точки прямой и гиперболы',description:'Проверь координаты во второй формуле после решения уравнения.'},
+   {id:'read-basic-function',title:'Свойства четырёх основных графиков',description:'Прочитай область, знак и направление по конкретной форме кривой.'},
+   {id:'identify-reciprocal',title:'Прямая или гипербола',description:'Сопоставь постоянное отношение и постоянное произведение.'},
+   {id:'test-reciprocal-points',title:'Принадлежность гиперболе',description:'Перемножай координаты на новых данных и выбирай все точки.'},
    {id:'estimate-root-reciprocal',title:'Округление графического корня',description:'Приближай пересечение возрастающей и убывающей ветвей.'},
    {id:'build-four-powers',title:'Четыре ординаты над своим x',description:'Строй четыре связанные функции по одному рациональному аргументу.'},
    {id:'compare-four-powers',title:'Порядок четырёх графиков',description:'Определи, какой график выше слева и справа от единицы.'},
@@ -976,6 +983,38 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='build-reciprocal-family'||id==='compare-reciprocal-size'){
+    const a=1+(seed+level)%6,ks=[a,a+2+Math.floor(seed/2)%5,-(a+1+seed%3),-(a+5+Math.floor(seed/5)%4)],x=1+seed%4,graph={type:'source-reciprocal-families',group:'four',coefficients:ks};
+    const hint='Над одной и той же абсциссой величина |y| равна |k|/|x|. Знаки зависят и от x, и от коэффициента.';
+    const list=ks.map(k=>k+'/x').join(', ');
+    if(id==='build-reciprocal-family')return {...common,kind:'four-reciprocal-marks',prompt:'Построй в одной системе '+list+' по своему ненулевому x и четырём высотам.',answer:[x,...ks.map(k=>k+'/'+x)].join(';'),graph:{...graph,mode:'draw'},steps:[probe,step('Какова высота четвёртой кривой при x = 1?',ks[3],hint)],inputNote:'Запиши x; y₁; y₂; y₃; y₄.',hint,correction:hint,explanation:'В каждой точке произведение xy равно коэффициенту её гиперболы.'};
+    const at=seed%2?x:-x,num=ks[seed%4],answer=Math.abs(num)+'/'+x;
+    return {...common,kind:'number',prompt:'Среди гипербол '+list+' возьми y = '+num+'/x. Найди расстояние её точки до оси x при абсциссе '+at+'.',answer,graph:{...graph,mode:'size'},steps:[probe,step('Чему равен модуль выбранного числителя?',Math.abs(num),hint)],hint,correction:hint,explanation:'Искомое расстояние равно '+answer+'.'};
+   }
+   if(id==='construct-reciprocal-line'||id==='intersect-reciprocal-line'){
+    const a=1+(seed+level)%5,b=2+Math.floor(seed/3)%5,m=seed%2?1:-1,k=m*a*b,offset=m*(b-a),g={type:'source-reciprocal-families',group:'pair',k,m,b:offset};
+    const h='Для общих точек приравняй высоты; для построения каждой кривой проверяй её собственную формулу.';
+    const pair='y = '+k+'/x и y = '+m+'x + ('+offset+')',left=[-b,-m*a],right=[a,m*b];
+    if(id==='construct-reciprocal-line')return {...common,kind:'reciprocal-line-marks',prompt:'Построй '+pair+' по своим точкам.',answer:'(-1;'+(-k)+'),(1;'+k+') | (0;'+offset+'),(2;'+(2*m+offset)+')',graph:{...g,mode:'draw'},steps:[probe,step('Какова ордината прямой при x = 0?',offset,h)],inputNote:'Две точки разных ветвей гиперболы | две разные точки прямой.',hint:h,correction:h,explanation:'Подстановка каждой пары проверяет её принадлежность.'};
+    return {...common,kind:'integer-pairs',prompt:'Найди все общие точки для '+pair+'.',answer:'('+left.join(';')+'),('+right.join(';')+')',graph:{...g,mode:'meet'},steps:[probe,step('Чему равно произведение координат точки гиперболы?',k,h)],inputNote:'Перечисли пары (x;y).',hint:h,correction:h,explanation:'Точки проверяются одновременно в квадратном уравнении и в формуле прямой.'};
+   }
+   if(id==='read-basic-function'){
+    const shape=['square','cube','sqrt','absolute'][(seed+level)%4],scale=1+Math.floor(seed/3)%5,mode=['sign','direction','range','domain'][(Math.floor(seed/4)+level)%4],label={square:'x²',cube:'x³',sqrt:'√x',absolute:'|x|'}[shape];
+    const signed=shape==='cube',full='(-∞;+∞)',pos='(0;+∞)',nn='[0;+∞)',sides='(-∞;0)∪(0;+∞)';
+    const answer=mode==='domain'?(shape==='sqrt'?nn:full):mode==='range'?(signed?full:nn):mode==='sign'?(signed?pos+'|(-∞;0)':(shape==='sqrt'?pos:sides)+'|∅'):(signed?full+'|∅':shape==='sqrt'?nn+'|∅':nn+'|(-∞;0]');
+    const desc={sign:'Разделив знаком |, укажи x с положительной и отрицательной ординатой.',direction:'Укажи максимальные промежутки возрастания и убывания через |, включая достижимые концы.',range:'Найди множество значений.',domain:'Найди область определения.'}[mode];
+    const hint='Исследуй координаты точки на выбранной кривой и положение относительно осей.';
+    return {...common,kind:mode==='sign'||mode==='direction'?'two-property-sets':'system-single',variable:mode==='range'?'y':'x',prompt:'Для y = '+scale+'·'+label+' выполни исследование. '+desc,answer,graph:{type:'source-elementary-properties',group:'profile',shape,scale,mode},steps:[probe,step('Какова высота при x = 1?',scale,hint)],hint,correction:hint,explanation:'Положительный множитель '+scale+' меняет высоты без изменения знаков и направлений.'};
+   }
+   if(id==='identify-reciprocal'){
+    const k=2+(seed+level)%13,first=(Math.floor(seed/2)+level)%2===0,label='y = '+k+'/x',second='y = x/'+k,hint='Проверь, является ли постоянным произведение координат.';
+    return {...common,kind:'choice',prompt:'Какая из двух формул описывает гиперболу? Выбери из '+(first?label+' и '+second:second+' и '+label)+'.',choices:first?[label,second]:[second,label],answer:label,graph:{type:'source-elementary-properties',group:'identify',k},steps:[probe,step('Какова ордината гиперболы при x = 1?',k,hint)],hint,correction:hint,explanation:'У '+label+' произведение координат равно '+k+'.'};
+   }
+   if(id==='test-reciprocal-points'){
+    const k=2+(seed+level)%12,neg=(Math.floor(seed/3)+level)%2===0?-1:1,base=k*neg,op=-base,points=[['1',String(base)],['2',String(op/2)],['-1',String(-base)],['-2',String(-op/2)]];
+    if(seed%2)points.reverse();const answer=seed%2?'2;4':'1;3',hint='В каждой паре перемножь обе координаты и сравни с постоянным числителем.';
+    return {...common,kind:'explicit-set',prompt:'Какие по порядку точки принадлежат y = '+base+'/x? '+points.map((p,i)=>(i+1)+' — ('+p.join('; ')+')').join(', ')+'.',answer,graph:{type:'source-elementary-properties',group:'membership',k:base,points},steps:[probe,step('Чему должно равняться произведение координат?',base,hint)],hint,correction:hint,explanation:'Для ненулевого x равенство xy = '+base+' проверяет принадлежность.'};
+   }
    if(id==='estimate-root-reciprocal'){
     const k=1+(seed*3+level)%15,center=Math.cbrt(k*k),rounded=Math.round(center*10)/10;
     const hint='Сравни высоты при двух близких положительных абсциссах и округли единственное пересечение.';

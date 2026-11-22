@@ -160,6 +160,9 @@ function formatProblem(value,q){
   const entries=text.split(';'),count=q.kind==='interval-examples'?q.exampleCount:String(q.answer).split(';').length;
   if(entries.length!==count||entries.some(v=>!M.parse(v)))return message;
  }
+ if(q.kind==='four-reciprocal-marks'&&!window.MakarychevTaskGraphs.domainCoefficients(text,5))return 'Введи абсциссу и четыре ординаты через точки с запятой. Попытка ещё не засчитана.';
+ if(q.kind==='reciprocal-line-marks'&&!window.MakarychevCheck.pointGroups(text))return 'Введи две группы точек, разделённые |. Попытка ещё не засчитана.';
+ if(q.kind==='two-property-sets'&&(text.split('|').length!==2||text.split('|').some(v=>!window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(v,'x')))))return 'Введи два множества абсцисс, разделённые |. Для пустого множества напиши ∅. Попытка ещё не засчитана.';
  if(q.kind==='four-power-marks'&&!window.MakarychevTaskGraphs.domainCoefficients(text,5))return 'Нужны абсцисса и четыре ординаты, разделённые точками с запятой. Попытка ещё не засчитана.';
  if(q.kind==='four-power-order'&&!window.MakarychevTaskGraphs.parseFourPowerOrder(text,q.graph.sample))return 'Укажи четыре разные формулы через точку с запятой. Попытка ещё не засчитана.';
  if(q.kind==='piecewise-marks'&&!window.MakarychevCheck.pointGroups(text))return 'Введи две группы точек, разделённые |. Математическая попытка ещё не засчитана.';
@@ -284,6 +287,45 @@ function feedbackFor(value,q){
   for(const candidate of entries){const y=window.MakarychevTaskGraphs.functionValueAt(g,candidate);if(y!==null&&!M.equal(y,'0'))return 'Твоя подстановка '+candidate+' даёт значение '+y+'. Для нуля функции требуется значение 0.';}
   if(entries.length===1&&q.answer.includes(';'))return 'Проверь число противоположного знака: зависит ли квадрат от знака аргумента?';
   return q.hint;
+ }
+ if(q.graph?.type==='source-reciprocal-families'){
+  const g=q.graph,G=window.MakarychevTaskGraphs,C=window.MakarychevCheck;
+  if(q.kind==='four-reciprocal-marks'){
+   const status=G.reciprocalFamilyMarks(g,value).status;
+   if(status==='zero')return 'Ноль обращает знаменатели в ноль. Для всех четырёх кривых выбери другую абсциссу.';
+   if(status.startsWith('height-')){const i=Number(status.split('-')[1]);return 'Перепроверь ординату кривой y = '+g.coefficients[i]+'/x: её произведение с выбранной абсциссой должно равняться '+g.coefficients[i]+'.';}
+  }
+  if(q.kind==='reciprocal-line-marks'){
+   const why=G.reciprocalLineMarks(g,C.pointGroups(value)).status;
+   if(why==='curve-branch')return 'Точки гиперболы оказались на одной ветви. У их абсцисс должны быть разные знаки.';
+   if(why.startsWith('curve-height')||why.startsWith('curve-axis'))return 'Перепроверь точки гиперболы: x не равен нулю и произведение xy должно равняться '+g.k+'.';
+   if(why==='repeat')return 'Чтобы задать прямую, нужны две разные абсциссы.';
+   if(why==='line')return 'Перепроверь точки второй группы по формуле прямой.';
+   return 'Нужны ровно две точки каждой кривой.';
+  }
+  if(g.mode==='meet'){
+   const proposed=G.parseIntegerPairs(value);
+   if(proposed?.some(([x,y])=>x===0||x*y!==g.k||g.m*x+g.b!==y))return 'Одна из пар не принадлежит сразу обеим кривым. Проверь произведение xy и высоту прямой.';
+   return 'Найди второе пересечение. Одного верного решения недостаточно.';
+  }
+  if(g.mode==='size')return 'При одном и том же x сравни модули ординат: |y| = |k|/|x|.';
+ }
+ if(q.graph?.type==='source-elementary-properties'){
+  const g=q.graph,C=window.MakarychevCheck,G=window.MakarychevTaskGraphs;
+  if(g.group==='profile'&&q.kind==='two-property-sets'){
+   const given=String(value).split('|'),expected=q.answer.split('|'),i=given.findIndex((v,i)=>!C.equalAxisSets(C.systemInput(v,'x'),expected[i]));
+   return (g.mode==='sign'?['Перепроверь, где график строго выше оси x.','Перепроверь, есть ли точки строго ниже оси x.']:['Проследи, где высота возрастает слева направо.','Проверь, где высота убывает слева направо, и включи достигнутый конец.'])[i]||q.hint;
+  }
+  if(g.group==='membership'){
+   const selected=G.setTokens(value,false)||[],indices=g.points.map((_,i)=>String(i+1));
+   if(selected.some(v=>!indices.includes(v)))return 'В исходном списке четыре точки. Проверь их номера.';
+   for(const [i,[px,py]]of g.points.entries()){
+    const a=M.parse(px),b=M.parse(py),valid=G.belongsToReciprocal(g.k,a,b),picked=selected.includes(String(i+1));
+    if(picked&&!valid)return 'Точка '+(i+1)+' выбрана, но произведение её координат равно '+M.answer(M.operation('multiply',a,b))+' вместо '+g.k+'.';
+   }
+   return 'Проверь точки, оставшиеся без отметки. У подходящей точки обе координаты дают произведение '+g.k+'.';
+  }
+  if(g.group==='identify')return 'Проверь x = 0: прямая проходит через начало координат, а гипербола при нуле не определена.';
  }
  if(q.graph?.type==='source-root-and-powers'){
   const g=q.graph,G=window.MakarychevTaskGraphs;
@@ -1058,7 +1100,7 @@ if(t.graph){
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(graph.type))graph=rationalEvidence(graph,s.value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(graph.type))graph={...graph,trial:s.values[graph.trialStep||0],prediction:s.values[graph.predictionStep],completed:s.correct};
  if(graph.fixedInput)graph={...graph,partial:s.values,showValue:Boolean(s.correct)};
- if(['source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-final-functions','source-surd-cancellation'].includes(graph.type))graph={...graph,partial:s.values};
+ if(['source-reciprocal-families','source-elementary-properties','source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-final-functions','source-surd-cancellation'].includes(graph.type))graph={...graph,partial:s.values};
  if(graph.type==='source-root-study'&&!graph.legacy)graph={...graph,partial:s.values};
  if(graph.type==='source-line-position')graph={...graph,partial:s.values};
  if(graph.type==='source-affine-study'&&!graph.legacy)graph={...graph,partial:s.values};
@@ -1105,7 +1147,7 @@ if(t.graph){
  if(modelInput&&graph.type==='natural-values')graph={...graph,rows:(window.MakarychevCheck.setEntries(modelInput)||[]).map(term=>({term,pair:naturalCase(term,t.naturalRule)}))};
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
-document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-surd-cancellation','source-final-functions','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
+document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-reciprocal-families','source-elementary-properties','source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-surd-cancellation','source-final-functions','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
 function rationalEvidence(graph,value){
  const C=window.MakarychevCheck;
  if(graph.type==='rational-root-audit')return {...graph,checks:C.rationalRootTrial(value,graph)};
@@ -1117,14 +1159,14 @@ function factorEvidence(graph,value){
  const [a,...roots]=String(value||'').split(';');
  return {...graph,rightLeading:M.equal(a,graph.leading),audit:window.MakarychevCheck.vietaAudit(roots.join(';'),graph)};
 }
-function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-surd-cancellation','source-final-functions','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-reciprocal-families','source-elementary-properties','source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-surd-cancellation','source-final-functions','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(base.type))graph=rationalEvidence(base,value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(base.type))graph={...base,trial:state.values[base.trialStep||0],prediction:state.values[base.predictionStep],completed:state.correct};
  if(base.fixedInput)graph={...graph,partial:state.values,showValue:Boolean(state.correct)};
- if(['source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-final-functions','source-surd-cancellation'].includes(base.type))graph={...base,partial:state.values};
+ if(['source-reciprocal-families','source-elementary-properties','source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-final-functions','source-surd-cancellation'].includes(base.type))graph={...base,partial:state.values};
  if(base.type==='source-root-study'&&!base.legacy)graph={...base,partial:state.values};
  if(base.type==='source-line-position')graph={...base,partial:state.values};
  if(base.type==='source-affine-study'&&!base.legacy)graph={...base,partial:state.values};
