@@ -777,3 +777,22 @@ test('the twelve original assertions decode by descending value; the meaning rem
  const pick=c=>click(s,'[data-cipher-letter="'+c+'"]'),send=()=>{click(s,'[data-cipher-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
  pick('Р');assert.match(send(),/Для буквы Р/);pick('Р');pick('Е');pick('Д');assert.match(send(),/должны убывать/);pick('Е');for(const c of 'ЕЛИМОСТЬ')pick(c);assert.match(send(),/Объясни его смысл/);input(s,'[data-cipher-meaning]','При делении одного натурального числа на другое остаток равен нулю.');assert.match(send(),/сохранено для проверки/);const w=bookWork(s,'038-termin');assert.equal(w.cipherLetters,'ДЕЛИМОСТЬ');assert(w.submitted&&!w.correct&&!w.independent);const back=await surface(t,BOOK+'#n/38/038-termin',storage(s));assert.match(element(back,'[data-cipher-meaning]').value,/остаток равен нулю/);
 });
+test('parameter models describe all permitted values, and the eight prime-factor subsets give exactly D(42)',async t=>{
+ const s=await surface(t,BOOK+'#n/39/039-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(38,41),set=(q,v)=>{const el=element(s,q);el.value=String(v);el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const row of rows)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  if(row.number<41){
+   const value=row.number===39?3:0;set('[data-factor-parameter]',value);assert.equal(bookWork(s,p.id).formulaInput,value);
+   if(p.id==='040-5'){set('[data-factor-remainder]',0);assert.match(element(s,'[data-factor-output]').textContent,/не подходит/);set('[data-factor-remainder]',2);assert.match(element(s,'[data-factor-output]').textContent,/не кратно 3/);}
+   if(p.id==='039-2')assert.match(element(s,'[data-factor-output]').textContent,/= 14/);set('[data-logic-left]',1);set('[data-logic-right]',1);input(s,'[data-logic-other]',p.explanation);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование/);assert(!bookWork(s,p.id).correct);
+  }else{
+   input(s,'[data-basket-value]','41');click(s,'[data-basket-add]');click(s,'[data-basket-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Умножь/);input(s,'[data-basket-value]','42');
+   for(const bit of [0,1,0,2,0,1,0]){click(s,'[data-factor-bit="'+bit+'"]');click(s,'[data-basket-add]');}
+   click(s,'[data-basket-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/восемь/);assert.deepEqual([...bookWork(s,p.id).divisorBasket],[1,2,3,6,7,14,21,42]);assert(!bookWork(s,p.id).correct);
+   click(s,'[data-basket-remove]');assert.equal(bookWork(s,p.id).divisorBasket.length,7);const fresh=await surface(t,BOOK+'#n/41/041-1',storage(s));assert.equal(element(fresh,'[data-basket-value]').value,'42');assert.equal(bookWork(fresh,p.id).divisorBasket.length,7);
+  }
+  for(let j=0;j<36;j++){
+   const sample=s.w.PetersonAnalogues.create(row.number,p,j);assert(s.w.PetersonBook.check(sample,sample.answer));if(row.number===41){const [,prime,index]=sample.prompt.match(/2 · 3 · (\d+).*назови (\d+)-й/),n=6*Number(prime),answers=Array.from({length:n},(_,k)=>k+1).filter(d=>n%d===0);assert.equal(sample.answer,String(answers[Number(index)-1]));}
+  }
+ }
+});

@@ -473,6 +473,66 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const propertyClaims=[
+    ['a = 6n, где n — натуральное число, начиная с 1.','Все такие a чётные, составные и делятся на 2, 3 и 6.','Все такие a делятся на 12.','Любое такое a простое.','a = 2 · 3 · n и a ≥ 6.','Достаточно проверить только n = 2.','При n = 1 получается простое число.','Проверь n = 1 на лишний делитель, затем вынеси общие множители в общем виде.'],
+    ['b = 4k + 2, где k — натуральное число, начиная с 1.','Все такие b чётные, составные и дают остаток 2 при делении на 4.','Все такие b кратны 4.','Все такие b — простые.','b = 2(2k + 1), а 2k + 1 ≥ 3.','b = 4(k + 2).','Достаточно проверить значение k = 2.','Раздели 4k + 2 на 4 с остатком. Для составности найди разложение на два множителя больше 1.']
+  ];
+  const translations=[
+    ['Число a кратно семи.','a = 7q','7 = aq','a = q + 7','Множитель q может быть различным; число a делится на 7 без остатка.','a надо прибавить к 7.','a обязательно равно 7.','Семь выступает делителем. Произведением нужно представить a.'],
+    ['Девять является делителем числа b.','b = 9q','9 = bq','b = 9 + q','Частное b : 9 — целое число q.','Частное 9 : b обязано быть целым.','Число b должно быть делителем девяти.','Проверь порядок слов: делитель — 9, делимое — b.'],
+    ['Число c одновременно кратно двум и пяти.','c = 10q','c = 7q','c = 2q или c = 5q','2 и 5 взаимно просты, поэтому общее кратное делится на 10.','Нужно сложить 2 и 5.','Достаточно делимости хотя бы на одно из них.','Обе проверки должны выполняться одновременно. Наименьшее общее положительное кратное чисел 2 и 5 равно 10.'],
+    ['Число d чётное.','d = 2q','d = 2q + 1','d = q + 2','При делении d на 2 остаток равен нулю.','При делении d на 2 остаток равен единице.','Чётным бывает только число 2.','Запись должна описывать любое чётное число, а не одно конкретное.'],
+    ['Число k не является кратным трём.','k = 3q + 1 или k = 3q + 2','k = 3q + 1','k = 3q','При делении на 3 допустимы остатки 0, 1, 2; здесь исключён только ноль.','Есть только один ненулевой остаток.','У k нет остатка от деления на 3.','Нужны оба ненулевых остатка. Проверь, допускает ли формула числа 1 и 2.'],
+    ['При делении числа m на семь остаток равен единице.','m = 7q + 1','m = 7(q + 1)','m = q + 7','Сначала берут полные группы по 7, затем прибавляют остаток 1.','Остаток прибавляют к частному перед умножением.','Остаток всегда равен частному.','Запись делимого: делитель × частное + остаток.']
+  ];
+  function factorCard(number,part){
+    const i=Number(part.id.split('-')[1])-1,data=number===39?propertyClaims[i]:translations[i];
+    return {prompt:number===39?'По общей формуле установи свойства числа и докажи их для всех допустимых значений. '+data[0]:'Переведи в формулу: «'+data[0]+'» Объясни обозначения и допустимые значения параметра. Для целых чисел q — целое, для натуральных выбирай те q, при которых результат натуральный.',
+      leftTitle:number===39?'Какие свойства следуют всегда?':'Математическая запись',left:data.slice(1,4),li:0,rightTitle:'Обоснование',right:data.slice(4,7),ri:0,hint:data[7],reference:data[7],extra:'Мои обозначения и объяснение'};
+  }
+  function formulaLab(number,part,work,interactive){
+    const i=Number(part.id.split('-')[1])-1,orig=number===39,offset=orig?1:i>=4?0:-3,variable=orig?(i?'k':'n'):'q',chosen=work.formulaInput;
+    const theOptions=Array.from({length:14},(_,j)=>j+offset);
+    const select='<label>Значение '+variable+' <select data-factor-parameter><option value="">Выбери</option>'+theOptions.map(n=>'<option value="'+n+'"'+(chosen===n?' selected':'')+'>'+n+'</option>').join('')+'</select></label>';
+    const remain=number===40&&i===4,r=work.formulaRemainder??1,other=remain?'<label>Остаток при делении на 3 <select data-factor-remainder>'+[0,1,2].map(n=>'<option value="'+n+'"'+(r===n?' selected':'')+'>'+n+'</option>').join('')+'</select></label>':'';
+    const coefficients=orig?[6,4]:[7,9,10,2,3,7],constant=orig?(i?2:0):remain?r:i===5?1:0;
+    let output='Выбери значение параметра и сопоставь результат со свойством.';
+    if(Number.isInteger(chosen)){
+      const mult=coefficients[i],value=mult*chosen+constant;output=mult+' · ('+chosen+')'+(constant?' + '+constant:'')+' = '+value+'. ';
+      if(orig)output+=i?'Частное при делении на 4: '+chosen+', остаток 2.':'Деление на 2 даёт '+value/2+', на 3 — '+value/3+'.';
+      else if(remain)output+=r?'Это число не кратно 3.':'Нулевой остаток не подходит к исходной фразе.';
+      else output+='При делении на '+mult+' частное '+chosen+', остаток '+constant+'.';
+    }
+    return '<section data-factor-host><h3>Подставь значение</h3>'+(interactive?select+other:'')+'<p data-factor-output aria-live="polite">'+U.esc(output)+'</p><p>Подстановка проверяет один случай. Общее доказательство запиши через параметр.</p></section>';
+  }
+  function mountFormulaLab(main,number,part,work,save){
+    let host=main.querySelector('[data-factor-host]');if(!host)return;
+    function draw(){host.outerHTML=formulaLab(number,part,work,true);host=main.querySelector('[data-factor-host]');
+      for(const [sel,key] of [['[data-factor-parameter]','formulaInput'],['[data-factor-remainder]','formulaRemainder']]){const f=host.querySelector(sel);if(f)f.onchange=()=>{if(f.value!=='')work[key]=Number(f.value);else delete work[key];save();draw();host.querySelector(sel).focus({preventScroll:true});};}
+    }draw();
+  }
+  function factorBasket(work,interactive){
+    const flags=work.factorMask||0,product=[2,3,7].reduce((acc,v,i)=>flags&(1<<i)?acc*v:acc,1),values=work.divisorBasket||[];
+    const options=[2,3,7].map((d,i)=>'<button type="button" data-factor-bit="'+i+'" class="secondary" aria-pressed="'+Boolean(flags&(1<<i))+'">'+(flags&(1<<i)?'✓ ':'')+d+'</button>').join(' ');
+    return '<section data-basket-host><h3>Собери делитель из множителей</h3><p>Каждый из простых множителей 2, 3, 7 можно взять один раз или пропустить. Если пропустить все, произведение равно 1.</p>'+(interactive?'<label>Моё значение a <input data-basket-value inputmode="numeric" maxlength="50" style="display:block;box-sizing:border-box;max-width:100%;width:100%" value="'+U.esc(work.factorValue||'')+'"></label>'+options:'')+'<p data-basket-product>Текущее произведение: '+product+'</p>'+(interactive?'<button data-basket-add type="button" class="secondary">Внести делитель</button>':'')+'<p data-basket-items aria-live="polite">Моё множество: {'+values.join('; ')+'}</p>'+(interactive?'<button data-basket-remove type="button" class="secondary">Убрать текущий делитель</button><button data-basket-use type="button" class="secondary">Перенести множество</button>':'')+'</section>';
+  }
+  function mountBasket(main,work,save){
+    let host=main.querySelector('[data-basket-host]');if(!host)return;
+    function draw(){host.outerHTML=factorBasket(work,true);host=main.querySelector('[data-basket-host]');const mask=work.factorMask||0;
+      for(const button of host.querySelectorAll('[data-factor-bit]'))button.onclick=()=>{const v=Number(button.dataset.factorBit);work.factorMask=mask^(1<<v);save();draw();host.querySelector('[data-factor-bit="'+v+'"]').focus({preventScroll:true});};
+      const product=[2,3,7].reduce((acc,d,i)=>mask&(1<<i)?acc*d:acc,1),vals=new Set(work.divisorBasket||[]);
+      for(const [selector,add] of [['[data-basket-add]',true],['[data-basket-remove]',false]]){const b=host.querySelector(selector);b.disabled=add?vals.has(product):!vals.has(product);b.onclick=()=>{if(add)vals.add(product);else vals.delete(product);work.divisorBasket=[...vals].sort((a,b)=>a-b);save();draw();};}
+      const use=host.querySelector('[data-basket-use]'),value=host.querySelector('[data-basket-value]'),enable=()=>{use.disabled=!vals.size||!work.factorValue?.trim();};enable();value.oninput=()=>{work.factorValue=value.value.slice(0,50);enable();save();};use.onclick=()=>{const field=main.querySelector('#answer');field.value='a = '+work.factorValue+'; D(a) = {'+work.divisorBasket.join('; ')+'}';field.dispatchEvent(new Event('input',{bubbles:true}));field.focus();};
+    }draw();
+  }
+  function basketResponse(number,input){
+    if(number!==41)return null;let t=input.trim().replace(/\.$/,'');const pair=t.match(/^a\s*=\s*([^;]+);\s*D\(a\)\s*=\s*(.+)$/i);if(pair){if(!root.PetersonBook.M.equal(pair[1],42))return {ok:false,text:'Сначала найди значение a. Умножь 2 на 3 и полученный результат на 7.'};t=pair[2];}if(!/^\{\s*\d+(?:\s*;\s*\d+)*\s*\}$/.test(t))return null;const nums=t.slice(1,-1).split(';').map(Number),extra=nums.find(n=>!n||42%n!==0);
+    if(extra!==undefined)return {ok:false,text:'Число '+extra+' не делит 42 без остатка. Проверь, из каких множителей оно собрано.'};
+    if(new Set(nums).size!==nums.length)return {ok:false,text:'Один делитель записан несколько раз. При перестановке множителей новый делитель не появляется.'};
+    if(nums.length!==8)return {ok:false,text:!nums.includes(1)?'Не забудь пустой выбор множителей. Его произведение равно 1.':!nums.includes(42)?'Возьми все три множителя одновременно и проверь получившийся делитель.':'Сверь одиночные множители и все пары. На каждый из трёх множителей приходится два выбора.'};
+    return {ok:true,text:'Собраны все восемь различных делителей. Объясни, почему других нет. Работа сохранена для проверки.'};
+  }
+
   function cutoutQuestion(part){
     if(part.id==='037-1')return 'Обозначь длины соседних сторон прямоугольника a и b, периметр обозначь P, площадь S. Запиши обе формулы и объясни смысл каждого действия.';
     if(part.id==='037-2')return 'Сам обозначь сторону квадрата буквой. Запиши формулы периметра и площади через эту сторону и объясни, какие величины получены.';
@@ -925,6 +985,7 @@
     if(number===27)return witnessCard(part);
     if(number===28)return scopeCard(part);
     if(number===29)return divisorCard(part);
+    if(number===39||number===40)return factorCard(number,part);
     if((number===35||number===36)&&part.id.endsWith('pravilo'))return periodicRule(number);
     const i=Number(part.id.split('-')[1])-1;
     if(number===19){
@@ -967,16 +1028,18 @@
   }
   function logicResponse(number,part,input,work){
     const periodRule=(number===35||number===36)&&part.id.endsWith('pravilo');
-    if((number<19||number>21)&&(number<26||number>29)&&!periodRule)return null;
+    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&!periodRule)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
-    if((number>=27&&number<=29)||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if((number>=27&&number<=29)||number===39||number===40||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
 
   function openingQuestion(number,part) {
+    if(number===39||number===40)return factorCard(number,part).prompt;
+    if(number===41)return 'Число a задано произведением 2 · 3 · 7. Найди a и запиши множество D(a) всех его положительных делителей. Покажи, как убедился в полноте множества.';
     if(number===37)return cutoutQuestion(part);
     if((number===35||number===36)&&part.id.endsWith('pravilo'))return periodicRule(number).prompt;
     if(number===35)return 'Запиши дробь '+periodTasks[part.id]+' как бесконечную периодическую десятичную дробь, затем округли её до тысячных. Для периода используй скобки.';
@@ -1046,6 +1109,8 @@
     if(item.number===33)drawing=roundingFigure(part,{},false);
     if(item.number===34)drawing=calculationView(part,{},false);
     if(item.number===37)drawing=geometryFigure(part,{},false);
+    if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
+    if(item.number===41)drawing=factorBasket({},false);
     if(item.number===35||item.number===36)drawing=part.id.endsWith('pravilo')?logicConstruction(item.number,part,false):divisionView(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
@@ -1075,5 +1140,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse};
 })(globalThis);

@@ -48,10 +48,10 @@ function sanitize(part,input){
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
- if(/^(019|020|021|026|027|028|029)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id)){
+ if(/^(019|020|021|026|027|028|029|039|040)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id)){
   for(const key of ['logicLeft','logicRight'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
   if(input.logicReference===true)clean.logicReference=true;
-  if((/^02[6789]-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
+  if((/^(02[6789]|039|040)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='038-termin'&&typeof input.cipherMeaning==='string'&&input.cipherMeaning)clean.cipherMeaning=cut(input.cipherMeaning,600);
@@ -61,6 +61,15 @@ function sanitize(part,input){
   if(Number.isInteger(input.periodStep)&&input.periodStep>=1&&input.periodStep<=8)clean.periodStep=input.periodStep;
   for(const key of ['periodDigit','periodRem','periodNotation','periodApprox'])if(typeof input[key]==='string'&&input[key])clean[key]=cut(input[key],60);
   if(input.periodError===true)clean.periodError=true;
+ }
+ if(/^(039|040)-/.test(part.id)){
+  if(Number.isInteger(input.formulaInput)&&input.formulaInput>=-3&&input.formulaInput<=14)clean.formulaInput=input.formulaInput;
+  if(Number.isInteger(input.formulaRemainder)&&input.formulaRemainder>=0&&input.formulaRemainder<3)clean.formulaRemainder=input.formulaRemainder;
+ }
+ if(part.id==='041-1'){
+  if(typeof input.factorValue==='string'&&input.factorValue)clean.factorValue=cut(input.factorValue,50);
+  if(Number.isInteger(input.factorMask)&&input.factorMask>=0&&input.factorMask<8)clean.factorMask=input.factorMask;
+  if(Array.isArray(input.divisorBasket)&&input.divisorBasket.length<=8)clean.divisorBasket=[...new Set(input.divisorBasket.filter(n=>Number.isInteger(n)&&n>0&&42%n===0))].sort((a,b)=>a-b);
  }
  if(part.id.startsWith('037-')){
   if(['outline','area','cuts'].includes(input.geometryView))clean.geometryView=input.geometryView;

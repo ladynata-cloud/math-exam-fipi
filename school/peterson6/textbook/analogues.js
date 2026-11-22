@@ -508,17 +508,40 @@
     return {...choice('Карточки: '+rows.join('; ')+'. Прочитай слово по убыванию результатов верных равенств.',choices.slice(shift).concat(choices.slice(0,shift)),word,hint),id:'analog-'+part.id+'-'+attempt,family:'divisibility-cipher-'+part.id,match:'skill',mistake:hint};
   }
 
+  function formulaPractice(number,part,attempt){
+    const i=Number(part.id.split('-')[1])-1,k=seed(part.id)%61+attempt,q=2+k%11,base=[4,5,6,7,8,9,10][k%7],shift=k%3,choice3=(prompt,options,hint)=>({...choice(prompt,options.slice(shift).concat(options.slice(0,shift)),options[0],hint),mistake:hint});
+    let task;
+    if(number===39){
+      if(i===0)task=choice3('Для всех натуральных n число a = '+(2*base)+'n. Какой делитель гарантирован формулой?',[String(base),'a + 1',String(2*base+1)],'Раскрой коэффициент 2 · '+base+'. Значение, которое больше a или не делит коэффициент при n=1, не гарантировано.');
+      else{const r=1+k%(base-1);task=choice3('При делении '+base+'k + '+r+' на '+base+' какой остаток получается при любом натуральном k?',[String(r),'0',String(base)],'Полные группы по '+base+' остатка не дают. Остаток должен быть меньше делителя.');}
+    }else if(number===41){
+      const other=[5,7,11,13][k%4],values=[1,2,3,6,other,2*other,3*other,6*other].sort((a,b)=>a-b),slot=k%values.length;
+      task={...numerical('Натуральное N = 2 · 3 · '+other+'. Найди все его делители и назови '+(slot+1)+'-й в порядке возрастания.',values[slot],'Составь произведения всех подмножеств трёх простых множителей, начиная с 1.','У каждого из трёх множителей два выбора: включить его или пропустить.'),mistake:'Проверь 1, одиночные множители, их пары и полное произведение. Только теперь упорядочь список.'};
+    }else{
+      const opts=[
+        ['Как записать все целые u, кратные '+base+'?',['u = '+base+'q',base+' = uq','u = q + '+base],'В записи u делителем является коэффициент при целом q.'],
+        ['Число '+base+' — делитель v. Какая запись это выражает?',['v = '+base+'q',base+' = vq','v = q − '+base],'Частное v : '+base+' должно быть целым.'],
+        ['Число v одновременно кратно 2 и '+(2*q+1)+'. Как описать все такие числа?',['v = '+(2*(2*q+1))+'q₁','v = '+(2*q+3)+'q₁','v кратно хотя бы одному из этих чисел'],'Два и нечётное число взаимно просты. Общие кратные кратны их произведению.'],
+        ['Почему число '+(2*q)+'n чётно при каждом целом n?',['Это 2 · ('+q+'n).','Это сумма нечётного числа и 2.','Достаточно случая n = 1.'],'Выдели множитель 2 из общей формулы.'],
+        ['Какое число из списка не кратно '+base+'?',[String(base*q+1),String(base*q),String(base*(q+1))],'Проверь остаток при делении на данный делитель.'],
+        ['Частное при делении положительного x на '+base+' равно '+q+', а остаток равен 1. Чему равно x?',[String(base*q+1),String(base*(q+1)),String(base*q)],'x = делитель · частное + остаток.']
+      ][i];task=choice3(...opts);
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'factor-form-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number===38&&part.expression)return termPractice(part,attempt);
     if(number===36&&part.expression)return periodPractice(number,part,attempt);
     if(number===34)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>38)return createLegacy(number,part,attempt);
+    if(number<7||number>41)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=39)return formulaPractice(number,part,attempt);
     if(number===38)return termPractice(part,attempt);
     if(number===37)return geometryPractice(part,attempt);
     if(number>=35)return periodPractice(number,part,attempt);
@@ -562,7 +585,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=38&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=41&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -584,7 +607,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=38&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=41&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
