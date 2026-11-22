@@ -2935,17 +2935,17 @@ function ln(s,x1,y1,x2,y2,attrs={}){s.append(svg('line',{x1,y1,x2,y2,stroke:'#20
 function dot(s,x,y,name,color='#176b51'){s.append(svg('circle',{cx:x,cy:y,r:4,fill:color}));if(name)txt(s,x+10,y-12,name,{'text-anchor':'start'});}
 function page48NumberLine([center,radius,outside,closed],stage){
  const lo=center-radius,hi=center+radius,pad=Math.max(2,Math.ceil(radius/2));
- const point=x=>14+(x-lo+pad)*332/(2*(radius+pad));
+ const point=x=>12+(x-lo+pad)*276/(2*(radius+pad));
  const solution=outside?'два внешних луча':'промежуток между границами';
  const title=stage===2?'Решение: '+solution+', границы '+(closed?'включены':'исключены')+'.':'Координатная прямая с отмеченным центром '+center+'.';
- const s=svg('svg',{viewBox:'0 0 360 92',role:'img',class:'pm-chart','aria-label':title});
+ const s=svg('svg',{viewBox:'0 0 300 92',role:'img',class:'pm-chart pcm-segment','aria-label':title});
  const cy=44;
- ln(s,10,cy,350,cy,{stroke:'#596c64','stroke-width':2});
+ ln(s,6,cy,294,cy,{stroke:'#596c64','stroke-width':2});
  for(let x=lo-pad;x<=hi+pad;x++){ln(s,point(x),cy-3,point(x),cy+4,{stroke:'#596c64','stroke-width':1});}
  const band=(x,y)=>ln(s,x,cy,y,cy,{stroke:'#086751','stroke-width':5});
- if(stage===2){if(outside){band(10,point(lo));band(point(hi),350);for(const [x,d] of [[10,1],[350,-1]]){ln(s,x,cy,x+d*8,cy-5);ln(s,x,cy,x+d*8,cy+5);}}else band(point(lo),point(hi));}
- txt(s,point(center),cy+30,String(center),{'font-size':17});
- if(stage>=1){for(const x of [lo,hi]){s.append(svg('circle',{cx:point(x),cy,r:5,fill:stage===1?'#f6d79a':closed?'#086751':'#fff',stroke:stage===1?'#815818':'#086751','stroke-width':2.5}));txt(s,point(x),cy-15,String(x),{'font-size':17});}}
+ if(stage===2){if(outside){band(6,point(lo));band(point(hi),294);for(const [x,d] of [[6,1],[294,-1]]){ln(s,x,cy,x+d*8,cy-5);ln(s,x,cy,x+d*8,cy+5);}}else band(point(lo),point(hi));}
+ txt(s,point(center),cy+30,String(center),{'font-size':20});
+ if(stage>=1){for(const x of [lo,hi]){s.append(svg('circle',{cx:point(x),cy,r:5,fill:stage===1?'#f6d79a':closed?'#086751':'#fff',stroke:stage===1?'#815818':'#086751','stroke-width':2.5}));txt(s,point(x),cy-15,String(x),{'font-size':20});}}
  return s;
 }
 function splitSegmentFigure(left){
