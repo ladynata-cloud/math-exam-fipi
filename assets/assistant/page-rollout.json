@@ -2955,9 +2955,10 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/long-division-quotient-digit.html": {
-      "beforeSha256": "bdd2c30cb6db299beb9bae146e2e9e86866af59c69a555b0be44e4b2d5216278",
-      "afterSha256": "fca76249f886edfa693c7c66419f74fa4b907ac2119deb9d6cd2a3211cda7511",
-      "placement": "before-head-close"
+      "beforeSha256": "aeb2c4c235d4cd3ce687ddacdc3ef55723e01a18e7e3ee75549de5303cc1b389",
+      "afterSha256": "259e91e93f3335a5da49a96671b78601f84df7d1ee3e9208ae2d4ed5a4e78b37",
+      "placement": "before-head-close",
+      "sourceSha": "b780ecb374bd9a8d0246ec427219ae01feed731c"
     },
     "trainers/oge-basics/multiplication-division/long-division-two-digit.html": {
       "beforeSha256": "7b241c10acee38d7272c779cf9864b7b3ab9b5bdb0394e2e7314483eb31e79a3",

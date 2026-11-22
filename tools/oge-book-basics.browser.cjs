@@ -266,7 +266,7 @@ async function percent(page,rec){
 async function divisionStep(page,rec,wrong=false){
   const phase=await observed(page.locator('#phaseText')),ns=nums(phase);let answer;
   if(/Пример решён/.test(phase))return false;
-  if(/Подберите цифру/.test(phase)){
+  if(/Подберите цифру|Сколько раз по/.test(phase)){
     const part=number(await observed(page.locator('#partialValue'))),d=number(await observed(page.locator('#divisorDisplay')));answer=Math.floor(part/d);
     await page.locator('#multiples button').nth(wrong?(answer+1)%10:answer).click();
   }else if(/Снесите/.test(phase)){await page.locator('#bringBtn').click();answer='bring';}
