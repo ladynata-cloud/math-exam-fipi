@@ -834,9 +834,11 @@
       v.hours.map((h,i)=>'<circle cx="'+x(h)+'" cy="'+y(v.temp[i])+'" r="3.5" fill="#8b4226"/><text x="'+x(h)+'" y="113" text-anchor="middle">'+h+'</text>').join('')+
       '<text x="1" y="18">°C</text><text x="247" y="124">час</text><text x="2" y="'+(y(0)+3)+'">0</text><text x="2" y="'+(y(Math.max(...v.temp))+3)+'">'+Math.max(...v.temp)+'</text><text x="2" y="99">'+Math.min(...v.temp)+'</text></g></svg>';
   }
+  const statistics=window.MathExamMordkovich7Statistics;
+  if(statistics)statistics.register({card,model,question,branches,lines});
   const previous={grade:course.grade, source:course.source, next:course.nextId, figure:course.figure};
   course.grade=b=>b===89?'7 класс · часть 1 · 11-е издание · 2019':previous.grade(b);
   course.source=(b,p)=>b===89?'https://pdf.my-uchebnik.ru/pdf/algebra/00000069.pdf#page='+(p+1):previous.source(b,p);
   course.nextId=l=>l.book===89?order[order.indexOf(l.id)+1]:previous.next(l);
-  course.figure=d=>d.chart==='theory89'?figure(d):previous.figure(d);
+  course.figure=d=>d.chart==='statistics89'?statistics.figure(d.visual):d.chart==='theory89'?figure(d):previous.figure(d);
 })();

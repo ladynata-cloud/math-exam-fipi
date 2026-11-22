@@ -19,13 +19,13 @@ assert.deepEqual(Array.from(paragraphs,r=>r.page),printedPages);
 for(const [i,row] of paragraphs.entries()) {
   assert.equal(row.sectionLabel,'§ '+(i+1));
   assert.equal(row.sourcePath,'https://pdf.my-uchebnik.ru/pdf/algebra/00000069.pdf#page='+(row.page+1));
-  assert.equal(row.coverage,i<6?'module':'source');
-  if(i<6)assert.equal(row.externalPath,row.boardPath);
+  assert.equal(row.coverage,i<7?'module':'source');
+  if(i<7)assert.equal(row.externalPath,row.boardPath);
   else assert(row.bookOnly&&!row.externalPath&&!row.boardPath);
 }
 const dir='trainers/mordkovich-2019/';
-const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','1-q1','1-q2','1-q3','1-q4','1-q5','1-q6','1-q7','1-q8','1-q9','1-q10','1-q11','1-q12','2-q1-add','2-q1-div','2-q2','2-q3','2-q4','3-ex1','3-ex2','3-q1','3-q2','3-q3','4-ex1','4-ex2','4-q1','4-q2','4-q3','4-q4','4-q5-a','4-q5-b','4-q5-c','4-q6','4-q7','4-q8-a','4-q8-b','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded'];
-const printed=[6,9,9,9,10,10,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,14,15,17,17,17,19,20,21,21,21,21,21,21,21,21,21,21,21,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36];
+const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','1-q1','1-q2','1-q3','1-q4','1-q5','1-q6','1-q7','1-q8','1-q9','1-q10','1-q11','1-q12','2-q1-add','2-q1-div','2-q2','2-q3','2-q4','3-ex1','3-ex2','3-q1','3-q2','3-q3','4-ex1','4-ex2','4-q1','4-q2','4-q3','4-q4','4-q5-a','4-q5-b','4-q5-c','4-q6','4-q7','4-q8-a','4-q8-b','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded','7-intro-1','7-intro-2','7-intro-3','7-intro-4','7-intro-5','7-intro-6','7-intro-7','7-intro-8','7-intro-9','7-intro-10','7-ex1','7-ex2-a','7-ex2-b','7-ex2-c','7-ex2-d','7-q1','7-q2','7-q3','7-q4','7-q5','7-q6','7-q7','7-q8','7-q9'];
+const printed=[6,9,9,9,10,10,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,14,15,17,17,17,19,20,21,21,21,21,21,21,21,21,21,21,21,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36,37,37,37,37,37,37,37,37,37,37,38,39,39,39,39,40,40,40,40,40,40,40,40,40];
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
   .filter(x=>!x.startsWith('/')&&!x.includes('board-bridge')).map(x=>read(path.join(dir,x)));
@@ -147,6 +147,38 @@ function expected(i,s) {
     case '3-q1':return [2*s+6,4*s+9,s+1];
     case '3-q2':return [s+3,(s+2)*(s+1),s+3+(s+2)*(s+1)];
     case '3-q3':{const cap=s+3,n=(s+2)*cap+1;return [Math.floor(n/cap),n%cap,Math.ceil(n/cap)];}
+    case '7-intro-1':return [s+2,-s-1,-(s+1)*(s+2)];
+    case '7-intro-2':return [s+3,s+1,(s+1)*(s+2)];
+    case '7-intro-3':return [2*s+5,-2*s-5,2*s+5];
+    case '7-intro-4':return [(s+2)*(s+1),s+2,-s-1];
+    case '7-intro-5':return [s+3,s+2,0];
+    case '7-intro-6':return [(s+3)*(s+1),s+3,s+1];
+    case '7-intro-7':return [(s+1)*(s+2),-s-2,-s-1];
+    case '7-intro-8':return [-s-3,2*s+5,0];
+    case '7-intro-9':return [1,s+4,(s+2)*(1-s-4)];
+    case '7-intro-10':return [-2*s-3,1,-s-3];
+    case '7-ex1':{
+      const points=[0,1,2,3,6].map(n=>n*(s+1)-s-3),d=[];
+      for(let i=0;i<points.length;i++)for(let j=i+1;j<points.length;j++)d.push(Math.abs(points[i]-points[j]));
+      const mode=d.toSorted((a,b)=>d.filter(x=>x===b).length-d.filter(x=>x===a).length)[0];
+      return [d.length,Math.max(...d)-Math.min(...d),mode];
+    }
+    case '7-ex2-a':return [s+4,s+3,(s+4)*(s+3)];
+    case '7-ex2-b':return [2,s+4,2*s+8];
+    case '7-ex2-c':{const pairs=Array.from({length:s+4},(_,i)=>i+1).filter(i=>2*i<=s+4);return [pairs.at(-1),2*pairs.at(-1),pairs.length];}
+    case '7-ex2-d':{const list=Array.from({length:s+4},(_,i)=>i+1),ev=list.filter(x=>x%2===0),od=list.filter(x=>x%2===1);return [ev.length,od.length,ev.length*od.length];}
+    case '7-q1':return [8,s+4,2*s+3];
+    case '7-q2':return [s-6,s+3,0];
+    case '7-q3':return [3,1.5,-s-.5];
+    case '7-q4':return [0,0,s+3];
+    case '7-q5':return [-s-4,3,1];
+    case '7-q6':return [6,5,s+4];
+    case '7-q7':case '7-q8':{
+      const n=ids[i]==='7-q7'?s+4:s+5;let count=0;
+      for(let a=0;a<n;a++)for(let b=a+1;b<n;b++)count++;
+      return [n-1,2*count,count];
+    }
+    case '7-q9':return [s+1,(s+3)*(s+1),s+3];
     default:throw new Error('Unexpected lesson');
   }
 }
@@ -161,6 +193,7 @@ for(const [i,entry] of book.exercises.entries()){
   assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),entry.path);
   const lesson=w.MathExamTopicPractice.lessons.get(id);
   assert.equal(lesson.title,entry.title);
+  assert.equal(lesson.printedReference,entry.printed);
   assert.equal(w.MathExamTopicEdition.nextId(lesson),ids[i+1]&&'89-'+ids[i+1]);
   const variants=new Set();
   for(let s=1;s<=11;s++){
@@ -202,4 +235,4 @@ for(const [i,entry] of book.exercises.entries()){
   assert.notEqual(JSON.parse(reopened.w.localStorage.getItem(key)).variant,0);
   reopened.dom.window.close();dom.window.close();
 }
-console.log('Source 89: 48 printed paragraphs, 64 student routes, 2112 independently checked questions and 64 personal draft round trips.');
+console.log('Source 89: 48 printed paragraphs, 88 student routes, 2904 independently checked questions and 88 personal draft round trips.');
