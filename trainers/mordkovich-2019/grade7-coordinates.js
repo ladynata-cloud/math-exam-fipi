@@ -211,7 +211,7 @@
       if(a!==0)for(const py of [loY,hiY])candidates.push([(-c-b*py)/a,py]);
       const within=candidates.filter(([px,py])=>loX-1e-8<=px&&px<=hiX+1e-8&&loY-1e-8<=py&&py<=hiY+1e-8);
       const first=within[0],last=first&&within.find(p=>Math.hypot(p[0]-first[0],p[1]-first[1])>1e-8);
-      if(last)overlay+=line(x(first[0]),y(first[1]),x(last[0]),y(last[1]),idx?'#aa582a':'#23766c',2,idx?'5 3':'');
+      if(last)overlay+=line(x(first[0]),y(first[1]),x(last[0]),y(last[1]),['#23766c','#aa582a','#554597'][idx%3],2,['','5 3','2 3'][idx%3]);
     }
     for(const path of v.paths||[]) {
       const points=path.map(([px,py])=>x(px)+','+y(py)).join(' ');
