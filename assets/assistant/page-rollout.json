@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "96b6a1560706c2ff138ffed50d9d2d5ba3421590aa5d2d4cd065d664150bad25",
-      "afterSha256": "5c11925dbaac2113aa0898d5473a6b920498f0c8fdc5a3f1420a3e77c6e15e1b",
+      "beforeSha256": "7dd2c14a6600f18658ad0176e35d5e1cd71c334bb2a1d1dddb6d2833876ed0a5",
+      "afterSha256": "e319c2097a50715ceddd348d2ced4b95e28306c2fe1fc99063e1aee325afae39",
       "placement": "before-head-close",
-      "sourceSha": "a14d853c47bbfc4ad3030786cd0fd613fb58a51c"
+      "sourceSha": "df86fb39d384f87c2662f473f7795266ad1de585"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7361,6 +7361,15 @@
       ],
       "bindingScope": "First-volume printed Vilenkin exercises through 1.147 and second-volume exercises through 5.71.",
       "boundary": "Only the combined school entry receives this page binding."
+    },
+    {
+      "previousBaseSha": "a14d853c47bbfc4ad3030786cd0fd613fb58a51c",
+      "sourceBaseSha": "df86fb39d384f87c2662f473f7795266ad1de585",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверены упражнения 1.148–1.150 первой части: лучи, классы чисел, выбор на разные должности. Включён разбор ошибки в порядке букв."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
