@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "5d0e3aad1f9b8df8260f49fb02daa060efec415fd57c0be0ac5dfa8988140434",
-      "afterSha256": "96deb0cd1cbf1869d4294244a4c517c551c0d2d615d7783b47a5ffabf2c67ba2",
+      "beforeSha256": "cb06348ac11c4a2c93db8859534ff91dd2a6e80c6ddf7a90e6c1d2639a73b07a",
+      "afterSha256": "b3e56d4d81020ae0a6a6b472c24a7ce743248b4667ef582c828c8c994f605d73",
       "placement": "before-head-close",
-      "sourceSha": "ebf776ae20f8069b57da8a3eaef9de3d65b3eb1e"
+      "sourceSha": "b92da32a243a6cfb1c0a271f58b44e976c020760"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7397,6 +7397,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, первая часть, §5: №1.159–1.162, измерения пяти рыб и все подпункты сравнения в метрах, разные единицы для пакетов, повтор на новых числах, сохранение рисунков и шагов двух участников. Таблицы двух томов помещаются на 320 и 375 пикселях."
+    },
+    {
+      "previousBaseSha": "ebf776ae20f8069b57da8a3eaef9de3d65b3eb1e",
+      "sourceBaseSha": "b92da32a243a6cfb1c0a271f58b44e976c020760",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Первые двенадцать подпунктов §6 на странице 34: две сравниваемые координаты, обе стороны прямой, буквы и их произношение. Проверены самостоятельное исправление и возврат состояния учителя и ученика."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
