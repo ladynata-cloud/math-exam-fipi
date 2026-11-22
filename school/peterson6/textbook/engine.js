@@ -42,9 +42,9 @@ function sanitize(part,input){
   const value=firstError(step.kind,step.choices,v=>checkStep(step,v),input.firstErrors?.steps?.[i]);
   if(value)clean.firstErrors.steps[i]=value;
  }
- if(/^(01[123]|02[23])-/.test(part.id)&&part.expression&&Number.isInteger(input.decimalView)&&input.decimalView>0){
+ if(/^(01[123]|02[23]|038)-/.test(part.id)&&part.expression&&Number.isInteger(input.decimalView)&&input.decimalView>0){
   const operands=[part.expression.left,part.expression.right].map(v=>String(v).replace(',','.').split('.'));
-  const limit=/^(013|023)-/.test(part.id)?ss.length:Math.max(...operands.map(x=>x[0].length))+Math.max(...operands.map(x=>x[1]?.length||0));
+  const limit=/^(013|023|038)-/.test(part.id)?ss.length:Math.max(...operands.map(x=>x[0].length))+Math.max(...operands.map(x=>x[1]?.length||0));
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
@@ -54,6 +54,8 @@ function sanitize(part,input){
   if((/^02[6789]-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
+ if(part.id==='038-termin'&&typeof input.cipherMeaning==='string'&&input.cipherMeaning)clean.cipherMeaning=cut(input.cipherMeaning,600);
+ if(part.id==='038-termin'&&typeof input.cipherLetters==='string'&&/^[МОРЕСТДАКИЛЬ]{1,12}$/.test(input.cipherLetters)&&new Set(input.cipherLetters).size===input.cipherLetters.length)clean.cipherLetters=input.cipherLetters;
  if(part.id==='022-slovo'&&typeof input.cipherLetters==='string'&&/^[РУНОЕДГБИЖАКТЯС]{1,15}$/.test(input.cipherLetters)&&new Set(input.cipherLetters).size===input.cipherLetters.length)clean.cipherLetters=input.cipherLetters;
  if(/^03[56]-[a-z]$/.test(part.id)){
   if(Number.isInteger(input.periodStep)&&input.periodStep>=1&&input.periodStep<=8)clean.periodStep=input.periodStep;

@@ -763,3 +763,17 @@ test('the rectangle and square formulas distinguish contour and area, and both c
  }
  const restored=await surface(t,BOOK+'#n/37/037-3',storage(s));assert.equal(element(restored,'[data-geo-mode]').value,'area');assert.equal(element(restored,'[data-geo-number="1"]').value,'85,88');
 });
+test('the twelve original assertions decode by descending value; the meaning remains separate from the checked code',async t=>{
+ const s=await surface(t,BOOK+'#n/38/038-m'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[37],matches=[];
+ for(const p of row.parts){
+  await route(s,'#n/38/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);const E=s.w.PetersonBook,M=E.M;
+  if(p.expression){const text=sourcePresent(s).querySelector('.problem').textContent,claim=text.match(/ = ([\d,]+)\./)[1],v=E.exact(p.expression);if(M.equal(claim,v))matches.push([p.label,v.n/v.d]);else{input(s,'#answer',claim);submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/проверяемой строки/);}
+   input(s,'#answer',p.answer);submit(s,'#answer-form');assert(bookWork(s,p.id).correct);const sort=element(s,'[data-decimal-position]');sort.value='1';sort.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.equal(bookWork(s,p.id).decimalView,1);}
+  for(let attempt=0;attempt<25;attempt++){const task=s.w.PetersonAnalogues.create(38,p,attempt);assert(E.check(task,task.answer));if(p.expression){const factor=M.operation('divide',E.exact(task.expression),E.exact(p.expression));assert(factor.n>factor.d);assert(M.equal(task.answer,M.operation('multiply',factor,E.exact(p.expression))));}
+   else{const labels=task.prompt.match(/[А-ЯЁ] · \d+ [−+] \d+ = \d+/g).map(line=>{const [,letter,x,op,y,claim]=line.match(/([А-ЯЁ]) · (\d+) ([−+]) (\d+) = (\d+)/);return [letter,op==='+'?Number(x)+Number(y):Number(x)-Number(y),Number(claim)];});assert.equal(labels.filter(l=>l[1]===l[2]).sort((a,b)=>b[1]-a[1]).map(l=>l[0]).join(''),task.answer);}
+  }
+ }
+ assert.equal(matches.sort((a,b)=>b[1]-a[1]).map(r=>r[0]).join(''),'ДЕЛИМОСТЬ');
+ const pick=c=>click(s,'[data-cipher-letter="'+c+'"]'),send=()=>{click(s,'[data-cipher-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ pick('Р');assert.match(send(),/Для буквы Р/);pick('Р');pick('Е');pick('Д');assert.match(send(),/должны убывать/);pick('Е');for(const c of 'ЕЛИМОСТЬ')pick(c);assert.match(send(),/Объясни его смысл/);input(s,'[data-cipher-meaning]','При делении одного натурального числа на другое остаток равен нулю.');assert.match(send(),/сохранено для проверки/);const w=bookWork(s,'038-termin');assert.equal(w.cipherLetters,'ДЕЛИМОСТЬ');assert(w.submitted&&!w.correct&&!w.independent);const back=await surface(t,BOOK+'#n/38/038-termin',storage(s));assert.match(element(back,'[data-cipher-meaning]').value,/остаток равен нулю/);
+});

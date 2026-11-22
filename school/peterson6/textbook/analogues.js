@@ -490,16 +490,36 @@
     return {...numerical(prompt,result,'Запиши числовое значение запрошенной величины.',hint),id:'analog-'+part.id+'-'+attempt,family:'geometry-'+part.id,match:'skill',mistake:hint};
   }
 
+  function termPractice(part,attempt){
+    const M=E.M,k=seed(part.id)%97+attempt;
+    if(part.expression){
+      const factor=(11+k%17)+'/10';
+      function scaled(node){
+        if(typeof node!=='object')return M.decimal(M.operation('multiply',node,factor));
+        return {op:node.op,left:scaled(node.left),right:['add','subtract'].includes(node.op)?scaled(node.right):node.right};
+      }
+      const expression=scaled(part.expression),value=E.exact(expression),claim=k%2?value:M.operation('multiply',value,10);
+      return {kind:'expression',expression,prompt:'Проверь карточку. Её составитель получил '+M.decimal(claim)+'. Введи правильное значение выражения, соблюдая порядок действий.',answer:M.answer(value),id:'analog-'+part.id+'-'+attempt,family:'divisibility-cipher-'+part.id,match:'skill',
+        mistake:'Проверь скобки и выполни умножение и деление слева направо, прежде чем переходить к сложению и вычитанию.'};
+    }
+    const words=['МЕРА','УГОЛ','ДУГА','СЧЁТ'],word=words[k%4],v=3+k%19,order=[2,0,3,1],rows=order.map(i=>word[i]+' · '+v+' + '+(5-i)+' = '+(v+5-i));
+    rows.splice(k%5,0,'Я · '+v+' − 2 = '+(v+2));const choices=[word,[...word].reverse().join(''),word[0]+'Я'+word.slice(2)],shift=k%3;
+    const hint='Сначала оставь исходно верные равенства. Затем начни с наибольшего результата и последовательно переходи к меньшим.';
+    return {...choice('Карточки: '+rows.join('; ')+'. Прочитай слово по убыванию результатов верных равенств.',choices.slice(shift).concat(choices.slice(0,shift)),word,hint),id:'analog-'+part.id+'-'+attempt,family:'divisibility-cipher-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
+    if(number===38&&part.expression)return termPractice(part,attempt);
     if(number===36&&part.expression)return periodPractice(number,part,attempt);
     if(number===34)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>37)return createLegacy(number,part,attempt);
+    if(number<7||number>38)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===38)return termPractice(part,attempt);
     if(number===37)return geometryPractice(part,attempt);
     if(number>=35)return periodPractice(number,part,attempt);
     if(number===33)return roundPractice(part,attempt);
@@ -542,7 +562,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=37&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=38&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -564,7 +584,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=37&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=38&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
@@ -574,7 +594,7 @@
   function shared(item,part,raw) {
     const model=part&&create(item.number,part);
     if(!model)return null;
-    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34||item.number===36))return null;
+    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34||item.number===36||item.number===38))return null;
     const active=document.querySelector('.equivalent-exercise');
     const row=record(part)[1];
     if(!raw&&row.formerlyAbsent&&!active?.open)return null;
@@ -586,7 +606,7 @@
   }
   function restoreShared(part,scene) {
     if(!document.body.dataset.petersonBoard)return;
-    if(!scene){if(part.expression&&/^(01[123]|02[23]|03[46])-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
+    if(!scene){if(part.expression&&/^(01[123]|02[23]|03[468])-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
     const row=record(part)[1];Object.assign(row,{attempt:scene.attempt,work:scene.work,status:scene.status,open:scene.open,hint:scene.hint});
   }
   function resetShared(){if(document.body.dataset.petersonBoard)states.clear();}

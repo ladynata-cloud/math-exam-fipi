@@ -142,7 +142,7 @@
     return result;
   }
   function decimalModel(part,view=0,interactive=false){
-    const many=/^(013|023)-/.test(part.id),columns=many?[]:decimalColumns(part),nodes=many?operations(part.expression):[],keys=many?nodes.map((_,i)=>'Действие '+(i+1)):columns.map(placeName);
+    const many=/^(013|023|038)-/.test(part.id),columns=many?[]:decimalColumns(part),nodes=many?operations(part.expression):[],keys=many?nodes.map((_,i)=>'Действие '+(i+1)):columns.map(placeName);
     const title=many?'Порядок действий':'Разрядная сетка обоих чисел';
     const picker=interactive?'<label>Рассмотреть <select data-decimal-position><option value="0">Всё выражение</option>'+keys.map((label,i)=>'<option value="'+(i+1)+'"'+(view===i+1?' selected':'')+'>'+U.esc(label)+'</option>').join('')+'</select></label>':'';
     let body;
@@ -412,27 +412,34 @@
     ['Д','9,1 − 1,05','8,05'],['Г','0,854 − 0,85','0,04'],['Б','0,5 · 3','0,15'],['И','4 · 1,7','6,8'],['Ж','17,2 · 10','1,72'],
     ['А','0,8 · 0,04','0,032'],['К','5 : 1000','0,05'],['Т','3,6 : 9','0,4'],['Я','12,3 : 5','24,6'],['С','0,056 : 0,7','0,08']
   ];
+  const divisibilityRows=[
+    ['М','4,5 − 2 : 5','4,1'],['О','8 − 4 · 1,4','2,4'],['Р','7 : 2 + 5','1'],['Е','5,6 : 0,7 + 1,2','9,2'],['С','14 · 0,01 : 0,2','0,7'],['Т','0,7 · 0,06 · 10','0,42'],
+    ['Д','4,9 : 7 · 30','21'],['А','0,54 : 0,9 : 0,1','0,6'],['К','28 : (0,4 · 0,7)','10'],['И','(8 − 3,2) : 0,6','8'],['Л','0,81 : (2,7 : 30)','9'],['Ь','0,24 : (0,5 + 0,3)','0,3']
+  ];
   function codewordQuestion(part){
+    if(part.id==='038-termin')return 'Найди исходно верные равенства, расположи их результаты по убыванию и прочитай математический термин. Объясни своими словами его значение. Неверные равенства исправь отдельно.';
     if(part.id==='022-slovo')return 'Оставь буквы равенств, которые верны именно в записанном виде. Расположи их по возрастанию результатов и прочитай астрономический термин. Для остальных строк запиши исправленные вычисления.';
-    const row=codedRows.find(([letter])=>letter===part.label);
+    const rows=part.id.startsWith('038-')?divisibilityRows:codedRows,row=rows.find(([letter])=>letter===part.label);
     return 'Для буквы '+row[0]+' предложено равенство '+row[1]+' = '+row[2]+'. Проверь его вычислением и введи правильное значение левой части. Для шифра оставь букву только при совпадении.';
   }
-  function cipherView(work,interactive){
-    const buttons=codedRows.map(([letter,expression,claim])=>{
+  function cipherView(work,interactive,number=22){
+    const rows=number===38?divisibilityRows:codedRows;
+    const buttons=rows.map(([letter,expression,claim])=>{
       const selected=(work.cipherLetters||'').includes(letter);
       return '<li style="margin:.2rem 0">'+(interactive?'<button style="width:100%;text-align:left;white-space:normal" type="button" class="secondary" data-cipher-letter="'+letter+'" aria-pressed="'+selected+'">'+(selected?'✓ ':'')+letter+' · '+expression+' = '+claim+'</button>':letter+' · '+expression+' = '+claim)+'</li>';
     }).join('');
-    return '<section data-cipher-host aria-label="Буквы шифра"><h3>Лента букв</h3><p>Касайся строк в нужном порядке. Повторное нажатие убирает букву, следующее ставит её в конец.</p><p data-cipher-draft aria-live="polite">'+(work.cipherLetters||'Лента пока пуста')+'</p><ul style="list-style:none;padding-left:0">'+buttons+'</ul>'+(interactive?'<button class="secondary" type="button" data-cipher-use>Перенести ленту в ответ</button>':'')+'</section>';
+    return '<section data-cipher-host aria-label="Буквы шифра"><h3>Лента букв</h3><p>Касайся строк в нужном порядке. Повторное нажатие убирает букву, следующее ставит её в конец.</p><p data-cipher-draft aria-live="polite">'+(work.cipherLetters||'Лента пока пуста')+'</p><ul style="list-style:none;padding-left:0">'+buttons+'</ul>'+(interactive&&number===38?'<label>Смысл полученного термина своими словами<textarea style="display:block;width:100%;box-sizing:border-box" maxlength="600" data-cipher-meaning>'+U.esc(work.cipherMeaning||'')+'</textarea></label>':'')+(interactive?'<button class="secondary" type="button" data-cipher-use>Перенести ленту в ответ</button>':'')+'</section>';
   }
-  function mountCipher(main,work,save){
+  function mountCipher(main,work,save,number=22){
     let host=main.querySelector('[data-cipher-host]');if(!host)return;
     function draw(){
-      host.outerHTML=cipherView(work,true);host=main.querySelector('[data-cipher-host]');
+      host.outerHTML=cipherView(work,true,number);host=main.querySelector('[data-cipher-host]');
       for(const button of host.querySelectorAll('[data-cipher-letter]'))button.onclick=()=>{
         const letter=button.dataset.cipherLetter,current=work.cipherLetters||'';work.cipherLetters=current.includes(letter)?current.replace(letter,''):current+letter;
         save();draw();host.querySelector('[data-cipher-letter="'+letter+'"]').focus({preventScroll:true});
       };
-      const use=host.querySelector('[data-cipher-use]');use.disabled=!work.cipherLetters;use.onclick=()=>{const input=main.querySelector('#answer');input.value=work.cipherLetters;input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();};
+      const meaning=host.querySelector('[data-cipher-meaning]');if(meaning)meaning.oninput=()=>{work.cipherMeaning=meaning.value.slice(0,600);save();};
+      const use=host.querySelector('[data-cipher-use]');use.disabled=!work.cipherLetters;use.onclick=()=>{const input=main.querySelector('#answer');input.value=work.cipherLetters+(number===38&&work.cipherMeaning?' · '+work.cipherMeaning:'');input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();};
     }
     draw();
   }
@@ -449,18 +456,20 @@
       const eq=n=>root.PetersonBook.M.equal(input,n);
       return {ok:false,text:eq('64.8')?'Получена масса всего мёда. Сколько одинаковых банок заполнили этой массой?':eq('21.6')?'Это мёд из третьего улья. Для наполнения банок использовали все три сбора.':eq('43.2')?'Учтены первые два улья. Вычисли половину этой суммы для третьего улья.':'Вычти 6,4 кг из первого сбора. Половину для третьего улья бери от суммы первого и второго.'};
     }
-    if(number!==22)return null;
-    if(part.id!=='022-slovo'){
-      const claim=codedRows.find(([letter])=>letter===part.label)[2],eq=root.PetersonBook.M.equal;
+    if(number!==22&&number!==38)return null;
+    const descending=number===38;
+    if(part.expression){
+      const rows=descending?divisibilityRows:codedRows,claim=rows.find(([letter])=>letter===part.label)[2],eq=root.PetersonBook.M.equal;
       if(correct)return {ok:true,text:eq(input,claim)?'Вычислено верно. Напечатанное равенство верно, его буква участвует в шифре.':'Вычислено верно. Напечатанный результат был ошибочным, эту букву пропусти при расшифровке.'};
       return {ok:false,text:eq(input,claim)?'Это результат из проверяемой строки. Вычисли левую часть самостоятельно. '+opHint[part.expression.op]:opHint[part.expression.op]};
     }
-    const entered=input.toUpperCase().replace(/[\s.]+/g,'');if(!/^[А-ЯЁ]+$/.test(entered))return null;
-    const key='АСТЕРОИД',wrong=[...entered].find(c=>!key.includes(c));
+    const [letters,...reason]=descending?input.split(' · '):[input],entered=letters.toUpperCase().replace(/[\s.]+/g,'');if(!/^[А-ЯЁ]+$/.test(entered))return null;
+    const key=descending?'ДЕЛИМОСТЬ':'АСТЕРОИД',wrong=[...entered].find(c=>!key.includes(c));
     if(wrong)return {ok:false,text:'Для буквы '+wrong+' не записано верное равенство. Проверь её исходную строку до исправления.'};
     if(new Set(entered).size<entered.length)return {ok:false,text:'Одна из букв встречается дважды. Каждая верная исходная строка даёт ровно одну букву.'};
-    if([...entered].some((c,i)=>i&&key.indexOf(entered[i-1])>key.indexOf(c)))return {ok:false,text:'Подходящие буквы есть, но результаты должны возрастать. Сопоставь соседним буквам числа и сравни их по разрядам.'};
-    if(entered!==key)return {ok:false,text:'Выбранные буквы стоят по возрастанию. Проверь оставшиеся строки: среди них есть ещё верная.'};
+    if([...entered].some((c,i)=>i&&key.indexOf(entered[i-1])>key.indexOf(c)))return {ok:false,text:'Подходящие буквы есть, но результаты должны '+(descending?'убывать':'возрастать')+'. Сопоставь соседним буквам числа и сравни их по разрядам.'};
+    if(entered!==key)return {ok:false,text:'Выбранные буквы стоят по '+(descending?'убыванию':'возрастанию')+'. Проверь оставшиеся строки: среди них есть ещё верная.'};
+    if(descending)return {ok:true,text:reason.join(' · ').trim()?'Математический термин расшифрован. Объяснение его смысла сохранено для проверки.':'Математический термин расшифрован. Объясни его смысл: какое условие на остаток должно выполняться при делении?'};
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
@@ -978,7 +987,7 @@
     if(number===32)return 'В промежутке 0,5 ≤ x ≤ 0,6 найди три разных решения. Придумай способ получить 1000 различных решений; проверь, можно ли получить 10 000. Объясни, почему границы не нарушаются.';
     if(number===30)return flowQuestion(part);
     if(number===25)return 'Замени одинаковые буквы одинаковыми цифрами, а разные буквы — различными. Первая цифра числа не может быть нулём. Найди верную подстановку для '+(part.id==='025-1'?'ЛЕТО + ЛЕТО = ПОЛЁТ.':'ПЧЁЛКА × 7 = ЖЖЖЖЖЖ.')+' Объясни, как проверил результат.';
-    if(number===22)return codewordQuestion(part);
+    if(number===22||number===38)return codewordQuestion(part);
     if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
     if(number===24)return 'С первого улья собрали 24,8 кг мёда. Второй дал на 6,4 кг меньше первого. С третьего получили половину совместного сбора первого и второго. Весь мёд поровну разлили в 18 банок. Сколько килограммов мёда в одной банке?';
     if((number>=19&&number<=21)||(number>=26&&number<=29))return logicCard(number,part).prompt;
@@ -1028,7 +1037,7 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
-    if(item.number===22)drawing=part.id==='022-slovo'?cipherView({},false):decimalModel(part);
+    if(item.number===22||item.number===38)drawing=part.expression?decimalModel(part):cipherView({},false,item.number);
     if(item.number===23)drawing=decimalModel(part);
     if(item.number===24)drawing=honeySupport();
     if(item.number===30)drawing=flowFigure(part,{},false);
