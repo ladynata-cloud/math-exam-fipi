@@ -38,7 +38,7 @@ assert(!C.check('2abc',{answer:'2',kind:'number'}));assert(!C.check('1e309',{ans
 const solvedSourceNumbers=new Set(D.lessons.flatMap(l=>l.tasks)
  .filter(t=>t.source.type==='textbook')
  .map(t=>Number(/№\s*(\d+)/.exec(t.source.reference)[1])));
-assert.deepEqual(Array.from(D.completedSourceRanges,r=>Array.from(r)),[[1,1075],[1077,1143]],'published range of complete source coverage');
+assert.deepEqual(Array.from(D.completedSourceRanges,r=>Array.from(r)),[[1,1075],[1077,1146]],'published range of complete source coverage');
 for(const [first,last] of D.completedSourceRanges)for(let n=first;n<=last;n++)assert(solvedSourceNumbers.has(n),'missing numbered course work '+n);
 assert(!solvedSourceNumbers.has(1076)&&D.sourceAlternatives.filter(t=>t.number===1076).length===2,'authored alternatives remain distinct from direct textbook work');
 for(const id of ['p05','p06','p07']) {

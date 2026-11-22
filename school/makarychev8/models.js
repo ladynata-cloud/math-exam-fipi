@@ -940,6 +940,8 @@
   }
 
   const finalFunctionSkills=[
+   {id:'combined-expression-domain',title:'Совместные условия для корней и дробей',description:'Испытай каждый уровень вычисления и запиши общий допустимый набор.'},
+   {id:'moving-section',title:'Подвижное сечение',description:'По своему расстоянию построй полосу или отрезок и найди его диапазон.'},
    {id:'floor-fraction-part',title:'Соседние целые и остаток',description:'Отметь рациональное число на оси и найди его целую или дробную часть.'},
    {id:'floor-graph-segments',title:'Ступеньки и скачки',description:'Построй один участок по выбранным координатам и отметь оба его конца.'},
    {id:'cancel-common-surd',title:'Убери общее слагаемое',description:'Сравни оставшиеся корни точно и учти знак перед каждым.'},
@@ -954,6 +956,19 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='combined-expression-domain'){
+    const parameter=2+(seed+level)%11,mode=['two-den','two-root','nested'][(seed+level)%3];
+    const root=mode==='two-root',minus=String(-parameter),answer=root?'['+parameter+';+∞)':'(-∞;'+minus+')∪('+minus+';0)∪(0;+∞)';
+    const expression=root?'√x − √(x − '+parameter+')':mode==='nested'?'1/(1 + '+parameter+'/x)':'1/('+parameter+'x) + 1/('+parameter+' + x)';
+    const hint=root?'Проверь оба подкоренных выражения.':'Исследуй оба деления, начиная со внутренних.';
+    return {...common,prompt:'Какие x допускает выражение '+expression+'?',kind:'system-single',answer,variable:'x',graph:{type:'source-domain-and-sections',group:'domain',mode,parameter},steps:[probe,step(root?'Где второй корень обращается в нуль?':'Какой отрицательный аргумент нарушает допустимость?',root?parameter:-parameter,hint)],hint,correction:hint,explanation:'Для выражения получаем '+answer+'.'};
+   }
+   if(id==='moving-section'){
+    const rectangle=seed%2===0,width=4+seed%13,height=2+(Math.floor(seed/3)+level)%6,mode=(Math.floor(seed/2)+level)%2?'range':'rule',range=mode==='range',max=rectangle?width*height:width;
+    const hint=rectangle?'Умножь постоянную сторону на выбранную высоту полосы.':'Используй подобие полного и отсечённого треугольников.';
+    const given=rectangle?'В прямоугольнике длина '+width+' см, высота '+height+' см. Площадь полосы высоты x обозначили y.':'В треугольнике основание '+width+' см, высота '+height+' см. Параллельное основанию сечение на расстоянии x от вершины имеет длину y.';
+    return {...common,prompt:given+(range?' Какие значения принимает y от начального до конечного положения включительно?':' Вырази y через x. Введи правую часть формулы.'),kind:range?'system-single':'text',reducedExpression:!range,answer:range?'[0;'+max+']':rectangle?width+'x':width+'x/'+height,variable:'y',graph:{type:'source-domain-and-sections',group:rectangle?'rectangle':'triangle',mode,width,height},steps:[probe,step('Чему равно y в положении на противоположной границе?',max,hint)],hint,correction:hint,explanation:hint+' В конце y = '+max+'.'};
+   }
    if(id==='floor-fraction-part'){
     const den=2+seed%7,num=(seed%2?-1:1)*(2+seed%43+level),floor=Math.floor(num/den),fraction=(num-floor*den)+'/'+den;
     const mode=(Math.floor(seed/2)+level)%2?'fraction':'floor',x=num+'/'+den,hint='Отметь число между последовательными целыми. Дробная часть отсчитывается от левой границы.';
