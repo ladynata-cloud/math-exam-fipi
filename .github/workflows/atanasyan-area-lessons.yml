@@ -7,6 +7,7 @@ on:
       - 'geometry-course/textbook/data/area*lessons.json'
       - 'geometry-course/textbook/index.html'
       - 'tools/geometry-textbook/*area*'
+      - 'tools/geometry-textbook/practice-answer-inventory.cjs'
       - 'tools/geometry-textbook/similarity_proofs.py'
       - 'tools/geometry-textbook/*midpoint*'
       - 'tools/geometry-textbook/construction_followup.py'
