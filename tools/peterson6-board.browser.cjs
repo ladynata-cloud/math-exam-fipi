@@ -683,7 +683,11 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
 
   phase = 'complete first ratio topic, similar triangles and both percentage baselines';
   await teacherFrame.locator('header nav a[href="#home"]').click();
-  assert.match(await teacherFrame.locator('#main').innerText(),/№1–27 со всеми подпунктами.*93/s);
+  const firstRatioCoverage = teacherFrame.locator('#main p.small').filter({ hasText: /разобраны №1–27 со всеми подпунктами/ });
+  await firstRatioCoverage.waitFor({ state: 'visible' });
+  const ratiosHome = await synchronized(teacherFrame, studentFrame, 'both roles returned from part three to the course home');
+  assert.equal(ratiosHome.route, '#home');
+  assert.match(await firstRatioCoverage.innerText(), /№1–27 со всеми подпунктами.*— 93\./s);
   await lesson(teacherFrame,'p15',86);
   await openModel(teacherFrame);
   await teacherFrame.getByLabel('Треугольник',{exact:true}).selectOption('3');

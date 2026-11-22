@@ -4,6 +4,12 @@ class N {
  constructor(tag){this.tag=tag;this.children=[];this.attrs={};this.events={};this._text='';this.value='';this.className='';this.classList={toggle:(c,on)=>{let a=this.className.split(' ').filter(Boolean).filter(x=>x!==c);if(on)a.push(c);this.className=a.join(' ');}};}
  set textContent(v){this._text=String(v);this.children=[];}
  get textContent(){return this._text+this.children.map(c=>c.textContent).join('');}
+ prepend(...nodes){
+  const existing=this.children;
+  this.children=[];
+  this.append(...nodes);
+  this.children.push(...existing);
+ }
  append(...nodes){nodes.forEach(n=>{if(typeof n==='string')n=Object.assign(new N('#text'),{_text:n});this.children.push(n);n.parent=this;});}
  setAttribute(k,v){this.attrs[k]=String(v);}
  addEventListener(k,v){this.events[k]=v;}
@@ -13,6 +19,8 @@ class N {
 const head=new N('head');
 const walk=n=>[n,...n.children.flatMap(walk)];
 global.document={head,createElement:t=>new N(t),createElementNS:(_,t)=>new N(t),createTextNode:t=>Object.assign(new N('#text'),{_text:t}),getElementById:id=>walk(head).find(n=>n.id===id)};
+// Match the browser entry points, which load the exact arithmetic API before the models.
+global.PetersonMath=require('./math.js');
 require('./models.js');
 function mount(model,id){const host=new N('div');const cleanup=PetersonModels.mount(host,{model,id,title:model});assert(host.textContent);assert(walk(host).some(n=>n.attrs['aria-live']==='polite'));for(const b of walk(host).filter(n=>n.tag==='button'))assert.equal(b.type,'button');for(const n of walk(host).filter(n=>['input','select'].includes(n.tag)))assert(walk(host).some(l=>l.tag==='label'&&l.htmlFor===n.id));for(const s of walk(host).filter(n=>n.tag==='svg')){assert.equal(s.attrs.role,'img');assert(s.attrs['aria-label']);}return {host,cleanup};}
 let count=0;

@@ -2,7 +2,8 @@
 // Each child releases its DOM and module graph before the next batch. Every
 // selected card still opens all assistance, submits every step and checks the final feedback.
 const {JSDOM}=require('jsdom'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const [start,end]=process.argv.slice(2).map(Number), errors=[];
+const byCard=process.argv[2]==='--cards';
+const [start,end]=process.argv.slice(byCard?3:2).map(Number), errors=[];
 assert(Number.isInteger(start)&&Number.isInteger(end)&&end>start&&start>=0);
   const fullDom=new JSDOM(fs.readFileSync(path.join(__dirname,'index.html'),'utf8'),{url:'https://peterson-render.test/',runScripts:'outside-only',pretendToBeVisual:true}),fw=fullDom.window,fd=fw.document;
   fw.scrollTo = () => {};
@@ -15,11 +16,30 @@ assert(Number.isInteger(start)&&Number.isInteger(end)&&end>start&&start>=0);
   function answerValue(q){if(q.answerFormat==='decimal'||q.answerFormat==='canonical-decimal')return fw.PetersonMath.decimal(q.answer);if(q.answerFormat==='mixed-number'){const r=fw.PetersonMath.parse(q.answer),n=Math.abs(Number(r.n)),den=Number(r.d),whole=Math.floor(n/den),rem=n%den;return (r.n<0?'-':'')+(rem?whole+' '+rem+'/'+den:whole);}return String(q.answer);}
   const ids = []; let steps = 0;
   try {
-    for (const lesson of fw.PetersonCourse.lessons.slice(start,end))
-      for (let index = 0; index < lesson.tasks.length; index++) {
+    const lessons=byCard?fw.PetersonCourse.lessons:fw.PetersonCourse.lessons.slice(start,end);
+    let ordinal=0;
+    for (const lesson of lessons)
+      for (let index = 0; index < lesson.tasks.length; index++,ordinal++) {
+        if(byCard&&(ordinal<start||ordinal>=end))continue;
         const task=lesson.tasks[index];
         fw.history.replaceState(null,'','#lesson/'+lesson.id+'/'+index);
         fw.PetersonApp.route();
+        assert(node('.prompt'),task.id+' initial prompt');
+        assert(node('#model').textContent.trim(),task.id+' initial model');
+        if(task.kind==='manual'){
+          node('.manual-work');
+          assert(!fd.querySelector('#final-answer'));
+        }else{
+          assert(node('.answer-form label').textContent.trim());
+          if(task.kind==='choice')assert.equal(fd.querySelectorAll('.choices button').length,task.choices.length);
+          else node('#final-answer');
+        }
+        if(task.figure){
+          const figure=node('#task-figure');
+          assert(figure.textContent.trim()||figure.querySelector('svg'),task.id+' required figure');
+          assert.equal(figure.closest('details'),null,'required figure remains visible');
+        }
+        assert(!fd.querySelector('.error-page'));
         clearTokens(task.id);
         node('[data-action="hint"]').click();
         clearTokens(task.id+' hint');
