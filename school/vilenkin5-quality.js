@@ -156,6 +156,15 @@
   }
   function inputIssue(value,target){
     if(!text(value)||!value.trim())return 'Сначала запиши ответ. Пустое поле не считается ошибкой.';
+    if(target.answerFormat==='v5-yes-no'&&!['да','нет'].includes(root.Vilenkin5RadiusChordSector.yesNo(value)))return 'Запиши «да» или «нет». Черновик можно уточнить.';
+    if(target.answerFormat==='v5-radius-name'&&!/^[A-Z]{2}$/.test(root.Vilenkin5RadiusChordSector.readSegment(value)))return 'Назови отрезок двумя буквами с рисунка. Пока это черновик.';
+    if(target.answerFormat==='v5-spoken-fraction'&&!/^[а-яёА-ЯЁ.,!?«»\s]+$/u.test(value))return 'Произнеси дробь вслух и запиши её словами. Можно поправить черновик.';
+    if(target.answerFormat==='v5-dictated-fraction'){
+      const v=root.Vilenkin5FractionLanguage.literal(value);
+      if(!v)return 'Запиши одно целое число над чертой и другое под ней, например 2/7. Пока это черновик.';
+      const [n,d]=root.Vilenkin5FractionLanguage.literal(target.answer);
+      if(BigInt(v[0])*BigInt(d)===BigInt(v[1])*BigInt(n)&&(v[0]!==n||v[1]!==d))return 'Величина верна. Для записи с голоса сохрани оба названных числа. Эту запись можно уточнить.';
+    }
     if(target.answerFormat==='v5-fraction-reading'&&!/[а-яё]/i.test(value))return 'Числа уже записаны в условии. Произнеси дробь вслух и введи словами вместе с названием целого. Пока это черновик.';
     if(['v5-pair','v5-triple'].includes(target.answerFormat)){
       const parts=value.split(';'),pair=target.answerFormat==='v5-pair';
@@ -292,6 +301,12 @@
     if(session.correct){const status=memoryOnly?'Совместный разбор':session.assisted?'Решено с помощью':session.exposed?'Работа со знакомым условием':session.attempt>1?'Решено после исправления':session.mode==='learn'?'Шаг понятен':'Получилось самостоятельно';task.insertAdjacentHTML('beforeend','<p class="v5q-outcome">'+status+'</p>');}
     const ownSituations=lesson.number==='1.72';
     const extra=root.document.createElement('section');extra.className='v5q-notes';extra.innerHTML=ownSituations?'<h2>Твои два примера</h2><label>Что ты захочешь узнать в магазине? А на спортивной площадке? Запиши для каждого места свой вопрос и математический способ его проверить.<textarea id="v5-quality-note" maxlength="2000" rows="5"></textarea></label><p class="tiny">Сверь свою запись: указаны оба места, величины и способ проверки. Можно привести любые подходящие примеры. Текст сохраняется. Тренажёр отдельно проверяет только расчёты ниже.</p><div data-v5-media-host></div>':'<details><summary>Мои рассуждения и проверка</summary><label>Объясни способ своими словами. Как проверить результат?<textarea id="v5-quality-note" maxlength="2000" rows="3"></textarea></label><p class="tiny">Твои записи сохраняются. Свободное объяснение проверяется вместе с учителем.</p></details><div data-v5-media-host></div>';
+    if(lesson.number==='5.69'&&lesson.v5Course){
+      extra.querySelector('summary').textContent='Моё определение радиуса';
+      extra.querySelector('label').firstChild.textContent='Закончи своими словами фразу «Отрезок является радиусом, если он…». ';
+      extra.querySelector('textarea').placeholder='Где расположен каждый конец?';
+      extra.querySelector('.tiny').textContent='Твоя формулировка сохраняется. В поле ответа проверяется только название отрезка.';
+    }
     if(lesson.number==='5.28'&&lesson.v5Course){
       extra.querySelector('summary').textContent='Моё объяснение о часах';
       extra.querySelector('label').firstChild.textContent='Назови одно преимущество солнечных часов, одно ограничение и общее свойство с сегодняшними часами. Выбери для сравнения конкретные часы.';
