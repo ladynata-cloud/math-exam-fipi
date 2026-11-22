@@ -132,7 +132,8 @@
       ['/geometry-course/textbook/data/motion-applications.json', '№1281–1285'],
       ['/geometry-course/textbook/data/star-rays-perimeter.json', '№1286–1288'],
       ['/geometry-course/textbook/data/medians-translated-altitudes.json', '№1289–1291'],
-      ['/geometry-course/textbook/data/final-motion-constructions.json', '№1292–1295']
+      ['/geometry-course/textbook/data/final-motion-constructions.json', '№1292–1295'],
+      ['/geometry-course/textbook/data/plane-map-review.json', 'вопросы 1–7 главы XIV']
   ];
 
   async function forCourse(base) {
