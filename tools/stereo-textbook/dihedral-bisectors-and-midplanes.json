@@ -1,0 +1,185 @@
+{
+  "parts": {
+    "771": [
+      null
+    ],
+    "772": [
+      null
+    ],
+    "773": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "771": {
+      "id": "source-main-0771",
+      "kind": "exercise",
+      "title": "Задача № 771",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "771",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          190
+        ],
+        "pdfPages": [
+          192
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "772": {
+      "id": "source-main-0772",
+      "kind": "exercise",
+      "title": "Задача № 772",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "772",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          190
+        ],
+        "pdfPages": [
+          192
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "773": {
+      "id": "source-main-0773",
+      "kind": "exercise",
+      "title": "Задача № 773",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "773",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          190
+        ],
+        "pdfPages": [
+          192
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0771": {
+      "raw": "954af9d5341e1131fe825a20e3054519af666caa3037bf94141d891957c435ec",
+      "authored": "90bd149078f810b50a2554a2bd68b97058746d982fa5cf872e6e19303faf4ddd",
+      "integrated": "4d9e243ce5dbec1c7202ec03db4013ac906890c825fc4d657af6103c19b06cc8"
+    },
+    "ex-main-0772": {
+      "raw": "86ea7951ee4a7799bf80020edb849fa05960f029e7172e434a6417da5455a66c",
+      "authored": "8ba8bc430f21fdd2842ff513226816b9f9dce4410e8e93964f3657844580b49c",
+      "integrated": "f429f51c699cac1573eb1154283e75b093579560c16290fb2455a74dbae4af2b"
+    },
+    "ex-main-0773": {
+      "raw": "a874598b1fcde533169a1a6922f584be834f1bf4272ab4c8feaef2dc03b8df6e",
+      "authored": "e2b7c065abec5952942d3ac82a23f7197df20873fd269eabf935a900b1dea400",
+      "integrated": "c47bcc86b79105e484e0c4303be962350d9f839f7b10ca1b3dcb47850fb75762"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0771|condition",
+      "dihedral-bisectors-and-midplanes-ex-main-0771-condition"
+    ],
+    [
+      "ex-main-0771|help:h1",
+      "dihedral-bisectors-and-midplanes-ex-main-0771-help-h1"
+    ],
+    [
+      "ex-main-0771|help:h2",
+      "dihedral-bisectors-and-midplanes-ex-main-0771-help-h2"
+    ],
+    [
+      "ex-main-0771|step-1",
+      "dihedral-bisectors-and-midplanes-ex-main-0771-step-1"
+    ],
+    [
+      "ex-main-0771|step-2",
+      "dihedral-bisectors-and-midplanes-ex-main-0771-step-2"
+    ],
+    [
+      "ex-main-0771|step-3",
+      "dihedral-bisectors-and-midplanes-ex-main-0771-step-3"
+    ],
+    [
+      "ex-main-0772|condition",
+      "dihedral-bisectors-and-midplanes-ex-main-0772-condition"
+    ],
+    [
+      "ex-main-0772|help:h1",
+      "dihedral-bisectors-and-midplanes-ex-main-0772-help-h1"
+    ],
+    [
+      "ex-main-0772|help:h2",
+      "dihedral-bisectors-and-midplanes-ex-main-0772-help-h2"
+    ],
+    [
+      "ex-main-0772|step-1",
+      "dihedral-bisectors-and-midplanes-ex-main-0772-step-1"
+    ],
+    [
+      "ex-main-0772|step-2",
+      "dihedral-bisectors-and-midplanes-ex-main-0772-step-2"
+    ],
+    [
+      "ex-main-0772|step-3",
+      "dihedral-bisectors-and-midplanes-ex-main-0772-step-3"
+    ],
+    [
+      "ex-main-0773|condition",
+      "dihedral-bisectors-and-midplanes-ex-main-0773-condition"
+    ],
+    [
+      "ex-main-0773|help:h1",
+      "dihedral-bisectors-and-midplanes-ex-main-0773-help-h1"
+    ],
+    [
+      "ex-main-0773|help:h2",
+      "dihedral-bisectors-and-midplanes-ex-main-0773-help-h2"
+    ],
+    [
+      "ex-main-0773|step-1",
+      "dihedral-bisectors-and-midplanes-ex-main-0773-step-1"
+    ],
+    [
+      "ex-main-0773|step-2",
+      "dihedral-bisectors-and-midplanes-ex-main-0773-step-2"
+    ],
+    [
+      "ex-main-0773|step-3",
+      "dihedral-bisectors-and-midplanes-ex-main-0773-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "53913ef591e901f4651a66b1f568c6463e60f4f5a31a3f22e72d4ece8810c7f3",
+      "afterSHA256": "f8d6a604161d1bc65f01f395dfd1b89fae30655a10d9d587bdff9830d27f0953"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "bcbc2e811018cfce22909a9bf9037f5c4a1b1a57cacbdb0726412e0cf45d4faf",
+      "afterSHA256": "b6b9035f20b2b87cf72aa458409a4e9b4d917fa4beced9f4fff71012058a45a5"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T02:08:00Z",
+    "scope": "All final-review parts of 764–767 and the first three advanced source exercises 768–770 are complete. The remaining advanced exercises begin at 771."
+  },
+  "before": {
+    "course": "39ac1b9e7e51add72c6b803c9f34c5ba75ee24471ef967f161577c05d7697c83",
+    "index": "da4ff8fad1e23f3b3612882db628a8ec6d82e45508780c4e7e15225dd027f696",
+    "registry": "3fa480df767eceaf4b3bd7bc0b34297843a3ae69777eba2aa289105b6c239bf1",
+    "cases": "eb2e2f6f3d1577a60325296c4d4684c93de819c03ab51339e219277d2b778fbe"
+  }
+}

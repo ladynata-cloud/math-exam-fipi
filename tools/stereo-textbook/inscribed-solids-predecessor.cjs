@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const firstAdvancedPyramidProblems = makeReviewedIncrement(require('./first-advanced-pyramid-problems.json'));
+const dihedralBisectorsAndMidplanes = makeReviewedIncrement(require('./dihedral-bisectors-and-midplanes.json'));
+const firstAdvancedPyramidProblems = makeReviewedIncrement(require('./first-advanced-pyramid-problems.json'), dihedralBisectorsAndMidplanes);
 const endOfFinalPyramidReview = makeReviewedIncrement(require('./end-of-final-pyramid-review.json'), firstAdvancedPyramidProblems);
 const finalTriangularPyramidReview = makeReviewedIncrement(require('./final-triangular-pyramid-review.json'), endOfFinalPyramidReview);
 const finalSquarePyramidReview = makeReviewedIncrement(require('./final-square-pyramid-review.json'), finalTriangularPyramidReview);
