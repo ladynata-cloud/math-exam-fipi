@@ -56,9 +56,9 @@ const squarePractice=window.MakarychevModels?.squarePractice;
 const appliedPractice=window.MakarychevModels?.appliedPractice;
 const invariantPractice=window.MakarychevModels?.invariantPractice;
 const fractionDomainPractice=window.MakarychevModels?.fractionDomainPractice;
-const {mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice,behaviorPractice,tripReviewPractice,phasePractice,curvePractice,witnessPractice,functionZeroPractice,review43Practice,review43Skills=[]}=window.MakarychevModels||{};
+const {mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice,behaviorPractice,tripReviewPractice,phasePractice,curvePractice,witnessPractice,functionZeroPractice,review43Practice,review43Skills=[],lineSkills=[],placementSkills=[],rootStudySkills=[]}=window.MakarychevModels||{};
 const auditPractice=window.MakarychevModels?.auditPractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice,behaviorPractice,tripReviewPractice,phasePractice,curvePractice,witnessPractice,functionZeroPractice,review43Practice,...review43Skills].filter(Boolean)];
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice,behaviorPractice,tripReviewPractice,phasePractice,curvePractice,witnessPractice,functionZeroPractice,review43Practice,...review43Skills,...lineSkills,...placementSkills,...rootStudySkills].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
@@ -67,6 +67,9 @@ function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
  if(id===mixturePractice?.id)return window.MakarychevModels.practiceMixture(seed,level);
  if(id===proofPractice?.id)return window.MakarychevModels.practiceProofEstimate(seed,level);
+ if(rootStudySkills.some(s=>s.id===id))return window.MakarychevModels.practiceRootStudy(id,seed,level);
+ if(placementSkills.some(s=>s.id===id))return window.MakarychevModels.practicePlacement(id,seed,level);
+ if(lineSkills.some(s=>s.id===id))return window.MakarychevModels.practiceLineStudy(id,seed,level);
  if(review43Skills.some(s=>s.id===id))return window.MakarychevModels.extraReview43(id,seed,level);
  if(id===review43Practice?.id)return window.MakarychevModels.practiceReview43(seed,level);
  if(id===functionZeroPractice?.id)return window.MakarychevModels.practiceFunctionZero(seed,level);
@@ -204,6 +207,9 @@ function formatProblem(value,q){
  if(q.kind==='integer-runs'&&!window.MakarychevTaskGraphs.sequenceRows(text,q.graph))return inputNote(q)+' Проверь число членов и скобки.';
  if(q.kind==='parameter-formulas'&&text.split(';').length!==String(q.answer).split(';').length)return inputNote(q)+' Количество частей не совпало с форматом записи.';
  if(q.kind==='parameter-sample'&&window.MakarychevTaskGraphs.parameterSample(text)===null)return 'Для опыта укажи число от −24 до 24 с шагом 1/8. Можно использовать дробь, например −1/8.';
+ if(q.kind==='root-transform-points'&&!window.MakarychevCheck.pointGroups(text))return q.inputNote;
+ if(q.kind==='line-placement'&&!window.MakarychevTaskGraphs.positionCoefficients(q.graph,text))return q.inputNote;
+ if(q.kind==='own-affine-points'&&!window.MakarychevCheck.pointGroups(text))return q.inputNote;
  if(q.kind==='intersection-points'&&!window.MakarychevCheck.pointGroups(text))return q.inputNote;
  if(q.kind==='landmark-interval'&&!window.MakarychevCheck.landmarkInput(text,window.MakarychevTaskGraphs.propertyCurve(q.graph).landmarks))return q.inputNote;
  if(['monotone-construction','zero-construction'].includes(q.kind)&&!window.MakarychevTaskGraphs.witnessMarks(q.graph,text).complete)return 'Нужны '+q.graph.xs.length+' чисел через точку с запятой. Сохрани все свои ординаты.';
@@ -263,6 +269,50 @@ function naturalCase(term,rule){
  return [36n-n*n,n*n];
 }
 function feedbackFor(value,q){
+ if(q.graph?.type==='source-root-study'){
+  const g=q.graph,C=window.MakarychevCheck,graph=window.MakarychevTaskGraphs;
+  if(q.kind==='root-transform-points'){const s=graph.transformedRootPoints(g,C.pointGroups(value)).status;
+   if(s==='same-x')return 'Обе точки имеют один аргумент. Выбери две различные абсциссы.';
+   if(s.startsWith('domain-'))return 'Проверь точку '+s.slice(-1)+': под корнем получается отрицательное число.';
+   if(s.startsWith('sign-'))return 'Проверь знак ординаты точки '+s.slice(-1)+'. При этом преобразовании он не может быть таким.';
+   if(s.startsWith('height-'))return 'Проверь высоту точки '+s.slice(-1)+'. Подставь её абсциссу в формулу нового графика.';
+  }
+  if(g.mode==='figure'){const v=String(value).split(';').map(s=>Number(s.trim()));if(v.includes(1))return 'Две ветви спускаются порознь. При x = −3 точка ниже, чем при x = 2: сравни разные ветви.';if(v.includes(4))return 'Сравни расстояния точек при −3 и при 2 до горизонтальной оси: отрицательная ордината больше по модулю.';}
+  if(g.mode==='level'){
+   if(M.parse(g.level).n<0)return 'Горизонталь проходит ниже оси x, а у квадратного корня таких ординат нет.';
+   if(M.equal(value,g.level))return 'Ты ввёл высоту прямой. Для абсциссы возведи эту высоту в квадрат.';
+  }
+  if(['band','greater','above','below'].includes(g.mode)){
+   const ranges=C.axisRanges(C.systemInput(value,'x'));
+   if(ranges){for(const x of [0,1,9,25,100,101,-1,.25,4,16,36]){const claimed=ranges.some(r=>(x>r.min||x===r.min&&!r.leftOpen)&&(x<r.max||x===r.max&&!r.rightOpen)),correct=g.mode==='band'?x>g.low*g.low&&x<g.high*g.high:g.mode==='above'?x>0&&x<1:g.mode==='greater'?x>g.low*g.low:x>1;
+    if(claimed!==correct)return 'Проверь x = '+String(x).replace('.',',')+'. '+(x<0?'Вещественный квадратный корень здесь не определён.':'Высота кривой равна '+String(Math.sqrt(x)).replace('.',',')+'. '+q.hint);}}
+  }
+  return q.hint;
+ }
+ if(q.graph?.type==='source-line-position'){
+  const g=q.graph,C=window.MakarychevCheck;
+  if(g.mode==='coefficients'){const r=window.MakarychevTaskGraphs.positionCoefficients(g,value);if(r&&!r.validK)return 'Выбранный k = '+r.k+' даёт другое направление. Сверь условие о наклоне.';if(r&&!r.validB)return 'При x = 0 получается y = '+r.b+'. Проверь условие для b.';}
+  if(g.mode==='figure69'){const ids=String(value).split(';').map(v=>Number(v.trim()));if(ids.includes(1))return 'Рассмотри линию слева направо: ордината растёт.';if(ids.includes(3))return 'Подставь x = 2: точка лежит на высоте 3, выше горизонтальной оси.';}
+  if(g.mode==='closed-band'){const ranges=C.axisRanges(C.systemInput(value,'x'));if(ranges){for(const x of [2,4,1,5,3]){const present=ranges.some(r=>(x>r.min||x===r.min&&!r.leftOpen)&&(x<r.max||x===r.max&&!r.rightOpen));if(present!==(x>=2&&x<=4))return 'Проверь x = '+x+': высота '+(-1.5*x+6)+(x>=2&&x<=4?' входит в допустимую полосу.':' лежит вне допустимой полосы.');}}}
+  if(g.mode==='quadrants'&&g.slopeSign===0&&/[34]/.test(value))return 'При k = 0 линия горизонтальна и всё время проходит на высоте 10, выше оси x.';
+  if(g.mode==='opposites'&&String(value).trim()==='='&&g.power===1)return 'Знаменатели равны. При замене x на −x числитель у этих двух значений меняет знак.';
+ }
+ if(q.graph?.type==='source-affine-study'){
+  const g=q.graph,C=window.MakarychevCheck;
+  if(g.feature==='build'){const trial=window.MakarychevTaskGraphs.ownAffine(g,C.pointGroups(value));
+   if(trial.status==='same-x')return 'У обеих точек одна абсцисса. Возьми два разных x, чтобы определить прямую.';
+   if(trial.status.startsWith('point-'))return 'Проверь точку '+trial.status.slice(-1)+': подставь её x в '+g.formula+' и сравни ординату.';
+  }
+  if(g.collection){const ids=String(value).split(';').map(v=>Number(v.trim()));const wrong=ids.find(i=>i>=1&&i<=5&&((g.feature==='increasing')!==(g.slopes[i-1]>0)));
+   if(wrong)return 'Проверь функцию '+wrong+': её коэффициент при x равен '+g.slopes[wrong-1]+'. При увеличении x на единицу ордината меняется на это число.';}
+  if(['negative','positive'].includes(g.feature)&&!g.legacy){
+   const k=M.parse(g.k),root=-g.b*k.d/k.n,ranges=C.axisRanges(C.systemInput(value,'x'));
+   if(ranges){for(const x of [root,root-1,root+1]){
+    const inside=ranges.some(s=>(x>s.min||x===s.min&&!s.leftOpen)&&(x<s.max||x===s.max&&!s.rightOpen));const isZero=x===root,desired=!isZero&&((x>root)===(k.n>0))===(g.feature==='positive');
+    if(inside!==(isZero?false:desired))return 'Проверь x ≈ '+String(Number(x.toPrecision(5))).replace('.',',')+': '+(isZero?'здесь ордината равна нулю.':((x>root)===(k.n>0))?'точка лежит выше оси x.':'точка лежит ниже оси x.');}}
+  }
+  return q.hint;
+ }
  if(q.graph?.type==='source-review-43'){
   const g=q.graph,C=window.MakarychevCheck;
   if(q.kind==='intersection-points'){
@@ -832,6 +882,9 @@ if(t.graph){
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(graph.type))graph=rationalEvidence(graph,s.value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(graph.type))graph={...graph,trial:s.values[graph.trialStep||0],prediction:s.values[graph.predictionStep],completed:s.correct};
  if(graph.fixedInput)graph={...graph,partial:s.values,showValue:Boolean(s.correct)};
+ if(graph.type==='source-root-study'&&!graph.legacy)graph={...graph,partial:s.values};
+ if(graph.type==='source-line-position')graph={...graph,partial:s.values};
+ if(graph.type==='source-affine-study'&&!graph.legacy)graph={...graph,partial:s.values};
  if(graph.type==='source-review-43')graph={...graph,partial:s.values};
  if(graph.type==='source-formula-zeros'&&!graph.legacy)graph={...graph,partial:s.values};
  if(graph.type==='source-curve-properties')graph={...graph,partial:s.values};
@@ -875,7 +928,7 @@ if(t.graph){
  if(modelInput&&graph.type==='natural-values')graph={...graph,rows:(window.MakarychevCheck.setEntries(modelInput)||[]).map(term=>({term,pair:naturalCase(term,t.naturalRule)}))};
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
-document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
+document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
 function rationalEvidence(graph,value){
  const C=window.MakarychevCheck;
  if(graph.type==='rational-root-audit')return {...graph,checks:C.rationalRootTrial(value,graph)};
@@ -887,13 +940,16 @@ function factorEvidence(graph,value){
  const [a,...roots]=String(value||'').split(';');
  return {...graph,rightLeading:M.equal(a,graph.leading),audit:window.MakarychevCheck.vietaAudit(roots.join(';'),graph)};
 }
-function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(base.type))graph=rationalEvidence(base,value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(base.type))graph={...base,trial:state.values[base.trialStep||0],prediction:state.values[base.predictionStep],completed:state.correct};
  if(base.fixedInput)graph={...graph,partial:state.values,showValue:Boolean(state.correct)};
+ if(base.type==='source-root-study'&&!base.legacy)graph={...base,partial:state.values};
+ if(base.type==='source-line-position')graph={...base,partial:state.values};
+ if(base.type==='source-affine-study'&&!base.legacy)graph={...base,partial:state.values};
  if(base.type==='source-review-43')graph={...base,partial:state.values};
  if(base.type==='source-formula-zeros'&&!base.legacy)graph={...base,partial:state.values};
  if(base.type==='source-curve-properties')graph={...base,partial:state.values};

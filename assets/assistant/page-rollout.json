@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "3fbeea40279bb10e661a58495b1cdc296d2b65e62e5bf6e13fc9f79592440ac8",
-      "afterSha256": "7423f20ddec64650ff15abc0af15aeb31dc490283b4a67232e68d7e3e1b81dfd",
+      "beforeSha256": "ba9244e6904d95a485812f688fe3cc723bb0998294f0b38a8231c42b728ee837",
+      "afterSha256": "ff00abf205eb38b75f9d53cfdd967c668c4e1d5e003c8d073fb4c3f7f07e89a6",
       "placement": "before-head-close",
-      "sourceSha": "278c5ac7d9e01c711b894094725b1df525f509e8"
+      "sourceSha": "7b7192ba171912fb44a569f15272add6c6fa1850"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -2256,10 +2256,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "9a3fc372c718e3b966db787218f8c48a47421a12e424313c3e637cddb5f3d96f",
-      "afterSha256": "8955052323cf5e243e39cfe022db0025531ae7135d37e383574b1a1567e89ba8",
+      "beforeSha256": "e8f67ff3c53fb1eed467d4a9091d68c9c066f47bb7994ad86b2a73337867c467",
+      "afterSha256": "96c36de5647fcdf86e88c72fc4940dac0860c360c287e302c4eb485d03325067",
       "placement": "before-head-close",
-      "sourceSha": "ee213101633b08535eff2f0d0389f9ad5354ec6e"
+      "sourceSha": "27d457bdccd30f4f834c0e65dcc38da5431f167d"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -7346,6 +7346,15 @@
       "boundary": "Проверенный прямой ряд Макарычева: №1–1075 и №1077–1113. На месте №1076 остаётся отдельно обозначенное авторское упражнение. После №1087 добавлены чтение графиков, собственные построения, нули функций, графические пересечения, тождества и сравнения."
     },
     {
+      "previousBaseSha": "278c5ac7d9e01c711b894094725b1df525f509e8",
+      "sourceBaseSha": "7b7192ba171912fb44a569f15272add6c6fa1850",
+      "task": "docs/tasks/WORKSHOP_MORDKOVICH_7_2019_WORKBOOK.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "В школьном входе сохранены практикумы Виленкина и подключены проверенные примеры из первой части Мордковича и Николаева для 7 класса, издание 2019 года."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
@@ -7376,6 +7385,33 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Bind the reviewed first-action page and preserve other navigator receipts."
+    },
+    {
+      "previousBaseSha": "ee213101633b08535eff2f0d0389f9ad5354ec6e",
+      "sourceBaseSha": "3dc4bd37d50536239f5be682ed50913310d0cf3f",
+      "task": "docs/tasks/MAKARYCHEV8_1114_1118.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "3dc4bd37d50536239f5be682ed50913310d0cf3f",
+      "sourceBaseSha": "0f612779519bdf997ccfef0d4cb3c0c6e4fcf4cb",
+      "task": "docs/tasks/MAKARYCHEV8_1119_1125.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0f612779519bdf997ccfef0d4cb3c0c6e4fcf4cb",
+      "sourceBaseSha": "27d457bdccd30f4f834c0e65dcc38da5431f167d",
+      "task": "docs/tasks/MAKARYCHEV8_1126_1130.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [

@@ -53,6 +53,8 @@ function curveValue(curve,x){
   if(curve.mode==='abs-den')return Math.abs(x)===2?NaN:48/(Math.abs(x)-2);
   return curve.mode==='abs-rad'?x*x+Math.sqrt(Math.abs(x)-1):Math.sqrt(Math.abs(2-x)-3*x);
  }
+ if(curve.kind==='root-study-segment')return x<curve.lower||x>curve.upper?NaN:Math.sqrt(x);
+ if(curve.kind==='scaled-root-study'){const n=curve.inside*x;return n<0?NaN:curve.scale*Math.sqrt(n);}
  if(curve.kind==='sqrt-affine'){const radicand=curve.k*x+curve.b;return radicand>=0?Math.sqrt(radicand):NaN;}
  if(curve.kind==='sqrt')return x>=0?Math.sqrt(x):NaN;
  if(curve.kind==='line')return curve.k*x+curve.b;
@@ -96,7 +98,7 @@ function rootGraph(config,value){
  const svg=node('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':config.label||(['root-build','curve-build'].includes(config.type)?'Координатная плоскость для твоего построения':'Графики функций на координатной плоскости')});
  const line=(x1,y1,x2,y2,color,attrs={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':1,...attrs}));
  const step=(a,b)=>{const size=(b-a)/(Math.max(Math.abs(a),Math.abs(b))>=10000?3:6),p=Math.pow(10,Math.floor(Math.log10(size)));return [1,2,5,10].find(n=>n*p>=size)*p;};
- const label=v=>config.compactTicks&&Math.abs(v)>=10000?v.toExponential(0):Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();
+ const label=v=>{const text=config.compactTicks&&Math.abs(v)>=10000?v.toExponential(0):Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();return config.decimalComma?text.replace('.',','):text;};
  const sx=config.xTickStep||step(...xr),sy=config.yTickStep||step(...yr),gx=config.xGridStep||config.gridStep||(xr[1]-xr[0]<=24?Math.min(1,sx):sx),gy=config.yGridStep||config.gridStep||(yr[1]-yr[0]<=24?Math.min(1,sy):sy),hasXAxis=yr[0]<=0&&yr[1]>=0,hasYAxis=xr[0]<=0&&xr[1]>=0;
  if(![sx,sy,gx,gy].every(v=>Number.isFinite(v)&&v>0)||(xr[1]-xr[0])/gx>200||(yr[1]-yr[0])/gy>200)throw Error('Invalid root grid');
  for(let v=Math.ceil(xr[0]/gx)*gx;v<=xr[1]+gx/100;v+=gx)line(x(v),pad,x(v),height-pad,'#e1e7e2');
@@ -133,7 +135,7 @@ function rootGraph(config,value){
    previous=[a,b];
   }
   if(c.kind==='vertical'&&c.h>=xr[0]&&c.h<=xr[1])path='M'+x(c.h)+' '+pad+' L'+x(c.h)+' '+(height-pad);
-  svg.append(node('path',{d:path,fill:'none',stroke:colors[j%colors.length],'stroke-width':2.5,...(c.dashed?{'stroke-dasharray':c.dashPattern||'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
+  svg.append(node('path',{d:path,fill:'none',stroke:c.emphasis?'#a13a1b':colors[j%colors.length],'stroke-width':c.emphasis?5:2.5,...(c.dashed?{'stroke-dasharray':c.dashPattern||'7 4'}:{}),'data-root-curve':c.kind,'data-curve-k':c.k??'','data-curve-b':c.b??'','data-curve-h':c.h??'','data-curve-scale':c.scale??''}));
   for(const [h,v] of c.holes||[])if(h>=xr[0]&&h<=xr[1]&&v>=yr[0]&&v<=yr[1])svg.append(node('circle',{cx:x(h),cy:y(v),r:5,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':h,'data-hole-y':v}));
   if(c.kind==='abs-ratio'&&xr[0]<=0&&xr[1]>=0)for(const b of [-(c.scale??1),c.scale??1])if(b>=yr[0]&&b<=yr[1])svg.append(node('circle',{cx:x(0),cy:y(b),r:4,fill:'white',stroke:colors[j%colors.length],'stroke-width':2,'data-hole-x':0,'data-hole-y':b}));
   if(c.label){
@@ -910,6 +912,143 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function transformedRootPoints(g,groups){
+ if(groups?.length!==1||groups[0].length!==2)return {points:[],status:'count'};
+ const pairs=groups[0],points=pairs.map(([x,y])=>[x.n/x.d,y.n/y.d]);
+ const equal=(a,b)=>BigInt(a.n)*BigInt(b.d)===BigInt(b.n)*BigInt(a.d);
+ if(equal(pairs[0][0],pairs[1][0]))return {points,status:'same-x'};
+ for(const [i,[x,y]] of pairs.entries()){
+  const nx=BigInt(x.n)*BigInt(g.inside),dx=BigInt(x.d),ny=BigInt(y.n),dy=BigInt(y.d),scale=BigInt(g.scale);
+  if(nx<0n)return {points,status:'domain-'+(i+1)};
+  if(ny*scale<0n)return {points,status:'sign-'+(i+1)};
+  if(ny*ny*dx!==scale*scale*nx*dy*dy)return {points,status:'height-'+(i+1)};
+ }
+ return {points,status:'valid'};
+}
+function rootStudyView(host,g,raw){
+ host.className='task-graphs quantity-model';const C=window.MakarychevCheck,trial=M.parse(g.partial?.[0]),x=trial?trial.n/trial.d:null,fmt=v=>String(Number(v.toPrecision(6))).replace('.',',');
+ let xr,yr,curves=[],points=[],note='';
+ if(g.mode==='figure'){
+  const k=g.generatedRoot||3;curves=[{kind:'reciprocal-offset',k,b:-1}];xr=[-7,Math.max(7,k+1)];yr=[-7,7];
+  if(x!==null){if(x===0)note='При x = 0 точки нет.';else{const y=k/x-1;points.push([x,y,'']);note='На авторской схеме при x = '+fmt(x)+' ордината ≈ '+fmt(y)+'.';}}
+  boundNote(host,g.generatedRoot?'Исследуй обе ветви графика для заданной формулы.':'Схема к рисунку 72. Одна клетка соответствует единице. Числовые оценки между отмеченными точками приблизительны.');
+ }else if(['double','negative','reflect'].includes(g.mode)){
+  const r=transformedRootPoints(g,C.pointGroups(raw)),extent=Math.max(5,...r.points.map(p=>Math.abs(p[0])),x===null?0:Math.abs(x)),height=Math.max(3,Math.sqrt(extent)*Math.max(1,Math.abs(g.scale)),...r.points.map(p=>Math.abs(p[1])));
+  xr=[g.inside<0?-extent-1:-1,extent+1];yr=[g.scale<0?-height-1:-1,height+1];curves=[{kind:'scaled-root-study',scale:1,inside:1}];points=r.points.map(([a,b])=>[a,b,'']);
+  if(g.showSolution)curves.push({kind:'scaled-root-study',scale:g.scale,inside:g.inside});
+  if(x!==null&&x>=0){const y=Math.sqrt(x);points.push([x,y,'']);boundNote(host,'Из исходной точки ('+fmt(x)+'; '+fmt(y)+') получается ('+fmt(g.inside*x)+'; '+fmt(g.scale*y)+').').dataset.rootTransform=String(x);}
+  if(x!==null&&x<0)note='Исходная функция √x при таком аргументе не определена. Выбери неотрицательный x на исходном графике.';
+  boundNote(host,'Твои две точки отмечаются сразу. После правильного построения появится преобразованный график.').dataset.rootConstruction=r.status;
+ }else{
+  const level=g.level?M.parse(g.level):null,h=level?level.n/level.d:0,t=g.high||g.low||h;
+  const fine=g.mode==='level'&&h>0&&h<.5;
+  const extent=Math.max(fine?2*h*h:2.5,t*t*1.2,x===null?0:Math.abs(x)*1.1);
+  xr=[-extent*.08,extent];yr=fine?[-h*.15,Math.max(h*1.6,Math.sqrt(extent)*1.1)]:[Math.min(-.6,h<0?h-1:0),Math.max(2,Math.sqrt(extent)*1.2,t+1)];
+  curves=[{kind:'scaled-root-study',scale:1,inside:1}];
+  if(g.mode==='level')curves.push({kind:'line',k:0,b:h});
+  if(g.mode==='band'||g.mode==='greater'){curves.push({kind:'line',k:0,b:g.low,dashed:true});if(Number.isFinite(g.high))curves.push({kind:'line',k:0,b:g.high,dashed:true});}
+  if(['above','below','cross'].includes(g.mode))curves.push({kind:'line',k:1,b:0});
+  if(x!==null){if(x<0)note='При отрицательном x у y = √x нет действительной точки.';else{points.push([x,Math.sqrt(x),'']);note='При x = '+fmt(x)+' высота √x ≈ '+fmt(Math.sqrt(x))+'.';}}
+  if(g.mode==='cross'){const groups=C.pointGroups(raw);if(groups?.length===1)for(const [a,b]of groups[0])points.push([a.n/a.d,b.n/b.d,'']);}
+ }
+ const intervalMode=['band','greater','above','below'].includes(g.mode);
+ const proposal=intervalMode&&raw?C.axisRanges(C.systemInput(raw,'x')):null;
+ if(proposal){
+  for(const range of proposal){
+   const lower=Math.max(0,range.min),upper=range.max;
+   if(lower>upper)continue;
+   const holes=[],xs=[];
+   for(const [end,open] of [[lower,lower===range.min&&range.leftOpen],[upper,range.rightOpen]]){
+    if(!Number.isFinite(end))continue;
+    xs.push(end);
+    if(open)holes.push([end,Math.sqrt(end)]);else points.push([end,Math.sqrt(end),'']);
+   }
+   curves.push({kind:'root-study-segment',lower,upper,holes,xs,emphasis:true});
+  }
+  boundNote(host,'Выделенная дуга показывает предложенные тобой значения x на графике корня. Пустой кружок означает, что граничная точка исключена.');
+ }
+ const svg=rootGraph({curves,points,xRange:xr,yRange:yr,compactTicks:Math.max(...xr.map(Math.abs))>1000||(xr[1]<1&&yr[1]<1),decimalComma:true,axisLabels:['x','y'],label:g.mode==='figure'?'Две ветви графика к рисунку 72':'Исходные графики и выбранные точки'},'');host.append(svg);
+ if(note)boundNote(host,note).dataset.rootStudyProbe=String(x);
+ if(proposal)intervalNumberLine(host,{givenRows:[],proposal,points:[]},'');
+}
+
+function positionCoefficients(g,raw){
+ const parts=String(raw??'').split(';');if(parts.length!==2)return null;
+ const [k,b]=parts.map(v=>M.parse(v));if(!k||!b)return null;
+ return {k:k.n/k.d,b:b.n/b.d,validK:Math.sign(k.n)===g.slopeSign,validB:Math.sign(b.n)===g.offsetSign};
+}
+function oppositeReading(g,x){return (g.power===0?1:g.k*x)/(x*x+5);}
+function positionGraph(host,g,raw){
+ host.className='task-graphs quantity-model';const own=g.mode==='coefficients',q=M.parse(g.partial?.[0]),x=q?q.n/q.d:null,fmt=v=>String(Number(v.toPrecision(7))).replace('.',',');
+ if(own||g.mode==='quadrants'){
+  const pair=own?positionCoefficients(g,raw):{k:q?q.n/q.d:g.slopeSign,b:g.b};
+  if(!pair){boundNote(host,'Введи коэффициенты через точку с запятой. Прямая пройдёт через точку (0;b) с выбранным наклоном.');return;}
+  const {k,b}=pair,intercept=k?-b/k:0,xmax=Math.max(2,Math.abs(intercept)*1.7),ymax=Math.max(2,Math.abs(b)*1.6,Math.abs(k)*xmax*.6);
+  const svg=rootGraph({curves:[{kind:'line',k,b}],points:[[0,b,'']],xRange:[-xmax,xmax],yRange:[-ymax,ymax],compactTicks:xmax>1000||ymax>1000,axisLabels:['x','y'],label:'Своя прямая и четыре координатные четверти'},'');host.append(svg);
+  boundNote(host,'Сейчас k = '+fmt(k)+', b = '+fmt(b)+'. I: x > 0, y > 0. II: x < 0, y > 0. III: x < 0, y < 0. IV: x > 0, y < 0.').dataset.positionLine=String(k)+';'+String(b);
+  return;
+ }
+ if(g.mode==='opposites'){
+  if(x===null){boundNote(host,'В первом шаге выбери аргумент для сравнения со своим противоположным числом.');return;}
+  boundNote(host,'Для x = '+fmt(x)+' ордината ≈ '+fmt(oppositeReading(g,x))+'; для −x = '+fmt(-x)+' ордината ≈ '+fmt(oppositeReading(g,-x))+'. Оба знаменателя равны '+fmt(x*x+5)+'.').dataset.oppositeTrial=String(x);return;
+ }
+ if(g.mode==='factor'){
+  if(x===null){boundNote(host,'Выбери значение переменной — модель вычислит исходный многочлен по его членам.');return;}
+  const terms=g.coeff.map((coefficient,i)=>coefficient*x**i);
+  boundNote(host,'Ненулевые слагаемые исходного многочлена при '+g.variable+' = '+fmt(x)+': '+terms.filter((_,i)=>g.coeff[i]!==0).reverse().map(fmt).join(' + ')+'. Сумма ≈ '+fmt(terms.reduce((a,b)=>a+b,0))+'.').dataset.factorTrial=String(x);return;
+ }
+ let curves,points=[],xr,yr,y;
+ if(g.mode==='quadratic'){
+  const a=g.a[0]/g.a[1],b=g.k[0]/g.k[1],c=g.b,vertex=-b/(2*a),span=Math.max(4,Math.abs(vertex)*2+2);
+  curves=[{kind:'quadratic',a,b,c}];xr=[-span,span];const extreme=a*vertex*vertex+b*vertex+c;yr=[Math.min(-2,extreme-2),Math.max(5,c+4,Math.abs(extreme)*.7)];
+  if(x!==null)y=a*x*x+b*x+c;
+ }else {
+  const figure=g.mode==='figure69',k=figure?.5:-1.5,b=figure?2:6;curves=[{kind:'line',k,b}];xr=figure?[-7,7]:[-1,7];yr=figure?[-2,7]:[-3,8];
+  if(!figure)curves.push({kind:'line',k:0,b:0},{kind:'line',k:0,b:3});
+  if(x!==null)y=k*x+b;
+ }
+ if(x!==null)points.push([x,y,'']);
+ host.append(rootGraph({curves,points,xRange:xr,yRange:yr,axisLabels:['x','y'],label:g.mode==='figure69'?'График к рисунку 69':'Исходная функция и проверяемая точка'},''));
+ if(x!==null)boundNote(host,'При аргументе '+fmt(x)+' высота ≈ '+fmt(y)+'.').dataset.positionProbe=String(x);
+ if(g.mode==='closed-band'&&raw){const C=window.MakarychevCheck,proposed=C.axisRanges(C.systemInput(raw,'x'));if(proposed)intervalNumberLine(host,{givenRows:[],proposal:proposed,points:[]},'');}
+}
+
+function ownAffine(g,groups){
+ if(groups?.length!==1||groups[0].length!==2)return {status:'count',points:[]};
+ const pairs=groups[0],points=pairs.map(([x,y])=>[x.n/x.d,y.n/y.d]);
+ const pair=pairs.map(([x,y])=>[BigInt(x.n),BigInt(x.d),BigInt(y.n),BigInt(y.d)]);
+ if(pair[0][0]*pair[1][1]===pair[1][0]*pair[0][1])return {status:'same-x',points};
+ const k=M.parse(g.k),kn=BigInt(k.n),kd=BigInt(k.d),b=BigInt(g.b);
+ const wrong=pair.findIndex(([xn,xd,yn,yd])=>yn*kd*xd!==(kn*xn+b*kd*xd)*yd);
+ const slope=(points[1][1]-points[0][1])/(points[1][0]-points[0][0]),offset=points[0][1]-slope*points[0][0];
+ return {status:wrong<0?'valid':'point-'+(wrong+1),points,slope,offset};
+}
+function affineStudyGraph(host,g,raw){
+ host.className='task-graphs quantity-model';const C=window.MakarychevCheck,entry=g.partial?.[0];
+ if(g.collection){
+  const q=M.parse(entry),i=q&&q.d===1&&q.n>=1&&q.n<=5?q.n-1:0,k=g.slopes[i],b=g.free[i],points=[[0,b,''],[1,b+k,'']];
+  const yr=[Math.min(-2,b-2,b+k-2),Math.max(2,b+2,b+k+2)];
+  host.append(rootGraph({curves:[{kind:'line',k,b}],points,xRange:[-2,3],yRange:yr,axisLabels:['x','y'],label:'Изменение y от x = 0 до x = 1'},''));
+  boundNote(host,'Функция '+(i+1)+': y = '+g.labels[i]+'. Аргумент вырос от 0 до 1, ордината изменилась от '+b+' до '+(b+k)+'.').dataset.affineIndex=String(i+1);return;
+ }
+ const base=M.parse(g.k),b=g.b,own=g.feature==='build',family=g.family&&!own,q=M.parse(entry);
+ const slope=family&&q&&q.n!==0&&Math.sign(q.n)===Math.sign(base.n)?q:base,k=slope.n/slope.d;
+ const root=-b/k;
+ const candidate=own?ownAffine(g,C.pointGroups(raw)):null,points=own?candidate.points.map(([x,y])=>[x,y,'']):[];
+ const curves=own?(Number.isFinite(candidate.slope)?[{kind:'line',k:candidate.slope,b:candidate.offset}]:[]):[{kind:'line',k,b}];
+ if(!own&&!family&&q){const x=q.n/q.d;points.push([x,k*x+b,'']);}
+ if(g.legacy){const attempt=M.parse(raw);if(attempt){const x=attempt.n/attempt.d;points.push([x,k*x+b,'']);}}
+ const xx=[0,root,...points.map(p=>p[0])],yy=[0,b,...points.map(p=>p[1])];
+ const padx=Math.max(2,(Math.max(...xx)-Math.min(...xx))*.15),pady=Math.max(Math.abs(k),2,(Math.max(...yy)-Math.min(...yy))*.15);
+ const svg=rootGraph({curves,points,xRange:[Math.min(...xx)-padx,Math.max(...xx)+padx],yRange:[Math.min(...yy)-pady,Math.max(...yy)+pady],
+  compactTicks:Math.max(...xx.map(Math.abs),...yy.map(Math.abs))>=1000,axisLabels:['x','y'],label:own?'Прямая, построенная через две предложенные точки':'Прямая и ордината при выбранном аргументе'},'');
+ host.append(svg);
+ if(own){svg.dataset.affineConstruct=candidate.status;boundNote(host,'После ввода двух точек с разными абсциссами модель проведёт через них твою прямую.');}
+ else if(family){boundNote(host,'Сейчас y = ('+M.answer(slope)+')x. Проверь новый коэффициент того же знака и проследи, какие свойства сохраняются.').dataset.affineSlope=M.answer(slope);}
+ else if(q&&!g.legacy){boundNote(host,'При x = '+M.answer(q)+' получаем y ≈ '+String(Number((k*q.n/q.d+b).toPrecision(8))).replace('.',',')+'.').dataset.affineInput=M.answer(q);}
+ if(['positive','negative','domain','range'].includes(g.feature)&&raw){const axis=g.feature==='range'?'y':'x',ranges=C.axisRanges(C.systemInput(raw,axis));if(ranges)intervalNumberLine(host,{givenRows:[],proposal:ranges,points:[]},'');}
+}
+
 function review43Trial(g,raw){
  const q=M.parse(raw);if(!q)return null;const x=q.n/q.d;
  if(['cross','disjoint','strip'].includes(g.mode)){
@@ -2353,6 +2492,9 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-root-study'){rootStudyView(host,config,value);return;}
+ if(config.type==='source-line-position'){positionGraph(host,config,value);return;}
+ if(config.type==='source-affine-study'){affineStudyGraph(host,config,value);return;}
  if(config.type==='source-review-43'){review43Graph(host,config,value);return;}
  if(config.type==='source-formula-zeros'){functionZeroGraph(host,config,value);return;}
  if(config.type==='source-graph-witness'){graphWitness(host,config,value);return;}
@@ -2455,5 +2597,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

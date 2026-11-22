@@ -110,7 +110,14 @@
       ['/geometry-course/textbook/data/regular-polygon-diagonals.json', '№1225–1228'],
       ['/geometry-course/textbook/data/arc-routes-and-incircles.json', '№1229–1232'],
       ['/geometry-course/textbook/data/major-arcs-and-similar-circles.json', '№1233–1235'],
-      ['/geometry-course/textbook/data/regular-compass-finale.json', '№1236–1239']
+      ['/geometry-course/textbook/data/regular-compass-finale.json', '№1236–1239'],
+      ['/geometry-course/textbook/data/regular-polygon-review.json', 'вопросы 1–7 главы XIII'],
+      ['/geometry-course/textbook/data/circle-measure-review.json', 'вопросы 8–16 главы XIII'],
+      ['/geometry-course/textbook/data/plane-isometries.json', 'пп. 122–124 и №1240–1241'],
+      ['/geometry-course/textbook/data/isometry-invariants.json', '№1242–1244'],
+      ['/geometry-course/textbook/data/isometric-quadrilaterals.json', '№1245а–г'],
+      ['/geometry-course/textbook/data/isometry-determination.json', '№1246–1249'],
+      ['/geometry-course/textbook/data/isometry-constructions.json', '№1250–1252']
   ];
 
   async function forCourse(base) {
