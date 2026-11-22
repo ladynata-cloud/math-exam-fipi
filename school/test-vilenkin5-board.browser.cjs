@@ -534,6 +534,20 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.164: compare neighbouring coordinates and return control';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-164"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№1.164'}).waitFor();
+  await teacherFrame.locator('#answer').fill('Пэ');await teacherFrame.locator('#answer-form button').click();
+  const firstOrderAttempt=await same(teacherFrame,studentFrame,'right-hand point chosen for left-hand question');
+  assert.match(firstOrderAttempt.scene.message,/правее/);assert.equal(firstOrderAttempt.scene.attempt,1);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption({value:'5'});
+  await studentFrame.locator('[data-v5-param=side]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('2990');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('ку');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const orderDraft=await same(studentFrame,teacherFrame,'separate model pair and lesson step');assert.equal(orderDraft.scene.model.row,5);assert.equal(orderDraft.scene.model.side,1);assert.equal(orderDraft.scene.savedInput,'ку');assert(orderDraft.scene.model.seen);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'return point comparison to teacher');await teacherFrame.locator('#answer-form button').click();
+  const orderCorrection=await same(teacherFrame,studentFrame,'spoken letter after self correction');assert(orderCorrection.scene.correct);assert.deepEqual(orderCorrection.scene.hintLevels,{});
+  await narrow(student,studentFrame,'compare-neighbouring-coordinates');
   phase = 'source 1.161: measure from the fish nose and retain the selected scale';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-161"]').click();await studentFrame.locator('h1').filter({hasText:'№1.161'}).waitFor();
   await teacherFrame.locator('[data-v5-param=row]').selectOption({value:'2'});await teacherFrame.locator('[data-v5-prediction]').fill('110');await teacherFrame.locator('[data-v5-predict] button').click();
