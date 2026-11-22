@@ -1538,6 +1538,15 @@ async function run(browser, origin, backend, failures) {
   await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'corrected vertex count')).scene.correct);
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);assert((await same(teacherFrame,studentFrame,'child reconnects to corrected cube')).scene.correct);await narrow(student,studentFrame,'two cube faces and bend');
 
+  phase = 'division source 5.112: legal and oversized remainders';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-112"]').click();await studentFrame.locator('h1').filter({hasText:'№5.112'}).waitFor();
+  await teacherFrame.locator('#answer').fill('0;7');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'identity holds but remainder too large')).scene.message,/ещё группу/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption({value:'3'});await studentFrame.locator('[data-v5-param=offset]').selectOption({value:'2'});
+  await studentFrame.locator('[data-v5-prediction]').fill('8');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('#answer').fill('2;');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);assert.equal((await same(studentFrame,teacherFrame,'shortage and partial pair after teacher reload')).scene.model.offset,2);
+  await studentFrame.locator('#answer').fill('2;1');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'correct remainder')).scene.correct);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);assert((await same(teacherFrame,studentFrame,'corrected pair survives child reload')).scene.correct);await narrow(student,studentFrame,'remainder groups');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
