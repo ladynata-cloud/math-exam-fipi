@@ -58,6 +58,7 @@ function curveValue(curve,x){
  if(curve.kind==='sqrt-affine'){const radicand=curve.k*x+curve.b;return radicand>=0?Math.sqrt(radicand):NaN;}
  if(curve.kind==='sqrt')return x>=0?Math.sqrt(x):NaN;
  if(curve.kind==='line')return curve.k*x+curve.b;
+ if(curve.kind==='sum-with-root')return sumOfRoot(curve.form,curve.k,x);
  if(curve.kind==='hyperbola')return x===0?NaN:curve.k/x;
  if(curve.kind==='quadratic')return curve.a*x*x+curve.b*x+curve.c;
  if(curve.kind==='square')return x*x;
@@ -925,6 +926,68 @@ function transformedRootPoints(g,groups){
  }
  return {points,status:'valid'};
 }
+function reciprocalPoints(graph, groups) {
+ if (groups?.length !== 1 || groups[0].length !== 2) return {status:'count',points:[]};
+ const pairs=groups[0], points=pairs.map(([x,y])=>[x.n/x.d,y.n/y.d]);
+ for (const [i,[x,y]] of pairs.entries()) {
+  if (x.n === 0) return {status:'axis-'+(i+1),points};
+  if (BigInt(x.n)*BigInt(y.n)!==BigInt(graph.k)*BigInt(x.d)*BigInt(y.d))
+   return {status:'height-'+(i+1),points};
+ }
+ return {status:Math.sign(pairs[0][0].n)===Math.sign(pairs[1][0].n)?'branch':'valid',points};
+}
+function reciprocalPair(graph,groups) {
+ if(groups?.length!==2)return {status:'count',parts:[]};
+ const parts=groups.map((points,i)=>reciprocalPoints({k:i?graph.k2:graph.k},[points]));
+ const wrong=parts.findIndex(part=>part.status!=='valid');
+ return {status:wrong<0?'valid':parts[wrong].status,group:wrong+1,parts};
+}
+function sumOfRoot(form,k,x) {
+ if(form==='negative')return x<=0?-k*x+Math.sqrt(-x):NaN;
+ if(x<0)return NaN;
+ return (form==='linear'?k*x:x*x)+Math.sqrt(x);
+}
+function finalFunctionsView(host,g,value) {
+ host.className='task-graphs quantity-model';
+ const C=window.MakarychevCheck, asSet=answer=>C.axisRanges(C.systemInput(answer,'x'));
+ const proposal=asSet(value);
+ if(g.mode==='system'){
+  const rows=(g.partial||[]).slice(0,2).map(asSet).filter(Boolean);
+  boundNote(host,'Промежутки из твоих шагов появляются по очереди. Последняя отметка показывает твой общий ответ.');
+  intervalNumberLine(host,{givenRows:rows,proposal,points:[]},'');
+  return;
+ }
+ const trial=M.parse(g.partial?.[0]), x=trial?trial.n/trial.d:null;
+ const sum=g.mode==='sum', plot=g.mode==='plot'||g.mode==='pair-build', curves=[], points=[];
+ const fmt=a=>String(Number(a.toPrecision(7))).replace('.',',');
+ let limit=sum?Math.max(12,Math.abs(g.k||5)*5+3):Math.max(6,Math.abs(g.level||0)+2,Math.abs(g.k||1)+2);
+ if(sum)curves.push({kind:'sum-with-root',form:g.form,k:g.k});
+ else {
+  if(!plot||g.showSolution)curves.push({kind:'hyperbola',k:g.k});
+  if(g.mode==='pair'||g.mode==='pair-build'&&g.showSolution)curves.push({kind:'hyperbola',k:g.k2,dashed:true});
+  if(['height','below','above'].includes(g.mode))curves.push({kind:'line',k:0,b:g.level,dashed:true});
+ }
+ const drafts=g.mode==='pair-build'?reciprocalPair(g,C.pointGroups(value)).parts:[reciprocalPoints(g,C.pointGroups(value))];
+ if(plot)for(const [index,draft] of drafts.entries())for(const [a,b] of draft.points){
+  if(Math.abs(a)<=6&&Math.abs(b)<=limit)points.push([a,b,g.mode==='pair-build'?(index?'Б':'А'):'']);
+  else boundNote(host,'Твоя точка ('+fmt(a)+'; '+fmt(b)+') лежит за границей показанной шкалы.');
+ }
+ if(x!==null){
+  const y=sum?sumOfRoot(g.form,g.k,x):x===0?NaN:g.k/x;
+  if(Number.isFinite(y)){
+   const values=['pair','pair-build'].includes(g.mode)?[y,g.k2/x]:[y];
+   boundNote(host,'При x = '+M.answer(trial)+' высота '+(values.length===2?'первой и второй кривых соответственно ':'')+values.map(fmt).join(' и ')+'.');
+   for(const v of values)if(Math.abs(x)<=6&&Math.abs(v)<=limit)points.push([x,v,'']);
+  }else boundNote(host,sum?'Этот x даёт отрицательное число под корнем.':'При x = 0 знаменатель равен нулю, точки нет.');
+ }
+ const svg=rootGraph({label:sum?'Зависимость суммы от аргумента':plot?'Построение ветвей гиперболы по своим точкам':'Сравнение ординат на координатной плоскости',curves,points,xRange:[-6,6],yRange:sum?[-3,limit]:[-limit,limit],xTickStep:2,yTickStep:Math.ceil(limit/3),plotHeight:275},'');
+ svg.setAttribute('data-final-function',g.mode);host.append(svg);
+ if(g.mode==='pair-build')boundNote(host,'Точки А относятся к первой гиперболе, точки Б — ко второй.');
+ if(g.mode==='pair'||g.mode==='pair-build'&&g.showSolution)boundNote(host,'Сплошная кривая соответствует y = '+g.k+'/x, штриховая — y = '+g.k2+'/x.');
+ if(['height','above','below'].includes(g.mode))boundNote(host,'Штриховая прямая показывает уровень y = '+g.level+'.');
+ if(proposal&&['above','below'].includes(g.mode)){boundNote(host,'Твой промежуток на оси x');intervalNumberLine(host,{givenRows:[],proposal,points:[]},'');}
+}
+
 function rootStudyView(host,g,raw){
  host.className='task-graphs quantity-model';const C=window.MakarychevCheck,trial=M.parse(g.partial?.[0]),x=trial?trial.n/trial.d:null,fmt=v=>String(Number(v.toPrecision(6))).replace('.',',');
  let xr,yr,curves=[],points=[],note='';
@@ -2492,6 +2555,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-final-functions'){finalFunctionsView(host,config,value);return;}
  if(config.type==='source-root-study'){rootStudyView(host,config,value);return;}
  if(config.type==='source-line-position'){positionGraph(host,config,value);return;}
  if(config.type==='source-affine-study'){affineStudyGraph(host,config,value);return;}
@@ -2597,5 +2661,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
