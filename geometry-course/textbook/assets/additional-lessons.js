@@ -115,7 +115,8 @@
       ['/geometry-course/textbook/data/circle-measure-review.json', 'вопросы 8–16 главы XIII'],
       ['/geometry-course/textbook/data/plane-isometries.json', 'пп. 122–124 и №1240–1241'],
       ['/geometry-course/textbook/data/isometry-invariants.json', '№1242–1244'],
-      ['/geometry-course/textbook/data/isometric-quadrilaterals.json', '№1245а–г']
+      ['/geometry-course/textbook/data/isometric-quadrilaterals.json', '№1245а–г'],
+      ['/geometry-course/textbook/data/isometry-determination.json', '№1246–1249']
   ];
 
   async function forCourse(base) {
