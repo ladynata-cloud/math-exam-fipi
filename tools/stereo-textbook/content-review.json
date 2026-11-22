@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T02:08:00Z",
-  "scope": "All final-review parts of 764–767 and the first three advanced source exercises 768–770 are complete. The remaining advanced exercises begin at 771.",
+  "registeredAt": "2026-11-22T02:18:00Z",
+  "scope": "All final-review parts of 764–767 and advanced source exercises 768–773 are complete. The remaining advanced exercises begin at 774.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2476,6 +2476,18 @@
       ],
       "evidence": "tools/stereo-textbook/first-advanced-pyramid-problems.json",
       "mathematicalReport": "tools/stereo-textbook/first-advanced-pyramid-problems.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued Atanasyan 2024 volume, advanced problems on printed page 190 (PDF page 192), answers and hints on printed page 272.",
+      "reviewedAt": "2026-11-22T02:18:00Z",
+      "scope": "Advanced exercises 771–773 on printed page 190, with original hints on page 272. Tested volume and face ratios at the bisecting plane, complete unordered seven-way classification of equidistant planes, and both directions of the dihedral-angle criterion for acute, right and obtuse sections.",
+      "cardIds": [
+        "ex-main-0771",
+        "ex-main-0772",
+        "ex-main-0773"
+      ],
+      "evidence": "tools/stereo-textbook/dihedral-bisectors-and-midplanes.json",
+      "mathematicalReport": "tools/stereo-textbook/dihedral-bisectors-and-midplanes.test.cjs"
     }
   ],
   "cards": [
@@ -8334,6 +8346,18 @@
     {
       "id": "ex-main-0770",
       "sha256": "4575dc6ad94a6cc23017545ffb13bb08459c5958760a1007e187b0ca2983bae3"
+    },
+    {
+      "id": "ex-main-0771",
+      "sha256": "90bd149078f810b50a2554a2bd68b97058746d982fa5cf872e6e19303faf4ddd"
+    },
+    {
+      "id": "ex-main-0772",
+      "sha256": "8ba8bc430f21fdd2842ff513226816b9f9dce4410e8e93964f3657844580b49c"
+    },
+    {
+      "id": "ex-main-0773",
+      "sha256": "e2b7c065abec5952942d3ac82a23f7197df20873fd269eabf935a900b1dea400"
     }
   ]
 }
