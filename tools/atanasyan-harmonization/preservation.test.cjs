@@ -73,6 +73,7 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
+  "geometry-course/textbook/data/rotated-circles-lines.json": "698930acc921de1583364dd030ca8a0683258efbc9e3be0f1d0fbd4ee95655ca",
   "geometry-course/textbook/data/rotation-constructions.json": "419d2548b6e362e17f394534b1b3927e6d1df439838e88ffd8eead573ebb6fcf",
   "geometry-course/textbook/data/parallel-translation-constructions.json": "7f1051c6f4a2e3984f48a7447260bcc48c55de3a4d94bb720b01b819daad64fc",
   "geometry-course/textbook/data/translations-and-rotations.json": "8f47c491676549df994d6b3e6743d81b7cdfcc541870ea7a59bfee573b5bf97d",
@@ -159,7 +160,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "af4883f5e3e4762dca4d3dba6371aa400b8c5ac6c91cf70bfbe07c998199ed71",
+  "geometry-course/textbook/assets/additional-lessons.js": "c6a8f0bbaa33d554c8139fa7e573dcdbacc0b28a68712a9d81cd8763c4b6f4ae",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",

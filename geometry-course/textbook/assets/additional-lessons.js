@@ -121,7 +121,8 @@
       ['/geometry-course/textbook/data/motion-composition.json', '№1253а–в и 1254–1256'],
       ['/geometry-course/textbook/data/translations-and-rotations.json', '№1257а–1259б и теория 125–126'],
       ['/geometry-course/textbook/data/parallel-translation-constructions.json', '№1260а–1262'],
-      ['/geometry-course/textbook/data/rotation-constructions.json', '№1263а–1266']
+      ['/geometry-course/textbook/data/rotation-constructions.json', '№1263а–1266'],
+      ['/geometry-course/textbook/data/rotated-circles-lines.json', '№1267а–1269']
   ];
 
   async function forCourse(base) {
