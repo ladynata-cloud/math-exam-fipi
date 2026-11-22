@@ -130,4 +130,5 @@ require('./first-advanced-pyramid-problems.test.cjs');
 require('./dihedral-bisectors-and-midplanes.test.cjs');
 require('./cube-sections-distances-and-division.test.cjs');
 require('./surface-paths-and-parallel-sections.test.cjs');
+require('./tetrahedra-and-cube-tilings.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

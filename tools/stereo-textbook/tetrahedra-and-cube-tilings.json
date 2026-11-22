@@ -1,0 +1,189 @@
+{
+  "parts": {
+    "780": [
+      null
+    ],
+    "781": [
+      null
+    ],
+    "782": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "780": {
+      "id": "source-main-0780",
+      "kind": "exercise",
+      "title": "Задача № 780",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "780",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          190
+        ],
+        "pdfPages": [
+          192
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "781": {
+      "id": "source-main-0781",
+      "kind": "exercise",
+      "title": "Задача № 781",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "781",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "782": {
+      "id": "source-main-0782",
+      "kind": "exercise",
+      "title": "Задача № 782",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "782",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0780": {
+      "raw": "ee63180d828b163979692fb54f326df669070c505e760ab54ef26b712e11fb89",
+      "authored": "cc0c51e7c2137345f5d23b317490723818a0c814f222257ecb3631bf3e0f9a84",
+      "integrated": "bbccec915cfe2442121e094ac932674442c02176d835a36f7ce8bbe7e9c4beab"
+    },
+    "ex-main-0781": {
+      "raw": "1adc4b9375df58d4cc931fc57bda1782d5c88a8ec80f50c4661ba2bc0658d3d8",
+      "authored": "0b0ff8b9add24f5415721d76e4bd0016879b6cdc67dd1668ba8033dab491d4ff",
+      "integrated": "fa721fe6d9478fe38c95139e822f427b42b2eb361db55393dba8de79509cc14c"
+    },
+    "ex-main-0782": {
+      "raw": "9b947460fdb5c600ef0ce496b708f01267306796ab7c53c787e3877e1f9aaa99",
+      "authored": "907e8c45bcba47f212bd4d13d9469436184ffd2a01b45fb05bcfa2f2df3d3abd",
+      "integrated": "21bbd01c271cb2a75bd086a8280f0881583536d63e86311e09f42dc800674bd8"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0780|condition",
+      "tetrahedra-and-cube-tilings-ex-main-0780-condition"
+    ],
+    [
+      "ex-main-0780|help:h1",
+      "tetrahedra-and-cube-tilings-ex-main-0780-help-h1"
+    ],
+    [
+      "ex-main-0780|help:h2",
+      "tetrahedra-and-cube-tilings-ex-main-0780-help-h2"
+    ],
+    [
+      "ex-main-0780|step-1",
+      "tetrahedra-and-cube-tilings-ex-main-0780-step-1"
+    ],
+    [
+      "ex-main-0780|step-2",
+      "tetrahedra-and-cube-tilings-ex-main-0780-step-2"
+    ],
+    [
+      "ex-main-0780|step-3",
+      "tetrahedra-and-cube-tilings-ex-main-0780-step-3"
+    ],
+    [
+      "ex-main-0781|condition",
+      "tetrahedra-and-cube-tilings-ex-main-0781-condition"
+    ],
+    [
+      "ex-main-0781|help:h1",
+      "tetrahedra-and-cube-tilings-ex-main-0781-help-h1"
+    ],
+    [
+      "ex-main-0781|help:h2",
+      "tetrahedra-and-cube-tilings-ex-main-0781-help-h2"
+    ],
+    [
+      "ex-main-0781|step-1",
+      "tetrahedra-and-cube-tilings-ex-main-0781-step-1"
+    ],
+    [
+      "ex-main-0781|step-2",
+      "tetrahedra-and-cube-tilings-ex-main-0781-step-2"
+    ],
+    [
+      "ex-main-0781|step-3",
+      "tetrahedra-and-cube-tilings-ex-main-0781-step-3"
+    ],
+    [
+      "ex-main-0782|condition",
+      "tetrahedra-and-cube-tilings-ex-main-0782-condition"
+    ],
+    [
+      "ex-main-0782|help:h1",
+      "tetrahedra-and-cube-tilings-ex-main-0782-help-h1"
+    ],
+    [
+      "ex-main-0782|help:h2",
+      "tetrahedra-and-cube-tilings-ex-main-0782-help-h2"
+    ],
+    [
+      "ex-main-0782|help:h3",
+      "tetrahedra-and-cube-tilings-ex-main-0782-help-h3"
+    ],
+    [
+      "ex-main-0782|step-1",
+      "tetrahedra-and-cube-tilings-ex-main-0782-step-1"
+    ],
+    [
+      "ex-main-0782|step-2",
+      "tetrahedra-and-cube-tilings-ex-main-0782-step-2"
+    ],
+    [
+      "ex-main-0782|step-3",
+      "tetrahedra-and-cube-tilings-ex-main-0782-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "37dd54b306261acc877fdeba996f19f9eea77ec986ecbfb60838957e80e3761f",
+      "afterSHA256": "53b462585a98b87d3d3c4d7d41aad0bf9b171a773203bdfb34da2ef781581d84"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "d7f7511a713ce9417ddf0058e006a786d3827e8bda0064243d0f6d96c3fe8253",
+      "afterSHA256": "7ca407c6496d30d02356b491d7c8c26773718c01c259479f7aa483fd78e060bc"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T02:31:00Z",
+    "scope": "All final-review parts of 764–767 and advanced source exercises 768–779 are complete. The remaining advanced exercises begin at 780."
+  },
+  "before": {
+    "course": "18c68022efaf1a64f84b0cf7a2c251759009aa49126eb9da2dd8937ac0261616",
+    "index": "166743eb111d4ecb0e69149489f8b9e6e07f52c1724fc76a5d59298cf688d4d3",
+    "registry": "594e94eb535b74deb904eb9e5818714bac8439b18752805868497c81229e64e6",
+    "cases": "7849f314f114936b2e7aff180e41cdf88cd9ff89e4872c7970df55ad2c01a3fe"
+  }
+}
