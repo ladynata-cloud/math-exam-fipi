@@ -1,4 +1,5 @@
 'use strict';
+const { chapterThreeCards } = require('./browser-chapter-three-inventory.cjs');
 // Printed pp. 118–120. Exercise the public course entry, model and saved learning on a clean browser profile.
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
@@ -41,11 +42,7 @@ async function verify(width,url){
   const page=await browser.newPage({viewport:{width,height:900}});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);
-  const inventory=await page.evaluate(()=>{
-    const p=MakarychevCourse.lessons.find(l=>l.id==='p20');
-    return p.studyOrder.filter(i=>p.tasks[i].source.type==='textbook')
-      .map(i=>({index:i,id:p.tasks[i].id,title:p.tasks[i].title,graph:Boolean(p.tasks[i].graph)}));
-  });
+  const inventory = await chapterThreeCards(page, 'p20', 510, 530);
   assert.equal(inventory.length,70);
   for(const card of inventory){
     await page.evaluate(index=>{history.replaceState(null,'','#lesson/p20/'+index);MakarychevApp.route();},card.index);

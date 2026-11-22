@@ -1,4 +1,5 @@
 'use strict';
+const { chapterThreeCards } = require('./browser-chapter-three-inventory.cjs');
 // Printed pp. 170–171. Exercise the public course entry, model and saved learning on a clean browser profile.
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
@@ -42,12 +43,11 @@ async function verify(width,url){
   const errors=[];
   const fresh=async()=>{const p=await browser.newPage({viewport:{width,height:900}});p.setDefaultTimeout(60000);p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;};
   let page=await fresh();
-  const cards=await page.evaluate(()=>{const lesson=MakarychevCourse.lessons.find(l=>l.id==='p32');
-    return lesson.studyOrder.filter(i=>lesson.tasks[i].source.type==='textbook'||lesson.tasks[i].source.adaptation).map(i=>({i,title:lesson.tasks[i].title}));});
+  const cards = await chapterThreeCards(page, 'p32', 719, 732);
   assert.equal(cards.length,24);
   for(const [index,card] of cards.entries()){
     if(index&&index%8===0){await page.close();page=await fresh();}
-    await page.evaluate(i=>{history.replaceState(null,'','#lesson/p32/'+i);MakarychevApp.route();},card.i);
+    await page.evaluate(i=>{history.replaceState(null,'','#lesson/p32/'+i);MakarychevApp.route();},card.index);
     assert.equal(await page.locator('.task-heading h2').innerText(),card.title);
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),card.title);
   }

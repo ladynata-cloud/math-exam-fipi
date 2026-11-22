@@ -1,4 +1,4 @@
-const {chromium}=require('playwright');
+const practice=require('./area-practice-shards.cjs');
 const assert=require('node:assert/strict');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../..');
@@ -11,10 +11,6 @@ const server=http.createServer((req,res)=>{
  res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res);
 });
 (async()=>{
- await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
- const base='http://127.0.0.1:'+server.address().port+'/geometry-course/textbook/';
- const browser=await chromium.launch({headless:true, ...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
- try {
  const answers={842:'8',843:'3',844:'64',845:'9',846:'40',847:'49',848:'19',849:'20',850:'40',851:'19',852:'15',853:'6',854:'24',855:'9',856:'37',857:'51',858:'61',859:'125','860-1':'108','860-2':'12,96',861:'6',862:'32',863:'9',864:'50',865:'3',866:'2',867:'1,44','868-1':'4,8','868-2':'100','868-3':'4','869-1':'135','869-2':'30',870:'14',871:'10',872:'10',873:'10',874:'7',875:'9',876:'2',877:'2',878:'12',879:'21',880:'9',881:'6',882:'16',883:'10',884:'8',885:'4',886:'15',887:'8',888:'8',889:'6',890:'6',891:'0,25',892:'1',893:'1,5',894:'6',895:'2,4',896:'5',897:'1,4',898:'1,5',899:'4',900:['8','5'],'901-1':['42','36'],'901-2':['6','4'],'901-3':['3','16'],902:['50','65'],903:['4','6'],904:['28','9'],905:['18','8'],906:['5','6'],907:['43','140'],908:['51','52'],909:['10','9'],910:['60','36'],911:['37','17'],912:['11','8'],913:['12','17'],914:['9','16'],915:['4','90'],916:['5','144'],917:['5','21,25'],918:['7','4,5'],919:['6','14'],920:['3','2'],921:['3','24'],922:['8','12'],'923-1':['1','2'],'923-2':['5','10'],924:['8','12'],925:['3','2'],t84:['0','7'],t85:['2','1'],t86:['4','-1'],926:['2','12'],927:['5','3'],'928-1':['25','35'],'928-2':['15','1'],'929-1':['2','3'],'929-2':['1','2'],'929-3':['2','1'],'929-4':['1','2'],'930-1':['0','1'],'930-2':['2','1'],'930-3':['1','1'],931:['6','3'],932:['2','3'],933:['73','10'],934:['50','117'],'935-1':['4','12'],'935-2':['2','4'],'935-3':['0','3'],'936-1':['8','2'],'936-2':['1','1'],'936-3':['7','18'],'936-4':['1','0'],'937-1':['2','1'],'937-2':['7','18'],'937-3':['7','1'],'937-4':['6','9'],'937-5':['9','10'],938:['4','9'],'939-1':['89','28'],'939-2':['1','2'],'940-1':['2','1'],'940-2':['2','1'],'940-3':['0','1'],'940-4':['2','2'],'940-5':['0','3'],t87:['4','0'],t88:['4','5'],t89:['1','0'],t90:['-3','-6'],941:['5','10'],942:['2','7'],943:['5','-2'],944:['-1','7'],945:['5','-2'],'946-1':['7','-2'],'946-2':['-7','0'],'946-3':['-3','-6'],'947-1':['1','5'],'947-2':['5','-3'],948:['5','4'],949:['0','7'],'950-1':['9','5'],'950-2':['27','75'],'950-3':['27','75'],'950-4':['9','5'],'950-5':['9','5'],'951-1':['-2','13'],'951-2':['14','13'],'951-3':['14','13'],'951-4':['-2','13'],'952-1':['6','3'],'952-2':['1','-3'],953:['-4','7'],954:['2','-3'],'955-1':['-4','2'],'955-2':['3','-7'],'955-3':['-1','-5'],956:['-2','6'],957:['2','-7'],'958-1':['5','2'],'958-2':['5','-2'],'958-3':['5','-8'],959:['3','6'],960:['-4','8'],961:['5','8'],962:['60','45'],t91:['9','-9'],t92:['3','12'],963:['4','-3'],'964-1':['6','-4'],'964-2':['3','2'],'964-3':['7','10'],'964-4':['-3','18'],'964-5':['8','-16'],'964-6':['-4','-8'],965:['-5','10'],'966-1':['-14','23'],'966-2':['4','0'],967:['8','3'],'968-1':['2','-3'],'968-2':['-2','3'],'969-1':['24','0'],'969-2':['9','15'],'969-3':['-4','-8'],970:['2','1'],971:['3','-1'],'972-1':['-2','-3'],'972-2':['-2','-1'],973:['1','3'],974:['3','6'],975:['-3','5'],976:['1','7'],977:['2','-5'],978:['2','4'],979:['3','4'],980:['3','14'],981:['20','12'],982:['6,8','7,5'],983:['15','22'],984:['27','17'],985:['2','9'],986:['24','30'],987:['3','11'],988:['2','13'],989:['-1','17'],990:['5','-8'],991:['-2','7'],992:['3','10'],993:['3','1'],994:['1','8'],995:['10,5','4'],996:['3','12'],997:['2','7']};
  const coordinateAnswers={t93:['3','5'],t94:['-2','-4'],'998-1':['4','-3'],'998-2':['240','3'],'998-3':['400','-0,2'],'998-4':['25','4'],'999-1':['6','1/3'],'999-2':['7','1/4'],'999-3':['9','-1/3'],'999-4':['9','-1'],'999-5':['8','1'],'999-6':['5','-1/5'],'999-7':['12','4'],'999-8':['12','-5/4'],'999-9':['1','2']};
  const relationAnswers={'1000-1':['7','-5'],'1000-2':['-1','-5'],'1001-1':['1','-2'],'1001-2':['-1','2'],'1001-3':['3','4'],1002:['8','10'],'1003-1':['3','-4'],'1003-2':['-5','7'],'1003-3':['0','-7'],'1003-4':['1/3','2/3']};
@@ -58,14 +54,34 @@ const server=http.createServer((req,res)=>{
  const additionalVectorAnswers={"1076-1":["-1","-2/3"],"1076-2":["-1","2"],"1076-3":["1","3"],"1076-4":["2","-4"],"1077-1":["-1","125"],"1077-2":["4","100"],"1077-3":["5","205"],"1077-4":["-18","180"],"1078":["6","4"]};
  const coordinateReviewAnswers={"j1":["-2","3"],"j2":["2","-1"],"j3":["3","-2"],"j4":["-3","-4"],"j5":["1","-2"],"j6":["-2","-1"],"j7":["2","-2"],"j8":["-1","-7"],"j9":["-4","3"],"j10":["-3","-5"],"j11":["4","-1"],"j12":["25","13"],"j13":["5","100"],"j14":["15","43"],"j15":["5","-2"],"j16":["9","5"],"j17":["5","25"],"j18":["1","3"],"j19":["-2","3"],"j20":["0","-1"],"j21":["3","4"],"j22":["0","1"],"j23":["2","1"],"j24":["8","-1"]};
  const reviewAnswers={r1:['7','0'],r2:['-3','0'],r3:['5','13'],r4:['2','5'],r5:['2','4'],r6:['4','6'],r7:['2','3'],r8:['3','8'],r9:['2','3'],r10:['4','-2'],r11:['3','-5'],r12:['3','-3'],r13:['-3','3'],r14:['-3','2'],'r15-1':['0','12'],'r15-2':['0','5'],r16:['-3','0'],r17:['-6','6'],r18:['-2','14'],r19:['5','7'],r20:['6','15']};
- for(const width of [320,1280]) {
-  const catalog=await browser.newPage({viewport:{width,height:900}});
-  const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
-  await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1189/).waitFor();
-  await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers,...additionalScalarVectorAnswers,...chapterTwelveFinalAnswers,...regularDefinitionAnswers,...regularAngleAnswers,...regularCenterAnswers,...regularTableAnswers,...polygonCircleAnswers,...polygonAreaAnswers,...polygonCompassAnswers})) {
-   const page=await browser.newPage({viewport:{width,height:900}});
+ const lessons=Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers,...additionalScalarVectorAnswers,...chapterTwelveFinalAnswers,...regularDefinitionAnswers,...regularAngleAnswers,...regularCenterAnswers,...regularTableAnswers,...polygonCircleAnswers,...polygonAreaAnswers,...polygonCompassAnswers});
+ if(process.argv[2]==='--matrix'){
+  console.log(JSON.stringify(practice.shardNumbers()));
+  return;
+ }
+ if(process.argv[2]==='--verify'){
+  practice.verifyReports(process.argv[3],lessons);
+  return;
+ }
+ const count=Number(process.env.AREA_SHARD_COUNT||1);
+ const shard=Number(process.env.AREA_SHARD_INDEX||1);
+ const selectedLessons=practice.selectLessons(lessons,shard,count);
+ const completed=[],opens=[],reloads=[];
+ console.log('Practice group '+shard+'/'+count+' starts '+selectedLessons.length+' lessons at both widths.');
+ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+ const base='http://127.0.0.1:'+server.address().port+'/geometry-course/textbook/';
+ const {chromium}=require('playwright');
+ const launch=()=>chromium.launch({headless:true, ...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
+ try {
+ for(const width of practice.widths) {
+  const errors=[];
+  await practice.withIsolatedReader(launch,width,'catalog',async catalog=>{
+   catalog.on('pageerror',e=>errors.push(e.message));
+   await catalog.goto(base);
+   await catalog.getByText(/Полностью доступны задачи: 1189/).waitFor();
+  });
+  for(const [n,value] of selectedLessons) {
+   await practice.withIsolatedReader(launch,width,n,async page=>{
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
    const chapter11=Object.hasOwn(coordinateReviewAnswers,n);
@@ -78,8 +94,10 @@ const server=http.createServer((req,res)=>{
    const revisionKey='mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r';
    const storageKey=revisionKey+(revised?2:1);
    if(revised)await page.addInitScript(({key,answer})=>{localStorage.setItem(key,JSON.stringify({checked:true,assisted:false,answer}));},{key:revisionKey+'1',answer:n==='1129-5'?'60':'0'});
+   const openTime=Date.now();
    await page.goto(base+'#'+id);
    await page.locator('[data-main-model] svg').waitFor();
+   opens.push(Date.now()-openTime);
    assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key))?.checked===true,storageKey),false);
    if(revised)assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).checked,revisionKey+'1'),true);
    const coefficient={
@@ -355,7 +373,9 @@ const server=http.createServer((req,res)=>{
     await submitFinal(enteredFinal);
     assert.match(await page.locator('[data-final-feedback]').innerText(),/после обращения к помощи/);
    }
+   const reloadTime=Date.now();
    await page.reload();await page.locator('[data-main-model] svg').waitFor();
+   reloads.push(Date.now()-reloadTime);
    if(switchCase) assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),switchCase);
    if(!theory) assert.equal(await page.locator('#final-answer').inputValue(),exactFinal?enteredFinal:'Синтетический черновик решения');
    if(!theory&&(review||Number(number)>=937)){
@@ -370,9 +390,18 @@ const server=http.createServer((req,res)=>{
     await page.locator('[data-main-model]').screenshot({path:artifact+'/plot-'+n+'-'+width+'.png'});
    }
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-   await page.close();
+   });
+   completed.push(practice.caseKey(width,n));
+   if(completed.length%10===0) console.log('Practice group '+shard+' checked '+completed.length+' scenarios; latest '+width+'/'+n);
   }
   assert.deepEqual(errors,[]);
  }
- } finally { await browser.close(); server.close(); }
+ assert.equal(completed.length,selectedLessons.length*practice.widths.length);
+ if(process.env.AREA_COVERAGE_DIR) practice.writeReport(process.env.AREA_COVERAGE_DIR,shard,count,completed,lessons);
+ const timing=values=>{
+  const sorted=[...values].sort((a,b)=>a-b);
+  return {p50:sorted[Math.ceil(sorted.length*.5)-1],p95:sorted[Math.ceil(sorted.length*.95)-1],max:sorted.at(-1)};
+ };
+ console.log('Practice group '+shard+' passed '+completed.length+' scenarios. Model ready (ms): '+JSON.stringify({open:timing(opens),reload:timing(reloads)}));
+ } finally { server.close(); }
 })().catch(error=>{console.error(error);server.close();process.exitCode=1});

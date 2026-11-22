@@ -1,4 +1,5 @@
 'use strict';
+const { chapterThreeCards } = require('./browser-chapter-three-inventory.cjs');
 // Printed pp. 125–128. Exercise the public course entry, model and saved learning on a clean browser profile.
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
@@ -44,17 +45,13 @@ async function verify(width,url){
     const p=await browser.newPage({viewport:{width,height:900}});p.on('pageerror',e=>errors.push(e.message));await p.goto(url);return p;
   }
   let page=await fresh();
-  const inventory=await page.evaluate(()=>{
-    const l=MakarychevCourse.lessons.find(l=>l.id==='p21');
-    return l.studyOrder.filter(i=>l.tasks[i].source.type==='textbook')
-      .map(i=>({index:i,title:l.tasks[i].title,ref:l.tasks[i].source.reference}));
-  });
+  const inventory = await chapterThreeCards(page, 'p21', 531, 556);
   assert.equal(inventory.length,134);assert.equal(new Set(inventory.map(x=>x.index)).size,134);
   for(const [offset,q] of inventory.entries()){
     if(offset&&offset%16===0){await page.close();page=await fresh();}
     await page.evaluate(i=>{history.replaceState(null,'','#lesson/p21/'+i);MakarychevApp.route();},q.index);
     assert.equal(await page.locator('.task-heading h2').innerText(),q.title);
-    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,q.ref);
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,q.source.reference);
   }
   await page.close();page=await fresh();
   for(let n=531;n<=556;n++){
