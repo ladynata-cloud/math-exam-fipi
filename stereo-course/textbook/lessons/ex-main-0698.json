@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0698",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Сумма проекций на третье направление",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "698",
+    "chapter": "VII. Метод координат в пространстве. Движения",
+    "printedPages": [
+      177
+    ],
+    "pdfPages": [
+      179
+    ]
+  },
+  "statement": {
+    "text": "Углы a с c и b с c равны 60°. Известны |a|=1, |b|=|c|=2. Найди (a+b)·c.",
+    "goal": "Разложи сумму, чтобы обойтись без неизвестного угла между a и b."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Оба направления a и b дают с c угол 60°, но их длины различны.",
+    "model": {
+      "points": {
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "A": [
+          0.8660254037844386,
+          0,
+          0.5
+        ],
+        "B": [
+          0,
+          1.7320508075688772,
+          1
+        ],
+        "C": [
+          0,
+          0,
+          2
+        ],
+        "S": [
+          0.8660254037844386,
+          1.7320508075688772,
+          1.5
+        ],
+        "T": [
+          0,
+          0,
+          -2
+        ]
+      },
+      "edges": [],
+      "faces": [],
+      "arrows": [
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "O",
+          "C"
+        ],
+        [
+          "O",
+          "S"
+        ],
+        [
+          "O",
+          "T"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "A",
+        "B",
+        "C"
+      ],
+      "views": {
+        "neutral": {
+          "label": "Оба направления a и b дают с c угол 60°, но их длины различны.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "B"
+            ],
+            [
+              "O",
+              "C"
+            ]
+          ]
+        },
+        "sum": {
+          "label": "OS — диагональ параллелограмма на a и b. Её произведение с c равно сумме двух произведений.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "A",
+              "S"
+            ],
+            [
+              "O",
+              "B"
+            ],
+            [
+              "B",
+              "S"
+            ],
+            [
+              "O",
+              "S"
+            ],
+            [
+              "O",
+              "C"
+            ]
+          ]
+        },
+        "new": {
+          "label": "OT меняет направление вектора c.",
+          "segments": [
+            [
+              "O",
+              "S"
+            ],
+            [
+              "O",
+              "T"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Как воспользоваться условием об углах?",
+      "text": "Отдельно вычисли |a|·|c|·cos60° и |b|·|c|·cos60°.",
+      "view": "neutral"
+    },
+    {
+      "id": "h2",
+      "question": "Нужно ли искать длину a+b?",
+      "text": "Можно сразу распределить произведение: (a+b)·c=a·c+b·c.",
+      "view": "sum"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Первый вклад",
+      "prompt": "Чему равно a·c?",
+      "input": {
+        "prompt": "Первый вклад",
+        "accepted": [
+          "1"
+        ],
+        "feedback": "1·2·(1/2)=1."
+      },
+      "explanation": "Проекция a на направление c равна половине.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "neutral"
+    },
+    {
+      "id": "step-2",
+      "title": "Второй вклад",
+      "prompt": "Чему равно b·c?",
+      "input": {
+        "prompt": "Второй вклад",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "Здесь длины обоих векторов равны 2."
+      },
+      "explanation": "2·2·(1/2)=2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "sum"
+    },
+    {
+      "id": "step-3",
+      "title": "Обратное направление",
+      "prompt": "Чему равно (a+b)·(−c)?",
+      "input": {
+        "prompt": "Обратное направление",
+        "accepted": [
+          "-3"
+        ],
+        "feedback": "Разворот c меняет знаки обоих слагаемых."
+      },
+      "explanation": "Сумма равна −1−2=−3.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "3"
+    ],
+    "prompt": "Введи (a+b)·c.",
+    "feedback": "Распределительность даёт 1+2=3."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 177, original supplied page 177, printed answer 271; proof identities, seven distinct requests for the oblique-base parallelepiped and all directed endpoints were checked independently.",
+    "at": "2026-11-21T23:13:17Z"
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0714",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Биссектрисы двух граней прямого трёхгранного угла",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "714",
+    "chapter": "VII. Метод координат в пространстве. Движения",
+    "printedPages": [
+      179
+    ],
+    "pdfPages": [
+      181
+    ]
+  },
+  "statement": {
+    "text": "Лучи OA, OB, OC попарно перпендикулярны. Найди угол между внутренними биссектрисами ∠COA и ∠AOB.",
+    "goal": "Построй два направления как суммы соответствующих единичных осевых векторов."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "Три исходных луча из O попарно перпендикулярны.",
+    "model": {
+      "points": {
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "A": [
+          2,
+          0,
+          0
+        ],
+        "B": [
+          0,
+          2,
+          0
+        ],
+        "C": [
+          0,
+          0,
+          2
+        ],
+        "U": [
+          1,
+          0,
+          1
+        ],
+        "V": [
+          1,
+          1,
+          0
+        ],
+        "T": [
+          -1,
+          -1,
+          0
+        ]
+      },
+      "edges": [],
+      "faces": [],
+      "arrows": [
+        [
+          "O",
+          "A"
+        ],
+        [
+          "O",
+          "B"
+        ],
+        [
+          "O",
+          "C"
+        ],
+        [
+          "O",
+          "U"
+        ],
+        [
+          "O",
+          "V"
+        ],
+        [
+          "O",
+          "T"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "A",
+        "B",
+        "C"
+      ],
+      "views": {
+        "neutral": {
+          "label": "Три исходных луча из O попарно перпендикулярны.",
+          "segments": [
+            [
+              "O",
+              "A"
+            ],
+            [
+              "O",
+              "B"
+            ],
+            [
+              "O",
+              "C"
+            ]
+          ]
+        },
+        "bisectors": {
+          "label": "OU лежит в COA и поровну делит прямой угол, OV тем же образом делит AOB.",
+          "segments": [
+            [
+              "O",
+              "U"
+            ],
+            [
+              "O",
+              "V"
+            ]
+          ]
+        },
+        "new": {
+          "label": "OT — противоположный луч к OV.",
+          "segments": [
+            [
+              "O",
+              "U"
+            ],
+            [
+              "O",
+              "T"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Почему эти суммы лежат на биссектрисах?",
+      "text": "Для двух перпендикулярных единичных направлений диагональ построенного квадрата образует равные углы с его сторонами.",
+      "view": "bisectors"
+    },
+    {
+      "id": "h2",
+      "question": "Какая у двух сумм общая компонента?",
+      "text": "Можно взять u=(1,0,1), v=(1,1,0). У обоих вдоль первого луча компонента 1.",
+      "view": "bisectors"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Числитель",
+      "prompt": "Найди u·v.",
+      "input": {
+        "prompt": "Числитель",
+        "accepted": [
+          "1"
+        ],
+        "feedback": "Единицы обеих первых координат дают один, а в двух оставшихся парах есть нули."
+      },
+      "explanation": "Общее направление OA даёт единственный ненулевой вклад.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "bisectors"
+    },
+    {
+      "id": "step-2",
+      "title": "Знаменатель",
+      "prompt": "Найди |u|·|v|.",
+      "input": {
+        "prompt": "Знаменатель",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "Обе диагонали единичных квадратов имеют длину √2."
+      },
+      "explanation": "Косинус равен 1/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "bisectors"
+    },
+    {
+      "id": "step-3",
+      "title": "Противоположный луч",
+      "prompt": "Каков угол OU с OT, если OT противоположен OV?",
+      "input": {
+        "prompt": "Противоположный луч",
+        "accepted": [
+          "120"
+        ],
+        "feedback": "Смежные углы дают 180°."
+      },
+      "explanation": "У внешнего луча косинус равен −1/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Координаты в прямоугольном базисе вычисляются отдельно по трём перпендикулярным направлениям.",
+          "theoryId": "theory-077"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "60",
+      "60°"
+    ],
+    "prompt": "Укажи угол внутренних биссектрис в градусах.",
+    "feedback": "arccos(1/2)=60°."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 179, official issued pages 178–179 and printed answer key 271; all pairs, the radical height in 706, ratios 3:1 and 1:4 and the printed discrepancy for 708b were checked visually with independently recomputed angles.",
+    "at": "2026-11-21T23:21:29Z"
+  }
+}

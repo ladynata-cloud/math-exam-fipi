@@ -1,0 +1,620 @@
+{
+  "parts": {
+    "723": [
+      null
+    ],
+    "724": [
+      "а",
+      "б"
+    ],
+    "725": [
+      "а",
+      "б"
+    ],
+    "726": [
+      null
+    ],
+    "727": [
+      "а",
+      "б"
+    ],
+    "728": [
+      "а",
+      "б"
+    ],
+    "729": [
+      "а",
+      "б"
+    ],
+    "730": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "723": {
+      "id": "source-main-0723",
+      "kind": "exercise",
+      "title": "Задача № 723",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "723",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "724": {
+      "id": "source-main-0724",
+      "kind": "exercise",
+      "title": "Задача № 724",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "724",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "725": {
+      "id": "source-main-0725",
+      "kind": "exercise",
+      "title": "Задача № 725",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "725",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "726": {
+      "id": "source-main-0726",
+      "kind": "exercise",
+      "title": "Задача № 726",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "726",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "727": {
+      "id": "source-main-0727",
+      "kind": "exercise",
+      "title": "Задача № 727",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "727",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "728": {
+      "id": "source-main-0728",
+      "kind": "exercise",
+      "title": "Задача № 728",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "728",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "729": {
+      "id": "source-main-0729",
+      "kind": "exercise",
+      "title": "Задача № 729",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "729",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "730": {
+      "id": "source-main-0730",
+      "kind": "exercise",
+      "title": "Задача № 730",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "730",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          185
+        ],
+        "pdfPages": [
+          187
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0723": {
+      "raw": "ef6b5ccc6ea0a08a2f00d118e498064917d4e061d5206875cb8c08cc1ef1695e",
+      "authored": "8ee5c79dcf8118b1eff605d45ba8b60b5ce7f8ad4efdc3fe4515488c590e0456",
+      "integrated": "8560e55a557919ae426bcac7f8bfac636d03e2127c6f302052471ea2634b6d2f"
+    },
+    "ex-main-0724-a": {
+      "raw": "b42ce14e8dcc98e77ebcb66675a8cdf9d5a99d88516c46974ee53ccc9cfd587d",
+      "authored": "3f0960357cb22a847d2dc4e6c956480f85fe70f36cc9a783b8ad71d14b279749",
+      "integrated": "a7e990ae1db7f2a029337da001cdc0197cae5efd8ee35e2a8fbdd15a7506cae6"
+    },
+    "ex-main-0724-b": {
+      "raw": "143ee390e9d29529aedbbd711e2885b32b68ecd391df513897f01374e4eb8712",
+      "authored": "3c649dad2db4e05208afc0784b22d353a0eba9249ea7a86eec30795e2333c7c9",
+      "integrated": "d745eb255cecd9375350c02725e38a3a30b026948fa1d6bad94072ae35709c43"
+    },
+    "ex-main-0725-a": {
+      "raw": "76988653a3f2bde3fde10246848e613868b6759838b5c0508ba6f5777e5178ef",
+      "authored": "543db44277f3439cf617c074ff695884e1614597ec4ebf62627772610cf5d588",
+      "integrated": "45f87fa699708efd96daa89e4f8aa114cc3b4aebb2df14b4c1ec325ff478d10c"
+    },
+    "ex-main-0725-b": {
+      "raw": "d7e9f3cd409cedb999206bcb00786982e4efc99ba558694f1fd3d2ab7346b74d",
+      "authored": "24b7cff2bd89645620c9143c0be03f7ced07a1598e0f1aca61bece1296a27863",
+      "integrated": "9b918b9b95705f69e418dc9f89f426e2a4b82d639fc3755199d7537e4e35fb0c"
+    },
+    "ex-main-0726": {
+      "raw": "4680b7c2cab14d89c004c78da6ebb4c8a71f890360adb76746370398cd17eb1b",
+      "authored": "12edfc6553b47f830820de588509e5a3a7f717fba7e3b4497154859f97a653d6",
+      "integrated": "09708f78858f2328518343f318cd7b170b6def3f5095a37666f96eb7515840ea"
+    },
+    "ex-main-0727-a": {
+      "raw": "7318b446ee6146b89923fadff1f4438a0b8e37f2a98ccc1a568a6bb841dafa47",
+      "authored": "c32f73724fcbcdf9b3400a45c3412e0cd8a56b8b18073ac6ed4d646cf995310d",
+      "integrated": "1aecb752cab43d0004042f62f5d42e801db7092b5ea48db717dc5a977374dfca"
+    },
+    "ex-main-0727-b": {
+      "raw": "9bb6bd0d595000a416a0e43fe846df215221bee98b5f8b9e917a5d750c307f1d",
+      "authored": "bc79d5e847f6e2b2bd27fb2941de40bd06d69ad2d72c0b04bcaaa8634fabb7ac",
+      "integrated": "a0ea25dadc4b50b8cddf69d8caf593406eb95c05371412efab9464dbfbe4b7d1"
+    },
+    "ex-main-0728-a": {
+      "raw": "8345e9a22e64f0636518eb59e121649fe90e03eb690468365c93737a5f18b35d",
+      "authored": "988ab3a0a8f6aea64e504b2ed0e75d2f05a4c8441c03ab4a349b7ab5ff095f31",
+      "integrated": "24f0381df139bf8bb96b6b2788234df9ea80119a62eeabfff676f670b873f7c2"
+    },
+    "ex-main-0728-b": {
+      "raw": "f560ac015ff58cf22b9e46f6b15d954ef280f33f7479a3dfc650a6385442dd9b",
+      "authored": "037a60a023755e54c8da40328b20af7124ff8a61c7829e3ff97efbef8e2550d6",
+      "integrated": "dbcd72e670402b2a6910d0c9d6e87cdcc85ef8098f3e8634a586d510c974edc3"
+    },
+    "ex-main-0729-a": {
+      "raw": "bdb9685f16501b69c0e65b5ffb4dc4791673d91b130924fec18189fbe647e4cd",
+      "authored": "36ca254f235bf8c7269013074443577f78c5eb6a3b5b5cec071122002c9ec639",
+      "integrated": "2dc183fa8b1ad0b2a06eaf7fde7788c814774377e80d9de20210d350bee2599b"
+    },
+    "ex-main-0729-b": {
+      "raw": "dfc7d789a6791bd8b6791a5575f32dab1601c996956110177b00d53d711c82fa",
+      "authored": "8325fbb638c4b945ec31ba4a76e90215984fa75ab3c7b81ef64e0c7e10da0e68",
+      "integrated": "d526f9b50624568e81f7c707d0b8ed5bae46ea3c2d25d90b4e0d9243f3109b82"
+    },
+    "ex-main-0730-a": {
+      "raw": "3af150523c2d82f225111ed720ab6b9a76559d2ab3a99ad078e2d7d3ea2a3a48",
+      "authored": "12613d9a66c98ec5d178de376eb8c2afabfd86b788a81bacab994fe0d744466e",
+      "integrated": "ff465b0d22506668bacf375a4f035c13aa060371673add775cf563beec4e2880"
+    },
+    "ex-main-0730-b": {
+      "raw": "2ff645d30dc99faa7fd81859adab3d75c66a1082cb63ae8de4adfb6f37f67fc2",
+      "authored": "e30e11af76a5d4bef22a6b3154d70cc38e87ac679142b3d674ce863153fe4bbe",
+      "integrated": "61de58780672b3c24ded044aecc2be0afa0a76d2a36dec418432152ac813c0ca"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0723|condition",
+      "isometries-of-space-section-end-ex-main-0723-condition"
+    ],
+    [
+      "ex-main-0723|help:h1",
+      "isometries-of-space-section-end-ex-main-0723-help-h1"
+    ],
+    [
+      "ex-main-0723|help:h2",
+      "isometries-of-space-section-end-ex-main-0723-help-h2"
+    ],
+    [
+      "ex-main-0723|step-1",
+      "isometries-of-space-section-end-ex-main-0723-step-1"
+    ],
+    [
+      "ex-main-0723|step-2",
+      "isometries-of-space-section-end-ex-main-0723-step-2"
+    ],
+    [
+      "ex-main-0723|step-3",
+      "isometries-of-space-section-end-ex-main-0723-step-3"
+    ],
+    [
+      "ex-main-0724-a|condition",
+      "isometries-of-space-section-end-ex-main-0724-a-condition"
+    ],
+    [
+      "ex-main-0724-a|help:h1",
+      "isometries-of-space-section-end-ex-main-0724-a-help-h1"
+    ],
+    [
+      "ex-main-0724-a|help:h2",
+      "isometries-of-space-section-end-ex-main-0724-a-help-h2"
+    ],
+    [
+      "ex-main-0724-a|step-1",
+      "isometries-of-space-section-end-ex-main-0724-a-step-1"
+    ],
+    [
+      "ex-main-0724-a|step-2",
+      "isometries-of-space-section-end-ex-main-0724-a-step-2"
+    ],
+    [
+      "ex-main-0724-a|step-3",
+      "isometries-of-space-section-end-ex-main-0724-a-step-3"
+    ],
+    [
+      "ex-main-0724-b|condition",
+      "isometries-of-space-section-end-ex-main-0724-b-condition"
+    ],
+    [
+      "ex-main-0724-b|help:h1",
+      "isometries-of-space-section-end-ex-main-0724-b-help-h1"
+    ],
+    [
+      "ex-main-0724-b|help:h2",
+      "isometries-of-space-section-end-ex-main-0724-b-help-h2"
+    ],
+    [
+      "ex-main-0724-b|step-1",
+      "isometries-of-space-section-end-ex-main-0724-b-step-1"
+    ],
+    [
+      "ex-main-0724-b|step-2",
+      "isometries-of-space-section-end-ex-main-0724-b-step-2"
+    ],
+    [
+      "ex-main-0724-b|step-3",
+      "isometries-of-space-section-end-ex-main-0724-b-step-3"
+    ],
+    [
+      "ex-main-0725-a|condition",
+      "isometries-of-space-section-end-ex-main-0725-a-condition"
+    ],
+    [
+      "ex-main-0725-a|help:h1",
+      "isometries-of-space-section-end-ex-main-0725-a-help-h1"
+    ],
+    [
+      "ex-main-0725-a|help:h2",
+      "isometries-of-space-section-end-ex-main-0725-a-help-h2"
+    ],
+    [
+      "ex-main-0725-a|step-1",
+      "isometries-of-space-section-end-ex-main-0725-a-step-1"
+    ],
+    [
+      "ex-main-0725-a|step-2",
+      "isometries-of-space-section-end-ex-main-0725-a-step-2"
+    ],
+    [
+      "ex-main-0725-a|step-3",
+      "isometries-of-space-section-end-ex-main-0725-a-step-3"
+    ],
+    [
+      "ex-main-0725-b|condition",
+      "isometries-of-space-section-end-ex-main-0725-b-condition"
+    ],
+    [
+      "ex-main-0725-b|help:h1",
+      "isometries-of-space-section-end-ex-main-0725-b-help-h1"
+    ],
+    [
+      "ex-main-0725-b|help:h2",
+      "isometries-of-space-section-end-ex-main-0725-b-help-h2"
+    ],
+    [
+      "ex-main-0725-b|step-1",
+      "isometries-of-space-section-end-ex-main-0725-b-step-1"
+    ],
+    [
+      "ex-main-0725-b|step-2",
+      "isometries-of-space-section-end-ex-main-0725-b-step-2"
+    ],
+    [
+      "ex-main-0725-b|step-3",
+      "isometries-of-space-section-end-ex-main-0725-b-step-3"
+    ],
+    [
+      "ex-main-0726|condition",
+      "isometries-of-space-section-end-ex-main-0726-condition"
+    ],
+    [
+      "ex-main-0726|help:h1",
+      "isometries-of-space-section-end-ex-main-0726-help-h1"
+    ],
+    [
+      "ex-main-0726|help:h2",
+      "isometries-of-space-section-end-ex-main-0726-help-h2"
+    ],
+    [
+      "ex-main-0726|step-1",
+      "isometries-of-space-section-end-ex-main-0726-step-1"
+    ],
+    [
+      "ex-main-0726|step-2",
+      "isometries-of-space-section-end-ex-main-0726-step-2"
+    ],
+    [
+      "ex-main-0726|step-3",
+      "isometries-of-space-section-end-ex-main-0726-step-3"
+    ],
+    [
+      "ex-main-0727-a|condition",
+      "isometries-of-space-section-end-ex-main-0727-a-condition"
+    ],
+    [
+      "ex-main-0727-a|help:h1",
+      "isometries-of-space-section-end-ex-main-0727-a-help-h1"
+    ],
+    [
+      "ex-main-0727-a|help:h2",
+      "isometries-of-space-section-end-ex-main-0727-a-help-h2"
+    ],
+    [
+      "ex-main-0727-a|step-1",
+      "isometries-of-space-section-end-ex-main-0727-a-step-1"
+    ],
+    [
+      "ex-main-0727-a|step-2",
+      "isometries-of-space-section-end-ex-main-0727-a-step-2"
+    ],
+    [
+      "ex-main-0727-a|step-3",
+      "isometries-of-space-section-end-ex-main-0727-a-step-3"
+    ],
+    [
+      "ex-main-0727-b|condition",
+      "isometries-of-space-section-end-ex-main-0727-b-condition"
+    ],
+    [
+      "ex-main-0727-b|help:h1",
+      "isometries-of-space-section-end-ex-main-0727-b-help-h1"
+    ],
+    [
+      "ex-main-0727-b|help:h2",
+      "isometries-of-space-section-end-ex-main-0727-b-help-h2"
+    ],
+    [
+      "ex-main-0727-b|step-1",
+      "isometries-of-space-section-end-ex-main-0727-b-step-1"
+    ],
+    [
+      "ex-main-0727-b|step-2",
+      "isometries-of-space-section-end-ex-main-0727-b-step-2"
+    ],
+    [
+      "ex-main-0727-b|step-3",
+      "isometries-of-space-section-end-ex-main-0727-b-step-3"
+    ],
+    [
+      "ex-main-0728-a|condition",
+      "isometries-of-space-section-end-ex-main-0728-a-condition"
+    ],
+    [
+      "ex-main-0728-a|help:h1",
+      "isometries-of-space-section-end-ex-main-0728-a-help-h1"
+    ],
+    [
+      "ex-main-0728-a|help:h2",
+      "isometries-of-space-section-end-ex-main-0728-a-help-h2"
+    ],
+    [
+      "ex-main-0728-a|step-1",
+      "isometries-of-space-section-end-ex-main-0728-a-step-1"
+    ],
+    [
+      "ex-main-0728-a|step-2",
+      "isometries-of-space-section-end-ex-main-0728-a-step-2"
+    ],
+    [
+      "ex-main-0728-a|step-3",
+      "isometries-of-space-section-end-ex-main-0728-a-step-3"
+    ],
+    [
+      "ex-main-0728-b|condition",
+      "isometries-of-space-section-end-ex-main-0728-b-condition"
+    ],
+    [
+      "ex-main-0728-b|help:h1",
+      "isometries-of-space-section-end-ex-main-0728-b-help-h1"
+    ],
+    [
+      "ex-main-0728-b|help:h2",
+      "isometries-of-space-section-end-ex-main-0728-b-help-h2"
+    ],
+    [
+      "ex-main-0728-b|step-1",
+      "isometries-of-space-section-end-ex-main-0728-b-step-1"
+    ],
+    [
+      "ex-main-0728-b|step-2",
+      "isometries-of-space-section-end-ex-main-0728-b-step-2"
+    ],
+    [
+      "ex-main-0728-b|step-3",
+      "isometries-of-space-section-end-ex-main-0728-b-step-3"
+    ],
+    [
+      "ex-main-0729-a|condition",
+      "isometries-of-space-section-end-ex-main-0729-a-condition"
+    ],
+    [
+      "ex-main-0729-a|help:h1",
+      "isometries-of-space-section-end-ex-main-0729-a-help-h1"
+    ],
+    [
+      "ex-main-0729-a|help:h2",
+      "isometries-of-space-section-end-ex-main-0729-a-help-h2"
+    ],
+    [
+      "ex-main-0729-a|step-1",
+      "isometries-of-space-section-end-ex-main-0729-a-step-1"
+    ],
+    [
+      "ex-main-0729-a|step-2",
+      "isometries-of-space-section-end-ex-main-0729-a-step-2"
+    ],
+    [
+      "ex-main-0729-a|step-3",
+      "isometries-of-space-section-end-ex-main-0729-a-step-3"
+    ],
+    [
+      "ex-main-0729-b|condition",
+      "isometries-of-space-section-end-ex-main-0729-b-condition"
+    ],
+    [
+      "ex-main-0729-b|help:h1",
+      "isometries-of-space-section-end-ex-main-0729-b-help-h1"
+    ],
+    [
+      "ex-main-0729-b|help:h2",
+      "isometries-of-space-section-end-ex-main-0729-b-help-h2"
+    ],
+    [
+      "ex-main-0729-b|step-1",
+      "isometries-of-space-section-end-ex-main-0729-b-step-1"
+    ],
+    [
+      "ex-main-0729-b|step-2",
+      "isometries-of-space-section-end-ex-main-0729-b-step-2"
+    ],
+    [
+      "ex-main-0729-b|step-3",
+      "isometries-of-space-section-end-ex-main-0729-b-step-3"
+    ],
+    [
+      "ex-main-0730-a|condition",
+      "isometries-of-space-section-end-ex-main-0730-a-condition"
+    ],
+    [
+      "ex-main-0730-a|help:h1",
+      "isometries-of-space-section-end-ex-main-0730-a-help-h1"
+    ],
+    [
+      "ex-main-0730-a|help:h2",
+      "isometries-of-space-section-end-ex-main-0730-a-help-h2"
+    ],
+    [
+      "ex-main-0730-a|step-1",
+      "isometries-of-space-section-end-ex-main-0730-a-step-1"
+    ],
+    [
+      "ex-main-0730-a|step-2",
+      "isometries-of-space-section-end-ex-main-0730-a-step-2"
+    ],
+    [
+      "ex-main-0730-a|step-3",
+      "isometries-of-space-section-end-ex-main-0730-a-step-3"
+    ],
+    [
+      "ex-main-0730-b|condition",
+      "isometries-of-space-section-end-ex-main-0730-b-condition"
+    ],
+    [
+      "ex-main-0730-b|help:h1",
+      "isometries-of-space-section-end-ex-main-0730-b-help-h1"
+    ],
+    [
+      "ex-main-0730-b|help:h2",
+      "isometries-of-space-section-end-ex-main-0730-b-help-h2"
+    ],
+    [
+      "ex-main-0730-b|step-1",
+      "isometries-of-space-section-end-ex-main-0730-b-step-1"
+    ],
+    [
+      "ex-main-0730-b|step-2",
+      "isometries-of-space-section-end-ex-main-0730-b-step-2"
+    ],
+    [
+      "ex-main-0730-b|step-3",
+      "isometries-of-space-section-end-ex-main-0730-b-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "75b8695a9ed8ef2422f318d6fb9b1c7e698f47c052cde9a44447ea00753b3d7a",
+      "afterSHA256": "c396676916796996f56cc7a7b2fb0bf594af9b00a69528046fcd09e4d2e9c448"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "0be31d87263b40990d5edd2b2737ed2f1dddf33341771f8cce9978babc7c349a",
+      "afterSHA256": "7e055aec58bacdcdaec6a754376f9c66e5de0d3a2eb8e196c2e9606bce85612a"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T23:28:42Z",
+    "scope": "Chapters I–VI and chapter VII points 71–84 plus exercises 637–722 with 1,325 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "eda2decb2306e04a45946a8559aaecf621f66ebe3db9079194cc9f40272f424c",
+    "index": "629d80a87fb80dbde5452b22dd6a7d75dfe33de0870009d05e59af4674638842",
+    "registry": "d9780ee3dee5c2e6f67896d5ae51b741183182e29c2cf631e1569ecfa6805c99",
+    "cases": "431176f761247b2fc4a9420c86aa54b15c5a9a60ce988e6659c7288067c77013"
+  }
+}

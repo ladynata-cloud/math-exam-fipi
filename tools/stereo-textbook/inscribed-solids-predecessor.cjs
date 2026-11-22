@@ -2,7 +2,16 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const coordinateSpheresSectionEnd = makeReviewedIncrement(require('./coordinate-spheres-section-end.json'), closedSections);
+const coordinatesChapterSevenSelfCheck = makeReviewedIncrement(require('./coordinates-chapter-seven-self-check.json'), closedSections);
+const isometriesOfSpaceSectionEnd = makeReviewedIncrement(require('./isometries-of-space-section-end.json'), coordinatesChapterSevenSelfCheck);
+const spatialSymmetriesAndFixedSets = makeReviewedIncrement(require('./spatial-symmetries-and-fixed-sets.json'), isometriesOfSpaceSectionEnd);
+const cubeProofsAndScalarProductSectionEnd = makeReviewedIncrement(require('./cube-proofs-and-scalar-product-section-end.json'), spatialSymmetriesAndFixedSets);
+const anglesWithLinesAndCoordinateFaces = makeReviewedIncrement(require('./angles-with-lines-and-coordinate-faces.json'), cubeProofsAndScalarProductSectionEnd);
+const spatialScalarIdentitiesAndOppositeEdges = makeReviewedIncrement(require('./spatial-scalar-identities-and-opposite-edges.json'), anglesWithLinesAndCoordinateFaces);
+const spatialDirectionCosinesAndSquare = makeReviewedIncrement(require('./spatial-direction-cosines-and-square.json'), spatialScalarIdentitiesAndOppositeEdges);
+const dotProductsCoordinateParameters = makeReviewedIncrement(require('./dot-products-coordinate-parameters.json'), spatialDirectionCosinesAndSquare);
+const scalarProductAnglesAndCube = makeReviewedIncrement(require('./scalar-product-angles-and-cube.json'), dotProductsCoordinateParameters);
+const coordinateSpheresSectionEnd = makeReviewedIncrement(require('./coordinate-spheres-section-end.json'), scalarProductAnglesAndCube);
 const spatialDistancesAndEqualLoci = makeReviewedIncrement(require('./spatial-distances-and-equal-loci.json'), coordinateSpheresSectionEnd);
 const midpointsAndVectorLengths = makeReviewedIncrement(require('./midpoints-and-vector-lengths.json'), spatialDistancesAndEqualLoci);
 const spatialPointsAndCentroid = makeReviewedIncrement(require('./spatial-points-and-centroid.json'), midpointsAndVectorLengths);

@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-selfcheck-vii-04",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Обратный путь по двум перемещениям",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "selfcheck",
+    "exercise": "4",
+    "chapter": "VII. Метод координат в пространстве. Движения",
+    "printedPages": [
+      186
+    ],
+    "pdfPages": [
+      188
+    ]
+  },
+  "statement": {
+    "text": "Даны AB={x₁;y₁;z₁} и BC={x₂;y₂;z₂}. Вырази обратный вектор CA.",
+    "goal": "В формуле CA=k·AB+m·BC введи k;m."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "AB и BC последовательно ведут из A в C.",
+    "model": {
+      "points": {
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "X": [
+          3,
+          0,
+          0
+        ],
+        "Y": [
+          0,
+          3,
+          0
+        ],
+        "Z": [
+          0,
+          0,
+          3
+        ],
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          2,
+          -1,
+          1
+        ],
+        "C": [
+          1,
+          2,
+          3
+        ],
+        "T": [
+          2,
+          1,
+          -1
+        ],
+        "U": [
+          5,
+          -1,
+          0
+        ]
+      },
+      "edges": [
+        [
+          "O",
+          "X"
+        ],
+        [
+          "O",
+          "Y"
+        ],
+        [
+          "O",
+          "Z"
+        ]
+      ],
+      "faces": [],
+      "arrows": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "A"
+        ],
+        [
+          "O",
+          "T"
+        ],
+        [
+          "T",
+          "U"
+        ],
+        [
+          "U",
+          "O"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C"
+      ],
+      "views": {
+        "neutral": {
+          "label": "AB и BC последовательно ведут из A в C.",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "B",
+              "C"
+            ]
+          ]
+        },
+        "reason": {
+          "label": "CA замыкает треугольник в обратном направлении.",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "B",
+              "C"
+            ],
+            [
+              "C",
+              "A"
+            ]
+          ]
+        },
+        "transfer": {
+          "label": "Новая ломаная OTU замыкается вектором UO.",
+          "segments": [
+            [
+              "O",
+              "T"
+            ],
+            [
+              "T",
+              "U"
+            ],
+            [
+              "U",
+              "O"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Как замкнуть ломаную?",
+      "text": "AB+BC+CA=0. Поэтому CA={−x₁−x₂; −y₁−y₂; −z₁−z₂}. Смена направления обращает все три знака.",
+      "view": "reason"
+    },
+    {
+      "id": "h2",
+      "question": "Как проверить на изменённом примере?",
+      "text": "Прямой путь OU=(5,−1,0). Возврат меняет знаки.",
+      "view": "transfer"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Сумма вперёд",
+      "prompt": "Для AB=(2,−1,1), BC=(−1,3,2) найди AC.",
+      "input": {
+        "prompt": "Сумма вперёд",
+        "accepted": [
+          "1;2;3"
+        ],
+        "feedback": "Сложи соответствующие компоненты: (2−1,−1+3,1+2)."
+      },
+      "explanation": "Сложи соответствующие компоненты: (2−1,−1+3,1+2).",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "AB+BC+CA=0. Поэтому CA={−x₁−x₂; −y₁−y₂; −z₁−z₂}. Смена направления обращает все три знака.",
+          "theoryId": "theory-072"
+        }
+      ],
+      "view": "neutral"
+    },
+    {
+      "id": "step-2",
+      "title": "Возвращение",
+      "prompt": "Найди CA в том же примере.",
+      "input": {
+        "prompt": "Возвращение",
+        "accepted": [
+          "-1;-2;-3"
+        ],
+        "feedback": "AB+BC+CA=0. Поэтому CA={−x₁−x₂; −y₁−y₂; −z₁−z₂}. Смена направления обращает все три знака."
+      },
+      "explanation": "AB+BC+CA=0. Поэтому CA={−x₁−x₂; −y₁−y₂; −z₁−z₂}. Смена направления обращает все три знака.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "AB+BC+CA=0. Поэтому CA={−x₁−x₂; −y₁−y₂; −z₁−z₂}. Смена направления обращает все три знака.",
+          "theoryId": "theory-072"
+        }
+      ],
+      "view": "reason"
+    },
+    {
+      "id": "step-3",
+      "title": "Новый путь",
+      "prompt": "Для OT=(2,1,−1) и TU=(3,−2,1) найди UO.",
+      "input": {
+        "prompt": "Новый путь",
+        "accepted": [
+          "-5;1;0"
+        ],
+        "feedback": "Прямой путь OU=(5,−1,0). Возврат меняет знаки."
+      },
+      "explanation": "Прямой путь OU=(5,−1,0). Возврат меняет знаки.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "AB+BC+CA=0. Поэтому CA={−x₁−x₂; −y₁−y₂; −z₁−z₂}. Смена направления обращает все три знака.",
+          "theoryId": "theory-072"
+        }
+      ],
+      "view": "transfer"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "prompt": "В формуле CA=k·AB+m·BC введи k;m.",
+    "accepted": [
+      "-1;-1"
+    ],
+    "feedback": "AB+BC+CA=0. Поэтому CA={−x₁−x₂; −y₁−y₂; −z₁−z₂}. Смена направления обращает все три знака."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: issued 2024 volume, chapter VII questions on printed page 186; source notation, dimensional cases and independent model checks.",
+    "at": "2026-11-21T23:52:06Z"
+  }
+}
