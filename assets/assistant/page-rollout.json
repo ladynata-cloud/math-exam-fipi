@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "0e55c14f02a0da3bd1ecd1bc753e31b6a18ac3892d371ce76f5ed8a85f5e42d6",
-      "afterSha256": "4de8597be211d2e17c9deb455c1065f0a7b8de2715c0318c2ff41a74bc3128ae",
+      "beforeSha256": "5bbe26f9b07d5f3c6d589a143ce76e4b1de2d1d4040b312df8aec496676c889e",
+      "afterSha256": "d1c7377e50ca178fc503fdfbde8ba92e7975778d7200fae3def84d1a3058eecd",
       "placement": "before-head-close",
-      "sourceSha": "f82d5e98c7f4ef10ff1510fea6a47c5a89198b4c"
+      "sourceSha": "58417df1ff037afeff5733775cec1a1195967eb7"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7451,6 +7451,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, том 1, §6, с. 35: непрерывно по №1.176. Пять отрезков рисунка 1.37 и виртуальный циркуль, включение отрезков и независимое варьирование соседних частей. На проверенном источнике 496346 математических и прикладных проверок, 16 мобильных ответов и отдельная комната учителя/ученика с обоими направлениями, сменой управления и восстановлением после перезагрузок. Публикация отдельно."
+    },
+    {
+      "previousBaseSha": "f82d5e98c7f4ef10ff1510fea6a47c5a89198b4c",
+      "sourceBaseSha": "58417df1ff037afeff5733775cec1a1195967eb7",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "В первой части Виленкина разобраны все исходные строки печатных №1.177–1.180 на с.35, включая разные допустимые заполнения открытых столбцов. Проверены самостоятельные ответы, новые условия, модель, обе роли, восстановление после перезагрузки и ширины 320 и 375 пикселей."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
