@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "cc25b9742d60ff5d9f3445cc419692328047c583a5141a1fb4b91417a1fb3f13",
-      "afterSha256": "ab508c043f60609ea7af182f500c72e83667b5b09a228275934db18f554fc252",
+      "beforeSha256": "7ae50a4e20bcd07c55de79a5c406aca9828cfd504903d556dc69fccb286c97d8",
+      "afterSha256": "3e40fe1a01bd9f656b0ae04aadaa64a2421e37c3ffbab56fda040754ded1f2d2",
       "placement": "before-head-close",
-      "sourceSha": "e1afecea1437bf1a28c7595cc4eb7eb17a093059"
+      "sourceSha": "454df0753f130761c85f9e4bc056503939f617bf"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7038,6 +7038,15 @@
         "school/index.html"
       ],
       "boundary": "Проверены обе серии точек №5.101 и все шесть отметок с выбором крайних в №5.102. Телефон, черновик пяти ещё не поставленных точек, подсказка на конкретном числителе и возвращение обеих ролей."
+    },
+    {
+      "previousBaseSha": "e1afecea1437bf1a28c7595cc4eb7eb17a093059",
+      "sourceBaseSha": "454df0753f130761c85f9e4bc056503939f617bf",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены двенадцать подпунктов №5.103–5.106 с двумя упорядоченными рядами дробей, моделью сравнения, подсказками и восстановлением на доске."
     }
   ],
   "coverageUpdates": [
