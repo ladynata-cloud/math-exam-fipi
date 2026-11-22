@@ -2,7 +2,12 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const cubeSectionsDistancesAndDivision = makeReviewedIncrement(require('./cube-sections-distances-and-division.json'), closedSections);
+const tetrahedronAltitudesAndDirectedAngles = makeReviewedIncrement(require('./tetrahedron-altitudes-and-directed-angles.json'), closedSections);
+const skewLinesAndCornerReflection = makeReviewedIncrement(require('./skew-lines-and-corner-reflection.json'), tetrahedronAltitudesAndDirectedAngles);
+const monotonePathsAndDualSolids = makeReviewedIncrement(require('./monotone-paths-and-dual-solids.json'), skewLinesAndCornerReflection);
+const tetrahedraAndCubeTilings = makeReviewedIncrement(require('./tetrahedra-and-cube-tilings.json'), monotonePathsAndDualSolids);
+const surfacePathsAndParallelSections = makeReviewedIncrement(require('./surface-paths-and-parallel-sections.json'), tetrahedraAndCubeTilings);
+const cubeSectionsDistancesAndDivision = makeReviewedIncrement(require('./cube-sections-distances-and-division.json'), surfacePathsAndParallelSections);
 const dihedralBisectorsAndMidplanes = makeReviewedIncrement(require('./dihedral-bisectors-and-midplanes.json'), cubeSectionsDistancesAndDivision);
 const firstAdvancedPyramidProblems = makeReviewedIncrement(require('./first-advanced-pyramid-problems.json'), dihedralBisectorsAndMidplanes);
 const endOfFinalPyramidReview = makeReviewedIncrement(require('./end-of-final-pyramid-review.json'), firstAdvancedPyramidProblems);
