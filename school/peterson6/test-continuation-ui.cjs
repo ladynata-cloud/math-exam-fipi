@@ -1815,3 +1815,14 @@ test('complete four decimal speed columns, twelve cipher values and the issued t
   f.nav('#lesson/p21/34');assert.equal(f.d.querySelectorAll('#task-figure tbody tr')[2].cells[1].textContent,'11/12');f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'1','change');assert.match(f.q('#model .pm-result').textContent,/КО□ФФИЦИЕНТ/);f.event(stage,'2','change');assert.match(f.q('#model .pm-result').textContent,/КОЭФФИЦИЕНТ/);f.event(data,'1','change');f.event(stage,'2','change');assert.match(f.q('#model .pm-result').textContent,/ЦЕНА/);assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('exhaust fourth natural numbers, reverse both proofs, cover all ten invariant checks and solve every problem twice',()=>{
+ const f=fixture(null,null,true);try{
+  const source=['2, 8, 18','5, 45','вычти n','поменяй знак','отношение 6','отношение 3','произведение 12','отношение 7','отношение 5','отношение 8','Сумма дня и ночи','отношение 9','отношение 4','произведение 24','120 руб.','3 дня.','204 км.','36 л.'];
+  for(let i=0;i<source.length;i++){
+   f.nav('#lesson/p21/'+(35+i));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(source[i]),[i,f.q('#model').textContent]);
+   const old=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,old);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
