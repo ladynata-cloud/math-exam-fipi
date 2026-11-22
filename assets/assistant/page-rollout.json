@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 643,
-    "covered": 641,
+    "total": 644,
+    "covered": 642,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -52,7 +52,8 @@
     "trainers/vilenkin-analysis-2014/index.html",
     "trainers/alimov-algebra-7-9/index.html",
     "trainers/nikolsky-algebra-7-9/index.html",
-    "trainers/dorofeev-algebra-7-9/index.html"
+    "trainers/dorofeev-algebra-7-9/index.html",
+    "trainers/mordkovich-2019/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4051,7 +4052,8 @@
     "trainers/vilenkin-analysis-2014/index.html": "school/index.html",
     "trainers/alimov-algebra-7-9/index.html": "school/index.html",
     "trainers/nikolsky-algebra-7-9/index.html": "school/index.html",
-    "trainers/dorofeev-algebra-7-9/index.html": "school/index.html"
+    "trainers/dorofeev-algebra-7-9/index.html": "school/index.html",
+    "trainers/mordkovich-2019/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -7516,6 +7518,14 @@
         "trainers/dorofeev-algebra-7-9/index.html"
       ],
       "reason": "Дорофеев и соавторы, 7 класс, второе издание 2014 года. Сравнение дробей, практический контроль качества и переход к конечной десятичной записи."
+    },
+    {
+      "sourceBaseSha": "2bf89ee658d9aeee4b0f0345a167e9e1699941c0",
+      "task": "docs/tasks/WORKSHOP_MORDKOVICH_7_2019_WORKBOOK.md",
+      "addedPages": [
+        "trainers/mordkovich-2019/index.html"
+      ],
+      "reason": "Мордкович и Николаев, 7 класс, вторая часть углублённого учебника 2019 года. Все подпункты первых четырёх упражнений о порядке действий."
     }
   ]
 }

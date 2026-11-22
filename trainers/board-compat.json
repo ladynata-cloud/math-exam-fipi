@@ -1512,6 +1512,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "mordkovich-2019",
+      "file": "trainers/mordkovich-2019/index.html",
+      "title": "Мордкович и Николаев · Алгебра 7 · углублённый уровень · 2019 · порядок действий",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
     }
   ]
 }
