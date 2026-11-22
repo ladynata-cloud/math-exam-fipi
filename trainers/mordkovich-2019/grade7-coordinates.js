@@ -182,6 +182,8 @@
 
   function figure(v) {
     const xs=v.points.map(p=>p[1]),ys=v.points.map(p=>p[2]);
+    if(v.bounds){xs.push(v.bounds[0],v.bounds[1]);ys.push(v.bounds[2],v.bounds[3]);}
+    for(const path of v.paths||[])for(const [px,py] of path){xs.push(px);ys.push(py);}
     if(v.vertical!==undefined)xs.push(v.vertical);
     if(v.horizontal!==undefined)ys.push(v.horizontal);
     const loX=Math.min(-1,...xs)-1,hiX=Math.max(1,...xs)+1,loY=Math.min(-1,...ys)-1,hiY=Math.max(1,...ys)+1;
@@ -192,14 +194,27 @@
     const label=(px,py,value,size=10,anchor='middle')=>'<text x="'+px+'" y="'+py+'" font-size="'+size+'" text-anchor="'+anchor+'">'+value+'</text>';
     let grid='',ticks='';
     for(let n=loX;n<=hiX;n++){
-      grid+=line(x(n),y(loY),x(n),y(hiY),'#d5e2e1');
+      if(scale>=8||n%step===0)grid+=line(x(n),y(loY),x(n),y(hiY),'#d5e2e1');
       if(n!==0&&n%step===0)ticks+=label(x(n),y(0)+12,n);
     }
     for(let n=loY;n<=hiY;n++){
-      grid+=line(x(loX),y(n),x(hiX),y(n),'#d5e2e1');
+      if(scale>=8||n%step===0)grid+=line(x(loX),y(n),x(hiX),y(n),'#d5e2e1');
       if(n!==0&&n%step===0)ticks+=label(x(0)-4,y(n)+3,n,10,'end');
     }
     let overlay='';
+    if(v.negativeQuadrant)overlay+='<rect x="'+x(loX)+'" y="'+y(0)+'" width="'+(x(0)-x(loX))+'" height="'+(y(loY)-y(0))+'" fill="#72ada1" fill-opacity=".35"/>';
+    for(const [idx,[a,b,c]] of (v.relations||[]).entries()) {
+      const candidates=[];
+      if(b!==0)for(const px of [loX,hiX])candidates.push([px,(-c-a*px)/b]);
+      if(a!==0)for(const py of [loY,hiY])candidates.push([(-c-b*py)/a,py]);
+      const within=candidates.filter(([px,py])=>loX-1e-8<=px&&px<=hiX+1e-8&&loY-1e-8<=py&&py<=hiY+1e-8);
+      const first=within[0],last=first&&within.find(p=>Math.hypot(p[0]-first[0],p[1]-first[1])>1e-8);
+      if(last)overlay+=line(x(first[0]),y(first[1]),x(last[0]),y(last[1]),idx?'#aa582a':'#23766c',2,idx?'5 3':'');
+    }
+    for(const path of v.paths||[]) {
+      const points=path.map(([px,py])=>x(px)+','+y(py)).join(' ');
+      overlay+='<polyline points="'+points+'" stroke="#277a72" fill="none" stroke-width="2.5"/>';
+    }
     if(v.vertical!==undefined)overlay+=line(x(v.vertical),y(loY),x(v.vertical),y(hiY),'#47789a',2,'4 3');
     if(v.horizontal!==undefined)overlay+=line(x(loX),y(v.horizontal),x(hiX),y(v.horizontal),'#a66c34',2,'4 3');
     if(v.quadrants) {
