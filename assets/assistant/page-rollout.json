@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "3fbeea40279bb10e661a58495b1cdc296d2b65e62e5bf6e13fc9f79592440ac8",
-      "afterSha256": "7423f20ddec64650ff15abc0af15aeb31dc490283b4a67232e68d7e3e1b81dfd",
+      "beforeSha256": "996e53ad6d150f6b7e4026b3a4fb01a6562333d0a0c64af91e2f4b8b24d2011a",
+      "afterSha256": "033a36d91e492f6080d296030b17fd2984dc7becbb91f0c4e3773c69ed18cc21",
       "placement": "before-head-close",
-      "sourceSha": "278c5ac7d9e01c711b894094725b1df525f509e8"
+      "sourceSha": "b12451dc364368cb71ee3005825167dde8088c8e"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7330,6 +7330,16 @@
         "school/index.html"
       ],
       "bindingScope": "First-volume printed Vilenkin exercises through 1.140 and second-volume exercises through 5.71.",
+      "boundary": "Only the combined school entry receives this page binding."
+    },
+    {
+      "previousBaseSha": "278c5ac7d9e01c711b894094725b1df525f509e8",
+      "sourceBaseSha": "b12451dc364368cb71ee3005825167dde8088c8e",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "bindingScope": "First-volume printed Vilenkin exercises through 1.142 and second-volume exercises through 5.71.",
       "boundary": "Only the combined school entry receives this page binding."
     },
     {
