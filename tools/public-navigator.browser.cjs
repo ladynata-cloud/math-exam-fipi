@@ -54,7 +54,8 @@ for (const item of catalogue) {
   async function assertLauncherLayout(page,filename,viewport){
     const host=page.locator('#maxexam-public-assistant'),launcher=host.locator('.launcher');
     const inPartOne=filename==='courses/vilenkin-5-part-1/index.html';
-    const flow=inPartOne||filename==='school/peterson5/index.html'||(filename==='school/index.html'&&await page.locator('body.v5-quality-active').count()===1);
+    const inArzhenikovGuide=filename==='topics/metod-arzhenikova/index.html';
+    const flow=inPartOne||inArzhenikovGuide||filename==='school/peterson5/index.html'||(filename==='school/index.html'&&await page.locator('body.v5-quality-active').count()===1);
     const box=await launcher.boundingBox();
     assert.ok(box.x>=0&&box.y>=0&&box.x+box.width<=viewport.width&&box.y+box.height<=viewport.height);
     if(!flow){
@@ -63,7 +64,9 @@ for (const item of catalogue) {
       if(viewport.width<=600)assert.ok(box.width<=56,'Mobile launcher must leave answer columns reachable');
       return box;
     }
-    assert.equal(await host.evaluate(element=>!!element.closest('header.topbar,header.top')),true,'Course navigator belongs to its header');
+    assert.equal(await host.evaluate((element,guide)=>guide
+      ?element.parentElement?.matches('header.site-header nav.site-nav')
+      :!!element.closest('header.topbar,header.top'),inArzhenikovGuide),true,'Scoped navigator belongs to its header');
     assert.equal(await launcher.evaluate(element=>getComputedStyle(element).position),'static','Scoped course launcher occupies layout space');
     const label=await host.locator('.launcher-label').evaluate(element=>({
       text:element.querySelector('strong').textContent,width:element.getBoundingClientRect().width,
@@ -71,7 +74,9 @@ for (const item of catalogue) {
     }));
     assert.equal(label.text,'Навигатор');assert.equal(label.clip,'none');
     assert.ok(label.width>60&&label.font>=15&&box.width>=100&&box.height>=44,'Scoped launcher keeps a readable label and accessible target');
-    const targets=page.locator('#workshop-question,[data-w-form] [data-w-value],[data-w-form] button[type="submit"],#task-panel .question,#answer,#answer-form button[type="submit"],#answerForm button[type="submit"]');
+    const targets=page.locator(inArzhenikovGuide
+      ?'main h1,main h2,main .topic-byline,main .topic-actions a,main .practice-panel,#practice .topic-card a,#discoveries a,#offline a'
+      :'#workshop-question,[data-w-form] [data-w-value],[data-w-form] button[type="submit"],#task-panel .question,#answer,#answer-form button[type="submit"],#answerForm button[type="submit"]');
     for(const target of await targets.all()){
       if(!await target.isVisible())continue;
       await target.scrollIntoViewIfNeeded();
@@ -79,9 +84,13 @@ for (const item of catalogue) {
         const button=document.getElementById('maxexam-public-assistant').shadowRoot.querySelector('.launcher').getBoundingClientRect(),box=element.getBoundingClientRect();
         return button.left<box.right&&button.right>box.left&&button.top<box.bottom&&button.bottom>box.top;
       });
-      assert.equal(overlaps,false,'Scoped navigator does not overlap the current question or answer');
+      assert.equal(overlaps,false,inArzhenikovGuide?'Guide navigator does not overlap text or an activity link':'Scoped navigator does not overlap the current question or answer');
     }
-    await page.evaluate(()=>window.scrollTo(0,0));
+    if(inArzhenikovGuide)await page.evaluate(()=>{
+      window.scrollTo({top:0,behavior:'instant'});
+      return new Promise(resolve=>requestAnimationFrame(resolve));
+    });
+    else await page.evaluate(()=>window.scrollTo(0,0));
     return box;
   }
   try {

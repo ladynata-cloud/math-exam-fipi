@@ -93,7 +93,9 @@ test('the method, examples, seven activities and six investigations are ordinary
   const allowed = new Set([
     '/assets/assistant/navigator-data.js?v=20261105-site1',
     '/assets/assistant/navigator-widget.js?v=20261105-site1',
-    '/assets/lesson-funnel.js?v=20261026'
+    '/assets/lesson-funnel.js?v=20261026',
+    // Only the existing launcher joins the header; all lesson content is source HTML.
+    '/assets/arzhenikov-guide-navigation.js'
   ]);
   for (const script of executable) {
     assert(allowed.has(script.getAttribute('src')) && script.defer && !script.textContent.trim(),

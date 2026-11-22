@@ -76,13 +76,80 @@ async function guideIdentity(page) {
   assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), canonical);
 }
 
+async function scrollGuideTo(page, id) {
+  await page.evaluate(target => {
+    if (target) document.getElementById(target).scrollIntoView({block: 'start', behavior: 'instant'});
+    else window.scrollTo({top: 0, behavior: 'instant'});
+    return new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  }, id);
+}
+
+async function checkGuideNavigator(page, width) {
+  const host = page.locator('#maxexam-public-assistant');
+  const launcher = host.locator('.launcher');
+  const panel = host.locator('.panel');
+  await launcher.waitFor({state: 'visible'});
+  assert.equal(await host.count(), 1, 'One existing navigator instance');
+  const presentation = await host.evaluate(element => {
+    const button = element.shadowRoot.querySelector('.launcher');
+    const label = element.shadowRoot.querySelector('.launcher-label');
+    const strong = label.querySelector('strong');
+    const rect = button.getBoundingClientRect();
+    return {
+      inMenu: element.parentElement?.matches('header.site-header nav.site-nav'),
+      position: getComputedStyle(button).position, label: strong.textContent,
+      clip: getComputedStyle(label).clipPath, font: parseFloat(getComputedStyle(strong).fontSize),
+      labelWidth: label.getBoundingClientRect().width,
+      left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom,
+      width: rect.width, height: rect.height, viewportHeight: innerHeight
+    };
+  });
+  assert.equal(presentation.inMenu, true, 'The original host occupies space in the guide header');
+  assert.equal(presentation.position, 'static', 'The closed launcher scrolls with the document');
+  assert.equal(presentation.label, 'Навигатор');
+  assert.equal(presentation.clip, 'none', 'The mobile label is visible');
+  assert(presentation.labelWidth > 60 && presentation.font >= 15 &&
+    presentation.width >= 100 && presentation.height >= 44, 'Readable launcher and accessible target');
+  assert(presentation.left >= 0 && presentation.right <= width && presentation.top >= 0 &&
+    presentation.bottom <= presentation.viewportHeight, 'The complete launcher fits the first viewport');
+  assert.equal(await panel.isVisible(), false);
+  for (const target of [null, 'method', 'practice', 'sources']) {
+    await scrollGuideTo(page, target);
+    const overlaps = await page.evaluate(() => {
+      const button = document.getElementById('maxexam-public-assistant').shadowRoot
+        .querySelector('.launcher').getBoundingClientRect();
+      return [...document.querySelectorAll('main h1,main h2,main h3,main p,main li,main a,main button,main input,main summary,main [role="img"]')]
+        .filter(element => getComputedStyle(element).visibility !== 'hidden')
+        .flatMap(element => [...element.getClientRects()]
+          .filter(rect => rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < innerHeight &&
+            rect.left < innerWidth && rect.right > 0 &&
+            button.left < rect.right && button.right > rect.left && button.top < rect.bottom && button.bottom > rect.top)
+          .map(() => element.textContent.trim().slice(0, 100)));
+    });
+    assert.deepEqual(overlaps, [], 'Closed navigator never covers visible text or CTA at ' + (target || 'top') + ', ' + width + 'px');
+  }
+  await scrollGuideTo(page, null);
+  await launcher.click();
+  await panel.waitFor({state: 'visible'});
+  assert.equal(await panel.evaluate(element => getComputedStyle(element).position), 'fixed');
+  const bounds = await panel.boundingBox();
+  const height = page.viewportSize().height;
+  assert(bounds && bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.width <= width &&
+    bounds.y + bounds.height <= height, 'The fixed dialog really fits the viewport after moving its host');
+  await host.locator('textarea').press('Escape');
+  assert.equal(await panel.isVisible(), false, 'Escape closes the same dialog');
+  assert.equal(await launcher.isVisible(), true);
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'false');
+  assert.equal(await host.evaluate(element => document.activeElement === element &&
+    element.shadowRoot.activeElement === element.shadowRoot.querySelector('.launcher')), true,
+  'Closing the dialog returns focus to the existing launcher');
+}
+
 async function checkGuide(page, width, enabled) {
   await guideIdentity(page);
   await page.evaluate(() => document.fonts.ready);
-  // Keep the whole page, including sources and the offline download. Capture
-  // before the layout assertion so a geometry failure still has usable evidence.
-  await page.screenshot({path: path.join(artifacts, 'guide-' + (enabled ? 'js' : 'nojs') + '-' + width + '.png'),
-    fullPage: true, animations: 'disabled'});
+  await scrollGuideTo(page, null);
+  if (enabled) await checkGuideNavigator(page, width);
   for (const id of ['method', 'practice', 'discoveries', 'offline', 'sources']) {
     const section = page.locator('#' + id);
     assert.equal(await section.isVisible(), true, id + ': visible with JavaScript ' + enabled);
@@ -118,6 +185,10 @@ async function checkGuide(page, width, enabled) {
   assert(geometry.document <= width + 1 && geometry.body <= width + 1,
     'No horizontal document scrolling: ' + JSON.stringify(geometry));
   assert.deepEqual(geometry.overflowing, [], 'The visible guide content fits ' + width + 'px');
+  await scrollGuideTo(page, null);
+  // Capture the final closed navigator in its header, with all content retained.
+  await page.screenshot({path: path.join(artifacts, 'guide-' + (enabled ? 'js' : 'nojs') + '-' + width + '.png'),
+    fullPage: true, animations: 'disabled'});
 }
 
 async function clickAndReturn(page, link, target, verify) {
