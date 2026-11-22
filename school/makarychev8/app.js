@@ -56,9 +56,9 @@ const squarePractice=window.MakarychevModels?.squarePractice;
 const appliedPractice=window.MakarychevModels?.appliedPractice;
 const invariantPractice=window.MakarychevModels?.invariantPractice;
 const fractionDomainPractice=window.MakarychevModels?.fractionDomainPractice;
-const {mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice}=window.MakarychevModels||{};
+const {mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice,behaviorPractice,tripReviewPractice,phasePractice,curvePractice,witnessPractice,functionZeroPractice,review43Practice,review43Skills=[]}=window.MakarychevModels||{};
 const auditPractice=window.MakarychevModels?.auditPractice;
-const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice].filter(Boolean)];
+const skillCatalogue=[...M.skills,...[extraPractice,formulaPractice,storyPractice,vietaPractice,trinomialPractice,factorsPractice,rationalEquationPractice,ratePractice,planePractice,systemPractice,graphicPractice,substitutionPractice,balancePractice,parameterPractice,squarePractice,appliedPractice,invariantPractice,fractionDomainPractice,auditPractice,mixturePractice,jointPractice,inequalityPractice,orderPractice,boundsPractice,combinedPractice,setPractice,axisPractice,rayPractice,casePractice,intersectionPractice,rootLocationPractice,proofPractice,functionPractice,domainPractice,graphReadingPractice,shapePractice,behaviorPractice,tripReviewPractice,phasePractice,curvePractice,witnessPractice,functionZeroPractice,review43Practice,...review43Skills].filter(Boolean)];
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])), skills=Object.fromEntries(skillCatalogue.map(s=>[s.id,s])), taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
@@ -67,6 +67,14 @@ function generatePractice(id,seed,level){
  if(id===extraPractice?.id)return window.MakarychevModels.practiceQuadratic(seed,level);
  if(id===mixturePractice?.id)return window.MakarychevModels.practiceMixture(seed,level);
  if(id===proofPractice?.id)return window.MakarychevModels.practiceProofEstimate(seed,level);
+ if(review43Skills.some(s=>s.id===id))return window.MakarychevModels.extraReview43(id,seed,level);
+ if(id===review43Practice?.id)return window.MakarychevModels.practiceReview43(seed,level);
+ if(id===functionZeroPractice?.id)return window.MakarychevModels.practiceFunctionZero(seed,level);
+ if(id===witnessPractice?.id)return window.MakarychevModels.practiceWitness(seed,level);
+ if(id===curvePractice?.id)return window.MakarychevModels.practiceCurveProperties(seed,level);
+ if(id===phasePractice?.id)return window.MakarychevModels.practicePhases(seed,level);
+ if(id===tripReviewPractice?.id)return window.MakarychevModels.practiceTripEquation(seed,level);
+ if(id===behaviorPractice?.id)return window.MakarychevModels.practiceBehavior(seed,level);
  if(id===shapePractice?.id)return window.MakarychevModels.practiceShapes(seed,level);
  if(id===graphReadingPractice?.id)return window.MakarychevModels.practiceReadings(seed,level);
  if(id===domainPractice?.id)return window.MakarychevModels.practiceDomain(seed,level);
@@ -148,6 +156,8 @@ function formatProblem(value,q){
   const entries=text.split(';'),count=q.kind==='interval-examples'?q.exampleCount:String(q.answer).split(';').length;
   if(entries.length!==count||entries.some(v=>!M.parse(v)))return message;
  }
+ if(q.kind==='trip-table'&&!window.MakarychevTaskGraphs.domainCoefficients(text,4))return message;
+ if(q.kind==='behavior-table'&&!window.MakarychevTaskGraphs.domainCoefficients(text,q.graph.xs.length))return message;
  if(q.kind==='feature-points'&&!window.MakarychevTaskGraphs.domainCoefficients(text,q.graph.constructionXs.length))return message;
  if(q.kind==='feature-coefficients'&&!window.MakarychevTaskGraphs.domainCoefficients(text,2))return message;
  if(q.kind==='positive-probe'&&!M.parse(text))return message;
@@ -194,6 +204,10 @@ function formatProblem(value,q){
  if(q.kind==='integer-runs'&&!window.MakarychevTaskGraphs.sequenceRows(text,q.graph))return inputNote(q)+' Проверь число членов и скобки.';
  if(q.kind==='parameter-formulas'&&text.split(';').length!==String(q.answer).split(';').length)return inputNote(q)+' Количество частей не совпало с форматом записи.';
  if(q.kind==='parameter-sample'&&window.MakarychevTaskGraphs.parameterSample(text)===null)return 'Для опыта укажи число от −24 до 24 с шагом 1/8. Можно использовать дробь, например −1/8.';
+ if(q.kind==='intersection-points'&&!window.MakarychevCheck.pointGroups(text))return q.inputNote;
+ if(q.kind==='landmark-interval'&&!window.MakarychevCheck.landmarkInput(text,window.MakarychevTaskGraphs.propertyCurve(q.graph).landmarks))return q.inputNote;
+ if(['monotone-construction','zero-construction'].includes(q.kind)&&!window.MakarychevTaskGraphs.witnessMarks(q.graph,text).complete)return 'Нужны '+q.graph.xs.length+' чисел через точку с запятой. Сохрани все свои ординаты.';
+ if(q.kind==='grid-estimate'&&!M.parse(text))return 'Запиши численную оценку высоты, например 0,5.';
  if(['system-single','system-intersection'].includes(q.kind)&&!window.MakarychevCheck.systemInput(text,q.variable||q.graph?.variable))return q.inputNote||'Запиши промежуток, неравенство с нужной буквой или ∅.';
  if(q.kind==='system-examples'&&!window.MakarychevCheck.rationalList(text))return q.inputNote;
  if(q.kind==='cube-graph-root'&&!window.MakarychevTaskGraphs.cubeRead(text))return q.inputNote;
@@ -249,6 +263,104 @@ function naturalCase(term,rule){
  return [36n-n*n,n*n];
 }
 function feedbackFor(value,q){
+ if(q.graph?.type==='source-review-43'){
+  const g=q.graph,C=window.MakarychevCheck;
+  if(q.kind==='intersection-points'){
+   const points=C.pointGroups(value)?.[0]||[];
+   for(const [a,b] of points){const x=a.n/a.d,y=b.n/b.d;if(x===0)return 'У гиперболы при x = 0 точки нет.';
+    if(Math.abs(y-(g.k*x+g.b))>1e-10)return 'Для x = '+M.answer(a)+' указанная ордината не лежит на прямой.';
+    if(Math.abs(y-g.h/x)>1e-10)return 'Для x = '+M.answer(a)+' ордината прямой не совпадает со значением на гиперболе.';}
+   if(points.length<2)return 'Проверь обе ветви гиперболы. Найдена ещё не вся пара точек.';
+  }
+  if(g.mode==='strip'){const ranges=C.axisRanges(C.systemInput(value,'x'));
+   if(ranges){for(const x of [0,4,1,-1,5]){const inside=ranges.some(r=>(x>r.min||x===r.min&&!r.leftOpen)&&(x<r.max||x===r.max&&!r.rightOpen));const trial=window.MakarychevTaskGraphs.review43Trial(g,String(x));if(inside!==trial.inside)return 'Проверь x = '+x+': высота y = '+trial.line+(trial.inside?' входит в полосу.':' лежит вне полосы.');}}}
+  if(g.mode==='numeric'&&M.equal(value,'9/25'))return 'Получен правильный модуль. Сверь знак перед квадратом 2a + 3.';
+  if(g.mode.startsWith('compare-')&&String(value).trim()==='=')return 'Добавь ещё десятичный разряд или приведи обе дроби к общему знаменателю. '+q.hint;
+ }
+ if(q.graph?.type==='source-formula-zeros'){
+  const g=q.graph,trial=v=>window.MakarychevTaskGraphs.functionZeroTrial(g,v);
+  if(g.measure==='domain'){
+   const ranges=window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(value,'x'));
+   if(ranges){
+    for(const probe of (g.formula==='root-above'?['-6','-5','-7','0']:['1','-5/2','5/3','2','0'])){
+     const r=trial(probe),inside=ranges.some(s=>(r.x>s.min||r.x===s.min&&!s.leftOpen)&&(r.x<s.max||r.x===s.max&&!s.rightOpen));
+     if(inside!==['nonzero','zero'].includes(r.status))return 'Сверь точку x = '+probe+'. '+(r.status==='pole'?'Здесь знаменатель равен нулю.':r.status==='radical'?'Здесь под корнем отрицательное число.':'Здесь корень существует и знаменатель ненулевой.');
+    }
+   }
+  }else {
+   for(const v of String(value).split(';')){
+    const r=trial(v);if(!r||r.status==='zero')continue;
+    if(r.status==='pole')return 'При x = '+r.entered+' знаменатель равен нулю. Функция в этой точке не определена.';
+    if(r.status==='radical')return 'При x = '+r.entered+' под квадратным корнем получается отрицательное число.';
+    if(g.formula==='root-above'&&r.x<0)return 'При x = '+r.entered+' левая часть x отрицательна, а квадратный корень неотрицателен. Проверь кандидата до возведения в квадрат.';
+    return 'Подставь x = '+r.entered+' в исходное выражение: числитель не обнуляется. '+q.hint;
+   }
+  }
+  return q.hint;
+ }
+ if(q.graph?.type==='source-graph-witness'){
+  const g=q.graph,r=window.MakarychevTaskGraphs.witnessMarks(g,value);
+  if(g.mode==='zeros'){const i=r.heights.indexOf(0);if(i>=0)return 'При x='+g.xs[i]+' ты создал дополнительный нуль. Дай этой свободной точке ненулевую высоту.';}
+  else if(r.complete){const [a,b,c]=r.heights,isPeak=g.mode==='peak',okLeft=isPeak?b>a:b<a;
+    return 'Проверь '+(okLeft?'правый':'левый')+' отрезок: '+(isPeak?(okLeft?'после вершины высота должна уменьшаться.':'к вершине высота должна увеличиваться.'):(okLeft?'после впадины высота должна увеличиваться.':'к впадине высота должна уменьшаться.'));
+  }
+  return q.hint;
+ }
+ if(q.graph?.type==='source-curve-properties'){
+  const g=q.graph,C=window.MakarychevCheck,G=window.MakarychevTaskGraphs,shape=G.propertyCurve(g);
+  if(['neg','pos','domain','range'].includes(g.measure)){
+   const interpret=v=>C.axisRanges(q.kind==='landmark-interval'?C.landmarkInput(v,shape.landmarks):C.systemInput(v,g.variable));
+   const proposed=interpret(value),expected=interpret(q.answer);
+   if(proposed&&expected){const low=g.variable==='y'?shape.yRange[0]:shape.xRange[0],high=g.variable==='y'?shape.yRange[1]:shape.xRange[1];
+    const has=(rs,x)=>rs.some(r=>(x>r.min||r.min===x&&!r.leftOpen)&&(x<r.max||r.max===x&&!r.rightOpen));
+    const probes=Array.from({length:2*(high-low)+1},(_,i)=>low+i/2).concat(shape.landmarks||[]);
+    for(const x of probes){if(has(proposed,x)===has(expected,x))continue;
+     if(g.variable==='x'&&['neg','pos'].includes(g.measure)){const y=G.propertyHeight(shape,x);const landmark=shape.landmarks?.indexOf(x);const label=landmark>=0?['α','β'][landmark]:String(x).replace('.',',');if(Number.isFinite(y))return 'Проверь точку x='+label+': она '+(Math.abs(y)<1e-9?'лежит на оси x':y>0?'выше оси x':'ниже оси x')+'. '+q.hint;}
+     return 'Сверь, входит ли в проекцию '+g.variable+'='+String(x).replace('.',',')+'. '+q.hint;
+    }
+   }
+  }
+  if(g.roundedZeros){
+   const expected=q.answer.split(';').map(Number),values=String(value).split(';').map(v=>M.parse(v));
+   const wrong=values.find(v=>v&&!expected.includes(v.n/v.d));
+   if(wrong)return 'Прочитай ближайшее целое деление в месте пересечения. Среди округлённых нулей нет '+M.answer(wrong)+'.';
+   if(values.filter(Boolean).length!==expected.length)return 'На рисунке видно '+expected.length+' пересечения оси x. Проверь их слева направо.';
+  }
+  if(g.at!==undefined&&q.kind==='grid-estimate')return 'Проверь вертикаль x='+g.at+' и ближайшее деление оси y. '+q.hint;
+  if(g.markZeros&&!g.roundedZeros){const vals=String(value).split(';').map(v=>M.parse(v));
+   for(const v of vals.filter(Boolean)){const x=v.n/v.d,y=G.readingHeight(shape.nodes,x);if(!Number.isFinite(y)||Math.abs(y)>1e-7)return 'Точка при x='+M.answer(v)+' не находится на пересечении кривой с осью x. '+q.hint;}
+  }
+  return q.hint;
+ }
+ if(q.graph?.type==='source-phase-reading'){
+  const g=q.graph;
+  if(g.scenario==='ice'&&String(value).includes('охлажд'))return 'Нагреватель всё время включён. Найди, где при подводе тепла температура остаётся на нуле.';
+  if(g.scenario==='water'&&q.kind==='number'&&M.equal(value,'28'))return '28 — это число минут на горизонтальной оси. Для температуры считай отметку вертикальной оси.';
+  if(q.kind==='system-single'){
+   const C=window.MakarychevCheck,proposed=C.axisRanges(C.systemInput(value,'t')),expected=C.axisRanges(C.systemInput(q.answer,'t'));
+   if(proposed?.length===1&&expected?.length===1){const p=proposed[0],r=expected[0];
+    if(p.min===r.min&&p.max===r.max&&(p.leftOpen||p.rightOpen))return 'Границы найдены. Крайние точки тоже показаны на графике: включи их квадратными скобками.';
+    if(p.min===r.min&&p.max!==r.max)return 'Начало совпадает. Проследи участок до следующего изменения наклона или конца рисунка.';
+    if(p.max===r.max&&p.min!==r.min)return 'Конец участка найден. Проверь, с какого момента начинается этот наклон.';
+   }
+  }
+  return q.hint;
+ }
+ if(q.graph?.type==='source-trip-review'){
+  const g=q.graph;
+  if(g.mode==='equation'){const raw=String(value).split(';');for(const v of raw){if(!M.parse(v))continue;const a=window.MakarychevTaskGraphs.functionValueAt({numerator:g.left,denominator:['1']},v),b=window.MakarychevTaskGraphs.functionValueAt({numerator:g.right,denominator:['1']},v);if(a!==null&&b!==null&&!M.equal(a,b))return 'При x='+v+' левая часть равна '+a+', а правая '+b+'. Проверь предложенный корень.';}if(q.kind==='set'&&raw.length<String(q.answer).split(';').length)return 'Проверь, нашёл ли ты все корни. '+q.hint;}
+  if(g.mode==='trip-build'){const p=String(value).split(';'),w=String(q.answer).split(';'),i=w.findIndex((v,i)=>!M.equal(p[i],v));if(i>=0)return 'Проверь узловую точку t='+g.xs[i]+'. '+q.hint;}
+  if(g.mode==='trip-value'&&Number(g.at)>1.5&&M.equal(value,'24'))return '24 км — произведение скорости обратного движения на время от начала наблюдения. В выражении расстояния нужно ещё учесть свободный член 35,5.';
+  return q.hint;
+ }
+ if(q.graph?.type==='source-behavior-review'){
+  const g=q.graph;
+  if(g.mode==='gallery'){const v=Number(value);if([1,2].includes(v)&&g.request>=3)return 'Ты выбрал гиперболу с двумя ветвями. Формула линейная: сравни прямые 3 и 4.';if([3,4].includes(v)&&g.request<=2)return 'В выбранном графике есть точка при x=0. В исходной дроби здесь знаменатель равен нулю.';}
+  if(q.kind==='behavior-table'){const raw=String(value).split(';'),i=g.tableValues.findIndex((v,i)=>!M.equal(raw[i],v));if(i>=0)return 'Перепроверь столбец при '+(g.mode==='tank-table'?'t':'x')+'='+g.xs[i]+'. '+q.hint;}
+  if(g.mode==='cubic-range'&&value==='[−8; 8]')return 'Проверь x=3/2: функция принимает −69/8, что меньше −8. Таблица по целым x пропустила экстремум.';
+  if(g.mode==='river'&&q.kind==='number'&&M.equal(value,'6'))return 'Шесть — день вершины, а вопрос о разности конечного и начального уровней.';
+  return q.hint;
+ }
  if(q.graph?.type==='source-function-features'){
   const g=q.graph,C=window.MakarychevCheck,r=C.axisRanges(C.systemInput(value,g.variable));
   const includes=x=>r?.some(row=>(x>row.min||x===row.min&&!row.leftOpen)&&(x<row.max||x===row.max&&!row.rightOpen));
@@ -610,7 +722,7 @@ ${D.chapters.map((chapter,i)=>'<section class="section" id="chapter-'+chapter.id
 }
 function findNumber(n){const r=document.getElementById('number-result');if(!Number.isInteger(n)||n<1||n>1340){r.textContent='Введи целый номер от 1 до 1340.';return;}const ref=D.sourceMap.sections.find(s=>s.exerciseRange&&n>=s.exerciseRange[0]&&n<=s.exerciseRange[1]);if(!ref){r.textContent='Номер не найден.';return;}const matches=D.lessons.flatMap(l=>l.tasks.map((t,i)=>({t,l,i}))).filter(x=>x.t.source?.type==='textbook'&&new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference)).sort((a,b)=>a.l.order-b.l.order+(a.l.id===b.l.id?((a.l.studyOrder?.indexOf(a.i)??a.i)-(b.l.studyOrder?.indexOf(b.i)??b.i)):0));const alternatives=(D.sourceAlternatives||[]).filter(v=>v.number===n).map(v=>{const l=byId[v.lessonId],i=l.tasks.findIndex(t=>t.id===v.taskId);return {l,i,t:l.tasks[i]};});let related=ref.kind==='topic'?D.lessons.filter(l=>l.order===ref.id):D.lessons.filter(l=>(()=>{const c=D.chapters.find(c=>c.id===ref.chapter);return c&&l.order>=c.topics[0]&&l.order<=c.topics[1];})());if(ref.kind==='difficult')related=[];r.innerHTML='<h3>№ '+n+'</h3><p>'+e(ref.title)+' · с. '+ref.printedPage+'–'+ref.printedEndPage+'</p><div class="row">'+matches.map(x=>'<a class="button" href="#lesson/'+x.l.id+'/'+x.i+'">'+e(x.t.source.reference)+'</a>').join('')+alternatives.map(x=>'<a class="button quiet" href="#lesson/'+x.l.id+'/'+x.i+'">Авторская альтернатива · '+e(x.t.title)+'</a>').join('')+related.map(l=>'<a class="button quiet" href="'+lessonEntry(l)+'">'+e(l.title)+'</a>').join('')+'</div>'+(matches.length?'':alternatives.length?'<p class="small">Для этого места подготовлена самостоятельная авторская задача со своими данными. Исходное упражнение остаётся в книге.</p>':'<p class="small">Индивидуального разбора этого номера в курсе пока нет. Для повторения воспользуйся темами курса ниже или картой глав.</p>');}
 function skillPage(){main.innerHTML=returnBanner()+'<p class="eyebrow">Вычислительная мастерская</p><h1>Потренируй один навык</h1><p class="lead">Выбери действие. Начни с простых чисел, затем переходи к более сложным. Кнопка «Новый пример» даёт другое задание.</p><div class="skill-grid">'+Object.values(skills).map(s=>'<article class="skill-card"><span class="eyebrow">Практика</span><h2>'+e(s.title)+'</h2><p>'+e(s.description)+'</p><a class="button quiet" href="#practice/'+s.id+'/1">Начать →</a></article>').join('')+'</div>';}
-function lessonView(id,index){const l=byId[id];if(!l)return home();index=Math.max(0,Math.min(l.tasks.length-1,Math.trunc(Number(index))||0));const t=l.tasks[index],order=l.studyOrder||l.tasks.map((_,i)=>i),position=order.indexOf(index);active={lesson:l,task:t,index,practice:false};state.last={hash:'#lesson/'+id+'/'+index};save();main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a>'+boardEntry()+'<span>/ '+l.chapter+'</span></div><p class="eyebrow">'+(/^additional-[1-6]$/.test(t.source?.section||'')?'Дополнительно к §'+(t.source.paragraph||1)+' · с. '+t.source.page:'Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange))+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details class="task-menu"'+(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches?' open':'')+'><summary>Задачи этой темы ('+l.tasks.length+')</summary><div class="side-list">'+order.map((i,pos)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':'')+'</span>'+(pos+1)+'. '+e(q.title)+'</button>';}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel"><summary>Коротко о главном</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><details class="panel model-panel"><summary>Исследовать на модели</summary><div id="model" class="model"></div></details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position<order.length-1?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):l.order<51?'<a class="button quiet" href="'+lessonEntry(byId['p'+String(l.order+1).padStart(2,'0')])+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';cleanup=window.MakarychevModels?.mount(document.getElementById('model'),l,{state:ts(t.id).investigation,onChange:value=>{const saved=ts(t.id);saved.investigation=sanitizeInvestigation(value);markAssisted(saved,'model');save();}});renderProblem();if(!sharedMode)window.MathExamCourseExamples?.mount(document.getElementById('problem'),'makarychev8',l.id,()=>{markAssisted(ts(t.id),'animation');save();});document.querySelectorAll('main details.panel').forEach(el=>{el.addEventListener('toggle',()=>{if(el.open){markAssisted(ts(t.id));save();}});});}
+function lessonView(id,index){const l=byId[id];if(!l)return home();index=Math.max(0,Math.min(l.tasks.length-1,Math.trunc(Number(index))||0));const source=l.tasks[index],model=l.taskModels?.[source.id];const t=model?{...source,graph:model}:source,order=l.studyOrder||l.tasks.map((_,i)=>i),position=order.indexOf(index);active={lesson:l,task:t,index,practice:false};state.last={hash:'#lesson/'+id+'/'+index};save();main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a>'+boardEntry()+'<span>/ '+l.chapter+'</span></div><p class="eyebrow">'+(/^additional-[1-6]$/.test(t.source?.section||'')?'Дополнительно к §'+(t.source.paragraph||1)+' · с. '+t.source.page:'Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange))+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details class="task-menu"'+(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches?' open':'')+'><summary>Задачи этой темы ('+l.tasks.length+')</summary><div class="side-list">'+order.map((i,pos)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':'')+'</span>'+(pos+1)+'. '+e(q.title)+'</button>';}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel"><summary>Коротко о главном</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><details class="panel model-panel"><summary>Исследовать на модели</summary><div id="model" class="model"></div></details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position<order.length-1?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):l.order<51?'<a class="button quiet" href="'+lessonEntry(byId['p'+String(l.order+1).padStart(2,'0')])+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';cleanup=window.MakarychevModels?.mount(document.getElementById('model'),l,{state:ts(t.id).investigation,onChange:value=>{const saved=ts(t.id);saved.investigation=sanitizeInvestigation(value);markAssisted(saved,'model');save();}});renderProblem();if(!sharedMode)window.MathExamCourseExamples?.mount(document.getElementById('problem'),'makarychev8',l.id,()=>{markAssisted(ts(t.id),'animation');save();});document.querySelectorAll('main details.panel').forEach(el=>{el.addEventListener('toggle',()=>{if(el.open){markAssisted(ts(t.id));save();}});});}
 function practiceView(id,level){if(!skills[id])return skillPage();level=[1,2,3].includes(Number(level))?Number(level):1;const key=id+':'+level;let p=state.practice[key];if(!p||!Number.isSafeInteger(p.seed))p=state.practice[key]={seed:1};const t=generatePractice(id,p.seed,level);t.id='practice:'+id+':'+level+':'+p.seed;t.signature=taskSignature(t);const saved=ts(t.id);if(!saved.signature){saved.signature=t.signature;saved.repeated=Object.entries(state.tasks).some(([other,r])=>other!==t.id&&r.signature===t.signature);}active={task:t,practice:true,skill:id,level,key};if(!state.origin)state.last={hash:'#practice/'+id+'/'+level};save();main.innerHTML=returnBanner()+'<div class="breadcrumb"><a href="#skills">← Выбрать другой навык</a></div><p class="eyebrow">Отдельная тренировка · пример '+p.seed+'</p><h1 class="lesson-title">'+e(skills[id].title)+'</h1><div class="row"><label for="level">Сложность</label><select id="level" class="level-select"><option value="1">1 · Начинаем с простого</option><option value="2">2 · Закрепляем</option><option value="3">3 · Проверяем себя</option></select><span class="small">Без ограничения времени</span></div><div id="problem" class="section"></div><div class="navigation">'+button('Новый пример →','new')+(state.origin?button('Вернуться к исходной задаче','return','',true):'<a class="button quiet" href="#skills">Другой навык</a>')+'</div><p class="small">Для самостоятельного результата реши новый пример без подсказок и с первой попытки. Разобранный пример остаётся в результатах как решение с помощью.</p>';document.getElementById('level').value=level;document.getElementById('level').onchange=ev=>go('#practice/'+id+'/'+ev.target.value);renderProblem();}
 function inRoots(){return active&&!active.practice&&active.lesson.order>=10&&active.lesson.order<=19;}
 function mathKeys(targetId){return inRoots()?'<div class="math-keys" role="group" aria-label="Математические знаки">'+['√','²','|','≥','≤',';'].map(v=>'<button type="button" class="quiet" data-action="math-key" data-target="'+targetId+'" data-symbol="'+e(v)+'" aria-label="Вставить '+e(v)+'">'+e(v)+'</button>').join('')+'</div>':'';}
@@ -720,6 +832,12 @@ if(t.graph){
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(graph.type))graph=rationalEvidence(graph,s.value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(graph.type))graph={...graph,trial:s.values[graph.trialStep||0],prediction:s.values[graph.predictionStep],completed:s.correct};
  if(graph.fixedInput)graph={...graph,partial:s.values,showValue:Boolean(s.correct)};
+ if(graph.type==='source-review-43')graph={...graph,partial:s.values};
+ if(graph.type==='source-formula-zeros'&&!graph.legacy)graph={...graph,partial:s.values};
+ if(graph.type==='source-curve-properties')graph={...graph,partial:s.values};
+ if(graph.type==='source-phase-reading')graph={...graph,partial:s.values};
+ if(graph.type==='source-trip-review')graph={...graph,partial:s.values};
+ if(graph.type==='source-behavior-review')graph={...graph,partial:s.values,proposal:graph.variable?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(s.value,graph.variable)):null};
  if(graph.type==='source-function-features')graph={...graph,partial:s.values,proposal:['domain','range'].includes(graph.mode)?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(s.value,graph.variable)):null};
  if(graph.type==='source-reading-graph')graph={...graph,partial:s.values,proposal:window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(s.value,graph.variable||'y')),xs:graph.mode==='preimage'?window.MakarychevCheck.rationalList(s.value):null};
  if(graph.type==='source-function-domain')graph={...graph,partial:s.values,proposal:['radical','quotient','zero'].includes(graph.case)?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(s.value,'x')):null};
@@ -757,7 +875,7 @@ if(t.graph){
  if(modelInput&&graph.type==='natural-values')graph={...graph,rows:(window.MakarychevCheck.setEntries(modelInput)||[]).map(term=>({term,pair:naturalCase(term,t.naturalRule)}))};
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
-document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
+document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
 function rationalEvidence(graph,value){
  const C=window.MakarychevCheck;
  if(graph.type==='rational-root-audit')return {...graph,checks:C.rationalRootTrial(value,graph)};
@@ -769,13 +887,19 @@ function factorEvidence(graph,value){
  const [a,...roots]=String(value||'').split(';');
  return {...graph,rightLeading:M.equal(a,graph.leading),audit:window.MakarychevCheck.vietaAudit(roots.join(';'),graph)};
 }
-function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(base.type))graph=rationalEvidence(base,value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(base.type))graph={...base,trial:state.values[base.trialStep||0],prediction:state.values[base.predictionStep],completed:state.correct};
  if(base.fixedInput)graph={...graph,partial:state.values,showValue:Boolean(state.correct)};
+ if(base.type==='source-review-43')graph={...base,partial:state.values};
+ if(base.type==='source-formula-zeros'&&!base.legacy)graph={...base,partial:state.values};
+ if(base.type==='source-curve-properties')graph={...base,partial:state.values};
+ if(base.type==='source-phase-reading')graph={...base,partial:state.values};
+ if(base.type==='source-trip-review')graph={...base,partial:state.values};
+ if(base.type==='source-behavior-review')graph={...base,partial:state.values,proposal:base.variable?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(value,base.variable)):null};
  if(base.type==='source-function-features')graph={...base,partial:state.values,proposal:['domain','range'].includes(base.mode)?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(value,base.variable)):null};
  if(base.type==='source-reading-graph')graph={...base,partial:state.values,proposal:window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(value,base.variable||'y')),xs:base.mode==='preimage'?window.MakarychevCheck.rationalList(value):null};
  if(base.type==='source-function-domain')graph={...base,partial:state.values,proposal:['radical','quotient','zero'].includes(base.case)?window.MakarychevCheck.axisRanges(window.MakarychevCheck.systemInput(value,'x')):null};

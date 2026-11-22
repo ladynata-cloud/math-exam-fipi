@@ -939,6 +939,76 @@
    return {title:rootLocationPractice.title,prompt:'При каких a оба корня уравнения (x − ('+center+'))² = '+radius*radius+' '+(negative?'отрицательны?':'лежат в ('+low+'; '+high+')?'),kind:'system-intersection',answer:ans,hint,correction:hint,explanation:'Корни равны ('+center+') − '+radius+' и ('+center+') + '+radius+'. Проверка обеих границ даёт '+ans+'.',inputNote:'Укажи промежуток или неравенство.',graph:{type:'source-system-review',mode:'parameters',settings,variable:'a'},steps:[{kind:'rational-probe',answer:'0',prompt:'Испытай своё значение a.',hint,explanation:hint},{kind:'number',answer:String(2*radius),prompt:'Чему равно расстояние между двумя корнями?',hint,explanation:hint}],skills:[rootLocationPractice.id],source:{type:'authored',reference:'Практика положения двух корней'}};
   }
 
+  const review43Skills=[
+   {id:'section43-intersection',title:'Найди общие точки',description:'Найди обе общие точки новой прямой и гиперболы.'},
+   {id:'section43-algebra',title:'Проверь тождество',description:'Построй доказательство для новой разности квадратов и сохрани исключение из области определения.'},
+   {id:'section43-comparison',title:'Сравни близкие дроби',description:'Выбери точность модели и сравни две новые дроби без округления.'}
+  ];
+  function extraReview43(id,seed,level=1){
+   const skill=review43Skills.find(s=>s.id===id),common={title:skill.title,skills:[id]};
+   if(id==='section43-intersection'){
+    const a=-1-seed%4,b=1+Math.floor(seed/3)%4,k=1,offset=-(a+b),h=-a*b;
+    const hint='Приравняй правые части и найди обе ненулевые абсциссы, затем проверь соответствующие ординаты.';
+    const line='x'+(offset<0?' − '+(-offset):offset>0?' + '+offset:'');
+    return {...common,prompt:'Найди общие точки функций y = '+line+' и y = '+h+'/x.',kind:'intersection-points',answer:'('+a+';'+(a+offset)+'), ('+b+';'+(b+offset)+')',graph:{type:'source-review-43',mode:'cross',k,b:offset,h},steps:[{prompt:'Проверь свой аргумент на двух графиках.',kind:'rational-probe',answer:'1',hint,explanation:hint}],hint,correction:hint,explanation:'Обе названные пары удовлетворяют обоим уравнениям.',finalLabel:'Точки (x;y)',inputNote:'Для каждой точки запиши (x;y), отделяя точки запятой.'};
+   }
+   if(id==='section43-comparison'){
+    const d=21+seed%17,n=11+level,swap=Boolean(seed%2),small=[n,d+1],large=[n,d],left=swap?large:small,right=swap?small:large,labels=[left.join('/'),right.join('/')],hint='Числители одинаковы и положительны. При большем знаменателе доля меньше.';
+    return {...common,prompt:'Сравни '+labels[0]+' и '+labels[1]+'.',kind:'text',answer:swap?'>':'<',choices:['<','=','>'],graph:{type:'source-review-43',mode:'compare-generated',left,right,labels},steps:[{prompt:'Выбери от 1 до 6 десятичных разрядов для модели.',kind:'review-precision',answer:'3',hint,explanation:hint}],hint,correction:hint,explanation:hint,finalLabel:'Знак'};
+   }
+   const h=2+seed%9,hint='Начни с области определения, разложи числитель на сопряжённые множители, затем обоснуй сокращение.';
+   return {...common,prompt:'Докажи равенство для допустимых a.',mathExpression:['=',['/',['-',['^','a','2'],String(h*h)],['-','a',String(h)]],['+','a',String(h)]],kind:'proof-chain',answer:'2;3;1',proofClaims:['Ненулевой общий множитель можно сократить. Остаётся правая часть.','Знаменатель требует a ≠ '+h+'.','Числитель равен (a − '+h+')(a + '+h+').'],graph:{type:'source-review-43',mode:'identity-generated',parameter:h},steps:[{prompt:'Выбери своё a и проверь дробь.',kind:'rational-probe',answer:'1',hint,explanation:hint}],hint,correction:hint,explanation:'На исходной области a − '+h+' отлично от нуля.',finalLabel:'Порядок утверждений'};
+  }
+  const review43Practice={id:'section43-review',title:'Ордината в полосе',description:'Измеряй высоту точки новой прямой и найди точный промежуток аргументов.'};
+  function practiceReview43(seed,level=1){
+   const k=1+seed%4,b=seed%9-4,low=-1-seed%3,high=level+1+seed%5,min=k*low+b,max=k*high+b;
+   const hint='Реши два неравенства для одной возрастающей прямой. Сохрани открытость нижней границы.';
+   const formula=k+'x'+(b<0?' − '+(-b):b>0?' + '+b:'');
+   return {title:review43Practice.title,prompt:'При каких x ордината y = '+formula+' удовлетворяет '+min+' < y ≤ '+max+'?',kind:'system-single',variable:'x',answer:'('+low+';'+high+']',graph:{type:'source-review-43',mode:'strip',k,b,min,max},steps:[{prompt:'Выбери аргумент и проверь его высоту.',kind:'rational-probe',answer:'0',hint,explanation:hint}],hint,correction:hint,explanation:'Нижняя граница не входит, верхняя входит.',skills:[review43Practice.id],finalLabel:'Промежуток x'};
+  }
+  const functionZeroPractice={id:'function-zero-check',title:'Нули и запреты дроби',description:'Подставь свой аргумент в новую дробь и отличи её нуль от точки, в которой делить нельзя.'};
+  function practiceFunctionZero(seed,level=1){
+   const zero=seed%11-5,excluded=zero+level+1,hint='Для нулевой дроби числитель равен нулю, а знаменатель отличен от нуля.';
+   const term=v=>v===0?'x':[v<0?'+':'-','x',String(Math.abs(v))];
+   const subtract=v=>v<0?'x + '+(-v):v>0?'x − '+v:'x',original='('+subtract(zero)+') / ('+subtract(excluded)+')';
+   return {title:functionZeroPractice.title,prompt:'Найди нуль и проверь его в исходной дроби.',kind:'set',answer:String(zero),mathExpression:['=','y',['/',term(zero),term(excluded)]],graph:{type:'source-formula-zeros',formula:'generated',original,zero,excluded},steps:[{prompt:'Подставь свой пробный аргумент.',kind:'rational-probe',answer:'0',hint,explanation:hint}],hint,correction:hint,explanation:'При x = '+zero+' числитель нулевой. При x = '+excluded+' деление невозможно.',skills:[functionZeroPractice.id],finalLabel:'Нуль функции'};
+  }
+  const witnessPractice={id:'graph-witness',title:'Построй свой график',description:'Выбирай высоты узлов, чтобы получить нужный поворот или точно заданные нули.'};
+  function practiceWitness(seed,level=1){
+   if(seed%3===0){
+    const left=-2-(seed%5),right=2+Math.floor(seed/5)%5,gap=(left+right)/2;
+    const xs=[left-1,gap,right+1],hint='Каждой свободной точке нужна ненулевая ордината. Между ними уже стоят заданные нули.';
+    return {title:witnessPractice.title,prompt:'Построй свою ломаную с нулями '+left+' и '+right+'. Введи ненулевые высоты при x='+xs.join('; ').replace('.',',')+'. За крайними узлами продолжи график горизонтально.',kind:'zero-construction',answer:'1;-2;3',graph:{type:'source-graph-witness',mode:'zeros',xs,zeros:[left,right]},steps:[{prompt:'Сколько абсцисс имеют нулевую высоту?',kind:'number',answer:'2',hint,explanation:hint}],hint,correction:hint,explanation:'На каждом участке между соседними нулями график сохраняет знак выбранной ординаты.',skills:[witnessPractice.id],finalLabel:'Три свои ординаты'};
+   }
+   const a=-2-seed%4,b=1+Math.floor(seed/5)%3,c=b+2+level,peak=Boolean(seed%2),hint='Выбери три своих высоты. Средняя должна быть строго '+(peak?'больше':'меньше')+' каждой соседней.';
+   return {title:witnessPractice.title,prompt:'Построй свою '+(peak?'вершину':'впадину')+' на ['+a+';'+c+']. Введи три высоты при x='+a+'; '+b+'; '+c+'.',kind:'monotone-construction',answer:peak?'0;2;1':'2;0;1',graph:{type:'source-graph-witness',mode:peak?'peak':'valley',xs:[a,b,c]},steps:[{prompt:'При каком x нужен поворот?',kind:'number',answer:String(b),hint,explanation:hint}],hint,correction:hint,explanation:'Порядок трёх высот задаёт направления двух отрезков.',skills:[witnessPractice.id],finalLabel:'Три свои ординаты'};
+  }
+  const curvePractice={id:'curve-properties',title:'Нули и знак кривой',description:'Проверь знаки между новыми двумя пересечениями с осью.'};
+  function practiceCurveProperties(seed,level=1){
+   const a=-(2+seed%4),b=2+Math.floor(seed/4)%4,height=1+level,left=a-2,right=b+2;
+   const nodes=[[left,height],[a,0],[0,-height],[b,0],[right,height]];
+   const positive=Boolean(seed%2),ans=positive?'['+left+';'+a+')∪('+b+';'+right+']':'('+a+';'+b+')';
+   const hint='Найди оба пересечения с осью. В самих нулях нет ни положительного, ни отрицательного значения.';
+   return {title:curvePractice.title,prompt:'Где функция на графике принимает '+(positive?'положительные':'отрицательные')+' значения? Запиши все части.',kind:'system-single',variable:'x',answer:ans,graph:{type:'source-curve-properties',figure:'generated',nodes,yRange:[-height-1,height+1],variable:'x',measure:positive?'pos':'neg'},steps:[{prompt:'Испытай собственное x на кривой.',kind:'rational-probe',answer:'1',hint,explanation:hint}],hint,correction:hint,explanation:'Знак меняется в точках '+a+' и '+b+'. Подходящие x: '+ans+'.',skills:[curvePractice.id],finalLabel:'Множество x'};
+  }
+  const phasePractice={id:'observed-phases',title:'Участки графика движения',description:'Определи по новой ломаной промежуток возрастания, убывания или постоянства скорости.'};
+  function practicePhases(seed,level=1){
+   const a=2+seed%5,b=a+2+Math.floor(seed/5)%5,end=b+2+level,peak=2+Math.floor(seed/7)%5;
+   const modes=['возрастает','постоянна','убывает'],i=(seed+level)%3,nodes=[[0,0],[a,peak],[b,peak],[end,0]];
+   const from=nodes[i][0],to=nodes[i+1][0],ans='['+from+';'+to+']';
+   const hint='Найди нужный наклон и прочитай время по концам отрезка.';
+   return {title:phasePractice.title,prompt:'На каком полном отрезке времени скорость '+modes[i]+'? Включи крайние моменты.',kind:'system-single',variable:'t',answer:ans,graph:{type:'source-phase-reading',scenario:'generated',variable:'t',nodes},steps:[{prompt:'Испытай выбранный момент времени.',kind:'rational-probe',answer:'1',hint,explanation:hint}],hint,correction:hint,explanation:'Границы нужного участка расположены при t='+from+' и t='+to+' с.',skills:[phasePractice.id],finalLabel:'Отрезок времени, с'};
+  }
+  const tripReviewPractice={id:'trip-equation-review',title:'Проверка движения и корней',description:'Сверяй подстановки в уравнениях с новыми целыми корнями.'};
+  function practiceTripEquation(seed,level=1){
+   const x=1+seed%8,y=-(level+seed%5),b=-(x+y),c=x*y,answer=y+';'+x,hint='Найди два числа по сумме и произведению. Сравни значения левой и правой частей.';
+   return {title:tripReviewPractice.title,prompt:'Найди все корни x²'+(b>=0?'+':'')+b+'x'+(c>=0?'+':'')+c+'=0.',kind:'set',answer,hint,correction:hint,explanation:'Разложение на множители даёт корни '+answer+'.',finalLabel:'Корни через точку с запятой',graph:{type:'source-trip-review',mode:'equation',left:[String(c),String(b),'1'],right:['0']},steps:[{prompt:'Проверь собственный x в обеих частях.',kind:'rational-probe',answer:'1',hint,explanation:hint}],skills:[tripReviewPractice.id]};
+  }
+  const behaviorPractice={id:'function-behavior',title:'Формула по участкам и таблица',description:'Собери свою ломаную по новым температурам и моментам измерения.'};
+  function practiceBehavior(seed,level=1){
+   const initial=10+seed%19,end=30+seed%15,peak=65+seed%20,xs=[0,10+level*3,30+level*3,60+level*5],values=[initial,peak,peak,end],answer=values.join(';'),hint='Для горизонтального участка в начальном и конечном столбцах стоят одинаковые температуры.';
+   return {title:behaviorPractice.title,prompt:'Собери температурную ломаную: сначала '+initial+' °С, затем '+peak+' °С, после выдержки столько же, в конце '+end+' °С. Времена: '+xs.join('; ')+' мин.',kind:'behavior-table',answer,hint,correction:hint,explanation:'Четыре узловые точки задают три отрезка.',finalLabel:'Четыре ординаты',graph:{type:'source-behavior-review',mode:'tank-table',xs,tableValues:values.map(String),customNodes:xs.map((x,i)=>[x,values[i]])},steps:[{prompt:'Выбери минуту для проверки.',kind:'rational-probe',answer:'1',hint,explanation:hint}],skills:[behaviorPractice.id]};
+  }
   const shapePractice={id:'function-shape-range',title:'График и достижимые высоты',description:'Построй новую прямую, найди диапазон на отрезке и проверь удалённую точку.'};
   function practiceShapes(seed,level=1){
    const k=(seed%2?1:-1)*(1+seed%4),b=seed%9-4,low=-(1+seed%3),high=2+seed%4,solve=level===1;
@@ -983,5 +1053,5 @@
    return {title:proofPractice.title,prompt:'Докажи для x>0: x² + '+(s+extra)+(strict?' > ':' ≥ ')+(2*b)+'x.',kind:'proof-chain',answer:seed%2?'3;2;1':'2;3;4',proofClaims:claims,steps:[{prompt:'Испытай своё положительное x.',kind:'source-domain-sample',answer:'1',sourceDomain:'positive',probeCount:1,hint:h,explanation:h},{prompt:'При каком x квадрат в доказательстве обращается в ноль?',kind:'number',answer:String(b),hint:h,explanation:h}],hint:h,correction:h,explanation:'Разность равна (x−'+b+')² + '+extra+'.',graph:{type:'inequality-evidence',mode:'probe',symbols:['x'],sourceDomain:'positive',left,right},finalLabel:'Собери доказательство',skills:[proofPractice.id],source:{type:'authored',reference:'Практика доказательства квадратичной оценки'}};
   }
 
-  return { mount, experiment, shapePractice, practiceShapes, graphReadingPractice, practiceReadings, domainPractice, practiceDomain, functionPractice, practiceFunction, proofPractice, practiceProofEstimate, rootLocationPractice, practiceRootLocations, intersectionPractice, practiceIntersection, casePractice, practiceCase, rayPractice, practiceRay, axisPractice, practiceAxis, setPractice, practiceSets, combinedPractice, practiceCombined, boundsPractice, practiceBounds, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  return { mount, experiment, review43Skills, extraReview43, review43Practice, practiceReview43, functionZeroPractice, practiceFunctionZero, witnessPractice, practiceWitness, curvePractice, practiceCurveProperties, phasePractice, practicePhases, tripReviewPractice, practiceTripEquation, behaviorPractice, practiceBehavior, shapePractice, practiceShapes, graphReadingPractice, practiceReadings, domainPractice, practiceDomain, functionPractice, practiceFunction, proofPractice, practiceProofEstimate, rootLocationPractice, practiceRootLocations, intersectionPractice, practiceIntersection, casePractice, practiceCase, rayPractice, practiceRay, axisPractice, practiceAxis, setPractice, practiceSets, combinedPractice, practiceCombined, boundsPractice, practiceBounds, orderPractice, practiceOrder, inequalityPractice, practiceInequality, mixturePractice, jointPractice, practiceMixture, practiceJoint, auditPractice, practiceRationalAudit, fractionDomainPractice, practiceFractionDomain, invariantPractice, practiceInvariants, appliedPractice, practiceAppliedReview, squarePractice, practiceCertificate, parameterPractice, practiceParameter, balancePractice, practiceBalance, substitutionPractice, practiceSubstitution, graphicPractice, practiceGraphical, systemPractice, practiceSystem, planePractice, practicePlane, ratePractice, practiceRates, rationalEquationPractice, practiceRationalEquation, factorsPractice, practiceFactors, trinomialPractice, practiceTrinomial, vietaPractice, practiceVieta, storyPractice, practiceStory, quadraticPractice, practiceQuadratic, formulaPractice, practiceFormula, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });

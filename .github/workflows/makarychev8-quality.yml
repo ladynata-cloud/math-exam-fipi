@@ -85,6 +85,10 @@ jobs:
           python school/makarychev8/test-exercises-1069-1075.py
           python school/makarychev8/test-exercises-1076-1079.py
           python school/makarychev8/test-exercises-1080-1087.py
+          python school/makarychev8/test-exercises-1088-1092.py
+          python school/makarychev8/test-exercises-1093-1096.py
+          python school/makarychev8/test-exercises-1097-1099.py
+          python school/makarychev8/test-exercises-1100-1102.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -130,6 +134,13 @@ jobs:
           node school/makarychev8/test-function-domains.cjs
           node school/makarychev8/test-graph-reading.cjs
           node school/makarychev8/test-function-features.cjs
+          node school/makarychev8/test-behavior-review.cjs
+          node school/makarychev8/test-trip-equation-review.cjs
+          node school/makarychev8/test-observed-phases.cjs
+          node school/makarychev8/test-curve-properties.cjs
+          node school/makarychev8/test-graph-witnesses.cjs
+          node school/makarychev8/test-formula-zeros.cjs
+          node school/makarychev8/test-section43-review.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -236,6 +247,20 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-graph-reading.cjs
       - name: Chromium constructed function graphs and endpoint ranges
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-features.cjs
+      - name: Chromium behavior review
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-behavior-review.cjs
+      - name: Chromium source trip, stops and algebraic review
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-trip-equation-review.cjs
+      - name: Chromium original velocity and thermal readings, figures 61–63
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-observed-phases.cjs
+      - name: Chromium original zeros, strict sign changes and source extrema
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-curve-properties.cjs
+      - name: Chromium graph reading and free polygon construction
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-graph-witnesses.cjs
+      - name: Chromium formula zeros, radical boundaries and excluded denominators
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-formula-zeros.cjs
+      - name: Chromium intersections, inequalities, proofs and recurring decimals
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-section43-review.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction
