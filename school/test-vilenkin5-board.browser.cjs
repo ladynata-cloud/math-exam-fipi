@@ -534,6 +534,13 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.143 to 1.145, road time, kilometre shares and a zero inside the chain';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-144"]').click();await studentFrame.locator('h1').filter({hasText:'№1.144'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=row]').selectOption({value:'5'});await teacherFrame.locator('[data-v5-prediction]').fill('50');await teacherFrame.locator('[data-v5-predict] button').click();const kilometreError=await same(teacherFrame,studentFrame,'the number of pieces differs from their length');assert.equal(kilometreError.scene.model.first,'50');assert.equal(kilometreError.scene.model.seen,false);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-prediction]').fill('20');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('#answer').fill('25');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const kilometreRestored=await same(studentFrame,teacherFrame,'one fiftieth with a retained correction and written draft');assert.equal(kilometreRestored.scene.model.first,'50');assert.equal(kilometreRestored.scene.model.prediction,'20');assert.equal(kilometreRestored.scene.savedInput,'25');
+  await ownership(teacher,student,false);await teacherFrame.locator('#answer').fill('250');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'a quarter is 250 metres')).scene.correct);
+
   phase = 'source 1.142, independently chosen factors in an open product column';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-142"]').click();await studentFrame.locator('h1').filter({hasText:'№1.142'}).waitFor();
   await teacherFrame.locator('[data-v5-param=column]').selectOption({value:'6'});await teacherFrame.locator('[data-v5-param=left]').fill('19');await teacherFrame.locator('[data-v5-param=left]').press('Tab');await teacherFrame.locator('[data-v5-param=right]').fill('5');await teacherFrame.locator('[data-v5-param=right]').press('Tab');
