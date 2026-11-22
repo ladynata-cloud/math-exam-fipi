@@ -1246,6 +1246,18 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
   await same(teacherFrame,studentFrame,'restored reflected time');await teacherFrame.locator('#answer-form button').click();const reflected=await same(teacherFrame,studentFrame,'seven and five reflected in vertical axis');assert(reflected.scene.correct);assert.equal(reflected.scene.attempt,2);await narrow(student,studentFrame,'reflected-clocks');
 
+  phase = 'source 5.77: draw equal radii on both sides of tangency';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-77"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.77'}).waitFor();
+  await teacherFrame.locator('#answer').fill('4');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'radius four for tangency')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('4');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'tangent circles are not separate')).scene.message,/касаются/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=a]').fill('39');await studentFrame.locator('[data-v5-param=a]').press('Tab');await studentFrame.locator('[data-v5-param=mark]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('0');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('#answer').fill('3,9');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const twoCircleState=await same(studentFrame,teacherFrame,'restore both student circles');assert.equal(twoCircleState.scene.model.a,39);assert(twoCircleState.scene.model.seen);assert.equal(twoCircleState.scene.savedInput,'3,9');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'both radii and draft survive');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'accept any positive radius under four')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('4,01');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'accept any radius greater than four')).scene.correct);await narrow(student,studentFrame,'two-equal-circle-radii');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
