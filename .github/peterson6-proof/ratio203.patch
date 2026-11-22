@@ -1,0 +1,967 @@
+diff --git a/school/peterson6/continuation-models.js b/school/peterson6/continuation-models.js
+index fee4e45caaf00028babaaaec6573dc91e4b46782..685bfff603f4f00dc5881af597520cb69727e138 100644
+--- a/school/peterson6/continuation-models.js
++++ b/school/peterson6/continuation-models.js
+@@ -2650,6 +2650,7 @@ function changeBars(before,after,labels=['Было','Стало']) {
+  return pic;
+ }
+ function configFor(lesson,task){
++ if(lesson?.id==='p22'&&task?.roosterGroups)return {title:'Кто может слышать пение?',controls:[c('Расположение людей',[[0,'Один двор'],[1,'Две отдельные комнаты'],[2,'Пять отдельных комнат']])],initial:[0]};
+  if(lesson?.id==='p41'&&task?.logicDirection)return {title:'Условие и заключение',controls:[c('Пример',[[0,'Первый'],[1,'Другой пример']]),c('Что открыть',[[0,'Только условие'],[1,'Заключение']])],initial:[0,0]};
+  if(lesson?.id==='p22'&&task?.proportionPair)return {title:'Две величины в таблице',controls:[c('Данные',[[0,'Из книги'],[1,'Для тренировки']]),c('Что показать',[[0,'Только условие'],[1,'Что постоянно'],[2,'Проверить ответ']])],initial:[0,0]};
+  if(lesson?.id==='p40'&&task?.functionReview)return {title:({224:'Формула в двух направлениях',225:'Три прямые на одной плоскости',226:'Наклоны трёх прямых',227:'Одна дробь',228:'Один маршрут',229:'Две большие дроби',230:'Шаг между дробями'})[task.source.exercise],controls:[c('Данные',[[0,'Из упражнения'],[1,'Новый пример']]),c('Шаг',[[0,'Самостоятельно'],[1,'Показать опору'],[2,'Сверить результат']])],initial:[0,0]};
+@@ -2977,12 +2978,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
+ function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
+ function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
+ function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
+-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p41-implication'){picture=table(['Часть записи','Содержание'],[['Условие',f.left],['Следствие',f.right]]);}else if(f.type==='p22-two-quantities'){const [a,b,x]=f.given;picture=table(f.labels,[[num(a),num(b)],[num(x),'?']]);}else if(f.type==='p40-law-data'){picture=table(['x','y'],lawXs[f.index].map(x=>[num(x),num(lawFunctions[f.index](x))]));}else if(f.type==='p40-vertical-sheet'){picture=exploreFunctionCurves('vertical',f.index,false,0).graph;}else if(f.type==='p21-facade'){picture=printedFacade(f.index,false,0).graph;}else if(f.type==='p21-calculation-sheet'){picture=table(['№','Выражение'],f.entries.map((e,i)=>[i+1,printedArithmetic(e,false).expression]));}else if(f.type==='p21-code-sheet'){picture=table(['Клетка','Число'],f.key.map((k,i)=>[i+1,printDecimal(k)]));}else if(f.type==='p21-graph-sheet'){picture=printedProportionGraph(f.kind,f.index,false,0).graph;}else if(f.type==='p39-cipher-sheet'){const v=coordinateCipher(f.index,false,0);picture=el('div');picture.append(v.graph,table(['Номер','Координаты'],v.rows.map(row=>row.slice(0,2))));}else if(f.type==='p39-outline-sheet'){picture=table(['№','(x; y)','№','(x; y)'],Array.from({length:17},(_,i)=>[i+1,outlineText(printedOutline[i]),i+18,outlineText(printedOutline[i+17])]));}else if(f.type==='p39-blank-paper'){picture=paperPlane([-6,6,-1,6],1,2,'Сетка для авторских ломаных.').graph;}else if(f.type==='p39-pine-observations'){picture=table(['Возраст, годы','Высота, м'],pineObservations.map((v,i)=>[i*10,num(v)]));}else if(f.type==='p39-grid-application'){picture=f.spec==='lines'?intersectDrawings(f.index,false,0).graph:table(['t, мин','T, °C','t, мин','T, °C'],Array.from({length:6},(_,i)=>[i,waterReadings[i],i+6,waterReadings[i+6]]));}else if(f.type==='p39-read-measurement'){picture=measuredPaperFigure(f.curve,'x',0,0).graph;}else if(f.type==='p39-print-construction'){picture=sourcePaperConstruction(f);}else if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
++function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p41-implication'){picture=table(['Часть записи','Содержание'],[['Условие',f.left],['Следствие',f.right]]);}else if(f.type==='p22-two-quantities'){const [a,b,x]=f.givenText||f.given.map(num);picture=table(f.labels,[[a,b],[x,'?']]);}else if(f.type==='p40-law-data'){picture=table(['x','y'],lawXs[f.index].map(x=>[num(x),num(lawFunctions[f.index](x))]));}else if(f.type==='p40-vertical-sheet'){picture=exploreFunctionCurves('vertical',f.index,false,0).graph;}else if(f.type==='p21-facade'){picture=printedFacade(f.index,false,0).graph;}else if(f.type==='p21-calculation-sheet'){picture=table(['№','Выражение'],f.entries.map((e,i)=>[i+1,printedArithmetic(e,false).expression]));}else if(f.type==='p21-code-sheet'){picture=table(['Клетка','Число'],f.key.map((k,i)=>[i+1,printDecimal(k)]));}else if(f.type==='p21-graph-sheet'){picture=printedProportionGraph(f.kind,f.index,false,0).graph;}else if(f.type==='p39-cipher-sheet'){const v=coordinateCipher(f.index,false,0);picture=el('div');picture.append(v.graph,table(['Номер','Координаты'],v.rows.map(row=>row.slice(0,2))));}else if(f.type==='p39-outline-sheet'){picture=table(['№','(x; y)','№','(x; y)'],Array.from({length:17},(_,i)=>[i+1,outlineText(printedOutline[i]),i+18,outlineText(printedOutline[i+17])]));}else if(f.type==='p39-blank-paper'){picture=paperPlane([-6,6,-1,6],1,2,'Сетка для авторских ломаных.').graph;}else if(f.type==='p39-pine-observations'){picture=table(['Возраст, годы','Высота, м'],pineObservations.map((v,i)=>[i*10,num(v)]));}else if(f.type==='p39-grid-application'){picture=f.spec==='lines'?intersectDrawings(f.index,false,0).graph:table(['t, мин','T, °C','t, мин','T, °C'],Array.from({length:6},(_,i)=>[i,waterReadings[i],i+6,waterReadings[i+6]]));}else if(f.type==='p39-read-measurement'){picture=measuredPaperFigure(f.curve,'x',0,0).graph;}else if(f.type==='p39-print-construction'){picture=sourcePaperConstruction(f);}else if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+ let sequence=0;
+ function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
+ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
+  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
+- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.logicDirection||task.proportionPair||task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.decimalPrint||task.functionReview||task.page48Study||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
++ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.roosterGroups||task.logicDirection||task.proportionPair||task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.decimalPrint||task.functionReview||task.page48Study||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
+   let hiddenControl=null;
+   if((task.quantifiedEquation||task.decimalPrint||task.mentalSeries||task.stationGraph||task.convertGroup||task.proportionOpening||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
+@@ -4592,13 +4593,20 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
+   formula(v.query);show(v.graph);show(table(v.labels,v.tableRows));if(b===2)say(v.result);
+   stepList(['Подпиши величины и единицы по осям.','Сверь положение точки с таблицей.','Вернись к физическому смыслу обеих координат.']);
+  } else if(n===21){const poly=[];for(let x=b?0.5:0;x<=6;x+=0.1){const y=b?a/x:a*x;if(y<=12)poly.push([x,y]);}show(planeFigure({xMin:0,xMax:6,yMin:0,yMax:12,polylines:[poly],points:[{name:'A',x:2,y:b?a/2:2*a}],caption:b?'График обратной пропорциональности при x > 0':'График y = kx при x ≥ 0'}));show(table(['x',1,2,3,6],[[b?'k : x':'kx',... [1,2,3,6].map(x=>b?exactRatio(a,x):a*x)]]));say(b?'Точки обратной пропорциональности не лежат на одной прямой. x = 0 запрещён.':'График прямой пропорциональности лежит на прямой через начало координат.');}
++ else if(n===22&&task.roosterGroups){
++  const groups=[1,2,5][a],people=10/groups;
++  show(table(['Кто слышит одну птицу','Людей'],Array.from({length:groups},(_,i)=>[groups===1?'Один двор':'Комната '+(i+1),people])));
++  say('В этой модели слышимость ограничена одной комнатой или одним двором. В печатном условии расположение не указано.');
++  stepList(['Посчитай группы людей.','Предположи, что пения достаточно для всех слушателей одной группы.','Смени расположение и сравни выводы.']);
++ }
+  else if(n===22&&task.proportionPair){
+   const problem=task.proportionPair,[x0,y0,x1]=problem.examples[a];
+   const answer=problem.inverse?x0*y0/x1:y0*x1/x0;
+-  show(table(problem.labels,[[num(x0),num(y0)],[num(x1),b===2?num(answer):'?']]));
++  const labels=problem.exact?.[a]||[x0,y0,x1,answer].map(num);
++  show(table(problem.labels,[[labels[0],labels[1]],[labels[2],b===2?labels[3]:'?']]));
+   if(b===0)say('Сравни строки. Попробуй предсказать, больше или меньше окажется ответ.');
+   if(b===1)say(problem.why);
+-  if(b===2){const proportion=problem.inverse?num(x0)+' · '+num(y0)+' = '+num(x1)+' · '+num(answer):num(y0)+' / '+num(x0)+' = '+num(answer)+' / '+num(x1);say('Проверь равенство: '+proportion+'.');}
++  if(b===2){const proportion=problem.inverse?labels[0]+' · '+labels[1]+' = '+labels[2]+' · '+labels[3]:labels[1]+' / ('+labels[0]+') = '+labels[3]+' / ('+labels[2]+')';say('Проверь равенство: '+proportion+'.');}
+   stepList(['Прочитай подписи обеих величин.','Выбери, что одинаково для двух строк: отношение или произведение.','Подставь найденное значение вместо вопроса и проверь равенство.']);
+  }
+  else if(n===22){show(table(['Масса, кг','Стоимость, р.'],[[2,6],[a,3*a]]));formula(frac(2,a),' = ',frac(6,3*a));stepList(['Цена неизменна: 6 : 2 = 3 р. за килограмм.','Масса и стоимость прямо пропорциональны. Сохраняй одинаковый порядок строк.','Стоимость '+a+' кг: 3 · '+a+' = '+3*a+' р.']);}
+diff --git a/school/peterson6/continuation-numeric-oracles.json b/school/peterson6/continuation-numeric-oracles.json
+index 364eefd6000fd8193b1a2685f31c1b109ecca430..28deade11645f37969cbbb31891b82e863fdb965 100644
+--- a/school/peterson6/continuation-numeric-oracles.json
++++ b/school/peterson6/continuation-numeric-oracles.json
+@@ -662,7 +662,14 @@
+     "p22-t10": "50",
+     "p22-t11": "80",
+     "p22-t12": "496",
+-    "p22-t13": "172"
++    "p22-t13": "172",
++    "p22-t14": "9",
++    "p22-t15": "95",
++    "p22-t16": "1350",
++    "p22-t17": "0,3",
++    "p22-t18": "100",
++    "p22-t19": "45",
++    "p22-t21": "5"
+   },
+   "additions": {
+     "2026-11-21": "Part 2 exercises 1–8 on p. 6, 9–11 on p. 7 and 15(2) on p. 8, part 3 exercises 1–3 on p. 4 and 4–10 on p. 5. Part 2, printed page 8: the four numerical changes in exercise 16, independently checked as 3, 4/3, 1001/200 and 28/5. Four roots of exercise 19 on p. 8: 68/25, 78/5, 33/5, 2/3; verified by substitution in both printed sides. Part 2, printed pp. 9–10, tasks 20–27 complete the first chapter topic. Source 26 gives A=9, B=36, percent differences 75 and 300. Part 3 pp. 7–8, exercises 17–26: midpoints, two codewords, two verified roots, circus, weighted speeds and mixture. Part 2 scale, printed p. 12 nos. 28–32; conversion in 29(3) gives 1:250000, and 31(1,3,4) give 10, 180, 35 km. Part 3 p. 9, exercises 27–31: signed coefficients, powers and variable parts; print list checked against the drawn parentheses. Part 3 pp. 10–11, exercises 32–41: original factors, quantified statements, signed square identities, reversible arithmetic tricks. Part 2 p. 13, exercises 37–44: drawing scales, adjacent-row exceptions, gear ratios, fees and slope. Part 2 pp. 14–15, exercises 45–56, the complete printed scale section. Part 3 p. 12: all six printed exercises №42–47 on like terms and substitution. Part 3 p. 13: all equations, applications, arithmetic diagrams and square-of-a-difference comparisons №48–53. Part 3 p. 14: quantified statements, four altitude diagrams, intersection and percent changes №54–58. Part 3 p. 15, №59–68: complete all 98 cards in the printed like-terms section. Part 2 pp. 18–19, №64–66: count all permutations, read all 9 code rows and solve every oral proportion. Part 2 p. 19 №67–70: all twelve equations, linked unknowns, eligible symbolic transformations and two copier directions. Part 2 p. 20 №71–75: pentagonal copy, alloy, circumference approximation, intersecting chords and odd expressions. Part 2 p.21 №76–82: bounds in quantifiers, percent bases, motion and two readings of the printed №81 (answer key on p.128). Part 2 p.22 №83–87: all boat directions, fall model, 12 currency rows, source-size drawing measurements. Part 2 pp.23–24 №88–95: finish the chapter on proportions and all printed tasks, including digits and three contradictory forecasts. Part 3 pp.17–18 №69–72: all written forms, source substitutions and all nine root-count equations, keeping original card identities. Part 3 p.18 №73–78: identities, empty sets, all source domains and reciprocal operation chains. Part 3 p.19 №79–85: quantified claims, balance, complete natural trial and Newton capital. Part 2 p.28 №104–111: exact proportion terms, original unknowns, two whole quantities and percent bases. Part 2 pp.29–30 №112–122: fixed tariff, exact anonymised data, triangle, source grids and two digit card constructions. Part 2 p.31 full printed relationships self-check №123–131. Part 3 p.22 full source exercises 86–89 with reversible operations, bracket signs and integer coefficients. Part 3 p.23 №90–96: two forbidden denominators, finite natural domains, six exact models, and all eight final equations. Part 3 p.24 №97–100: nested papyrus equation, two original directed cycles and each inverse arithmetic role. Part 3 p.24 №101–104: 36 directed fraction operations, mixed-number series, six exact arithmetic chains and eight comparisons. Part 3 pp. 25–26 №105–114: all paper equations, naturally bounded roots, three applied models, exact expressions, three-digit investigations and Diophantus timeline. Part 2 pp.34–35 №132–135: inverse formulas with units, twelve original table gaps and all six approach/pursuit questions. Part 2 p.35 №136–139: all four relative directions and their inverse formulas, river/percent/growth families, telegram tariff and six geometric dependencies. Part 2 pp.36–37 №140, №141(1–5), №142 and both printed №143: correct plane timelines, inverse flow, hobbies and rounded survey percentages; original 144 is missing. Part 2 pp.38–39 full section through №159: triangle inverse dimensions, six transformations, nine rational equations, seven applied situations, source plots, four expressions and oil can uniqueness. Part 3 pp.28–29 all fourteen printed subparts 115–121: compared portions, rates, stock, duration and segments with unit conversion. Part 3 p.30 all exercises 122–126 including both percentage reference quantities. Part 3 p.31 all printed 127–131, including four unique vehicle directions and both times for the river route. Part 3 p.32, both 132 and 133 subparts; all three ten-item 134 tests and all eight 135 subparts. Part 3 p.33 printed 136–140: every percentage direction and base, six reductions, four square quantifiers. Part 3 pp.33–34 all 141–144: symbolic cancellations, all three areas, two exact sequences, coordinate kite intersection. Part 3 p.34 all eight formulas in 145 and all four questions in 146, with both road profiles and their entire overlap. Part 3 p.34: all eighteen distinct unit-conversion prompts, all four pre-meeting walking rules, both 149 remainder bases. Part 3 p.35 all 150–156, including actual issued-PDF stroked dimensions of six rectangles, d 43.76 × 14.99 mm. Part 3 p.36 complete 37-point outline, chronological excursion with return, six unit conversions, three nested rational evaluations and the correct percent bases. Part 3 pp.36–37 complete 163–167: complete verified lists of all 16/12 double-digit numbers, unordered flower pairs, leading-zero rules and clothing. Full 115–167 section checked. Part 2 p.42: six direct families, inverse-law exception, all eight physical coefficients and eight changing-speed, price and productivity subparts. Part 2 pp.42–43 all ten printed 164 formulas and all sixteen missing cells of the four 165 tables, preserving the earlier personal/board steps. Part 2 p.43 all 166–172 including each unknown in the proportions, both curves, two independent dilution calculations and minimal prefix interval proof. Section 160–172 complete. Part 3 p.39 figures 12 and 13, motion from the marked point O, four distinct Cartesian quadrants and all eight ordered pairs checked against the print. Part 3 pp.39–40, remaining printed quadrants in 170, axis patterns 172 a–c and complete pair of examples in 173. Existing 170 III, 171 and 173a keep their stable indices. Part 3 p.40 tasks 174–177: triangle axes, segment cuts, secant, tangency, four quadrilaterals. All printed coordinates and side relationships checked. Part 3 pp.40–41, all 27 consecutive vertices in 178, approximate circle intersections in 179, six decimal points from the issued millimetre graph in 180. Part 3 p.41 exercise 181 all 18 readings measured from print figure 15, ±0.2 answer bands; 182 all six sections of the radius-3.5 circle, including both signs. Part 3 pp.41–42 183–185, two noninteger line intersections, all twelve thermometer readings and all eight signed rational arithmetic items. Part 3 p.42, 186–190, exact signed inequalities and quantifiers, open/closed sets, all eight divisions with bounds. Part 3 pp.42–43, each algebraic description and power 191–192, all four mixed-number proportions in 193, both definitions and nine classifications in 194. Part 3 p.43: two rate problems with independent route totals and all three scientist names from coordinate pairs in 195–196. Part 3 pp.43–44: consecutive vertices, independent construction and ten approximate graph readings in 197–198. Part 3 pp.44–45, full end of the plane-coordinates section 199–207, rechecked answers for compound fraction, relative motion, divisibility and remainder. Part 2 pp.45–47, all still-uncovered applications and graphs in 173, 175–178, including both measured positive hyperbolas. Part 2 p.47: forty checked decimal operations and twelve letter expressions. Issued print key third value in no.180 preserved separately from authored correction. Part 2 p.48: exhaustive natural fourth terms, reversible equalities, ten dependence contexts and two solution methods for all four stories, 181–184. Part 2 pp.48–49: four exact equations, two measurement estimates using issued vector dimensions and both percentage changes 185–188. Part 2 p.49: all two direct and three inverse graph readings, both paired methods, both equations and 193 equivalences. Part 2 p.50: three long expressions and unrestricted fourth term, five blind weighings proven over 24 orders, complete inclusion–exclusion; all source numbers 173–196 now covered. Part 3 p.47: book-title unit conversion (208) and every printed value in both directions (209), checked before and after rounding. Part 3 p.47: all four table laws (210), three vertical-line tests (211), affine lines, opposite slopes and parabola families (212–214), each original subpart. Part 3 p.48, each mental computation, source formula family, independent example and signed expression in 215–218. Part 3 p.48, exercises 219–223: fraction identities, quantified modulus statements, interval models, and equal-distance equations. Part 3 p.49, all six direct and inverse substitutions, two negative linear families, four algebraic quotients, cycling distance, nested arithmetic and both discrete bounds, 224–230."
+diff --git a/school/peterson6/index.html b/school/peterson6/index.html
+index a246c771bae6368d335b69f0e8fc3b01abd6c280..a4e205feb55d223f98385ec7ebd989e2b0da7e38 100644
+--- a/school/peterson6/index.html
++++ b/school/peterson6/index.html
+@@ -14,9 +14,9 @@
+ <script defer src="../../assets/course-examples.js?v=20261110"></script>
+   <script defer src="../../trainers/peterson-assistant.js?v=20261106-parts23"></script>
+   <script defer src="math.js?v=20261122-numbers-7-10"></script>
+-  <script defer src="continuation-models.js?v=20261122-logic233"></script>
++  <script defer src="continuation-models.js?v=20261122-ratio203"></script>
+   <script defer src="models.js?v=20261106-parts23"></script>
+-  <script defer src="data.js?v=20261122-logic233"></script>
++  <script defer src="data.js?v=20261122-ratio203"></script>
+   <script defer src="app.js?v=20261122-progress"></script>
+ <script defer src="/assets/assistant/home-link.js?v=20261110"></script>
+ <link rel="stylesheet" href="/assets/download-panel.css">
+diff --git a/school/peterson6/part2.json b/school/peterson6/part2.json
+index 1ac49aa599783eb8a0a99a7521c13d4706099781..f34eb4915d8c44bfb97f55919221fad43afae10a 100644
+--- a/school/peterson6/part2.json
++++ b/school/peterson6/part2.json
+@@ -35114,6 +35114,806 @@
+           ],
+           "caption": "Вторая строка относится к вопросу задачи."
+         }
++      },
++      {
++        "id": "p22-t14",
++        "title": "К задаче №200 (1) · Двенадцать процентов раствора",
++        "prompt": "Раствор массой 75 г содержит 12% серной кислоты по массе. Сколько граммов кислоты в растворе?",
++        "kind": "number",
++        "answer": "9",
++        "answerFormat": "integer",
++        "steps": [
++          {
++            "kind": "choice",
++            "prompt": "Как связаны указанные в таблице величины?",
++            "choices": [
++              "Прямая",
++              "Обратная"
++            ],
++            "answer": "Прямая",
++            "hint": "Для всего раствора в таблице пишем 100%, для растворённого вещества — 12%.",
++            "explanation": "Для всего раствора в таблице пишем 100%, для растворённого вещества — 12%."
++          },
++          {
++            "prompt": "Сколько граммов приходится на 1%?",
++            "answer": "0,75",
++            "hint": "Раздели массу всего раствора на 100.",
++            "explanation": "75 : 100 = 0,75 г."
++          },
++          {
++            "kind": "choice",
++            "prompt": "Какую пропорцию выражает таблица?",
++            "choices": [
++              "100 · 75 = 12 · x",
++              "75 / (100) = x / (12)"
++            ],
++            "answer": "75 / (100) = x / (12)",
++            "hint": "Для всего раствора в таблице пишем 100%, для растворённого вещества — 12%.",
++            "explanation": "Обозначь неизвестное через x. 75 / (100) = x / (12)."
++          }
++        ],
++        "hint": "Для всего раствора в таблице пишем 100%, для растворённого вещества — 12%.",
++        "explanation": "0,75 · 12 = 9 г. Проверка: 9/75 = 12/100.",
++        "skills": [
++          "proportion",
++          "direct-proportion"
++        ],
++        "finalLabel": "Ответ в граммах.",
++        "source": {
++          "type": "textbook",
++          "part": 2,
++          "page": 53,
++          "exercise": 200,
++          "reference": "№200 (1)",
++          "isbn": "978-5-9963-4598-4",
++          "subpart": "1"
++        },
++        "errorCues": [
++          [
++            "0,75",
++            "Это масса одного процента. Сколько таких долей нужно взять?"
++          ],
++          [
++            "66",
++            "Это масса остальных веществ раствора. Вопрос о кислоте."
++          ]
++        ],
++        "relatedTask": "p22-t15",
++        "proportionPair": {
++          "labels": [
++            "Доля, %",
++            "Масса, г"
++          ],
++          "examples": [
++            [
++              100,
++              75,
++              12
++            ],
++            [
++              100,
++              250,
++              16
++            ]
++          ],
++          "inverse": false,
++          "why": "Для всего раствора в таблице пишем 100%, для растворённого вещества — 12%."
++        },
++        "figure": {
++          "type": "p22-two-quantities",
++          "labels": [
++            "Доля, %",
++            "Масса, г"
++          ],
++          "given": [
++            100,
++            75,
++            12
++          ],
++          "caption": "Сопоставь данные двух строк."
++        }
++      },
++      {
++        "id": "p22-t15",
++        "title": "К задаче №200 (2) · Процент железа в руде",
++        "prompt": "После обогащения 80 т руды содержат 76 т железа. Каков массовый процент железа?",
++        "kind": "number",
++        "answer": "95",
++        "answerFormat": "integer",
++        "steps": [
++          {
++            "kind": "choice",
++            "prompt": "Как связаны указанные в таблице величины?",
++            "choices": [
++              "Прямая",
++              "Обратная"
++            ],
++            "answer": "Прямая",
++            "hint": "Отсчёт идёт от всей обогащённой руды. Её масса равна 100%.",
++            "explanation": "Отсчёт идёт от всей обогащённой руды. Её масса равна 100%."
++          },
++          {
++            "prompt": "Сколько тонн составляют 1% от 80 т?",
++            "answer": "0,8",
++            "hint": "Найди сотую часть общей массы.",
++            "explanation": "80 : 100 = 0,8 т."
++          },
++          {
++            "kind": "choice",
++            "prompt": "Какую пропорцию выражает таблица?",
++            "choices": [
++              "80 · 100 = 76 · x",
++              "100 / (80) = x / (76)"
++            ],
++            "answer": "100 / (80) = x / (76)",
++            "hint": "Отсчёт идёт от всей обогащённой руды. Её масса равна 100%.",
++            "explanation": "Обозначь неизвестное через x. 100 / (80) = x / (76)."
++          }
++        ],
++        "hint": "Отсчёт идёт от всей обогащённой руды. Её масса равна 100%.",
++        "explanation": "76 : 0,8 = 95. Значит, железо занимает 95% массы.",
++        "skills": [
++          "proportion",
++          "direct-proportion"
++        ],
++        "finalLabel": "Ответ в процентах.",
++        "source": {
++          "type": "textbook",
++          "part": 2,
++          "page": 53,
++          "exercise": 200,
++          "reference": "№200 (2)",
++          "isbn": "978-5-9963-4598-4",
++          "subpart": "2"
++        },
++        "errorCues": [
++          [
++            "5",
++            "Пять процентов — доля примесей. Какую долю составляет железо?"
++          ],
++          [
++            "0,95",
++            "Доля верная. В ответе нужен процент: единица соответствует ста процентам."
++          ]
++        ],
++        "relatedTask": "p22-t14",
++        "proportionPair": {
++          "labels": [
++            "Масса, т",
++            "Доля, %"
++          ],
++          "examples": [
++            [
++              80,
++              100,
++              76
++            ],
++            [
++              60,
++              100,
++              51
++            ]
++          ],
++          "inverse": false,
++          "why": "Отсчёт идёт от всей обогащённой руды. Её масса равна 100%."
++        },
++        "figure": {
++          "type": "p22-two-quantities",
++          "labels": [
++            "Масса, т",
++            "Доля, %"
++          ],
++          "given": [
++            80,
++            100,
++            76
++          ],
++          "caption": "Сопоставь данные двух строк."
++        }
++      },
++      {
++        "id": "p22-t16",
++        "title": "К задаче №200 (3) · Доход за год и первоначальный вклад",
++        "prompt": "За год начислено 81 р. Это доход при ставке 6% годовых. Каков был первоначальный вклад в рублях?",
++        "kind": "number",
++        "answer": "1350",
++        "answerFormat": "integer",
++        "steps": [
++          {
++            "kind": "choice",
++            "prompt": "Как связаны указанные в таблице величины?",
++            "choices": [
++              "Прямая",
++              "Обратная"
++            ],
++            "answer": "Прямая",
++            "hint": "Начисленные 81 р. соответствуют 6% первоначальной суммы.",
++            "explanation": "Начисленные 81 р. соответствуют 6% первоначальной суммы."
++          },
++          {
++            "prompt": "Сколько рублей составляет один процент вклада?",
++            "answer": "13,5",
++            "hint": "Раздели годовой доход на шесть одинаковых процентных долей.",
++            "explanation": "81 : 6 = 13,5 р."
++          },
++          {
++            "kind": "choice",
++            "prompt": "Какую пропорцию выражает таблица?",
++            "choices": [
++              "6 · 81 = 100 · x",
++              "81 / (6) = x / (100)"
++            ],
++            "answer": "81 / (6) = x / (100)",
++            "hint": "Начисленные 81 р. соответствуют 6% первоначальной суммы.",
++            "explanation": "Обозначь неизвестное через x. 81 / (6) = x / (100)."
++          }
++        ],
++        "hint": "Начисленные 81 р. соответствуют 6% первоначальной суммы.",
++        "explanation": "100% равны 13,5 · 100 = 1350 р. Проверка: 1350 · 0,06 = 81.",
++        "skills": [
++          "proportion",
++          "direct-proportion"
++        ],
++        "finalLabel": "Ответ в рублях.",
++        "source": {
++          "type": "textbook",
++          "part": 2,
++          "page": 53,
++          "exercise": 200,
++          "reference": "№200 (3)",
++          "isbn": "978-5-9963-4598-4",
++          "subpart": "3"
++        },
++        "errorCues": [
++          [
++            "13,5",
++            "Это всего один процент первоначального вклада."
++          ],
++          [
++            "1431",
++            "Это вклад с начисленными процентами. Требуется первоначальная сумма."
++          ]
++        ],
++        "relatedTask": "p22-t14",
++        "proportionPair": {
++          "labels": [
++            "Доля вклада, %",
++            "Деньги, р."
++          ],
++          "examples": [
++            [
++              6,
++              81,
++              100
++            ],
++            [
++              4,
++              72,
++              100
++            ]
++          ],
++          "inverse": false,
++          "why": "Начисленные 81 р. соответствуют 6% первоначальной суммы."
++        },
++        "figure": {
++          "type": "p22-two-quantities",
++          "labels": [
++            "Доля вклада, %",
++            "Деньги, р."
++          ],
++          "given": [
++            6,
++            81,
++            100
++          ],
++          "caption": "Сопоставь данные двух строк."
++        }
++      },
++      {
++        "id": "p22-t17",
++        "title": "К задаче №201 (1) · Одинаковое число, разные множители",
++        "prompt": "Неизвестное число, умноженное на 9 1/3, даёт 3,5. Какое произведение получится с множителем 0,8?",
++        "kind": "number",
++        "answer": "0,3",
++        "answerFormat": "decimal",
++        "steps": [
++          {
++            "kind": "choice",
++            "prompt": "Как связаны указанные в таблице величины?",
++            "choices": [
++              "Прямая",
++              "Обратная"
++            ],
++            "answer": "Прямая",
++            "hint": "Один множитель не меняется. При изменении второго произведение меняется в том же отношении.",
++            "explanation": "Один множитель не меняется. При изменении второго произведение меняется в том же отношении."
++          },
++          {
++            "prompt": "Какой множитель оставался постоянным? Можно ответить дробью.",
++            "answer": "3/8",
++            "hint": "Раздели 3,5 на 28/3.",
++            "explanation": "7/2 · 3/28 = 3/8."
++          },
++          {
++            "kind": "choice",
++            "prompt": "Какую пропорцию выражает таблица?",
++            "choices": [
++              "9 1/3 · 3,5 = 0,8 · x",
++              "3,5 / (9 1/3) = x / (0,8)"
++            ],
++            "answer": "3,5 / (9 1/3) = x / (0,8)",
++            "hint": "Один множитель не меняется. При изменении второго произведение меняется в том же отношении.",
++            "explanation": "Обозначь неизвестное через x. 3,5 / (9 1/3) = x / (0,8)."
++          }
++        ],
++        "hint": "Один множитель не меняется. При изменении второго произведение меняется в том же отношении.",
++        "explanation": "3/8 · 0,8 = 3/8 · 4/5 = 3/10.",
++        "skills": [
++          "proportion",
++          "direct-proportion"
++        ],
++        "finalLabel": "Запиши число.",
++        "source": {
++          "type": "textbook",
++          "part": 2,
++          "page": 53,
++          "exercise": 201,
++          "reference": "№201 (1)",
++          "isbn": "978-5-9963-4598-4",
++          "subpart": "1"
++        },
++        "errorCues": [
++          [
++            "0,375",
++            "Это неизвестный постоянный множитель. В финале нужно его произведение с 0,8."
++          ],
++          [
++            "3",
++            "Сравни множители: 0,8 меньше одной десятой от 9 1/3."
++          ]
++        ],
++        "relatedTask": "p22-t19",
++        "proportionPair": {
++          "labels": [
++            "Множитель",
++            "Итог умножения"
++          ],
++          "examples": [
++            [
++              9.333333333333334,
++              3.5,
++              0.8
++            ],
++            [
++              12,
++              4.5,
++              2
++            ]
++          ],
++          "inverse": false,
++          "why": "Один множитель не меняется. При изменении второго произведение меняется в том же отношении.",
++          "exact": [
++            [
++              "9 1/3",
++              "3,5",
++              "0,8",
++              "0,3"
++            ],
++            [
++              "12",
++              "4,5",
++              "2",
++              "0,75"
++            ]
++          ]
++        },
++        "figure": {
++          "type": "p22-two-quantities",
++          "labels": [
++            "Множитель",
++            "Итог умножения"
++          ],
++          "given": [
++            9.333333333333334,
++            3.5,
++            0.8
++          ],
++          "caption": "Сопоставь данные двух строк.",
++          "givenText": [
++            "9 1/3",
++            "3,5",
++            "0,8"
++          ]
++        }
++      },
++      {
++        "id": "p22-t18",
++        "title": "К задаче №201 (2) · Постоянное делимое",
++        "prompt": "При делении некоторого числа на 2 1/7 получилось 28. На какое число надо его разделить, чтобы частное равнялось 0,6?",
++        "kind": "number",
++        "answer": "100",
++        "answerFormat": "integer",
++        "steps": [
++          {
++            "kind": "choice",
++            "prompt": "Как связаны указанные в таблице величины?",
++            "choices": [
++              "Прямая",
++              "Обратная"
++            ],
++            "answer": "Обратная",
++            "hint": "Произведение делителя и частного всегда равно одному и тому же делимому.",
++            "explanation": "Произведение делителя и частного всегда равно одному и тому же делимому."
++          },
++          {
++            "prompt": "Найди постоянное делимое.",
++            "answer": "60",
++            "hint": "Умножь частное 28 на делитель 15/7.",
++            "explanation": "28 · 15/7 = 60."
++          },
++          {
++            "kind": "choice",
++            "prompt": "Какую пропорцию выражает таблица?",
++            "choices": [
++              "28 · 2 1/7 = 0,6 · x",
++              "2 1/7 / (28) = x / (0,6)"
++            ],
++            "answer": "28 · 2 1/7 = 0,6 · x",
++            "hint": "Произведение делителя и частного всегда равно одному и тому же делимому.",
++            "explanation": "Обозначь неизвестное через x. 28 · 2 1/7 = 0,6 · x."
++          }
++        ],
++        "hint": "Произведение делителя и частного всегда равно одному и тому же делимому.",
++        "explanation": "60 : x = 0,6. Поэтому x = 60 : 0,6 = 100.",
++        "skills": [
++          "proportion",
++          "inverse-proportion"
++        ],
++        "finalLabel": "Запиши число.",
++        "source": {
++          "type": "textbook",
++          "part": 2,
++          "page": 53,
++          "exercise": 201,
++          "reference": "№201 (2)",
++          "isbn": "978-5-9963-4598-4",
++          "subpart": "2"
++        },
++        "errorCues": [
++          [
++            "60",
++            "Это число, которое предстоит делить. Требуется сам делитель."
++          ],
++          [
++            "36",
++            "Частное меньше единицы. Для этого новый делитель должен быть больше 60."
++          ]
++        ],
++        "relatedTask": "p22-t09",
++        "proportionPair": {
++          "labels": [
++            "Частное",
++            "Делитель"
++          ],
++          "examples": [
++            [
++              28,
++              2.142857142857143,
++              0.6
++            ],
++            [
++              12,
++              2.5,
++              0.5
++            ]
++          ],
++          "inverse": true,
++          "why": "Произведение делителя и частного всегда равно одному и тому же делимому.",
++          "exact": [
++            [
++              "28",
++              "2 1/7",
++              "0,6",
++              "100"
++            ],
++            [
++              "12",
++              "2,5",
++              "0,5",
++              "60"
++            ]
++          ]
++        },
++        "figure": {
++          "type": "p22-two-quantities",
++          "labels": [
++            "Частное",
++            "Делитель"
++          ],
++          "given": [
++            28,
++            2.142857142857143,
++            0.6
++          ],
++          "caption": "Сопоставь данные двух строк.",
++          "givenText": [
++            "28",
++            "2 1/7",
++            "0,6"
++          ]
++        }
++      },
++      {
++        "id": "p22-t19",
++        "title": "К задаче №201 (3) · Постоянный делитель",
++        "prompt": "При делении 7,68 на некоторое число получилось 240. Каким будет частное, если на тот же делитель разделить 1,44?",
++        "kind": "number",
++        "answer": "45",
++        "answerFormat": "integer",
++        "steps": [
++          {
++            "kind": "choice",
++            "prompt": "Как связаны указанные в таблице величины?",
++            "choices": [
++              "Прямая",
++              "Обратная"
++            ],
++            "answer": "Прямая",
++            "hint": "Делитель постоянен. Если делимое уменьшается, частное уменьшается в том же отношении.",
++            "explanation": "Делитель постоянен. Если делимое уменьшается, частное уменьшается в том же отношении."
++          },
++          {
++            "prompt": "Какой делитель не менялся?",
++            "answer": "0,032",
++            "hint": "Раздели исходное делимое на исходное частное.",
++            "explanation": "7,68 : 240 = 0,032."
++          },
++          {
++            "kind": "choice",
++            "prompt": "Какую пропорцию выражает таблица?",
++            "choices": [
++              "7,68 · 240 = 1,44 · x",
++              "240 / (7,68) = x / (1,44)"
++            ],
++            "answer": "240 / (7,68) = x / (1,44)",
++            "hint": "Делитель постоянен. Если делимое уменьшается, частное уменьшается в том же отношении.",
++            "explanation": "Обозначь неизвестное через x. 240 / (7,68) = x / (1,44)."
++          }
++        ],
++        "hint": "Делитель постоянен. Если делимое уменьшается, частное уменьшается в том же отношении.",
++        "explanation": "1,44 : 0,032 = 45. Проверка: 45 · 0,032 = 1,44.",
++        "skills": [
++          "proportion",
++          "direct-proportion"
++        ],
++        "finalLabel": "Запиши число.",
++        "source": {
++          "type": "textbook",
++          "part": 2,
++          "page": 53,
++          "exercise": 201,
++          "reference": "№201 (3)",
++          "isbn": "978-5-9963-4598-4",
++          "subpart": "3"
++        },
++        "errorCues": [
++          [
++            "0,032",
++            "Это делитель. На него нужно разделить новое делимое."
++          ],
++          [
++            "450",
++            "Проверь умножением: 450 · 0,032 = 14,4, а дано 1,44."
++          ]
++        ],
++        "relatedTask": "p22-t17",
++        "proportionPair": {
++          "labels": [
++            "Делимое",
++            "Частное"
++          ],
++          "examples": [
++            [
++              7.68,
++              240,
++              1.44
++            ],
++            [
++              6.4,
++              80,
++              2.4
++            ]
++          ],
++          "inverse": false,
++          "why": "Делитель постоянен. Если делимое уменьшается, частное уменьшается в том же отношении."
++        },
++        "figure": {
++          "type": "p22-two-quantities",
++          "labels": [
++            "Делимое",
++            "Частное"
++          ],
++          "given": [
++            7.68,
++            240,
++            1.44
++          ],
++          "caption": "Сопоставь данные двух строк."
++        }
++      },
++      {
++        "id": "p22-t20",
++        "title": "К задаче №202 · Что может разбудить один петух?",
++        "prompt": "Пение одного петуха разбудило двух человек. Можно ли из этого определить точное число таких петухов, нужное, чтобы разбудить десятерых?",
++        "kind": "choice",
++        "choices": [
++          "Точно пять: каждый разбудит только двоих.",
++          "Числа в условии недостаточно для однозначного ответа.",
++          "Точно десять: по одному для каждого слушателя."
++        ],
++        "answer": "Числа в условии недостаточно для однозначного ответа.",
++        "source": {
++          "type": "textbook",
++          "part": 2,
++          "page": 53,
++          "exercise": 202,
++          "reference": "№202",
++          "isbn": "978-5-9963-4598-4"
++        },
++        "steps": [
++          {
++            "kind": "choice",
++            "prompt": "Могут ли сразу десять человек услышать одну и ту же птицу?",
++            "choices": [
++              "Да, если находятся в пределах слышимости.",
++              "Нет, звук слышат не более двух."
++            ],
++            "answer": "Да, если находятся в пределах слышимости.",
++            "hint": "Подумай, исчезает ли звук после двух слушателей.",
++            "explanation": "В одном дворе одну птицу могут услышать многие."
++          },
++          {
++            "prompt": "Только в модели с пятью изолированными комнатами по два человека: сколько птиц понадобится при одной птице в каждой комнате?",
++            "answer": "5",
++            "hint": "Каждую отдельную комнату нужно озвучить.",
++            "explanation": "В этой придуманной схеме получается пять. В книге такая схема не задана."
++          }
++        ],
++        "hint": "В условии про двух слушателей не сказано, сколько ещё людей могли услышать то же пение.",
++        "explanation": "Если все десять рядом и просыпаются от пения, может хватить одного петуха. За непроницаемыми перегородками ответ может измениться. Пропорция предполагает отдельное условие о числе слушателей на птицу.",
++        "finalLabel": "Выбери вывод.",
++        "skills": [
++          "proportion"
++        ],
++        "roosterGroups": true,
++        "errorCues": [
++          [
++            "Точно пять: каждый разбудит только двоих.",
++            "Двое проснулись, но это не означает, что звук могут услышать только двое."
++          ]
++        ]
++      },
++      {
++        "id": "p22-t21",
++        "title": "К задаче №203 · Возвращение с рынка",
++        "prompt": "Путь с рынка занял 1 2/3 часа при скорости 4,5 версты в час. С какой скоростью надо было пройти тот же путь, чтобы прийти на 10 минут раньше? Ответ в вёрстах за час.",
++        "kind": "number",
++        "answer": "5",
++        "answerFormat": "integer",
++        "steps": [
++          {
++            "kind": "choice",
++            "prompt": "Как связаны указанные в таблице величины?",
++            "choices": [
++              "Прямая",
++              "Обратная"
++            ],
++            "answer": "Обратная",
++            "hint": "Расстояние не меняется. Сокращение времени требует большей скорости.",
++            "explanation": "Расстояние не меняется. Сокращение времени требует большей скорости."
++          },
++          {
++            "prompt": "Чему равна длина пути в вёрстах?",
++            "answer": "7,5",
++            "hint": "Умножь прежнюю скорость на прежнее время.",
++            "explanation": "4,5 · 5/3 = 7,5."
++          },
++          {
++            "prompt": "Сколько минут должно занять возвращение?",
++            "answer": "90",
++            "hint": "Сначала переведи 1 2/3 часа в минуты, затем вычти 10.",
++            "explanation": "1 2/3 часа — 100 минут. Новый срок: 100 − 10 = 90 мин."
++          },
++          {
++            "kind": "choice",
++            "prompt": "Какую пропорцию выражает таблица?",
++            "choices": [
++              "1 2/3 · 4,5 = 1,5 · x",
++              "4,5 / (1 2/3) = x / (1,5)"
++            ],
++            "answer": "1 2/3 · 4,5 = 1,5 · x",
++            "hint": "Расстояние не меняется. Сокращение времени требует большей скорости.",
++            "explanation": "Обозначь неизвестное через x. 1 2/3 · 4,5 = 1,5 · x."
++          }
++        ],
++        "hint": "Расстояние не меняется. Сокращение времени требует большей скорости.",
++        "explanation": "Длина пути 4,5 · 5/3 = 7,5 версты. За 1,5 ч эту дорогу проходят со скоростью 7,5 : 1,5 = 5 вёрст/ч.",
++        "skills": [
++          "proportion",
++          "inverse-proportion"
++        ],
++        "finalLabel": "Ответ в вёрстах за час.",
++        "source": {
++          "type": "textbook",
++          "part": 2,
++          "page": 53,
++          "exercise": 203,
++          "reference": "№203",
++          "isbn": "978-5-9963-4598-4"
++        },
++        "errorCues": [
++          [
++            "7,5",
++            "Это расстояние в вёрстах. Чтобы получить скорость, раздели его на новое время в часах."
++          ],
++          [
++            "90",
++            "Это новое время в минутах. Вопрос о скорости."
++          ]
++        ],
++        "relatedTask": "p22-t09",
++        "proportionPair": {
++          "labels": [
++            "Время, ч",
++            "Скорость, вёрст/ч"
++          ],
++          "examples": [
++            [
++              1.6666666666666667,
++              4.5,
++              1.5
++            ],
++            [
++              2,
++              6,
++              1.5
++            ]
++          ],
++          "inverse": true,
++          "why": "Расстояние не меняется. Сокращение времени требует большей скорости.",
++          "exact": [
++            [
++              "1 2/3",
++              "4,5",
++              "1,5",
++              "5"
++            ],
++            [
++              "2",
++              "6",
++              "1,5",
++              "8"
++            ]
++          ]
++        },
++        "figure": {
++          "type": "p22-two-quantities",
++          "labels": [
++            "Время, ч",
++            "Скорость, вёрст/ч"
++          ],
++          "given": [
++            1.6666666666666667,
++            4.5,
++            1.5
++          ],
++          "caption": "Сопоставь данные двух строк.",
++          "givenText": [
++            "1 2/3",
++            "4,5",
++            "1,5"
++          ]
++        }
+       }
+     ]
+   },
+diff --git a/school/peterson6/test-continuation-content.cjs b/school/peterson6/test-continuation-content.cjs
+index 246ec0a454d59bd1c24d1efbb159048d1b351a0d..867d96c911ec012c2762116cb48e1cfa06b93d7b 100644
+--- a/school/peterson6/test-continuation-content.cjs
++++ b/school/peterson6/test-continuation-content.cjs
+@@ -62,7 +62,16 @@ for(let n=1;n<=999;n++)assert.equal(n%3,Array.from(String(n),Number).reduce((a,b
+ for(let d=1;d<=9;d++)for(let a=0;a<10;a++)for(let b=0;b<10;b++)assert.equal((d*a+d*b)%d,0);
+ assert.equal((1+3)%2,0);assert.equal(1%2,1);assert.equal(3%2,1);
+ for(let a=-4;a<=4;a++)for(let b=-4;b<=4;b++){assert.equal(a>b,b<a);assert.equal(a<=b,b>=a);}
+-const prop199=D.lessons.find(l=>l.id==='p22').tasks.filter(t=>t.proportionPair);
++const page53=D.lessons.find(l=>l.id==='p22').tasks.filter(t=>t.source.exercise>=200&&t.source.exercise<=203);
++assert.deepEqual(Array.from(page53,t=>[t.source.exercise,t.source.subpart||'',t.source.page]),[[200,'1',53],[200,'2',53],[200,'3',53],[201,'1',53],[201,'2',53],[201,'3',53],[202,'',53],[203,'',53]]);
++const correctPage53=[75*12/100,76/80*100,81/0.06,3.5/(28/3)*0.8,28*(15/7)/0.6,1.44/(7.68/240),null,4.5*(5/3)/1.5];
++for(const [i,t] of page53.entries()){
++ if(t.kind==='choice'){assert(t.roosterGroups);assert.equal(t.steps[1].answer,'5');continue;}
++ assert(Math.abs(Number(t.answer.replace(',','.'))-correctPage53[i])<1e-9);
++ for(const [j,[x,y,z]] of t.proportionPair.examples.entries()){const result=t.proportionPair.inverse?x*y/z:y*z/x;
++  if(t.proportionPair.exact)assert(Math.abs(result-Number(t.proportionPair.exact[j][3].replace(',','.')))<1e-9);}
++}
++const prop199=D.lessons.find(l=>l.id==='p22').tasks.filter(t=>t.proportionPair&&t.source.exercise<=199);
+ assert.deepEqual(Array.from(prop199,t=>[t.source.exercise,t.source.subpart,t.source.page]),[[197,'3',52],[197,'4',52],[198,'2',52],[199,'1',53],[199,'2',53],[199,'3',53],[199,'4',53]]);
+ const propOriginals=[[20,9,14,6.3],[5,14,3,8.4],[180,8,200,7.2],[27,4.5,300,50],[250,48,150,80],[25,310,40,496],[32,215,40,172]];
+ for(const [i,t] of prop199.entries()){
+@@ -76,7 +85,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
+ const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
+ assert.equal(Object.keys(oracles).length,newNumeric.length);
+ for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
+-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1518);assert(manual>0);
++assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1526);assert(manual>0);
+ const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
+ assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
+  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
+diff --git a/tools/peterson6-board.browser.cjs b/tools/peterson6-board.browser.cjs
+index 49e998c0bda57f3a37f9f82d6ae7d1da161593f2..499a632305a8dfad0aa8311359a03a3b04e5f1e7 100644
+--- a/tools/peterson6-board.browser.cjs
++++ b/tools/peterson6-board.browser.cjs
+@@ -409,6 +409,18 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
+   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);await synchronized(teacherFrame,studentFrame,'logic survives pupil reconnect');await narrowShot(student,studentFrame,'logic-role-table-320','#task-figure');
+   await teacherFrame.locator('header nav a[href="#home"]').click();await synchronized(teacherFrame,studentFrame,'return to number search');await teacherFrame.locator('#book-part').selectOption('1');
+ 
++  phase = 'part two: a fixed dividend and no compulsory rooster ratio';
++  await teacherFrame.locator('#book-part').selectOption('2');await teacherFrame.locator('#exercise-number').fill('201');await teacherFrame.locator('#number-form button').click();
++  assert.equal(await teacherFrame.locator('#number-result a[href^="#lesson/p22/"]').count(),3);await teacherFrame.locator('#number-result a[href="#lesson/p22/17"]').click();await synchronized(teacherFrame,studentFrame,'number 201 second printed subproblem');
++  await teacherFrame.locator('#final-answer').fill('60');await teacherFrame.locator('#answer-form button[type=submit]').click();assert.match(await teacherFrame.locator('.feedback').first().innerText(),/делитель/);await synchronized(teacherFrame,studentFrame,'dividend mistaken for divisor');
++  await ownership(teacher,student,true);await openModel(studentFrame);await studentFrame.locator('#model select').first().selectOption('1');await studentFrame.locator('#final-answer').fill('10');
++  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await courseFrame(teacher);await synchronized(studentFrame,teacherFrame,'reopened independent draft with new dividend');assert.equal(await teacherFrame.locator('#final-answer').inputValue(),'10');
++  await studentFrame.locator('#final-answer').fill('100');await studentFrame.locator('#answer-form button[type=submit]').click();await synchronized(studentFrame,teacherFrame,'original divisor corrected');
++  await lesson(studentFrame,'p22',19);await openModel(studentFrame);await studentFrame.locator('#model select').first().selectOption('2');await synchronized(studentFrame,teacherFrame,'five separate rooms are a possible additional assumption');
++  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);await synchronized(teacherFrame,studentFrame,'hearing arrangement survives pupil reload');assert.equal(await studentFrame.locator('#model .pm-visual tbody tr').count(),5);
++  await teacherFrame.locator('[data-choice]').filter({hasText:'недостаточно'}).click();await teacherFrame.locator('#answer-form button[type=submit]').click();await synchronized(teacherFrame,studentFrame,'absence of a fixed ratio');
++  await teacherFrame.locator('header nav a[href="#home"]').click();await synchronized(teacherFrame,studentFrame,'back to the search field');await teacherFrame.locator('#book-part').selectOption('1');
++
+   phase = 'textbook lookup, partial drafts and saved disclosures';
+   await teacherFrame.locator('#exercise-number').fill('177');
+   await teacherFrame.locator('#number-form button').click();
+diff --git a/trainers/peterson6-complete.html b/trainers/peterson6-complete.html
+index 808e5df35dafbc41fb17f5531556c0b31a786b47..4d0544bfbe1c28d30c64b1350f9b3922b6f85118 100644
+--- a/trainers/peterson6-complete.html
++++ b/trainers/peterson6-complete.html
+@@ -15,9 +15,9 @@
+ <script defer src="/assets/course-examples.js?v=20261110"></script>
+   <script defer src="/trainers/peterson-assistant.js?v=20261106-parts23"></script>
+   <script defer src="/school/peterson6/math.js?v=20261122-numbers-7-10"></script>
+-  <script defer src="/school/peterson6/continuation-models.js?v=20261122-logic233"></script>
++  <script defer src="/school/peterson6/continuation-models.js?v=20261122-ratio203"></script>
+   <script defer src="/school/peterson6/models.js?v=20261106-parts23"></script>
+-  <script defer src="/school/peterson6/data.js?v=20261122-logic233"></script>
++  <script defer src="/school/peterson6/data.js?v=20261122-ratio203"></script>
+   <script defer src="/trainers/board-bridge.js"></script>
+   <script defer src="/school/peterson6/board-session.js?v=20261106-parts23"></script>
+   <script defer src="/school/peterson6/app.js?v=20261122-progress"></script>
