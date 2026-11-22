@@ -15,12 +15,23 @@
   const aliases={'А':'A','В':'B','С':'C','Д':'D','К':'K','М':'M','Н':'H','О':'O','Р':'P','Т':'T','Х':'X'},norm=input=>String(input).trim().toUpperCase().replace(/[АВСДКМНОРТХ]/g,c=>aliases[c]);
   const err=(value,text)=>({value,text}),select=(key,title,labels)=>({key,title,values:labels.map((v,i)=>[i,v])});
   function read(input,rule){
-    const s=norm(input),points=rule.kind==='points',parts=points?Array.from(s.replace(/[\s;,]+/g,'')):s.split(/[\s,;]+/);
+    const s=rule.kind==='pencil'?String(input).trim().toUpperCase().replace(/[АКСДМРОЛНВЕТХУ]/g,k=>({'А':'A','К':'K','С':'C','Д':'D','М':'M','Р':'P','О':'O','Л':'L','Н':'N','В':'B','Е':'E','Т':'T','Х':'X','У':'U'})[k]):norm(input),points=rule.kind==='points',parts=points?Array.from(s.replace(/[\s;,]+/g,'')):s.split(/[\s,;]+/);
     if(!parts.length||parts.some(v=>!(points?/^[A-Z]$/:/^[A-Z]{2}$/).test(v)||!points&&v[0]===v[1]))return null;
     return parts;
   }
+  function checkPencil(words,rule){
+    const {pairs,outer}=rule,valid=new Map();
+    for(const [a,b] of pairs)if(outer){valid.set(a+'A',a);valid.set(a+b,a);valid.set(b+'A',b);valid.set(b+a,b);}else{valid.set('A'+a,a);valid.set('A'+b,b);}
+    const seen=new Set();
+    for(const word of words){
+      if(!valid.has(word))return outer?'Начни имя в одной из крайних отмеченных точек. Вторую букву бери на той же прямой по направлению к A.':'Начинай имя в A. Вторую букву выбирай на нужной прямой, по одну из сторон от A.';
+      const key=valid.get(word);if(seen.has(key))return 'Этот луч уже назван. Два названия с одним началом и тем же направлением описывают один луч.';seen.add(key);
+    }
+    return seen.size===pairs.length*2?'':'Проверь обе стороны каждой указанной прямой. Одна из нужных точек ещё не дала имени лучу.';
+  }
   function analyze(input,rule){
     const words=read(input,rule);if(!words)return {ok:false,message:'Проверь запись букв.'};
+    if(rule.kind==='pencil'){const message=checkPencil(words,rule);return {ok:!message,message};}
     if(words.length!==rule.count)return {ok:false,message:'Посчитай записанные объекты. Сейчас нужно '+rule.count+'.'};
     if(rule.kind==='points')return {ok:new Set(words).size===rule.count&&words.every(n=>rule.labels.includes(n)),message:'Выбери четыре разные подписанные точки.'};
     if(words.some(n=>![...n].every(p=>rule.on.includes(p))))return {ok:false,message:'Оба имени должны обозначать точки на показанной прямой. Проверь точки в стороне от неё.'};
