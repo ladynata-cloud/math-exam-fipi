@@ -104,7 +104,7 @@ const catalogue=process.argv.includes('--dorofeev9')?{
 } : process.argv.includes('--mordkovich7-2013') ? {
   directory:'mordkovich-2013',entries:[[97,47,23]],uniqueLessons:22,search:'mordkovich-2013',match:'выражения',lesson:'97-q14',chart:'svg[aria-label*="Направление шага"]',storage:'math:mordkovich-2013:v1:'
 } : process.argv.includes('--mordkovich7-theory-2019') ? {
-  directory:'mordkovich-2019',entries:[[89,66,12]],uniqueLessons:9,search:'mordkovich-2019',match:'порядок действий',lesson:'89-3-ex2',chart:'svg[aria-label*="Температура по часам"]',storage:'math:mordkovich-2019:v1:'
+  directory:'mordkovich-2019',entries:[[89,66,19]],uniqueLessons:13,search:'mordkovich-2019',match:'порядок действий',lesson:'89-3-ex2',chart:'svg[aria-label*="Температура по часам"]',storage:'math:mordkovich-2019:v1:'
 } : process.argv.includes('--mordkovich8-workbook-2019') ? {
   directory:'mordkovich-2019',entries:[[67,54,38]],uniqueLessons:37,search:'mordkovich-2019',match:'область определения',lesson:'67-1-10',chart:'svg[aria-label*="Подстановка на числовой прямой"]',storage:'math:mordkovich-2019:v1:'
 } : process.argv.includes('--mordkovich7-workbook-2019') ? {
@@ -184,6 +184,15 @@ async function run(browser, origin, serverOrigin) {
     await t.locator('#lesson').selectOption(catalogue.lesson);await value(student,'lesson',catalogue.lesson);
     await t.locator('#model').focus();await t.locator('#model').press('ArrowRight');await value(student,'model','1');
     assert.equal(await s.locator(catalogue.chart).count(),1);
+    if(catalogue.lesson==='89-3-ex2') {
+      await t.locator('#lesson').selectOption('89-6-ex2');
+      await value(student,'lesson','89-6-ex2');
+      await t.locator('#model').focus();await t.locator('#model').press('ArrowRight');
+      await value(student,'model','1');
+      assert.equal(await s.locator('svg[aria-label*="Три дробные координаты"]').count(),1);
+      await t.locator('#lesson').selectOption(catalogue.lesson);
+      await value(student,'lesson',catalogue.lesson);
+    }
     if(printedProperties){
       const shown='[data-action="printed-guide"][aria-expanded="true"]';
       const folded='[data-action="printed-guide"][aria-expanded="false"]';

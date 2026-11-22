@@ -19,13 +19,13 @@ assert.deepEqual(Array.from(paragraphs,r=>r.page),printedPages);
 for(const [i,row] of paragraphs.entries()) {
   assert.equal(row.sectionLabel,'§ '+(i+1));
   assert.equal(row.sourcePath,'https://pdf.my-uchebnik.ru/pdf/algebra/00000069.pdf#page='+(row.page+1));
-  assert.equal(row.coverage,i<3?'module':'source');
-  if(i<3)assert.equal(row.externalPath,row.boardPath);
+  assert.equal(row.coverage,i<6?'module':'source');
+  if(i<6)assert.equal(row.externalPath,row.boardPath);
   else assert(row.bookOnly&&!row.externalPath&&!row.boardPath);
 }
 const dir='trainers/mordkovich-2019/';
-const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2'];
-const printed=[6,9,9,9,12,12,12,14,15];
+const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2','4-ex1','5-ex1','6-ex1','6-ex2'];
+const printed=[6,9,9,9,12,12,12,14,15,19,22,32,33];
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
   .filter(x=>!x.startsWith('/')&&!x.includes('board-bridge')).map(x=>read(path.join(dir,x)));
@@ -49,6 +49,13 @@ function expected(i,s) {
     case 6:return [h*w,h*k,h*(w-k)];
     case 7:return [2*k,initial,3*initial];
     case 8:return [6,2*s+4,3*s+6];
+    case 9:{const x=(s+1)/3+(s+3)/6;return [6,12*x,4*x];}
+    case 10:{const high=3*s+6,low=2*s+4;const total=high*(s+1)/(high-low);return [high*(s+1),total,low*total];}
+    case 11:return [-s-2,-3*s-6,s+2];
+    case 12:{
+      const b=(s+1)/(s+6),c=(s+3+s%3)/(s+6),a=(s+8)/(s+6);
+      return [Math.abs(c-b),Math.abs(a-c),2*c<a+b?b:a];
+    }
     default:throw new Error('Unexpected lesson');
   }
 }
@@ -104,4 +111,4 @@ for(const [i,entry] of book.exercises.entries()){
   assert.notEqual(JSON.parse(reopened.w.localStorage.getItem(key)).variant,0);
   reopened.dom.window.close();dom.window.close();
 }
-console.log('Source 89: 48 printed paragraphs, nine student routes, 297 independently checked questions and nine personal draft round trips.');
+console.log('Source 89: 48 printed paragraphs, 13 student routes, 429 independently checked questions and 13 personal draft round trips.');
