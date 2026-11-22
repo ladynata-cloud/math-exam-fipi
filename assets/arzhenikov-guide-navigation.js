@@ -30,4 +30,3 @@
   if (document.readyState === 'complete') placeNavigator();
   else document.addEventListener('DOMContentLoaded', placeNavigator, {once: true});
 })();
-
