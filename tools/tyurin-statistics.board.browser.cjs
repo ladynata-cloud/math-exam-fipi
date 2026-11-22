@@ -103,6 +103,8 @@ const catalogue=process.argv.includes('--dorofeev9')?{
   directory:'mordkovich-2020',entries:[[25,50,60]],uniqueLessons:59,search:'mordkovich-2020',match:'множества и делимость',lesson:'25-review-17d',chart:'svg[aria-label*="Разложения для сравнения"]',storage:'math:mordkovich-2020:v1:'
 } : process.argv.includes('--mordkovich7-2013') ? {
   directory:'mordkovich-2013',entries:[[97,47,23]],uniqueLessons:22,search:'mordkovich-2013',match:'выражения',lesson:'97-q14',chart:'svg[aria-label*="Направление шага"]',storage:'math:mordkovich-2013:v1:'
+} : process.argv.includes('--mordkovich9-theory-2019') ? {
+  directory:'mordkovich-2019',entries:[[46,37,11]],uniqueLessons:10,search:'mordkovich-2019',match:'квадратные неравенства',lesson:'46-1-ex2',chart:'svg[aria-label*="Проверка равносильности"]',storage:'math:mordkovich-2019:v1:'
 } : process.argv.includes('--mordkovich9-workbook-2019') ? {
   directory:'mordkovich-2019',entries:[[47,37,25]],uniqueLessons:24,search:'mordkovich-2019',match:'квадратные неравенства',lesson:'47-1-6-d',chart:'svg[aria-label*="Знаки произведения"]',storage:'math:mordkovich-2019:v1:'
 } : process.argv.includes('--mordkovich8-theory-2019') ? {

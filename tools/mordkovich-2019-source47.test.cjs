@@ -49,7 +49,7 @@ assert.equal(book.exercises.length,ids.length);
 for(const [i,r] of book.exercises.entries()){
  const id='47-'+ids[i];assert.equal(r.path,'/'+dir+'index.html#lesson/'+id);assert.equal(r.boardPath,r.path);assert.equal(r.printed,printed[i]);assert.equal(r.page,i<20?4:5);
  let {dom,w,doc,key,l}=open(r);
- assert(doc.querySelector('#edition').textContent.includes('13-е издание'));assert(!doc.querySelector('#edition').textContent.includes('14-е'));assert.equal(doc.querySelector('#lesson').value,id);assert.equal(doc.querySelectorAll('#lesson option').length,469);
+ assert(doc.querySelector('#edition').textContent.includes('13-е издание'));assert(!doc.querySelector('#edition').textContent.includes('14-е'));assert.equal(doc.querySelector('#lesson').value,id);assert.equal(doc.querySelectorAll('#lesson option').length,479);
  assert.equal(doc.querySelector('#source').href,'https://pdf.my-uchebnik.ru/pdf/algebra/00000035.pdf#page='+(r.page+1));assert.equal(doc.querySelector('#back').hash,'#book/source-47');
  assert.equal(new URL(doc.querySelector('#board').href).searchParams.get('trainer'),r.path);assert.equal(w.MathExamTopicEdition.nextId(l),ids[i+1]&&'47-'+ids[i+1]);assert.equal(r.title,l.title);
  const variants=new Set();for(let s=1;s<=11;s++){
