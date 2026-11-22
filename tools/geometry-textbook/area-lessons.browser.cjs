@@ -31,6 +31,22 @@ const server=http.createServer((req,res)=>{
  const equationAnswers={1051:['2','13'],'1052-1':['5','4'],'1052-2':['2','9'],'1052-3':['-7','9/4'],'1052-4':['-3','25'],1053:['10','13'],1054:['25','25'],'1055-1':['2','13'],'1055-2':['3','10'],1056:['16','1'],1057:['4','3']};
  const lineAnswers={'1058-1':['3','-1'],'1058-2':['-3','-3'],'1058-3':['-6','-1'],1059:['3','2'],'1060-1':['1','-6'],'1060-2':['5','3'],1061:['5','-3'],'1062-1':['3','-2'],'1062-2':['-2','3'],'1062-3':['-4','1'],'1062-4':['7','-1'],1063:['5','4'],1064:['5','6']};
  const locusAnswers={1065:['8','1'],1066:['-3','0'],'1067-1':['0','4'],'1067-2':['1','0'],'1068-1':['2','1'],'1068-2':['3','0'],1069:['4','4'],'1070-1':['4','1'],'1070-2':['1/3','2/3'],1071:['1','2'],1072:['3','0'],1073:['-2','-3'],1074:['32','2'],1075:['-3','-2']};
+ const compassFinaleAnswers={"1236":["45","32"],"1237":["5","169"],"1238-1":["120","4"],"1238-2":["60","5"],"1239-1":["90","2"],"1239-2":["45","4"]};
+ const arcSimilarityAnswers={"1233":["270","20"],"1234":["12","30"],"1235":["3","12"]};
+ const extraCircleAnswers={"1229":["42076","630"],"1230-1":["5","9,6"],"1230-2":["2","3"],"1231":["3","8,8"],"1232":["6","24"]};
+ const polygonDiagonalAnswers={"1225-1":["120","60"],"1225-2":["75","12"],"1226-1":["180","14"],"1226-2":["36","7"],"1226-3":["4","7"],"1227":["6","6"],"1228":["135","16"]};
+ const extraPerimeterAnswers={"1221-1":["162","15"],"1221-2":["140","12"],"1221-3":["108","8"],"1221-4":["120","4"],"1222":["27","54"],"1223":["1,12","15"],"1224-1":["4","2"],"1224-2":["4","2"]};
+ const sectorAreaAnswers={"t121":["4","3"],"1217":["300","24"],"1218":["5","6"],"1219":["4","4"],"1220":["2","3"]};
+ const cutDiskAnswers={"1214":["8","8"],"1215":["7","28"],"1216":["25","169"]};
+ const annulusAnswers={"1209":["3,3","4"],"1210":["1681","25"],"1211":["1","12"],"1212":["20","1"],"1213":["4","16"]};
+ const inDiskAnswers={"1207-1":["25","17"],"1207-2":["5","169"],"1207-3":["25","625"],"1208-1":["3","12"],"1208-2":["6","4"],"1208-3":["8","16"],"1208-4":["2","100"]};
+ const diskTableAnswers={"t120":["6","16"],"1205-1":["4","50,24"],"1205-2":["25","314"],"1205-3":["9","3,39"],"1205-4":["49","1,03"],"1205-5":["49","14"],"1205-6":["108,6","37033,03"],"1205-7":["3","37,68"],"1205-8":["25","2,82"],"1206-1":["9","28"],"1206-2":["9","25"]};
+ const radianConstructionAnswers={"1204-1":["60","6"],"1204-2":["45","18"],"1204-3":["90","9"],"1204-4":["30","12"],"1204-5":["180","18"],"1204-6":["120","12"]};
+ const radianTableAnswers={"t119":["1","4"],"1203-1":["1","2"],"1203-2":["180","90"],"1203-3":["2","3"],"1203-4":["3","3"],"1203-5":["5","5"],"1203-6":["4","4"],"1203-7":["6","6"],"1203-8":["45","4"],"1203-9":["60","3"],"1203-10":["5","6"],"1203-11":["3","3"],"1203-12":["90","4"]};
+ const arcDeviceAnswers={"1200":["29","10"],"1201":["12","30"],"1202":["5000","30"]};
+ const practicalLengthAnswers={"1195":["1978","60"],"1196":["40000","6369"],"1197":["6690","43960"],"1198-1":["12","2"],"1198-2":["8","2"],"1198-3":["6","6"],"1198-4":["4","4"],"1199":["12","20"]};
+ const incircleLengthAnswers={"1193-1":["18","6"],"1193-2":["5","13"],"1193-3":["4","25"],"1193-4":["5","68"],"1193-5":["4","4"],"1194-1":["3","10"],"1194-2":["6","5"],"1194-3":["1","4"],"1194-4":["3","4/3"]};
+ const circumferenceAnswers={"t118":["12","4"],"1190-1":["8","50,24"],"1190-2":["6","56,52"],"1190-3":["6,28","26,11"],"1190-4":["18","18"],"1190-5":["1,4","13,19"],"1190-6":["2","2"],"1190-7":["203","1274,84"],"1190-8":["7","43,96"],"1190-9":["2","0,90"],"1191-1":["3","20"],"1191-2":["1","1"],"1191-3":["4","20"],"1191-4":["1","1"],"1192-1":["3","20"],"1192-2":["1","1"]};
  const polygonCompassAnswers={"1188":["45","2"],"1189-1":["60","6"],"1189-2":["120","108"],"1189-3":["90","72"],"1189-4":["45","4"]};
  const polygonAreaAnswers={"1183-1":["18","144"],"1183-2":["8","4"],"1183-3":["6","18"],"1183-4":["75","200"],"1184":["3","4"],"1185":["6","24"],"1186":["3","4"],"1187-1":["6","12"],"1187-2":["1","12"]};
  const polygonCircleAnswers={"t117":["12","16"],"1178":["6","96"],"1179":["3","48"],"1180":["3","4"],"1181":["8","16"],"1182":["2","3"]};
@@ -62,9 +78,9 @@ const server=http.createServer((req,res)=>{
   const catalog=await browser.newPage({viewport:{width,height:900}});
   const errors=[]; catalog.on('pageerror',e=>errors.push(e.message));
   await catalog.goto(base);
-  await catalog.getByText(/Полностью доступны задачи: 1189/).waitFor();
+  await catalog.getByText(/Полностью доступны задачи: 1239/).waitFor();
   await catalog.close();
-  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers,...additionalScalarVectorAnswers,...chapterTwelveFinalAnswers,...regularDefinitionAnswers,...regularAngleAnswers,...regularCenterAnswers,...regularTableAnswers,...polygonCircleAnswers,...polygonAreaAnswers,...polygonCompassAnswers})) {
+  for(const [n,value] of Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers,...additionalScalarVectorAnswers,...chapterTwelveFinalAnswers,...regularDefinitionAnswers,...regularAngleAnswers,...regularCenterAnswers,...regularTableAnswers,...polygonCircleAnswers,...polygonAreaAnswers,...polygonCompassAnswers,...circumferenceAnswers,...incircleLengthAnswers,...practicalLengthAnswers,...arcDeviceAnswers,...radianTableAnswers,...radianConstructionAnswers,...diskTableAnswers,...inDiskAnswers,...annulusAnswers,...cutDiskAnswers,...sectorAreaAnswers,...extraPerimeterAnswers,...polygonDiagonalAnswers,...extraCircleAnswers,...arcSimilarityAnswers,...compassFinaleAnswers})) {
    const page=await browser.newPage({viewport:{width,height:900}});
    page.on('pageerror',e=>errors.push(e.message));
    const theory=n.startsWith('t');
@@ -83,6 +99,95 @@ const server=http.createServer((req,res)=>{
    assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key))?.checked===true,storageKey),false);
    if(revised)assert.equal(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).checked,revisionKey+'1'),true);
    const coefficient={
+    "1233":["-100","π(20+9√2)/2","Одна и та же хо","(10+9√2/2)π"],
+    "1234":["-100","65π/4","У вписанной тра","16.25*pi"],
+    "1229":["-100","330","Два оборота име","21038/pi-6370"],
+    "1230-1":["-100","4,8π","Окружность каса","15.1"],
+    "1230-2":["-100","πa sin α","Высота ромба ра","aπsinα"],
+    "1231":["-100","4,4","Три километра —","3*pi/(pi-1)"],
+    "1227":["-100","6;54√3","Площадь круга н","6 см;54√3 см²"],
+    "1221-1":["-100","20","Число 18° — уже","20,0"],
+    "1221-2":["-100","9","Число 40° — уже","9,0"],
+    "1221-3":["-100","5","Число 72° — уже","5,0"],
+    "1221-4":["-100","6","Число 60° — уже","6,0"],
+    "1222":["-100","3√6/2","Сначала восстан","sqrt(13.5)"],
+    "1223":["-100","6,72","От A₁ до A₄ три","6,72 см"],
+    "1224-1":["-100","3√6/8","Общий R доведён","3√3/(4√2)"],
+    "1224-2":["-100","3√3/4","Общий r доведён","(3/4)√3"],
+    "1217":["-100","250π/3","Угол 60° описыв","262 см²"],
+    "1218":["-100","√(5S/π)","Угол 72° занима","sqrt(5S/pi)"],
+    "1219":["(4−π)a²/4","πa²/4","В фигуре 354 ро","a²π/4"],
+    "1214":["-100","r²(π−2)","У вписанного кв","r^2*(pi-2)"],
+    "1215":["-100","π;3π;5π;7π","Сначала найди ч","1π;3π;5π;7π"],
+    "1209":["-100","34,2","В условии 6,6 м","10.89π"],
+    "1210":["-100","41/π;1681/(4π)","41 м относится ","41/pi;1681/(4*pi)"],
+    "1211":["-100","π(R₂²−R₁²);4π","Кольцо — часть ","π(R₂−R₁)(R₂+R₁);4π"],
+    "1212":["-100","0,75","Нужна толщина с","3/4"],
+    "1213":["-100","5,6π","Внешний радиус ","17,6 дм³"],
+    "1207-1":["-100","π(a²+b²)/4","Квадрат радиуса","pi*(a^2+b^2)/4"],
+    "1207-2":["-100","πa²/(4sin²α)","Катет a лежит н","pi*a^2/(4*sin(alpha)^2)"],
+    "1207-3":["π(a²+4h²)/(64h²)","π(a²+4h²)²/(64h²)","В ответе на с. ","pi*((a^2+4*h^2)/(8*h))^2"],
+    "1208-1":["-100","πa²/12","Радиус до сторо","πa^2/12"],
+    "1208-2":["-100","πa²sin²α/(sinα+cosα+1)²","Условие говорит","pi*a^2*sin(alpha)^2/(1+sin(alpha)+cos(alpha))^2"],
+    "1208-3":["-100","πa²sin²α/(4(1+sin(α/2))²)","Полный угол α в","pi*a^2*sin(alpha)^2/(4*(1+sin(alpha/2))^2)"],
+    "1208-4":["-100","πa²tg²(α/2)/4","Бери половину б","pi*a^2*tan(alpha/2)^2/4"],
+    "1205-1":["-100","12,56","Площадь равна π","12.56"],
+    "1205-2":["-100","78,5","Площадь равна π","78.50"],
+    "1205-3":["-100","1,69","Сначала раздели","1.69"],
+    "1205-4":["-100","0,26","Площадь равна π","12.56/49"],
+    "1205-5":["-100","7","Сначала сократи","7"],
+    "1205-6":["-100","9258,26","Площадь равна π","9258.26"],
+    "1205-7":["-100","9,42","Площадь равна π","9.42"],
+    "1205-8":["-100","1,41","Сначала раздели","1.41"],
+    "1206-1":["-100","k²","Составь отношен","к²"],
+    "1206-2":["-100","1/k²","Составь отношен","1/к²"],
+    "1203-1":["-100","180","Для перевода ра","180°"],
+    "1203-2":["-100","π/180","Для перевода гр","pi/180"],
+    "1203-3":["-100","π/2","Для перевода гр","pi/2"],
+    "1203-4":["-100","60","Для перевода ра","60°"],
+    "1203-5":["-100","36","Для перевода ра","36°"],
+    "1203-6":["-100","π/4","Для перевода гр","pi/4"],
+    "1203-7":["-100","π/6","Для перевода гр","pi/6"],
+    "1203-8":["-100","135","Для перевода ра","135°"],
+    "1203-9":["-100","120","Для перевода ра","120°"],
+    "1203-10":["-100","5π/6","Для перевода гр","5pi/6"],
+    "1203-11":["-100","πn/180","Для перевода гр","n*pi/180"],
+    "1203-12":["-100","180φ/π","Для перевода ра","180*phi/pi"],
+    "1200":["-100","59,2","117° относятся ","377π/20"],
+    "1201":["-100","36,2","Радиус дуги — р","2160/(19*pi)"],
+    "1202":["-100","4°35′","Сначала приведи","14.4/pi"],
+    "1195":["-100","63","989 м относятся","63.0"],
+    "1196":["-100","12739","Если один метр ","12732 км"],
+    "1197":["-100","42013","Высота 320 км о","42035 км"],
+    "1198-1":["-100","π","Полный оборот р","pi"],
+    "1198-2":["-100","3π/2","Полный оборот р","3*pi/2"],
+    "1198-3":["-100","2π","Полный оборот р","2*pi"],
+    "1198-4":["-100","3π","Полный оборот р","3*pi"],
+    "1199":["-100","30","Один шаг измере","30 зубьев"],
+    "1193-1":["-100","2πa√3/3","Берём две трети","2*pi*a/sqrt(3)"],
+    "1193-2":["-100","π√(a²+b²)","Гипотенуза уже ","pi*sqrt(a^2+b^2)"],
+    "1193-3":["-100","2πb²/√(4b²−a²)","Сторона b напра","2*pi*b^2/sqrt(4*b^2-a^2)"],
+    "1193-4":["-100","πa/sin(α/2)","Раздели пополам","pi*a/sin(alpha/2)"],
+    "1193-5":["-100","8π","В правильном ше","8*pi"],
+    "1194-1":["-100","πa","У вписанной окр","pi*a"],
+    "1194-2":["-100","πc(√2−1)","Гипотенуза c не","pi*c*(sqrt(2)-1)"],
+    "1194-3":["-100","πc(sinα+cosα−1)","Находи оба кате","pi*c*(sin(alpha)+cos(alpha)-1)"],
+    "1194-4":["-100","2πh·tg(α/2)·ctgα","Центр T лежит н","2*pi*h*tan(alpha/2)/tan(alpha)"],
+    "1190-1":["-100","25,12","Отрезок от цент","25.12"],
+    "1190-2":["-100","18,84","Отрезок от цент","18.84"],
+    "1190-3":["-100","13,06","Из C=2πR вырази","13.06"],
+    "1190-4":["-100","9","Сохрани π в чис","9"],
+    "1190-5":["-100","4,40","Отрезок от цент","4.396"],
+    "1190-6":["-100","1","Из C=2πR вырази","1"],
+    "1190-7":["-100","637,42","Отрезок от цент","637.42"],
+    "1190-8":["-100","14,65","Отрезок от цент","14.65"],
+    "1190-9":["-100","0,45","Из C=2πR вырази","0.45"],
+    "1191-1":["-100","3","Запиши C₂/C₁. И","3"],
+    "1191-2":["-100","1/2","Запиши C₂/C₁. И","0.5"],
+    "1191-3":["-100","k","Запиши C₂/C₁. И","к"],
+    "1191-4":["-100","1/k","Запиши C₂/C₁. И","1/к"],
+    "1192-1":["-100","k","Запиши R₂/R₁. И","к"],
+    "1192-2":["-100","1/k","Запиши R₂/R₁. И","1/к"],
     "1188":["2R²","√2R²","У вершин, номер","R^2*sqrt(2)"],
     "1183-1":["18","36","Исходное R дове","36.0"],
     "1183-2":["64","16√3","Раздели перимет","16sqrt(3)"],
@@ -336,7 +441,7 @@ const server=http.createServer((req,res)=>{
    const midpointCases={'972-1':5,'972-2':4,973:3,974:3,975:3};
    const appliedCases={976:2,977:4,978:2,979:3,980:3};
    const lengthCases={981:3,982:3,983:2,984:2,985:3,986:3,987:3};
-   const extraCase=n.startsWith('1189-')?'case-4':n==='1188'?'case-3':n==='1185'?'case-4':Object.hasOwn(polygonAreaAnswers,n)?'case-3':Object.hasOwn(polygonCircleAnswers,n)?'case-3':Object.hasOwn(regularTableAnswers,n)?'case-3':Object.hasOwn(regularCenterAnswers,n)?'case-3':Object.hasOwn(regularAngleAnswers,n)?'case-3':Object.hasOwn(regularDefinitionAnswers,n)?'case-3':Object.hasOwn(chapterTwelveFinalAnswers,n)?'case-3':Object.hasOwn(additionalScalarVectorAnswers,n)?'case-3':Object.hasOwn(additionalSolveAnswers,n)?'case-3':Object.hasOwn(additionalAreaAnswers,n)?'case-3':chapter12?'case-3':Object.hasOwn(scalarGeometryAnswers,n)?'case-3':Object.hasOwn(scalarCoordinateAnswers,n)?'case-3':(n==='t109'||n==='t110')?'case-4':Object.hasOwn(scalarProductAnswers,n)?'case-3':Object.hasOwn(fieldTrigAnswers,n)?'case-3':['1117','1118','1122'].includes(n)?'case-4':Object.hasOwn(solvedTriangleAnswers,n)?'case-3':n==='t107'?'case-4':Object.hasOwn(triangleAreaAnswers,n)?'case-3':n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
+   const extraCase=Object.hasOwn(compassFinaleAnswers,n)?'case-3':Object.hasOwn(arcSimilarityAnswers,n)?'case-3':Object.hasOwn(extraCircleAnswers,n)?'case-3':Object.hasOwn(polygonDiagonalAnswers,n)?'case-3':Object.hasOwn(extraPerimeterAnswers,n)?'case-3':Object.hasOwn(sectorAreaAnswers,n)?'case-3':Object.hasOwn(cutDiskAnswers,n)?'case-3':Object.hasOwn(annulusAnswers,n)?'case-3':Object.hasOwn(inDiskAnswers,n)?'case-3':Object.hasOwn(diskTableAnswers,n)?'case-3':Object.hasOwn(radianConstructionAnswers,n)?'case-3':Object.hasOwn(radianTableAnswers,n)?'case-3':Object.hasOwn(arcDeviceAnswers,n)?'case-3':Object.hasOwn(practicalLengthAnswers,n)?'case-3':Object.hasOwn(incircleLengthAnswers,n)?'case-3':Object.hasOwn(circumferenceAnswers,n)?'case-3':n.startsWith('1189-')?'case-4':n==='1188'?'case-3':n==='1185'?'case-4':Object.hasOwn(polygonAreaAnswers,n)?'case-3':Object.hasOwn(polygonCircleAnswers,n)?'case-3':Object.hasOwn(regularTableAnswers,n)?'case-3':Object.hasOwn(regularCenterAnswers,n)?'case-3':Object.hasOwn(regularAngleAnswers,n)?'case-3':Object.hasOwn(regularDefinitionAnswers,n)?'case-3':Object.hasOwn(chapterTwelveFinalAnswers,n)?'case-3':Object.hasOwn(additionalScalarVectorAnswers,n)?'case-3':Object.hasOwn(additionalSolveAnswers,n)?'case-3':Object.hasOwn(additionalAreaAnswers,n)?'case-3':chapter12?'case-3':Object.hasOwn(scalarGeometryAnswers,n)?'case-3':Object.hasOwn(scalarCoordinateAnswers,n)?'case-3':(n==='t109'||n==='t110')?'case-4':Object.hasOwn(scalarProductAnswers,n)?'case-3':Object.hasOwn(fieldTrigAnswers,n)?'case-3':['1117','1118','1122'].includes(n)?'case-4':Object.hasOwn(solvedTriangleAnswers,n)?'case-3':n==='t107'?'case-4':Object.hasOwn(triangleAreaAnswers,n)?'case-3':n==='1103'?'case-4':Object.hasOwn(trigRayAnswers,n)?'case-3':(n==='1098-1'||n==='1098-2')?'case-6':n==='1099'?'case-5':n==='t100'?'case-4':Object.hasOwn(semicircleAnswers,n)?'case-3':(n==='1093'||n==='1097-2')?'case-4':n==='1086'?'case-6':n==='j23'?'case-8':Object.hasOwn(endCoordinateAnswers,n)||Object.hasOwn(additionalFigureAnswers,n)||Object.hasOwn(additionalVectorAnswers,n)||review||Object.hasOwn(coordinateAnswers,n)||Object.hasOwn(relationAnswers,n)||Number(number)>=988&&Number(number)<=997?'case-3':null;
    const gridCase=Object.hasOwn(gridAnswers,n)?'case-'+(Number(number)<=1006?6:3):null;
    const actionCase=Object.hasOwn(actionAnswers,n)?'case-'+(n==='1011'?4:n==='1012'?6:3):null;
    const positionCase=Object.hasOwn(positionAnswers,n)?'case-3':null;

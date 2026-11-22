@@ -99,6 +99,38 @@ on:
       - 'tools/geometry-textbook/*polygon_circle_applications*'
       - 'tools/geometry-textbook/*regular_polygon_areas*'
       - 'tools/geometry-textbook/*regular_polygon_constructions*'
+      - 'tools/geometry-textbook/*circumference_lengths*'
+      - 'tools/geometry-textbook/*inscribed_circle_lengths*'
+      - 'tools/geometry-textbook/*circle_length_applications*'
+      - 'tools/geometry-textbook/*measured_arc_devices*'
+      - 'tools/geometry-textbook/*radian_table*'
+      - 'tools/geometry-textbook/*radian_constructions*'
+      - 'tools/geometry-textbook/*disk_area_table*'
+      - 'tools/geometry-textbook/*areas_of_inscribed_disks*'
+      - 'tools/geometry-textbook/*disks_and_annuli*'
+      - 'tools/geometry-textbook/*cut_disks_and_semicircles*'
+      - 'tools/geometry-textbook/*sector_areas*'
+      - 'tools/geometry-textbook/*additional_regular_perimeters*'
+      - 'tools/geometry-textbook/*regular_polygon_diagonals*'
+      - 'tools/geometry-textbook/*arc_routes_and_incircles*'
+      - 'tools/geometry-textbook/*major_arcs_and_similar_circles*'
+      - 'tools/geometry-textbook/*regular_compass_finale*'
+      - 'geometry-course/textbook/data/regular-compass-finale.json'
+      - 'geometry-course/textbook/data/major-arcs-and-similar-circles.json'
+      - 'geometry-course/textbook/data/arc-routes-and-incircles.json'
+      - 'geometry-course/textbook/data/regular-polygon-diagonals.json'
+      - 'geometry-course/textbook/data/additional-regular-perimeters.json'
+      - 'geometry-course/textbook/data/sector-areas.json'
+      - 'geometry-course/textbook/data/cut-disks-and-semicircles.json'
+      - 'geometry-course/textbook/data/disks-and-annuli.json'
+      - 'geometry-course/textbook/data/areas-of-inscribed-disks.json'
+      - 'geometry-course/textbook/data/disk-area-table.json'
+      - 'geometry-course/textbook/data/radian-constructions.json'
+      - 'geometry-course/textbook/data/radian-table.json'
+      - 'geometry-course/textbook/data/measured-arc-devices.json'
+      - 'geometry-course/textbook/data/circle-length-applications.json'
+      - 'geometry-course/textbook/data/inscribed-circle-lengths.json'
+      - 'geometry-course/textbook/data/circumference-lengths.json'
       - 'geometry-course/textbook/data/regular-polygon-constructions.json'
       - 'geometry-course/textbook/data/regular-polygon-areas.json'
       - 'geometry-course/textbook/data/polygon-circle-applications.json'
@@ -178,6 +210,22 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/regular_compass_finale.py --check && python3 tools/geometry-textbook/check_regular_compass_finale.py
+      - run: python3 tools/geometry-textbook/major_arcs_and_similar_circles.py --check && python3 tools/geometry-textbook/check_major_arcs_and_similar_circles.py
+      - run: python3 tools/geometry-textbook/arc_routes_and_incircles.py --check && python3 tools/geometry-textbook/check_arc_routes_and_incircles.py
+      - run: python3 tools/geometry-textbook/regular_polygon_diagonals.py --check && python3 tools/geometry-textbook/check_regular_polygon_diagonals.py
+      - run: python3 tools/geometry-textbook/additional_regular_perimeters.py --check && python3 tools/geometry-textbook/check_additional_regular_perimeters.py
+      - run: python3 tools/geometry-textbook/sector_areas.py --check && python3 tools/geometry-textbook/check_sector_areas.py
+      - run: python3 tools/geometry-textbook/cut_disks_and_semicircles.py --check && python3 tools/geometry-textbook/check_cut_disks_and_semicircles.py
+      - run: python3 tools/geometry-textbook/disks_and_annuli.py --check && python3 tools/geometry-textbook/check_disks_and_annuli.py
+      - run: python3 tools/geometry-textbook/areas_of_inscribed_disks.py --check && python3 tools/geometry-textbook/check_areas_of_inscribed_disks.py
+      - run: python3 tools/geometry-textbook/disk_area_table.py --check && python3 tools/geometry-textbook/check_disk_area_table.py
+      - run: python3 tools/geometry-textbook/radian_constructions.py --check && python3 tools/geometry-textbook/check_radian_constructions.py
+      - run: python3 tools/geometry-textbook/radian_table.py --check && python3 tools/geometry-textbook/check_radian_table.py
+      - run: python3 tools/geometry-textbook/measured_arc_devices.py --check && python3 tools/geometry-textbook/check_measured_arc_devices.py
+      - run: python3 tools/geometry-textbook/circle_length_applications.py --check && python3 tools/geometry-textbook/check_circle_length_applications.py
+      - run: python3 tools/geometry-textbook/inscribed_circle_lengths.py --check && python3 tools/geometry-textbook/check_inscribed_circle_lengths.py
+      - run: python3 tools/geometry-textbook/circumference_lengths.py --check && python3 tools/geometry-textbook/check_circumference_lengths.py
       - run: python3 tools/geometry-textbook/regular_polygon_constructions.py --check && python3 tools/geometry-textbook/check_regular_polygon_constructions.py
       - run: python3 tools/geometry-textbook/regular_polygon_areas.py --check && python3 tools/geometry-textbook/check_regular_polygon_areas.py
       - run: python3 tools/geometry-textbook/polygon_circle_applications.py --check && python3 tools/geometry-textbook/check_polygon_circle_applications.py
