@@ -19,8 +19,8 @@ for(const row of book.mapping){
   if(row.sectionLabel==='§ 1.1')assert.equal(row.boardPath,row.externalPath);
   else assert(row.bookOnly&&!row.boardPath&&!row.externalPath);
 }
-const ids=['abcdefgh','abcdef','abcdefgh','abcdefgh'].flatMap((letters,i)=>Array.from(letters,letter=>(i+1)+'-'+letter));
-const printed=ids.map(id=>/^4-[efgh]$/.test(id)?11:10);
+const ids=['abcdefgh','abcdef','abcdefgh','abcdefgh'].flatMap((letters,i)=>Array.from(letters,letter=>(i+1)+'-'+letter)).concat(['5','6','7','8']);
+const printed=ids.map(id=>/^4-[efgh]$|^[5-8]$/.test(id)?11:10);
 const dir='trainers/rubin-chulkov7-2015/';
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
@@ -50,6 +50,10 @@ function expected(i,s){
       const end=[4*s+3,4*s+2,(4*s+3)/4,a*a-b*b,3*a-b/2,a/b-b/a];
       return [(s+sub)%3+1,middle[sub],end[sub]];
     }
+    case '5':return [3*s+2,-.3*s-1,-6*s-4];
+    case '6':return [1-3*s,.3*s+7,3*s+16];
+    case '7':return [7*s+3,0,s-.3];
+    case '8':return [0,8*s+.7,-7.05*s-1.4];
     default: {
       const [exercise,letter]=ids[i].split('-'),part='abcdefgh'.indexOf(letter);
       if(exercise==='3'){
@@ -122,6 +126,6 @@ async function checkExercises() {
     // Allow jsdom to release closed windows before opening the next lesson.
     await new Promise(resolve=>setImmediate(resolve));
   }
-  console.log('Source 94: 30 paragraphs, 30 revision topics, 30 answer sections, 30 student routes, 990 independently checked answers and 30 saved drafts.');
+  console.log('Source 94: 30 paragraphs, 30 revision topics, 30 answer sections, 34 student routes, 1122 independently checked answers and 34 saved drafts.');
 }
 checkExercises().catch(error=>{console.error(error);process.exitCode=1;});

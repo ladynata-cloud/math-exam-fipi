@@ -6,7 +6,9 @@
   function record(key, title, source, guide, rule, make, page = 10) {
     add(94, key, page, title, 'Разбери пример из учебника и проверь своё решение на новом выражении.', rule, 'fraction', make);
     const lesson = lessons.get('94-' + key);
-    Object.assign(lesson, {printedReference:'№' + Number(key.split('-')[0]) + 'абвгдежз'['abcdefgh'.indexOf(key.split('-')[1])], printedPrompt:source, printedGuide:guide});
+    const [n, letter] = key.split('-');
+    const printedReference = '№' + n + (letter ? 'абвгдежз'['abcdefgh'.indexOf(letter)] : '');
+    Object.assign(lesson, {printedReference, printedPrompt:source, printedGuide:guide});
     order.push(lesson.id);
   }
   function model(expression, branches, action, questions) {
@@ -147,7 +149,50 @@
       ]);
     },i<4?10:11);
   }
+  const tables = [
+    {n:5,formula:'3a − 1',vars:['a'],initial:[[2],[4],[-1],[-1.6],[7.12],[-119]],
+      rule:'Бери аргумент из одного столбца, утраивай и вычитай единицу. Перейди к следующему столбцу только после записи результата.',
+      comment:'При a = −1,6 сначала получается −4,8, затем −5,8.', sample:s=>[[s+1],[-s/10],[-(2*s+1)]],value:a=>3*a-1, diagnose:(a)=>3*(a-1),
+      mistake:'Сначала умножь a на три. Скобок вокруг a − 1 в задании нет.'},
+    {n:6,formula:'3s + 7',vars:['s'],initial:[[-2],[0],[2],[-12.5],[3.3],[19]],
+      rule:'Для каждого столбца умножь значение s на три, затем прибавь семь. При нулевом аргументе остаётся свободное слагаемое 7.',
+      comment:'Так, при s = −12,5 произведение равно −37,5, после прибавления 7 получаем −30,5.',sample:s=>[[-s-2],[s/10],[s+3]],value:a=>3*a+7,diagnose:a=>3*(a+7),
+      mistake:'Семёрка находится за пределами произведения. Её прибавляют один раз после утроения.'},
+    {n:7,formula:'3x + 2y',vars:['x','y'],initial:[[2,3],[4,-1],[-3,-2],[1/3,-.5],[23/7,-69/14],[2.13,13.2]],
+      rule:'У каждой колонки своя пара x и y. Найди утроенный x и удвоенный y из одной колонки, затем сложи их с учётом знаков.',
+      comment:'В пятой колонке 3 · 23/7 = 69/7 и 2 · (−69/14) = −69/7: значения уничтожаются.',
+      sample:s=>[[s+1,2*s],[-s/3,s/2],[s+.1,-s-.3]],value:(x,y)=>3*x+2*y,diagnose:(x,y)=>3*x-2*y,
+      mistake:'Между 3x и 2y стоит плюс. Подставь знак координаты y лишь один раз.'},
+    {n:8,formula:'7m − 5n',vars:['m','n'],initial:[[.5,.7],[.45,.23],[7,5],[-5,-7],[.2,-.12],[-1.17,.002]],
+      rule:'Вычисли два произведения для одной пары m и n. Вычти второе произведение целиком, даже если оно отрицательное.',
+      comment:'В последней колонке 7 · (−1,17) = −8,19 и 5 · 0,002 = 0,01. Разность равна −8,2.',
+      sample:s=>[[s/2,7*s/10],[s+.1,-s/5],[-s-.2,s/100]],value:(m,n)=>7*m-5*n,diagnose:(m,n)=>7*m+5*n,
+      mistake:'Это разность. Сначала вычисли 5n вместе со знаком и затем вычти это число.'}
+  ];
+  function columnFigure(t,rows) {
+    const pos=[52,140,228];
+    const columns=rows.map((row,i)=>{
+      const x=pos[i];
+      const values=row.map((v,j)=>'<text x="'+x+'" y="'+(43+15*j)+'">'+t.vars[j]+' = '+f(v)+'</text>').join('');
+      return '<rect x="'+(x-38)+'" y="10" width="76" height="61" rx="6" fill="#e7f4ef" stroke="#447465"/><text x="'+x+'" y="26">Столбец '+(i+1)+'</text>'+values+
+        '<path d="M'+x+' 72v16m-3 -4l3 4 3-4" fill="none" stroke="#447465"/><text x="'+x+'" y="107">'+t.formula+'</text>';
+    }).join('');
+    return '<svg viewBox="0 0 280 119" role="img" aria-label="Три столбца с собственными значениями для подстановки"><g text-anchor="middle" font-size="11" font-family="sans-serif" fill="#193f33">'+columns+'</g></svg>';
+  }
+  for (const t of tables) {
+    const bookValues=t.initial.map(row=>f(t.value(...row)));
+    record(String(t.n),'Таблица значений '+t.formula,
+      'На с. 11 заполни все шесть колонок для выражения '+t.formula+'. Проверяй каждый результат по исходным значениям своей колонки.',
+      t.comment+' В порядке столбцов результат: '+bookValues.join('; ')+'.',t.rule,s=>{
+        const rows=t.sample(s);
+        const data=example('Вычисли '+t.formula+' отдельно для каждой строки', ['Строка',...t.vars], rows.map((values,i)=>[String(i+1),...values.map(f)]),
+          rows.map((values,i)=>q('Чему равно '+t.formula+' в строке '+(i+1)+'?',t.value(...values),'Для строки '+(i+1)+' подставь '+values.map((v,j)=>t.vars[j]+' = '+f(v)).join(', ')+'. '+t.rule,t.diagnose(...values),t.mistake)), 'rubin-table');
+        data.tableFigure=columnFigure(t,rows);
+        return data;
+      },11);
+  }
   function figure(data) {
+    if (data.tableFigure) return data.tableFigure;
     const words = text => text.split(' ').reduce((lines, word) => {
       const end=lines.length-1;
       if (lines[end] && lines[end].length + word.length > 16) lines.push(word);

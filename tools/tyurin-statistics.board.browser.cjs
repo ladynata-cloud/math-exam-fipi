@@ -52,7 +52,7 @@ const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
 const catalogue=process.argv.includes('--rubin7')?{
-  directory:'rubin-chulkov7-2015',entries:[[94,99,31]],uniqueLessons:30,search:'rubin-chulkov7-2015',match:'алгебраические выражения и порядок действий',lesson:'94-1-g',chart:'svg[aria-label*="две части перед последним действием"]',storage:'math:rubin-chulkov7-2015:v1:'
+  directory:'rubin-chulkov7-2015',entries:[[94,99,35]],uniqueLessons:34,search:'rubin-chulkov7-2015',match:'алгебраические выражения и порядок действий',lesson:process.argv.includes('--table')?'94-8':'94-1-g',chart:process.argv.includes('--table')?'svg[aria-label*="Три столбца с собственными значениями"]':'svg[aria-label*="две части перед последним действием"]',storage:'math:rubin-chulkov7-2015:v1:'
 }:process.argv.includes('--dorofeev9')?{
   directory:'dorofeev-algebra-7-9',entries:[[53,51,18]],uniqueLessons:17,search:'dorofeev-algebra-7-9',match:'действительные числа',lesson:'53-2e',chart:'svg[aria-label*="Карта вложенных числовых множеств"]',storage:'math:dorofeev-algebra-7-9:v1:'
 }:process.argv.includes('--dorofeev8')?{

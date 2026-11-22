@@ -115,6 +115,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --mordkovich9-workbook-2019 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich9-theory-2019 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --rubin7 --printed-identity
+          node tools/tyurin-statistics.board.browser.cjs --rubin7 --printed-identity --table
           node tools/tyurin-statistics.board.browser.cjs --dorofeev7 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev8 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev9 --printed-identity
