@@ -163,6 +163,22 @@ async function verify(width,url,offline=false){
  await submit(p,'[2;+∞)');assert.match(await p.locator('#problem').innerText(),/нулевой.*горизонтальна/);
  await submit(p,'a>2');await p.reload();await p.locator('[data-slope-mode="горизонтальна"]').waitFor();
  assert(await p.evaluate(()=>MakarychevApp.getState().tasks['p44-source-1160-a'].correct));
+ for(const card of require('./exercises-1161-1163.json')){
+  await openNumber(p,Number(card.title.match(/\d+/)[0]),card.title);await p.locator('#task-graph svg').first().waitFor();assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ }
+ await openNumber(p,1161,'№ 1161');await submit(p,'-5;0');assert.equal(await p.evaluate(()=>MakarychevApp.getState().tasks['p45-source-1161-order'].attempts),0);
+ await submit(p,'1;0;0,5;0,7;-5');assert.match(await p.locator('#problem').innerText(),/соседних ординат/);
+ await submit(p,'-5;0;1/2;7/10;1');
+ await openNumber(p,1162,'№ 1162 · y = 4x − 5');await p.locator('[data-action=guided]').click();
+ await p.locator('#step-answer-0').fill('-1');await p.locator('[data-root-line-position=outside]').waitFor();
+ await p.locator('#step-answer-0').fill('25/16');await p.locator('[data-root-line-position=equal]').waitFor();
+ assert(await p.locator('#task-graph [data-point-x="1.5625"][data-point-y="1.25"]').count()>=1);
+ await openNumber(p,1163,'№ 1163 · график');await submit(p,'(-3/4;-4/3),(1;1)');assert.match(await p.locator('#problem').innerText(),/выколотую точку/);
+ await submit(p,'(-1/2;-2),(5;1/5)');await p.reload();await p.locator('[data-punctured-plot=valid]').waitFor();assert.equal(await p.locator('[data-hole-x="-0.75"]').count(),1);
+ await openNumber(p,1163,'№ 1163 · параметр');await p.locator('[data-action=guided]').click();await p.locator('#step-answer-0').fill('1');await p.locator('[data-punctured-count="2"]').waitFor();
+ await submit(p,'1');assert.match(await p.locator('#problem').innerText(),/остались две точки/);
+ await p.locator('#step-answer-0').fill('16/9');await p.locator('[data-punctured-count="1"]').waitFor();await submit(p,'16/9');
+ await p.reload();await p.locator('[data-punctured-count="1"]').waitFor();assert.equal(await p.locator('[data-hole-x="-0.75"]').count(),1);assert.equal(await p.locator('[data-point-x="0.75"]').count(),1);
  assert.deepEqual(errors,[]);await ctx.close();
 }
 (async()=>{
@@ -172,6 +188,6 @@ async function verify(width,url,offline=false){
   for(const w of [320,390,1024])await verify(w,url);
   const offline=path.join(root,'downloads/trainers/makarychev8-algebra/makarychev8-algebra.html');
   await verify(320,require('node:url').pathToFileURL(offline).href,true);
-  console.log('PASS source 1131–1160 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
+  console.log('PASS source 1131–1163 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
  }finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

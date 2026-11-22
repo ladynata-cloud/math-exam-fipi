@@ -940,6 +940,9 @@
   }
 
   const finalFunctionSkills=[
+   {id:'rank-reflected-roots',title:'Упорядочивание значений корня',description:'Сравни ординаты на разных рациональных аргументах.'},
+   {id:'cross-line-root',title:'Пересечение прямой с корнем',description:'Подбирай абсциссы и сравнивай взаимное положение графиков.'},
+   {id:'punctured-root-slope',title:'Наклон и удалённая точка',description:'Исследуй число пересечений гиперболы с прямой.'},
    {id:'line-intersection-location',title:'Пересечение в выбранном месте',description:'Придумай собственную прямую через ось или нужную четверть.'},
    {id:'parallel-at-point',title:'Параллельная через точку',description:'Сохрани наклон и вычисли свободный член на новых данных.'},
    {id:'line-parameter-direction',title:'Параметр и направление',description:'Исследуй параметр, при котором наклон меняет знак.'},
@@ -968,6 +971,24 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='rank-reflected-roots'){
+    const shift=(seed+level)%9-2,half=3+seed%2,big=3+level+seed%4;
+    const xs=['1','0',String(big*big),String(half*half)+'/4','1/4'];
+    const answer=[shift-big,shift-half/2,shift-1,shift-0.5,shift].join(';');
+    const hint='Найди каждый корень, вычти его и упорядочь высоты от меньшей к большей.';
+    return {...common,kind:'sorted-root-values',prompt:'Расположи значения y = '+shift+' − √x при x = '+xs.join('; ')+' по возрастанию.',answer,graph:{type:'source-root-crossings',group:'rank',shift,xs},steps:[probe,step('Чему равно значение функции при x = 0?',shift,hint)],inputNote:'Разделяй значения точкой с запятой.',hint,correction:hint,explanation:'После упорядочения получаем '+answer+'.'};
+   }
+   if(id==='cross-line-root'){
+    const n=1+(seed+level)%6,b=1+Math.floor(seed/3)%5,yes=(seed+level)%3!==1,m=yes?(seed%2?n:-n):-n,intercept=yes?(m<0?b:-b):-b;
+    const map={type:'source-root-crossings',group:'cross',slope:[m,1],intercept,window:[0,b+4]};
+    const hint=yes?'Сравни взаимное положение в начале ветви и дальше вправо.':'Проверь, может ли прямая принять неотрицательное значение справа от нуля.';
+    return {...common,kind:'choice',prompt:'Имеют ли общую точку y = √x и y = '+m+'x + ('+intercept+')?',choices:['Есть общая точка','Общих точек нет'],answer:yes?'Есть общая точка':'Общих точек нет',graph:map,steps:[probe,step('Чему равна высота прямой при x = 0?',intercept,hint)],hint,correction:hint,explanation:yes?'Непрерывные графики меняют взаимное положение на неотрицательной полуоси.':'На неотрицательной полуоси прямая отрицательна, корень неотрицателен.'};
+   }
+   if(id==='punctured-root-slope'){
+    const k=1+(seed+level)%6,h=1+Math.floor(seed/2)%7,d=2+level,sign=seed%2?1:-1,ans=k*d*d+'/'+(h*h);
+    const hint='Прямая должна пройти через пропущенную точку и симметричную ей точку другой ветви.';
+    return {...common,kind:'number',prompt:'Из графика y = '+k+'/x удалили точку с абсциссой '+(sign*h)+'/'+d+'. При каком наклоне m у y = mx с оставшимся графиком ровно одна общая точка?',answer:ans,graph:{type:'source-root-crossings',group:'hole',mode:'slope',k,hole:[sign*h,d]},steps:[step('Проверь свой наклон.',1,hint,'rational-probe'),step('Сколько общих точек было бы у полных графиков при положительном наклоне?',2,hint)],hint,correction:hint,explanation:'Из m x² = '+k+' и координаты отсутствующей точки получаем m = '+ans+'.'};
+   }
    if(id==='line-intersection-location'||id==='parallel-at-point'){
     const k=1+(seed+level)%6,b=-(1+Math.floor(seed/2)%9)*k,x=-(1+seed%5),y=k*x+b;
     const mode=id==='parallel-at-point'?'parallel':['third','ox','oy'][(seed+level)%3],offset=b+1+seed%4,point=[x,k*x+offset];
