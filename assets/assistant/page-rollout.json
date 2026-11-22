@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "61d59df1e50a3f1166d404cd2038dd10ba69799249f5b3578060d19b5fa0ae0f",
-      "afterSha256": "8db0346dfa8a1f007c66de82d0d818c28ec0715c90b3b9a5c2ba631dc27161ea",
+      "beforeSha256": "50c60463af45705adf8527b632c8cc39c1f310a694e3e83924030f45b489dc2a",
+      "afterSha256": "f7b4eaeb0367a9a13b13e40f1378e4433bfa324cc84b0e82ff525b45e7cdb843",
       "placement": "before-head-close",
-      "sourceSha": "e0efea972f6021c9b8ccfe52c53c8a29b3b11438"
+      "sourceSha": "d04a8a933255251c6176323d257a2649b3156343"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7379,6 +7379,15 @@
         "school/index.html"
       ],
       "boundary": "Сверена страница 31 первого тома, упражнения 1.151–1.154, включая отдельные подпункты, математический разбор и сохранение модели."
+    },
+    {
+      "previousBaseSha": "e0efea972f6021c9b8ccfe52c53c8a29b3b11438",
+      "sourceBaseSha": "d04a8a933255251c6176323d257a2649b3156343",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверена страница 31 первого тома, упражнения 1.155–1.158, включая отдельные подпункты, математический разбор и сохранение модели."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
