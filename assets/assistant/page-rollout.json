@@ -2256,10 +2256,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "cb1c83acd4cdc5f79fff841c4a76559e7e1957fb6f4ab1aa9d1404f70f649d0a",
-      "afterSha256": "24cc93b0b81e9b19738c88a8bff8ceab3ef6700fce6d32ec4a87c1e7df888465",
+      "beforeSha256": "2813759edb45d8394de9875f6c52dd7a65277cdc0c4850f722f96ec2501392d6",
+      "afterSha256": "ccce155bd329f40c841f8d61d54e293b87133211baf09d8ca0d4a903f13ef17d",
       "placement": "before-head-close",
-      "sourceSha": "a3692ce412121210f0a9def263bbe3c812c13d71"
+      "sourceSha": "fb7fc5f7c2db8a8f595a0ee8c10730722f5f2350"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -3361,10 +3361,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "school/peterson6/textbook/index.html": {
-      "beforeSha256": "e873770fc21511f91d19ef3b3b743abf7e13afbb4031c742b134985824c31a8e",
-      "afterSha256": "648fa8e61b24d4224c930a2356e47b21ca79b02bcdde77bcc7b469657775f4f5",
+      "beforeSha256": "25f23a5a894ccd368e9e6e0570be669b5efecae2be280b12758bc97921f59984",
+      "afterSha256": "ec010323e354a3e28728630efe1a7a77815f6356b90893078b8320be1c05b141",
       "placement": "before-head-close",
-      "sourceSha": "d04a8dd8ae7b8d4a85a147e74233790173079612"
+      "sourceSha": "fb7fc5f7c2db8a8f595a0ee8c10730722f5f2350"
     },
     "trainers/peterson6-workshop/index.html": {
       "beforeSha256": "aff5a4686e3a522eb30af65b8e89b325a77ea2798f61c203c7ca06a2755d2aea",
@@ -7482,6 +7482,24 @@
         "school/index.html"
       ],
       "boundary": "Сверены входы в оба тома Виленкина: упражнения №1–172 и №1–93 открываются в общем школьном маршруте вместе с проверенными книгами Мастерской."
+    },
+    {
+      "previousBaseSha": "d04a8dd8ae7b8d4a85a147e74233790173079612",
+      "sourceBaseSha": "fb7fc5f7c2db8a8f595a0ee8c10730722f5f2350",
+      "task": "docs/tasks/PETERSON6_FIRST_VOLUME_COMPANION_20261121.md",
+      "changedPaths": [
+        "school/peterson6/textbook/index.html"
+      ],
+      "boundary": "Обновлена проверенная версия общего обработчика чисел для записи с пробелами между классами."
+    },
+    {
+      "previousBaseSha": "a3692ce412121210f0a9def263bbe3c812c13d71",
+      "sourceBaseSha": "fb7fc5f7c2db8a8f595a0ee8c10730722f5f2350",
+      "task": "docs/tasks/PETERSON6_FIRST_VOLUME_COMPANION_20261121.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлена проверенная версия общего обработчика чисел для записи с пробелами между классами."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
