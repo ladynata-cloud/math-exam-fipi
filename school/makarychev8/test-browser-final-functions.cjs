@@ -91,6 +91,6 @@ async function verify(width,url,offline=false){
   for(const w of [320,390,1024])await verify(w,url);
   const offline=path.join(root,'downloads/trainers/makarychev8-algebra/makarychev8-algebra.html');
   await verify(320,require('node:url').pathToFileURL(offline).href,true);
-  console.log('PASS source 1131–1135 on 320/390/1024px and 320px offline; distinct error feedback, both branches and restored inequality intersection.');
+  console.log('PASS source 1131–1136 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
  }finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
