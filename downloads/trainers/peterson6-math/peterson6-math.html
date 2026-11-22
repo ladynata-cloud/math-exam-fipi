@@ -1626,6 +1626,44 @@ function printedDecimalCode(data,other){
  const visible=read(keys),corrected=other?keys:keys.map((k,i)=>i===2?answers[data.letters.indexOf('Э')]:k);
  return {keys,visible,solution:read(corrected).join('')};
 }
+const weighingPairs=[[0,1],[2,3],[0,2],[1,3],[1,2]];
+function fourFruitOrders(prefix,rest){
+ if(!rest.length)return [prefix];
+ return Array.from(rest).flatMap((letter,i)=>fourFruitOrders(prefix+letter,rest.slice(0,i)+rest.slice(i+1)));
+}
+const fruitOrders=fourFruitOrders('','ABCD');
+function fiveWeighings(order,stage){
+ const row=['A','B','C','D'],history=[];
+ for(const [a,b] of weighingPairs.slice(0,stage)){
+  const x=row[a],y=row[b],swap=order.indexOf(x)>order.indexOf(y);
+  if(swap)[row[a],row[b]]=[y,x];
+  history.push({x,y,heavier:swap?x:y,lighter:swap?y:x,positions:row.join(' ')});
+ }
+ const current=history.at(-1);const g=svg('svg',{viewBox:'0 0 280 154',class:'pm-chart pcm-route-fractions',role:'img','aria-label':current?'Последнее сравнение: '+current.heavier+' тяжелее '+current.lighter:'Равноплечие весы, гири не требуются.'});
+ const leftHeavy=current&&current.heavier===current.x,tilt=current?(leftHeavy?10:-10):0;
+ ln(g,140,112,140,44,{stroke:'#395b4b','stroke-width':4});ln(g,119,113,161,113,{stroke:'#395b4b','stroke-width':5});ln(g,57,57+tilt,223,57-tilt,{stroke:'#395b4b','stroke-width':4});
+ for(const [x,dy,letter] of [[57,tilt,current?.x],[223,-tilt,current?.y]]){
+  ln(g,x,57+dy,x-20,88+dy,{stroke:'#779785'});ln(g,x,57+dy,x+20,88+dy,{stroke:'#779785'});ln(g,x-22,88+dy,x+22,88+dy,{stroke:'#3c6754','stroke-width':3});
+  if(letter){g.append(svg('ellipse',{cx:x,cy:78+dy,rx:13,ry:10,fill:'#d2e4bc',stroke:'#47723f','data-weighed':letter}));txt(g,x,81+dy,letter,{'font-size':11});}
+ }
+ txt(g,140,139,current?current.heavier+' тяжелее '+current.lighter:'Сначала сравни A и B.',{'font-size':13});return {graph:g,history,positions:row.join(' ')};
+}
+function proportionSummaryData(kind,index,fresh){
+ if(kind==='expressions'){
+  const calc=[
+   {given:fresh?'Замени 0,992 первым слагаемым 1,992 в выражении A.':'Вычисли дробную часть выражения в скобках A.',rows:[['Скобки',87.6],['Частное после скобок',7.008]],answer:fresh?'9':'8'},
+   {given:fresh?'В первом множителе B замени 2 3/11 на 3 3/11.':'Найди множитель и содержимое квадратной скобки B.',rows:[['Первый множитель',fresh?'36/11':'25/11'],['Второй множитель','22/5']],answer:fresh?'14,4':'10'},
+   {given:fresh?'Возведи значение скобки C в куб.':'Возведи значение скобки C в квадрат.',rows:[['Первое слагаемое','5/3'],['Второе слагаемое','1/3'],['Значение скобки',2]],answer:fresh?'8':'4'}
+  ][index];return {given:calc.given,headers:['Этап','Значение'],rows:calc.rows.map(([a,b])=>[a,typeof b==='number'?num(b):b]),result:'Ответ '+calc.answer+'.'};
+ }
+ if(kind==='four'){
+  const [a,b,c]=fresh?[6,9,3]:[8,10,4];const triples=[[a,b,c],[a,c,b],[b,c,a]],rows=triples.map(([x,y,z])=>[`${x} · ${y} : ${z}`,printDecimal(root.PetersonMath.answer(root.PetersonMath.operation('divide',x*y,z)))]);
+  return {given:`Подбери четвёртое число к ${a}, ${b}, ${c}.`,headers:['Кандидат','Значение'],rows,result:'Три значения: '+rows.map(row=>row[1]).join(', ')+'.'};
+ }
+ const limit=fresh?119:99,even=Math.floor(limit/2),triple=Math.floor(limit/3),both=Math.floor(limit/6),union=even+triple-both;
+ const values=[even-both,union,limit-union];const methods=[`${even} − ${both}`,`${even} + ${triple} − ${both}`,`${limit} − ${union}`];
+ return {given:`Используй натуральные числа от 1 до ${limit}.`,headers:['Группа','Количество'],rows:[['Только кратные 2',even-both],['Кратные 2 и 3',both],['Только кратные 3',triple-both],['Остальные',limit-union]],result:`Ответ ${methods[index]} = ${values[index]}.`};
+}
 function lastProportionReview(kind,index,other){
  if(kind==='compare'){
   if(index===0){const count=other?9:12;return {given:'Три книги стоят 324 рубля. Новое количество — '+count+'.',rows:[['Цена за экземпляр','324 : 3 = 108'],['Множитель количества',count+' : 3 = '+count/3]],result:'Стоимость '+108*count+' руб.'};}
@@ -3231,6 +3269,8 @@ function changeBars(before,after,labels=['Было','Стало']) {
  return pic;
 }
 function configFor(lesson,task){
+ if(lesson?.id==='p21'&&task?.finalProportions){const sort=task.finalProportions.kind==='sort';return {title:sort?'Чашечные весы без гирь':'Проверь варианты и множества',controls:sort?[c('Набор',fruitOrders.map((_,i)=>[i,'Набор '+(i+1)])),c('Взвешивания',Array.from({length:6},(_,i)=>[i,i===0?'До сравнений':'Выполнено '+i]))]:[c('Данные',[[0,'Из упражнения'],[1,'Новая задача']]),c('Шаг',[[0,'Работаю сам'],[1,'Сверяю ход'],[2,'Сверяю ответ']])],initial:[0,0]};}
+
  if(lesson?.id==='p21'&&task?.graphSectionReview)return {title:['direct','inverse'].includes(task.graphSectionReview.kind)?'Два направления чтения графика':'Сравнение и проверка рассуждений',controls:[c('Данные',[[0,'Из упражнения'],[1,'Другие данные']]),c('Шаг',[[0,'Самостоятельно'],[1,'Промежуточная проверка'],[2,'Сверить ответ']])],initial:[0,0]};
  if(lesson?.id==='p21'&&task?.scaleAndWork)return {title:({equation:'Проверка уравнения',facade:'Фасад в одном масштабе',percent:'Изменение величин'})[task.scaleAndWork.kind],controls:[c('Данные',[[0,'Из упражнения'],[1,'Новый пример']]),c('Шаг',[[0,'Самостоятельно'],[1,'Промежуточный шаг'],[2,'Проверить результат']])],initial:[0,0]};
  if(lesson?.id==='p21'&&task?.proportionInvestigation)return {title:({fourth:'Три возможные пары',equiv:'Прямое и обратное преобразования',contexts:'Проверь зависимость',twoWays:'Два способа решения'})[task.proportionInvestigation.kind],controls:[c('Данные',[[0,'Из задания'],[1,'Новый пример']]),c('Шаг',[[0,'Самостоятельно'],[1,'Проверить рассуждение'],[2,'Сверить вывод']])],initial:[0,0]};
@@ -3539,7 +3579,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.decimalPrint||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.decimalPrint||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.quantifiedEquation||task.decimalPrint||task.mentalSeries||task.stationGraph||task.convertGroup||task.proportionOpening||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -3550,7 +3590,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -5125,7 +5165,11 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
 
 
 
- else if(n===21&&task.graphSectionReview){const {kind,index}=task.graphSectionReview;
+
+ else if(n===21&&task.finalProportions){const {kind,index}=task.finalProportions;
+  if(kind==='sort'){const v=fiveWeighings(fruitOrders[a],b);show(v.graph);if(b>0)show(table(['Сравнение','Легче','Места после сравнения'],v.history.map((r,i)=>[(i+1)+': '+r.x+' и '+r.y,r.lighter,r.positions])));if(b===5)say('От лёгкого к тяжёлому: '+v.positions+'.');}
+  else{const v=proportionSummaryData(kind,index,a===1);formula(v.given);if(b>=1)show(table(v.headers,v.rows));if(b===2)say(v.result);}
+ } else if(n===21&&task.graphSectionReview){const {kind,index}=task.graphSectionReview;
   if(kind==='direct'||kind==='inverse'){const v=printedProportionGraph(kind==='direct'?'five':'six',index,a===1,b);formula(v.query);show(v.graph);show(table(v.labels,v.tableRows));if(b===2)say(v.result);}
   else{const v=lastProportionReview(kind,index,a===1);formula(v.given);if(b>=1)show(table(['Разбор','Результат'],v.rows));if(b===2)say(v.result);}
  } else if(n===21&&task.scaleAndWork){const {kind,index}=task.scaleAndWork;
@@ -50117,6 +50161,445 @@ window.PetersonCourse = {
       "index": 1
      },
      "errorCues": []
+    },
+    {
+     "id": "p21-t73",
+     "title": "К задаче №194 (A)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 50,
+      "exercise": 194,
+      "subpart": "A",
+      "reference": "№194 (A)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "prompt": "Вычисли A = 0,992 + (8,109 : 1,5 + 840 · 1,04 − 791,406) : 12,5.",
+     "answer": "8",
+     "steps": [
+      {
+       "prompt": "Первое частное внутри скобок?",
+       "answer": "2703/500",
+       "hint": "Умножь оба числа в частном на 10.",
+       "explanation": "8,109 : 1,5 = 5,406."
+      },
+      {
+       "prompt": "Чему равняется всё выражение в скобках?",
+       "answer": "438/5",
+       "hint": "Произведение 840 · 1,04 = 873,6.",
+       "explanation": "5,406 + 873,6 − 791,406 = 87,6."
+      }
+     ],
+     "hint": "После вычисления скобок раздели на 12,5 и прибавь 0,992.",
+     "explanation": "87,6 : 12,5 = 7,008; вместе с 0,992 получается 8.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Запиши число.",
+     "finalProportions": {
+      "kind": "expressions",
+      "index": 0
+     },
+     "errorCues": [
+      [
+       "7.008",
+       "Осталось прибавить первое слагаемое 0,992."
+      ]
+     ]
+    },
+    {
+     "id": "p21-t74",
+     "title": "К задаче №194 (B)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 50,
+      "exercise": 194,
+      "subpart": "B",
+      "reference": "№194 (B)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "prompt": "Вычисли B = (2 3/11 + 5 8/11 · 0) · [(3 5/6) : (3 5/6 − 0) + 2,7 · (1 1/3) − (1/3) : (1 2/3) · 1].",
+     "answer": "10",
+     "steps": [
+      {
+       "prompt": "Каков первый множитель перед квадратной скобкой?",
+       "answer": "25/11",
+       "hint": "Произведение на нуль равно нулю.",
+       "explanation": "2 3/11 = 25/11."
+      },
+      {
+       "prompt": "Чему равно (1/3) : (1 2/3)?",
+       "answer": "1/5",
+       "hint": "Умножь 1/3 на обратную дробь 3/5.",
+       "explanation": "(1/3) · (3/5) = 1/5."
+      },
+      {
+       "prompt": "Что получается в квадратной скобке?",
+       "answer": "22/5",
+       "hint": "Первое частное равно 1, а 2,7 · 4/3 = 3,6.",
+       "explanation": "1 + 3,6 − 0,2 = 4,4."
+      }
+     ],
+     "hint": "Выдели нейтральные действия с нулём и единицей, далее следуй скобкам.",
+     "explanation": "B = (25/11) · (22/5) = 10.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Запиши число.",
+     "finalProportions": {
+      "kind": "expressions",
+      "index": 1
+     },
+     "errorCues": [
+      [
+       "4.4",
+       "Это значение квадратной скобки, умножь его на 25/11."
+      ]
+     ]
+    },
+    {
+     "id": "p21-t75",
+     "title": "К задаче №194 (C)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 50,
+      "exercise": 194,
+      "subpart": "C",
+      "reference": "№194 (C)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "prompt": "Вычисли C = [(18 1/3) : 11 + 0,8 · (4 1/6 − 3 3/4)]². Сначала посчитай оба слагаемых в квадратной скобке.",
+     "answer": "4",
+     "steps": [
+      {
+       "prompt": "Чему равно (18 1/3) : 11?",
+       "answer": "5/3",
+       "hint": "Смешанное число равно 55/3.",
+       "explanation": "(55/3) : 11 = 5/3."
+      },
+      {
+       "prompt": "Разность 4 1/6 − 3 3/4?",
+       "answer": "5/12",
+       "hint": "Приведи две дроби к знаменателю 12.",
+       "explanation": "50/12 − 45/12 = 5/12."
+      },
+      {
+       "prompt": "Что стоит под квадратом?",
+       "answer": "2",
+       "hint": "Умножь 5/12 на 4/5 и прибавь 5/3.",
+       "explanation": "5/3 + 1/3 = 2."
+      }
+     ],
+     "hint": "Внешний квадрат относится ко всему содержимому скобки.",
+     "explanation": "В квадрат возводим 2, получаем 4.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Запиши число.",
+     "finalProportions": {
+      "kind": "expressions",
+      "index": 2
+     },
+     "errorCues": [
+      [
+       "2",
+       "Это значение скобки. Выполни последнюю степень."
+      ]
+     ]
+    },
+    {
+     "id": "p21-t76",
+     "title": "К задаче №194 (четвёртый член)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 50,
+      "exercise": 194,
+      "subpart": "четвёртый член",
+      "reference": "№194 (четвёртый член)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "choice",
+     "prompt": "Для A = 8, B = 10 и C = 4 подбери все четвёртые числа, позволяющие переставить четыре члена в пропорцию. Сколько их?",
+     "answer": "16/5, 5 и 20",
+     "steps": [
+      {
+       "prompt": "При знаменателе 4 сколько даёт произведение 8 и 10, делённое на 4?",
+       "answer": "20",
+       "hint": "Для вхождения в пропорцию проверь три разных произведения. В этом номере четвёртое число может быть дробным.",
+       "explanation": "8 · 10 / 4 = 20, 8 · 4 / 10 = 16/5, 10 · 4 / 8 = 5. Получаются три различные возможности."
+      },
+      {
+       "prompt": "Сколько даёт 8 · 4 / 10?",
+       "answer": "16/5",
+       "hint": "Для вхождения в пропорцию проверь три разных произведения. В этом номере четвёртое число может быть дробным.",
+       "explanation": "8 · 10 / 4 = 20, 8 · 4 / 10 = 16/5, 10 · 4 / 8 = 5. Получаются три различные возможности."
+      },
+      {
+       "prompt": "Сколько различных значений получилось?",
+       "answer": "3",
+       "hint": "Для вхождения в пропорцию проверь три разных произведения. В этом номере четвёртое число может быть дробным.",
+       "explanation": "8 · 10 / 4 = 20, 8 · 4 / 10 = 16/5, 10 · 4 / 8 = 5. Получаются три различные возможности."
+      }
+     ],
+     "hint": "Для вхождения в пропорцию проверь три разных произведения. В этом номере четвёртое число может быть дробным.",
+     "explanation": "8 · 10 / 4 = 20, 8 · 4 / 10 = 16/5, 10 · 4 / 8 = 5. Получаются три различные возможности.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Выбери полный набор.",
+     "finalProportions": {
+      "kind": "four",
+      "index": 0
+     },
+     "errorCues": [
+      [
+       "5 и 20",
+       "Проверь каждый из трёх знаменателей. Натуральность четвёртого числа здесь не требуется."
+      ],
+      [
+       "4, 8 и 10",
+       "Проверь каждый из трёх знаменателей. Натуральность четвёртого числа здесь не требуется."
+      ],
+      [
+       "5, 16 и 20",
+       "Проверь каждый из трёх знаменателей. Натуральность четвёртого числа здесь не требуется."
+      ]
+     ],
+     "choices": [
+      "16/5, 5 и 20",
+      "5 и 20",
+      "4, 8 и 10",
+      "5, 16 и 20"
+     ]
+    },
+    {
+     "id": "p21-t77",
+     "title": "К задаче №195",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 50,
+      "exercise": 195,
+      "subpart": "",
+      "reference": "№195",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "manual",
+     "prompt": "Четыре арбуза A, B, C, D имеют разные массы. Есть чашечные весы без гирь. Придумай последовательность максимум из пяти взвешиваний, которая расставит плоды от лёгкого к тяжёлому при любом исходном порядке.",
+     "answer": "",
+     "steps": [
+      {
+       "prompt": "Сколько взвешиваний нужно для упорядочения двух непересекающихся пар?",
+       "answer": "2",
+       "hint": "Поставь арбузы в четыре позиции. Сравни первую пару и вторую пару, оставляя более лёгкий слева. Затем сравни кандидатов на края, после чего останутся только две средние позиции.",
+       "explanation": "Сравни первую пару один раз и вторую ещё один раз."
+      },
+      {
+       "prompt": "Сколько сравнений нужно ещё, чтобы выбрать самый лёгкий из двух лёгких и самый тяжёлый из двух тяжёлых?",
+       "answer": "2",
+       "hint": "Поставь арбузы в четыре позиции. Сравни первую пару и вторую пару, оставляя более лёгкий слева. Затем сравни кандидатов на края, после чего останутся только две средние позиции.",
+       "explanation": "Одно сравнение на минимум и одно на максимум."
+      },
+      {
+       "prompt": "Сколько останется взвешиваний на порядок двух средних арбузов?",
+       "answer": "1",
+       "hint": "Поставь арбузы в четыре позиции. Сравни первую пару и вторую пару, оставляя более лёгкий слева. Затем сравни кандидатов на края, после чего останутся только две средние позиции.",
+       "explanation": "Упорядочи места (1,2), (3,4), (1,3), (2,4), (2,3). Каждое сравнение при необходимости меняет плоды местами. Минимум и максимум известны после четырёх взвешиваний, пятое расставляет средние."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Прогони свой алгоритм на двух разных наборах. Почему он работает независимо от порядка?",
+       "hint": "Поставь арбузы в четыре позиции. Сравни первую пару и вторую пару, оставляя более лёгкий слева. Затем сравни кандидатов на края, после чего останутся только две средние позиции.",
+       "explanation": "Упорядочи места (1,2), (3,4), (1,3), (2,4), (2,3). Каждое сравнение при необходимости меняет плоды местами. Минимум и максимум известны после четырёх взвешиваний, пятое расставляет средние."
+      }
+     ],
+     "hint": "Поставь арбузы в четыре позиции. Сравни первую пару и вторую пару, оставляя более лёгкий слева. Затем сравни кандидатов на края, после чего останутся только две средние позиции.",
+     "explanation": "Упорядочи места (1,2), (3,4), (1,3), (2,4), (2,3). Каждое сравнение при необходимости меняет плоды местами. Минимум и максимум известны после четырёх взвешиваний, пятое расставляет средние.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Опиши все сравнения.",
+     "finalProportions": {
+      "kind": "sort",
+      "index": 0
+     },
+     "errorCues": []
+    },
+    {
+     "id": "p21-t78",
+     "title": "К задаче №196 (а)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 50,
+      "exercise": 196,
+      "subpart": "а",
+      "reference": "№196 (а)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "prompt": "Сколько положительных натуральных чисел меньше 100 делятся на 2 и не делятся на 3? Объясни, как учитываются общие кратные.",
+     "answer": "33",
+     "steps": [
+      {
+       "prompt": "Сколько кратных 2 от 1 до 99?",
+       "answer": "49",
+       "hint": "Последнее положительное кратное двойки равно 98.",
+       "explanation": "98 : 2 = 49."
+      },
+      {
+       "prompt": "Сколько в этом ряду кратных 6?",
+       "answer": "16",
+       "hint": "Последнее положительное кратное шести, не превосходящее 99, равно 96.",
+       "explanation": "96 : 6 = 16."
+      }
+     ],
+     "hint": "Считай от 1 до 99 включительно. Общие кратные 2 и 3 — это кратные 6.",
+     "explanation": "Из 49 чётных убери 16 кратных 6: 33.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Запиши число.",
+     "finalProportions": {
+      "kind": "sets",
+      "index": 0
+     },
+     "errorCues": [
+      [
+       "82",
+       "Проверь границы 1–99 и перекрытие двух списков кратных."
+      ],
+      [
+       "49",
+       "Проверь границы 1–99 и перекрытие двух списков кратных."
+      ],
+      [
+       "66",
+       "Проверь границы 1–99 и перекрытие двух списков кратных."
+      ]
+     ]
+    },
+    {
+     "id": "p21-t79",
+     "title": "К задаче №196 (б)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 50,
+      "exercise": 196,
+      "subpart": "б",
+      "reference": "№196 (б)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "prompt": "Сколько положительных натуральных чисел меньше 100 делятся хотя бы на одно из чисел 2 и 3? Объясни, как учитываются общие кратные.",
+     "answer": "66",
+     "steps": [
+      {
+       "prompt": "Сколько кратных 2 от 1 до 99?",
+       "answer": "49",
+       "hint": "Последнее положительное кратное двойки равно 98.",
+       "explanation": "98 : 2 = 49."
+      },
+      {
+       "prompt": "Сколько в этом ряду кратных 6?",
+       "answer": "16",
+       "hint": "Последнее положительное кратное шести, не превосходящее 99, равно 96.",
+       "explanation": "96 : 6 = 16."
+      },
+      {
+       "prompt": "Сколько кратных 3 от 1 до 99?",
+       "answer": "33",
+       "hint": "Считай от 1 до 99 включительно. Общие кратные 2 и 3 — это кратные 6.",
+       "explanation": "99 : 3 = 33."
+      }
+     ],
+     "hint": "Считай от 1 до 99 включительно. Общие кратные 2 и 3 — это кратные 6.",
+     "explanation": "В двух списках 49 и 33 числа; 16 общих посчитаны дважды. Объединение 49 + 33 − 16 = 66.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Запиши число.",
+     "finalProportions": {
+      "kind": "sets",
+      "index": 1
+     },
+     "errorCues": [
+      [
+       "82",
+       "Проверь границы 1–99 и перекрытие двух списков кратных."
+      ],
+      [
+       "49",
+       "Проверь границы 1–99 и перекрытие двух списков кратных."
+      ]
+     ]
+    },
+    {
+     "id": "p21-t80",
+     "title": "К задаче №196 (в)",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 50,
+      "exercise": 196,
+      "subpart": "в",
+      "reference": "№196 (в)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "prompt": "Сколько положительных натуральных чисел меньше 100 не делятся ни на 2, ни на 3? Объясни, как учитываются общие кратные.",
+     "answer": "33",
+     "steps": [
+      {
+       "prompt": "Сколько кратных 2 от 1 до 99?",
+       "answer": "49",
+       "hint": "Последнее положительное кратное двойки равно 98.",
+       "explanation": "98 : 2 = 49."
+      },
+      {
+       "prompt": "Сколько в этом ряду кратных 6?",
+       "answer": "16",
+       "hint": "Последнее положительное кратное шести, не превосходящее 99, равно 96.",
+       "explanation": "96 : 6 = 16."
+      },
+      {
+       "prompt": "Сколько кратных 3 от 1 до 99?",
+       "answer": "33",
+       "hint": "Считай от 1 до 99 включительно. Общие кратные 2 и 3 — это кратные 6.",
+       "explanation": "99 : 3 = 33."
+      }
+     ],
+     "hint": "Считай от 1 до 99 включительно. Общие кратные 2 и 3 — это кратные 6.",
+     "explanation": "Из 99 натуральных чисел вычти 66, делящихся хотя бы на одно из двух. Получится 33.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Запиши число.",
+     "finalProportions": {
+      "kind": "sets",
+      "index": 2
+     },
+     "errorCues": [
+      [
+       "82",
+       "Проверь границы 1–99 и перекрытие двух списков кратных."
+      ],
+      [
+       "49",
+       "Проверь границы 1–99 и перекрытие двух списков кратных."
+      ],
+      [
+       "66",
+       "Проверь границы 1–99 и перекрытие двух списков кратных."
+      ]
+     ]
     }
    ]
   },

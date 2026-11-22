@@ -1843,3 +1843,14 @@ test('repeat both readings for five quantities, compare solution methods, check 
    const old=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(next[i]));assert.notEqual(f.q('#model').textContent,old);});
  }finally{f.close();}
 });
+
+test('prove five pan weighings sort each of twenty-four hidden orders and include the entire final textbook page',()=>{
+ const f=fixture(null,null,true);try{
+  const src=['Ответ 8.','Ответ 10.','Ответ 4.','20, 3,2, 5.'];const fresh=['Ответ 9.','Ответ 14,4.','Ответ 8.','18, 2, 4,5.'];
+  src.forEach((v,i)=>{f.nav('#lesson/p21/'+(72+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(v));f.event(d,'1','change');assert.equal(f.q(st).value,'0');f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(fresh[i]));});
+  f.nav('#lesson/p21/76');f.click('[data-lesson-help="model"] > summary');const [set,step]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);const orders=[];
+  for(let i=0;i<24;i++){f.event(set,String(i),'change');assert.equal(f.q(step).value,'0');assert.equal(f.d.querySelectorAll('#model [data-weighed]').length,0);f.event(step,'5','change');const rows=[...f.d.querySelectorAll('#model tbody tr')];assert.equal(rows.length,5);const final=rows[4].cells[2].textContent.replaceAll(' ','');assert.equal([...new Set(final)].sort().join(''),'ABCD');orders.push(final);for(const row of rows){const pair=row.cells[0].textContent.match(/[A-D]/g),lighter=row.cells[1].textContent,heavy=pair.find(x=>x!==lighter);assert(final.indexOf(lighter)<final.indexOf(heavy));}}
+  assert.equal(new Set(orders).size,24);['= 33.','= 66.','= 33.'].forEach((v,i)=>{f.nav('#lesson/p21/'+(77+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(v));f.event(d,'1','change');f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(['= 40.','= 79.','= 40.'][i]));});
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
