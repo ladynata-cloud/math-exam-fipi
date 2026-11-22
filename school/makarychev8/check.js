@@ -901,6 +901,8 @@ function check(user,target){
   const n=target.graph.xs.length,a=G.domainCoefficients(user,n),b=G.domainCoefficients(target.answer,n);
   return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
  }
+ if(target.kind==='four-power-marks')return G.fourPowerMarks(user).status==='valid';
+ if(target.kind==='four-power-order')return G.parseFourPowerOrder(user,target.graph.sample)?.join(';')===target.answer;
  if(target.kind==='piecewise-marks')return G.piecewiseMarks(target.graph,pointGroups(user)).status==='valid';
  if(target.kind==='punctured-root-points')return G.puncturedPoints(target.graph,pointGroups(user)).status==='valid';
  if(target.kind==='absolute-reciprocal-points')return G.reciprocalPoints({...target.graph,absolute:true},pointGroups(user)).status==='valid';

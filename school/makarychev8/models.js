@@ -940,6 +940,9 @@
   }
 
   const finalFunctionSkills=[
+   {id:'estimate-root-reciprocal',title:'Округление графического корня',description:'Приближай пересечение возрастающей и убывающей ветвей.'},
+   {id:'build-four-powers',title:'Четыре ординаты над своим x',description:'Строй четыре связанные функции по одному рациональному аргументу.'},
+   {id:'compare-four-powers',title:'Порядок четырёх графиков',description:'Определи, какой график выше слева и справа от единицы.'},
    {id:'build-piecewise-branches',title:'Два участка одного графика',description:'Строй каждую ветвь по своей формуле и учитывай границы.'},
    {id:'study-piecewise-values',title:'Свойства функции по частям',description:'Сопоставь вершину, стык и правый край на новых данных.'},
    {id:'rank-reflected-roots',title:'Упорядочивание значений корня',description:'Сравни ординаты на разных рациональных аргументах.'},
@@ -973,6 +976,21 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='estimate-root-reciprocal'){
+    const k=1+(seed*3+level)%15,center=Math.cbrt(k*k),rounded=Math.round(center*10)/10;
+    const hint='Сравни высоты при двух близких положительных абсциссах и округли единственное пересечение.';
+    return {...common,kind:'number',prompt:'С помощью двух графиков оцени решение √x = '+k+'/x. Запиши абсциссу до десятых.',answer:String(rounded),graph:{type:'source-root-and-powers',group:'estimate',k},steps:[probe,step('Какая высота у гиперболы при x = 1?',k,hint)],hint,correction:hint,explanation:'Абсцисса пересечения при округлении до десятых равна '+rounded+'.'};
+   }
+   if(id==='build-four-powers'){
+    const n=2+(seed+level)%7,d=1+(Math.floor(seed/3)+level)%4,x=n*n+'/'+(d*d),hint='Выбери положительный рациональный квадрат и проверь все четыре ординаты.';
+    const pick=n===d?n+1:n,a=pick*pick,b=d*d,answer=[a+'/'+b,a+'/'+b,a*a+'/'+(b*b),a**3+'/'+b**3,pick+'/'+d].join(';');
+    return {...common,kind:'four-power-marks',prompt:'Построй прямую, квадрат, куб и корень по своему положительному аргументу, кроме 1. Для проверки сравни их ещё и при x = '+x+'.',answer,graph:{type:'source-root-and-powers',group:'powers',mode:'draw',sample:x},steps:[probe,step('Чему равна высота корня при контрольном x = '+x+'?',n+'/'+d,hint)],inputNote:'Введи x; x; x²; x³; √x для выбранного аргумента.',hint,correction:hint,explanation:'Для положительного x обе степени и корень лежат в первой четверти.'};
+   }
+   if(id==='compare-four-powers'){
+    const small=(seed+level)%2===0,n=small?1+seed%7:2+seed%13,d=small?n+1+level:1,sample=n+'/'+d,ascending=(Math.floor(seed/2)+level)%2===0,low=small?['куб','квадрат','прямая','корень']:['корень','прямая','квадрат','куб'];
+    const hint='Сравни аргумент с единицей, затем выбери нужное направление чтения.';
+    return {...common,kind:'four-power-order',prompt:'При x = '+sample+' расположи x, x², x³ и √x в порядке '+(ascending?'возрастания':'убывания')+'.',answer:(ascending?low:[...low].reverse()).join(';'),graph:{type:'source-root-and-powers',group:'powers',mode:'order',sample,side:small?'left':'right',ascending},inputNote:'Раздели обозначения формул точкой с запятой.',steps:[probe,step('Дай числитель контрольной дроби x = '+sample+'.',n,hint)],hint,correction:hint,explanation:'Для дроби между нулём и единицей возведение в степень уменьшает величину, а для x > 1 увеличивает.'};
+   }
    if(id==='build-piecewise-branches'||id==='study-piecewise-values'){
     const vertex=(seed%7)-3,join=vertex+1,root=(seed+level)%2===0,last=root?null:join+1+level%2,slope=-(1+(seed+level)%4),intercept=1-slope*join;
     const right=root?'√(x − ('+join+') + 1)':slope+'x + ('+intercept+')';
