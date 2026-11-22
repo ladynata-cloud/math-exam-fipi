@@ -1826,3 +1826,11 @@ test('exhaust fourth natural numbers, reverse both proofs, cover all ten invaria
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('all four source equations, ruler estimates and both percentage baselines keep their parameters on repeat',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=['70.','3,6.','10.','1,2.','3,8 м','6,7 м','28%','20%'],other=['14.','3.','20.','3.','4,6 м','8,1 м','25%','40%'];
+  for(let i=0;i<expected.length;i++){f.nav('#lesson/p21/'+(53+i));if(i===4||i===5)assert.equal(f.d.querySelectorAll('#task-figure svg').length,1);f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(expected[i]),[i,f.q('#model').textContent]);if(i===4||i===5)assert.equal(f.d.querySelectorAll('#model [data-facade-height]').length,1);
+   f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(other[i]),[i,f.q('#model').textContent]);}
+ }finally{f.close();}
+});
