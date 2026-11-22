@@ -440,6 +440,8 @@ function factoredPair(value,expected,required=2,maxDegree=1){
   while(s.length){
    const scalar=s.match(/^\/?\d+(?:\.\d+)?/);
    if(scalar){s=s.slice(scalar[0].length).replace(/^\*/,'');continue;}
+   const single=/^([a-z])(?:\^(\d+))?/.exec(s);
+   if(single&&symbols.has(single[1])){count+=Number(single[2]||1);s=s.slice(single[0].length).replace(/^\*/,'');continue;}
    if(s[0]!=='(')return 'expanded';
    const end=endGroup(0);if(end<0)return 'expanded';
    const [n,d]=polynomialFraction(s.slice(1,end),symbols);
@@ -878,6 +880,8 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='line-placement'){const proposed=G.positionCoefficients(target.graph,user);return Boolean(proposed?.validK&&proposed.validB);}
+ if(target.kind==='line-signed-coefficient'){const q=M.parse(user);return Boolean(q&&Math.sign(q.n)===target.sign);}
  if(target.kind==='own-affine-points')return G.ownAffine(target.graph,pointGroups(user)).status==='valid';
  if(target.kind==='review-slope'){const v=M.parse(user);return Boolean(v&&(target.positive?v.n>0:v.n<0));}
  if(target.kind==='review-line-index'){const v=M.parse(user);return Boolean(v&&v.d===1&&v.n>=1&&v.n<=5);}

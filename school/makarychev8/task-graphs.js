@@ -910,6 +910,47 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function positionCoefficients(g,raw){
+ const parts=String(raw??'').split(';');if(parts.length!==2)return null;
+ const [k,b]=parts.map(v=>M.parse(v));if(!k||!b)return null;
+ return {k:k.n/k.d,b:b.n/b.d,validK:Math.sign(k.n)===g.slopeSign,validB:Math.sign(b.n)===g.offsetSign};
+}
+function oppositeReading(g,x){return (g.power===0?1:g.k*x)/(x*x+5);}
+function positionGraph(host,g,raw){
+ host.className='task-graphs quantity-model';const own=g.mode==='coefficients',q=M.parse(g.partial?.[0]),x=q?q.n/q.d:null,fmt=v=>String(Number(v.toPrecision(7))).replace('.',',');
+ if(own||g.mode==='quadrants'){
+  const pair=own?positionCoefficients(g,raw):{k:q?q.n/q.d:g.slopeSign,b:g.b};
+  if(!pair){boundNote(host,'Введи коэффициенты через точку с запятой. Прямая пройдёт через точку (0;b) с выбранным наклоном.');return;}
+  const {k,b}=pair,intercept=k?-b/k:0,xmax=Math.max(2,Math.abs(intercept)*1.7),ymax=Math.max(2,Math.abs(b)*1.6,Math.abs(k)*xmax*.6);
+  const svg=rootGraph({curves:[{kind:'line',k,b}],points:[[0,b,'']],xRange:[-xmax,xmax],yRange:[-ymax,ymax],compactTicks:xmax>1000||ymax>1000,axisLabels:['x','y'],label:'Своя прямая и четыре координатные четверти'},'');host.append(svg);
+  boundNote(host,'Сейчас k = '+fmt(k)+', b = '+fmt(b)+'. I: x > 0, y > 0. II: x < 0, y > 0. III: x < 0, y < 0. IV: x > 0, y < 0.').dataset.positionLine=String(k)+';'+String(b);
+  return;
+ }
+ if(g.mode==='opposites'){
+  if(x===null){boundNote(host,'В первом шаге выбери аргумент для сравнения со своим противоположным числом.');return;}
+  boundNote(host,'Для x = '+fmt(x)+' ордината ≈ '+fmt(oppositeReading(g,x))+'; для −x = '+fmt(-x)+' ордината ≈ '+fmt(oppositeReading(g,-x))+'. Оба знаменателя равны '+fmt(x*x+5)+'.').dataset.oppositeTrial=String(x);return;
+ }
+ if(g.mode==='factor'){
+  if(x===null){boundNote(host,'Выбери значение переменной — модель вычислит исходный многочлен по его членам.');return;}
+  const terms=g.coeff.map((coefficient,i)=>coefficient*x**i);
+  boundNote(host,'Ненулевые слагаемые исходного многочлена при '+g.variable+' = '+fmt(x)+': '+terms.filter((_,i)=>g.coeff[i]!==0).reverse().map(fmt).join(' + ')+'. Сумма ≈ '+fmt(terms.reduce((a,b)=>a+b,0))+'.').dataset.factorTrial=String(x);return;
+ }
+ let curves,points=[],xr,yr,y;
+ if(g.mode==='quadratic'){
+  const a=g.a[0]/g.a[1],b=g.k[0]/g.k[1],c=g.b,vertex=-b/(2*a),span=Math.max(4,Math.abs(vertex)*2+2);
+  curves=[{kind:'quadratic',a,b,c}];xr=[-span,span];const extreme=a*vertex*vertex+b*vertex+c;yr=[Math.min(-2,extreme-2),Math.max(5,c+4,Math.abs(extreme)*.7)];
+  if(x!==null)y=a*x*x+b*x+c;
+ }else {
+  const figure=g.mode==='figure69',k=figure?.5:-1.5,b=figure?2:6;curves=[{kind:'line',k,b}];xr=figure?[-7,7]:[-1,7];yr=figure?[-2,7]:[-3,8];
+  if(!figure)curves.push({kind:'line',k:0,b:0},{kind:'line',k:0,b:3});
+  if(x!==null)y=k*x+b;
+ }
+ if(x!==null)points.push([x,y,'']);
+ host.append(rootGraph({curves,points,xRange:xr,yRange:yr,axisLabels:['x','y'],label:g.mode==='figure69'?'График к рисунку 69':'Исходная функция и проверяемая точка'},''));
+ if(x!==null)boundNote(host,'При аргументе '+fmt(x)+' высота ≈ '+fmt(y)+'.').dataset.positionProbe=String(x);
+ if(g.mode==='closed-band'&&raw){const C=window.MakarychevCheck,proposed=C.axisRanges(C.systemInput(raw,'x'));if(proposed)intervalNumberLine(host,{givenRows:[],proposal:proposed,points:[]},'');}
+}
+
 function ownAffine(g,groups){
  if(groups?.length!==1||groups[0].length!==2)return {status:'count',points:[]};
  const pairs=groups[0],points=pairs.map(([x,y])=>[x.n/x.d,y.n/y.d]);
@@ -2389,6 +2430,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-line-position'){positionGraph(host,config,value);return;}
  if(config.type==='source-affine-study'){affineStudyGraph(host,config,value);return;}
  if(config.type==='source-review-43'){review43Graph(host,config,value);return;}
  if(config.type==='source-formula-zeros'){functionZeroGraph(host,config,value);return;}
@@ -2492,5 +2534,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
