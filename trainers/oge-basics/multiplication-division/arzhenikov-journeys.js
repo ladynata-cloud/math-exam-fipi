@@ -213,7 +213,9 @@
   function drawCamera() {
     if (host.hidden) return;
     const width = viewport.clientWidth || 800, height = viewport.clientHeight || 500;
-    const mobile = width < 600;
+    // Region cards keep a readable screen size while the world zooms out.
+    // Below 760 px the wide trail would bring two full-height cards together.
+    const mobile = width < 760;
     host.dataset.compact = String(mobile);
     const worldWidth = mobile?1400:2400, worldHeight = mobile?2300:1500;
     const locations = mobile

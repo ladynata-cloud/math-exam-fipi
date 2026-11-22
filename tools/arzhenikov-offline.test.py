@@ -20,6 +20,8 @@ class OfflinePackageTest(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
+        self.license_bytes = b"MIT License\r\n\r\nCopyright (c) test fixture\r\nPermission notice preserved exactly.\r\n"
+        (self.root / "LICENSE").write_bytes(self.license_bytes)
         self.page = self.root / offline.PAGE
         self.page.parent.mkdir(parents=True)
         self.page.write_text('''<!doctype html><html><head>
@@ -109,6 +111,19 @@ class OfflinePackageTest(unittest.TestCase):
             self.assertEqual(entry["bytes"], len(content))
             self.assertEqual(entry["sha256"], hashlib.sha256(content).hexdigest())
 
+    def test_license_notice_is_preserved_exactly(self):
+        members = offline.build_members(self.root)
+        self.assertEqual(members["LICENSE.txt"], self.license_bytes)
+        archive_bytes = offline.zip_bytes(members)
+        with zipfile.ZipFile(io.BytesIO(archive_bytes)) as archive:
+            self.assertEqual(archive.read("LICENSE.txt"), self.license_bytes)
+        changed = self.license_bytes + b"Additional notice.\r\n"
+        (self.root / "LICENSE").write_bytes(changed)
+        revised = offline.build_members(self.root)
+        self.assertEqual(revised["LICENSE.txt"], changed)
+        with self.assertRaisesRegex(ValueError, "stale content: LICENSE.txt"):
+            offline.check_archive(archive_bytes, revised)
+
     def test_repository_page_is_complete_without_writing(self):
         members = offline.build_members()
         self.assertIn("arzhenikov-object-atlas.png", members)
@@ -117,6 +132,7 @@ class OfflinePackageTest(unittest.TestCase):
         self.assertIn("arzhenikov-garden-bank.js", members)
         self.assertIn("arzhenikov-life-bank.js", members)
         self.assertIn("arzhenikov-harbor-bank.js", members)
+        self.assertEqual(members["LICENSE.txt"], (offline.ROOT / "LICENSE").read_bytes())
         offline.check_archive(offline.zip_bytes(members), members)
 
 

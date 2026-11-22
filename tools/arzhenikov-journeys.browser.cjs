@@ -306,14 +306,21 @@ async function mapControlsFit(page, where) {
         .map(node => ({id: node.dataset.journeyGroup || node.dataset.group + '/' + node.dataset.journeyTopic, ...box(node)}))};
   });
   const separate = (a, b) => a.right <= b.x + 1 || b.right <= a.x + 1 || a.bottom <= b.y + 1 || b.bottom <= a.y + 1;
-  assert(boxes.nodes.length > 0, where + ': visible destinations');
-  for (const [index, node] of boxes.nodes.entries()) {
-    const v = boxes.viewport;
-    assert(node.width >= 44 && node.height >= 44, where + ' ' + node.id + ': usable touch target');
-    assert(node.x >= v.x - 1 && node.y >= v.y - 1 && node.right <= v.right + 1 && node.bottom <= v.bottom + 1,
-      where + ' ' + node.id + ': whole control fits: ' + JSON.stringify(node));
-    assert(separate(node, boxes.camera), where + ' ' + node.id + ': destination must not overlap the zoom controls');
-    for (const other of boxes.nodes.slice(0, index)) assert(separate(node, other), where + ': ' + node.id + ' and ' + other.id + ' must not overlap');
+  try {
+    assert(boxes.nodes.length > 0, where + ': visible destinations');
+    for (const [index, node] of boxes.nodes.entries()) {
+      const v = boxes.viewport;
+      assert(node.width >= 44 && node.height >= 44, where + ' ' + node.id + ': usable touch target');
+      assert(node.x >= v.x - 1 && node.y >= v.y - 1 && node.right <= v.right + 1 && node.bottom <= v.bottom + 1,
+        where + ' ' + node.id + ': whole control fits: ' + JSON.stringify(node));
+      assert(separate(node, boxes.camera), where + ' ' + node.id + ': destination must not overlap the zoom controls');
+      for (const other of boxes.nodes.slice(0, index)) assert(separate(node, other), where + ': ' + node.id + ' and ' + other.id + ' must not overlap');
+    }
+  } catch (error) {
+    const name = 'journeys-failure-' + where.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    fs.writeFileSync(path.join(artifacts, name + '.json'), JSON.stringify({where, ...boxes}, null, 2) + '\n');
+    await page.locator('#journey-map').screenshot({path: path.join(artifacts, name + '.png'), timeout: 5000}).catch(() => {});
+    throw error;
   }
 }
 
@@ -337,7 +344,7 @@ async function mapBrowser(page, width) {
   assert.deepEqual(await map.locator('[data-journey-group]').evaluateAll(nodes => [...new Set(nodes.map(node => node.dataset.journeyGroup))].sort()), [...groups].sort());
   await mapControlsFit(page, 'Overview ' + width);
   await fits('Map overview ' + width);
-  await page.screenshot({path: path.join(artifacts, 'journeys-overview-' + width + '.png')});
+  await map.screenshot({path: path.join(artifacts, 'journeys-overview-' + width + '.png')});
   for (const group of groups) {
     await route('#journey'); await view('overview');
     await map.locator('[data-journey-group="' + group + '"]').first().press('Enter');
@@ -363,7 +370,7 @@ async function mapBrowser(page, width) {
     assert.equal(await map.getAttribute('data-group'), group, 'Browser Back restores the containing group');
     await map.locator('[data-journey-topic="' + topic + '"][data-group="' + group + '"]').press('Enter'); await view('topic');
     if (group === 'discoveries') {
-      await page.screenshot({path: path.join(artifacts, 'journeys-topic-' + width + '.png')});
+      await map.screenshot({path: path.join(artifacts, 'journeys-topic-' + width + '.png')});
       await viewport.focus(); await viewport.press('Escape'); await view('group');
     } else {
       await map.locator('[data-journey-action="back"]').press('Enter'); await view('group');
@@ -478,7 +485,7 @@ async function offlineBrowser(browser) {
     await map.locator('[data-journey-topic="meanings"][data-group="discoveries"]').press('Enter');
     await page.waitForFunction(() => document.querySelector('#journey-map').dataset.view === 'topic');
     assert.equal(await map.locator('a[data-journey-action="open"]').getAttribute('href'), '#discoveries-meanings-1');
-    await page.screenshot({path: path.join(artifacts, 'offline-journey-375.png')});
+    await map.screenshot({path: path.join(artifacts, 'offline-journey-375.png')});
     await map.locator('a[data-journey-action="open"]').press('Enter');
     await page.locator('#discoveries-play[data-stage="predict"]').waitFor({state: 'visible'});
     await flow.sync(); await solve(flow, cases[0], {restoreMove: true, wrongAnswer: true});
@@ -519,9 +526,9 @@ async function main() {
     const errors = []; page.on('pageerror', error => errors.push(error.message));
     await investigations(new BrowserFlow(page));
     assert.deepEqual(errors, []); await context.close();
-    // 640px exercises the boundary where the canvas can be narrower than 600px
-    // even though the browser window uses the wider layout breakpoint.
-    for (const width of [320, 375, 640, 1280]) {
+    // 640px reproduces the original overlap. The 800/825px pair surrounds the
+    // shared compact boundary: actual canvas widths are about 750/773px.
+    for (const width of [320, 375, 390, 640, 800, 825, 1280]) {
       const ctx = await browser.newContext({viewport: {width, height: 850}, reducedMotion: 'reduce'});
       const tab = await ctx.newPage(); tab.setDefaultTimeout(15000);
       const failures = []; tab.on('pageerror', error => failures.push(error.message));
@@ -534,7 +541,7 @@ async function main() {
       assert.deepEqual(failures, []); await ctx.close();
     }
     await offlineBrowser(browser);
-    console.log('ARZHENIKOV_JOURNEYS_BROWSER_OK: 24 investigations; exact saved work, first predictions, independent evidence; seven map areas, zoom/back/keyboard, 320/375/640/1280, reduced motion, preserved city action and unpacked offline ZIP with HTTP blocked.');
+    console.log('ARZHENIKOV_JOURNEYS_BROWSER_OK: 24 investigations; exact saved work, first predictions, independent evidence; seven map areas, zoom/back/keyboard, 320/375/390/640/800/825/1280, reduced motion, preserved city action and unpacked offline ZIP with HTTP blocked.');
   } finally { await browser.close(); }
 }
 
