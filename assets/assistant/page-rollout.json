@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "fa544b70e8c0dd0361f4eae7920e8cd00966d21e7a5d40512cf0879d89204e58",
-      "afterSha256": "fff56f640d99c461e4924d188219f865a0fcbc231f5c73c706f679a01a6d8a26",
+      "beforeSha256": "4d799604c0fe034b0b483d4ffc2dddae0382242152aa418b541b3b7beab2667d",
+      "afterSha256": "1a2f40416a4ade75d0ca13b87e26c9af342db70357a6f442740d6d06e3d3d4c4",
       "placement": "before-head-close",
-      "sourceSha": "15cce95e1ab67367164d8f565dd8487a9ebdd557"
+      "sourceSha": "22f3517000bbe1a3bd93ddb65ea105408082cc6a"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7002,6 +7002,15 @@
         "school/index.html"
       ],
       "boundary": "Печатная с. 19 завершается номерами 5.96 и 5.97. Сверены площади каждого треугольника, равновеликие пары с перестановкой вершин и остаток груш при целых допустимых покупках. Проверены обе роли с перезагрузками."
+    },
+    {
+      "previousBaseSha": "15cce95e1ab67367164d8f565dd8487a9ebdd557",
+      "sourceBaseSha": "22f3517000bbe1a3bd93ddb65ea105408082cc6a",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Обе печатные проверочные части 2 на с. 20 проверены шаг за шагом. У диаграммы сохраняются исходные высоты в первой попытке и итоговые высоты после своего исправления. Сверены общий вход, телефон и два участника."
     }
   ],
   "coverageUpdates": [
