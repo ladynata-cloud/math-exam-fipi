@@ -125,6 +125,63 @@
     if(number===10)return numberTiles(part.id==='010-a'?['миллионы','тысячи','единицы']:part.id==='010-b'?['целые','числитель','знаменатель']:['целые','десятые','сотые','тысячные','десятитысячные','стотысячные'],dictation[part.id][1]);
     return '';
   }
+  const placeName=power=>({'4':'десятки тысяч','3':'тысячи','2':'сотни','1':'десятки','0':'единицы','-1':'десятые','-2':'сотые','-3':'тысячные','-4':'десятитысячные','-5':'стотысячные','-6':'миллионные'})[power]||'разряд '+power;
+  const opHint={
+    add:'Совмести запятые. Дополни пустые дробные разряды нулями, затем складывай одинаковые разряды.',
+    subtract:'Совмести запятые. Перед вычитанием можешь разменять один старший разряд на десять единиц соседнего младшего.',
+    multiply:'Сначала оцени результат. Множитель между нулём и единицей уменьшает первое число, а множитель больше единицы увеличивает его.',
+    divide:'При делении на десятичную дробь перенеси запятую в обоих числах одинаково. Если делитель меньше единицы, частное больше делимого.'
+  };
+  function decimalColumns(part){
+    const a=[part.expression.left,part.expression.right].map(v=>String(v).replace(',','.').split('.'));
+    const whole=Math.max(...a.map(([x])=>x.length)),fraction=Math.max(...a.map(([,x])=>(x||'').length));
+    return Array.from({length:whole+fraction},(_,i)=>whole-1-i);
+  }
+  function operations(node,result=[]){
+    if(node&&typeof node==='object'){operations(node.left,result);operations(node.right,result);result.push(node);}
+    return result;
+  }
+  function decimalModel(part,view=0,interactive=false){
+    const many=part.id.startsWith('013-'),columns=many?[]:decimalColumns(part),nodes=many?operations(part.expression):[],keys=many?nodes.map((_,i)=>'Действие '+(i+1)):columns.map(placeName);
+    const title=many?'Порядок действий':'Разрядная сетка обоих чисел';
+    const picker=interactive?'<label>Рассмотреть <select data-decimal-position><option value="0">Всё выражение</option>'+keys.map((label,i)=>'<option value="'+(i+1)+'"'+(view===i+1?' selected':'')+'>'+U.esc(label)+'</option>').join('')+'</select></label>':'';
+    let body;
+    if(many){
+      const chosen=nodes[view-1];body=chosen?'<p>В выбранном действии: '+U.expression(chosen)+'.</p>':'<p>Выбери действие и найди его операнды. Сначала выполняются внутренние операции, в конце — внешняя.</p>';
+    }else{
+      const band=value=>{
+        const [integer,dec='']=String(value).replace(',','.').split('.');
+        return '<div style="display:grid;grid-template-columns:repeat('+columns.length+',minmax(0,1fr));margin:.35em 0" aria-label="'+U.esc(String(value))+'">'+columns.map((power,i)=>{
+          const actual=power>=0?integer[integer.length-1-power]:dec[-power-1],selected=view===i+1;
+          return '<span style="text-align:center;border:1px solid #8da899;padding:.15em 0;'+(power===0?'border-right:3px solid #365e50;':'')+(selected?'background:#d8ecdd;font-weight:bold;':'')+'">'+(actual===undefined?'·':actual)+'</span>';
+        }).join('')+'</div>';
+      };
+      body=band(part.expression.left)+band(part.expression.right)+'<p>Жирная черта стоит после единиц. Точка в пустой ячейке означает отсутствие записанной цифры. '+(view?'Выбраны '+placeName(columns[view-1])+'. ':'')+opHint[part.expression.op]+'</p>';
+    }
+    return '<figure style="margin:.6em 0" data-decimal-host><figcaption>'+title+'</figcaption>'+picker+body+'</figure>';
+  }
+  function mountDecimal(main,part,work,save){
+    let host=main.querySelector('[data-decimal-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=decimalModel(part,work.decimalView||0,true);host=main.querySelector('[data-decimal-host]');
+      const select=host.querySelector('select');select.onchange=()=>{
+        const view=Number(select.value);if(view)work.decimalView=view;else delete work.decimalView;
+        save();draw();host.querySelector('select').focus({preventScroll:true});
+      };
+    }
+    draw();
+  }
+  function decimalError(number,part,input,correct){
+    if(correct||number<11||number>13)return null;
+    if(number===13)return {ok:false,text:'Проверь оба выражения по сторонам последнего '+(part.expression.op==='add'?'сложения':'вычитания')+'. Внутри каждой цепочки умножение и деление выполняются слева направо.'};
+    const M=root.PetersonBook.M,x=part.expression,expected=root.PetersonBook.exact(x),value=M.parse(input);
+    if(!value)return null;
+    for(const factor of [10,100,1000,'0.1','0.01','0.001'])if(M.equal(value,M.operation('multiply',expected,factor)))return {ok:false,text:'Цифры похожи на результат, но разряд не совпал. '+opHint[x.op]};
+    const other={add:'subtract',subtract:'add',multiply:'add',divide:'multiply'}[x.op];
+    if(M.equal(value,M.operation(other,x.left,x.right)))return {ok:false,text:'Получился результат другого действия. Посмотри на знак между числами. '+opHint[x.op]};
+    return {ok:false,text:opHint[x.op]};
+  }
+
   function normalizeNumber(raw) {
     const s=raw.trim().replace(/\.$/,'').replace(/\s*\/\s*/g,'/').replace(/\s+/g,' ');
     return /^\d{1,3}(?: \d{3})+$/.test(s)?s.replace(/ /g,''):s.replace(/(?<=\d)\.(?=\d)/g,',');
@@ -173,6 +230,7 @@
 
   function openingQuestion(number,part) {
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
+    if(number>=11&&number<=13)return number===11?'Вычисли устно. Выбери удобный способ: разряды, перенос запятой или проверку обратным действием.':number===12?'Выполни указанное действие с десятичными дробями. Для записи по разрядам или промежуточных вычислений открой черновик.':'Найди значение всего выражения. Выдели внутренние действия и запиши промежуточные результаты перед последним действием.';
     const index=Number(part.id.split('-')[1])-1;
     if(number===1 && openingStatements[index])return 'Высказывание: «'+openingStatements[index]+'» Сначала начни отрицание со слов «Неверно, что…», затем передай ту же мысль без них. Почему ровно одно из двух высказываний истинно?';
     if(number===2 && disproofs[index]){const [claim,check]=disproofs[index];return 'Опровергни утверждение: «'+claim+'» Запиши его отрицание и обоснуй. '+check;}
@@ -215,6 +273,7 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
+    if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
     if(item.number>=7&&item.number<=10)drawing=pageSevenFigure(item.number,part);
     if(item.number===240) drawing=angleSet();
     if(item.number===241) drawing=source241(part);
@@ -238,5 +297,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError};
 })(globalThis);

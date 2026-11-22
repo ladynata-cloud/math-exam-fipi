@@ -474,3 +474,22 @@ test('existing page-seven chapter attempts preserve their original prompt, draft
  element(draftOnly,'.equivalent-exercise button[type=button]').click();assert.equal(state(draftOnly,key).earlier.work.note,partial.note);assert(!state(draftOnly,key).earlier.work.correct);
 
 });
+test('printed 11–13 retain exact source values, independent decimal models and different arithmetic on retry',async t=>{
+ const s=await surface(t,BOOK+'#map'),bank=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(10,13);
+ const expected=[['1.5','6.6','1.5','3.28','1.4','1.93','7.8','19.38','2.7','60','0.087','1.08','0.6','720','7','0.3'],['36.3636','1000','7.777','330.013','0.21714','1525.939','4.08','0.0055'],['10','9.1']];
+ const plan=element(s,'[aria-label="Действия с десятичными дробями на страницах 7 и 8"]');assert.equal(plan.querySelectorAll('a').length,3);
+ const independent=n=>typeof n==='object'?({add:(a,b)=>a+b,subtract:(a,b)=>a-b,multiply:(a,b)=>a*b,divide:(a,b)=>a/b})[n.op](independent(n.left),independent(n.right)):Number(String(n).replace(',','.'));
+ for(const [j,item] of bank.entries())for(const [i,part] of item.parts.entries()){
+  await route(s,'#n/'+item.number+'/'+part.id);assert(s.w.PetersonBook.check(part,expected[j][i]),part.id);
+  const select=element(s,'[data-decimal-position]');select.value='1';select.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.equal(bookWork(s,part.id).decimalView,1);assert(!bookWork(s,part.id).assisted);assert(!bookWork(s,part.id).correct);
+  const variants=new Set();
+  for(let attempt=0;attempt<8;attempt++){
+   const m=s.w.PetersonAnalogues.create(item.number,part,attempt),a=s.w.PetersonBook.M.parse(m.answer);
+   assert.equal(m.kind,'expression');assert(Math.abs(independent(m.expression)-a.n/a.d)<1e-8,part.id);assert.notEqual(JSON.stringify(m.expression),JSON.stringify(part.expression));variants.add(JSON.stringify(m.expression));
+  }
+  assert.equal(variants.size,8);input(s,'#answer',expected[j][i]);submit(s,'#answer-form');assert(bookWork(s,part.id).independent,part.id);
+ }
+ const p=bank[0].parts[0];await route(s,'#n/11/'+p.id);
+ const old=s.w.PetersonBook.blank(p);old.note='Черновик к исходному выражению.';s.w.PetersonBook.submit(p,old,'1,5');
+ const stable=s.w.PetersonBook.sanitize(p,old);assert.equal(stable.note,old.note);assert(stable.independent);assert.equal(stable.decimalView,undefined);
+});
