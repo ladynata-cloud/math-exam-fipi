@@ -4464,7 +4464,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
 
 
  else if(n===21&&task.finalProportions){const {kind,index}=task.finalProportions;
-  if(kind==='sort'){const v=fiveWeighings(fruitOrders[a],b);show(v.graph);if(b>0)show(table(['Сравнение','Легче','Места после сравнения'],v.history.map((r,i)=>[(i+1)+': '+r.x+' и '+r.y,r.lighter,r.positions])));if(b===5)say('От лёгкого к тяжёлому: '+v.positions+'.');}
+  if(kind==='sort'){const v=fiveWeighings(fruitOrders[a],b);show(v.graph);if(b>0){const readings=table(['Весы','Легче','Порядок'],v.history.map((r,i)=>[(i+1)+': '+r.x+' и '+r.y,r.lighter,r.positions]));readings.classList.add('pcm-route-table');show(readings);}if(b===5)say('От лёгкого к тяжёлому: '+v.positions+'.');}
   else{const v=proportionSummaryData(kind,index,a===1);formula(v.given);if(b>=1)show(table(v.headers,v.rows));if(b===2)say(v.result);}
  } else if(n===21&&task.graphSectionReview){const {kind,index}=task.graphSectionReview;
   if(kind==='direct'||kind==='inverse'){const v=printedProportionGraph(kind==='direct'?'five':'six',index,a===1,b);formula(v.query);show(v.graph);show(table(v.labels,v.tableRows));if(b===2)say(v.result);}
