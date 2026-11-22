@@ -878,6 +878,9 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='own-affine-points')return G.ownAffine(target.graph,pointGroups(user)).status==='valid';
+ if(target.kind==='review-slope'){const v=M.parse(user);return Boolean(v&&(target.positive?v.n>0:v.n<0));}
+ if(target.kind==='review-line-index'){const v=M.parse(user);return Boolean(v&&v.d===1&&v.n>=1&&v.n<=5);}
  if(target.kind==='review-precision'){const v=M.parse(user);return Boolean(v&&v.d===1&&v.n>=1&&v.n<=6);}
  if(target.kind==='intersection-points'){
   const list=pointGroups(user),expected=pointGroups(target.answer);

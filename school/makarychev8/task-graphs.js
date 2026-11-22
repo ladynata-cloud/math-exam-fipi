@@ -910,6 +910,42 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function ownAffine(g,groups){
+ if(groups?.length!==1||groups[0].length!==2)return {status:'count',points:[]};
+ const pairs=groups[0],points=pairs.map(([x,y])=>[x.n/x.d,y.n/y.d]);
+ const pair=pairs.map(([x,y])=>[BigInt(x.n),BigInt(x.d),BigInt(y.n),BigInt(y.d)]);
+ if(pair[0][0]*pair[1][1]===pair[1][0]*pair[0][1])return {status:'same-x',points};
+ const k=M.parse(g.k),kn=BigInt(k.n),kd=BigInt(k.d),b=BigInt(g.b);
+ const wrong=pair.findIndex(([xn,xd,yn,yd])=>yn*kd*xd!==(kn*xn+b*kd*xd)*yd);
+ const slope=(points[1][1]-points[0][1])/(points[1][0]-points[0][0]),offset=points[0][1]-slope*points[0][0];
+ return {status:wrong<0?'valid':'point-'+(wrong+1),points,slope,offset};
+}
+function affineStudyGraph(host,g,raw){
+ host.className='task-graphs quantity-model';const C=window.MakarychevCheck,entry=g.partial?.[0];
+ if(g.collection){
+  const q=M.parse(entry),i=q&&q.d===1&&q.n>=1&&q.n<=5?q.n-1:0,k=g.slopes[i],b=g.free[i],points=[[0,b,''],[1,b+k,'']];
+  const yr=[Math.min(-2,b-2,b+k-2),Math.max(2,b+2,b+k+2)];
+  host.append(rootGraph({curves:[{kind:'line',k,b}],points,xRange:[-2,3],yRange:yr,axisLabels:['x','y'],label:'Изменение y от x = 0 до x = 1'},''));
+  boundNote(host,'Функция '+(i+1)+': y = '+g.labels[i]+'. Аргумент вырос от 0 до 1, ордината изменилась от '+b+' до '+(b+k)+'.').dataset.affineIndex=String(i+1);return;
+ }
+ const base=M.parse(g.k),b=g.b,own=g.feature==='build',family=g.family&&!own,q=M.parse(entry);
+ const slope=family&&q&&q.n!==0&&Math.sign(q.n)===Math.sign(base.n)?q:base,k=slope.n/slope.d;
+ const root=-b/k;
+ const candidate=own?ownAffine(g,C.pointGroups(raw)):null,points=own?candidate.points.map(([x,y])=>[x,y,'']):[];
+ const curves=own?(Number.isFinite(candidate.slope)?[{kind:'line',k:candidate.slope,b:candidate.offset}]:[]):[{kind:'line',k,b}];
+ if(!own&&!family&&q){const x=q.n/q.d;points.push([x,k*x+b,'']);}
+ if(g.legacy){const attempt=M.parse(raw);if(attempt){const x=attempt.n/attempt.d;points.push([x,k*x+b,'']);}}
+ const xx=[0,root,...points.map(p=>p[0])],yy=[0,b,...points.map(p=>p[1])];
+ const padx=Math.max(2,(Math.max(...xx)-Math.min(...xx))*.15),pady=Math.max(Math.abs(k),2,(Math.max(...yy)-Math.min(...yy))*.15);
+ const svg=rootGraph({curves,points,xRange:[Math.min(...xx)-padx,Math.max(...xx)+padx],yRange:[Math.min(...yy)-pady,Math.max(...yy)+pady],
+  compactTicks:Math.max(...xx.map(Math.abs),...yy.map(Math.abs))>=1000,axisLabels:['x','y'],label:own?'Прямая, построенная через две предложенные точки':'Прямая и ордината при выбранном аргументе'},'');
+ host.append(svg);
+ if(own){svg.dataset.affineConstruct=candidate.status;boundNote(host,'После ввода двух точек с разными абсциссами модель проведёт через них твою прямую.');}
+ else if(family){boundNote(host,'Сейчас y = ('+M.answer(slope)+')x. Проверь новый коэффициент того же знака и проследи, какие свойства сохраняются.').dataset.affineSlope=M.answer(slope);}
+ else if(q&&!g.legacy){boundNote(host,'При x = '+M.answer(q)+' получаем y ≈ '+String(Number((k*q.n/q.d+b).toPrecision(8))).replace('.',',')+'.').dataset.affineInput=M.answer(q);}
+ if(['positive','negative','domain','range'].includes(g.feature)&&raw){const axis=g.feature==='range'?'y':'x',ranges=C.axisRanges(C.systemInput(raw,axis));if(ranges)intervalNumberLine(host,{givenRows:[],proposal:ranges,points:[]},'');}
+}
+
 function review43Trial(g,raw){
  const q=M.parse(raw);if(!q)return null;const x=q.n/q.d;
  if(['cross','disjoint','strip'].includes(g.mode)){
@@ -2353,6 +2389,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-affine-study'){affineStudyGraph(host,config,value);return;}
  if(config.type==='source-review-43'){review43Graph(host,config,value);return;}
  if(config.type==='source-formula-zeros'){functionZeroGraph(host,config,value);return;}
  if(config.type==='source-graph-witness'){graphWitness(host,config,value);return;}
@@ -2455,5 +2492,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

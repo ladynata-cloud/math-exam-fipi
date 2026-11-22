@@ -63,6 +63,13 @@ async function verify(width,url){
   await submit(page,'3');assert.equal(await page.locator('[data-zero-trial="3"]').getAttribute('data-zero-status'),'zero');
   await page.close();page=await fresh();await openNumber(page,1106,'№ 1106г');await submit(page,'1');
   assert.match(await page.locator('#problem').innerText(),/знаменатель равен нулю/);await submit(page,'нет');
+  await page.close();page=await fresh();
+  for(const [index,ref,answer] of [[0,'№1106а','15'],[1,'№1106в','-2']]){
+    await openNumber(page,1106);await page.getByRole('link',{name:ref,exact:true}).click();
+    assert.equal(await page.evaluate(()=>location.hash),'#lesson/p43/'+index);
+    assert.equal(await page.evaluate(i=>Boolean(MakarychevCourse.lessons.find(l=>l.id==='p43').tasks[i].graph),index),false);
+    await page.locator('#final-answer').fill(answer);await page.locator('[data-zero-status=zero]').waitFor();
+  }
   assert.deepEqual(errors,[]);await page.close();return {width,cards:cards.length};
 }
 (async () => {
