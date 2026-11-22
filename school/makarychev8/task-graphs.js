@@ -947,6 +947,70 @@ function sumOfRoot(form,k,x) {
  if(x<0)return NaN;
  return (form==='linear'?k*x:x*x)+Math.sqrt(x);
 }
+function floorPiece(g,C,raw) {
+ const chunks=String(raw||'').split('|');
+ if(chunks.length!==2)return {status:'format'};
+ const groups=C.pointGroups(chunks[0]),ends=chunks[1].replace(/\s/g,'');
+ if(groups?.length!==1||groups[0].length!==2||!['[)','(]','[]','()'].includes(ends))return {status:'format'};
+ const pairs=groups[0], [[start,low],[finish,high]]=pairs;
+ const points=pairs.map(([x,y])=>[x.n/x.d,y.n/y.d]);
+ const n=BigInt(start.n)*BigInt(g.inside),d=BigInt(start.d);
+ if(n%d!==0n)return {points,ends,status:'jump'};
+ const k=n/d, scale=BigInt(g.inside),outside=BigInt(g.outer);
+ if(BigInt(finish.n)*scale!==(k+1n)*BigInt(finish.d))return {points,ends,status:'width'};
+ const yLeft=g.saw?0n:outside*k,yRight=g.saw?outside:yLeft;
+ if(BigInt(low.n)!==yLeft*BigInt(low.d))return {points,ends,status:'left-height'};
+ if(BigInt(high.n)!==yRight*BigInt(high.d))return {points,ends,status:'right-height'};
+ return {points,ends,status:ends==='[)'?'valid':'ends'};
+}
+function floorPartsView(host,g,raw) {
+ host.className='task-graphs quantity-model';
+ const C=window.MakarychevCheck, fmt=v=>String(Number(v.toPrecision(7))).replace('.',',');
+ if(g.mode!=='plot'){
+  const studentValue=g.product?M.parse(g.partial?.[0]):null;
+  if(g.product&&!studentValue&&!g.showSolution){boundNote(host,'Введи в первом шаге результат умножения. На оси появится твоя отметка.');}
+  const value=g.x==='pi'?Math.PI:(studentValue?studentValue.n/studentValue.d:Number(M.parse(g.x).n)/M.parse(g.x).d);
+  const floor=Math.floor(value), svg=node('svg',{viewBox:'0 0 312 110',role:'img','aria-label':'Исходное число и границы единичного промежутка'});
+  const visible=!g.product||studentValue||g.showSolution,px=48+216*(value-floor);
+  svg.append(node('line',{x1:12,x2:298,y1:56,y2:56,stroke:'#5c6863','stroke-width':2}),node('path',{d:'M288 51 L298 56 L288 61',fill:'none',stroke:'#5c6863','stroke-width':2}));
+  for(const [pos,n]of [[48,floor],[264,floor+1]]){
+   svg.append(node('line',{x1:pos,x2:pos,y1:49,y2:63,stroke:'#48574e','stroke-width':2}),node('text',{x:pos,y:85,'text-anchor':'middle','font-size':19},visible?fmt(n):'?'));
+  }
+  if(visible){
+   svg.append(node('line',{x1:48,x2:px,y1:56,y2:56,stroke:'#117460','stroke-width':5}),node('circle',{cx:px,cy:56,r:5,fill:'#963e22','data-floor-position':g.x==='pi'?'pi':fmt(value)}),node('text',{x:Math.min(261,Math.max(49,px)),y:33,'text-anchor':'middle','font-size':17},g.x==='pi'?'π':fmt(value)));
+  }
+  host.append(svg);boundNote(host,g.x==='pi'?'Отметка π на рисунке приблизительная. Оставь π в точном ответе.':'Рассмотри целые границы. Цветной отрезок идёт от левой целой точки к отметке числа.');
+  return;
+ }
+ const witness=floorPiece(g,C,raw),trial=integerProbe(g.partial?.[0]);
+ const picked=witness.points?.[0]?.[0], plotK=Number.isFinite(picked)?Math.floor(picked*g.inside):trial??0;
+ const k=Math.max(-1000000,Math.min(1000000,plotK)),left=(k-1)/g.inside,right=(k+2)/g.inside;
+ const yAt=t=>g.saw?0:g.outer*t;
+ const levels=g.saw?[0,g.outer]:[yAt(k-1),yAt(k),yAt(k+1)];
+ const lo=Math.min(...levels)-.6,hi=Math.max(...levels)+.6;
+ const px=x=>35+(x-left)/(right-left)*247,py=y=>120-(y-lo)/(hi-lo)*91;
+ const svg=node('svg',{viewBox:'0 0 312 160',role:'img','aria-label':'Три соседних участка функции с отметками включённых и исключённых концов'});
+ const line=(x1,y1,x2,y2,color,width)=>svg.append(node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':width}));
+ line(16,128,294,128,'#586961',1);
+ if(lo<=0&&hi>=0)line(32,py(0),286,py(0),'#a2aaa4',1);
+ if(left<=0&&right>=0)line(px(0),18,px(0),120,'#a2aaa4',1);
+ svg.append(node('text',{x:298,y:132,'font-size':13},'x'),node('text',{x:15,y:14,'font-size':13},'y'));
+ for(let j=k-1;j<=k+2;j++){const x=j/g.inside,xpos=px(x);line(xpos,124,xpos,133,'#52635c',1.5);svg.append(node('text',{x:xpos,y:152,'text-anchor':'middle','font-size':14},fmt(x)));}
+ const piece=(points,ends,color,name)=>{
+  const [[x,y],[z,v]]=points;if(x<left||z>right||y<lo||y>hi||v<lo||v>hi)return;
+  line(px(x),py(y),px(z),py(v),color,3);
+  for(const [a,b,closed] of [[x,y,ends[0]==='['],[z,v,ends[1]===']']]){
+   svg.append(node('circle',{cx:px(a),cy:py(b),r:4,fill:closed?color:'white',stroke:color,'stroke-width':2,'data-floor-end':closed?'closed':'open','data-floor-piece':name}));
+  }
+ };
+ if(g.showSolution)for(let j=k-1;j<=k+1;j++)piece([[j/g.inside,yAt(j)],[(j+1)/g.inside,g.saw?g.outer:yAt(j)]],'[)','#176956','completed');
+ if(witness.points)piece(witness.points,witness.ends,'#a54428','own');
+ for(const y of [...new Set(levels)])svg.append(node('text',{x:29,y:py(y)+4,'text-anchor':'end','font-size':14},fmt(y)));
+ host.append(svg);
+ boundNote(host,'Под каждой отметкой указана абсцисса. Закрашенная точка входит в участок, пустая исключена. Твой участок отображается охрой.');
+ if(witness.points&&Math.abs(plotK)>1000000)boundNote(host,'Выбранные координаты лежат за пределами шкалы. Их точное сравнение остаётся доступным.');
+}
+
 function surdCancellationView(host,g) {
  host.className='task-graphs quantity-model';
  const input=g.partial||[],factor=M.parse(input[0]),sides=[g.leftTerm,g.rightTerm];
@@ -2577,6 +2641,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-floor-parts'){floorPartsView(host,config,value);return;}
  if(config.type==='source-surd-cancellation'){surdCancellationView(host,config);return;}
  if(config.type==='source-final-functions'){finalFunctionsView(host,config,value);return;}
  if(config.type==='source-root-study'){rootStudyView(host,config,value);return;}
@@ -2684,5 +2749,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,floorPiece,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

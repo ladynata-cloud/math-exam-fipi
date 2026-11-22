@@ -82,6 +82,19 @@ async function verify(width,url,offline=false){
  await p.locator('[data-action=choice][data-choice="2"]').click();await p.locator('#answer-form button[type=submit]').click();
  await p.reload();await p.waitForFunction(()=>MakarychevApp.getState().tasks['p45-source-1136-g']?.correct);
  assert.deepEqual(await p.locator('#task-graph [data-surd-area]').evaluateAll(nodes=>nodes.map(n=>n.dataset.surdArea)),['20','23']);
+ for(const card of require('./exercises-1137-1143.json')){
+  await openNumber(p,Number(card.title.match(/\d+/)[0]),card.title);
+  await p.locator('#task-graph svg').waitFor();
+  assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ }
+ await openNumber(p,1138,'№ 1138 · −8/9');await submit(p,'-8/9');
+ assert.match(await p.locator('#problem').innerText(),/расстояние.*отрицательным/);
+ await submit(p,'1/9');
+ await openNumber(p,1143,'№ 1143');await submit(p,'(-2;0), (-1;-1) | []');assert.match(await p.locator('#problem').innerText(),/пустым/);
+ await submit(p,'(-2;0), (-1;-1) | [)');
+ assert.equal(await p.locator('#task-graph [data-floor-piece=completed][data-floor-end=open]').count(),3);
+ await p.reload();await p.waitForFunction(()=>MakarychevApp.getState().tasks['p46-source-1143-saw']?.correct);
+ assert.equal(await p.locator('#task-graph [data-floor-piece=own][data-floor-end=closed]').count(),1);
  assert.deepEqual(errors,[]);await ctx.close();
 }
 (async()=>{
@@ -91,6 +104,6 @@ async function verify(width,url,offline=false){
   for(const w of [320,390,1024])await verify(w,url);
   const offline=path.join(root,'downloads/trainers/makarychev8-algebra/makarychev8-algebra.html');
   await verify(320,require('node:url').pathToFileURL(offline).href,true);
-  console.log('PASS source 1131–1136 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
+  console.log('PASS source 1131–1143 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
  }finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

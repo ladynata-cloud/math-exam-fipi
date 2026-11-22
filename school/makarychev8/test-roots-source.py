@@ -39,9 +39,25 @@ old_addresses = {(l['id'], i, t['id']) for l in lessons for i, t in enumerate(l[
 frozen_addresses = {(r['lesson'], r['index'], r['id']) for r in baseline['records']}
 ok(len(old_addresses) == len(frozen_addresses) == 722 and old_addresses == frozen_addresses, 'unique complete prior routes and identities')
 ok(baseline['storageKey'] == 'mathexam.makarychev8.2024.v1', 'unchanged learner storage identity')
+# The four existing §46 cards gained a model and a practice skill. Their
+# questions, answer formats, steps, IDs and positions are frozen by the original
+# digest. The two №1140 expressions also gained exact edition references.
+def prior_payload(task):
+    if task['id'] not in {'p46-t01', 'p46-t02', 'p46-t03', 'p46-t04'}:
+        return task
+    prior = dict(task)
+    assert prior.pop('graph')['type'] == 'source-floor-parts'
+    assert prior['skills'][0] == 'floor-fraction-part'
+    prior['skills'] = prior['skills'][1:]
+    if task['id'] in {'p46-t03', 'p46-t04'}:
+        reference = {'p46-t03': '№ 1140 · [2x]', 'p46-t04': '№ 1140 · 2[x]'}[task['id']]
+        assert task['source'] == {'type': 'textbook', 'reference': reference, 'page': 256}
+        prior['source'] = {'type': 'authored', 'reference': 'Авторская задача по теме учебника', 'page': 255}
+    return prior
+
 for record in baseline['records']:
     task = by_lesson[record['lesson']]['tasks'][record['index']]
-    ok(task['id'] == record['id'] and digest(task) == record['sha256'], 'old task payload/route changed: ' + record['id'])
+    ok(task['id'] == record['id'] and digest(prior_payload(task)) == record['sha256'], 'old task payload/route changed: ' + record['id'])
 
 # Reconstruct later chapter-I additions only after checking all 722 historical
 # addresses. The final bank comparison below must include every appended card.
@@ -83,6 +99,7 @@ by_lesson['p44']['tasks'].extend(read('exercises-1119-1125.json'))
 by_lesson['p45']['tasks'].extend(read('exercises-1126-1130.json'))
 by_lesson['p45']['tasks'].extend(read('exercises-1131-1135.json'))
 by_lesson['p45']['tasks'].extend(read('exercises-1136.json'))
+by_lesson['p46']['tasks'].extend(read('exercises-1137-1143.json'))
 for t in read('exercises-743-752.json')+read('exercises-753-763.json')+read('exercises-764-782.json')+read('exercises-783-797.json')+read('exercises-798-805.json')+read('exercises-806-821.json')+read('exercises-822-831.json')+read('exercises-832-837.json')+read('exercises-838-845.json')+read('exercises-846-859.json')+read('exercises-860-868.json')+read('exercises-869-880.json')+read('exercises-881-897.json')+read('exercises-898-910.json')+read('exercises-911-931.json')+read('exercises-932-955.json')+read('exercises-956-972.json')+read('exercises-973-990.json')+read('exercises-991-1003.json')+read('exercises-1004-1013.json')+read('exercises-1014-1021.json')+read('exercises-1022-1031.json')+read('exercises-1032-1038.json')+read('exercises-1039-1048.json')+read('exercises-1049-1062.json'):
     by_lesson[t['id'][:3]]['tasks'].append(t)
 
@@ -189,5 +206,5 @@ for original, actual in zip(lessons, built['lessons']):
         ok(actual['studyOrder'] == expected_order and sorted(actual['studyOrder']) == list(range(len(original['tasks']))), original['id'] + ' complete source-ordered navigation with preserved URL indices')
 for record in baseline['records']:
     t = next(l for l in built['lessons'] if l['id'] == record['lesson'])['tasks'][record['index']]
-    ok(digest(t) == record['sha256'], 'built prior payload unchanged ' + record['id'])
+    ok(digest(prior_payload(t)) == record['sha256'], 'built prior payload unchanged ' + record['id'])
 print(json.dumps({'status': 'PASS', 'checks': checks, 'sourceNumbers': len(numbers), 'rootCards': len(roots), 'reviewCards': len(review_cards), 'priorTasksPreserved': baseline['count']}, ensure_ascii=False))

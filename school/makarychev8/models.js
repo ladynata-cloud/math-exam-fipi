@@ -940,6 +940,8 @@
   }
 
   const finalFunctionSkills=[
+   {id:'floor-fraction-part',title:'Соседние целые и остаток',description:'Отметь рациональное число на оси и найди его целую или дробную часть.'},
+   {id:'floor-graph-segments',title:'Ступеньки и скачки',description:'Построй один участок по выбранным координатам и отметь оба его конца.'},
    {id:'cancel-common-surd',title:'Убери общее слагаемое',description:'Сравни оставшиеся корни точно и учти знак перед каждым.'},
    {id:'reciprocal-samples',title:'Две ветви гиперболы',description:'Отметь свои точки новой гиперболы по обе стороны от оси.'},
    {id:'reciprocal-boundaries',title:'Дробь и уровень',description:'Проверь знаки на двух ветвях при новой высоте.'},
@@ -952,6 +954,18 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='floor-fraction-part'){
+    const den=2+seed%7,num=(seed%2?-1:1)*(2+seed%43+level),floor=Math.floor(num/den),fraction=(num-floor*den)+'/'+den;
+    const mode=(Math.floor(seed/2)+level)%2?'fraction':'floor',x=num+'/'+den,hint='Отметь число между последовательными целыми. Дробная часть отсчитывается от левой границы.';
+    return {...common,prompt:'Найди '+(mode==='floor'?'целую':'дробную')+' часть '+x+'.',kind:'number',answer:mode==='floor'?String(floor):fraction,
+     graph:{type:'source-floor-parts',mode,x},steps:[step('Какое целое находится слева или совпадает с числом?',floor,hint),step('Какое целое строго больше и ближе остальных?',floor+1,hint)],hint,correction:hint,explanation:'Число равно сумме '+floor+' и '+fraction+'.'};
+   }
+   if(id==='floor-graph-segments'){
+    const inside=1+seed%4,negative=Boolean(seed%2),outer=(negative?-1:1)*(1+(Math.floor(seed/3)+level)%4),saw=Boolean(Math.floor(seed/2)%2),coef=inside===1?'':String(inside);
+    const formula=outer+(saw?'{'+coef+'x}':'['+coef+'x]'),hint='Между скачками внутренний аргумент проходит от целого k до следующего целого.';
+    return {...common,prompt:'Построй произвольный полный участок графика y = '+formula+'. Введи его концы и включение в формате (x;y), (x;y) | [).',kind:'floor-graph-piece',answer:'(0;0), (1/'+inside+';'+(saw?outer:0)+') | [)',graph:{type:'source-floor-parts',mode:'plot',inside,outer,saw,revealAfterSubmit:true},
+     steps:[step('Выбери целый номер участка.',0,'Можно выбрать любое целое.','integer-probe'),step('Какова ширина по оси x?','1/'+inside,hint)],hint,correction:hint,explanation:'В точке скачка значение задаёт участок справа.'};
+   }
    if(id==='cancel-common-surd'){
     const coeff=2+seed%5,rad=[2,3,5,7][seed%4],k1=2+(seed+level)%5,k2=1+(Math.floor(seed/3)+level)%6;
     const negative=Boolean(seed%2),sign=negative?' − ':' + ',a=k1*k1*2,b=k2*k2*3,hidden=coeff*coeff*rad;

@@ -3233,6 +3233,7 @@
         "hint": "Число −0,01 лежит между −1 и 0.",
         "explanation": "[−0,01] = −1, а не 0.",
         "skills": [
+          "floor-fraction-part",
           "decimal-multiply",
           "fraction-divide"
         ],
@@ -3240,6 +3241,12 @@
           "type": "textbook",
           "reference": "№1137 · a = −0,01",
           "page": 256
+        },
+        "graph": {
+          "type": "source-floor-parts",
+          "revealAfterSubmit": true,
+          "mode": "floor",
+          "x": "-0.01"
         }
       },
       {
@@ -3272,6 +3279,7 @@
         "hint": "−1 ≤ −0,95 < 0.",
         "explanation": "Дробная часть равна 0,05: она неотрицательна.",
         "skills": [
+          "floor-fraction-part",
           "decimal-multiply",
           "fraction-divide"
         ],
@@ -3279,6 +3287,12 @@
           "type": "textbook",
           "reference": "№1138 · c = −0,95",
           "page": 256
+        },
+        "graph": {
+          "type": "source-floor-parts",
+          "revealAfterSubmit": true,
+          "mode": "fraction",
+          "x": "-0.95"
         }
       },
       {
@@ -3311,13 +3325,21 @@
         "hint": "2 · 2,7 = 5,4.",
         "explanation": "[2 · 2,7] = [5,4] = 5. Это не то же самое, что 2[2,7].",
         "skills": [
+          "floor-fraction-part",
           "decimal-multiply",
           "fraction-divide"
         ],
         "source": {
-          "type": "authored",
-          "reference": "Авторская задача по теме учебника",
-          "page": 255
+          "type": "textbook",
+          "reference": "№ 1140 · [2x]",
+          "page": 256
+        },
+        "graph": {
+          "type": "source-floor-parts",
+          "revealAfterSubmit": true,
+          "mode": "floor",
+          "x": "5.4",
+          "product": true
         }
       },
       {
@@ -3350,13 +3372,20 @@
         "hint": "2 ≤ 2,7 < 3.",
         "explanation": "2[2,7] = 4, тогда как [2 · 2,7] = 5.",
         "skills": [
+          "floor-fraction-part",
           "decimal-multiply",
           "fraction-divide"
         ],
         "source": {
-          "type": "authored",
-          "reference": "Авторская задача по теме учебника",
-          "page": 255
+          "type": "textbook",
+          "reference": "№ 1140 · 2[x]",
+          "page": 256
+        },
+        "graph": {
+          "type": "source-floor-parts",
+          "revealAfterSubmit": true,
+          "mode": "floor",
+          "x": "2.7"
         }
       },
       {
