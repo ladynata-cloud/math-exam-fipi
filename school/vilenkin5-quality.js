@@ -188,6 +188,11 @@
     if(target.answerFormat==='v5-unit-fraction'&&!M.parse(root.Vilenkin5PartsOfUnits.normalized(value)))return 'Запиши число. Для доли подходят десятичная, обыкновенная и смешанная дроби. Пока это черновик.';
     if(target.answerFormat==='v5-ray-label'&&!root.Vilenkin5PrintedRay.read(value))return 'Запиши одну букву с луча. Число можно заменить буквой без потери попытки.';
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
+    if(target.answerFormat==='v5-refined-area'){
+      const area=root.Vilenkin5EquivalentArea;
+      if(!area.parse(value))return 'Укажи два ответа: дробь по новым частям; число частей в одной старой. Пока это черновик.';
+      if(!area.accepts(value,target)&&M.equal(value,target.answer))return area.feedback(value,target);
+    }
     if(target.answerFormat==='v5-difficulty')return /[а-яё]/i.test(value)?'':'Напиши название группы словами: лёгкие, средние или сложные.';
     if(target.answerFormat==='v5-triangle-area-pairs')return root.Vilenkin5TrianglesAndStock.pairs(value)?'':'Пока это черновик. Запиши все четыре названия по одному разу и поставь знак = в каждой паре.';
     if(target.answerFormat==='v5-stock-expression')return root.Vilenkin5TrianglesAndStock.stockExpression(value,root.Vilenkin5IslandAndMeeting)?'':'Пока это черновик. Запиши остаток с буквой n.';

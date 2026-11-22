@@ -1437,6 +1437,23 @@ async function run(browser, origin, backend, failures) {
   assert.deepEqual(chartLabels.map(n=>n[2]),['Лёгкие','Средние','Сложные']);
   assert(chartLabels[0][1]<chartLabels[1][0]&&chartLabels[1][1]<chartLabels[2][0],'mobile chart labels must not overlap');
 
+  phase = 'source 5.98: explain equal areas on four pairs of figures';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-98"]').click();await studentFrame.locator('h1').filter({hasText:'№5.98'}).waitFor();
+  await teacherFrame.locator('#answer').fill('1/9;3');await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'subdivide all coloured pieces too')).scene.message,/Закрашенные/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=example]').selectOption('3');await studentFrame.locator('[data-v5-param=pieces]').fill('3');await studentFrame.locator('[data-v5-param=pieces]').press('Tab');
+  await studentFrame.locator('[data-v5-prediction]').fill('6');await studentFrame.locator('[data-v5-predict] button').click();
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const sharedArea=await same(studentFrame,teacherFrame,'same two-fifths with six coloured rectangles');assert.equal(sharedArea.scene.model.example,3);assert.equal(sharedArea.scene.model.pieces,3);assert(sharedArea.scene.model.seen);
+  for(const [i,v] of ['3/9;3','10/12;2','3/12;3','8/20;4'].entries()){
+    if(i)await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill(v);await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'matched equal area '+i)).scene.correct);
+  }
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'additive rule fails')).scene.message,/1\/2/);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await teacherFrame.locator('#answer').fill('2');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'fixed-area explanation')).scene.correct);
+  await narrow(student,studentFrame,'fraction-preserving-area');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
