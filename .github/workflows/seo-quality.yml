@@ -25,11 +25,18 @@ on:
       - 'tools/arzhenikov-life*'
       - 'tools/arzhenikov-adventure*'
       - 'tools/arzhenikov-harbor*'
+      - 'tools/arzhenikov-discoveries*'
+      - 'tools/arzhenikov-journeys*'
+      - 'tools/arzhenikov-offline*'
+      - 'tools/build-arzhenikov-offline.py'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-life*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-workshop*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-garden*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-adventure*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-harbor*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-discoveries*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-journeys*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-offline.zip'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-art*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-*-atlas.png'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-peach.png'
@@ -74,6 +81,10 @@ jobs:
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-adventure.browser.cjs
           node --test tools/arzhenikov-harbor.test.cjs
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-harbor.browser.cjs
+          node --test tools/arzhenikov-discoveries.test.cjs
+          python3 tools/arzhenikov-offline.test.py
+          python3 tools/build-arzhenikov-offline.py --check
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-journeys.browser.cjs
 
       - name: Preserve child adventure screenshots
         if: always()
