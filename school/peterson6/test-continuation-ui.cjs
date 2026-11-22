@@ -1862,3 +1862,11 @@ test('read every issued Fahrenheit and Celsius value on paired scales before rou
    const old=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,old);}
  }finally{f.close();}
 });
+
+test('read the entire printed table, separate reciprocal branches, count true vertical intersections and compare every linear and quadratic family',()=>{
+ const f=fixture(null,null,true);try{
+  for(const [slot,expected,count] of [[1,'−2x',1],[2,'|x|',1],[18,'1/x',2],[19,'x²',1]]){f.nav('#lesson/p40/'+slot);assert(f.d.querySelectorAll('#task-figure tbody tr').length>=9);f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,count);assert(f.q('#model .pm-result').textContent.includes(expected));const old=f.q('#model').textContent;f.event(d,'1','change');f.event(st,'2','change');assert.notEqual(f.q('#model').textContent,old);}
+  for(let i=0;i<3;i++){f.nav('#lesson/p40/'+(20+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-vertical-crossing]').length,[1,2,1][i]);f.event(d,'1','change');assert.equal(f.q(st).value,'0');f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-vertical-crossing]').length,[1,4,1][i]);}
+  for(const [i,count] of [[3,3],[23,3],[24,2],[25,2],[26,2],[27,3],[28,2],[29,2]]){f.nav('#lesson/p40/'+i);f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-curve-probe]').length,count);assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,count);const rows=f.q('#model table').textContent;f.event(d,'1','change');f.event(st,'2','change');assert.notEqual(f.q('#model table').textContent,rows);}
+ }finally{f.close();}
+});
