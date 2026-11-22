@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "6e49846d98b9ff10f827ddbd8898a897370366363fab260183eb6c6d6625554c",
-      "afterSha256": "07c841a2bdc78041ca932bf18a90c3fd22b23ae769585341ca8b99f6251df82e",
+      "beforeSha256": "e2c1554ce7dd3c8e3f7ec57aa93498af45b68363af76387e7494173c585c0eb3",
+      "afterSha256": "7b31a1db5da8e057f102fad0d67475c55c6ac0f7e55c5c6447a656a442ad512d",
       "placement": "before-head-close",
-      "sourceSha": "43a23f5ea414ee2133f092602b9f2bd5cc7dc48c"
+      "sourceSha": "6cd37404679e20e0241ec30a1288cda688ba24b9"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7627,6 +7627,15 @@
       ],
       "task": "docs/tasks/VERIFIED_BOOK_ROUTES_20261121.md",
       "boundary": "На общей школьной странице сохранены два тома Виленкина и добавлена карта издания source-66 с проверенными упражнениями Мордковича и Николаева для 8 класса."
+    },
+    {
+      "previousBaseSha": "43a23f5ea414ee2133f092602b9f2bd5cc7dc48c",
+      "sourceBaseSha": "6cd37404679e20e0241ec30a1288cda688ba24b9",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "task": "docs/tasks/VERIFIED_BOOK_ROUTES_20261121.md",
+      "boundary": "На общей школьной странице сохранены два тома Виленкина и учебник с задачником Мордковича и Николаева для 9 класса, включая первые 24 по задачнику и 10 заданий по теории."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
