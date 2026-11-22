@@ -1,0 +1,233 @@
+{
+  "parts": {
+    "766": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е"
+    ]
+  },
+  "previousCatalog": {
+    "766": {
+      "id": "source-main-0766",
+      "kind": "exercise",
+      "title": "Задача № 766",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "766",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          189
+        ],
+        "pdfPages": [
+          191
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0766-a": {
+      "raw": "1f7484db981431c19390009ea7b104118d3c187fd408df37624f8a6ff6a23afb",
+      "authored": "c2772cd97113a23be8a42aa1601e6077913981264372074f03434da30486668e",
+      "integrated": "a97b55ad04549642446cee0395ef94b2936ced6f2b5adc0a9de6eddff1fbefc1"
+    },
+    "ex-main-0766-b": {
+      "raw": "d330788a8e9bb1c948a7a9cf361e0d82b32454ba775f4099be83a1ce489bd588",
+      "authored": "c827fa9160fa50243f5bed2fbfbedd4a0ae72e05f4faa4ef8037b079f6fdf883",
+      "integrated": "8523851d17e0544877346e469a8d4d14491b4cfef1a331ada79fcc4e735b2571"
+    },
+    "ex-main-0766-c": {
+      "raw": "e07b758ad0cb05b81c32a6c9c5df60f56fe6d0f6b4dd6940129884f2183bc354",
+      "authored": "55b3043c2496fd58392b6f066ec5547540a59361957e09ca330162ef7900880a",
+      "integrated": "1ccd54e779d9af6053242244b69054e71f2b291191d778710643eb66246d4be2"
+    },
+    "ex-main-0766-d": {
+      "raw": "7c8bc7c3c0ad54a531f23d9507f5f6dccecbb926751a23d563ec8961d54a9ce2",
+      "authored": "9b459a46f4d12a4176f4b395c3f1e3e867cec1b9db21b313927e49c2bc427dff",
+      "integrated": "a4a2773172bc2a19a4fd61a08ae4bc5dc07c7da49f1abeea916d53c6134e91c3"
+    },
+    "ex-main-0766-e": {
+      "raw": "3540463fa1e5304588a2e4e21410e565372a6dd17ef0e9331de02526711df841",
+      "authored": "6cb0014f1f6f757384bfc34e82284b7d0df14c9ff5b7deaf26e4e2b3e4d00c4d",
+      "integrated": "b6c490576ac2af2da0e3848e294727bebdb928e2d25e5fb972063ac42ba450e7"
+    },
+    "ex-main-0766-f": {
+      "raw": "8816ebd87a73e7b2bb8ffe4bcac9385c4bbd9ae271f7e9e68a8152c86117ac7f",
+      "authored": "de335e90b91d0b2a6f662fa7f08451074f514d6d5f7049939a6ebf04c2923b88",
+      "integrated": "d1824b7fbb384f27435aabf1f729b5cf54838703c82def28a0c93e03eaccf83f"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0766-a|condition",
+      "final-triangular-pyramid-review-ex-main-0766-a-condition"
+    ],
+    [
+      "ex-main-0766-a|help:h1",
+      "final-triangular-pyramid-review-ex-main-0766-a-help-h1"
+    ],
+    [
+      "ex-main-0766-a|help:h2",
+      "final-triangular-pyramid-review-ex-main-0766-a-help-h2"
+    ],
+    [
+      "ex-main-0766-a|step-1",
+      "final-triangular-pyramid-review-ex-main-0766-a-step-1"
+    ],
+    [
+      "ex-main-0766-a|step-2",
+      "final-triangular-pyramid-review-ex-main-0766-a-step-2"
+    ],
+    [
+      "ex-main-0766-a|step-3",
+      "final-triangular-pyramid-review-ex-main-0766-a-step-3"
+    ],
+    [
+      "ex-main-0766-b|condition",
+      "final-triangular-pyramid-review-ex-main-0766-b-condition"
+    ],
+    [
+      "ex-main-0766-b|help:h1",
+      "final-triangular-pyramid-review-ex-main-0766-b-help-h1"
+    ],
+    [
+      "ex-main-0766-b|help:h2",
+      "final-triangular-pyramid-review-ex-main-0766-b-help-h2"
+    ],
+    [
+      "ex-main-0766-b|step-1",
+      "final-triangular-pyramid-review-ex-main-0766-b-step-1"
+    ],
+    [
+      "ex-main-0766-b|step-2",
+      "final-triangular-pyramid-review-ex-main-0766-b-step-2"
+    ],
+    [
+      "ex-main-0766-b|step-3",
+      "final-triangular-pyramid-review-ex-main-0766-b-step-3"
+    ],
+    [
+      "ex-main-0766-c|condition",
+      "final-triangular-pyramid-review-ex-main-0766-c-condition"
+    ],
+    [
+      "ex-main-0766-c|help:h1",
+      "final-triangular-pyramid-review-ex-main-0766-c-help-h1"
+    ],
+    [
+      "ex-main-0766-c|help:h2",
+      "final-triangular-pyramid-review-ex-main-0766-c-help-h2"
+    ],
+    [
+      "ex-main-0766-c|step-1",
+      "final-triangular-pyramid-review-ex-main-0766-c-step-1"
+    ],
+    [
+      "ex-main-0766-c|step-2",
+      "final-triangular-pyramid-review-ex-main-0766-c-step-2"
+    ],
+    [
+      "ex-main-0766-c|step-3",
+      "final-triangular-pyramid-review-ex-main-0766-c-step-3"
+    ],
+    [
+      "ex-main-0766-d|condition",
+      "final-triangular-pyramid-review-ex-main-0766-d-condition"
+    ],
+    [
+      "ex-main-0766-d|help:h1",
+      "final-triangular-pyramid-review-ex-main-0766-d-help-h1"
+    ],
+    [
+      "ex-main-0766-d|help:h2",
+      "final-triangular-pyramid-review-ex-main-0766-d-help-h2"
+    ],
+    [
+      "ex-main-0766-d|step-1",
+      "final-triangular-pyramid-review-ex-main-0766-d-step-1"
+    ],
+    [
+      "ex-main-0766-d|step-2",
+      "final-triangular-pyramid-review-ex-main-0766-d-step-2"
+    ],
+    [
+      "ex-main-0766-d|step-3",
+      "final-triangular-pyramid-review-ex-main-0766-d-step-3"
+    ],
+    [
+      "ex-main-0766-e|condition",
+      "final-triangular-pyramid-review-ex-main-0766-e-condition"
+    ],
+    [
+      "ex-main-0766-e|help:h1",
+      "final-triangular-pyramid-review-ex-main-0766-e-help-h1"
+    ],
+    [
+      "ex-main-0766-e|help:h2",
+      "final-triangular-pyramid-review-ex-main-0766-e-help-h2"
+    ],
+    [
+      "ex-main-0766-e|step-1",
+      "final-triangular-pyramid-review-ex-main-0766-e-step-1"
+    ],
+    [
+      "ex-main-0766-e|step-2",
+      "final-triangular-pyramid-review-ex-main-0766-e-step-2"
+    ],
+    [
+      "ex-main-0766-e|step-3",
+      "final-triangular-pyramid-review-ex-main-0766-e-step-3"
+    ],
+    [
+      "ex-main-0766-f|condition",
+      "final-triangular-pyramid-review-ex-main-0766-f-condition"
+    ],
+    [
+      "ex-main-0766-f|help:h1",
+      "final-triangular-pyramid-review-ex-main-0766-f-help-h1"
+    ],
+    [
+      "ex-main-0766-f|help:h2",
+      "final-triangular-pyramid-review-ex-main-0766-f-help-h2"
+    ],
+    [
+      "ex-main-0766-f|step-1",
+      "final-triangular-pyramid-review-ex-main-0766-f-step-1"
+    ],
+    [
+      "ex-main-0766-f|step-2",
+      "final-triangular-pyramid-review-ex-main-0766-f-step-2"
+    ],
+    [
+      "ex-main-0766-f|step-3",
+      "final-triangular-pyramid-review-ex-main-0766-f-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "605623cbdd1617e8b3ba1f0fad28e53ecddbc5028eff1ffb3d48b9a7b52f7aea",
+      "afterSHA256": "33b1126be2a56c6c6d97c8e8bfc0d144241d42e9761aa5744c605d7357ba70e2"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "3db6ed4d45864e2908e38cc265691c2d25bf7c3572bf6aafd8b43cca27022ccc",
+      "afterSHA256": "3a80591bb3362d66552dbb68effe0f171eba0a9d56864679615c199127b2d4a4"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T01:35:00Z",
+    "scope": "Chapters I–VII and the first two final-review exercises, 764–765, are complete in all twelve printed parts. The remaining final-review and advanced exercises from 766 are inventoried separately."
+  },
+  "before": {
+    "course": "ac45ff4ed79fc5003cc4e8275a591f9517008bfafb1282ca9bcb1dc428854b2c",
+    "index": "19004e558312a25d2a8abd9ea34d03d16905da374259154a4499de524af6a381",
+    "registry": "87256a6bf093f364e7ac1973592cd6d8b68b7bcaea7e1bd78ca58347dfb75044",
+    "cases": "6a285e71377a1623083dac14b3f5ecf902bb4eec545c5ce64178ceca0b59a05f"
+  }
+}
