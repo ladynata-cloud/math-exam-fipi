@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "4e6a72047bfc3638158ff990e7bbbbae5f7113ef85f5413fcc4669baf5dd03e6",
-      "afterSha256": "c6bc65d1de7a78618c71833e295b99635e5a074e56d2c9011b9cc025c45100a6",
+      "beforeSha256": "0035f0278cf3d9e4d1235a9736fa21d3f3ba0213da7a23f02863e6730ec7f83a",
+      "afterSha256": "b7177c9a6141f97e0600eb4a6375f14857c5d1c484bcc418fd865a4739ccb1af",
       "placement": "before-head-close",
-      "sourceSha": "6fec046997b200ee604bb91128484d5b0e31ed66"
+      "sourceSha": "a4f53e596e7b4e41bcbeeebd02888fa7a7a1cc58"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7083,6 +7083,15 @@
         "school/index.html"
       ],
       "boundary": "На с. 23 проверены все четыре деления, ошибочное равенство с чрезмерным остатком и воспроизводимая работа обоих участников."
+    },
+    {
+      "previousBaseSha": "6fec046997b200ee604bb91128484d5b0e31ed66",
+      "sourceBaseSha": "a4f53e596e7b4e41bcbeeebd02888fa7a7a1cc58",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверены шесть преобразований единиц и связь кубического сантиметра с миллилитром, четыре объёма воды, три части периметра и доля урока. Состояния моделей восстанавливаются у учителя и ученика."
     }
   ],
   "coverageUpdates": [
