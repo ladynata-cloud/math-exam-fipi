@@ -1454,6 +1454,24 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('#answer').fill('2');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'fixed-area explanation')).scene.correct);
   await narrow(student,studentFrame,'fraction-preserving-area');
 
+  phase = 'source 5.99 and 5.100: pupils place fractions on the actual answer line';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-99"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.99'}).waitFor();
+  await teacherFrame.locator('#answer').fill('8');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  const setTick=async(frame,i,n)=>{const range=frame.locator('[data-line-mark="'+i+'"]');await range.focus();await range.press('Home');for(let j=0;j<n;j++)await range.press('ArrowRight');};
+  await setTick(teacherFrame,0,2);await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'numerator in place of cells')).scene.message,/Числитель/);
+  await ownership(teacher,student,true);await setTick(studentFrame,0,16);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  assert.equal((await same(studentFrame,teacherFrame,'student placed the first marker on cell 16')).scene.savedInput,'16');
+  await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('4');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await setTick(studentFrame,1,20);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-line-why="3"]').check();await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'complete two constructed fractions')).scene.correct);
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-100"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.100'}).waitFor();
+  await studentFrame.locator('#answer').fill('2');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await setTick(studentFrame,0,6);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await setTick(studentFrame,1,6);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  assert.equal((await same(teacherFrame,studentFrame,'two names at the same coordinate')).scene.savedInput,'6');
+  assert.match(await studentFrame.locator('[data-line-image] svg').getAttribute('aria-label'),/Первая отметка 6, вторая 6/);
+  await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('[data-line-why="1"]').check();await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'equal coordinates explained')).scene.correct);
+  await narrow(student,studentFrame,'paired-coordinate-points');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
