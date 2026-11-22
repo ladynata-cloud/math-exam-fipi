@@ -380,6 +380,23 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.match(await teacherFrame.locator('footer').innerText(), /без зачёта в личный прогресс/);
   const baselineCounts = await quietMessages([teacher, student], 'initial quiet');
 
+  phase = 'part 2 four printed gear and proportion problems';
+  await teacherFrame.locator('#book-part').selectOption('2');
+  await teacherFrame.locator('#exercise-number').fill('199');await teacherFrame.locator('#number-form button').click();
+  assert.equal(await teacherFrame.locator('#number-result a[href^="#lesson/p22/"]').count(),4);
+  await teacherFrame.locator('#number-result a[href="#lesson/p22/12"]').click();
+  await synchronized(teacherFrame,studentFrame,'№199(4) loads both gear tooth counts');
+  await teacherFrame.locator('#final-answer').fill('6880');await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await synchronized(teacherFrame,studentFrame,'teacher counted tooth crossings');assert.match(await studentFrame.locator('.feedback').first().innerText(),/прохождений зубцов/);
+  await ownership(teacher,student,true);await openModel(studentFrame);await studentFrame.locator('#model select').nth(0).selectOption('1');await studentFrame.locator('#model select').nth(1).selectOption('1');
+  await studentFrame.locator('#final-answer').fill('17');await synchronized(studentFrame,teacherFrame,'independent draft while viewing other gears');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await courseFrame(teacher);await synchronized(studentFrame,teacherFrame,'gear model and partial answer after teacher reload');
+  assert.deepEqual(await teacherFrame.locator('#model select').evaluateAll(nodes=>nodes.map(n=>n.value)),['1','1']);assert.equal(await teacherFrame.locator('#final-answer').inputValue(),'17');
+  await studentFrame.locator('#final-answer').fill('172');await studentFrame.locator('#answer-form button[type=submit]').click();await synchronized(studentFrame,teacherFrame,'student corrected tooth count');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await synchronized(teacherFrame,studentFrame,'corrected gear ratio after pupil reload');assert.equal(await studentFrame.locator('#final-answer').inputValue(),'172');await narrowShot(student,studentFrame,'gear-table-320','#task-figure');
+  await teacherFrame.locator('header nav a[href="#home"]').click();await synchronized(teacherFrame,studentFrame,'back to number search');await teacherFrame.locator('#book-part').selectOption('1');
+
   phase = 'textbook lookup, partial drafts and saved disclosures';
   await teacherFrame.locator('#exercise-number').fill('177');
   await teacherFrame.locator('#number-form button').click();

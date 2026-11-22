@@ -55,11 +55,21 @@ for(const [i,l]of D.lessons.entries()){
   }
  }
 }
+const prop199=D.lessons.find(l=>l.id==='p22').tasks.filter(t=>t.proportionPair);
+assert.deepEqual(Array.from(prop199,t=>[t.source.exercise,t.source.subpart,t.source.page]),[[197,'3',52],[197,'4',52],[198,'2',52],[199,'1',53],[199,'2',53],[199,'3',53],[199,'4',53]]);
+const propOriginals=[[20,9,14,6.3],[5,14,3,8.4],[180,8,200,7.2],[27,4.5,300,50],[250,48,150,80],[25,310,40,496],[32,215,40,172]];
+for(const [i,t] of prop199.entries()){
+ const [x0,y0,x1,result]=propOriginals[i],inverse=[2,4,6].includes(i);assert.equal(t.proportionPair.inverse,inverse);
+ assert.deepEqual(Array.from(t.proportionPair.examples[0]),[x0,y0,x1]);assert.equal(Number(t.answer.replace(',','.')),result);
+ assert(Math.abs(inverse?x0*y0-x1*result:y0/x0-result/x1)<1e-9);
+ assert(t.proportionPair.examples[1].some((n,k)=>n!==t.proportionPair.examples[0][k]));
+ const other=prop199.find(q=>q.id===t.relatedTask);assert(other&&other.id!==t.id);assert.equal(other.proportionPair.inverse,inverse);
+}
 const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numeric-oracles.json'),'utf8')).answers;
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1503);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1510);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
