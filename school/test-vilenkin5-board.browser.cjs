@@ -534,6 +534,14 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.135 to 1.137, plotting a coordinate in grid squares and millimetres';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-137"]').click();await studentFrame.locator('h1').filter({hasText:'№1.137'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=group]').selectOption('1');await teacherFrame.locator('[data-v5-param=target]').selectOption('2');await teacherFrame.locator('[data-v5-prediction]').fill('7');await teacherFrame.locator('[data-v5-predict] button').click();
+  const coordinateError=await same(teacherFrame,studentFrame,'seven steps must be converted into millimetres');assert.equal(coordinateError.scene.model.first,'7');assert.equal(coordinateError.scene.model.seen,false);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-prediction]').fill('105');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('#answer').fill('0;2;10;');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const coordinateRecovered=await same(studentFrame,teacherFrame,'restore the active scale, corrected prediction and written distances');assert.equal(coordinateRecovered.scene.model.first,'7');assert.equal(coordinateRecovered.scene.model.prediction,'105');assert.equal(coordinateRecovered.scene.savedInput,'0;2;10;');
+  await studentFrame.locator('#answer').fill('0;2;10;14');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'printed grid distances accepted')).scene.correct);await ownership(teacher,student,false);
+
   phase = 'source 1.130 to 1.134, mass units before and after making full groups';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-131"]').click();await studentFrame.locator('h1').filter({hasText:'№1.131'}).waitFor();
   await teacherFrame.locator('#answer').fill('357');await teacherFrame.locator('#answer-form button').click();const massError=await same(teacherFrame,studentFrame,'adding unlike weights triggers a unit-specific explanation');assert.match(massError.scene.message,/разными единицами/);
