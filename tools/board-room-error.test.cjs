@@ -60,13 +60,21 @@ async function createBoardFixture({ role = 'student', sourceOverride, trainer = 
     studentToken: 'fixture-student-token', server: SERVER
   }));
 
-  class FakeSocket {
-    constructor() { this.listeners = new Map(); this.sent = []; this.disconnected = false; }
+  class FixtureEvents {
+    constructor() { this.listeners = new Map(); }
     on(name, fn) { if (!this.listeners.has(name)) this.listeners.set(name, new Set()); this.listeners.get(name).add(fn); return this; }
     off(name, fn) { if (fn) this.listeners.get(name)?.delete(fn); else this.listeners.delete(name); return this; }
     removeAllListeners() { this.listeners.clear(); return this; }
-    emit(name, payload) { this.sent.push({ name, payload: payload === undefined ? undefined : copy(payload) }); return this; }
     deliver(name, payload) { for (const fn of [...(this.listeners.get(name) || [])]) fn(payload === undefined ? undefined : inRealm(payload)); }
+  }
+  class FakeSocket extends FixtureEvents {
+    constructor() {
+      super();
+      this.io = new FixtureEvents();
+      this.sent = [];
+      this.disconnected = false;
+    }
+    emit(name, payload) { this.sent.push({ name, payload: payload === undefined ? undefined : copy(payload) }); return this; }
     disconnect() { this.disconnected = true; this.deliver('disconnect'); return this; }
   }
   w.io = (_server, options) => {
@@ -204,8 +212,13 @@ test('the invited pupil can retry the same room without seeing an unrelated exer
     const next = f.socket();
     assert.notEqual(next, first);
     assert.equal(first.disconnected, true);
+    const shareStatus = doc.getElementById('shareStatus');
+    next.io.deliver('reconnect_attempt', 1);
+    assert.equal(shareStatus.textContent, 'переподключение');
     next.deliver('connect');
     f.accept(next);
+    first.io.deliver('reconnect_attempt', 2);
+    assert.equal(shareStatus.textContent, 'подключено', 'replaced Manager cannot overwrite the new room status');
     assert.equal(doc.body.classList.contains('awaiting-room'), false);
     assert.equal(doc.getElementById('shareStatus').textContent, 'подключено');
   } finally { f.close(); }
@@ -470,8 +483,11 @@ test('late socket, ready and registry events cannot unlock a pupil after a termi
     f.evaluate('loadTrainerRegistry({force:true})');
     const outgoing = oldSocket.sent.length;
     oldSocket.deliver('room:error', { message: TERMINAL_ERRORS[0] });
+    const terminalStatus = f.w.document.getElementById('shareStatus').textContent;
+    oldSocket.io.deliver('reconnect_attempt', 1);
+    assert.equal(f.w.document.getElementById('shareStatus').textContent, terminalStatus);
     for (const [name, payload] of [
-      ['connect'], ['reconnect_attempt'],
+      ['connect'],
       ['room:state', { state: { ...before, control: 'fixture-student', controlVersion: 99 }, you: { participantId: 'fixture-student', role: 'student' } }],
       ['control:changed', { control: 'fixture-student', controlVersion: 99 }],
       ['participants:state', { participants: [{ id: 'fixture-student', role: 'student' }] }],
