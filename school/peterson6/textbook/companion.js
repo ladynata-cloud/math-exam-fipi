@@ -464,6 +464,72 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  function cutoutQuestion(part){
+    if(part.id==='037-1')return 'Обозначь длины соседних сторон прямоугольника a и b, периметр обозначь P, площадь S. Запиши обе формулы и объясни смысл каждого действия.';
+    if(part.id==='037-2')return 'Сам обозначь сторону квадрата буквой. Запиши формулы периметра и площади через эту сторону и объясни, какие величины получены.';
+    return 'Из квадрата со стороной 10,6 см удалили прямоугольники в правом верхнем и левом нижнем углах, как на нашей схеме. AB = 7,5 см, DE = KF = 5,8 см, EF = 8,6 см. Найди периметр и площадь оставшейся фигуры. Площадь укажи точно, а затем округли до десятых.';
+  }
+  function cutoutDrawing(part,work){
+    const mode=work.geometryView||'outline',square=part.id==='037-2',name=work.squareSide||'a';
+    const title=mode==='outline'?'Граница фигуры':mode==='cuts'?'Удалённые прямоугольники':'Части площади',stroke=mode==='outline'?'#973c20':'#345b4e',background=mode==='area'?'#c7dfca':'#e8eee8';
+    const txt=(x,y,label)=>'<text x="'+x+'" y="'+y+'" text-anchor="middle" font-size="12" fill="#24392d">'+U.esc(label)+'</text>';
+    let shapes;
+    if(part.id!=='037-3'){
+      const x=square?61:37,y=square?27:51,w=square?164:214,h=square?164:115;
+      shapes='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+background+'" stroke="'+stroke+'" stroke-width="'+(mode==='outline'?4:2)+'"/>'+txt(x+w/2,y-8,square?name:'a')+txt(x+w+14,y+h/2,square?name:'b');
+      if(mode==='area')shapes+=txt(x+w/2,y+h/2,'площадь внутри');
+    }else{
+      // Positions reflect the issued dimensions, in centimetres scaled uniformly by 18.
+      const x=v=>37+18*v,y=v=>22+18*v,A=[0,0],B=[7.5,0],C=[7.5,4.8],D=[10.6,4.8],E=[10.6,10.6],F=[2,10.6],K=[2,4.8],M=[0,4.8];
+      const polygon=[A,B,C,D,E,F,K,M].map(([a,b])=>x(a)+','+y(b)).join(' '),w=18*10.6,h=18*4.8,bottom=18*5.8;
+      shapes='<rect x="'+x(0)+'" y="'+y(0)+'" width="'+w+'" height="'+w+'" fill="none" stroke="#647a70" stroke-dasharray="5 4"/>';
+      if(mode==='cuts')shapes+='<rect x="'+x(7.5)+'" y="'+y(0)+'" width="'+18*3.1+'" height="'+h+'" fill="#ffe4bf"/><rect x="'+x(0)+'" y="'+y(4.8)+'" width="'+18*2+'" height="'+bottom+'" fill="#ffe4bf"/>';
+      shapes+='<polygon points="'+polygon+'" fill="'+background+'" stroke="'+stroke+'" stroke-width="'+(mode==='outline'?3.4:2)+'"/>';
+      if(mode==='area')shapes+='<path d="M'+x(2)+' '+y(4.8)+' H'+x(7.5)+'" stroke="#4e6754" stroke-width="2" stroke-dasharray="5 3"/>'+txt(x(3.9),y(2.8),'верхняя часть')+txt(x(6.4),y(8.2),'нижняя часть');
+      for(const [point,label,dx,dy] of [[A,'A',-10,-4],[B,'B',5,-6],[C,'C',-8,-5],[D,'D',11,1],[E,'E',9,6],[F,'F',-7,13],[K,'K',8,15],[M,'M',-12,4]])shapes+=txt(x(point[0])+dx,y(point[1])+dy,label);
+    }
+    return '<svg viewBox="0 0 275 236" style="width:100%;max-width:365px;display:block" role="img" aria-label="'+U.esc(title+(part.id==='037-3'?'. В квадрате удалены противоположные углы; оставшийся контур A, B, C, D, E, F, K, M.':square?'. Квадрат со стороной '+name+'.':'. Прямоугольник со сторонами a и b.'))+'">'+shapes+'</svg>';
+  }
+  function formulaChoices(part,work){
+    const a=part.id==='037-2'?work.squareSide||'a':'a',square=part.id==='037-2';
+    return square?[[a+' + '+a, '4 · '+a, a+'²'],['4 · '+a,a+'²',a+' + '+a]]:[['a + b','2(a + b)','a · b'],['2(a + b)','a · b','a + b']];
+  }
+  function geometryFigure(part,work,interactive){
+    const cut=part.id==='037-3',square=part.id==='037-2',mode=work.geometryView||'outline';
+    const dropdown=(key,options,v)=>'<select data-geo-'+key+'><option value="">Выбери</option>'+options.map((text,i)=>'<option value="'+(i+1)+'"'+(v===i+1?' selected':'')+'>'+U.esc(text)+'</option>').join('')+'</select>';
+    const numbers=['Периметр P, см','Точная площадь S, см²','Площадь до десятых, см²'],variants=formulaChoices(part,work);
+    const fields=cut?numbers.map((s,i)=>'<label>'+s+' <input style="display:block;box-sizing:border-box;width:100%;max-width:100%" data-geo-number="'+i+'" inputmode="decimal" maxlength="50" value="'+U.esc(work.geometryNumbers?.[i]||'')+'"></label>').join(''):
+      (square?'<label>Буква моей стороны <select data-geo-side>'+['a','b','x','m'].map(c=>'<option value="'+c+'"'+((work.squareSide||'a')===c?' selected':'')+'>'+c+'</option>').join('')+'</select></label>':'')+'<label>Моя формула P '+dropdown('p',variants[0],work.perimeterChoice)+'</label><label>Моя формула S '+dropdown('s',variants[1],work.areaChoice)+'</label>';
+    const modes=[['outline','Обойти границу'],['area',cut?'Разбить оставшуюся площадь':'Рассмотреть площадь']];if(cut)modes.push(['cuts','Выделить вырезанные углы']);
+    return '<figure data-geometry-host style="margin:.5em 0"><figcaption>Периметр и площадь</figcaption>'+cutoutDrawing(part,work)+(interactive?'<label>На рисунке <select style="display:block;max-width:100%;width:100%" data-geo-mode>'+modes.map(([v,label])=>'<option value="'+v+'"'+(mode===v?' selected':'')+'>'+label+'</option>').join('')+'</select></label><div style="display:grid;grid-template-columns:minmax(0,1fr);gap:.35em">'+fields+'</div><button class="secondary" type="button" data-geo-use>Перенести мои результаты в ответ</button>':'')+'</figure>';
+  }
+  function geometryText(part,work){
+    if(part.id==='037-3'){const v=work.geometryNumbers||[];return 'P = '+v[0]+' см. S = '+v[1]+' см², до десятых '+v[2]+' см².';}
+    const choices=formulaChoices(part,work);return 'P = '+choices[0][work.perimeterChoice-1]+'; S = '+choices[1][work.areaChoice-1]+'.';
+  }
+  function mountGeometry(main,part,work,save){
+    let host=main.querySelector('[data-geometry-host]');if(!host)return;
+    function draw(){host.outerHTML=geometryFigure(part,work,true);host=main.querySelector('[data-geometry-host]');const use=host.querySelector('[data-geo-use]');
+      const enable=()=>{use.disabled=part.id==='037-3'?[0,1,2].some(i=>!work.geometryNumbers?.[i]?.trim()):!work.perimeterChoice||!work.areaChoice;};enable();
+      for(const [selector,key] of [['[data-geo-mode]','geometryView'],['[data-geo-side]','squareSide'],['[data-geo-p]','perimeterChoice'],['[data-geo-s]','areaChoice']]){const field=host.querySelector(selector);if(field)field.onchange=()=>{if(field.value)work[key]=key.endsWith('Choice')?Number(field.value):field.value;else delete work[key];save();draw();host.querySelector(selector).focus({preventScroll:true});};}
+      for(const field of host.querySelectorAll('[data-geo-number]'))field.oninput=()=>{const values=Array.from({length:3},(_,i)=>work.geometryNumbers?.[i]||'');values[Number(field.dataset.geoNumber)]=field.value.slice(0,50);work.geometryNumbers=values;enable();save();};
+      use.onclick=()=>{const el=main.querySelector('#answer');el.value=geometryText(part,work);el.dispatchEvent(new Event('input',{bubbles:true}));el.focus();};
+    }draw();
+  }
+  function geometryResponse(number,part,input,work){
+    if(number!==37||input!==geometryText(part,work))return null;
+    if(part.id!=='037-3'){
+      if(work.perimeterChoice!==2)return {ok:false,text:'Периметр — путь по всей границе. Посчитай все четыре стороны, не пропуская противоположные.'};
+      if(work.areaChoice!==2)return {ok:false,text:'Площадь измеряет внутреннюю часть в квадратных единицах. Умножь длину на ширину.'};
+      return {ok:true,text:'Обе формулы подходят. Объясни, почему в первой считаются длины, а во второй — квадратные единицы. Формулы и объяснение ждут проверки.'};
+    }
+    const M=root.PetersonBook.M,[p,area,rounded]=work.geometryNumbers;
+    if(!M.equal(p,'42.4'))return {ok:false,text:'Обойди границу. В каждом вырезанном углу два внешних отрезка заменились двумя внутренними тех же длин.'};
+    if(!M.equal(area,'85.88'))return {ok:false,text:M.equal(area,'112.36')?'Это площадь полного квадрата. Вычти площади обоих удалённых прямоугольников.':'Верхняя правая выемка имеет высоту 10,6 − 5,8 и ширину 10,6 − 7,5. Для нижней левой выемки найди отдельные размеры.'};
+    if(!M.equal(rounded,'85.9'))return {ok:false,text:'Точная площадь подходит. Для округления до десятых проверь цифру сотых, сохрани одну цифру после запятой.'};
+    return {ok:true,text:'Периметр, точная и округлённая площадь согласуются. Запиши, как нашёл размеры вырезанных частей; решение ждёт проверки.'};
+  }
+
   const periodTasks={'035-a':'1/3','035-b':'2/11','035-v':'23/90','035-g':'32/33'};
   function periodicRule(number){
     if(number===35)return {prompt:'Всегда ли обыкновенная дробь имеет конечную десятичную запись? Подбери доказательство или контрпример и запиши своё объяснение.',
@@ -902,6 +968,7 @@
   }
 
   function openingQuestion(number,part) {
+    if(number===37)return cutoutQuestion(part);
     if((number===35||number===36)&&part.id.endsWith('pravilo'))return periodicRule(number).prompt;
     if(number===35)return 'Запиши дробь '+periodTasks[part.id]+' как бесконечную периодическую десятичную дробь, затем округли её до тысячных. Для периода используй скобки.';
     if(number===36)return 'Найди частное данных десятичных дробей. Дойди при делении до цифры, позволяющей округлить результат до десятитысячных.';
@@ -969,6 +1036,7 @@
     if(item.number===32)drawing=intervalSequence({},false);
     if(item.number===33)drawing=roundingFigure(part,{},false);
     if(item.number===34)drawing=calculationView(part,{},false);
+    if(item.number===37)drawing=geometryFigure(part,{},false);
     if(item.number===35||item.number===36)drawing=part.id.endsWith('pravilo')?logicConstruction(item.number,part,false):divisionView(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
@@ -998,5 +1066,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse};
 })(globalThis);

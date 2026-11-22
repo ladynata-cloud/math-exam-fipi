@@ -471,16 +471,36 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'period-'+part.id,match:'skill'};
   }
 
+  function geometryPractice(part,attempt){
+    const k=seed(part.id)%61+attempt,area=attempt%2===1,E=root.PetersonBook;
+    let prompt,result,hint;
+    if(part.id==='037-1'||part.id==='037-2'){
+      const square=part.id==='037-2',a=4+k%8,b=square?a:2+k%7;
+      prompt=square?'Сторона квадрата '+a+' см. ':'Длина прямоугольника '+a+' см, ширина '+b+' см. ';
+      prompt+=area?'Найди площадь в квадратных сантиметрах.':'Найди периметр в сантиметрах.';
+      result=area?a*b:2*(a+b);hint=area?'Площадь равна произведению соседних сторон. Укажи числовое значение в квадратных единицах.':'Обойди всю границу. Учти каждую из двух пар равных сторон.';
+    }else{
+      const tenth=3+k%6,side=10+k%5,topWidth=side-2-k%2,lowWidth=side-1-k%3,lowerHeight=3+k%4;
+      const total=side*10+tenth,top=topWidth*10+1,lower=lowWidth*10+2,h=lowerHeight*10+3,show=n=>E.M.decimal(n+'/10');
+      prompt='Из двух противоположных углов квадрата со стороной '+show(total)+' см вырезали прямоугольники. Верхняя оставшаяся полоска имеет длину '+show(top)+' см, нижняя — '+show(lower)+' см и высоту '+show(h)+' см. Полоски соприкасаются, каждая заканчивается у внешнего края. ';
+      result=area?E.M.decimal((top*(total-h)+lower*h)+'/100'):show(4*total);
+      prompt+=area?'Найди точную площадь оставшейся фигуры в см².':'Найди оставшийся периметр в см.';
+      hint=area?'Высота верхней полоски равна стороне квадрата за вычетом высоты нижней. Сложи площади двух полосок.':'При прямоугольном вырезе в углу два утраченных внешних участка заменяются двумя равными им внутренними.';
+    }
+    return {...numerical(prompt,result,'Запиши числовое значение запрошенной величины.',hint),id:'analog-'+part.id+'-'+attempt,family:'geometry-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number===36&&part.expression)return periodPractice(number,part,attempt);
     if(number===34)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>36)return createLegacy(number,part,attempt);
+    if(number<7||number>37)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===37)return geometryPractice(part,attempt);
     if(number>=35)return periodPractice(number,part,attempt);
     if(number===33)return roundPractice(part,attempt);
     if(number>=31)return intervalPractice(number,part,attempt);
@@ -522,7 +542,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=36&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=37&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -544,7 +564,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=36&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=37&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

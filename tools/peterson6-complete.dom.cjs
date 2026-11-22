@@ -746,3 +746,20 @@ test('period detection compares exact periodic values, checks each long-division
  }
  const r=await surface(t,BOOK+'#n/35/035-v',storage(s));assert.equal(bookWork(r,'035-v').periodStep,5);assert.equal(element(r,'[data-period-notation]').value,'0,2(5)');assert.match(element(r,'[data-period-tape]').textContent,/0,25555/);
 });
+test('the rectangle and square formulas distinguish contour and area, and both corner cuts preserve perimeter',async t=>{
+ const s=await surface(t,BOOK+'#n/37/037-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[36],set=(q,v)=>{const f=element(s,q);f.value=String(v);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));},use=()=>{click(s,'[data-geo-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/37/'+p.id);assert.match(sourcePresent(s).textContent,/периметр|периметра/i);set('[data-geo-mode]',i===2?'cuts':'area');
+  if(i<2){
+   if(i===1)set('[data-geo-side]','x');set('[data-geo-p]',1);set('[data-geo-s]',2);assert.match(use(),/все четыре стороны/);set('[data-geo-p]',2);set('[data-geo-s]',1);assert.match(use(),/внутреннюю часть/);set('[data-geo-s]',2);assert.match(use(),/Обе формулы/);if(i===1)assert.match(element(s,'#answer').value,/4 · x; S = x²/);
+  }else{
+   const svg=element(s,'[data-geometry-host] svg');assert.equal(svg.querySelector('polygon').getAttribute('points').split(' ').length,8);assert.equal(svg.querySelectorAll('rect').length,3);
+   const entry=(i,v)=>input(s,'[data-geo-number="'+i+'"]',v);entry(0,'42');entry(1,'112,36');entry(2,'85,8');assert.match(use(),/два внешних/);entry(0,'42,4');assert.match(use(),/полного квадрата/);entry(1,'85,88');assert.match(use(),/цифру сотых/);entry(2,'85,9');assert.match(use(),/согласуются/);set('[data-geo-mode]','area');assert.match(element(s,'[data-geometry-host]').textContent,/верхняя часть/);
+  }
+  const w=bookWork(s,p.id);assert(w.submitted&&!w.correct&&!w.independent);
+  for(let a=0;a<36;a++){const sample=s.w.PetersonAnalogues.create(37,p,a),nums=sample.prompt.match(/\d+(?:,\d+)?/g).map(x=>Number(x.replace(',','.'))),r=s.w.PetersonBook.M.parse(sample.answer);let val;
+   if(i===0)val=a%2?nums[0]*nums[1]:2*(nums[0]+nums[1]);else if(i===1)val=a%2?nums[0]*nums[0]:4*nums[0];else{const [size,top,bottom,h]=nums;val=a%2?size*size-(size-top)*(size-h)-(size-bottom)*h:4*size;}assert(Math.abs(r.n/r.d-val)<1e-8);
+  }
+ }
+ const restored=await surface(t,BOOK+'#n/37/037-3',storage(s));assert.equal(element(restored,'[data-geo-mode]').value,'area');assert.equal(element(restored,'[data-geo-number="1"]').value,'85,88');
+});

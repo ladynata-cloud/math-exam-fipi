@@ -60,6 +60,12 @@ function sanitize(part,input){
   for(const key of ['periodDigit','periodRem','periodNotation','periodApprox'])if(typeof input[key]==='string'&&input[key])clean[key]=cut(input[key],60);
   if(input.periodError===true)clean.periodError=true;
  }
+ if(part.id.startsWith('037-')){
+  if(['outline','area','cuts'].includes(input.geometryView))clean.geometryView=input.geometryView;
+  if(['a','b','x','m'].includes(input.squareSide))clean.squareSide=input.squareSide;
+  for(const key of ['perimeterChoice','areaChoice'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
+  if(Array.isArray(input.geometryNumbers)&&input.geometryNumbers.length===3)clean.geometryNumbers=input.geometryNumbers.map(v=>cut(v,50));
+ }
  if(part.id.startsWith('034-')){
   if(typeof input.calcExact==='string'&&input.calcExact)clean.calcExact=cut(input.calcExact,80);
   if(typeof input.calcDigit==='string'&&/^[0-9]$/.test(input.calcDigit))clean.calcDigit=input.calcDigit;
