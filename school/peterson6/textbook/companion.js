@@ -361,7 +361,70 @@
     return items.length===6?{ok:true,text:'Все шесть чисел расположены по возрастанию. Прочитай их вслух, называя миллионы, тысячи и единицы.'}:{ok:false,text:'Порядок верный. Проверь, все ли шесть позиций второй пятёрки использованы.'};
   }
 
+  const factChecks=[
+    ['Бруно следовал астрономическому учению Птолемея.','Бруно развивал представление Коперника о движении Земли.','Бруно не следовал этому учению Птолемея.','Бруно не занимался астрономией.','Птолемей следовал учению Бруно.','Отрицай именно указанную связь учёного с учением. Занятия астрономией сами по себе её не устанавливают.','https://plato.stanford.edu/entries/bruno/','Стэнфордская энциклопедия философии'],
+    ['Рекорд высоты среди деревьев принадлежит пальмам.','Выше всех известных ныне живущих деревьев вырастают вечнозелёные секвойи.','Рекорд высоты среди деревьев не принадлежит пальмам.','Все пальмы низкие.','Ни одно другое дерево не выше пальмы.','Высокое дерево может и не быть рекордсменом. Утверждение о первенстве опровергает более высокий вид.','https://home.nps.gov/articles/000/coast-redwood.htm','Служба национальных парков США'],
+    ['По массе в земном воздухе кислорода не меньше, чем азота.','В 100 кг сухого воздуха около 23,1 кг кислорода и 75,5 кг азота.','По массе кислорода меньше, чем азота.','По массе кислорода не больше, чем азота.','По массе кислорода столько же, сколько азота.','При равенстве исходное «не меньше» уже верно. Можно ли оставить равенство в его отрицании?','https://assets.publishing.service.gov.uk/media/5e18b963ed915d3b08797c2e/Volume_10_Meteorology__CFS_version_.pdf','Метеорологический справочник, таблица 1'],
+    ['Территория Германии больше территории Франции.','Справочные площади: Германия около 358 тысяч км², Франция более 550 тысяч км².','Территория Германии не больше территории Франции.','Территории этих стран равны.','Германия больше любой другой страны.','Отрицание знака «больше» охватывает сразу два случая: меньше и равно. Верное наблюдение и точное отрицание — разные требования.','https://european-union.europa.eu/principles-countries-history/eu-countries/france_en','Справочник ЕС о странах'],
+    ['Год основания Санкт-Петербурга — 1704 или 1705.','Датой основания города считают закладку крепости в 1703 году.','Город не был основан ни в 1704, ни в 1705 году.','Город основан не в 1704 году, зато в 1705.','Город основан не в 1705 году, зато в 1704.','Для отрицания «или» исключи оба года. Если оставить один из них, исходная версия по-прежнему возможна.','https://www.prlib.ru/history/619267','Президентская библиотека'],
+    ['Альтернативы в высказывании о кенгуру — жить в Австралии или в Антарктиде. Под «или» здесь понимаем «выполнена хотя бы одна альтернатива».','Рыжий кенгуру обитает в Австралии.','Пропустить при записи ложных высказываний.','Записать как ложное, потому что Антарктида не подходит.','Записать как ложное, потому что нужны оба материка.','Логическое «или» истинно уже при одной верной альтернативе. Исходное задание просит отрицать только ложные высказывания.','https://australian.museum/learn/animals/mammals/red-kangaroo/','Австралийский музей']
+  ];
+  const relationChecks=[
+    ['Число x меньше пяти девятых.',['x < 5/9','x ≤ 5/9','x > 5/9'],['x ≥ 5/9','x > 5/9','x ≤ 5/9'],'Подставь x = 5/9. Слово «меньше» равенства не допускает.'],
+    ['Число y не меньше трёх целых четырёх тысячных.',['y ≥ 3,004','y > 3,004','y ≥ 3,04'],['y < 3,004','y ≤ 3,004','y > 3,004'],'Проверь тысячные, затем возьми y = 3,004. Равенство уже входит в исходную фразу.'],
+    ['Если из a вычесть b, получится c.',['a − b = c','b − a = c','a + b = c'],['a − b ≠ c','a − b < c','b − a ≠ c'],'Порядок уменьшаемого и вычитаемого сохраняется. Два неравных числа могут стоять в любом порядке.'],
+    ['Квадрат числа n отличается от 16.',['n² ≠ 16','n² = 16','2n ≠ 16'],['n² = 16','n² < 16','n = 16'],'Подставь n = −4. Решение должно учитывать и положительные, и отрицательные значения n.'],
+    ['Значение x больше квадрата этого же числа.',['x > x²','x ≥ x²','x² > x'],['x ≤ x²','x < x²','x ≥ x²'],'Попробуй x = 0, затем x = 0,5. Ровно одна из двух записей должна выполняться каждый раз.'],
+    ['Значение x на единицу меньше квадрата этого же числа.',['x = x² − 1','x < x²','x² = x − 1'],['x ≠ x² − 1','x ≥ x²','x = x² + 1'],'«На единицу» задаёт точную разность. Для отрицания достаточно любой другой разности, в том числе двух.']
+  ];
+  function logicCard(number,part){
+    const i=Number(part.id.split('-')[1])-1;
+    if(number===19){
+      const [statement,fact,denial,a,b,hint,url,sourceName]=factChecks[i];
+      return {prompt:'Реши, верно ли утверждение. Если оно ложно, вырази его отрицание. Обоснуй своё решение. '+statement,
+        reference:fact,url,sourceName,leftTitle:'Оценка утверждения',left:['Истинно','Ложно'],li:i===5?0:1,rightTitle:'Что записать',right:[denial,a,b],ri:0,hint};
+    }
+    if(number===20){
+      const [statement,left,right,hint]=relationChecks[i];
+      return {prompt:'Переведи фразу в математическую запись, затем запиши её отрицание. '+statement,
+        reference:'Проверка пары: при одном и том же выборе чисел первая запись и её отрицание должны давать противоположные ответы.',leftTitle:'Первая запись',left,li:0,rightTitle:'Её отрицание',right,ri:0,hint};
+    }
+    return {prompt:'Проверь высказывание «каждая река впадает в Каспийское море». Сформулируй его отрицание и объясни, почему из двух фраз истинна ровно одна.',
+      reference:'Волга заканчивает свой путь в Каспийском море, а Нева относится к бассейну Балтийского моря.',url:'https://bigenc.ru/c/vostochno-evropeiskaia-ravnina-e8ecd2',sourceName:'Большая российская энциклопедия',
+      leftTitle:'Как звучит отрицание?',left:['Есть река, не впадающая в Каспийское море.','Ни одна река не впадает в Каспийское море.','Есть река, впадающая в Каспийское море.'],li:0,
+      rightTitle:'Как проверить исходную фразу?',right:['Указать реку, которая впадает в другое море.','Достаточно найти реку, впадающую в Каспийское море.','Убедиться, что ни одна река не впадает в Каспийское море.'],ri:0,
+      hint:'Для опровержения слов «все реки» достаточно одного контрпримера. Отдельная река, впадающая в Каспий, исходную фразу ещё не доказывает.'};
+  }
+  function logicConstruction(number,part,interactive){
+    const card=logicCard(number,part);
+    const group=(side,title,options)=>{
+      const offset=(Number(part.id.split('-')[1])+number+(side==='left'?0:1))%options.length;
+      return '<label style="display:grid;gap:.2em">'+U.esc(title)+'<select style="max-width:100%;width:100%;min-width:0" data-logic-'+side+'><option value="">Выбери вариант</option>'+options.map((_,j)=>{const i=(j+offset)%options.length;return '<option value="'+(i+1)+'">'+U.esc(options[i])+'</option>';}).join('')+'</select></label>';
+    };
+    return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
+  }
+  function logicText(card,work){return (card.left[work.logicLeft-1]||'…')+' / '+(card.right[work.logicRight-1]||'…');}
+  function mountLogic(main,number,part,work,save){
+    const host=main.querySelector('[data-logic-host]');if(!host)return;
+    host.outerHTML=logicConstruction(number,part,true);
+    const card=logicCard(number,part),left=main.querySelector('[data-logic-left]'),right=main.querySelector('[data-logic-right]'),use=main.querySelector('[data-logic-use]');
+    function update(){left.value=work.logicLeft||'';right.value=work.logicRight||'';main.querySelector('[data-logic-summary]').textContent=logicText(card,work);use.disabled=!work.logicLeft||!work.logicRight;}
+    for(const [select,key] of [[left,'logicLeft'],[right,'logicRight']])select.onchange=()=>{if(select.value)work[key]=Number(select.value);else delete work[key];update();save();};
+    use.onclick=()=>{const field=main.querySelector('#answer');field.value=logicText(card,work);field.dispatchEvent(new Event('input',{bubbles:true}));field.focus();};
+    const reference=main.querySelector('[data-logic-reference]');reference.open=Boolean(work.logicReference);
+    reference.ontoggle=()=>{if(reference.open===Boolean(work.logicReference))return;work.logicReference=reference.open;if(reference.open)root.PetersonBook.assist(work);save();};
+    update();
+  }
+  function logicResponse(number,part,input,work){
+    if(number<19||number>21)return null;
+    const card=logicCard(number,part);if(input!==logicText(card,work))return null;
+    if(work.logicLeft!==card.li+1)return {ok:false,text:number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
+    if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
+    return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
+  }
+
   function openingQuestion(number,part) {
+    if(number>=19&&number<=21)return logicCard(number,part).prompt;
     if(number===17||number===18)return campQuestion(number,part);
     if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
@@ -408,6 +471,7 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
+    if(item.number>=19&&item.number<=21)drawing=logicConstruction(item.number,part,false);
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
@@ -434,5 +498,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse};
 })(globalThis);

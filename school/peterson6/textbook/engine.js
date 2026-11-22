@@ -48,6 +48,10 @@ function sanitize(part,input){
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
+ if(/^(019|020|021)-/.test(part.id)){
+  for(const key of ['logicLeft','logicRight'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
+  if(input.logicReference===true)clean.logicReference=true;
+ }
  if(part.id==='018-1'){
   if(Number.isInteger(input.planetRelation)&&input.planetRelation>=1&&input.planetRelation<=4)clean.planetRelation=input.planetRelation;
   if(Number.isInteger(input.earthZone)&&input.earthZone>=1&&input.earthZone<=5)clean.earthZone=input.earthZone;

@@ -212,13 +212,54 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'camp-'+part.id,match:'skill'};
   }
 
+  function logicPractice(number,part,attempt){
+    const i=Number(part.id.split('-')[1])-1,k=seed(part.id)%23+attempt,t=2+k%13,shift=(options)=>options.slice(k%options.length).concat(options.slice(0,k%options.length));
+    let prompt,options,answer,hint;
+    if(number===19){
+      let truth,denials;
+      if(i===0){
+        const people=['Ира','Нина','Олег','Яна'],person=people[k%4],mentor=people[(k+1)%4],other=people[(k+2)%4],subject=k%2?mentor:other;
+        prompt='В списке кружка для карточки «'+person+'» указан только один наставник — '+mentor+'. Проверяем фразу: «На карточке «'+person+'» указан наставник '+subject+'».';
+        denials=['На карточке «'+person+'» наставником указан не '+subject+'.','На карточке «'+subject+'» не указан наставник '+person+'.','У всех участников один наставник.'];truth=subject===mentor;hint='Сопоставь имя указанного наставника со списком, сохрани роли участника и наставника.';
+      }else if(i===1){
+        const h=t+8,high=k%2===0;prompt='Два измеренных дерева имеют высоту '+h+' м и '+(h+3)+' м. Проверяем фразу: «Из этих деревьев выше то, чья высота '+(high?h+3:h)+' м».';
+        denials=['Дерево высотой '+(high?h+3:h)+' м не выше второго.','Оба дерева одной высоты.','Оба дерева ниже '+h+' м.'];truth=high;hint='У двух чисел высот сравни значения в одинаковых единицах.';
+      }else if(i===2||i===3){
+        const a=t+4,b=a+(k%3-1)*2;
+        prompt=i===2?'В смеси '+a+' г песка и '+b+' г соли. Проверяем фразу: «Масса песка не меньше массы соли».':'Площади двух участков A и Б составляют '+a+' м² и '+b+' м². Проверяем фразу: «Площадь A больше площади Б».';
+        denials=i===2?['Песка меньше, чем соли.','Песка не больше, чем соли.','Песка и соли поровну.']:['Площадь A не больше площади Б.','Площадь A меньше площади Б.','Участки имеют равную площадь.'];truth=i===2?a>=b:a>b;hint=i===2?'«Не меньше» включает равенство. Сравни две массы.':'Слово «больше» не включает равенство. Формальным отрицанием будет «не больше».';
+      }else{
+        const year=1710+t,a=year+(k%3-1),b=a+2;
+        if(i===4){prompt='В календаре кружка отмечен единственный год постройки башни — '+year+'. Проверяем фразу: «Это произошло в '+a+' или '+b+' году».';denials=['Год постройки отличен и от '+a+', и от '+b+'.','Год постройки отличен от '+a+' или от '+b+'.','Год постройки — '+a+'.'];truth=year===a||year===b;}
+        else{const bags=['синем','зелёном','белом','жёлтом'],x=k%4,y=(x+1)%4,z=(x+1+k%3)%4;prompt='В этом опыте бусина лежит в '+bags[z]+' мешочке. Проверяем фразу: «Бусина в '+bags[x]+' или '+bags[y]+' мешочке».';denials=['Бусины нет ни в '+bags[x]+', ни в '+bags[y]+' мешочке.','Бусины нет в '+bags[x]+' мешочке.','Бусина в обоих мешочках.'];truth=z===x||z===y;}
+        hint='Проверь обе альтернативы. Для «или» достаточно одной верной, а для его отрицания обе должны быть ложны.';
+      }
+      options=['Исходная фраза истинна, её отрицание ложно','Исходная фраза ложна, её отрицание истинно'];answer=options[truth?0:1];if(attempt%2){options=denials;answer=options[0];prompt+=' Выбери точное отрицание проверяемой фразы.';}else prompt+=' Какая оценка верна?';
+    }else if(number===20){
+      const x=['u','v','t','s'][k%4],f=(t+1)+'/'+(t+3),d=t+',00'+(1+k%8);
+      const data=[
+        ['«'+x+' меньше '+f+'»',[x+' ≥ '+f,x+' > '+f,x+' ≤ '+f],'Проверь отдельно равенство дроби.'],
+        ['«'+x+' не меньше '+d+'»',[x+' < '+d,x+' ≤ '+d,x+' > '+d],'Равенство уже включено в «не меньше».'],
+        ['«Разность '+x+' и '+t+' равна '+(t+4)+'»',[x+' − '+t+' ≠ '+(t+4),t+' − '+x+' ≠ '+(t+4),x+' − '+t+' < '+(t+4)],'Сохрани порядок вычитания. Отрицание равенства допускает оба направления неравенства.'],
+        ['«Квадрат '+x+' отличается от '+t*t+'»',[x+'² = '+t*t,x+' = '+t*t,x+'² < '+t*t],'Сохрани квадрат и измени только знак отношения.'],
+        ['«Число '+x+' больше, чем его квадрат минус '+t+'»',[x+' ≤ '+x+'² − '+t,x+' < '+x+'² − '+t,x+' ≥ '+x+'² − '+t],'Сохрани обе части сравнения. В отрицании строгого «больше» учти равенство.'],
+        ['«Число '+x+' на '+t+' меньше своего квадрата»',[x+' ≠ '+x+'² − '+t,x+' ≥ '+x+'²',x+' = '+x+'² + '+t],'Слова «на столько-то» задают точное равенство, которое можно нарушить по-разному.']
+      ][i];prompt='Выбери точное отрицание фразы '+data[0]+'.';options=data[1];answer=options[0];hint=data[2];
+    }else{
+      const counts=[t+1,t-1,t+3],names=['А','Б','В'],j=k%3;const shown=counts.map((v,n)=>names[(n+j)%3]+' — '+v).join(', ');
+      prompt='На трёх полках книги: '+shown+'. Какую полку достаточно указать, чтобы опровергнуть фразу «на каждой полке не меньше '+t+' книг»?';options=names.map(v=>'Полка '+v);answer=options[(1+j)%3];hint='Для слова «каждая» нужен один контрпример. Найди полку, где число меньше порога.';
+    }
+    const exercise=choice(prompt,shift(options),answer,hint);return {...exercise,id:'analog-'+part.id+'-'+attempt,family:'logic-page9-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>18)return createLegacy(number,part,attempt);
+    if(number<7||number>21)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=19)return logicPractice(number,part,attempt);
     if(number>=17)return campPractice(number,part,attempt);
     if(number>=14)return comparisonPractice(number,part,attempt);
     const model=repeatNumberWork(number,part,attempt);
@@ -249,7 +290,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=18&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=21&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -271,7 +312,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=18&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=21&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
