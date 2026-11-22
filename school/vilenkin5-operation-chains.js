@@ -34,13 +34,16 @@
   }
   const buildRows=(start,pairs)=>{let v=start;return pairs.map(([op,num])=>{const before=v;v=calc(v,op,num);return {before,op,num,answer:v};});};
   function chains(seed,r,step){
-    const problems=published.map(([v,p],i)=>seed?randomChain(i,r):[v,p]),all=problems.map(([v,p])=>buildRows(v,p));
+    return fromProblems(published.map(([v,p],i)=>seed?randomChain(i,r):[v,p]),step,'five-chains');
+  }
+  function fromProblems(problems,step,id){
+    const all=problems.map(([v,p])=>buildRows(v,p));
     const tasks=all.flatMap((chain,i)=>chain.map((row,j)=>{
       const base=problems[i][0],wrong=calc(base,row.op,row.num),errors=[];
       if(j&&wrong!==row.answer&&Number.isSafeInteger(wrong))errors.push({value:wrong,text:'Ты снова начал с верхнего числа столбика. Возьми результат непосредственно над текущей строкой.'});
       return step('Столбик '+names[i]+', строка '+(j+1)+'. '+(j?'Возьми предыдущее число и ':'Возьми начальное число '+base+' и ')+verbs[row.op]+' '+row.num+'. Какой результат записать?',row.answer,row.before+' '+row.op+' '+row.num+' = '+row.answer+'.',errors);
     }));
-    const last=tasks.pop();return {...last,prompt:'Вычисли результат всего столбика д. Начало: '+problems[4][0]+'. Выполняй действия сверху вниз.',steps:tasks,inputPrompt:'Итог столбика д',data:{chainPractice:problems},conditionKey:'five-chains/'+problems.map(([v,p])=>v+':'+p.flat().join(',')).join('/')};
+    const last=tasks.pop();return {...last,prompt:'Вычисли результат всего столбика д. Начало: '+problems[4][0]+'. Выполняй действия сверху вниз.',steps:tasks,inputPrompt:'Итог столбика д',data:{chainPractice:problems},conditionKey:id+'/'+problems.map(([v,p])=>v+':'+p.flat().join(',')).join('/')};
   }
   function decrease(seed,r,step){
     const last=seed?r(12,94):90,minus=seed?r(3,15)*100:1000,k=seed?[10,20,50,100][r(0,3)]:100,share=k*last+minus,total=100*share;
@@ -61,6 +64,6 @@
     const [start,pairs]=t.data.chainPractice[s.column],row=buildRows(start,pairs)[s.line];
     return {title:'Проверь переход между соседними строками',controls:[{key:'column',title:'Столбик',values:names.map((n,i)=>[i,n])},{key:'line',title:'Строка',values:names.map((_,i)=>[i,String(i+1)])}],visual:diagram(t,s.column,s.line),question:'В выделенной строке было '+row.before+'. Чему равен результат?',answer:row.answer,why:'Выполни ровно одно действие: '+row.before+' '+row.op+' '+row.num+'.'};
   }
-  const api={lessons,generators:{'5.67':chains,'5.68':decrease},bounds:{'5.67':{column:[0,4,0],line:[0,4,0]},'5.68':{line:[0,2,0]}},draw,explore};
+  const api={lessons,fromProblems,generators:{'5.67':chains,'5.68':decrease},bounds:{'5.67':{column:[0,4,0],line:[0,4,0]},'5.68':{line:[0,2,0]}},draw,explore};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Vilenkin5OperationChains=api;
 })(typeof window!=='undefined'?window:globalThis);
