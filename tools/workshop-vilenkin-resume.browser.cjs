@@ -205,7 +205,6 @@ async function exercise(page, origin) {
 }
 
 const legacyRef = '7fe55249048e6cd2b88d1b2e6e8b459b7e480506';
-const legacyState = '20261109-audit1';
 const recoveryState = '20261118-vilenkin-resume';
 
 async function legacyFile(name) {
@@ -230,11 +229,16 @@ async function mixedCache(page, origin) {
   });
   const [oldApp, oldState] = await Promise.all([legacyFile('app'), legacyFile('state')]);
   const shell = await fs.readFile(path.join(root, 'school/index.html'), 'utf8');
-  const appScript = shell.match(/<script\b[^>]*\bsrc=["'](app\.js(?:\?[^"']*)?)["']/);
-  assert(appScript, 'the current shell must include its app script');
-  const stableStatePath = '/school/state.js?v=' + legacyState;
-  const currentAppPath = '/school/' + appScript[1];
+  function versionedScriptPath(name) {
+    const pattern = new RegExp(`<script\\b[^>]*\\bsrc=["'](${name}\\.js\\?v=[^"']+)["']`, 'g');
+    const scripts = [...shell.matchAll(pattern)];
+    assert.equal(scripts.length, 1, 'the current shell must include one versioned ' + name + '.js');
+    return '/school/' + scripts[0][1];
+  }
+  const currentStatePath = versionedScriptPath('state');
+  const currentAppPath = versionedScriptPath('app');
   const recoveryPath = '/school/state.js?v=' + recoveryState;
+  assert.notEqual(currentStatePath, recoveryPath, 'recovery must bypass the cached initial script');
   let mode = 'current';
   let failRecovery = true;
   let releaseRecovery;
@@ -258,7 +262,7 @@ async function mixedCache(page, origin) {
     const file = url.pathname + url.search;
     requests.push(file);
     if (mode === 'old-app' && file === currentAppPath) return route.fulfill({contentType: 'application/javascript', body: oldApp});
-    if (mode === 'old-state' && file === stableStatePath) return route.fulfill({contentType: 'application/javascript', body: oldState});
+    if (mode === 'old-state' && file === currentStatePath) return route.fulfill({contentType: 'application/javascript', body: oldState});
     if (mode === 'old-state' && file === recoveryPath) {
       if (failRecovery) return route.abort('failed');
       if (releaseRecovery) await releaseRecovery;
@@ -270,14 +274,14 @@ async function mixedCache(page, origin) {
   const url = (grade, route) => origin + '/school/index.html?course=vilenkin' + grade + '#' + route;
   await page.goto(url(6, 'course/vilenkin6'));
   await page.locator('main h1').waitFor();
-  assert.deepEqual(requests.sort(), [stableStatePath, currentAppPath].sort());
+  assert.deepEqual(requests.sort(), [currentStatePath, currentAppPath].sort());
 
   // A cached prior UI can still read and save a record validated by the new state library.
   mode = 'old-app';
   requests = [];
   await page.goto(url(5, 'lesson/v5f-place-build'));
   await page.locator('#answer').waitFor();
-  assert.deepEqual(requests.sort(), [stableStatePath, currentAppPath].sort());
+  assert.deepEqual(requests.sort(), [currentStatePath, currentAppPath].sort());
   const oldUi = await readState(page);
   assert.equal(oldUi.last.skill, 'v5f-place-build');
   assert.deepEqual(oldUi.vilenkinDrafts[fifth], initialDraft);

@@ -13,6 +13,7 @@ const artifactDir = path.resolve(process.env.LESSON_WORKSPACE_ARTIFACTS || fs.mk
 fs.mkdirSync(artifactDir, { recursive: true });
 const checks = [], layout = [], layoutFailures = [], screenshots = [], errors = [], blockedExternal = [];
 const observedHydrates = [];
+const hydratedContexts = new Set();
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 let phase = 'initialization';
 
@@ -43,7 +44,6 @@ async function readyFrame(page, host = '#trainer-host') {
   const frame = await (await holder.elementHandle()).contentFrame();
   assert(frame, 'A real managed child frame must exist');
   await frame.locator('#main').waitFor();
-  observedHydrates.push(...await frame.evaluate(() => window.__lessonGateHydrates || []));
   return frame;
 }
 async function readyMaterial(page, attempt) {
@@ -54,7 +54,7 @@ async function readyMaterial(page, attempt) {
     if (!frame) return null;
     const hydration = await frame.evaluate(() => window.__lessonGateHydrates?.at(-1));
     if (!hydration || JSON.stringify(hydration.taskSpec) !== JSON.stringify(attempt.taskSpec)) return null;
-    observedHydrates.push(hydration); return frame;
+    return frame;
   }, 'selected material rendered in the real child frame');
 }
 async function readonly(frame, expected) {
@@ -175,14 +175,22 @@ async function checkLayout(page, label, width) {
         if ([service.origin, service.trainerOrigin].includes(url.origin) || ['about:', 'data:', 'blob:'].includes(url.protocol)) return request.continue();
         blockedExternal.push(url.origin + url.pathname); return request.abort();
       });
-      await context.addInitScript(() => {
+      // Deliver the payload to the test while its frame is alive. A lesson switch can
+      // detach a frame between page.frames() and a later audit of its JS globals.
+      await context.exposeBinding('__recordLessonHydration', (_source, envelope) => {
+        observedHydrates.push(envelope);
+        hydratedContexts.add(context);
+      });
+      await context.addInitScript(trainerOrigin => {
         window.__lessonGateHydrates = [];
         window.addEventListener('message', event => {
           if (event.data?.protocol === 'mathexam-learning' && event.data.type === 'hydrate') {
-            window.__lessonGateHydrates.push(JSON.parse(JSON.stringify(event.data.payload)));
+            const envelope = JSON.parse(JSON.stringify(event.data.payload));
+            window.__lessonGateHydrates.push(envelope);
+            if (location.origin === trainerOrigin) void window.__recordLessonHydration(envelope);
           }
         });
-      });
+      }, service.trainerOrigin);
       await context.addCookies([{ name: parent ? 'mathexam_parent_local' : 'mathexam_learning_local',
         value: session.sessionToken, url: service.origin, httpOnly: true, sameSite: 'Strict' }]);
       const page = await context.newPage(); page.setDefaultTimeout(18000);
@@ -432,11 +440,8 @@ async function checkLayout(page, label, width) {
     }
     const forbidden = [f.teacher.sessionToken, f.pupil.sessionToken, f.peer.sessionToken, f.parent.sessionToken,
       f.teacher.account.id, f.pupil.account.id, f.peer.account.id];
-    for (const { page } of clients) {
-      for (const frame of page.frames().filter(frame => frame.url().startsWith(service.trainerOrigin))) {
-        const envelopes = await frame.evaluate(() => window.__lessonGateHydrates);
-        observedHydrates.push(...envelopes);
-      }
+    for (const participant of [teacher, pupil, late]) {
+      assert(hydratedContexts.has(participant.context), 'Each participant received real trainer hydration');
     }
     for (const envelope of observedHydrates) {
       assert.deepEqual(Object.keys(envelope).sort(), ['readOnly', 'state', 'taskSpec']);
