@@ -127,7 +127,8 @@
       ['/geometry-course/textbook/data/symmetry-applications.json', 'пункты 127–129'],
       ['/geometry-course/textbook/data/quadrilateral-symmetries.json', '№1271а–г'],
       ['/geometry-course/textbook/data/regular-polygon-symmetries.json', '№1272–1273в'],
-      ['/geometry-course/textbook/data/bounded-symmetries.json', '№1274–1278']
+      ['/geometry-course/textbook/data/bounded-symmetries.json', '№1274–1278'],
+      ['/geometry-course/textbook/data/tiling-symmetries.json', '№1279а–1280б']
   ];
 
   async function forCourse(base) {
