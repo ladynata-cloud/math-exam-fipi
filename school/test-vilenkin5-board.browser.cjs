@@ -534,6 +534,14 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.168: hidden digits, changed prediction and recovered ownership';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-168"]').click();await studentFrame.locator('h1').filter({hasText:'№1.168'}).waitFor();
+  await teacherFrame.locator('#answer').fill('>');await teacherFrame.locator('#answer-form button').click();
+  const wrongMask=await same(teacherFrame,studentFrame,'fixed high-order digit conflict');assert.match(wrongMask.scene.message,/Начни слева/);assert.equal(wrongMask.scene.attempt,1);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=row]').selectOption('1');await studentFrame.locator('[data-v5-param=lead]').selectOption('7');await studentFrame.locator('[data-v5-param=d1]').selectOption('8');await studentFrame.locator('#answer').fill('<');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const maskDraft=await same(studentFrame,teacherFrame,'model with independent hidden digits');assert.equal(maskDraft.scene.model.lead,7);assert.equal(maskDraft.scene.model.d1,8);assert.equal(maskDraft.scene.savedInput,'<');
+  await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'old sign corrected without hint')).scene.correct);
+  await studentFrame.locator('[data-cmd=next]').click();await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'new step after return of control');await teacherFrame.locator('#answer').fill('>');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'four digit number exceeds three digit number')).scene.correct);await narrow(student,studentFrame,'hidden-digits');
   phase = 'source 1.165: read a large inequality and retain the distinction between formatting, correction and help';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-165"]').click();
   await studentFrame.locator('h1').filter({hasText:'№1.165'}).waitFor();

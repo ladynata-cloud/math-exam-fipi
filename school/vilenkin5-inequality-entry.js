@@ -85,6 +85,6 @@
     return {title:'Сравни числа по разрядам',controls:[{key:'row',title:'Строка',values:d.rows.map((_,i)=>[i,'абвгде'[i]])},{key:'say',title:'Чтение',values:[[0,'Читаю сам'],[1,'Сверить произношение']]}],
       visual:placeBands(row)+reading,question:'Какое число нужно поставить первым перед знаком '+d.sign+'?',answer:a[0],why:'Прочитай знак. Выбери большее число для «больше» и меньшее для «меньше».'};
   }
-  const api={lessons,generators:Object.fromEntries(Object.keys(source).map(n=>[n,(seed,rand,step)=>generate(n,seed,rand,step)])),bounds:Object.fromEntries(Object.keys(source).map(n=>[n,{row:[0,5,0],say:[0,1,0]}])),draw,explore,read,accepts,inputIssue,mistake,aloud};
+  const api={lessons,generators:Object.fromEntries(Object.keys(source).map(n=>[n,(seed,rand,step)=>generate(n,seed,rand,step)])),bounds:Object.fromEntries(Object.keys(source).map(n=>[n,{row:[0,5,0],say:[0,1,0]}])),draw,explore,read,accepts,inputIssue,mistake,aloud,spoken};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Vilenkin5InequalityEntry=api;
 })(typeof window!=='undefined'?window:globalThis);
