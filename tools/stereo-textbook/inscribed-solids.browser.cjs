@@ -70,7 +70,8 @@ const groups = {
   additionalCoordinateCombinations: {manifests:[require('./additional-coordinate-combinations.json')],count:17},
   additionalCoordinateDistances: {manifests:[require('./additional-coordinate-distances.json')],count:10},
   additionalDirectedAndPlaneAngles: {manifests:[require('./additional-directed-and-plane-angles.json')],count:23},
-  coordinateChapterSevenEnd: {manifests:[require('./coordinate-chapter-seven-end.json')],count:9}
+  coordinateChapterSevenEnd: {manifests:[require('./coordinate-chapter-seven-end.json')],count:9},
+  finalTriangularPrismReview: {manifests:[require('./final-triangular-prism-review.json')],count:6}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
@@ -162,12 +163,15 @@ async function exercise(page, card, base, width) {
   assert(checked >= 1);
   assert.deepEqual([...views].sort(), Object.keys(card.visualization.model.views).sort(), card.id + ': reachable figure views');
   const final = page.locator('#final-answer');
-  const text = card.answer.accepted?.[0] || 'Мой довод опирается на перпендикулярность и касание.';
+  const text = card.answer.accepted?.[0] || card.answer.feedback || 'Мой довод опирается на перпендикулярность и касание.';
   await final.fill(text);
   await page.locator('[data-final-form] button[type="submit"]').click();
   const feedback = page.locator('[data-final-feedback]');
   if (card.answer.mode === 'exact') assert.equal(await feedback.getAttribute('data-answer-status'), 'correct');
-  else assert.match(await feedback.innerText(), /сохранено/u);
+  else {
+    assert.match(await feedback.innerText(), /сохранено/u);
+    assert.equal(await feedback.getAttribute('data-answer-status'), null, 'written proof needs review');
+  }
   await page.reload();
   await page.waitForFunction(title => document.querySelector('main>header>h1')?.textContent === title, card.title);
   assert.equal(await final.inputValue(), text);

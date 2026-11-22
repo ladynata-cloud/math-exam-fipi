@@ -1,0 +1,233 @@
+{
+  "parts": {
+    "764": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е"
+    ]
+  },
+  "previousCatalog": {
+    "764": {
+      "id": "source-main-0764",
+      "kind": "exercise",
+      "title": "Задача № 764",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "764",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          189
+        ],
+        "pdfPages": [
+          191
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0764-a": {
+      "raw": "a2c1347d4e3724fbc8fa0a1482b6043fa086436ff121ab7bcaf14fc48aa6332e",
+      "authored": "fb918031863dc1399fb5dfa07c1857402337d4ba61f06e91af10f628283f3519",
+      "integrated": "8bc51350afdec694c3b4419bc0cf897fc6b639beaa65fcea535bc88d74286537"
+    },
+    "ex-main-0764-b": {
+      "raw": "9da87605e07c8e15fb28807976d4dd78e31583e55bb5748abfb340bceb61ccb0",
+      "authored": "96868640752c88b938d0b8dfa86d3991b501091fa62e60d273950c1b5128dc30",
+      "integrated": "1845e31cb484120ee439cc623360707ccb3b7221bf5f0acbde4c304a563d4590"
+    },
+    "ex-main-0764-c": {
+      "raw": "019d8050ef1106397634537347a4367b03ba0fc64bb5bb034757d5f6f1daba7c",
+      "authored": "8ed5cdd365a7119fd05fd3ac8f209a2feb42352a84353e13bc98d80c0988c426",
+      "integrated": "84864c6835c5a8e281b5b7ebca9fa43d60f5a8fb0359b16baac8d450e4a07070"
+    },
+    "ex-main-0764-d": {
+      "raw": "608d79794b60e5b87fd2f38ebe7c0220eedb5c8eeea047ca5620fad0e3f8a5f5",
+      "authored": "1a6fc67dee29dca167270ec20cefa983b99b37744abbc5ab4fd72e343ad4bce5",
+      "integrated": "a391ddf2a6bb98b0d5ef37dd024ffa31f6e75e2403e575dd9b38f417d2d013fa"
+    },
+    "ex-main-0764-e": {
+      "raw": "2d3f5f27a2081eefef184e3dc5796a6d167eb1d86c5b0ab670924c0860494ae1",
+      "authored": "547528d3175747c42c88c64803643a86e7f4208e40bbd8fa639d20483cfff0bb",
+      "integrated": "8728e233a63a5e76296671e92ac87cfb7a7d92e806b76c0fa33004637ff2b4bc"
+    },
+    "ex-main-0764-f": {
+      "raw": "aa535bf1708a3050d97c09f7f7f53dddb4dde93dd45269f6a6a760954b816f7c",
+      "authored": "ef048efb7f4d161506d6bd45e43e6cf3c68ab9d9bdaac8eace8055054c735270",
+      "integrated": "9fc646a4f2ef82c99c814ff0ab8f9e55b8feeb6ae5429102b72285b3011662bc"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0764-a|condition",
+      "final-triangular-prism-review-ex-main-0764-a-condition"
+    ],
+    [
+      "ex-main-0764-a|help:h1",
+      "final-triangular-prism-review-ex-main-0764-a-help-h1"
+    ],
+    [
+      "ex-main-0764-a|help:h2",
+      "final-triangular-prism-review-ex-main-0764-a-help-h2"
+    ],
+    [
+      "ex-main-0764-a|step-1",
+      "final-triangular-prism-review-ex-main-0764-a-step-1"
+    ],
+    [
+      "ex-main-0764-a|step-2",
+      "final-triangular-prism-review-ex-main-0764-a-step-2"
+    ],
+    [
+      "ex-main-0764-a|step-3",
+      "final-triangular-prism-review-ex-main-0764-a-step-3"
+    ],
+    [
+      "ex-main-0764-b|condition",
+      "final-triangular-prism-review-ex-main-0764-b-condition"
+    ],
+    [
+      "ex-main-0764-b|help:h1",
+      "final-triangular-prism-review-ex-main-0764-b-help-h1"
+    ],
+    [
+      "ex-main-0764-b|help:h2",
+      "final-triangular-prism-review-ex-main-0764-b-help-h2"
+    ],
+    [
+      "ex-main-0764-b|step-1",
+      "final-triangular-prism-review-ex-main-0764-b-step-1"
+    ],
+    [
+      "ex-main-0764-b|step-2",
+      "final-triangular-prism-review-ex-main-0764-b-step-2"
+    ],
+    [
+      "ex-main-0764-b|step-3",
+      "final-triangular-prism-review-ex-main-0764-b-step-3"
+    ],
+    [
+      "ex-main-0764-c|condition",
+      "final-triangular-prism-review-ex-main-0764-c-condition"
+    ],
+    [
+      "ex-main-0764-c|help:h1",
+      "final-triangular-prism-review-ex-main-0764-c-help-h1"
+    ],
+    [
+      "ex-main-0764-c|help:h2",
+      "final-triangular-prism-review-ex-main-0764-c-help-h2"
+    ],
+    [
+      "ex-main-0764-c|step-1",
+      "final-triangular-prism-review-ex-main-0764-c-step-1"
+    ],
+    [
+      "ex-main-0764-c|step-2",
+      "final-triangular-prism-review-ex-main-0764-c-step-2"
+    ],
+    [
+      "ex-main-0764-c|step-3",
+      "final-triangular-prism-review-ex-main-0764-c-step-3"
+    ],
+    [
+      "ex-main-0764-d|condition",
+      "final-triangular-prism-review-ex-main-0764-d-condition"
+    ],
+    [
+      "ex-main-0764-d|help:h1",
+      "final-triangular-prism-review-ex-main-0764-d-help-h1"
+    ],
+    [
+      "ex-main-0764-d|help:h2",
+      "final-triangular-prism-review-ex-main-0764-d-help-h2"
+    ],
+    [
+      "ex-main-0764-d|step-1",
+      "final-triangular-prism-review-ex-main-0764-d-step-1"
+    ],
+    [
+      "ex-main-0764-d|step-2",
+      "final-triangular-prism-review-ex-main-0764-d-step-2"
+    ],
+    [
+      "ex-main-0764-d|step-3",
+      "final-triangular-prism-review-ex-main-0764-d-step-3"
+    ],
+    [
+      "ex-main-0764-e|condition",
+      "final-triangular-prism-review-ex-main-0764-e-condition"
+    ],
+    [
+      "ex-main-0764-e|help:h1",
+      "final-triangular-prism-review-ex-main-0764-e-help-h1"
+    ],
+    [
+      "ex-main-0764-e|help:h2",
+      "final-triangular-prism-review-ex-main-0764-e-help-h2"
+    ],
+    [
+      "ex-main-0764-e|step-1",
+      "final-triangular-prism-review-ex-main-0764-e-step-1"
+    ],
+    [
+      "ex-main-0764-e|step-2",
+      "final-triangular-prism-review-ex-main-0764-e-step-2"
+    ],
+    [
+      "ex-main-0764-e|step-3",
+      "final-triangular-prism-review-ex-main-0764-e-step-3"
+    ],
+    [
+      "ex-main-0764-f|condition",
+      "final-triangular-prism-review-ex-main-0764-f-condition"
+    ],
+    [
+      "ex-main-0764-f|help:h1",
+      "final-triangular-prism-review-ex-main-0764-f-help-h1"
+    ],
+    [
+      "ex-main-0764-f|help:h2",
+      "final-triangular-prism-review-ex-main-0764-f-help-h2"
+    ],
+    [
+      "ex-main-0764-f|step-1",
+      "final-triangular-prism-review-ex-main-0764-f-step-1"
+    ],
+    [
+      "ex-main-0764-f|step-2",
+      "final-triangular-prism-review-ex-main-0764-f-step-2"
+    ],
+    [
+      "ex-main-0764-f|step-3",
+      "final-triangular-prism-review-ex-main-0764-f-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "f7c32d383ca5d6b0a583baea5c675819a012cd7d037408373f100715b5703614",
+      "afterSHA256": "c907375cae1702e4cef6198c5d6b789f5e254191ea185b69d8eeadcfdc45bea4"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "25755d57616b45f2819e32170a09efa87ed8d4058db8f546eaa7a19f5552ac1c",
+      "afterSHA256": "0d5b977a65586fb934a696606198267288a528e9a6142518b2be209e8b606e0d"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T00:24:09Z",
+    "scope": "Chapters I–VI, chapter VII points 71–84 and questions 1–17, and every numbered exercise through 763 are reviewed. The four final review problems 764–767 and the advanced problems 768–815 remain separate source positions before chapter VIII."
+  },
+  "before": {
+    "course": "82e5e78735ea3528899154d2454e28e7e80476447a37569d8a34f7c4a732fcc9",
+    "index": "b72bc40f06be0fdd314648a8118ea2be58c4b9cc6af3944deef0b34d4e3d300e",
+    "registry": "8845257f2a252baafe2517cb340ff83b12185b893785e777b79b2a45d7938142",
+    "cases": "09868284a2e9df1485cc0996c5f5b3ffc81eec07fecd6e2de2dd897e7c1b0801"
+  }
+}

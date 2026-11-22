@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T00:24:09Z",
-  "scope": "Chapters I–VI, chapter VII points 71–84 and questions 1–17, and every numbered exercise through 763 are reviewed. The four final review problems 764–767 and the advanced problems 768–815 remain separate source positions before chapter VIII.",
+  "registeredAt": "2026-11-22T01:16:00Z",
+  "scope": "Chapters I–VII and the six parts of the first final-review exercise, 764, are complete. The remaining final-review and advanced exercises from 765 are inventoried separately.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2404,6 +2404,21 @@
       ],
       "evidence": "tools/stereo-textbook/coordinate-chapter-seven-end.json",
       "mathematicalReport": "tools/stereo-textbook/coordinate-chapter-seven-end.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, final review on printed page 189, PDF page 191, checked against the exercise page and the key on printed page 272.",
+      "reviewedAt": "2026-11-22T01:16:00Z",
+      "scope": "All six parts of exercise 764, printed page 189. Independent cross products, line–plane incidence proof, projections, direction of the vector sum, and volume units were checked against the printed exercise and the answer key on page 272.",
+      "cardIds": [
+        "ex-main-0764-a",
+        "ex-main-0764-b",
+        "ex-main-0764-c",
+        "ex-main-0764-d",
+        "ex-main-0764-e",
+        "ex-main-0764-f"
+      ],
+      "evidence": "tools/stereo-textbook/final-triangular-prism-review.json",
+      "mathematicalReport": "tools/stereo-textbook/final-triangular-prism-review.test.cjs"
     }
   ],
   "cards": [
@@ -8154,6 +8169,30 @@
     {
       "id": "ex-main-0763-b",
       "sha256": "6bb7aa2a1f27d5ef024806bf1fb2d7b4cd856d6c5a621b875634b4dcc857c2aa"
+    },
+    {
+      "id": "ex-main-0764-a",
+      "sha256": "fb918031863dc1399fb5dfa07c1857402337d4ba61f06e91af10f628283f3519"
+    },
+    {
+      "id": "ex-main-0764-b",
+      "sha256": "96868640752c88b938d0b8dfa86d3991b501091fa62e60d273950c1b5128dc30"
+    },
+    {
+      "id": "ex-main-0764-c",
+      "sha256": "8ed5cdd365a7119fd05fd3ac8f209a2feb42352a84353e13bc98d80c0988c426"
+    },
+    {
+      "id": "ex-main-0764-d",
+      "sha256": "1a6fc67dee29dca167270ec20cefa983b99b37744abbc5ab4fd72e343ad4bce5"
+    },
+    {
+      "id": "ex-main-0764-e",
+      "sha256": "547528d3175747c42c88c64803643a86e7f4208e40bbd8fa639d20483cfff0bb"
+    },
+    {
+      "id": "ex-main-0764-f",
+      "sha256": "ef048efb7f4d161506d6bd45e43e6cf3c68ab9d9bdaac8eace8055054c735270"
     }
   ]
 }
