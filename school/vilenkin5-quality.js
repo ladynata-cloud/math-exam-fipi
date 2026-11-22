@@ -265,6 +265,7 @@
     active=session;host.dataset.v5Quality='lesson';root.document.body.classList.add('v5-quality-active');
     const head=host.querySelector('.lesson-head'),task=host.querySelector('#task-panel'),model=host.querySelector('#model'),theory=host.querySelector('.v6-theory'),claim=host.querySelector('#claim-feedback')?.closest('section'),d=detail(session);
     if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
+    if(session.task.data?.pointSets)root.Vilenkin5PlotFractionSets.bind(task,session.task,session,()=>readOnly);
     if(session.task.data?.fractionLine)root.Vilenkin5FractionCellLine.bind(task,session.task,session,()=>readOnly);
     if(lesson.fullKey==='printed-check-2-2'&&['learn','practice'].includes(session.mode)){
       const choose=root.document.createElement('form');

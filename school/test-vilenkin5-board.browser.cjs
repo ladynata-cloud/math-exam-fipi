@@ -1472,6 +1472,21 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('[data-line-why="1"]').check();await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'equal coordinates explained')).scene.correct);
   await narrow(student,studentFrame,'paired-coordinate-points');
 
+  phase = 'source 5.101 and 5.102: multiple fraction marks and two extremes';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-101"]').click();await studentFrame.locator('h1').filter({hasText:'№5.101'}).waitFor();
+  await teacherFrame.locator('#answer').fill('1;4;6;8;10');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'first misplaced point A')).scene.message,/A \(1\/6\)/);
+  await ownership(teacher,student,true);
+  const cellPick=async(frame,i,n)=>{const range=frame.locator('[data-set-mark="'+i+'"]');await range.focus();await range.press('Home');for(let j=0;j<n;j++)await range.press('ArrowRight');};
+  await cellPick(studentFrame,0,2);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('1;3;5;7;9;11');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'all eleven marks checked')).scene.correct);
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-102"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.102'}).waitFor();
+  await cellPick(studentFrame,0,6);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  assert.equal((await same(studentFrame,teacherFrame,'one mark and five blanks restored')).scene.savedInput,'6;;;;;');
+  for(const [i,v] of [4,2,1,8,9].entries())await cellPick(studentFrame,i+1,v);
+  await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-set-end="6"]').selectOption('4');await studentFrame.locator('[data-set-end="7"]').selectOption('6');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'correct markings but extremes reversed')).scene.message,/порядок/);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await teacherFrame.locator('[data-set-end="6"]').selectOption('6');await teacherFrame.locator('[data-set-end="7"]').selectOption('4');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'six points and both extremes')).scene.correct);
+  await narrow(student,studentFrame,'six-fractions-placed');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
