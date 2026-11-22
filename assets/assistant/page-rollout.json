@@ -2256,10 +2256,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "7af1c23749ade4f0321db4ac3fb69e637092578f6e4c77320d94105cb8b6df7c",
-      "afterSha256": "3b93d901d5f65785c05eb4b56d81a0cdb657a681ed067b1a1724816846b74800",
+      "beforeSha256": "d6e287b6dd942f2fae9559645c414618acf1be2fbab33f4969635d9d50e9257d",
+      "afterSha256": "2d26b7142bc440d53ceebd3826b9c851959b5240ecd15a4c90313f728a47d39a",
       "placement": "before-head-close",
-      "sourceSha": "72aa2df8292227aecdeb06987e851a0e1fe40a7c"
+      "sourceSha": "feec3de6a2a19bf17dc98bdbb2bc7a3238c67eb3"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -7857,6 +7857,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены все пять цепочек, одиннадцать дробей и шесть имён точек на печатной странице 23. В упражнении сохраняются выбранная строка, взаимное положение точек и частичный ответ ученика."
+    },
+    {
+      "previousBaseSha": "72aa2df8292227aecdeb06987e851a0e1fe40a7c",
+      "sourceBaseSha": "feec3de6a2a19bf17dc98bdbb2bc7a3238c67eb3",
+      "task": "docs/tasks/MAKARYCHEV8_1154_1157.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [

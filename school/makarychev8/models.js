@@ -940,6 +940,9 @@
   }
 
   const finalFunctionSkills=[
+   {id:'strict-sign-study',title:'Строгий знак функции',description:'Проверь нуль и возможные знаки для новой формулы.'},
+   {id:'identify-transformed-graph',title:'Вершина и граница графика',description:'Используй конечную точку корня или вершину модуля для распознавания.'},
+   {id:'absolute-reciprocal-study',title:'Две положительные ветви',description:'Поставь свои точки по разным сторонам вертикальной оси.'},
    {id:'zeros-and-poles',title:'Нуль и запрет знаменателя',description:'Подставь кандидата в исходную дробь и проверь допустимость.'},
    {id:'monotone-proof',title:'Сложение строгих неравенств',description:'Сравни значения двух функций в выбранных точках и собери общий довод.'},
    {id:'monotone-equation',title:'Решение и единственность',description:'Найди точку заданного уровня для строго возрастающей функции.'},
@@ -962,6 +965,20 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='strict-sign-study'){
+    const code=[2,3,6,8,9][(seed+level)%5],param=1+Math.floor(seed/3)%13,positive=code!==3&&code!==6;
+    const formula=({2:'x² + '+(5+param),3:'2x + '+(5+param),6:'−x² − '+(4+param),8:'√x + '+(1+param),9:'x⁴ + x² + '+(6+param)})[code];
+    const choices=['Всюду положительна','Всюду отрицательна','Принимает значения обоих знаков'],hint='Учитывай область и точное значение при нуле, затем оцени каждое слагаемое.';
+    return {...common,prompt:'Каков строгий знак y = '+formula+' на всей области?',kind:'choice',choices,answer:choices[positive?0:code===6?1:2],graph:{type:'source-sign-and-symmetry',group:'sign',code,parameter:param},steps:[probe,step('Какова ордината при нуле?',({2:5,3:5,6:-4,8:1,9:6})[code]+(code===6?-param:param),hint)],hint,correction:hint,explanation:positive?'На всей области положительная константа добавляется к неотрицательной части.':code===6?'Значение не больше отрицательной константы.':'По разные стороны линейного нуля знаки разные.'};
+   }
+   if(id==='identify-transformed-graph'){
+    const h=(seed%2?-1:1)*(1+(seed+level)%12),m=(Math.floor(seed/3)+level)%9-4,hint='Модуль обращается в нуль при x, равном горизонтальному сдвигу. Высота вершины задаётся прибавленной константой.';
+    return {...common,prompt:'Найди вершину y = |x − ('+h+')| + ('+m+'). Запиши (x;y).',kind:'intersection-points',answer:'('+h+';'+m+')',graph:{type:'source-sign-and-symmetry',group:'vertex',h,m},steps:[probe,step('При какой абсциссе выражение внутри модуля равно нулю?',h,hint)],hint,correction:hint,explanation:'При x = '+h+' модуль равен 0 и y = '+m+'.'};
+   }
+   if(id==='absolute-reciprocal-study'){
+    const k=2+(seed+level)%19,hint='Абсциссы должны иметь разные знаки, а для каждой пары должно выполняться |x|·y = '+k+'.';
+    return {...common,prompt:'Построй обе ветви y = '+k+'/|x|. Введи две собственные точки в формате (x;y), (x;y).',kind:'absolute-reciprocal-points',answer:'(-1;'+k+'), ('+k+';1)',graph:{type:'source-sign-and-symmetry',group:'reciprocal',mode:'graph',k,revealAfterSubmit:true},steps:[probe,step('Какова ордината при x = −1?',k,hint)],hint,correction:hint,explanation:'Обе ветви положительные. У противоположных аргументов совпадают значения.'};
+   }
    if(id==='zeros-and-poles'){
     const zero=(seed%2?-1:1)*(1+(seed+level)%10),pole=zero+1+(Math.floor(seed/4)+level)%6,hint='Проверяй нуль числителя, затем подставляй его в знаменатель.';
     return {...common,prompt:'Найди нули y = (x − ('+zero+'))/(x − ('+pole+')).',kind:'set',answer:String(zero),graph:{type:'source-function-values',mode:'zeros',target:0,numerator:[String(-zero),'1'],denominator:[String(-pole),'1'],poles:[pole],diagnoseZeros:true,xRange:[Math.min(-3,zero-2),Math.max(3,pole+2)],yRange:[-4,4]},steps:[probe,step('Какой аргумент обращает знаменатель в нуль?',pole,hint)],hint,correction:hint,explanation:'x = '+zero+' допустим и даёт нулевой числитель.'};

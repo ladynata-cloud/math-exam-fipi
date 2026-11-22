@@ -131,6 +131,18 @@ async function verify(width,url,offline=false){
  await submit(p,'3;2;1');assert.match(await p.locator('#problem').innerText(),/не обещает пересечения/);
  await submit(p,'3;2;4');await p.reload();await p.locator('[data-monotone-sample="-2"]').waitFor();await p.locator('[data-monotone-sample="3"]').waitFor();
  assert(await p.locator('#task-graph svg text').evaluateAll(labels=>labels.every(t=>t.getBBox().x>=0)), 'All negative fractional tick labels fit the SVG');
+ for(const card of require('./exercises-1154-1157.json')){
+  await openNumber(p,Number(card.title.match(/\d+/)[0]),card.title);await p.locator('#task-graph svg').first().waitFor();
+  assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ }
+ await openNumber(p,1155,'№ 1155');await p.locator('[data-action=guided]').click();await p.locator('#step-answer-0').fill('2');
+ await p.locator('[data-sign-probe=outside]').waitFor();assert.equal(await p.locator('#task-graph [data-point-x="1"][data-point-y="0"]').count(),1);assert(await p.locator('#task-graph svg text').evaluateAll(labels=>labels.every(t=>t.getBBox().x>=0)));
+ await p.locator('#step-answer-0').fill('-3');await p.locator('[data-sign-probe=positive]').waitFor();
+ await openNumber(p,1156,'№ 1156');assert.equal(await p.locator('#task-graph [data-source-gallery]').count(),3);
+ await submit(p,'1');assert.match(await p.locator('#problem').innerText(),/координаты вершины/);await submit(p,'2');
+ await openNumber(p,1157,'№ 1157 · график');await submit(p,'(-1;-6), (3;2)');assert.match(await p.locator('#problem').innerText(),/ордината должна быть положительна/);
+ await submit(p,'(-4;3/2), (3;2)');await p.reload();await p.locator('[data-absolute-points=valid]').waitFor();
+ assert.equal(await p.locator('#task-graph [data-root-curve=absolute-reciprocal]').count(),1);
  assert.deepEqual(errors,[]);await ctx.close();
 }
 (async()=>{
@@ -140,6 +152,6 @@ async function verify(width,url,offline=false){
   for(const w of [320,390,1024])await verify(w,url);
   const offline=path.join(root,'downloads/trainers/makarychev8-algebra/makarychev8-algebra.html');
   await verify(320,require('node:url').pathToFileURL(offline).href,true);
-  console.log('PASS source 1131–1153 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
+  console.log('PASS source 1131–1157 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
  }finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
