@@ -433,3 +433,44 @@ test('all opening negations and the Euler diagram are available without a printe
   }
   assert.equal(count, 41);
 });
+
+test('page 7 runs all 13 source parts, accepts grouped dictation and keeps written work outside mastery',async t=>{
+ const s=await surface(t,BOOK+'#map'),items=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(6,10);
+ assert.equal(element(s,'[aria-label="Самостоятельная работа на странице 7"]').querySelectorAll('a').length,4);
+ for(const item of items)for(const part of item.parts){
+  await route(s,'#n/'+item.number+'/'+part.id);
+  const pane=sourcePresent(s);assert.match(pane.textContent,/Всё условие/);assert(pane.querySelector('figure'));
+  assert.match(element(s,'.equivalent-exercise summary').textContent,/Авторский пример/);assert(!bookWork(s,part.id)?.correct);
+  const inputValue=part.id==='010-a'?'6 702 058':part.id==='010-b'?'7 4/5':part.id==='010-v'?'3,00012':part.answer.replace(/\.$/,'');
+  if(item.number===7||item.number===8){input(s,'#answer',item.number===7?'0; 1':'0');submit(s,'#answer-form');assert(!bookWork(s,part.id).correct);}
+  input(s,'#answer',inputValue);submit(s,'#answer-form');const work=bookWork(s,part.id);
+  if(item.number===10){assert.equal(work.correct,true,part.id);assert.equal(work.independent,true,part.id);}
+  else {assert.equal(work.correct,false,part.id);assert.equal(work.submitted,true,part.id);assert(!work.independent);assert(element(s,'.feedback.ok').textContent.trim());}
+  const variants=new Set();
+  for(let attempt=0;attempt<3;attempt++){
+   const model=s.w.PetersonAnalogues.create(item.number,part,attempt);
+   assert.equal(model.match,'skill');assert.equal(model.family,'page7-'+part.id);
+   assert(s.w.PetersonBook.check(model,model.answer));variants.add(model.prompt);
+  }
+  assert.equal(variants.size,3,part.id);
+ }
+});
+test('existing page-seven chapter attempts preserve their original prompt, draft, correction and solution when extending practice',async t=>{
+ const part=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[6].parts[0],id=part.id,key='mathexam.peterson6.analogue.v1.'+id,attempt=2;
+ const s=await surface(t,BOOK+'#n/7/'+id),w=s.w;
+ let hash=2166136261;for(const ch of id+'|'+attempt)hash=Math.imul(hash^ch.charCodeAt(0),16777619);hash>>>=0;
+ const legacy={...w.PetersonPractice.generate('logic-negation',1+hash%3,hash),id:'analog-'+id+'-'+attempt},stored=w.PetersonBook.blank(legacy);
+ stored.note='Сохранилась запись из старой тренировки.';w.PetersonBook.submit(legacy,stored,legacy.answer);
+ const prior=await surface(t,BOOK+'#n/7/'+id,{[key]:JSON.stringify({attempt,work:stored})});
+ assert.equal(element(prior,'.equivalent-exercise .problem').textContent,legacy.prompt);
+ const answer=element(prior,'.analogue-form input,.analogue-form select');assert.equal(answer.value,String(legacy.answer));assert.match(element(prior,'.equivalent-exercise [role=status]').textContent,/самостоятельно/i);
+ const old=prior.w.PetersonAnalogues.create(7,part,attempt,stored);assert.equal(old.match,'chapter');assert.equal(prior.w.PetersonBook.sanitize(old,stored).note,stored.note);
+ element(prior,'.equivalent-exercise button[type=button]').click();
+ const current=state(prior,key);assert.equal(current.earlier.work.note,stored.note);assert.equal(current.earlier.work.draft,stored.draft);assert(current.earlier.work.correct);assert.match(element(prior,'.earlier-practice').textContent,/Сохранилась запись/);assert.equal(current.attempt,attempt+1);assert(!current.work.correct);assert.notEqual(current.work.signature,stored.signature);assert.equal(element(prior,'.equivalent-exercise .problem').textContent,prior.w.PetersonAnalogues.create(7,part,attempt+1).prompt);
+ const draft=element(prior,'.analogue-form input');draft.value='22';draft.dispatchEvent(new prior.w.Event('input',{bubbles:true}));const reload=await surface(t,BOOK+'#n/7/'+id,storage(prior));assert.equal(element(reload,'.analogue-form input').value,'22');assert(element(reload,'.earlier-practice').textContent.includes(legacy.prompt));
+ const partial=w.PetersonBook.blank(legacy);partial.draft=String(legacy.choices.find(value=>value!==legacy.answer));partial.note='Мой черновик до обновления.';
+ const draftOnly=await surface(t,BOOK+'#n/7/'+id,{[key]:JSON.stringify({attempt,work:partial})});
+ assert.equal(element(draftOnly,'.analogue-form select').value,partial.draft);assert.equal(element(draftOnly,'.equivalent-exercise .problem').textContent,legacy.prompt);
+ element(draftOnly,'.equivalent-exercise button[type=button]').click();assert.equal(state(draftOnly,key).earlier.work.note,partial.note);assert(!state(draftOnly,key).earlier.work.correct);
+
+});
