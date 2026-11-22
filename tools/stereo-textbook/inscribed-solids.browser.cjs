@@ -83,7 +83,8 @@ const groups = {
   monotonePathsAndDualSolids: {manifests:[require('./monotone-paths-and-dual-solids.json')],count:4},
   skewLinesAndCornerReflection: {manifests:[require('./skew-lines-and-corner-reflection.json')],count:4},
   tetrahedronAltitudesAndDirectedAngles: {manifests:[require('./tetrahedron-altitudes-and-directed-angles.json')],count:4},
-  sphereChordsCentresAndInradii: {manifests:[require('./sphere-chords-centres-and-inradii.json')],count:4}
+  sphereChordsCentresAndInradii: {manifests:[require('./sphere-chords-centres-and-inradii.json')],count:4},
+  tangentBallsConeAndPrismRatios: {manifests:[require('./tangent-balls-cone-and-prism-ratios.json')],count:4}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
