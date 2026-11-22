@@ -1269,6 +1269,19 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both wall views restored');
   await teacherFrame.locator('#answer-form button').click();const fullWall=await same(teacherFrame,studentFrame,'all ten layers');assert(fullWall.scene.correct);assert.equal(fullWall.scene.attempt,2);await narrow(student,studentFrame,'all-wall-layers');
 
+  phase = 'source 5.82: draw at the specified radius and shade your own sectors';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-82"]').click();await studentFrame.locator('h1').filter({hasText:'№5.82'}).waitFor();
+  await teacherFrame.locator('#answer').fill('3');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'radius three')).scene.correct);await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('1');await teacherFrame.locator('#answer-form button').click();assert.equal((await same(teacherFrame,studentFrame,'number alone never completes a drawing')).scene.attempt,0);
+  await teacherFrame.locator('[data-v5-param=radius]').selectOption({value:'3'});await teacherFrame.locator('[data-v5-sector="2"]').focus();await teacherFrame.locator('[data-v5-sector="2"]').press('Enter');
+  await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'quarter completed by keyboard')).scene.correct);await teacherFrame.locator('[data-cmd=next]').click();
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=part]').selectOption({value:'1'});
+  for(const i of [0,2,4,5,7]){const sector=studentFrame.locator('[data-v5-sector="'+i+'"]');await sector.focus();await sector.press('Space');}
+  await studentFrame.locator('[data-v5-prediction]').fill('5/8');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('#answer').fill('5');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const savedSectors=await same(studentFrame,teacherFrame,'restore five nonadjacent eighths plus earlier quarter');assert(savedSectors.scene.model.seen);assert.equal(savedSectors.scene.model.bitsA,4);assert.equal(savedSectors.scene.model.bitsB,181);assert.equal(savedSectors.scene.savedInput,'5');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'two shaded drawings after both reloads');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'check completed eighths drawing')).scene.correct);await narrow(student,studentFrame,'five-of-eight-sectors');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

@@ -156,6 +156,7 @@
   }
   function inputIssue(value,target){
     if(!text(value)||!value.trim())return 'Сначала запиши ответ. Пустое поле не считается ошибкой.';
+    if(target.sectorTarget){const session=connection?.getSession?.();if(session){const issue=root.Vilenkin5CircleShading.issue(target.sectorTarget,detail(session).model);if(issue)return issue;}}
     if(target.answerFormat==='v5-yes-no'&&!['да','нет'].includes(root.Vilenkin5RadiusChordSector.yesNo(value)))return 'Запиши «да» или «нет». Черновик можно уточнить.';
     if(target.answerFormat==='v5-radius-name'&&!/^[A-Z]{2}$/.test(root.Vilenkin5RadiusChordSector.readSegment(value)))return 'Назови отрезок двумя буквами с рисунка. Пока это черновик.';
     if(target.answerFormat==='v5-spoken-fraction'&&!/^[а-яёА-ЯЁ.,!?«»\s]+$/u.test(value))return 'Произнеси дробь вслух и запиши её словами. Можно поправить черновик.';
