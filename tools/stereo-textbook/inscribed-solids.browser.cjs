@@ -63,7 +63,10 @@ const groups = {
   spatialDirectionCosinesAndSquare: {manifests:[require('./spatial-direction-cosines-and-square.json')],count:12},
   spatialScalarIdentitiesAndOppositeEdges: {manifests:[require('./spatial-scalar-identities-and-opposite-edges.json')],count:15},
   anglesWithLinesAndCoordinateFaces: {manifests:[require('./angles-with-lines-and-coordinate-faces.json')],count:20},
-  cubeProofsAndScalarProductSectionEnd: {manifests:[require('./cube-proofs-and-scalar-product-section-end.json')],count:7}
+  cubeProofsAndScalarProductSectionEnd: {manifests:[require('./cube-proofs-and-scalar-product-section-end.json')],count:7},
+  spatialSymmetriesAndFixedSets: {manifests:[require('./spatial-symmetries-and-fixed-sets.json')],count:14},
+  isometriesOfSpaceSectionEnd: {manifests:[require('./isometries-of-space-section-end.json')],count:14},
+  coordinatesChapterSevenSelfCheck: {manifests:[require('./coordinates-chapter-seven-self-check.json')],count:39}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

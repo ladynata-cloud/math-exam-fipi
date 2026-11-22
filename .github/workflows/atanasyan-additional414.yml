@@ -96,6 +96,9 @@ jobs:
           node tools/stereo-textbook/spatial-scalar-identities-and-opposite-edges.test.cjs
           node tools/stereo-textbook/angles-with-lines-and-coordinate-faces.test.cjs
           node tools/stereo-textbook/cube-proofs-and-scalar-product-section-end.test.cjs
+          node tools/stereo-textbook/spatial-symmetries-and-fixed-sets.test.cjs
+          node tools/stereo-textbook/isometries-of-space-section-end.test.cjs
+          node tools/stereo-textbook/coordinates-chapter-seven-self-check.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -392,6 +395,21 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: cubeProofsAndScalarProductSectionEnd
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cube-proofs-and-scalar-product-section-end
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all 21 original point images, rotations, reflections, translations and fixed sets
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialSymmetriesAndFixedSets
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-symmetries-and-fixed-sets
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check two-sided proofs of all isometry images, including disjoint planes and space circles
+        env:
+          TEXTBOOK_PRACTICE_GROUP: isometriesOfSpaceSectionEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/isometries-of-space-section-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check every printed coordinate-and-motion self-check on page 186
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinatesChapterSevenSelfCheck
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinates-chapter-seven-self-check
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -484,5 +502,8 @@ jobs:
             artifacts/spatial-scalar-identities-and-opposite-edges/
             artifacts/angles-with-lines-and-coordinate-faces/
             artifacts/cube-proofs-and-scalar-product-section-end/
+            artifacts/spatial-symmetries-and-fixed-sets/
+            artifacts/isometries-of-space-section-end/
+            artifacts/coordinates-chapter-seven-self-check/
           retention-days: 14
           if-no-files-found: error

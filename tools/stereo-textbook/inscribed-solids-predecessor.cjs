@@ -2,7 +2,10 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const cubeProofsAndScalarProductSectionEnd = makeReviewedIncrement(require('./cube-proofs-and-scalar-product-section-end.json'), closedSections);
+const coordinatesChapterSevenSelfCheck = makeReviewedIncrement(require('./coordinates-chapter-seven-self-check.json'), closedSections);
+const isometriesOfSpaceSectionEnd = makeReviewedIncrement(require('./isometries-of-space-section-end.json'), coordinatesChapterSevenSelfCheck);
+const spatialSymmetriesAndFixedSets = makeReviewedIncrement(require('./spatial-symmetries-and-fixed-sets.json'), isometriesOfSpaceSectionEnd);
+const cubeProofsAndScalarProductSectionEnd = makeReviewedIncrement(require('./cube-proofs-and-scalar-product-section-end.json'), spatialSymmetriesAndFixedSets);
 const anglesWithLinesAndCoordinateFaces = makeReviewedIncrement(require('./angles-with-lines-and-coordinate-faces.json'), cubeProofsAndScalarProductSectionEnd);
 const spatialScalarIdentitiesAndOppositeEdges = makeReviewedIncrement(require('./spatial-scalar-identities-and-opposite-edges.json'), anglesWithLinesAndCoordinateFaces);
 const spatialDirectionCosinesAndSquare = makeReviewedIncrement(require('./spatial-direction-cosines-and-square.json'), spatialScalarIdentitiesAndOppositeEdges);
