@@ -160,7 +160,11 @@ function formatProblem(value,q){
   const entries=text.split(';'),count=q.kind==='interval-examples'?q.exampleCount:String(q.answer).split(';').length;
   if(entries.length!==count||entries.some(v=>!M.parse(v)))return message;
  }
- if(q.kind==='absolute-reciprocal-points'&&!window.MakarychevCheck.pointGroups(text))return 'Запиши две координатные пары (x;y). Математическая попытка ещё не засчитана.';
+ if(q.kind==='four-power-marks'&&!window.MakarychevTaskGraphs.domainCoefficients(text,5))return 'Нужны абсцисса и четыре ординаты, разделённые точками с запятой. Попытка ещё не засчитана.';
+ if(q.kind==='four-power-order'&&!window.MakarychevTaskGraphs.parseFourPowerOrder(text,q.graph.sample))return 'Укажи четыре разные формулы через точку с запятой. Попытка ещё не засчитана.';
+ if(q.kind==='piecewise-marks'&&!window.MakarychevCheck.pointGroups(text))return 'Введи две группы точек, разделённые |. Математическая попытка ещё не засчитана.';
+ if(q.kind==='sorted-root-values'&&!window.MakarychevTaskGraphs.domainCoefficients(text,q.graph.xs.length))return 'Нужны все пять чисел, разделённые точкой с запятой. Математическая попытка ещё не засчитана.';
+ if(['punctured-root-points','absolute-reciprocal-points'].includes(q.kind)&&!window.MakarychevCheck.pointGroups(text))return 'Запиши две координатные пары (x;y). Математическая попытка ещё не засчитана.';
  if(['trip-knots','full-range-knots'].includes(q.kind)&&!window.MakarychevCheck.pointGroups(text))return 'Запиши вершины парами (x;y). Математическая попытка ещё не засчитана.';
  if(q.kind==='trip-table'&&!window.MakarychevTaskGraphs.domainCoefficients(text,4))return message;
  if(q.kind==='behavior-table'&&!window.MakarychevTaskGraphs.domainCoefficients(text,q.graph.xs.length))return message;
@@ -212,6 +216,7 @@ function formatProblem(value,q){
  if(q.kind==='parameter-sample'&&window.MakarychevTaskGraphs.parameterSample(text)===null)return 'Для опыта укажи число от −24 до 24 с шагом 1/8. Можно использовать дробь, например −1/8.';
  if(['reciprocal-points','reciprocal-pair-points'].includes(q.kind)&&!window.MakarychevCheck.pointGroups(text))return q.inputNote||'Нужны две пары координат: (x;y), (x;y).';
  if(q.kind==='root-transform-points'&&!window.MakarychevCheck.pointGroups(text))return q.inputNote;
+ if(q.kind==='affine-condition'&&!window.MakarychevCheck.affinePlot(text))return 'Введи полное уравнение линейной функции с y, например y = 2x + 3. Математическая попытка ещё не засчитана.';
  if(q.kind==='line-placement'&&!window.MakarychevTaskGraphs.positionCoefficients(q.graph,text))return q.inputNote;
  if(q.kind==='own-affine-points'&&!window.MakarychevCheck.pointGroups(text))return q.inputNote;
  if(q.kind==='intersection-points'&&!window.MakarychevCheck.pointGroups(text))return q.inputNote;
@@ -279,6 +284,70 @@ function feedbackFor(value,q){
   for(const candidate of entries){const y=window.MakarychevTaskGraphs.functionValueAt(g,candidate);if(y!==null&&!M.equal(y,'0'))return 'Твоя подстановка '+candidate+' даёт значение '+y+'. Для нуля функции требуется значение 0.';}
   if(entries.length===1&&q.answer.includes(';'))return 'Проверь число противоположного знака: зависит ли квадрат от знака аргумента?';
   return q.hint;
+ }
+ if(q.graph?.type==='source-root-and-powers'){
+  const g=q.graph,G=window.MakarychevTaskGraphs;
+  if(g.group==='estimate'){
+   const result=G.rootReciprocalProbe(g.k,M.parse(value));
+   if(result?.status==='zero'||result?.status==='negative')return 'Это x вне общей области обоих графиков. Для дроби и корня вместе требуется x > 0.';
+   if(result&&Math.abs(result.x-Math.cbrt(g.k*g.k))<.05)return 'Оценка уже близка к пересечению. Теперь округли абсциссу именно до десятых.';
+   return 'Сравни графики на увеличенном участке. Ищи абсциссу пересечения по горизонтальной шкале.';
+  }
+  if(g.mode==='draw'){
+   const mark=G.fourPowerMarks(value),names=['прямой','квадрата','куба','квадратного корня'];
+   if(mark.status==='anchor')return 'Для дополнительного измерения нужен положительный x, отличный от единицы. Ноль и единица уже дают общие точки.';
+   if(mark.status.startsWith('height-'))return 'Перепроверь высоту '+names[Number(mark.status.split('-')[1])]+', остальные формулы имеют свои ординаты.';
+  }
+  if(g.mode==='common')return 'Нужны все точки пересечения четырёх графиков. Начни с уравнения x² = x и проверь оба корня.';
+  if(g.mode==='order')return (g.side==='left'?'Между нулём и единицей умножение числа на x уменьшает его.':'После единицы умножение на x увеличивает число.')+' Читай ординаты '+(g.ascending?'снизу вверх.':'сверху вниз.');
+ }
+ if(q.graph?.type==='source-piecewise-properties'){
+  const g=q.graph,C=window.MakarychevCheck,G=window.MakarychevTaskGraphs;
+  if(g.mode==='graph'){
+   const result=G.piecewiseMarks(g,C.pointGroups(value));
+   if(result.status==='domain')return 'Одна из точек указана на чужом участке или за границей обеих формул. Граница стыка относится к первой строке.';
+   if(result.status==='repeat')return 'В одной части повторилась одна абсцисса. Для построения нужны две разные точки каждой ветви.';
+   if(result.status==='height')return 'Для одной из отметок не совпала высота. Подставь её абсциссу в формулу своей ветви.';
+   return 'Укажи ровно две точки для каждой из двух ветвей.';
+  }
+  if(g.mode==='range'&&g.last!==null)return 'Сравни вершину квадратичной ветви с высотой в последней точке правого отрезка.';
+  if(g.mode==='extrema')return 'Двигаясь по левой ветви влево, можно подняться сколь угодно высоко. Для минимума сравни вершину и правую границу.';
+  if(g.mode==='increase'||g.mode==='decrease')return 'Отметь вершину и стык. Проследи высоту слева направо между этими точками и справа от них.';
+  if(g.mode==='zeros'||g.mode==='positive'||g.mode==='negative')return 'Отметь допустимые нули обеих формул и проверь знак строго между соседними нулями.';
+ }
+ if(q.graph?.type==='source-root-crossings'){
+  const g=q.graph,G=window.MakarychevTaskGraphs;
+  if(g.group==='rank'){
+   const values=G.domainCoefficients(value,g.xs.length);
+   if(values?.some((p,i)=>i>0&&p.n*values[i-1].d<values[i-1].n*p.d))return 'Среди соседних ординат есть уменьшение. Расставь полученные высоты по возрастанию.';
+   return 'Порядок чисел уже возрастает. Проверь вычисление корня у каждого данного аргумента и знак после вычитания.';
+  }
+  if(g.group==='cross')return q.answer==='Общих точек нет'?'При x ≥ 0 прямая отрицательна, а высота корня отрицательной быть не может.':'Проверь высоты слева и справа на предложенном отрезке. Если порядок непрерывных графиков меняется, они встречаются.';
+  if(g.mode==='plot'){
+   const p=G.puncturedPoints(g,window.MakarychevCheck.pointGroups(value));
+   if(p.status==='hole')return 'Одна координата попала в выколотую точку. Проверь исходный знаменатель до сокращения.';
+   if(p.status==='branch')return 'Обе точки одной ветви. Выбери абсциссы разных знаков.';
+   if(p.status.startsWith('axis'))return 'При нулевом x выражение не определено.';
+   return 'Проверь произведение двух координат каждой точки после сокращения дроби.';
+  }
+  const count=G.puncturedIntersections(g,M.parse(value));
+  if(count?.count===0)return 'С таким наклоном ни одна точка не подходит. Обе координаты точки на этой гиперболе одного знака.';
+  if(count?.count===2)return 'У выбранной прямой остались две точки. Направь её через выколотую точку графика.';
+ }
+ if(q.graph?.type==='source-affine-conditions'){
+  const g=q.graph,C=window.MakarychevCheck;
+  if(g.mode==='parameter'){
+   const ranges=C.axisRanges(C.systemInput(value,'a')),edge=g.offset;
+   const has=ranges?.some(r=>(r.min<edge||r.min===edge&&!r.leftOpen)&&(r.max>edge||r.max===edge&&!r.rightOpen));
+   if(g.feature!=='const'&&has)return 'При a = '+edge+' наклон нулевой: прямая горизонтальна. Проверь, входит ли эта граница.';
+   return 'Подставь одно значение по каждую сторону от границы и проверь знак наклона.';
+  }
+  const result=C.lineCondition(value,g);
+  if(result.status==='same')return 'Твоя формула описывает ту же прямую. Здесь нужна отличная от неё прямая.';
+  if(result.status==='parallel')return 'Наклоны совпали, а свободные члены различны. У этих прямых нет точки пересечения.';
+  if(result.status==='slope')return 'Прямые пересекаются. Для параллельности сохрани коэффициент при x.';
+  if(result.status==='point')return 'Параллельность уже есть. Подставь в свою формулу обе координаты заданной точки.';
+  if(result.status==='location')return g.mode==='third'?'Для третьей четверти нужны одновременно x < 0 и y < 0. Проверь оба знака в полученном пересечении.':g.mode==='ox'?'На оси x ордината пересечения должна равняться нулю.':'На оси y абсцисса пересечения должна равняться нулю.';
  }
  if(q.graph?.type==='source-sign-and-symmetry'){
   const g=q.graph,C=window.MakarychevCheck;
@@ -989,7 +1058,7 @@ if(t.graph){
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(graph.type))graph=rationalEvidence(graph,s.value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(graph.type))graph={...graph,trial:s.values[graph.trialStep||0],prediction:s.values[graph.predictionStep],completed:s.correct};
  if(graph.fixedInput)graph={...graph,partial:s.values,showValue:Boolean(s.correct)};
- if(['source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-final-functions','source-surd-cancellation'].includes(graph.type))graph={...graph,partial:s.values};
+ if(['source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-final-functions','source-surd-cancellation'].includes(graph.type))graph={...graph,partial:s.values};
  if(graph.type==='source-root-study'&&!graph.legacy)graph={...graph,partial:s.values};
  if(graph.type==='source-line-position')graph={...graph,partial:s.values};
  if(graph.type==='source-affine-study'&&!graph.legacy)graph={...graph,partial:s.values};
@@ -1036,7 +1105,7 @@ if(t.graph){
  if(modelInput&&graph.type==='natural-values')graph={...graph,rows:(window.MakarychevCheck.setEntries(modelInput)||[]).map(term=>({term,pair:naturalCase(term,t.naturalRule)}))};
  window.MakarychevTaskGraphs?.render(document.getElementById('task-graph'),graph,modelInput);
 }
-document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-surd-cancellation','source-final-functions','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
+document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();if(['story-balance','parameter-polynomial','source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','source-proof-review','source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-surd-cancellation','source-final-functions','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','square-substitution'].includes(t.graph?.type))preview(s.value);};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
 function rationalEvidence(graph,value){
  const C=window.MakarychevCheck;
  if(graph.type==='rational-root-audit')return {...graph,checks:C.rationalRootTrial(value,graph)};
@@ -1048,14 +1117,14 @@ function factorEvidence(graph,value){
  const [a,...roots]=String(value||'').split(';');
  return {...graph,rightLeading:M.equal(a,graph.leading),audit:window.MakarychevCheck.vietaAudit(roots.join(';'),graph)};
 }
-function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-surd-cancellation','source-final-functions','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
+function preview(value){if(active?.task.graph?.learnerIntersections||['build','pair','root-build','curve-build','root-line','line-example','rational-intersections','rational-root-audit','graph-root-reading','travel-times','quantity-audit','linear-review','inequality-evidence','labelled-order','transformed-numbers','source-proof-review','source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-surd-cancellation','source-final-functions','source-root-study','source-line-position','source-affine-study','source-review-43','source-formula-zeros','source-graph-witness','source-curve-properties','source-phase-reading','source-trip-review','source-behavior-review','source-function-features','source-reading-graph','source-function-domain','source-function-values','source-applied-bounds','source-solution-audit','interval-set-review','geometry-bound-review','source-system-review','source-system-rays','source-inequality-case','linear-ray-trial','source-interval-axis','interval-review','euler-operation','overlap-segments','proportion-coefficient','harvest-check','combined-intervals','two-comparisons','power-order','median-investigation','diagonal-proof','mean-factors','signed-square-proof','library-area','cancel-ratio','cut-square','interval-image','rank-expressions','compare-surd-values','square-substitution','radical-comparison','source-fraction','factor-witness','vieta-audit','number-sequence','applied-measure','root-residual','square-certificate','parameter-polynomial','story-balance','inequality-intervals','abs-line-choice','own-lines','own-points','rate-table','two-equations','applied-shape','vertex-form','leg-trial','coefficient-example','rational-line-example'].includes(active?.task.graph?.type)){
  const state=ts(active.task.id),base=active.task.graph;
  let graph=['vertex-form','coefficient-example'].includes(base.type)?{...base,evaluated:Boolean(state.attempts||state.correct)}:base;
  if(['own-lines','own-points'].includes(base.type))graph={...base,groups:window.MakarychevCheck.pointGroups(value)};
  if(['rational-intersections','rational-root-audit','graph-root-reading'].includes(base.type))graph=rationalEvidence(base,value);
  if(['source-fraction','travel-times','quantity-audit','linear-review','inequality-evidence'].includes(base.type))graph={...base,trial:state.values[base.trialStep||0],prediction:state.values[base.predictionStep],completed:state.correct};
  if(base.fixedInput)graph={...graph,partial:state.values,showValue:Boolean(state.correct)};
- if(['source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-final-functions','source-surd-cancellation'].includes(base.type))graph={...base,partial:state.values};
+ if(['source-root-and-powers','source-piecewise-properties','source-root-crossings','source-affine-conditions','source-sign-and-symmetry','source-monotone-reason','source-route-and-range','source-domain-and-sections','source-floor-parts','source-final-functions','source-surd-cancellation'].includes(base.type))graph={...base,partial:state.values};
  if(base.type==='source-root-study'&&!base.legacy)graph={...base,partial:state.values};
  if(base.type==='source-line-position')graph={...base,partial:state.values};
  if(base.type==='source-affine-study'&&!base.legacy)graph={...base,partial:state.values};
