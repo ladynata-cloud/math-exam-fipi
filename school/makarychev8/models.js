@@ -940,6 +940,8 @@
   }
 
   const finalFunctionSkills=[
+   {id:'build-piecewise-branches',title:'Два участка одного графика',description:'Строй каждую ветвь по своей формуле и учитывай границы.'},
+   {id:'study-piecewise-values',title:'Свойства функции по частям',description:'Сопоставь вершину, стык и правый край на новых данных.'},
    {id:'rank-reflected-roots',title:'Упорядочивание значений корня',description:'Сравни ординаты на разных рациональных аргументах.'},
    {id:'cross-line-root',title:'Пересечение прямой с корнем',description:'Подбирай абсциссы и сравнивай взаимное положение графиков.'},
    {id:'punctured-root-slope',title:'Наклон и удалённая точка',description:'Исследуй число пересечений гиперболы с прямой.'},
@@ -971,6 +973,22 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='build-piecewise-branches'||id==='study-piecewise-values'){
+    const vertex=(seed%7)-3,join=vertex+1,root=(seed+level)%2===0,last=root?null:join+1+level%2,slope=-(1+(seed+level)%4),intercept=1-slope*join;
+    const right=root?'√(x − ('+join+') + 1)':slope+'x + ('+intercept+')';
+    const definition='y = (x − ('+vertex+'))² при x ≤ '+join+'; y = '+right+' при x > '+join+(root?'':' и x ≤ '+last)+'. ';
+    const graph={type:'source-piecewise-properties',vertex,join,last,shape:root?'root':'line',slope,intercept};
+    const hint='Применяй каждую строку только на её области и учитывай точку стыка.';
+    const steps=[probe,step('Какова высота в стыке?',1,hint)];
+    if(id==='build-piecewise-branches'){
+     const x1=root?join+3:join+.5,x2=root?join+8:join+1,y1=root?2:slope*x1+intercept,y2=root?3:slope*x2+intercept;
+     return {...common,kind:'piecewise-marks',prompt:definition+'Выбери по две точки каждой части.',answer:'('+vertex+';0),('+join+';1) | ('+x1+';'+y1+'),('+x2+';'+y2+')',graph:{...graph,mode:'graph'},steps,inputNote:'Две точки первой ветви | две точки второй ветви.',hint,correction:hint,explanation:'На границе x = '+join+' действует квадратичная формула; на правой ветви x строго больше.'};
+    }
+    const mode=['domain','range','increase','decrease'][(Math.floor(seed/2)+level)%4];
+    const ans=mode==='domain'?(root?'(-∞;+∞)':'(-∞;'+last+']'):mode==='range'?'['+(root?0:Math.min(0,slope*last+intercept))+';+∞)':mode==='increase'?'['+vertex+';'+(root?'+∞)':join+']'):'(-∞;'+vertex+']'+(root?'':'∪['+join+';'+last+']');
+    const labels={domain:'Укажи область определения.',range:'Укажи множество значений.',increase:'Укажи максимальный промежуток возрастания.',decrease:'Перечисли отдельно максимальные промежутки убывания через знак объединения.'};
+    return {...common,kind:'system-single',variable:mode==='range'?'y':'x',prompt:definition+labels[mode],answer:ans,graph:{...graph,mode},steps,hint,correction:hint,explanation:'Граница формул x = '+join+', вершина параболы при x = '+vertex+'. Получается '+ans+'.'};
+   }
    if(id==='rank-reflected-roots'){
     const shift=(seed+level)%9-2,half=3+seed%2,big=3+level+seed%4;
     const xs=['1','0',String(big*big),String(half*half)+'/4','1/4'];

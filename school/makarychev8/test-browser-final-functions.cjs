@@ -179,6 +179,18 @@ async function verify(width,url,offline=false){
  await submit(p,'1');assert.match(await p.locator('#problem').innerText(),/остались две точки/);
  await p.locator('#step-answer-0').fill('16/9');await p.locator('[data-punctured-count="1"]').waitFor();await submit(p,'16/9');
  await p.reload();await p.locator('[data-punctured-count="1"]').waitFor();assert.equal(await p.locator('[data-hole-x="-0.75"]').count(),1);assert.equal(await p.locator('[data-point-x="0.75"]').count(),1);
+ for(const card of require('./exercises-1164.json')){
+  await openNumber(p,1164,card.title);await p.locator('#task-graph svg').first().waitFor();assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ }
+ await openNumber(p,1164,'№ 1164а · график');await submit(p,'(0;0),(1;1) | (1;1),(4;2)');assert.match(await p.locator('#problem').innerText(),/стыка относится к первой строке/);
+ await submit(p,'(0;0),(-1/2;1/4) | (9/4;3/2),(4;2)');await p.locator('[data-piecewise-marks=valid]').waitFor();assert.equal(await p.locator('[data-root-curve=piecewise-half]').count(),2);
+ await openNumber(p,1164,'№ 1164б · график');await p.locator('[data-action=guided]').click();await p.locator('#step-answer-0').fill('4');await p.locator('[data-piecewise-trial=outside]').waitFor();
+ await p.locator('#step-answer-0').fill('2');await p.locator('[data-piecewise-trial=left]').waitFor();
+ await p.locator('#step-answer-0').fill('5/2');await p.locator('[data-piecewise-trial=right]').waitFor();assert.match(await p.locator('[data-piecewise-trial=right]').innerText(),/равна 0/);
+ await submit(p,'(0;1),(1;0) | (9/4;1/2),(3;-1)');await p.reload();await p.locator('[data-piecewise-marks=valid]').waitFor();
+ assert.equal(await p.locator('[data-piecewise-boundary="2"]').count(),1);assert.equal(await p.locator('[data-piecewise-boundary="3"]').count(),1);
+ await openNumber(p,1164,'№ 1164б · значения');await submit(p,'[0;+∞)');assert.match(await p.locator('#problem').innerText(),/последней точке/);await submit(p,'[-1;+∞)');
+ await openNumber(p,1164,'№ 1164б · убывание');await submit(p,'(-∞;1]');assert.match(await p.locator('#problem').innerText(),/вершину и стык/);await submit(p,'(-∞;1]∪[2;3]');await p.reload();assert(await p.evaluate(()=>MakarychevApp.getState().tasks['p45-source-1164-b-decrease'].correct));
  assert.deepEqual(errors,[]);await ctx.close();
 }
 (async()=>{
@@ -188,6 +200,6 @@ async function verify(width,url,offline=false){
   for(const w of [320,390,1024])await verify(w,url);
   const offline=path.join(root,'downloads/trainers/makarychev8-algebra/makarychev8-algebra.html');
   await verify(320,require('node:url').pathToFileURL(offline).href,true);
-  console.log('PASS source 1131–1163 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
+  console.log('PASS source 1131–1164 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
  }finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
