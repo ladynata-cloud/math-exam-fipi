@@ -1801,3 +1801,17 @@ test('all missing printed graph contexts include correct endpoints, inverse slop
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('complete four decimal speed columns, twelve cipher values and the issued third-cell misprint separately',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=[['4.3','1.7','.64','.92','22.4','3.1','.92','1.8','.27','3.56'],['6','240','.64','.015','.49','0','.072','1','.1','.008'],['.58','36','.025','960','.08','12','40','80','.2','.01'],['.05','.9','6.22','.3','.7','420','16','1.8','10.1','1.988']];
+  for(let col=0;col<4;col++){
+   f.nav('#lesson/p21/'+(18+col));assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,10);f.click('[data-lesson-help="model"] > summary');const [data,index,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   expected[col].forEach((v,i)=>{f.event(index,String(i),'change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes('Ответ '+String(Number(v)).replace('.',',')+'.'),[col,i,f.q('#model').textContent]);});
+   f.event(data,'1','change');assert.equal(f.q(stage).value,'0');
+  }
+  const table=['23/12','43/25','6/5','95/12','6','9799/100','7/2','22','7/6','61/20','5/2','27/4'];
+  table.forEach((v,i)=>{f.nav('#lesson/p21/'+(22+i));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes('Точное значение '+v+'.'));const old=f.q('#model').textContent;f.event(data,'1','change');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,old);});
+  f.nav('#lesson/p21/34');assert.equal(f.d.querySelectorAll('#task-figure tbody tr')[2].cells[1].textContent,'11/12');f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'1','change');assert.match(f.q('#model .pm-result').textContent,/КО□ФФИЦИЕНТ/);f.event(stage,'2','change');assert.match(f.q('#model .pm-result').textContent,/КОЭФФИЦИЕНТ/);f.event(data,'1','change');f.event(stage,'2','change');assert.match(f.q('#model .pm-result').textContent,/ЦЕНА/);assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
