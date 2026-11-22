@@ -1461,6 +1461,30 @@ async function run(browser, origin, backend, failures) {
   await same(teacherFrame,studentFrame,'two fractions of one avenue');await teacherFrame.locator('#answer-form button').click();const unitNinth=await same(teacherFrame,studentFrame,'one ninth equals half a kilometre');assert(unitNinth.scene.correct);assert.equal(unitNinth.scene.attempt,2);
   await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('4,5');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'four and one half kilometres as a whole')).scene.correct);await narrow(student,studentFrame,'avenue-from-four-ninths');
 
+  phase = 'source 5.68: decrease by or divide by one hundred';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-68"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.68'}).waitFor();
+  await teacherFrame.locator('#answer').fill('10000');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'one hundredth of a million')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('9000');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'subtract a thousand')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('8900');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'division error')).scene.message,/деление/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=line]').selectOption({value:'2'});await studentFrame.locator('[data-v5-prediction]').fill('90');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('90');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const reductionDraft=await same(studentFrame,teacherFrame,'restored third operation and draft');assert(reductionDraft.scene.model.seen);assert.equal(reductionDraft.scene.model.line,2);assert.equal(reductionDraft.scene.savedInput,'90');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'restore both roles after handoff');await teacherFrame.locator('#answer-form button').click();const divisionCorrected=await same(teacherFrame,studentFrame,'corrected to ninety');assert(divisionCorrected.scene.correct);assert.equal(divisionCorrected.scene.attempt,2);await narrow(student,studentFrame,'subtract-or-divide');
+
+  phase = 'source 5.70: disk and boundary have the same maximum distance';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-70"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.70'}).waitFor();
+  await teacherFrame.locator('#answer').fill('возможно');await teacherFrame.locator('#answer-form button').click();const chordDraft=await same(teacherFrame,studentFrame,'ambiguous draft');assert.equal(chordDraft.scene.attempt,0);
+  await teacherFrame.locator('#answer').fill('нет');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'shorter than diameter')).scene.message,/короткого отрезка/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=choice]').selectOption({value:'6'});await studentFrame.locator('[data-v5-prediction]').fill('20');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('ДА');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const chordLong=await same(studentFrame,teacherFrame,'restored impossible fourteen centimetres model');assert(chordLong.scene.model.seen);assert.equal(chordLong.scene.model.choice,6);assert.equal(chordLong.scene.savedInput,'ДА');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'restored both chord calculations');await teacherFrame.locator('#answer-form button').click();assert.equal((await same(teacherFrame,studentFrame,'recognise the short chord')).scene.attempt,2);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('да');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'one millimetre fits')).scene.correct);await narrow(student,studentFrame,'one-millimetre-chord');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
