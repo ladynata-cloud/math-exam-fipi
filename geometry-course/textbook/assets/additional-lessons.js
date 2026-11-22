@@ -140,7 +140,8 @@
       ['/geometry-course/textbook/data/similarity-figure-reading.json', '№1299а–1301в'],
       ['/geometry-course/textbook/data/polygon-similarity-choices.json', '№1302–1303е'],
       ['/geometry-course/textbook/data/similar-perimeters-areas.json', '№1304–1308'],
-      ['/geometry-course/textbook/data/homothety-centers.json', 'пп. 133–135 и №1309а–1310б']
+      ['/geometry-course/textbook/data/homothety-centers.json', 'пп. 133–135 и №1309а–1310б'],
+      ['/geometry-course/textbook/data/homothetic-lines-circles.json', '№1311а–1312в']
   ];
 
   async function forCourse(base) {
