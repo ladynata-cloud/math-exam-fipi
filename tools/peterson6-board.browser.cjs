@@ -421,6 +421,19 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await teacherFrame.locator('[data-choice]').filter({hasText:'недостаточно'}).click();await teacherFrame.locator('#answer-form button[type=submit]').click();await synchronized(teacherFrame,studentFrame,'absence of a fixed ratio');
   await teacherFrame.locator('header nav a[href="#home"]').click();await synchronized(teacherFrame,studentFrame,'back to the search field');await teacherFrame.locator('#book-part').selectOption('1');
 
+  phase = 'logical implication, equal vertical angles and a personal statement';
+  await teacherFrame.locator('#book-part').selectOption('3');await teacherFrame.locator('#exercise-number').fill('234');await teacherFrame.locator('#number-form button').click();
+  assert.equal(await teacherFrame.locator('#number-result a[href^="#lesson/p41/"]').count(),4);await teacherFrame.locator('#number-result a[href="#lesson/p41/15"]').click();await synchronized(teacherFrame,studentFrame,'fourth angle statement');
+  await teacherFrame.locator('#answer-form [data-choice]').filter({hasText:'α + β = 180°'}).click();await teacherFrame.locator('#answer-form button[type=submit]').click();
+  assert.match(await teacherFrame.locator('.feedback').first().innerText(),/40°/);await synchronized(teacherFrame,studentFrame,'adjacent angles are mistaken for vertical angles');
+  await ownership(teacher,student,true);await openModel(studentFrame);await studentFrame.locator('#model select').first().selectOption('1');await studentFrame.locator('#model select').nth(1).selectOption('1');
+  await synchronized(studentFrame,teacherFrame,'two equal angles of 55 degrees');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await courseFrame(teacher);await synchronized(studentFrame,teacherFrame,'teacher recovers the pupil angle model');
+  assert.match(await teacherFrame.locator('#model .pm-result').innerText(),/55°/);
+  await studentFrame.locator('#answer-form [data-choice]').filter({hasText:'α и β вертикальные ⇒ α = β'}).click();await studentFrame.locator('#answer-form button[type=submit]').click();await synchronized(studentFrame,teacherFrame,'learner corrects vertical angle implication');
+  await lesson(studentFrame,'p41',16);if(!await studentFrame.locator('#notebook').isVisible())await studentFrame.locator('.problem > details > summary').click();await studentFrame.locator('#notebook').fill('Если n кратно 30, то n кратно 5. 30 ∣ n ⇒ 5 ∣ n.');await studentFrame.locator('[data-action=record-manual]').click();await synchronized(studentFrame,teacherFrame,'own reasoning recorded for review');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);await synchronized(teacherFrame,studentFrame,'pupil reload restores shared text without personal mastery');
+  assert.equal(await studentFrame.locator('#notebook').inputValue(),'Если n кратно 30, то n кратно 5. 30 ∣ n ⇒ 5 ∣ n.');assert.match(await studentFrame.locator('[data-action=record-manual]').innerText(),/Записано для проверки/);
+  await teacherFrame.locator('header nav a[href="#home"]').click();await synchronized(teacherFrame,studentFrame,'return to number search');await teacherFrame.locator('#book-part').selectOption('1');
   phase = 'textbook lookup, partial drafts and saved disclosures';
   await teacherFrame.locator('#exercise-number').fill('177');
   await teacherFrame.locator('#number-form button').click();

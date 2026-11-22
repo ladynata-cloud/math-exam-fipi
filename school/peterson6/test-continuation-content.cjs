@@ -55,6 +55,12 @@ for(const [i,l]of D.lessons.entries()){
   }
  }
 }
+const statements=D.lessons.find(l=>l.id==='p41').tasks.filter(t=>t.logicLab);
+assert.deepEqual(Array.from(statements,t=>[t.source.exercise,t.source.subpart,t.source.page,t.logicLab]),[[234,'а',52,'opposite'],[234,'б',52,'fraction'],[234,'в',52,'parallel'],[234,'г',52,'vertical'],[235,'',52,'own']]);
+assert.equal(statements[4].kind,'manual');assert.equal(statements[4].answer,'');
+for(const t of statements.slice(0,4)){assert.equal(t.steps[0].kind,'choice');assert.equal(new Set(t.errorCues.map(p=>p[0])).size,2);}
+for(const [a,b,c,d] of [[2,3,1,2],[3,4,2,5],[1,2,3,4]])assert(a*c>0&&a*c<b*d);
+for(const [n,k] of [[24,12],[30,10],[42,14]])assert.equal(n%k,0);
 const logicPage=D.lessons.find(l=>l.id==='p41').tasks.filter(t=>t.logicDirection);
 assert.deepEqual(Array.from(logicPage,t=>[t.source.exercise,t.source.subpart,t.source.page]),[[231,'а',51],[231,'б',51],[232,'в',51],[232,'г',51],[232,'д',51],[232,'е',51],[233,'в',51],[233,'г',51]]);
 for(const t of logicPage){assert.equal(t.steps[0].answer,t.logicDirection.p);assert.equal(t.steps[1].answer,t.logicDirection.q);assert.notDeepEqual(Array.from(t.logicDirection.examples[0]),Array.from(t.logicDirection.examples[1]));}
@@ -85,7 +91,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1526);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1531);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
