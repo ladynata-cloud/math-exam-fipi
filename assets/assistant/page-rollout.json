@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "1527e07fe6205a9fb5e3da957e7ef0d2b10b7a90e01b5d206a47fadcd35f57c4",
-      "afterSha256": "3258517c307f1aa1d93a6233347c77c1c9f7955f6f2d9507641f2916ad6b41ca",
+      "beforeSha256": "8c22cc38e22548febc539f3387e46680c4ee52915bd851006dbfd6b9c41b2d97",
+      "afterSha256": "a0398ff0feaed9b80110c185437b2595cbba6ec407dbc9f3ffbc8694a7dcef1b",
       "placement": "before-head-close",
-      "sourceSha": "8aafdfe3ba0e569bb1aa083b553a5d28039e6bee"
+      "sourceSha": "ac29dc4e9560030c4a94f05504996a88cf02ff98"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6948,6 +6948,15 @@
         "school/index.html"
       ],
       "boundary": "Страница 18, №5.81 и №5.82. Сверены оба числовых выражения и обе дроби. Касание секторов и клавиатура сохраняют две отдельные закраски, числовой ответ без построения не завершает упражнение. Подтверждены два мобильных размера, передача управления и обе перезагрузки."
+    },
+    {
+      "previousBaseSha": "8aafdfe3ba0e569bb1aa083b553a5d28039e6bee",
+      "sourceBaseSha": "ac29dc4e9560030c4a94f05504996a88cf02ff98",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, страница 18, №5.83–5.85. Сверены доли объёма, площади и массы. Для площади принимаются 13,5 и 27/2. На двух мобильных ширинах и в двух ролях проверены шаги и сохранение модели квадрата."
     }
   ],
   "coverageUpdates": [
