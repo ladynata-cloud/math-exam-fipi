@@ -136,7 +136,7 @@ async function verify(width,url,offline=false){
   assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  }
  await openNumber(p,1155,'№ 1155');await p.locator('[data-action=guided]').click();await p.locator('#step-answer-0').fill('2');
- await p.locator('[data-sign-probe=outside]').waitFor();assert(await p.locator('#task-graph svg text').evaluateAll(labels=>labels.every(t=>t.getBBox().x>=0)));
+ await p.locator('[data-sign-probe=outside]').waitFor();assert.equal(await p.locator('#task-graph [data-point-x="1"][data-point-y="0"]').count(),1);assert(await p.locator('#task-graph svg text').evaluateAll(labels=>labels.every(t=>t.getBBox().x>=0)));
  await p.locator('#step-answer-0').fill('-3');await p.locator('[data-sign-probe=positive]').waitFor();
  await openNumber(p,1156,'№ 1156');assert.equal(await p.locator('#task-graph [data-source-gallery]').count(),3);
  await submit(p,'1');assert.match(await p.locator('#problem').innerText(),/координаты вершины/);await submit(p,'2');

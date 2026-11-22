@@ -968,21 +968,22 @@ function signSymmetryView(host,g,raw) {
  const C=window.MakarychevCheck,trial=M.parse(g.partial?.[0]),x=trial?trial.n/trial.d:null,fmt=v=>Number(v.toPrecision(8)).toString().replace('.',',');
  if(g.group==='gallery'){
   for(const [i,[h,m]]of [[2,-2],[2,0],[-2,0]].entries()){
-   const curve={kind:'abs-linear',k:1,b:m,h};
-   const y=trial?curveValue(curve,x):null,points=trial?[[x,y,'']]:[];
+   const curve={kind:'abs-linear',k:1,b:m,h,xs:[h]};
+   const points=[[h,m,'']];if(trial&&x!==h)points.push([x,curveValue(curve,x),'']);
    boundNote(host,'Рисунок '+(i+1)+(trial?'. При x = '+M.answer(trial)+' значение y = '+fmt(y)+'.':'.'));
    const svg=rootGraph({curves:[curve],points,xRange:[-4,5],yRange:[-3,5],xTickStep:2,yTickStep:2,label:'Авторская схема '+(i+1)+' по рисунку 77'},'');svg.dataset.sourceGallery=String(i+1);host.append(svg);
   }
   return;
  }
- const reciprocal=g.group==='reciprocal',curve=g.group==='vertex'?{kind:'abs-linear',k:1,h:g.h,b:g.m}:reciprocal?{kind:'absolute-reciprocal',k:g.k}:g.group==='root-match'?{kind:'sqrt-affine',k:-1,b:1}:signCurve(g.code,g.parameter);
+ const reciprocal=g.group==='reciprocal',curve=g.group==='vertex'?{kind:'abs-linear',k:1,h:g.h,b:g.m}:reciprocal?{kind:'absolute-reciprocal',k:g.k}:g.group==='root-match'?{kind:'sqrt-affine',k:-1,b:1,xs:[0,1]}:signCurve(g.code,g.parameter);
  const constructing=reciprocal&&g.mode==='graph',proposed=constructing?reciprocalPoints({...g,absolute:true},C.pointGroups(raw)):null,points=proposed?.points.map(([a,b])=>[a,b,''])||[];
  if(trial){
   const y=curveValue(curve,x);if(Number.isFinite(y)){points.push([x,y,'']);boundNote(host,'При x = '+M.answer(trial)+' получаем y ≈ '+fmt(y)+'.').dataset.signProbe=y===0?'zero':y>0?'positive':'negative';}
   else boundNote(host,reciprocal?'При x = 0 знаменатель нулевой, точка отсутствует.':'Это значение x дало отрицательное подкоренное выражение. Точка в действительных координатах отсутствует.').dataset.signProbe='outside';
  }
- const xr=g.group==='vertex'?[g.h-4,g.h+4]:reciprocal?[-6,6]:[-4,5],yr=g.group==='vertex'?[g.m-1,g.m+5]:reciprocal?[-1,Math.max(8,g.k+1)]:g.group==='root-match'?[-.6,3]:g.code===9?[-2,(g.parameter||0)+18]:[-9-(g.parameter||0),10+(g.parameter||0)];
- const cfg={curves:constructing&&!g.showSolution?[]:[curve],points,xRange:xr,yRange:yr,compactTicks:g.group==='root-match',label:constructing?'Твои точки левой и правой ветвей':'График и пробная точка с выбранной абсциссой'};
+ const xr=g.group==='vertex'?[g.h-4,g.h+4]:g.group==='root-match'?[-3.5,2.5]:reciprocal?[-6,6]:[-4,5],yr=g.group==='vertex'?[g.m-1,g.m+5]:reciprocal?[-1,Math.max(8,g.k+1)]:g.group==='root-match'?[-.6,3]:g.code===9?[-2,(g.parameter||0)+18]:[-9-(g.parameter||0),10+(g.parameter||0)];
+ if(g.group==='root-match')points.push([0,1,''],[1,0,'']);
+ const cfg={curves:constructing&&!g.showSolution?[]:[curve],points,xRange:xr,yRange:yr,compactTicks:g.group==='root-match',...(g.group==='root-match'?{xTickStep:1,yTickStep:1}:{}),label:constructing?'Твои точки левой и правой ветвей':'График и пробная точка с выбранной абсциссой'};
  const svg=rootGraph(cfg,'');if(proposed)svg.dataset.absolutePoints=proposed.status;host.append(svg);
  if(g.group==='sign')boundNote(host,'Сопоставь формулу, значения в точках и положение относительно оси x. Нуль рассматривается отдельно от положительного и отрицательного знаков.');
  if(reciprocal&&['domain','range','increase','decrease'].includes(g.mode)){const ranges=C.axisRanges(C.systemInput(raw,g.mode==='range'?'y':'x'));if(ranges)intervalNumberLine(host,{givenRows:[],proposal:ranges,points:[]},'');}
