@@ -144,7 +144,8 @@
       ['/geometry-course/textbook/data/homothetic-lines-circles.json', '№1311а–1312в'],
       ['/geometry-course/textbook/data/homothetic-grid-figures.json', '№1313а–1314г'],
       ['/geometry-course/textbook/data/similarity-laws.json', '№1315–1320б'],
-      ['/geometry-course/textbook/data/given-homothety-image.json', '№1321–1324в']
+      ['/geometry-course/textbook/data/given-homothety-image.json', '№1321–1324в'],
+      ['/geometry-course/textbook/data/chord-product-theorems.json', 'пп. 136–137 и №1325а–1326']
   ];
 
   async function forCourse(base) {
