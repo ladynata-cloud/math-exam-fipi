@@ -202,6 +202,7 @@
       if(n!==0&&n%step===0)ticks+=label(x(0)-4,y(n)+3,n,10,'end');
     }
     let overlay='';
+    if(v.wholePlane)overlay+='<rect x="'+x(loX)+'" y="'+y(hiY)+'" width="'+(x(hiX)-x(loX))+'" height="'+(y(loY)-y(hiY))+'" fill="#72ada1" fill-opacity=".25"/>';
     if(v.negativeQuadrant)overlay+='<rect x="'+x(loX)+'" y="'+y(0)+'" width="'+(x(0)-x(loX))+'" height="'+(y(loY)-y(0))+'" fill="#72ada1" fill-opacity=".35"/>';
     for(const [idx,[a,b,c]] of (v.relations||[]).entries()) {
       const candidates=[];
