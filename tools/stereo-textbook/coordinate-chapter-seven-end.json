@@ -1,0 +1,449 @@
+{
+  "parts": {
+    "757": [
+      null
+    ],
+    "758": [
+      null
+    ],
+    "759": [
+      null
+    ],
+    "760": [
+      null
+    ],
+    "761": [
+      "а",
+      "б"
+    ],
+    "762": [
+      null
+    ],
+    "763": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "757": {
+      "id": "source-main-0757",
+      "kind": "exercise",
+      "title": "Задача № 757",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "757",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "758": {
+      "id": "source-main-0758",
+      "kind": "exercise",
+      "title": "Задача № 758",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "758",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "759": {
+      "id": "source-main-0759",
+      "kind": "exercise",
+      "title": "Задача № 759",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "759",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "760": {
+      "id": "source-main-0760",
+      "kind": "exercise",
+      "title": "Задача № 760",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "760",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "761": {
+      "id": "source-main-0761",
+      "kind": "exercise",
+      "title": "Задача № 761",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "761",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "762": {
+      "id": "source-main-0762",
+      "kind": "exercise",
+      "title": "Задача № 762",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "762",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "763": {
+      "id": "source-main-0763",
+      "kind": "exercise",
+      "title": "Задача № 763",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "763",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          189
+        ],
+        "pdfPages": [
+          191
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0757": {
+      "raw": "350ab9ad4a2ee6248006ad08bd9c3a2aa214a6e89317aaecb3dbf7d275e7ff9d",
+      "authored": "5cb62fbc501ea1028e6f8482133b0fb1bc5b2322997f07d8820a3377d59e7ca8",
+      "integrated": "412908555c18ee3ad2a1c93e028deb6eb2685c467519ded10572114459380c55"
+    },
+    "ex-main-0758": {
+      "raw": "9caf40da4d8265e29e2db7828897cda1d82643bcefb87d1e2dff3f4bc76a1bbb",
+      "authored": "34fcb2fd2bd7f03dd6ede83d4e3bd221541ba48d60d9bcf06ced3ff48956e51b",
+      "integrated": "29486f2c8e227b7f9eb3a95fa657431b766d74fa5f6858c1ea8d65d415a8f9f8"
+    },
+    "ex-main-0759": {
+      "raw": "a2ccc55023c2de85e9da474b500b95adbee5eaf57dcf205aa06c73c2dd43a7fa",
+      "authored": "fc09ed4e6e857892c4fd9149353dae556436266556e71325fc1f4b35eabd0bea",
+      "integrated": "b6c7f35fe74a14e0a523007dce3d27e1c348f71b2c88091dfdacf5b06b87fdee"
+    },
+    "ex-main-0760": {
+      "raw": "66f54c53c6d110e2ac67b2df3158e7a6f75bfef9f45318fc1dc55157e62238e4",
+      "authored": "1d0ff2dd7c6ad796afe448a7ce0fb7a20d0295a53e036a1fc80fe694ebc826e1",
+      "integrated": "acdbe596d8038448010a2f8a0d3231d089f7750df1f600d79401f3237fda5826"
+    },
+    "ex-main-0761-a": {
+      "raw": "44f10ce80e797b2a0d156303cae750dbea32296373161492391f3cfe52d98278",
+      "authored": "a9e30855621f0e4777363f8056f4db41d0eb0dec2d0b7a27581ad8d8b423bff3",
+      "integrated": "a7e0871ad1f52812efee856a2b620e70c445422019e41e530a3505bf20db3036"
+    },
+    "ex-main-0761-b": {
+      "raw": "5f91524429bc9b0641d8bdd8a195ed32eabcbb0cd131ec5de6431df491429d1b",
+      "authored": "5dd0b10b824b628599094c9b13098c668b211fcc2ddb57b24ed9fb62bfab133b",
+      "integrated": "8fc8ad8e804bb179a11af193ed8ad0782b9f7fdf63d3ba90dbb83e125cff4a71"
+    },
+    "ex-main-0762": {
+      "raw": "e70d81c8f0ba17cdb147517d831649f1308b33627dd1d71de174f4ad075d7a9c",
+      "authored": "62f6286e95094a6001531c9f6a3f8d8e181b2edac72d2dd52e4c3aa93e4af713",
+      "integrated": "695354b5ecbe59de211c242838ab20495d500f0588bf5e9c9aa4987552a0eec3"
+    },
+    "ex-main-0763-a": {
+      "raw": "31e065e65637d328b28c0842c9719bad507827c7a2f4da9ccd7ef34034348ddf",
+      "authored": "bf3aaefcc810e391ee5b361db5c61e97c8f0364a57e9edede8d78dd6a793259d",
+      "integrated": "c13888d8903ab347770cd276a3952c1ff57c33b51d28c4c5e002e5257e86c1e9"
+    },
+    "ex-main-0763-b": {
+      "raw": "088a634e696526df0f5c61ef780463f4406480e34b30a4b13f9756784ba4415c",
+      "authored": "6bb7aa2a1f27d5ef024806bf1fb2d7b4cd856d6c5a621b875634b4dcc857c2aa",
+      "integrated": "267ff18645f3f2576480aa850d7abc8ee05ca155b9fca04b8626f9d3a8cd5fbc"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0757|condition",
+      "coordinate-chapter-seven-end-ex-main-0757-condition"
+    ],
+    [
+      "ex-main-0757|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0757-help-h1"
+    ],
+    [
+      "ex-main-0757|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0757-help-h2"
+    ],
+    [
+      "ex-main-0757|step-1",
+      "coordinate-chapter-seven-end-ex-main-0757-step-1"
+    ],
+    [
+      "ex-main-0757|step-2",
+      "coordinate-chapter-seven-end-ex-main-0757-step-2"
+    ],
+    [
+      "ex-main-0757|step-3",
+      "coordinate-chapter-seven-end-ex-main-0757-step-3"
+    ],
+    [
+      "ex-main-0758|condition",
+      "coordinate-chapter-seven-end-ex-main-0758-condition"
+    ],
+    [
+      "ex-main-0758|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0758-help-h1"
+    ],
+    [
+      "ex-main-0758|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0758-help-h2"
+    ],
+    [
+      "ex-main-0758|step-1",
+      "coordinate-chapter-seven-end-ex-main-0758-step-1"
+    ],
+    [
+      "ex-main-0758|step-2",
+      "coordinate-chapter-seven-end-ex-main-0758-step-2"
+    ],
+    [
+      "ex-main-0758|step-3",
+      "coordinate-chapter-seven-end-ex-main-0758-step-3"
+    ],
+    [
+      "ex-main-0759|condition",
+      "coordinate-chapter-seven-end-ex-main-0759-condition"
+    ],
+    [
+      "ex-main-0759|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0759-help-h1"
+    ],
+    [
+      "ex-main-0759|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0759-help-h2"
+    ],
+    [
+      "ex-main-0759|step-1",
+      "coordinate-chapter-seven-end-ex-main-0759-step-1"
+    ],
+    [
+      "ex-main-0759|step-2",
+      "coordinate-chapter-seven-end-ex-main-0759-step-2"
+    ],
+    [
+      "ex-main-0759|step-3",
+      "coordinate-chapter-seven-end-ex-main-0759-step-3"
+    ],
+    [
+      "ex-main-0760|condition",
+      "coordinate-chapter-seven-end-ex-main-0760-condition"
+    ],
+    [
+      "ex-main-0760|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0760-help-h1"
+    ],
+    [
+      "ex-main-0760|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0760-help-h2"
+    ],
+    [
+      "ex-main-0760|step-1",
+      "coordinate-chapter-seven-end-ex-main-0760-step-1"
+    ],
+    [
+      "ex-main-0760|step-2",
+      "coordinate-chapter-seven-end-ex-main-0760-step-2"
+    ],
+    [
+      "ex-main-0760|step-3",
+      "coordinate-chapter-seven-end-ex-main-0760-step-3"
+    ],
+    [
+      "ex-main-0761-a|condition",
+      "coordinate-chapter-seven-end-ex-main-0761-a-condition"
+    ],
+    [
+      "ex-main-0761-a|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0761-a-help-h1"
+    ],
+    [
+      "ex-main-0761-a|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0761-a-help-h2"
+    ],
+    [
+      "ex-main-0761-a|step-1",
+      "coordinate-chapter-seven-end-ex-main-0761-a-step-1"
+    ],
+    [
+      "ex-main-0761-a|step-2",
+      "coordinate-chapter-seven-end-ex-main-0761-a-step-2"
+    ],
+    [
+      "ex-main-0761-a|step-3",
+      "coordinate-chapter-seven-end-ex-main-0761-a-step-3"
+    ],
+    [
+      "ex-main-0761-b|condition",
+      "coordinate-chapter-seven-end-ex-main-0761-b-condition"
+    ],
+    [
+      "ex-main-0761-b|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0761-b-help-h1"
+    ],
+    [
+      "ex-main-0761-b|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0761-b-help-h2"
+    ],
+    [
+      "ex-main-0761-b|step-1",
+      "coordinate-chapter-seven-end-ex-main-0761-b-step-1"
+    ],
+    [
+      "ex-main-0761-b|step-2",
+      "coordinate-chapter-seven-end-ex-main-0761-b-step-2"
+    ],
+    [
+      "ex-main-0761-b|step-3",
+      "coordinate-chapter-seven-end-ex-main-0761-b-step-3"
+    ],
+    [
+      "ex-main-0762|condition",
+      "coordinate-chapter-seven-end-ex-main-0762-condition"
+    ],
+    [
+      "ex-main-0762|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0762-help-h1"
+    ],
+    [
+      "ex-main-0762|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0762-help-h2"
+    ],
+    [
+      "ex-main-0762|step-1",
+      "coordinate-chapter-seven-end-ex-main-0762-step-1"
+    ],
+    [
+      "ex-main-0762|step-2",
+      "coordinate-chapter-seven-end-ex-main-0762-step-2"
+    ],
+    [
+      "ex-main-0762|step-3",
+      "coordinate-chapter-seven-end-ex-main-0762-step-3"
+    ],
+    [
+      "ex-main-0763-a|condition",
+      "coordinate-chapter-seven-end-ex-main-0763-a-condition"
+    ],
+    [
+      "ex-main-0763-a|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0763-a-help-h1"
+    ],
+    [
+      "ex-main-0763-a|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0763-a-help-h2"
+    ],
+    [
+      "ex-main-0763-a|step-1",
+      "coordinate-chapter-seven-end-ex-main-0763-a-step-1"
+    ],
+    [
+      "ex-main-0763-a|step-2",
+      "coordinate-chapter-seven-end-ex-main-0763-a-step-2"
+    ],
+    [
+      "ex-main-0763-a|step-3",
+      "coordinate-chapter-seven-end-ex-main-0763-a-step-3"
+    ],
+    [
+      "ex-main-0763-b|condition",
+      "coordinate-chapter-seven-end-ex-main-0763-b-condition"
+    ],
+    [
+      "ex-main-0763-b|help:h1",
+      "coordinate-chapter-seven-end-ex-main-0763-b-help-h1"
+    ],
+    [
+      "ex-main-0763-b|help:h2",
+      "coordinate-chapter-seven-end-ex-main-0763-b-help-h2"
+    ],
+    [
+      "ex-main-0763-b|step-1",
+      "coordinate-chapter-seven-end-ex-main-0763-b-step-1"
+    ],
+    [
+      "ex-main-0763-b|step-2",
+      "coordinate-chapter-seven-end-ex-main-0763-b-step-2"
+    ],
+    [
+      "ex-main-0763-b|step-3",
+      "coordinate-chapter-seven-end-ex-main-0763-b-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "bd8fb4d1e500c5bda4d8cef516c3b32d9958e56dcdedea07b266da0aa9be19cd",
+      "afterSHA256": "f7c32d383ca5d6b0a583baea5c675819a012cd7d037408373f100715b5703614"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "569c55200a3921fb366dc03ecdbee068446a008d096d699f3c18bfebe68a273c",
+      "afterSHA256": "25755d57616b45f2819e32170a09efa87ed8d4058db8f546eaa7a19f5552ac1c"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T00:17:53Z",
+    "scope": "Chapters I–VI, chapter VII points 71–84, every self-check on page 186 and consecutive source exercises through 756. The later inventory is still draft."
+  },
+  "before": {
+    "course": "91d4e2874e2edcb6c7bfe3caa57bf113b2d43b51028604699d097edb3cc72124",
+    "index": "a21fb5327bad4a2b49d312a9e249e944343066404799a54b390706a722c622d2",
+    "registry": "d8a79cd8e3903339e79cbc6fc8c5c33ad99553309d523bb3e45593dec95119f7",
+    "cases": "2ba01f6cbd247dc6e732637c52013228dfa756ba75709aeccfc21c14bdb504be"
+  }
+}
