@@ -1893,3 +1893,21 @@ test('printed fraction reductions, truth values, all four interval endpoints and
   f.nav('#lesson/p40/58');f.event('#final-answer','18/5');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/первоначальная скорость/);
  }finally{f.close();}
 });
+
+test('source graph section ends with inverse substitutions, three actual lines and both strict natural-number bounds',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const lesson=f.w.PetersonCourse.lessons.find(l=>l.id==='p40');
+  const answers=['-4','19/5','-52/5','138/5','7','-4','Прямые параллельны','Все проходят через начало координат, наклоны различны','−a/6','−(4b + c²)/(2c)','an/x','−c/2','2','1','Да','Нет'];
+  for(const [i,answer] of answers.entries()){
+   const task=lesson.tasks[i+60];assert.equal(task.answer,answer);f.nav('#lesson/p40/'+(i+60));f.click('[data-lesson-help="model"] > summary');
+   const [d,stage]=Array.from(f.d.querySelectorAll('#model select'),e=>'#'+e.id);
+   if(i===6||i===7)assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,0);
+   f.event(stage,'2','change');
+   if(i===6||i===7){assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,3);assert.equal(f.d.querySelectorAll('#model [data-line-point]').length,6);}
+   const original=f.q('#model').textContent;f.event(d,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,original);
+  }
+  assert.deepEqual(Array.from(new Set(Array.from(lesson.tasks,t=>t.source.exercise))).sort((a,b)=>a-b),Array.from({length:23},(_,i)=>208+i));
+  f.nav('#lesson/p40/72');f.event('#final-answer','6');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/скорость пешком/);
+ }finally{f.close();}
+});
