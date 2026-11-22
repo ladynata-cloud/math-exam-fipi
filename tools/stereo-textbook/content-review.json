@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T02:58:00Z",
-  "scope": "All final-review parts of 764–767 and advanced source exercises 768–794 are complete. The remaining advanced exercises begin at 795.",
+  "registeredAt": "2026-11-22T03:04:00Z",
+  "scope": "All final-review parts of 764–767 and advanced source exercises 768–798 are complete. The remaining advanced exercises begin at 799.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2563,6 +2563,19 @@
       ],
       "evidence": "tools/stereo-textbook/tetrahedron-altitudes-and-directed-angles.json",
       "mathematicalReport": "tools/stereo-textbook/tetrahedron-altitudes-and-directed-angles.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued Atanasyan 2024 volume, advanced problem on printed page 192 (PDF page 194), answers and hints on printed page 273.",
+      "reviewedAt": "2026-11-22T03:04:00Z",
+      "scope": "Advanced exercises 795–798 on printed page 192 with hints and answers on page 273. Verified the orthogonal chord identity under rotation, both boundary tangencies of a nondegenerate section-center arc, necessary and sufficient triple-tangent distance, and volume decomposition for a general tetrahedral inradius.",
+      "cardIds": [
+        "ex-main-0795",
+        "ex-main-0796",
+        "ex-main-0797",
+        "ex-main-0798"
+      ],
+      "evidence": "tools/stereo-textbook/sphere-chords-centres-and-inradii.json",
+      "mathematicalReport": "tools/stereo-textbook/sphere-chords-centres-and-inradii.test.cjs"
     }
   ],
   "cards": [
@@ -8517,6 +8530,22 @@
     {
       "id": "ex-main-0794",
       "sha256": "a0b9f0caf4f0bbcfe48982c4d9030b9b0b2315f3a2a1fce839d19b7fe766f971"
+    },
+    {
+      "id": "ex-main-0795",
+      "sha256": "5ea879e6aa48f929c7acf281ce6a464e69439a4a2e322b3112d737a6eb7436ad"
+    },
+    {
+      "id": "ex-main-0796",
+      "sha256": "1fca2c1ab4d99fcbee5c74860b81a62cd6fd583a52b01c72319d0fde82d30fbb"
+    },
+    {
+      "id": "ex-main-0797",
+      "sha256": "1b5a8a023c919b06a448138f9461385191ee71bbe4cb4ca308fd648ba4631ef7"
+    },
+    {
+      "id": "ex-main-0798",
+      "sha256": "57fe4ead5d9fccc594f3f32c5314274e9add98fab45f4699c49b67a6dcbaadf4"
     }
   ]
 }

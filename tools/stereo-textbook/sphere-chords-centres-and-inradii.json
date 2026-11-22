@@ -1,0 +1,240 @@
+{
+  "parts": {
+    "795": [
+      null
+    ],
+    "796": [
+      null
+    ],
+    "797": [
+      null
+    ],
+    "798": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "795": {
+      "id": "source-main-0795",
+      "kind": "exercise",
+      "title": "Задача № 795",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "795",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          192
+        ],
+        "pdfPages": [
+          194
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "796": {
+      "id": "source-main-0796",
+      "kind": "exercise",
+      "title": "Задача № 796",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "796",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          192
+        ],
+        "pdfPages": [
+          194
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "797": {
+      "id": "source-main-0797",
+      "kind": "exercise",
+      "title": "Задача № 797",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "797",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          192
+        ],
+        "pdfPages": [
+          194
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "798": {
+      "id": "source-main-0798",
+      "kind": "exercise",
+      "title": "Задача № 798",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "798",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          192
+        ],
+        "pdfPages": [
+          194
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0795": {
+      "raw": "e30d1ed0a95f725bda23f4b13b7868a2a747b10c6e11f70afb115411ebec0b3b",
+      "authored": "5ea879e6aa48f929c7acf281ce6a464e69439a4a2e322b3112d737a6eb7436ad",
+      "integrated": "00ad6510cb64e96c042c152e5fee4492be78b836040021a3ef512b8d9e3c0736"
+    },
+    "ex-main-0796": {
+      "raw": "d5dc902a05e7cf978e978ac7b53111df7be7108620c3cf7503859ff44a90cfce",
+      "authored": "1fca2c1ab4d99fcbee5c74860b81a62cd6fd583a52b01c72319d0fde82d30fbb",
+      "integrated": "8f43e7abdc9da85a10c7ea712ba86e7c55a62854ab89efa955264d2b6d7b2625"
+    },
+    "ex-main-0797": {
+      "raw": "6fdc4337be92a7fb64f4afab9773dbe237f26ada782f00bc37baba5c592a44ba",
+      "authored": "1b5a8a023c919b06a448138f9461385191ee71bbe4cb4ca308fd648ba4631ef7",
+      "integrated": "8591ee8f587079d075140fe901ab6e722393485ef21a5253007a5b6d4db09f8e"
+    },
+    "ex-main-0798": {
+      "raw": "a8e4134c1cfba2a8fc434c2f1d14da2a5f7fe7e37aa933dba582d00e61222fd2",
+      "authored": "57fe4ead5d9fccc594f3f32c5314274e9add98fab45f4699c49b67a6dcbaadf4",
+      "integrated": "46e7b06d4fe5e7901e6f6bdcaa90fac682f94b0b29d16ba3f566edf02edc2149"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0795|condition",
+      "sphere-chords-centres-and-inradii-ex-main-0795-condition"
+    ],
+    [
+      "ex-main-0795|help:h1",
+      "sphere-chords-centres-and-inradii-ex-main-0795-help-h1"
+    ],
+    [
+      "ex-main-0795|help:h2",
+      "sphere-chords-centres-and-inradii-ex-main-0795-help-h2"
+    ],
+    [
+      "ex-main-0795|step-1",
+      "sphere-chords-centres-and-inradii-ex-main-0795-step-1"
+    ],
+    [
+      "ex-main-0795|step-2",
+      "sphere-chords-centres-and-inradii-ex-main-0795-step-2"
+    ],
+    [
+      "ex-main-0795|step-3",
+      "sphere-chords-centres-and-inradii-ex-main-0795-step-3"
+    ],
+    [
+      "ex-main-0796|condition",
+      "sphere-chords-centres-and-inradii-ex-main-0796-condition"
+    ],
+    [
+      "ex-main-0796|help:h1",
+      "sphere-chords-centres-and-inradii-ex-main-0796-help-h1"
+    ],
+    [
+      "ex-main-0796|help:h2",
+      "sphere-chords-centres-and-inradii-ex-main-0796-help-h2"
+    ],
+    [
+      "ex-main-0796|help:h3",
+      "sphere-chords-centres-and-inradii-ex-main-0796-help-h3"
+    ],
+    [
+      "ex-main-0796|step-1",
+      "sphere-chords-centres-and-inradii-ex-main-0796-step-1"
+    ],
+    [
+      "ex-main-0796|step-2",
+      "sphere-chords-centres-and-inradii-ex-main-0796-step-2"
+    ],
+    [
+      "ex-main-0796|step-3",
+      "sphere-chords-centres-and-inradii-ex-main-0796-step-3"
+    ],
+    [
+      "ex-main-0797|condition",
+      "sphere-chords-centres-and-inradii-ex-main-0797-condition"
+    ],
+    [
+      "ex-main-0797|help:h1",
+      "sphere-chords-centres-and-inradii-ex-main-0797-help-h1"
+    ],
+    [
+      "ex-main-0797|help:h2",
+      "sphere-chords-centres-and-inradii-ex-main-0797-help-h2"
+    ],
+    [
+      "ex-main-0797|step-1",
+      "sphere-chords-centres-and-inradii-ex-main-0797-step-1"
+    ],
+    [
+      "ex-main-0797|step-2",
+      "sphere-chords-centres-and-inradii-ex-main-0797-step-2"
+    ],
+    [
+      "ex-main-0797|step-3",
+      "sphere-chords-centres-and-inradii-ex-main-0797-step-3"
+    ],
+    [
+      "ex-main-0798|condition",
+      "sphere-chords-centres-and-inradii-ex-main-0798-condition"
+    ],
+    [
+      "ex-main-0798|help:h1",
+      "sphere-chords-centres-and-inradii-ex-main-0798-help-h1"
+    ],
+    [
+      "ex-main-0798|help:h2",
+      "sphere-chords-centres-and-inradii-ex-main-0798-help-h2"
+    ],
+    [
+      "ex-main-0798|step-1",
+      "sphere-chords-centres-and-inradii-ex-main-0798-step-1"
+    ],
+    [
+      "ex-main-0798|step-2",
+      "sphere-chords-centres-and-inradii-ex-main-0798-step-2"
+    ],
+    [
+      "ex-main-0798|step-3",
+      "sphere-chords-centres-and-inradii-ex-main-0798-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "d123c4c7943c841787fb03500f7062c58a91274ccc0e43de0b1353ace8c801e6",
+      "afterSHA256": "d86d6aab36dcbd505347497612eb9c7039852b4cf831306c6d8610c841235b55"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "2625096fd76ce5082789317cdc8c14c80896e94356be25d77cc601e8347236b9",
+      "afterSHA256": "53928fd6caff53aef783dd67b429404cc19a36abbd591e2103d6b53275cb354f"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T02:58:00Z",
+    "scope": "All final-review parts of 764–767 and advanced source exercises 768–794 are complete. The remaining advanced exercises begin at 795."
+  },
+  "before": {
+    "course": "d11be2d111901c0d8a9541fc1132efcc0f10c05accfc91c2d904d5a43b0f5496",
+    "index": "31c18e9bb62fa5231b843cb9d07c0f87b332637fb3d799eef8f7561eb40dcb6a",
+    "registry": "efc872585b7240648ec9ca1fa6fb5daa89039bf0f1bfe57601942b4a758bff18",
+    "cases": "de363de7c6e95ac9625fafd442011969d3a49864d86c52003d071169b7e7cee7"
+  }
+}

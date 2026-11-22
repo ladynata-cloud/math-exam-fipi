@@ -2,7 +2,8 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const tetrahedronAltitudesAndDirectedAngles = makeReviewedIncrement(require('./tetrahedron-altitudes-and-directed-angles.json'), closedSections);
+const sphereChordsCentresAndInradii = makeReviewedIncrement(require('./sphere-chords-centres-and-inradii.json'), closedSections);
+const tetrahedronAltitudesAndDirectedAngles = makeReviewedIncrement(require('./tetrahedron-altitudes-and-directed-angles.json'), sphereChordsCentresAndInradii);
 const skewLinesAndCornerReflection = makeReviewedIncrement(require('./skew-lines-and-corner-reflection.json'), tetrahedronAltitudesAndDirectedAngles);
 const monotonePathsAndDualSolids = makeReviewedIncrement(require('./monotone-paths-and-dual-solids.json'), skewLinesAndCornerReflection);
 const tetrahedraAndCubeTilings = makeReviewedIncrement(require('./tetrahedra-and-cube-tilings.json'), monotonePathsAndDualSolids);
