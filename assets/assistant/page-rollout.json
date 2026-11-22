@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "50c60463af45705adf8527b632c8cc39c1f310a694e3e83924030f45b489dc2a",
-      "afterSha256": "f7b4eaeb0367a9a13b13e40f1378e4433bfa324cc84b0e82ff525b45e7cdb843",
+      "beforeSha256": "5d0e3aad1f9b8df8260f49fb02daa060efec415fd57c0be0ac5dfa8988140434",
+      "afterSha256": "96deb0cd1cbf1869d4294244a4c517c551c0d2d615d7783b47a5ffabf2c67ba2",
       "placement": "before-head-close",
-      "sourceSha": "d04a8a933255251c6176323d257a2649b3156343"
+      "sourceSha": "ebf776ae20f8069b57da8a3eaef9de3d65b3eb1e"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7388,6 +7388,15 @@
         "school/index.html"
       ],
       "boundary": "Сверена страница 31 первого тома, упражнения 1.155–1.158, включая отдельные подпункты, математический разбор и сохранение модели."
+    },
+    {
+      "previousBaseSha": "d04a8a933255251c6176323d257a2649b3156343",
+      "sourceBaseSha": "ebf776ae20f8069b57da8a3eaef9de3d65b3eb1e",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, первая часть, §5: №1.159–1.162, измерения пяти рыб и все подпункты сравнения в метрах, разные единицы для пакетов, повтор на новых числах, сохранение рисунков и шагов двух участников. Таблицы двух томов помещаются на 320 и 375 пикселях."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
