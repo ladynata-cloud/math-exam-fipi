@@ -114,6 +114,7 @@ jobs:
           node tools/stereo-textbook/tetrahedra-and-cube-tilings.test.cjs
           node tools/stereo-textbook/monotone-paths-and-dual-solids.test.cjs
           node tools/stereo-textbook/skew-lines-and-corner-reflection.test.cjs
+          node tools/stereo-textbook/tetrahedron-altitudes-and-directed-angles.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -500,6 +501,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: skewLinesAndCornerReflection
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/skew-lines-and-corner-reflection
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify both ray positions, tetrahedral altitude concurrence and the signed projection condition
+        env:
+          TEXTBOOK_PRACTICE_GROUP: tetrahedronAltitudesAndDirectedAngles
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/tetrahedron-altitudes-and-directed-angles
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -610,5 +616,6 @@ jobs:
             artifacts/tetrahedra-and-cube-tilings/
             artifacts/monotone-paths-and-dual-solids/
             artifacts/skew-lines-and-corner-reflection/
+            artifacts/tetrahedron-altitudes-and-directed-angles/
           retention-days: 14
           if-no-files-found: error
