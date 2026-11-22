@@ -48,6 +48,10 @@ function sanitize(part,input){
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
+ if(part.id==='018-1'){
+  if(Number.isInteger(input.planetRelation)&&input.planetRelation>=1&&input.planetRelation<=4)clean.planetRelation=input.planetRelation;
+  if(Number.isInteger(input.earthZone)&&input.earthZone>=1&&input.earthZone<=5)clean.earthZone=input.earthZone;
+ }
  clean.draft=cut(input.draft,MAX_TEXT);clean.note=cut(input.note);clean.noteOpen=input.noteOpen===true;clean.errors=Number.isInteger(input.errors)?Math.max(0,Math.min(10000,input.errors)):0;
  clean.errors=Math.max(clean.errors,Object.keys(clean.firstErrors.steps).length+(clean.firstErrors.final?1:0));
  clean.guided=input.guided===true;clean.showSolution=input.showSolution===true;clean.stepDrafts=ss.map((_,i)=>cut(input.stepDrafts?.[i],MAX_TEXT));

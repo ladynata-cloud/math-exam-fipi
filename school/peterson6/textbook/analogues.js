@@ -192,13 +192,34 @@
     return {...model,id:'analog-'+part.id+'-'+attempt,family:'comparison-'+part.id,match:'skill'};
   }
 
+  function campPractice(number,part,attempt){
+    const n=seed(part.id)%29+attempt;
+    let task;
+    if(number===18){
+      const list=['Меркурий','Венера','Земля','Марс','Юпитер','Сатурн','Уран','Нептун'],giants=list.slice(4),letters=['М','В','Н','С','З','Ю','У'],letter=letters[n%7],planet=list[n%8],inM=planet[0]===letter,inG=giants.includes(planet);
+      const choices=['В обеих группах','Только в группе по букве','Только в группе гигантов','Вне обеих групп'],answer=choices[inM&&inG?0:inM?1:inG?2:3];
+      task=choice('Восемь планет в нашей модели: '+list.join(', ')+'. Одна группа объединяет названия на '+letter+', вторая — гигантов ('+giants.join(', ')+'). Где окажется '+planet+'?',choices,answer,'Сначала проверь первую букву, затем сверь название со списком гигантов. Оба признака независимы.');
+      task.mistake='Нужно проверить оба признака. Определи первую букву и найди выбранную планету в списке гигантов.';
+    }else if(part.id==='017-a'){
+      const a=20+5*(n%15),b=a*6/5,offset=4+2*(n%4)+a%2,c=b-offset,answer=(a+b+c)/2;
+      task=numerical('В первом отряде '+a+' ребят, во втором их в 1,2 раза больше, а в третьем на '+offset+' меньше, чем во втором. Всех детей делят поровну на две команды. Сколько ребят в одной?',answer,'Найди общее число ребят, затем раздели на две команды.','При умножении на 1,2 прибавляется одна пятая от исходного числа.');
+      task.mistake='Проверь, что учтены три отряда, а делишь ты на число команд.';
+    }else{
+      const first=6+n%8,last=8+n%9,rate=20+n%7,later=13+n%11,total=first*rate+last*later;
+      task=numerical('Запас составляет '+total+' кг. В первые '+first+' дней брали по '+rate+' кг в день. Запаса хватило ровно на '+(first+last)+' дней, причём после первого периода расход был постоянным. Сколько килограммов в день брали в конце?',later,'Раздели оставшийся запас на число оставшихся дней.','Отдели расход и длительность первого периода от общего запаса и срока.');
+      task.mistake='Вычти потраченные килограммы из всего запаса; из полной длительности вычти первые дни.';
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'camp-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>16)return createLegacy(number,part,attempt);
+    if(number<7||number>18)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=17)return campPractice(number,part,attempt);
     if(number>=14)return comparisonPractice(number,part,attempt);
     const model=repeatNumberWork(number,part,attempt);
     return {...model,id:'analog-'+part.id+'-'+attempt,family:'page7-'+part.id,match:'skill'};
@@ -228,7 +249,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=16&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=18&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -250,7 +271,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=16&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=18&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

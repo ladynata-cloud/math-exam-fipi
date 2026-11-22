@@ -225,6 +225,16 @@ async function run(browser, origin, backend, failures, published) {
       await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'teacher reload preserves fraction method and answer');
       await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
       await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'pupil reload preserves fraction method and handoff');
+      await a.locator('#number-input').fill('18');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №18');
+      await a.locator('[data-planet-relation]').selectOption('2');await a.locator('[data-planet-zone]').selectOption('1');await a.locator('[data-planet-use]').click();await a.locator('#answer-form button').click();
+      const overlapPlanet=await same(a,b,'incorrect overlap in planet diagram');assert.equal(overlapPlanet.work.planetRelation,2);assert.equal(overlapPlanet.work.earthZone,1);assert.match(overlapPlanet.message.text,/в обоих списках/);
+      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await b.locator('[data-planet-relation]').selectOption('1');await b.locator('[data-planet-zone]').selectOption('3');await b.locator('[data-planet-use]').click();await b.locator('#answer-form button').click();
+      const giantEarth=await same(b,a,'pupil changes Earth placement');assert.equal(giantEarth.work.earthZone,3);assert.match(giantEarth.message.text,/название начинается/);
+      await b.locator('[data-planet-zone]').selectOption('1');await b.locator('[data-planet-use]').click();await b.locator('#answer-form button').click();const earthDone=await same(b,a,'drawing corrected and submitted for human review');assert.match(earthDone.message.text,/совпало/);assert(earthDone.work.submitted&&!earthDone.work.correct&&!earthDone.work.independent);
+      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'constructed areas survive teacher reload');
+      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'constructed areas survive pupil reload');
+
 
 
 

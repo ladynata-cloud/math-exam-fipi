@@ -259,6 +259,62 @@
     return {ok:false,text:'Сравнивай слева направо, начиная с наибольшего разряда. Большая длина дробной части сама по себе не определяет большее число.'};
   }
 
+  function campQuestion(number,part){
+    if(number===18)return 'Рассмотри восемь планет Солнечной системы. Обозначь их множество C; множество планет, чьё русское название начинается на М, — M; группу планет-гигантов — Г. Изобрази их области и поставь точку Земля. Объясни свой выбор.';
+    return part.id==='017-a'?'В лагере три отряда. В первом 25 ребят, во втором в 1,2 раза больше, чем в первом, а в третьем на 7 ребят меньше, чем во втором. Всех ребят поделили поровну на две команды. Сколько человек в каждой команде?':'За 28 дней в лагере израсходована тонна картофеля. Первые 12 дней ежедневно расходовалось 38 кг, а во все оставшиеся дни ежедневный расход был одинаковым. Сколько килограммов расходовалось за день во второй период?';
+  }
+  const relationNames=['Выбери расположение','Раздельные области','Области пересекаются','M целиком внутри Г','Г целиком внутри M'];
+  const planetZones=['Выбери место для Земли','В C вне M и Г','Только в M','Только в Г','В пересечении M и Г','Вне C'];
+  function astronomy(work,interactive){
+    const relation=work.planetRelation||0,zone=work.earthZone||0;
+    const positions=[[],[[82,68,40],[190,68,40]],[[105,68,47],[156,68,47]],[[107,68,22],[131,68,56]],[[132,68,56],[152,68,23]]][relation];
+    const options=(labels,key,active)=>'<label>'+key+' <select '+(key==='Области'?'data-planet-relation':'data-planet-zone')+'>'+labels.map((label,i)=>'<option value="'+i+'"'+(i===active?' selected':'')+'>'+label+'</option>').join('')+'</select></label>';
+    const shapes=positions.map(([cx,cy,r],i)=>'<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+(i?'#9c5435':'#417457')+'" stroke-width="2"/><text x="'+(cx+(i?1:-1)*Math.floor(r*.33))+'" y="'+(cy-r+16)+'" text-anchor="middle">'+(i?'Г':'М')+'</text>').join('');
+    const locations=[null,[135,136],relation===3?[105,71]:relation===4?[96,75]:relation===2?[75,72]:[81,70],relation===4?[153,71]:relation===3?[161,71]:relation===2?[188,72]:[191,70],relation===3?[105,71]:relation===4?[152,71]:[130,70],[136,171]];
+    const impossible=(zone===4&&relation===1)||(zone===2&&relation===3)||(zone===3&&relation===4);
+    const position=(relation||zone===1||zone===5)&&!impossible?locations[zone]:null;
+    const earth=position?'<circle cx="'+position[0]+'" cy="'+position[1]+'" r="3" fill="#16476a"/><text x="'+(position[0]+6)+'" y="'+(position[1]+3)+'" style="font-size:11px">Земля</text>':'';
+    const description=relationNames[relation]+'. '+(zone?planetZones[zone]:planetZones[0])+'.';
+    return '<figure data-planet-host style="margin:.5em 0"><figcaption>Диаграмма множеств планет</figcaption>'+(interactive?'<div style="display:grid;gap:.4em">'+options(relationNames,'Области',relation)+options(planetZones,'Земля',zone)+'</div>':'')+
+      '<svg viewBox="0 0 276 185" style="width:100%;max-width:450px;display:block" role="img" aria-label="'+U.esc(description)+'"><rect x="8" y="8" width="260" height="146" rx="20" fill="#f3f7f2" stroke="#34594d" stroke-width="2"/><text x="18" y="29">C</text>'+shapes+earth+'</svg>'+
+      (impossible?'<p>При выбранном расположении такой области нет. Измени расположение или место для Земли.</p>':'')+
+      (interactive?'<button class="secondary" type="button" data-planet-use>Перенести мой рисунок в ответ</button>':'')+'</figure>';
+  }
+  function mountPlanets(main,work,save){
+    let host=main.querySelector('[data-planet-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=astronomy(work,true);host=main.querySelector('[data-planet-host]');
+      for(const [selector,key] of [['[data-planet-relation]','planetRelation'],['[data-planet-zone]','earthZone']]){
+        host.querySelector(selector).onchange=e=>{const n=Number(e.target.value);if(n)work[key]=n;else delete work[key];save();draw();host.querySelector(selector).focus({preventScroll:true});};
+      }
+      const use=host.querySelector('[data-planet-use]');use.disabled=!work.planetRelation||!work.earthZone;
+      use.onclick=()=>{
+        const input=main.querySelector('#answer');if(!input)return;
+        input.value='Мой рисунок: '+relationNames[work.planetRelation]+'. Земля: '+planetZones[work.earthZone]+'.';
+        input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();
+      };
+    }
+    draw();
+  }
+  function campSupport(number,part){
+    if(number===18)return astronomy({},false);
+    const people=part.id==='017-a';
+    const sections=people?[['Первый отряд','25 ребят'],['Второй отряд','в 1,2 раза больше первого'],['Третий отряд','на 7 меньше второго'],['Две равные команды','все три отряда вместе']]:[['Весь запас','1 т = 1000 кг'],['Первая часть смены','12 дней по 38 кг'],['Остальная часть смены','28 − 12 дней'],['Во второй период','одинаковый расход в каждый день']];
+    return '<figure style="margin:.5em 0"><figcaption>'+(people?'Как связаны три отряда и команды':'Как разделить срок и запас на две части')+'</figcaption><dl>'+sections.map(([a,b])=>'<dt><strong>'+a+'</strong></dt><dd style="margin-left:.6em">'+b+'</dd>').join('')+'</dl></figure>';
+  }
+  function campResponse(number,part,input,correct,work){
+    if(number===17&&!correct){
+      const match=n=>root.PetersonBook.M.equal(input,n);
+      if(part.id==='017-a')return {ok:false,text:match(78)?'Это общее число детей во всех отрядах. На сколько равных команд их разделили?':match(30)||match(23)?'Ты нашёл численность одного отряда. В команды входят дети из всех трёх отрядов.':'«В 1,2 раза» требует умножения, а «на 7 меньше» — вычитания. Сначала найди численность каждого отряда.'};
+      return {ok:false,text:match(544)?'Это весь оставшийся запас в килограммах. В ответе нужен расход за один день.':match(16)?'Такова длительность второго периода. Раздели оставшийся запас на это число дней.':'Найди, сколько килограммов потратили за 12 дней. Из тонны вычти этот расход и раздели остаток на оставшиеся дни.'};
+    }
+    if(number!==18||!input.startsWith('Мой рисунок: '))return null;
+    const described='Мой рисунок: '+relationNames[work.planetRelation]+'. Земля: '+planetZones[work.earthZone]+'.';if(input!==described)return null;
+    if(work.planetRelation!==1)return {ok:false,text:'Назови планеты на М, затем четыре гиганта. Есть ли хотя бы одна планета сразу в обоих списках?'};
+    if(work.earthZone!==1)return {ok:false,text:'Земля входит в Солнечную систему, её название начинается с З. Проверь, входит ли она в группу гигантов.'};
+    return {ok:true,text:'Расположение областей и Земли совпало. Подпиши, какие планеты входят в каждую группу. Письменное объяснение остаётся для проверки учителем.'};
+  }
+
   function normalizeNumber(raw) {
     const s=raw.trim().replace(/\.$/,'').replace(/\s*\/\s*/g,'/').replace(/\s+/g,' ');
     return /^\d{1,3}(?: \d{3})+$/.test(s)?s.replace(/ /g,''):s.replace(/(?<=\d)\.(?=\d)/g,',');
@@ -306,6 +362,7 @@
   }
 
   function openingQuestion(number,part) {
+    if(number===17||number===18)return campQuestion(number,part);
     if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
     if(number>=11&&number<=13)return number===11?'Вычисли устно. Выбери удобный способ: разряды, перенос запятой или проверку обратным действием.':number===12?'Выполни указанное действие с десятичными дробями. Для записи по разрядам или промежуточных вычислений открой черновик.':'Найди значение всего выражения. Выдели внутренние действия и запиши промежуточные результаты перед последним действием.';
@@ -351,6 +408,7 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
+    if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
     if(item.number>=7&&item.number<=10)drawing=pageSevenFigure(item.number,part);
@@ -376,5 +434,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse};
 })(globalThis);

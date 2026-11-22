@@ -495,7 +495,7 @@ test('printed 11–13 retain exact source values, independent decimal models and
 });
 test('page 8 statement endings, place-value comparisons and fraction methods agree with the issued volume',async t=>{
  const s=await surface(t,BOOK+'#map'),bank=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(13,16),answers=[['в) 79 398','б) 0','а) 8','б) 6','в) 9','б) сложения','б) 83 004 020','б) 350 807','вбабвббб.'],['>','>','<','<','>','<'],['>','<','>','<','<']];
- assert.equal(element(s,'[aria-label="Разряды и сравнение на странице 8"]').querySelectorAll('a').length,3);
+ assert.equal(element(s,'[aria-label="Задания на странице 8"]').querySelectorAll('a').length,5);
  for(const [j,item] of bank.entries())for(const [i,p] of item.parts.entries()){
   assert.equal(p.answer,answers[j][i]);await route(s,'#n/'+item.number+'/'+p.id);
   const pane=sourcePresent(s);assert.match(pane.textContent,/Всё условие/);assert(pane.querySelector('figure'));
@@ -511,4 +511,21 @@ test('page 8 statement endings, place-value comparisons and fraction methods agr
   if(p.id==='014-itog'){assert(!work.independent&&!work.correct&&work.submitted);assert.match(element(s,'#feedback').textContent,/Восемь букв/);}
   else assert(work.correct&&work.independent,p.id);
  }
+});
+test('camp quantities and the independently built planet diagram are checked from the selected source part',async t=>{
+ const s=await surface(t,BOOK+'#n/17/017-a'),bank=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(16,18);
+ for(const [i,p] of bank[0].parts.entries()){
+  await route(s,'#n/17/'+p.id);const text=sourcePresent(s).querySelector('.problem').textContent;assert.match(text,i?/тонна/:/1,2 раза/);
+  input(s,'#answer',i?'544':'78');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,i?/оставшийся запас/:/общее число/);
+  input(s,'#answer',i?'34':'39');submit(s,'#answer-form');const work=bookWork(s,p.id);assert(work.correct&&!work.assisted&&!work.independent);
+  for(let n=0;n<33;n++){const model=s.w.PetersonAnalogues.create(17,p,n),nums=model.prompt.match(/\d+(?:,\d+)?/g).map(v=>Number(v.replace(',','.')));
+   const result=i?(nums[0]-nums[1]*nums[2])/(nums[3]-nums[1]):(nums[0]+nums[0]*nums[1]*2-nums[2])/2;assert.equal(Number(model.answer),result);assert(Number.isInteger(result));}
+ }
+ await route(s,'#n/18/018-1');
+ const change=(selector,v)=>{const el=element(s,selector);el.value=String(v);el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ change('[data-planet-relation]',2);change('[data-planet-zone]',1);click(s,'[data-planet-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/в обоих списках/);assert.equal(bookWork(s,'018-1').planetRelation,2);
+ change('[data-planet-relation]',1);change('[data-planet-zone]',3);click(s,'[data-planet-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/название начинается/);
+ change('[data-planet-zone]',1);click(s,'[data-planet-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/совпало/);const work=bookWork(s,'018-1');assert(work.submitted&&!work.independent&&!work.correct);assert.equal(work.earthZone,1);
+ const restored=await surface(t,BOOK+'#n/18/018-1',storage(s));assert.equal(element(restored,'[data-planet-zone]').value,'1');assert.equal(element(restored,'[data-planet-relation]').value,'1');assert.equal(element(restored,'#answer').value,work.draft);
+ const answers=new Set();for(let n=0;n<56;n++){const model=s.w.PetersonAnalogues.create(18,bank[1].parts[0],n);assert(s.w.PetersonBook.check(model,model.answer));answers.add(model.answer);}assert.equal(answers.size,4);
 });
