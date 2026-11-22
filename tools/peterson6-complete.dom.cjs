@@ -545,3 +545,85 @@ test('source page 9 contrasts truth with exact negation, keeps reasons reviewabl
  const p=rows[1].parts[0];await route(s,'#n/20/'+p.id);const reference=element(s,'[data-logic-reference]');reference.open=true;reference.dispatchEvent(new s.w.Event('toggle'));assert(bookWork(s,p.id).assisted);
  const restored=await surface(t,BOOK+'#n/20/'+p.id,storage(s));assert.equal(element(restored,'[data-logic-reference]').open,true);assert.equal(element(restored,'[data-logic-right]').value,'1');assert.match(element(restored,'#answer').value,/≥/);
 });
+test('the printed cipher checks all fifteen assertions separately and retains ordering, exact totals and earlier scenes',async t=>{
+ const s=await surface(t,BOOK+'#n/22/022-r'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(21,24),truth=[];
+ for(const row of rows)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);const material=sourcePresent(s);assert.match(material.textContent,/Всё условие/);
+  if(p.expression){
+   const model=s.w.PetersonBook.exact(p.expression),M=s.w.PetersonBook.M;
+   if(row.number===22){
+    const statement=material.querySelector('.problem').textContent,claim=statement.match(/ = ([\d,]+)\./)[1];
+    if(M.equal(claim,model))truth.push([p.label,M.parse(model)]);
+    else{input(s,'#answer',claim);submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/проверяемой строки/);}
+   }
+   if(row.number===23){input(s,'#answer',p.id==='023-a'?'52,52':'117,53');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/последнего минуса|справа от знака минус/);}
+   input(s,'#answer',p.answer);submit(s,'#answer-form');assert(bookWork(s,p.id).correct);
+   const picker=element(s,'[data-decimal-position]');picker.value='1';picker.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.equal(bookWork(s,p.id).decimalView,1);
+  }
+  for(let attempt=0;attempt<26;attempt++){const task=s.w.PetersonAnalogues.create(row.number,p,attempt);assert(s.w.PetersonBook.check(task,task.answer));if(task.expression)assert(s.w.PetersonBook.M.equal(task.answer,s.w.PetersonBook.exact(task.expression)));
+   if(row.number===23&&p.id==='023-a')assert(s.w.PetersonBook.M.parse(task.answer).n>0&&s.w.PetersonBook.M.parse(task.answer).n/s.w.PetersonBook.M.parse(task.answer).d<0.1);
+   if(row.number===24){const [first,gap,jars]=task.prompt.match(/\d+(?:,\d+)?/g).map(v=>Number(v.replace(',','.')));assert(Math.abs((first*2-gap)*1.5/jars-Number(task.answer.replace(',','.')))<1e-9);}
+  }
+ }
+ truth.sort((a,b)=>a[1].n/a[1].d-b[1].n/b[1].d);assert.equal(truth.map(([l])=>l).join(''),'АСТЕРОИД');
+ await route(s,'#n/22/022-slovo');const tile=letter=>click(s,'[data-cipher-letter="'+letter+'"]'),use=()=>{click(s,'[data-cipher-use]');submit(s,'#answer-form');};
+ tile('Б');use();assert.match(element(s,'#feedback').textContent,/Для буквы Б/);tile('Б');tile('С');tile('А');use();assert.match(element(s,'#feedback').textContent,/возрастать/);tile('С');use();assert.match(element(s,'#feedback').textContent,/ещё верная/);
+ for(const c of 'СТЕРОИД')tile(c);use();assert.match(element(s,'#feedback').textContent,/астрономический термин/);let w=bookWork(s,'022-slovo');assert.equal(w.cipherLetters,'АСТЕРОИД');assert(w.submitted&&!w.correct&&!w.independent);
+ const restored=await surface(t,BOOK+'#n/22/022-slovo',storage(s));assert.equal(element(restored,'[data-cipher-draft]').textContent,'АСТЕРОИД');
+ await route(s,'#n/24/024-1');input(s,'#answer','64,8');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/всего мёда/);input(s,'#answer','3,6');submit(s,'#answer-form');w=bookWork(s,'024-1');assert(w.correct&&!w.independent&&!w.assisted);
+});
+test('both page-nine alphametics show carries, keep manual reasoning and admit all verified substitutions',async t=>{
+ const s=await surface(t,BOOK+'#n/25/025-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[24].parts;
+ const setDigit=(letter,digit)=>{const field=element(s,'[data-puzzle-letter="'+letter+'"]');field.value=digit;field.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ const send=()=>{click(s,'[data-puzzle-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const [i,p] of rows.entries()){
+  await route(s,'#n/25/'+p.id);const letters=i?'ПЧЁЛКАЖ':'ЛЕТОПЁ',cases=i?['1428579']:['634218','738416','842615','946813'];
+  assert.match(sourcePresent(s).textContent,i?/ПЧЁЛКА/:/ПОЛЁТ/);assert(element(s,'[data-puzzle-use]').disabled);
+  for(const digits of cases){
+   [...letters].forEach((l,j)=>setDigit(l,digits[j]));assert.match(send(),/верное равенство/);const w=bookWork(s,p.id);assert.equal(w.puzzleDigits,digits);assert(w.submitted&&!w.correct&&!w.independent);
+  }
+  const correct=cases[0];[...letters].forEach((l,j)=>setDigit(l,correct[j]));setDigit(letters[0],correct[1]);assert.match(send(),/одну цифру/);setDigit(letters[0],'0');assert.match(send(),/старший разряд/);setDigit(letters[0],correct[0]);setDigit(letters.at(-1),i?'3':'7');assert.match(send(),/разряде/);
+  const saved=await surface(t,BOOK+'#n/25/'+p.id,storage(s));assert.equal(element(saved,'[data-puzzle-letter="'+letters.at(-1)+'"]').value,i?'3':'7');
+  let oldPrompt='';for(let attempt=0;attempt<50;attempt++){
+   const task=s.w.PetersonAnalogues.create(25,p,attempt);assert.notEqual(task.prompt,oldPrompt);oldPrompt=task.prompt;assert(s.w.PetersonBook.check(task,task.answer));const m=task.prompt;
+   if(i){const x=m.match(/ребусе ([АБВГ]+) × (\d+) = (Д+) буква Д означает (\d)\. Какая цифра соответствует букве ([АБВГ])/),value=Number(x[4].repeat(x[3].length))/Number(x[2]);assert.equal(String(value)[x[1].indexOf(x[5])],task.answer);}
+   else{const x=m.match(/= ([АБВГД]+)\. Дано: А = (\d), Б = (\d)\. Какую цифру нужно поставить вместо ([АБВГД])/),sum=String(2*Number(x[2]+x[3]));assert.equal(sum[x[1].indexOf(x[4])],task.answer);}
+  }
+ }
+});
+test('all twelve universal statements keep the domain, reverse the predicate and retain a second formulation',async t=>{
+ const s=await surface(t,BOOK+'#n/26/026-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[25];
+ const change=(field,value)=>{const el=element(s,'[data-logic-'+field+']');el.value=String(value);el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ const turnIn=()=>{click(s,'[data-logic-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const p of row.parts){
+  await route(s,'#n/26/'+p.id);assert.match(sourcePresent(s).textContent,/Составь два/);change('left',2);change('right',1);assert.match(turnIn(),/Сколько объектов/);
+  change('left',1);change('right',2);assert.match(element(s,'[data-logic-summary]').textContent,/Существует/);assert(!turnIn().includes('Такой объект'));
+  change('right',1);assert.match(turnIn(),/Добавь вторую/);const words='Неверно, что '+sourcePresent(s).querySelector('.problem').textContent.split('Исходная фраза: ')[1];input(s,'[data-logic-other]',words);assert.match(turnIn(),/Второе отрицание сохранено/);
+  const w=bookWork(s,p.id);assert.equal(w.logicOther,words);assert(w.draft.includes(words));assert(w.submitted&&!w.correct&&!w.independent);
+  const answers=new Set();for(let j=0;j<36;j++){const sample=s.w.PetersonAnalogues.create(26,p,j);assert(s.w.PetersonBook.check(sample,sample.answer));answers.add(sample.answer);}assert(answers.has('Среди трёх карточек контрпримера нет')&&answers.size>=4);
+ }
+ const ss=await surface(t,BOOK+'#n/26/026-12',storage(s));assert.match(element(ss,'[data-logic-other]').value,/угол/);assert.equal(element(ss,'[data-logic-right]').value,'1');
+});
+test('the ten mathematical claims separate a proof for all values from one admissible counterexample',async t=>{
+ const s=await surface(t,BOOK+'#n/27/027-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[26];
+ const set=(key,val)=>{const f=element(s,'[data-logic-'+key+']');f.value=String(val);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/27/'+p.id);const truth=[2,4,6,7].includes(i);assert.match(sourcePresent(s).textContent,/Исходная фраза/);
+  set('left',truth?1:2);set('right',2);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').className,/error/);
+  set('right',1);input(s,'[data-logic-other]',p.explanation);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование для выбранной оценки подходит/);
+  const w=bookWork(s,p.id);assert(w.submitted&&!w.correct&&!w.independent);assert.equal(w.logicOther,p.explanation);
+  for(let a=0;a<32;a++){const sample=s.w.PetersonAnalogues.create(27,p,a);assert.equal(new Set(sample.choices).size,3);assert(s.w.PetersonBook.check(sample,sample.answer));const txt=sample.prompt,ans=sample.answer,x=(txt.match(/\d+(?:,\d+)?/g)||[]).map(v=>Number(v.replace(',','.')));
+   if(i===0)assert(Number(ans.replace(',','.'))>x[0]&&Number(ans.replace(',','.'))<=x[1]&&!Number.isInteger(Number(ans.replace(',','.'))));
+   if(i===1)assert(Number.isInteger(Number(ans))&&Number(ans)>=x[0]&&Number(ans)<x[1]);
+   if(i===2){const [q,r]=ans.split('; ').map(Number);assert.equal(q*x[1]+r,x[0]);assert(r>=0&&r<x[1]);}
+   if(i===3)assert([3,7,9,11,13].includes(Number(ans.split('/')[1])));
+   if(i===4)assert(s.w.PetersonBook.M.equal(ans,txt.match(/числа ([\d,]+)\./)[1]));
+   if(i===5){const nums=ans.split(' → ').map(v=>Number(v.replace(',','.')));assert.equal(Math.round(nums[0]),nums[1]);assert(nums[1]>nums[0]);}
+   if(i===6)assert(s.w.PetersonBook.M.equal(ans,txt.match(/равно ([\d,]+)/)[1]));
+   if(i===7)assert.equal(Number(ans),x[0]+1);
+   if(i===8){const [left,right]=ans.split(' · ').map(v=>Number(v.replace(',','.')));assert(left*right<Math.min(left,right)&&left*right>0);}
+   if(i===9){const [left,right]=ans.split(' : ').map(Number);assert.equal(right,3);assert.notEqual(left%3,0);}
+  }
+ }
+ const r=await surface(t,BOOK+'#n/27/027-10',storage(s));assert.match(element(r,'[data-logic-other]').value,/1\/3/);
+});

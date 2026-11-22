@@ -120,6 +120,12 @@ on:
       - 'tools/geometry-textbook/*plane_isometries*'
       - 'tools/geometry-textbook/*isometry_invariants*'
       - 'tools/geometry-textbook/*isometric_quadrilaterals*'
+      - 'tools/geometry-textbook/*final_motion_constructions*'
+      - 'geometry-course/textbook/data/final-motion-constructions.json'
+      - 'tools/geometry-textbook/*medians_and_translated_altitudes*'
+      - 'geometry-course/textbook/data/medians-translated-altitudes.json'
+      - 'tools/geometry-textbook/*star_rays_perimeter*'
+      - 'geometry-course/textbook/data/star-rays-perimeter.json'
       - 'tools/geometry-textbook/*motion_applications*'
       - 'geometry-course/textbook/data/motion-applications.json'
       - 'tools/geometry-textbook/*tiling_symmetries*'
@@ -248,6 +254,9 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/final_motion_constructions.py --check && python3 tools/geometry-textbook/check_final_motion_constructions.py
+      - run: python3 tools/geometry-textbook/medians_and_translated_altitudes.py --check && python3 tools/geometry-textbook/check_medians_and_translated_altitudes.py
+      - run: python3 tools/geometry-textbook/star_rays_perimeter.py --check && python3 tools/geometry-textbook/check_star_rays_perimeter.py
       - run: python3 tools/geometry-textbook/motion_applications.py --check && python3 tools/geometry-textbook/check_motion_applications.py
       - run: python3 tools/geometry-textbook/tiling_symmetries.py --check && python3 tools/geometry-textbook/check_tiling_symmetries.py
       - run: python3 tools/geometry-textbook/bounded_symmetries.py --check && python3 tools/geometry-textbook/check_bounded_symmetries.py

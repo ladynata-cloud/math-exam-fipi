@@ -42,16 +42,19 @@ function sanitize(part,input){
   const value=firstError(step.kind,step.choices,v=>checkStep(step,v),input.firstErrors?.steps?.[i]);
   if(value)clean.firstErrors.steps[i]=value;
  }
- if(/^01[123]-/.test(part.id)&&part.expression&&Number.isInteger(input.decimalView)&&input.decimalView>0){
+ if(/^(01[123]|02[23])-/.test(part.id)&&part.expression&&Number.isInteger(input.decimalView)&&input.decimalView>0){
   const operands=[part.expression.left,part.expression.right].map(v=>String(v).replace(',','.').split('.'));
-  const limit=part.id.startsWith('013-')?ss.length:Math.max(...operands.map(x=>x[0].length))+Math.max(...operands.map(x=>x[1]?.length||0));
+  const limit=/^(013|023)-/.test(part.id)?ss.length:Math.max(...operands.map(x=>x[0].length))+Math.max(...operands.map(x=>x[1]?.length||0));
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
- if(/^(019|020|021)-/.test(part.id)){
+ if(/^(019|020|021|026|027)-/.test(part.id)){
   for(const key of ['logicLeft','logicRight'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
   if(input.logicReference===true)clean.logicReference=true;
+  if(/^02[67]-/.test(part.id)&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
  }
+ if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
+ if(part.id==='022-slovo'&&typeof input.cipherLetters==='string'&&/^[РУНОЕДГБИЖАКТЯС]{1,15}$/.test(input.cipherLetters)&&new Set(input.cipherLetters).size===input.cipherLetters.length)clean.cipherLetters=input.cipherLetters;
  if(part.id==='018-1'){
   if(Number.isInteger(input.planetRelation)&&input.planetRelation>=1&&input.planetRelation<=4)clean.planetRelation=input.planetRelation;
   if(Number.isInteger(input.earthZone)&&input.earthZone>=1&&input.earthZone<=5)clean.earthZone=input.earthZone;

@@ -142,7 +142,7 @@
     return result;
   }
   function decimalModel(part,view=0,interactive=false){
-    const many=part.id.startsWith('013-'),columns=many?[]:decimalColumns(part),nodes=many?operations(part.expression):[],keys=many?nodes.map((_,i)=>'Действие '+(i+1)):columns.map(placeName);
+    const many=/^(013|023)-/.test(part.id),columns=many?[]:decimalColumns(part),nodes=many?operations(part.expression):[],keys=many?nodes.map((_,i)=>'Действие '+(i+1)):columns.map(placeName);
     const title=many?'Порядок действий':'Разрядная сетка обоих чисел';
     const picker=interactive?'<label>Рассмотреть <select data-decimal-position><option value="0">Всё выражение</option>'+keys.map((label,i)=>'<option value="'+(i+1)+'"'+(view===i+1?' selected':'')+'>'+U.esc(label)+'</option>').join('')+'</select></label>':'';
     let body;
@@ -361,6 +361,149 @@
     return items.length===6?{ok:true,text:'Все шесть чисел расположены по возрастанию. Прочитай их вслух, называя миллионы, тысячи и единицы.'}:{ok:false,text:'Порядок верный. Проверь, все ли шесть позиций второй пятёрки использованы.'};
   }
 
+  function letterPuzzle(part){
+    return part.id==='025-1'?{letters:'ЛЕТОПЁ',word:'ЛЕТО',output:'ПОЛЁТ',factor:2}:{letters:'ПЧЁЛКАЖ',word:'ПЧЁЛКА',output:'ЖЖЖЖЖЖ',factor:7};
+  }
+  function puzzleRows(puzzle,work){
+    const digits=work.puzzleDigits||'-'.repeat(puzzle.letters.length),replace=word=>Array.from(word,c=>digits[puzzle.letters.indexOf(c)]).join('');
+    return {digits,operand:replace(puzzle.word),target:replace(puzzle.output)};
+  }
+  function letterEquation(puzzle,work){
+    const {operand,target}=puzzleRows(puzzle,work);
+    return puzzle.factor===2?operand+' + '+operand+' = '+target:operand+' × 7 = '+target;
+  }
+  function puzzleFigure(part,work,interactive){
+    const puzzle=letterPuzzle(part),{digits,operand,target}=puzzleRows(puzzle,work),chars=Array.from(puzzle.letters);
+    const field=chars.map((c,i)=>'<label style="display:grid;gap:.2em">'+c+'<select data-puzzle-letter="'+c+'" aria-label="Цифра для буквы '+c+'"><option value="-">?</option>'+Array.from({length:10},(_,d)=>'<option value="'+d+'"'+(digits[i]===String(d)?' selected':'')+'>'+d+'</option>').join('')+'</select></label>').join('');
+    const rows=puzzle.factor===2?[['',puzzle.word,operand],['+',puzzle.word,operand],['=',puzzle.output,target]]:[['',puzzle.word,operand],['×','7','7'],['=',puzzle.output,target]];
+    const line=([op,word,val])=>'<div style="display:grid;grid-template-columns:1.1em 1fr 1fr;align-items:baseline;text-align:right;font-size:clamp(.86rem,3.8vw,1.1rem)"><span>'+op+'</span><span aria-label="'+word+'">'+word+'</span><strong aria-label="'+val.replaceAll('-','?')+'" style="font-variant-numeric:tabular-nums;letter-spacing:.08em">'+val.replaceAll('-','·')+'</strong></div>';
+    return '<section data-puzzle-host aria-label="Подстановка цифр по разрядам"><h3>Буквы и цифры</h3><p>У одной буквы в каждой позиции одна и та же цифра. Е и Ё обозначают разные буквы.</p><div style="max-width:22em;border:1px solid #91a79b;padding:.5em">'+rows.map(line).join('')+'</div>'+(interactive?'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(3.6em,1fr));gap:.45em;margin:.65em 0">'+field+'</div><button type="button" class="secondary" data-puzzle-use>Перенести равенство в ответ</button>':'')+'</section>';
+  }
+  function mountPuzzle(main,part,work,save){
+    const puzzle=letterPuzzle(part);let host=main.querySelector('[data-puzzle-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=puzzleFigure(part,work,true);host=main.querySelector('[data-puzzle-host]');
+      for(const field of host.querySelectorAll('[data-puzzle-letter]'))field.onchange=()=>{
+        const digits=[...puzzleRows(puzzle,work).digits],letter=field.dataset.puzzleLetter;digits[puzzle.letters.indexOf(letter)]=field.value;
+        work.puzzleDigits=digits.join('');save();draw();host.querySelector('[data-puzzle-letter="'+letter+'"]').focus({preventScroll:true});
+      };
+      const use=host.querySelector('[data-puzzle-use]');use.disabled=puzzleRows(puzzle,work).digits.includes('-');
+      use.onclick=()=>{const input=main.querySelector('#answer');input.value=letterEquation(puzzle,work);input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();};
+    }
+    draw();
+  }
+  function puzzleResponse(number,part,input,work){
+    if(number!==25)return null;
+    const puzzle=letterPuzzle(part);if(input!==letterEquation(puzzle,work))return null;
+    const {digits,operand,target}=puzzleRows(puzzle,work);
+    for(let i=0;i<digits.length;i++){
+      const previous=digits.indexOf(digits[i]);if(previous<i)return {ok:false,text:'Буквы '+puzzle.letters[previous]+' и '+puzzle.letters[i]+' получили одну цифру '+digits[i]+'. Разным буквам нужны разные цифры.'};
+    }
+    if(operand[0]==='0'||target[0]==='0')return {ok:false,text:'Проверь старший разряд. Запись многозначного числа не может начинаться с нуля.'};
+    const product=String(Number(operand)*puzzle.factor).padStart(target.length,'0'),places=['единиц','десятков','сотен','тысяч','десятков тысяч','сотен тысяч','миллионов'];
+    for(let col=0;col<Math.max(product.length,target.length);col++){
+      if((product.at(-col-1)||'0')!==(target.at(-col-1)||'0'))return {ok:false,text:'Начни справа. Первая несовпавшая цифра результата — в разряде '+places[col]+'. Проверь произведение и перенос из предыдущего разряда.'};
+    }
+    return {ok:true,text:'Подстановка даёт верное равенство, разным буквам соответствуют разные цифры. Объясни, как выбирал цифры и учитывал перенос. Запись остаётся для проверки.'};
+  }
+
+  const codedRows=[
+    ['Р','0,4 + 3','3,4'],['У','6 + 0,12','0,18'],['Н','0,25 + 0,5','0,3'],['О','3,28 + 1,3','4,58'],['Е','2,6 − 0,01','2,59'],
+    ['Д','9,1 − 1,05','8,05'],['Г','0,854 − 0,85','0,04'],['Б','0,5 · 3','0,15'],['И','4 · 1,7','6,8'],['Ж','17,2 · 10','1,72'],
+    ['А','0,8 · 0,04','0,032'],['К','5 : 1000','0,05'],['Т','3,6 : 9','0,4'],['Я','12,3 : 5','24,6'],['С','0,056 : 0,7','0,08']
+  ];
+  function codewordQuestion(part){
+    if(part.id==='022-slovo')return 'Оставь буквы равенств, которые верны именно в записанном виде. Расположи их по возрастанию результатов и прочитай астрономический термин. Для остальных строк запиши исправленные вычисления.';
+    const row=codedRows.find(([letter])=>letter===part.label);
+    return 'Для буквы '+row[0]+' предложено равенство '+row[1]+' = '+row[2]+'. Проверь его вычислением и введи правильное значение левой части. Для шифра оставь букву только при совпадении.';
+  }
+  function cipherView(work,interactive){
+    const buttons=codedRows.map(([letter,expression,claim])=>{
+      const selected=(work.cipherLetters||'').includes(letter);
+      return '<li style="margin:.2rem 0">'+(interactive?'<button style="width:100%;text-align:left;white-space:normal" type="button" class="secondary" data-cipher-letter="'+letter+'" aria-pressed="'+selected+'">'+(selected?'✓ ':'')+letter+' · '+expression+' = '+claim+'</button>':letter+' · '+expression+' = '+claim)+'</li>';
+    }).join('');
+    return '<section data-cipher-host aria-label="Буквы шифра"><h3>Лента букв</h3><p>Касайся строк в нужном порядке. Повторное нажатие убирает букву, следующее ставит её в конец.</p><p data-cipher-draft aria-live="polite">'+(work.cipherLetters||'Лента пока пуста')+'</p><ul style="list-style:none;padding-left:0">'+buttons+'</ul>'+(interactive?'<button class="secondary" type="button" data-cipher-use>Перенести ленту в ответ</button>':'')+'</section>';
+  }
+  function mountCipher(main,work,save){
+    let host=main.querySelector('[data-cipher-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=cipherView(work,true);host=main.querySelector('[data-cipher-host]');
+      for(const button of host.querySelectorAll('[data-cipher-letter]'))button.onclick=()=>{
+        const letter=button.dataset.cipherLetter,current=work.cipherLetters||'';work.cipherLetters=current.includes(letter)?current.replace(letter,''):current+letter;
+        save();draw();host.querySelector('[data-cipher-letter="'+letter+'"]').focus({preventScroll:true});
+      };
+      const use=host.querySelector('[data-cipher-use]');use.disabled=!work.cipherLetters;use.onclick=()=>{const input=main.querySelector('#answer');input.value=work.cipherLetters;input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();};
+    }
+    draw();
+  }
+  function honeySupport(){
+    return '<figure style="margin:.5em 0"><figcaption>От ульев к одной банке</figcaption><ol><li>Первый улей — 24,8 кг.</li><li>Второй — первый сбор без 6,4 кг.</li><li>Третий — половина суммы первых двух сборов.</li><li>Общий сбор заполняет 18 одинаковых банок поровну.</li></ol></figure>';
+  }
+  function codewordResponse(number,part,input,correct){
+    if(number===23&&!correct){
+      const eq=n=>root.PetersonBook.M.equal(input,n);
+      if(part.id==='023-a')return {ok:false,text:eq('52.52')?'Это значение слева от последнего минуса. Вычисли вторую часть выражения и вычти её.':eq('52.5')?'Это частное справа от последнего минуса. Вычти его из первой части.':'Проверь разность в знаменателе последнего частного. Сохрани сотые до последнего вычитания.'};
+      return {ok:false,text:eq('117.53')?'Найдено произведение справа от знака минус. Какое число стоит перед ним?':eq('14.6')?'Это сумма внутри скобок. Остались умножение и вычитание.':'Сначала найди два частных внутри скобок, затем их сумму умножь на 8,05.'};
+    }
+    if(number===24&&!correct){
+      const eq=n=>root.PetersonBook.M.equal(input,n);
+      return {ok:false,text:eq('64.8')?'Получена масса всего мёда. Сколько одинаковых банок заполнили этой массой?':eq('21.6')?'Это мёд из третьего улья. Для наполнения банок использовали все три сбора.':eq('43.2')?'Учтены первые два улья. Вычисли половину этой суммы для третьего улья.':'Вычти 6,4 кг из первого сбора. Половину для третьего улья бери от суммы первого и второго.'};
+    }
+    if(number!==22)return null;
+    if(part.id!=='022-slovo'){
+      const claim=codedRows.find(([letter])=>letter===part.label)[2],eq=root.PetersonBook.M.equal;
+      if(correct)return {ok:true,text:eq(input,claim)?'Вычислено верно. Напечатанное равенство верно, его буква участвует в шифре.':'Вычислено верно. Напечатанный результат был ошибочным, эту букву пропусти при расшифровке.'};
+      return {ok:false,text:eq(input,claim)?'Это результат из проверяемой строки. Вычисли левую часть самостоятельно. '+opHint[part.expression.op]:opHint[part.expression.op]};
+    }
+    const entered=input.toUpperCase().replace(/[\s.]+/g,'');if(!/^[А-ЯЁ]+$/.test(entered))return null;
+    const key='АСТЕРОИД',wrong=[...entered].find(c=>!key.includes(c));
+    if(wrong)return {ok:false,text:'Для буквы '+wrong+' не записано верное равенство. Проверь её исходную строку до исправления.'};
+    if(new Set(entered).size<entered.length)return {ok:false,text:'Одна из букв встречается дважды. Каждая верная исходная строка даёт ровно одну букву.'};
+    if([...entered].some((c,i)=>i&&key.indexOf(entered[i-1])>key.indexOf(c)))return {ok:false,text:'Подходящие буквы есть, но результаты должны возрастать. Сопоставь соседним буквам числа и сравни их по разрядам.'};
+    if(entered!==key)return {ok:false,text:'Выбранные буквы стоят по возрастанию. Проверь оставшиеся строки: среди них есть ещё верная.'};
+    return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
+  }
+
+  const arithmeticClaims=[
+    ['Каждое решение двойного неравенства 1 < x ≤ 8 — натуральное число.',false,['1,5 находится в интервале и не является натуральным.','0 не является натуральным.','8 принадлежит интервалу и является натуральным.'],'Контрпример должен выполнить обе границы и нарушить натуральность.','Существует ненатуральное решение 1 < x ≤ 8.'],
+    ['Среди решений 2 ≤ x < 3 нет натуральных чисел.',false,['2 — натуральное решение.','3 — натуральное число.','2,5 — решение, которое не является натуральным.'],'Проверь обе границы. Знак слева разрешает значение 2, знак справа исключает 3.','Существует натуральное решение 2 ≤ x < 3.'],
+    ['При делении натуральных чисел с остатком остаток всегда меньше делителя.',true,['Если остаток не меньше делителя, из него можно выделить ещё один целый делитель.','Так получилось при делении 17 на 5.','Остаток всегда равен единице.'],'Один пример не доказывает правило для всех. Проверь, можно ли продолжить деление, если остаток ещё велик.','В записи a = bq + r для положительного b имеем 0 ≤ r < b.'],
+    ['Любая обыкновенная дробь допускает конечную десятичную запись.',false,['1/3 даёт бесконечную периодическую запись.','1/4 записывается как 0,25.','1/5 записывается как 0,2.'],'Один удачный перевод в конечную запись не опровергает общее правило. Ищи деление, в котором остаток повторится.','Существует обыкновенная дробь без конечной десятичной записи.'],
+    ['Всякую конечную десятичную дробь можно записать обыкновенной дробью.',true,['Если после запятой k цифр, знаменателем можно сделать 10 в степени k.','Достаточно проверить запись 0,5.','Знаменатель всегда равен 10, сколько бы цифр ни стояло после запятой.'],'Обоснование должно работать и для сотых, и для тысячных, и для любого числа десятичных знаков.','Например, 0,037 = 37/1000. Правило переноса запятой относится к любому числу знаков.'],
+    ['Округление числа всегда даёт меньшее число.',false,['1,8 при округлении до целых даёт 2.','1,2 при округлении до целых даёт 1.','1,8 при округлении до целых даёт 1.'],'Один случай уменьшения не опровергает фразу «всегда уменьшается». Сначала проверь само округление.','Есть число, которое при округлении не уменьшается.'],
+    ['Умножение на единицу оставляет любое число прежним.',true,['Для любого a произведение a · 1 равно a.','Только целые числа при умножении на 1 сохраняются.','1,5 · 1 = 1,5, поэтому остальных чисел можно не проверять.'],'Нужно общее свойство единицы, а не удачный пример с одним множителем.','Единица — нейтральный множитель.'],
+    ['Сумма двух натуральных чисел больше каждого слагаемого. Натуральный ряд начинается с 1.',true,['Прибавление каждого из двух положительных слагаемых увеличивает другое.','К одному из чисел можно прибавить ноль.','В качестве натурального слагаемого можно взять −1.'],'В этом задании оба слагаемых из ряда 1, 2, 3, … Проверяй условие на оба числа.','Если a и b положительны, то a+b>a и a+b>b.'],
+    ['Произведение двух ненулевых чисел больше каждого множителя.',false,['0,5 · 0,5 = 0,25, что меньше каждого множителя.','0 · 10 = 0.','2 · 3 = 6, что больше обоих множителей.'],'Нулевой множитель в условии запрещён. Для двух положительных чисел меньше единицы оцени, как меняется произведение.','Есть ненулевые множители, произведение которых не больше хотя бы одного из них.'],
+    ['Частное конечных десятичных дробей всегда имеет конечную десятичную запись. Делитель ненулевой.',false,['0,1 : 0,3 = 1/3, десятичная запись периодическая.','1,2 : 0,3 = 4.','1,2 : 0 не даёт конечной записи.'],'Делить на ноль нельзя. Нужна пара допустимых дробей, у которой получится бесконечная запись.','Существуют конечные десятичные дроби с ненулевым делителем, для которых частное не имеет конечной записи.']
+  ];
+  function witnessCard(part){
+    const [statement,truth,proof,hint,reference]=arithmeticClaims[Number(part.id.split('-')[1])-1];
+    return {prompt:'Проверь утверждение. Если оно ложно, запиши отрицание и докажи его истинность. Если истинно — обоснуй общее правило. Исходная фраза: '+statement,
+      leftTitle:'Значение исходной фразы',left:['Истинно','Ложно'],li:truth?0:1,rightTitle:'Что обосновывает ответ?',right:proof,ri:0,hint,reference,extra:'Моё объяснение или отрицание'};
+  }
+
+  const universalStatements=[
+    ['Каждая европейская страна входит в Европейский союз.','европейская страна','не входящая в Европейский союз','входящая в Европейский союз','находящаяся вне Европы','Не все европейские страны входят в Евросоюз.','Сохрани круг стран: рассматриваются именно европейские. Членство в союзе — свойство, которое меняется.'],
+    ['Любое европейское государство является республикой.','европейское государство','которое не является республикой','которое является республикой','которое находится за пределами Европы','Не каждое европейское государство является республикой.','Меняется форма правления, а принадлежность государства к Европе сохраняется.'],
+    ['В каждом российском городе найдётся памятник истории.','город России','в котором нет ни одного памятника истории','в котором есть памятник истории','в котором один из домов не является памятником','Не в каждом российском городе есть памятник истории.','Одного дома без статуса памятника мало. В городе-контрпримере не должно быть ни одного такого памятника.'],
+    ['Все города России расположены в Европе.','город России','расположенный вне Европы','расположенный в Европе','не относящийся к России','Не все города России расположены в Европе.','Для контрпримера нужен именно российский город: меняется только его расположение в Европе.'],
+    ['Любая планета имеет форму шара. Одинаково понимай «форму шара» в обеих фразах.','планета','форма которой не соответствует принятому здесь смыслу шара','форма которой соответствует принятому здесь смыслу шара','которая не является планетой','Не всякая планета имеет форму шара.','Выбери один смысл формы шара: точная геометрическая форма или приближённая модель. Используй его в обеих фразах.'],
+    ['У любой планеты Солнечной системы есть естественный спутник.','планета Солнечной системы','не имеющая естественных спутников','имеющая хотя бы один естественный спутник','у которой нет искусственных спутников','Не у каждой планеты Солнечной системы есть естественный спутник.','Сохрани слово «естественный». Отсутствие одного конкретного спутника не означает отсутствия всех.'],
+    ['Ни одна планета Солнечной системы не окружена кольцами.','планета Солнечной системы','имеющая кольца','не имеющая колец','имеющая естественный спутник','Неверно, что у всех планет Солнечной системы отсутствуют кольца.','Исходная фраза уже содержит отрицание. Для её опровержения нужны именно кольца хотя бы у одной планеты.'],
+    ['На всякой планете есть вода.','планета','на которой нет воды','на которой есть вода','на которой нет океана','Не на каждой планете есть вода.','Отсутствие океана ещё допускает воду в другой форме. Сохрани значение слова «вода».'],
+    ['Любое высказывание выражается повествовательным предложением.','высказывание','которое не является повествовательным предложением','которое является повествовательным предложением','которое ложно','Не всякое высказывание является повествовательным предложением.','Отрицай форму предложения. Истинность самого высказывания — другое свойство.'],
+    ['Ни одно вопросительное предложение не является высказыванием.','вопросительное предложение','которое является высказыванием','которое не является высказыванием','на которое кто-то ответил','Неверно, что ни одно вопросительное предложение не является высказыванием.','В исходном тексте говорится о самом вопросительном предложении, а не о возможном ответе на него.'],
+    ['У каждого четырёхугольника диагонали равны.','четырёхугольник','диагонали которого различны по длине','диагонали которого равны','у которого стороны имеют разную длину','Не у всех четырёхугольников равные диагонали.','Сравни длины диагоналей. Разные стороны сами по себе ничего не решают.'],
+    ['Всякий угол является либо острым, либо тупым.','угол','который не является ни острым, ни тупым','который не является острым','который не является тупым','Не всякий угол является острым или тупым.','Чтобы отрицать «острый или тупой», исключи одновременно оба вида. Например, проверь угол в 90°.']
+  ];
+  function universalCard(part){
+    const [statement,subject,opposite,unchanged,distractor,alternative,hint]=universalStatements[Number(part.id.split('-')[1])-1];
+    return {prompt:'Составь два равносильных отрицания и объясни, почему ровно одно из исходного утверждения и его отрицания верно. Исходная фраза: '+statement,
+      reference:'Представь список всех рассматриваемых объектов. Либо у каждого есть нужное свойство, либо найдётся объект без него. Для фразы «ни один» контрпримером будет объект с указанным свойством.',
+      leftTitle:'Начало отрицания',left:['Существует хотя бы один такой объект','Любой такой объект','Не существует ни одного такого объекта'],li:0,
+      rightTitle:'Какой объект нужен?',right:[subject+', '+opposite,subject+', '+unchanged,subject+', '+distractor],ri:0,hint,alternative,second:true};
+  }
+
   const factChecks=[
     ['Бруно следовал астрономическому учению Птолемея.','Бруно развивал представление Коперника о движении Земли.','Бруно не следовал этому учению Птолемея.','Бруно не занимался астрономией.','Птолемей следовал учению Бруно.','Отрицай именно указанную связь учёного с учением. Занятия астрономией сами по себе её не устанавливают.','https://plato.stanford.edu/entries/bruno/','Стэнфордская энциклопедия философии'],
     ['Рекорд высоты среди деревьев принадлежит пальмам.','Выше всех известных ныне живущих деревьев вырастают вечнозелёные секвойи.','Рекорд высоты среди деревьев не принадлежит пальмам.','Все пальмы низкие.','Ни одно другое дерево не выше пальмы.','Высокое дерево может и не быть рекордсменом. Утверждение о первенстве опровергает более высокий вид.','https://home.nps.gov/articles/000/coast-redwood.htm','Служба национальных парков США'],
@@ -378,6 +521,8 @@
     ['Значение x на единицу меньше квадрата этого же числа.',['x = x² − 1','x < x²','x² = x − 1'],['x ≠ x² − 1','x ≥ x²','x = x² + 1'],'«На единицу» задаёт точную разность. Для отрицания достаточно любой другой разности, в том числе двух.']
   ];
   function logicCard(number,part){
+    if(number===26)return universalCard(part);
+    if(number===27)return witnessCard(part);
     const i=Number(part.id.split('-')[1])-1;
     if(number===19){
       const [statement,fact,denial,a,b,hint,url,sourceName]=factChecks[i];
@@ -401,13 +546,14 @@
       const offset=(Number(part.id.split('-')[1])+number+(side==='left'?0:1))%options.length;
       return '<label style="display:grid;gap:.2em">'+U.esc(title)+'<select style="max-width:100%;width:100%;min-width:0" data-logic-'+side+'><option value="">Выбери вариант</option>'+options.map((_,j)=>{const i=(j+offset)%options.length;return '<option value="'+(i+1)+'">'+U.esc(options[i])+'</option>';}).join('')+'</select></label>';
     };
-    return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
+    return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+((card.second||card.extra)?'<label>'+U.esc(card.extra||'Второе, равносильное отрицание своими словами')+'<textarea maxlength="600" data-logic-other></textarea></label>':'')+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+(card.second?' Например: «'+U.esc(card.alternative)+'»':'')+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
   }
-  function logicText(card,work){return (card.left[work.logicLeft-1]||'…')+' / '+(card.right[work.logicRight-1]||'…');}
+  function logicText(card,work){return (card.left[work.logicLeft-1]||'…')+' / '+(card.right[work.logicRight-1]||'…')+((card.second||card.extra)&&work.logicOther?' / '+(card.extra||'Второе отрицание')+': '+work.logicOther:'');}
   function mountLogic(main,number,part,work,save){
     const host=main.querySelector('[data-logic-host]');if(!host)return;
     host.outerHTML=logicConstruction(number,part,true);
     const card=logicCard(number,part),left=main.querySelector('[data-logic-left]'),right=main.querySelector('[data-logic-right]'),use=main.querySelector('[data-logic-use]');
+    const other=main.querySelector('[data-logic-other]');if(other){other.value=work.logicOther||'';other.oninput=()=>{work.logicOther=other.value.slice(0,600);update();save();};}
     function update(){left.value=work.logicLeft||'';right.value=work.logicRight||'';main.querySelector('[data-logic-summary]').textContent=logicText(card,work);use.disabled=!work.logicLeft||!work.logicRight;}
     for(const [select,key] of [[left,'logicLeft'],[right,'logicRight']])select.onchange=()=>{if(select.value)work[key]=Number(select.value);else delete work[key];update();save();};
     use.onclick=()=>{const field=main.querySelector('#answer');field.value=logicText(card,work);field.dispatchEvent(new Event('input',{bubbles:true}));field.focus();};
@@ -416,15 +562,21 @@
     update();
   }
   function logicResponse(number,part,input,work){
-    if(number<19||number>21)return null;
+    if((number<19||number>21)&&number!==26&&number!==27)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
-    if(work.logicLeft!==card.li+1)return {ok:false,text:number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
+    if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
+    if(number===27)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
 
   function openingQuestion(number,part) {
-    if(number>=19&&number<=21)return logicCard(number,part).prompt;
+    if(number===25)return 'Замени одинаковые буквы одинаковыми цифрами, а разные буквы — различными. Первая цифра числа не может быть нулём. Найди верную подстановку для '+(part.id==='025-1'?'ЛЕТО + ЛЕТО = ПОЛЁТ.':'ПЧЁЛКА × 7 = ЖЖЖЖЖЖ.')+' Объясни, как проверил результат.';
+    if(number===22)return codewordQuestion(part);
+    if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
+    if(number===24)return 'С первого улья собрали 24,8 кг мёда. Второй дал на 6,4 кг меньше первого. С третьего получили половину совместного сбора первого и второго. Весь мёд поровну разлили в 18 банок. Сколько килограммов мёда в одной банке?';
+    if((number>=19&&number<=21)||number===26||number===27)return logicCard(number,part).prompt;
     if(number===17||number===18)return campQuestion(number,part);
     if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
@@ -471,7 +623,11 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
-    if(item.number>=19&&item.number<=21)drawing=logicConstruction(item.number,part,false);
+    if(item.number===22)drawing=part.id==='022-slovo'?cipherView({},false):decimalModel(part);
+    if(item.number===23)drawing=decimalModel(part);
+    if(item.number===24)drawing=honeySupport();
+    if(item.number===25)drawing=puzzleFigure(part,{},false);
+    if((item.number>=19&&item.number<=21)||item.number===26||item.number===27)drawing=logicConstruction(item.number,part,false);
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
@@ -498,5 +654,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse};
 })(globalThis);

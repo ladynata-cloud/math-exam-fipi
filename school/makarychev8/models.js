@@ -940,6 +940,11 @@
   }
 
   const finalFunctionSkills=[
+   {id:'rational-axis-location',title:'Дробь и координатные оси',description:'Определи положение положительной дроби при перемене аргумента.'},
+   {id:'boat-cumulative-path',title:'Путь и положение катера',description:'Построй четыре события рейса на графике времени и всего пройденного пути.'},
+   {id:'graph-full-range',title:'Своя ломаная с заданными границами',description:'Выбери вершины, чтобы обе проекции заполнили указанные отрезки.'},
+   {id:'combined-expression-domain',title:'Совместные условия для корней и дробей',description:'Испытай каждый уровень вычисления и запиши общий допустимый набор.'},
+   {id:'moving-section',title:'Подвижное сечение',description:'По своему расстоянию построй полосу или отрезок и найди его диапазон.'},
    {id:'floor-fraction-part',title:'Соседние целые и остаток',description:'Отметь рациональное число на оси и найди его целую или дробную часть.'},
    {id:'floor-graph-segments',title:'Ступеньки и скачки',description:'Построй один участок по выбранным координатам и отметь оба его конца.'},
    {id:'cancel-common-surd',title:'Убери общее слагаемое',description:'Сравни оставшиеся корни точно и учти знак перед каждым.'},
@@ -954,6 +959,33 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='rational-axis-location'){
+    const c=1+seed%13,k=1+(Math.floor(seed/3)+level)%8,hint='На вертикальной оси абсцисса равна нулю.';
+    return {...common,prompt:'Найди ординату на оси y для y = '+c+'/(x² + '+k+').',kind:'number',answer:c+'/'+k,graph:{type:'source-route-and-range',group:'rational',mode:'oy',c,k},steps:[probe,step('При каком x линия пересекает ось y?',0,hint)],hint,correction:hint,explanation:'При x = 0 остаётся '+c+'/'+k+'.'};
+   }
+   if(id==='boat-cumulative-path'){
+    const downstream=10+2*(seed%5),upstream=4+2*((Math.floor(seed/5)+level)%3),distance=downstream*upstream,rest=1+(seed+level)%4;
+    const leave=upstream+rest,end=leave+downstream,answer='(0;0), ('+upstream+';'+distance+'), ('+leave+';'+distance+'), ('+end+';'+(2*distance)+')';
+    const hint='Вторая координата на стоянке не меняется, а после продолжает возрастать.';
+    return {...common,prompt:'До пристани '+distance+' км. Скорости по течению и обратно '+downstream+' и '+upstream+' км/ч, стоянка '+rest+' ч. Построй четыре вершины графика всего пройденного пути в формате (t;l).',kind:'trip-knots',answer,graph:{type:'source-route-and-range',group:'boat',mode:'graph',downstream,upstream,distance,rest,revealAfterSubmit:true},steps:[probe,step('Сколько часов занимает первый переход?',upstream,hint)],hint,correction:hint,explanation:'Последняя ордината равна длине двух переходов.'};
+   }
+   if(id==='graph-full-range'){
+    const left=-1-seed%5,right=1+(Math.floor(seed/2)+level)%6,low=-seed%4,high=low+2+(seed+level)%9,hint='Крайние абсциссы задают область, а самая низкая и высокая из вершин задают диапазон.';
+    return {...common,prompt:'Задай 2–6 вершин графика ломаной с областью ['+left+';'+right+'] и значениями ['+low+';'+high+']. Введи пары (x;y) по возрастанию x.',kind:'full-range-knots',answer:'('+left+';'+high+'), ('+right+';'+low+')',graph:{type:'source-route-and-range',group:'free',mode:'free',left,right,low,high},steps:[step('Какая абсцисса должна встретиться первой?',left,hint),step('Какую нижнюю высоту нужно достичь?',low,hint)],hint,correction:hint,explanation:'Между соседними вершинами отрезки заполняют все промежуточные высоты.'};
+   }
+   if(id==='combined-expression-domain'){
+    const parameter=2+(seed+level)%11,mode=['two-den','two-root','nested'][(seed+level)%3];
+    const root=mode==='two-root',minus=String(-parameter),answer=root?'['+parameter+';+∞)':'(-∞;'+minus+')∪('+minus+';0)∪(0;+∞)';
+    const expression=root?'√x − √(x − '+parameter+')':mode==='nested'?'1/(1 + '+parameter+'/x)':'1/('+parameter+'x) + 1/('+parameter+' + x)';
+    const hint=root?'Проверь оба подкоренных выражения.':'Исследуй оба деления, начиная со внутренних.';
+    return {...common,prompt:'Какие x допускает выражение '+expression+'?',kind:'system-single',answer,variable:'x',graph:{type:'source-domain-and-sections',group:'domain',mode,parameter},steps:[probe,step(root?'Где второй корень обращается в нуль?':'Какой отрицательный аргумент нарушает допустимость?',root?parameter:-parameter,hint)],hint,correction:hint,explanation:'Для выражения получаем '+answer+'.'};
+   }
+   if(id==='moving-section'){
+    const rectangle=seed%2===0,width=4+seed%13,height=2+(Math.floor(seed/3)+level)%6,mode=(Math.floor(seed/2)+level)%2?'range':'rule',range=mode==='range',max=rectangle?width*height:width;
+    const hint=rectangle?'Умножь постоянную сторону на выбранную высоту полосы.':'Используй подобие полного и отсечённого треугольников.';
+    const given=rectangle?'В прямоугольнике длина '+width+' см, высота '+height+' см. Площадь полосы высоты x обозначили y.':'В треугольнике основание '+width+' см, высота '+height+' см. Параллельное основанию сечение на расстоянии x от вершины имеет длину y.';
+    return {...common,prompt:given+(range?' Какие значения принимает y от начального до конечного положения включительно?':' Вырази y через x. Введи правую часть формулы.'),kind:range?'system-single':'text',reducedExpression:!range,answer:range?'[0;'+max+']':rectangle?width+'x':width+'x/'+height,variable:'y',graph:{type:'source-domain-and-sections',group:rectangle?'rectangle':'triangle',mode,width,height},steps:[probe,step('Чему равно y в положении на противоположной границе?',max,hint)],hint,correction:hint,explanation:hint+' В конце y = '+max+'.'};
+   }
    if(id==='floor-fraction-part'){
     const den=2+seed%7,num=(seed%2?-1:1)*(2+seed%43+level),floor=Math.floor(num/den),fraction=(num-floor*den)+'/'+den;
     const mode=(Math.floor(seed/2)+level)%2?'fraction':'floor',x=num+'/'+den,hint='Отметь число между последовательными целыми. Дробная часть отсчитывается от левой границы.';
