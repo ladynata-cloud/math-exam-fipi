@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "7dd2c14a6600f18658ad0176e35d5e1cd71c334bb2a1d1dddb6d2833876ed0a5",
-      "afterSha256": "e319c2097a50715ceddd348d2ced4b95e28306c2fe1fc99063e1aee325afae39",
+      "beforeSha256": "61d59df1e50a3f1166d404cd2038dd10ba69799249f5b3578060d19b5fa0ae0f",
+      "afterSha256": "8db0346dfa8a1f007c66de82d0d818c28ec0715c90b3b9a5c2ba631dc27161ea",
       "placement": "before-head-close",
-      "sourceSha": "df86fb39d384f87c2662f473f7795266ad1de585"
+      "sourceSha": "e0efea972f6021c9b8ccfe52c53c8a29b3b11438"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7370,6 +7370,15 @@
         "school/index.html"
       ],
       "boundary": "Проверены упражнения 1.148–1.150 первой части: лучи, классы чисел, выбор на разные должности. Включён разбор ошибки в порядке букв."
+    },
+    {
+      "previousBaseSha": "df86fb39d384f87c2662f473f7795266ad1de585",
+      "sourceBaseSha": "e0efea972f6021c9b8ccfe52c53c8a29b3b11438",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверена страница 31 первого тома, упражнения 1.151–1.154, включая отдельные подпункты, математический разбор и сохранение модели."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
