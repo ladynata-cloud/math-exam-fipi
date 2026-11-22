@@ -183,6 +183,7 @@
     if(target.answerFormat==='v5-unit-fraction'&&!M.parse(root.Vilenkin5PartsOfUnits.normalized(value)))return 'Запиши число. Для доли подходят десятичная, обыкновенная и смешанная дроби. Пока это черновик.';
     if(target.answerFormat==='v5-ray-label'&&!root.Vilenkin5PrintedRay.read(value))return 'Запиши одну букву с луча. Число можно заменить буквой без потери попытки.';
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
+    if(target.answerFormat==='v5-garage-view')return root.Vilenkin5ClassesAndViews.asChoice(value)?'':'Выбери букву б, в, г, д или введи номер от 1 до 4. Пока это черновик.';
     if(target.answerFormat==='v5-object-shape'&&!root.Vilenkin5RoundObjects.read(value))return 'В ответе к рисунку нужно название формы: окружность, круг, цилиндр или шар. Свои предметы запиши в «Мои четыре примера». Написанное можно уточнить.';
     if(target.answerFormat==='v5-arc'&&!/^[ABCDKMPST]{3}$/.test(root.Vilenkin5Numbered.readArc(value)))return 'Нужны три буквы. Сначала запиши начало дуги, затем промежуточную метку и конец.';
     if(target.answerFormat==='v5-membership-set'&&!root.Vilenkin5DiskMembership.read(value))return 'Укажи буквы с этого рисунка. Их можно разделять запятыми или пробелами.';

@@ -1333,6 +1333,32 @@ async function run(browser, origin, backend, failures) {
   }
   await narrow(student,studentFrame,'diameter-and-moving-chord');
 
+  phase = 'source 5.92 and 5.93: realignment of classes and rear view of garage';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-92"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.92'}).waitFor();
+  await teacherFrame.locator('#answer').fill('18 208 304 662');await teacherFrame.locator('#answer-form button').click();
+  assert((await same(teacherFrame,studentFrame,'classes of a full source addition')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('44293830');await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'third term of a sum')).scene.message,/последнее число/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=row]').selectOption({value:'2'});await studentFrame.locator('[data-v5-param=group]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('298');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('52182829');await studentFrame.locator('#answer-form button').click();
+  assert((await same(studentFrame,teacherFrame,'correction of three-term addition')).scene.correct);
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-93"]').click();
+  await teacherFrame.locator('h1').filter({hasText:'№5.93'}).waitFor();
+  await studentFrame.locator('#answer').fill('1');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('[data-v5-param=end]').selectOption({value:'1'});await studentFrame.locator('[data-v5-prediction]').fill('2');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('г');await studentFrame.locator('#answer-form button').click();
+  const wrongGarage=await same(studentFrame,teacherFrame,'same wall, wrong end');assert.match(wrongGarage.scene.message,/Стена выбрана верно/);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  assert.equal((await same(studentFrame,teacherFrame,'rear-view position and typed letter')).scene.model.end,1);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'rejoined at the rear of the garage');await teacherFrame.locator('#answer').fill('б');await teacherFrame.locator('#answer-form button').click();
+  assert((await same(teacherFrame,studentFrame,'same garage after walking round')).scene.correct);await narrow(student,studentFrame,'rear-view-garage');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
