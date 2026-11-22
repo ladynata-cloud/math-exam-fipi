@@ -3353,6 +3353,7 @@ function changeBars(before,after,labels=['Было','Стало']) {
  return pic;
 }
 function configFor(lesson,task){
+ if(lesson?.id==='p40'&&task?.page48Study)return {title:task.source.exercise===221?'Расстояние на числовой прямой':task.source.exercise>=222?'Один путь, две скорости':task.source.exercise===220?'Проверка высказывания':'Преобразование дроби',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новый пример']]),c('Шаг',[[0,'Самостоятельно'],[1,'Показать опору'],[2,'Сверить результат']])],initial:[0,0]};
  if(lesson?.id==='p40'&&task?.functionArithmetic)return {title:'Формула и её значения',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новый пример']]),c('Шаг',[[0,'Самостоятельно'],[1,'Сверить вычисления'],[2,'Сверить результат']])],initial:[0,0]};
  if(lesson?.id==='p40'&&task?.functionPlane)return {title:task.functionPlane.kind==='vertical'?'Проверка вертикальной прямой':'Семейство графиков',controls:[c('Данные',[[0,'Исходные значения'],[1,'Другие точки']]),c('Шаг',[[0,'Построение'],[1,'Отметить точки'],[2,'Сверить вывод']])],initial:[0,0]};
  if(lesson?.id==='p40'&&task?.scaleConversion)return {title:'Две температурные шкалы',controls:[c('Данные',[[0,'Температура из задания'],[1,'Другая температура']]),c('Шаг',[[0,'Самостоятельно'],[1,'Связать шкалы'],[2,'Проверить округление']])],initial:[0,0]};
@@ -3634,6 +3635,21 @@ function chart(label){return svg('svg',{viewBox:'0 0 600 370',role:'img','aria-l
 function txt(s,x,y,text,attrs={}){const t=svg('text',{x,y,'font-size':20,'text-anchor':'middle',fill:'#234436',...attrs});t.textContent=String(text);s.append(t);return t;}
 function ln(s,x1,y1,x2,y2,attrs={}){s.append(svg('line',{x1,y1,x2,y2,stroke:'#205b46','stroke-width':2.5,...attrs}));}
 function dot(s,x,y,name,color='#176b51'){s.append(svg('circle',{cx:x,cy:y,r:4,fill:color}));if(name)txt(s,x+10,y-12,name,{'text-anchor':'start'});}
+function page48NumberLine([center,radius,outside,closed],stage){
+ const lo=center-radius,hi=center+radius,pad=Math.max(2,Math.ceil(radius/2));
+ const point=x=>14+(x-lo+pad)*332/(2*(radius+pad));
+ const solution=outside?'два внешних луча':'промежуток между границами';
+ const title=stage===2?'Решение: '+solution+', границы '+(closed?'включены':'исключены')+'.':'Координатная прямая с отмеченным центром '+center+'.';
+ const s=svg('svg',{viewBox:'0 0 360 92',role:'img',class:'pm-chart','aria-label':title});
+ const cy=44;
+ ln(s,10,cy,350,cy,{stroke:'#596c64','stroke-width':2});
+ for(let x=lo-pad;x<=hi+pad;x++){ln(s,point(x),cy-3,point(x),cy+4,{stroke:'#596c64','stroke-width':1});}
+ const band=(x,y)=>ln(s,x,cy,y,cy,{stroke:'#086751','stroke-width':5});
+ if(stage===2){if(outside){band(10,point(lo));band(point(hi),350);for(const [x,d] of [[10,1],[350,-1]]){ln(s,x,cy,x+d*8,cy-5);ln(s,x,cy,x+d*8,cy+5);}}else band(point(lo),point(hi));}
+ txt(s,point(center),cy+30,String(center),{'font-size':17});
+ if(stage>=1){for(const x of [lo,hi]){s.append(svg('circle',{cx:point(x),cy,r:5,fill:stage===1?'#f6d79a':closed?'#086751':'#fff',stroke:stage===1?'#815818':'#086751','stroke-width':2.5}));txt(s,point(x),cy-15,String(x),{'font-size':17});}}
+ return s;
+}
 function splitSegmentFigure(left){
  const right=12-left,cx=24+26*left,y=65;
  const picture=svg('svg',{viewBox:'0 0 360 115',role:'img',class:'pm-chart pcm-segment',
@@ -3666,7 +3682,7 @@ let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.decimalPrint||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.decimalPrint||task.page48Study||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.quantifiedEquation||task.decimalPrint||task.mentalSeries||task.stationGraph||task.convertGroup||task.proportionOpening||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -3677,7 +3693,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.page48Study||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -5392,6 +5408,14 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
 
 
 
+
+ else if(n===40&&task.page48Study){
+  const example=task.page48Study[a];
+  formula(example.given);
+  if(example.diagram)show(page48NumberLine(example.diagram,b));
+  if(b>=1){const t=table(['Величина или шаг','Проверка'],example.rows);t.classList.add('pcm-route-table');show(t);}
+  if(b===2)say(example.result);
+ }
  else if(n===40&&task.functionArithmetic){const {kind,index}=task.functionArithmetic,v=sourceGraphArithmetic(kind,index,a===1);formula(v.given);if(b>=1){const t=table(['Строка','Расчёт'],v.rows);t.classList.add('pcm-route-table');show(t);}if(b===2)say(v.result);}
  else if(n===40&&task.functionPlane){const {kind,index}=task.functionPlane,v=exploreFunctionCurves(kind,index,a===1,b);formula(v.title);show(v.graph);if(b>0&&v.rows.length){const t=table(kind==='laws'?['x','y']:['График','Ордината'],v.rows);t.classList.add('pcm-route-table');show(t);}if(b===2)say(v.result);}
  else if(n===40&&task.scaleConversion){const v=temperatureTranslation(task.scaleConversion,a===1,b);formula(v.question);show(v.graph);if(b>=1){const t=table(['Действие','Точное значение'],v.rows);t.classList.add('pcm-route-table');show(t);}if(b===2)say(v.result);}
@@ -98720,6 +98744,1165 @@ window.PetersonCourse = {
       [
        "441/100",
        "Проверь, относится ли минус к числу, делению или ко всему квадрату. Сначала сложи, возведи всю сумму в квадрат, затем примени внешний минус."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t47",
+     "title": "К задаче №219 (а)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 219,
+      "subpart": "а",
+      "reference": "№219 (а)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Представь одной сокращённой дробью выражение −2x/15 − x/6.",
+     "answer": "−3x/10",
+     "steps": [
+      {
+       "prompt": "Наименьший общий знаменатель 15 и 6?",
+       "answer": "30",
+       "hint": "Минусы относятся к обоим слагаемым.",
+       "explanation": "Минусы относятся к обоим слагаемым."
+      },
+      {
+       "prompt": "Сколько раз 6 помещается в общем знаменателе?",
+       "answer": "5",
+       "hint": "Минусы относятся к обоим слагаемым.",
+       "explanation": "Минусы относятся к обоим слагаемым."
+      }
+     ],
+     "hint": "Минусы относятся к обоим слагаемым.",
+     "explanation": "−4x/30 − 5x/30 = −9x/30 = −3x/10.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "−2x/15 − x/6",
+       "rows": [
+        [
+         "Наименьший общий знаменатель 15 и 6?",
+         "30"
+        ],
+        [
+         "Сколько раз 6 помещается в общем знаменателе?",
+         "5"
+        ]
+       ],
+       "result": "−3x/10"
+      },
+      {
+       "given": "−x/6 − x/4",
+       "rows": [
+        [
+         "Общий знаменатель",
+         "12"
+        ],
+        [
+         "Числитель",
+         "−2x − 3x"
+        ]
+       ],
+       "result": "−5x/12"
+      }
+     ],
+     "choices": [
+      "−x/30",
+      "−3x/10",
+      "3x/10"
+     ],
+     "errorCues": [
+      [
+       "−x/30",
+       "Заметь знак у первого слагаемого: оба числителя отрицательны."
+      ],
+      [
+       "3x/10",
+       "Сумма двух отрицательных коэффициентов отрицательна."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t48",
+     "title": "К задаче №219 (б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 219,
+      "subpart": "б",
+      "reference": "№219 (б)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Представь одной сокращённой дробью выражение y − 2/(3y), где y ≠ 0.",
+     "answer": "(3y² − 2)/(3y)",
+     "steps": [
+      {
+       "prompt": "При y = 2 чему равен 3y?",
+       "answer": "6",
+       "hint": "Первое слагаемое умножь и раздели на 3y.",
+       "explanation": "Первое слагаемое умножь и раздели на 3y."
+      },
+      {
+       "prompt": "При y = 2 чему равен числитель 3y² − 2?",
+       "answer": "10",
+       "hint": "Первое слагаемое умножь и раздели на 3y.",
+       "explanation": "Первое слагаемое умножь и раздели на 3y."
+      }
+     ],
+     "hint": "Первое слагаемое умножь и раздели на 3y.",
+     "explanation": "Дробь 3y²/(3y) равна y. Общий числитель равен 3y² − 2.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "y − 2/(3y), где y ≠ 0",
+       "rows": [
+        [
+         "При y = 2 чему равен 3y?",
+         "6"
+        ],
+        [
+         "При y = 2 чему равен числитель 3y² − 2?",
+         "10"
+        ]
+       ],
+       "result": "(3y² − 2)/(3y)"
+      },
+      {
+       "given": "z − 1/(2z), где z ≠ 0",
+       "rows": [
+        [
+         "Общий знаменатель",
+         "2z"
+        ],
+        [
+         "Первое слагаемое",
+         "2z²/(2z)"
+        ]
+       ],
+       "result": "(2z² − 1)/(2z)"
+      }
+     ],
+     "choices": [
+      "(y − 2)/(3y)",
+      "(3y² − 2)/(3y)",
+      "(3y − 2)/(3y)"
+     ],
+     "errorCues": [
+      [
+       "(y − 2)/(3y)",
+       "Чтобы y получила знаменатель 3y, домножь числитель на 3y."
+      ],
+      [
+       "(3y − 2)/(3y)",
+       "Произведение y на 3y содержит квадрат y."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t49",
+     "title": "К задаче №219 (в)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 219,
+      "subpart": "в",
+      "reference": "№219 (в)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Представь одной сокращённой дробью выражение (10/n³) : (2/(−n²)), где n ≠ 0.",
+     "answer": "−5/n",
+     "steps": [
+      {
+       "prompt": "Чему равно 10 : 2?",
+       "answer": "5",
+       "hint": "При делении переворачивай только вторую дробь. Сохрани её минус.",
+       "explanation": "При делении переворачивай только вторую дробь. Сохрани её минус."
+      },
+      {
+       "prompt": "Сколько множителей n останется в знаменателе после сокращения?",
+       "answer": "1",
+       "hint": "При делении переворачивай только вторую дробь. Сохрани её минус.",
+       "explanation": "При делении переворачивай только вторую дробь. Сохрани её минус."
+      }
+     ],
+     "hint": "При делении переворачивай только вторую дробь. Сохрани её минус.",
+     "explanation": "10/n³ · (−n²)/2 = −5/n.",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "(10/n³) : (2/(−n²)), где n ≠ 0",
+       "rows": [
+        [
+         "Чему равно 10 : 2?",
+         "5"
+        ],
+        [
+         "Сколько множителей n останется в знаменателе после сокращения?",
+         "1"
+        ]
+       ],
+       "result": "−5/n"
+      },
+      {
+       "given": "(12/t⁴) : (3/(−t²)), где t ≠ 0",
+       "rows": [
+        [
+         "Обратная дробь",
+         "−t²/3"
+        ],
+        [
+         "Степень в знаменателе после сокращения",
+         "4 − 2 = 2"
+        ]
+       ],
+       "result": "−4/t²"
+      }
+     ],
+     "choices": [
+      "−5n",
+      "−5/n",
+      "5/n"
+     ],
+     "errorCues": [
+      [
+       "−5n",
+       "Сокращая n² из знаменателя n³, оставь один n снизу."
+      ],
+      [
+       "5/n",
+       "Минус в знаменателе делителя сохраняется после обращения."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t50",
+     "title": "К задаче №219 (г)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 219,
+      "subpart": "г",
+      "reference": "№219 (г)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Представь одной сокращённой дробью выражение (−4b/m³) : (20b²/m²), где b и m отличны от нуля.",
+     "answer": "−1/(5bm)",
+     "steps": [
+      {
+       "prompt": "Каков знаменатель сокращённой дроби 4/20?",
+       "answer": "5",
+       "hint": "Запиши произведение с обратной дробью. Сокращай множители сверху и снизу.",
+       "explanation": "Запиши произведение с обратной дробью. Сокращай множители сверху и снизу."
+      },
+      {
+       "prompt": "Сколько множителей b остаётся снизу после сокращения?",
+       "answer": "1",
+       "hint": "Запиши произведение с обратной дробью. Сокращай множители сверху и снизу.",
+       "explanation": "Запиши произведение с обратной дробью. Сокращай множители сверху и снизу."
+      }
+     ],
+     "hint": "Запиши произведение с обратной дробью. Сокращай множители сверху и снизу.",
+     "explanation": "Полная дробь (−4bm²)/(20b²m³) после сокращения даёт −1/(5bm).",
+     "skills": [
+      "fraction-multiply"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "(−4b/m³) : (20b²/m²), где b и m отличны от нуля",
+       "rows": [
+        [
+         "Каков знаменатель сокращённой дроби 4/20?",
+         "5"
+        ],
+        [
+         "Сколько множителей b остаётся снизу после сокращения?",
+         "1"
+        ]
+       ],
+       "result": "−1/(5bm)"
+      },
+      {
+       "given": "(−6r/s³) : (18r²/s²), где r и s отличны от нуля",
+       "rows": [
+        [
+         "После обращения",
+         "−6rs²/(18r²s³)"
+        ],
+        [
+         "Несокращённые множители",
+         "снизу остаются r и s"
+        ]
+       ],
+       "result": "−1/(3rs)"
+      }
+     ],
+     "choices": [
+      "−b/(5m)",
+      "−1/(5bm)",
+      "−m/(5b)"
+     ],
+     "errorCues": [
+      [
+       "−b/(5m)",
+       "В знаменателе два множителя b, в числителе один."
+      ],
+      [
+       "−m/(5b)",
+       "После сокращения и m, и b остаются в знаменателе."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t51",
+     "title": "К задаче №220 (а)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 220,
+      "subpart": "а",
+      "reference": "№220 (а)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Среди рациональных чисел есть a, для которого |a| \u003c 0. Верно ли утверждение? Если оно ложно, сначала запиши его отрицание.",
+     "answer": "Ложно",
+     "steps": [
+      {
+       "prompt": "Каков наименьший возможный модуль?",
+       "answer": "0",
+       "hint": "Расстояние до нуля всегда неотрицательно.",
+       "explanation": "Расстояние до нуля всегда неотрицательно."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Обоснуй ответ. Для ложного высказывания запиши точное отрицание.",
+       "hint": "Расстояние до нуля всегда неотрицательно.",
+       "explanation": "Для любого рационального a верно |a| ≥ 0."
+      }
+     ],
+     "hint": "Расстояние до нуля всегда неотрицательно.",
+     "explanation": "Для любого рационального a верно |a| ≥ 0.",
+     "skills": [
+      "absolute-value"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "Среди рациональных чисел есть a, для которого |a| \u003c 0.",
+       "rows": [
+        [
+         "Каков наименьший возможный модуль?",
+         "0"
+        ]
+       ],
+       "result": "Для любого рационального a верно |a| ≥ 0."
+      },
+      {
+       "given": "Может ли |r| быть равным −3?",
+       "rows": [
+        [
+         "r = −3",
+         "|r| = 3"
+        ],
+        [
+         "r = 0",
+         "|r| = 0"
+        ]
+       ],
+       "result": "Нет. Модуль неотрицателен."
+      }
+     ],
+     "choices": [
+      "Истинно",
+      "Ложно"
+     ],
+     "errorCues": [
+      [
+       "Истинно",
+       "Расстояние до нуля всегда неотрицательно."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t52",
+     "title": "К задаче №220 (б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 220,
+      "subpart": "б",
+      "reference": "№220 (б)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Для каждого рационального a выполняется |a| = |−a|. Верно ли утверждение? Если оно ложно, сначала запиши его отрицание.",
+     "answer": "Истинно",
+     "steps": [
+      {
+       "prompt": "Каков модуль числа, противоположного 7?",
+       "answer": "7",
+       "hint": "Противоположные числа одинаково удалены от нуля.",
+       "explanation": "Противоположные числа одинаково удалены от нуля."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Обоснуй ответ. Для ложного высказывания запиши точное отрицание.",
+       "hint": "Противоположные числа одинаково удалены от нуля.",
+       "explanation": "Равенство сохраняется для любого рационального a, включая ноль."
+      }
+     ],
+     "hint": "Противоположные числа одинаково удалены от нуля.",
+     "explanation": "Равенство сохраняется для любого рационального a, включая ноль.",
+     "skills": [
+      "absolute-value"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "Для каждого рационального a выполняется |a| = |−a|.",
+       "rows": [
+        [
+         "Каков модуль числа, противоположного 7?",
+         "7"
+        ]
+       ],
+       "result": "Равенство сохраняется для любого рационального a, включая ноль."
+      },
+      {
+       "given": "Проверь пару −5/2 и 5/2 и объясни общее правило.",
+       "rows": [
+        [
+         "Первый модуль",
+         "5/2"
+        ],
+        [
+         "Второй модуль",
+         "5/2"
+        ]
+       ],
+       "result": "Истинно для любого рационального a."
+      }
+     ],
+     "choices": [
+      "Истинно",
+      "Ложно"
+     ],
+     "errorCues": [
+      [
+       "Ложно",
+       "Противоположные числа одинаково удалены от нуля."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t53",
+     "title": "К задаче №220 (в)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 220,
+      "subpart": "в",
+      "reference": "№220 (в)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Найдутся рациональные a и b, для которых |a + b| = |a| + |b|. Верно ли утверждение? Если оно ложно, сначала запиши его отрицание.",
+     "answer": "Истинно",
+     "steps": [
+      {
+       "prompt": "При a = 2 и b = 3 чему равен модуль суммы?",
+       "answer": "5",
+       "hint": "Слово «найдутся» требует хотя бы одного примера.",
+       "explanation": "Слово «найдутся» требует хотя бы одного примера."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Обоснуй ответ. Для ложного высказывания запиши точное отрицание.",
+       "hint": "Слово «найдутся» требует хотя бы одного примера.",
+       "explanation": "Например, при a = 2 и b = 3 обе части равны 5."
+      }
+     ],
+     "hint": "Слово «найдутся» требует хотя бы одного примера.",
+     "explanation": "Например, при a = 2 и b = 3 обе части равны 5.",
+     "skills": [
+      "absolute-value"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "Найдутся рациональные a и b, для которых |a + b| = |a| + |b|.",
+       "rows": [
+        [
+         "При a = 2 и b = 3 чему равен модуль суммы?",
+         "5"
+        ]
+       ],
+       "result": "Например, при a = 2 и b = 3 обе части равны 5."
+      },
+      {
+       "given": "Проверь a = −4 и b = −2.",
+       "rows": [
+        [
+         "Модуль суммы",
+         "|−6| = 6"
+        ],
+        [
+         "Сумма модулей",
+         "4 + 2 = 6"
+        ]
+       ],
+       "result": "Эта пара тоже подтверждает существование."
+      }
+     ],
+     "choices": [
+      "Истинно",
+      "Ложно"
+     ],
+     "errorCues": [
+      [
+       "Ложно",
+       "Слово «найдутся» требует хотя бы одного примера."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t54",
+     "title": "К задаче №220 (г)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 220,
+      "subpart": "г",
+      "reference": "№220 (г)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Для любых рациональных a и b выполняется |a + b| ≥ |a − b|. Верно ли утверждение? Если оно ложно, сначала запиши его отрицание.",
+     "answer": "Ложно",
+     "steps": [
+      {
+       "prompt": "При a = 1 и b = −1 чему равен |a − b|?",
+       "answer": "2",
+       "hint": "Чтобы опровергнуть «для любых», подбери пару противоположных ненулевых чисел.",
+       "explanation": "Чтобы опровергнуть «для любых», подбери пару противоположных ненулевых чисел."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Обоснуй ответ. Для ложного высказывания запиши точное отрицание.",
+       "hint": "Чтобы опровергнуть «для любых», подбери пару противоположных ненулевых чисел.",
+       "explanation": "Отрицание: существуют a и b, для которых |a + b| \u003c |a − b|. При 1 и −1 получаем 0 \u003c 2."
+      }
+     ],
+     "hint": "Чтобы опровергнуть «для любых», подбери пару противоположных ненулевых чисел.",
+     "explanation": "Отрицание: существуют a и b, для которых |a + b| \u003c |a − b|. При 1 и −1 получаем 0 \u003c 2.",
+     "skills": [
+      "absolute-value"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "Для любых рациональных a и b выполняется |a + b| ≥ |a − b|.",
+       "rows": [
+        [
+         "При a = 1 и b = −1 чему равен |a − b|?",
+         "2"
+        ]
+       ],
+       "result": "Отрицание: существуют a и b, для которых |a + b| \u003c |a − b|. При 1 и −1 получаем 0 \u003c 2."
+      },
+      {
+       "given": "Сравни модули при a = −3 и b = 3.",
+       "rows": [
+        [
+         "Модуль суммы",
+         "0"
+        ],
+        [
+         "Модуль разности",
+         "6"
+        ]
+       ],
+       "result": "0 \u003c 6. Это контрпример."
+      }
+     ],
+     "choices": [
+      "Истинно",
+      "Ложно"
+     ],
+     "errorCues": [
+      [
+       "Истинно",
+       "Чтобы опровергнуть «для любых», подбери пару противоположных ненулевых чисел."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t55",
+     "title": "К задаче №221 (а)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 221,
+      "subpart": "а",
+      "reference": "№221 (а)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Нарисуй на координатной прямой все решения |x| ≤ 5. Какие числа отмечены?",
+     "answer": "-5 ≤ x ≤ 5",
+     "steps": [
+      {
+       "prompt": "Координата левой границы?",
+       "answer": "-5",
+       "hint": "Модуль показывает расстояние от 0. Отложи 5 влево и вправо.",
+       "explanation": "Модуль показывает расстояние от 0. Отложи 5 влево и вправо."
+      },
+      {
+       "prompt": "Координата правой границы?",
+       "answer": "5",
+       "hint": "Модуль показывает расстояние от 0. Отложи 5 влево и вправо.",
+       "explanation": "Модуль показывает расстояние от 0. Отложи 5 влево и вправо."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Отметь границы, затем выбери нужную часть прямой.",
+       "hint": "Модуль показывает расстояние от 0. Отложи 5 влево и вправо.",
+       "explanation": "Границы -5 и 5. Отметь решения между границами, граничные точки закрась."
+      }
+     ],
+     "hint": "Модуль показывает расстояние от 0. Отложи 5 влево и вправо.",
+     "explanation": "Границы -5 и 5. Отметь решения между границами, граничные точки закрась.",
+     "skills": [
+      "absolute-value"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "|x| ≤ 5",
+       "rows": [
+        [
+         "Центр",
+         "0"
+        ],
+        [
+         "Расстояние до границ",
+         "5"
+        ]
+       ],
+       "result": "-5 ≤ x ≤ 5",
+       "diagram": [
+        0,
+        5,
+        false,
+        true
+       ]
+      },
+      {
+       "given": "|x − 1| ≤ 3",
+       "rows": [
+        [
+         "Центр",
+         "1"
+        ],
+        [
+         "Расстояние до границ",
+         "3"
+        ]
+       ],
+       "result": "-2 ≤ x ≤ 4",
+       "diagram": [
+        1,
+        3,
+        false,
+        true
+       ]
+      }
+     ],
+     "choices": [
+      "-5 \u003c x \u003c 5",
+      "x ≤ -5 или x ≥ 5",
+      "-5 ≤ x ≤ 5"
+     ],
+     "errorCues": [
+      [
+       "-5 \u003c x \u003c 5",
+       "Проверь исходный знак: строгое неравенство исключает границу, нестрогое включает."
+      ],
+      [
+       "x ≤ -5 или x ≥ 5",
+       "Расстояние меньше радиуса внутри промежутка, больше радиуса — за его пределами."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t56",
+     "title": "К задаче №221 (б)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 221,
+      "subpart": "б",
+      "reference": "№221 (б)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Нарисуй на координатной прямой все решения |x| > 2. Какие числа отмечены?",
+     "answer": "x \u003c -2 или x > 2",
+     "steps": [
+      {
+       "prompt": "Координата левой границы?",
+       "answer": "-2",
+       "hint": "Модуль показывает расстояние от 0. Отложи 2 влево и вправо.",
+       "explanation": "Модуль показывает расстояние от 0. Отложи 2 влево и вправо."
+      },
+      {
+       "prompt": "Координата правой границы?",
+       "answer": "2",
+       "hint": "Модуль показывает расстояние от 0. Отложи 2 влево и вправо.",
+       "explanation": "Модуль показывает расстояние от 0. Отложи 2 влево и вправо."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Отметь границы, затем выбери нужную часть прямой.",
+       "hint": "Модуль показывает расстояние от 0. Отложи 2 влево и вправо.",
+       "explanation": "Границы -2 и 2. Отметь решения снаружи, граничные точки оставь пустыми."
+      }
+     ],
+     "hint": "Модуль показывает расстояние от 0. Отложи 2 влево и вправо.",
+     "explanation": "Границы -2 и 2. Отметь решения снаружи, граничные точки оставь пустыми.",
+     "skills": [
+      "absolute-value"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "|x| > 2",
+       "rows": [
+        [
+         "Центр",
+         "0"
+        ],
+        [
+         "Расстояние до границ",
+         "2"
+        ]
+       ],
+       "result": "x \u003c -2 или x > 2",
+       "diagram": [
+        0,
+        2,
+        true,
+        false
+       ]
+      },
+      {
+       "given": "|x + 1| > 3",
+       "rows": [
+        [
+         "Центр",
+         "-1"
+        ],
+        [
+         "Расстояние до границ",
+         "3"
+        ]
+       ],
+       "result": "x \u003c -4 или x > 2",
+       "diagram": [
+        -1,
+        3,
+        true,
+        false
+       ]
+      }
+     ],
+     "choices": [
+      "x ≤ -2 или x ≥ 2",
+      "-2 \u003c x \u003c 2",
+      "x \u003c -2 или x > 2"
+     ],
+     "errorCues": [
+      [
+       "x ≤ -2 или x ≥ 2",
+       "Проверь исходный знак: строгое неравенство исключает границу, нестрогое включает."
+      ],
+      [
+       "-2 \u003c x \u003c 2",
+       "Расстояние меньше радиуса внутри промежутка, больше радиуса — за его пределами."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t57",
+     "title": "К задаче №221 (в)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 221,
+      "subpart": "в",
+      "reference": "№221 (в)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Нарисуй на координатной прямой все решения |x − 1| \u003c 3. Какие числа отмечены?",
+     "answer": "-2 \u003c x \u003c 4",
+     "steps": [
+      {
+       "prompt": "Координата левой границы?",
+       "answer": "-2",
+       "hint": "Модуль показывает расстояние от 1. Отложи 3 влево и вправо.",
+       "explanation": "Модуль показывает расстояние от 1. Отложи 3 влево и вправо."
+      },
+      {
+       "prompt": "Координата правой границы?",
+       "answer": "4",
+       "hint": "Модуль показывает расстояние от 1. Отложи 3 влево и вправо.",
+       "explanation": "Модуль показывает расстояние от 1. Отложи 3 влево и вправо."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Отметь границы, затем выбери нужную часть прямой.",
+       "hint": "Модуль показывает расстояние от 1. Отложи 3 влево и вправо.",
+       "explanation": "Границы -2 и 4. Отметь решения между границами, граничные точки оставь пустыми."
+      }
+     ],
+     "hint": "Модуль показывает расстояние от 1. Отложи 3 влево и вправо.",
+     "explanation": "Границы -2 и 4. Отметь решения между границами, граничные точки оставь пустыми.",
+     "skills": [
+      "absolute-value"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "|x − 1| \u003c 3",
+       "rows": [
+        [
+         "Центр",
+         "1"
+        ],
+        [
+         "Расстояние до границ",
+         "3"
+        ]
+       ],
+       "result": "-2 \u003c x \u003c 4",
+       "diagram": [
+        1,
+        3,
+        false,
+        false
+       ]
+      },
+      {
+       "given": "|x − 2| \u003c 4",
+       "rows": [
+        [
+         "Центр",
+         "2"
+        ],
+        [
+         "Расстояние до границ",
+         "4"
+        ]
+       ],
+       "result": "-2 \u003c x \u003c 6",
+       "diagram": [
+        2,
+        4,
+        false,
+        false
+       ]
+      }
+     ],
+     "choices": [
+      "-2 ≤ x ≤ 4",
+      "x \u003c -2 или x > 4",
+      "-2 \u003c x \u003c 4"
+     ],
+     "errorCues": [
+      [
+       "-2 ≤ x ≤ 4",
+       "Проверь исходный знак: строгое неравенство исключает границу, нестрогое включает."
+      ],
+      [
+       "x \u003c -2 или x > 4",
+       "Расстояние меньше радиуса внутри промежутка, больше радиуса — за его пределами."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t58",
+     "title": "К задаче №221 (г)",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 221,
+      "subpart": "г",
+      "reference": "№221 (г)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Нарисуй на координатной прямой все решения |x + 2| ≥ 1. Какие числа отмечены?",
+     "answer": "x ≤ -3 или x ≥ -1",
+     "steps": [
+      {
+       "prompt": "Координата левой границы?",
+       "answer": "-3",
+       "hint": "Модуль показывает расстояние от -2. Отложи 1 влево и вправо.",
+       "explanation": "Модуль показывает расстояние от -2. Отложи 1 влево и вправо."
+      },
+      {
+       "prompt": "Координата правой границы?",
+       "answer": "-1",
+       "hint": "Модуль показывает расстояние от -2. Отложи 1 влево и вправо.",
+       "explanation": "Модуль показывает расстояние от -2. Отложи 1 влево и вправо."
+      },
+      {
+       "kind": "instruction",
+       "prompt": "Отметь границы, затем выбери нужную часть прямой.",
+       "hint": "Модуль показывает расстояние от -2. Отложи 1 влево и вправо.",
+       "explanation": "Границы -3 и -1. Отметь решения снаружи, граничные точки закрась."
+      }
+     ],
+     "hint": "Модуль показывает расстояние от -2. Отложи 1 влево и вправо.",
+     "explanation": "Границы -3 и -1. Отметь решения снаружи, граничные точки закрась.",
+     "skills": [
+      "absolute-value"
+     ],
+     "finalLabel": "Выбери ответ.",
+     "page48Study": [
+      {
+       "given": "|x + 2| ≥ 1",
+       "rows": [
+        [
+         "Центр",
+         "-2"
+        ],
+        [
+         "Расстояние до границ",
+         "1"
+        ]
+       ],
+       "result": "x ≤ -3 или x ≥ -1",
+       "diagram": [
+        -2,
+        1,
+        true,
+        true
+       ]
+      },
+      {
+       "given": "|x + 3| ≥ 2",
+       "rows": [
+        [
+         "Центр",
+         "-3"
+        ],
+        [
+         "Расстояние до границ",
+         "2"
+        ]
+       ],
+       "result": "x ≤ -5 или x ≥ -1",
+       "diagram": [
+        -3,
+        2,
+        true,
+        true
+       ]
+      }
+     ],
+     "choices": [
+      "x \u003c -3 или x > -1",
+      "-3 ≤ x ≤ -1",
+      "x ≤ -3 или x ≥ -1"
+     ],
+     "errorCues": [
+      [
+       "x \u003c -3 или x > -1",
+       "Проверь исходный знак: строгое неравенство исключает границу, нестрогое включает."
+      ],
+      [
+       "-3 ≤ x ≤ -1",
+       "Расстояние меньше радиуса внутри промежутка, больше радиуса — за его пределами."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t59",
+     "title": "К задаче №222",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 222,
+      "subpart": "",
+      "reference": "№222",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "number",
+     "prompt": "Пешеход планировал идти 3 ч 50 мин. Когда он увеличил скорость на 1 км/ч, тот же путь занял 3 ч. Найди расстояние в километрах.",
+     "answer": "69/5",
+     "steps": [
+      {
+       "prompt": "Сколько часов составляют 50 мин?",
+       "answer": "5/6",
+       "hint": "Раздели 50 на 60.",
+       "explanation": "Раздели 50 на 60."
+      },
+      {
+       "prompt": "Сколько километров добавляет прибавка в 1 км/ч за 3 ч?",
+       "answer": "3",
+       "hint": "Умножь прибавку скорости на время.",
+       "explanation": "Умножь прибавку скорости на время."
+      },
+      {
+       "prompt": "Какова первоначальная скорость?",
+       "answer": "18/5",
+       "hint": "За 5/6 ч при первоначальной скорости пройдено столько же, сколько добавили 3 км.",
+       "explanation": "За 5/6 ч при первоначальной скорости пройдено столько же, сколько добавили 3 км."
+      }
+     ],
+     "hint": "Сравни расстояния (23/6)v и 3(v + 1).",
+     "explanation": "5v/6 = 3, откуда v = 18/5 км/ч. За 3 ч при скорости 23/5 км/ч пройдено 69/5 км.",
+     "skills": [
+      "linear-equation",
+      "unit-conversion"
+     ],
+     "finalLabel": "Введи точное значение.",
+     "page48Study": [
+      {
+       "given": "План: 3 ч 50 мин. Факт: 3 ч, скорость выше на 1 км/ч.",
+       "rows": [
+        [
+         "По плану",
+         "(23/6)v"
+        ],
+        [
+         "После ускорения",
+         "3(v + 1)"
+        ]
+       ],
+       "result": "v = 18/5 км/ч, путь 69/5 км."
+      },
+      {
+       "given": "План: 4 ч. Факт: 3 ч, скорость выше на 2 км/ч.",
+       "rows": [
+        [
+         "По плану",
+         "4v"
+        ],
+        [
+         "После ускорения",
+         "3(v + 2)"
+        ]
+       ],
+       "result": "v = 6 км/ч, путь 24 км."
+      }
+     ],
+     "errorCues": [
+      [
+       "18/5",
+       "Найдена первоначальная скорость. Умножь её на 23/6 ч, чтобы получить путь."
+      ]
+     ]
+    },
+    {
+     "id": "p40-t60",
+     "title": "К задаче №223",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 48,
+      "exercise": 223,
+      "subpart": "",
+      "reference": "№223",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "number",
+     "prompt": "Катер должен был пройти весь путь по озеру за 2 ч 30 мин. Первый час он шёл по расписанию, затем снизил скорость на 10 км/ч и опоздал на полчаса. Найди первоначальную скорость в км/ч.",
+     "answer": "40",
+     "steps": [
+      {
+       "prompt": "Сколько часов после первого часа оставалось по расписанию?",
+       "answer": "3/2",
+       "hint": "Вычти один час из 2 ч 30 мин.",
+       "explanation": "Вычти один час из 2 ч 30 мин."
+      },
+      {
+       "prompt": "За сколько часов на самом деле пройден оставшийся путь?",
+       "answer": "2",
+       "hint": "Прибавь полчаса опоздания к плановому остатку времени.",
+       "explanation": "Прибавь полчаса опоздания к плановому остатку времени."
+      }
+     ],
+     "hint": "Оставшийся путь одинаков в двух расчётах. Скорость снизилась только после первого часа.",
+     "explanation": "Пусть v — первоначальная скорость. Для оставшегося пути (3/2)v = 2(v − 10), откуда v = 40. Проверка: за 2 ч при 30 км/ч получится 60 км.",
+     "skills": [
+      "linear-equation"
+     ],
+     "finalLabel": "Введи точное значение.",
+     "page48Study": [
+      {
+       "given": "Остаток маршрута после первого часа.",
+       "rows": [
+        [
+         "План",
+         "1,5 ч при v"
+        ],
+        [
+         "Факт",
+         "2 ч при v − 10"
+        ]
+       ],
+       "result": "1,5v = 2(v − 10). Первоначальная скорость 40 км/ч."
+      },
+      {
+       "given": "Весь путь планировался за 3 ч. После первого часа скорость упала на 6 км/ч. Опоздание — полчаса.",
+       "rows": [
+        [
+         "Плановый остаток",
+         "2 ч при v"
+        ],
+        [
+         "Фактический остаток",
+         "2,5 ч при v − 6"
+        ]
+       ],
+       "result": "2v = 2,5(v − 6). Первоначальная скорость 30 км/ч."
+      }
+     ],
+     "errorCues": [
+      [
+       "30",
+       "Это скорость после снижения. Прибавь потерянные 10 км/ч."
       ]
      ]
     }

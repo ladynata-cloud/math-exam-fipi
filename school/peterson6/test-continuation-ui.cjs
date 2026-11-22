@@ -1877,3 +1877,19 @@ test('verify all printed signed operations, own function examples, parameters an
   expected.forEach((v,i)=>{f.nav('#lesson/p40/'+(30+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(v),[i,f.q('#model').textContent]);const old=f.q('#model').textContent;f.event(d,'1','change');assert.equal(f.q(st).value,'0');f.event(st,'2','change');assert.notEqual(f.q('#model').textContent,old);if(i>=12)assert(f.q('#model .pm-result').textContent.includes(['-4/5','-6/5','93/100','-441/25'][i-12]));});
  }finally{f.close();}
 });
+
+test('printed fraction reductions, truth values, all four interval endpoints and two equal-distance problems',()=>{
+ const f=fixture(null,null,true);
+ try{
+  const answers=['−3x/10','(3y² − 2)/(3y)','−5/n','−1/(5bm)','Ложно','Истинно','Истинно','Ложно','-5 ≤ x ≤ 5','x < -2 или x > 2','-2 < x < 4','x ≤ -3 или x ≥ -1','69/5','40'];
+  const lesson=f.w.PetersonCourse.lessons.find(l=>l.id==='p40');
+  for(const [i,answer] of answers.entries()){
+   f.nav('#lesson/p40/'+(i+46));const task=lesson.tasks[i+46];assert.equal(task.answer,answer);
+   f.click('[data-lesson-help="model"] > summary');const [d,step]=Array.from(f.d.querySelectorAll('#model select'),e=>'#'+e.id);
+   f.event(step,'2','change');const first=f.q('#model .pm-result').textContent;
+   if(i>=8&&i<12){const graph=f.q('#model svg');assert.equal(graph.querySelectorAll('circle').length,2);assert.equal(graph.querySelector('circle').getAttribute('fill'),[8,11].includes(i)?'#086751':'#fff');assert(first.endsWith(answer));}
+   f.event(d,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.notEqual(f.q('#model .pm-result').textContent,first);
+  }
+  f.nav('#lesson/p40/58');f.event('#final-answer','18/5');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/первоначальная скорость/);
+ }finally{f.close();}
+});
