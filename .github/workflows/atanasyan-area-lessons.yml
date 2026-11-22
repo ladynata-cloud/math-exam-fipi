@@ -114,6 +114,8 @@ on:
       - 'tools/geometry-textbook/*regular_polygon_diagonals*'
       - 'tools/geometry-textbook/*arc_routes_and_incircles*'
       - 'tools/geometry-textbook/*major_arcs_and_similar_circles*'
+      - 'tools/geometry-textbook/*regular_compass_finale*'
+      - 'geometry-course/textbook/data/regular-compass-finale.json'
       - 'geometry-course/textbook/data/major-arcs-and-similar-circles.json'
       - 'geometry-course/textbook/data/arc-routes-and-incircles.json'
       - 'geometry-course/textbook/data/regular-polygon-diagonals.json'
@@ -208,6 +210,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/regular_compass_finale.py --check && python3 tools/geometry-textbook/check_regular_compass_finale.py
       - run: python3 tools/geometry-textbook/major_arcs_and_similar_circles.py --check && python3 tools/geometry-textbook/check_major_arcs_and_similar_circles.py
       - run: python3 tools/geometry-textbook/arc_routes_and_incircles.py --check && python3 tools/geometry-textbook/check_arc_routes_and_incircles.py
       - run: python3 tools/geometry-textbook/regular_polygon_diagonals.py --check && python3 tools/geometry-textbook/check_regular_polygon_diagonals.py
