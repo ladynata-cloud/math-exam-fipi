@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T02:40:00Z",
-  "scope": "All final-review parts of 764–767 and advanced source exercises 768–782 are complete. The remaining advanced exercises begin at 783.",
+  "registeredAt": "2026-11-22T02:45:00Z",
+  "scope": "All final-review parts of 764–767 and advanced source exercises 768–786 are complete. The remaining advanced exercises begin at 787.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2524,6 +2524,19 @@
       ],
       "evidence": "tools/stereo-textbook/tetrahedra-and-cube-tilings.json",
       "mathematicalReport": "tools/stereo-textbook/tetrahedra-and-cube-tilings.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued Atanasyan 2024 volume, advanced problem on printed page 191 (PDF page 193), answers and hints on printed page 273.",
+      "reviewedAt": "2026-11-22T02:45:00Z",
+      "scope": "Advanced exercises 783–786 on printed page 191, see also hints on page 273. Checked the monotone three-segment extremal family, determinant invariance along skew lines, explicit three- and five-sided supporting faces and all incidences of the two regular dual solids.",
+      "cardIds": [
+        "ex-main-0783",
+        "ex-main-0784",
+        "ex-main-0785",
+        "ex-main-0786"
+      ],
+      "evidence": "tools/stereo-textbook/monotone-paths-and-dual-solids.json",
+      "mathematicalReport": "tools/stereo-textbook/monotone-paths-and-dual-solids.test.cjs"
     }
   ],
   "cards": [
@@ -8430,6 +8443,22 @@
     {
       "id": "ex-main-0782",
       "sha256": "907e8c45bcba47f212bd4d13d9469436184ffd2a01b45fb05bcfa2f2df3d3abd"
+    },
+    {
+      "id": "ex-main-0783",
+      "sha256": "c8ae4619264c365751059561e5e8e4b68afa58ba0955d1333f9c8b9110bb1120"
+    },
+    {
+      "id": "ex-main-0784",
+      "sha256": "fdcaae7c280f44e644144438320af51fb6c4c3a4c993b15e22915c91d44bc3d5"
+    },
+    {
+      "id": "ex-main-0785",
+      "sha256": "4f3f60775b2f659efc9281f24b4f881218e9f7cdbd14b7621ef6dda68363203b"
+    },
+    {
+      "id": "ex-main-0786",
+      "sha256": "f6e736c08fbedf80df7cc139cc01a7b712c865f178087145a109a38838463332"
     }
   ]
 }

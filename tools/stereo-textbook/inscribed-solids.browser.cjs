@@ -79,7 +79,8 @@ const groups = {
   dihedralBisectorsAndMidplanes: {manifests:[require('./dihedral-bisectors-and-midplanes.json')],count:3},
   cubeSectionsDistancesAndDivision: {manifests:[require('./cube-sections-distances-and-division.json')],count:3},
   surfacePathsAndParallelSections: {manifests:[require('./surface-paths-and-parallel-sections.json')],count:3},
-  tetrahedraAndCubeTilings: {manifests:[require('./tetrahedra-and-cube-tilings.json')],count:3}
+  tetrahedraAndCubeTilings: {manifests:[require('./tetrahedra-and-cube-tilings.json')],count:3},
+  monotonePathsAndDualSolids: {manifests:[require('./monotone-paths-and-dual-solids.json')],count:4}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
