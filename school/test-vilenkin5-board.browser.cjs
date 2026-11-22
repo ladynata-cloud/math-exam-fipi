@@ -1323,7 +1323,7 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=place]').selectOption({value:'7'});
   await studentFrame.locator('[data-v5-param=edge]').selectOption({value:'2'});await studentFrame.locator('[data-v5-prediction]').fill('57');await studentFrame.locator('[data-v5-predict] button').click();
   await studentFrame.locator('#answer').fill('80');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
-  const chordDraft=await same(studentFrame,teacherFrame,'same lower arc and draft');assert(chordDraft.scene.model.seen);assert.equal(chordDraft.scene.model.place,7);assert.equal(chordDraft.scene.model.edge,2);assert.equal(chordDraft.scene.savedInput,'80');
+  const inscribedChordWork=await same(studentFrame,teacherFrame,'same lower arc and draft');assert(inscribedChordWork.scene.model.seen);assert.equal(inscribedChordWork.scene.model.place,7);assert.equal(inscribedChordWork.scene.model.edge,2);assert.equal(inscribedChordWork.scene.savedInput,'80');
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
   await same(teacherFrame,studentFrame,'restore selected chord on handoff');
   for(const [i,v] of ['80','69','41','BN'].entries()){
