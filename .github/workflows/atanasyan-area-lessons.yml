@@ -120,6 +120,8 @@ on:
       - 'tools/geometry-textbook/*plane_isometries*'
       - 'tools/geometry-textbook/*isometry_invariants*'
       - 'tools/geometry-textbook/*isometric_quadrilaterals*'
+      - 'tools/geometry-textbook/*motion_composition*'
+      - 'geometry-course/textbook/data/motion-composition.json'
       - 'tools/geometry-textbook/*isometry_constructions*'
       - 'geometry-course/textbook/data/isometry-constructions.json'
       - 'tools/geometry-textbook/*isometry_determination*'
@@ -224,6 +226,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/motion_composition.py --check && python3 tools/geometry-textbook/check_motion_composition.py
       - run: python3 tools/geometry-textbook/isometry_constructions.py --check && python3 tools/geometry-textbook/check_isometry_constructions.py
       - run: python3 tools/geometry-textbook/isometry_determination.py --check && python3 tools/geometry-textbook/check_isometry_determination.py
       - run: python3 tools/geometry-textbook/isometric_quadrilaterals.py --check && python3 tools/geometry-textbook/check_isometric_quadrilaterals.py

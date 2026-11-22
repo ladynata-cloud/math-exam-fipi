@@ -117,7 +117,8 @@
       ['/geometry-course/textbook/data/isometry-invariants.json', '№1242–1244'],
       ['/geometry-course/textbook/data/isometric-quadrilaterals.json', '№1245а–г'],
       ['/geometry-course/textbook/data/isometry-determination.json', '№1246–1249'],
-      ['/geometry-course/textbook/data/isometry-constructions.json', '№1250–1252']
+      ['/geometry-course/textbook/data/isometry-constructions.json', '№1250–1252'],
+      ['/geometry-course/textbook/data/motion-composition.json', '№1253а–в и 1254–1256']
   ];
 
   async function forCourse(base) {
