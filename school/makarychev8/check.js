@@ -904,6 +904,8 @@ function check(user,target){
  if(target.kind==='two-property-sets'){
   const a=user.split('|'),b=target.answer.split('|');return a.length===2&&a.every((v,i)=>equalAxisSets(systemInput(v,'x'),b[i]));
  }
+ if(target.kind==='four-reciprocal-marks')return G.reciprocalFamilyMarks(target.graph,user).status==='valid';
+ if(target.kind==='reciprocal-line-marks')return G.reciprocalLineMarks(target.graph,pointGroups(user)).status==='valid';
  if(target.kind==='four-power-marks')return G.fourPowerMarks(user).status==='valid';
  if(target.kind==='four-power-order')return G.parseFourPowerOrder(user,target.graph.sample)?.join(';')===target.answer;
  if(target.kind==='piecewise-marks')return G.piecewiseMarks(target.graph,pointGroups(user)).status==='valid';
