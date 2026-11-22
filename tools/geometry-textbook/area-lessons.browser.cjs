@@ -1,4 +1,5 @@
 const practice=require('./area-practice-shards.cjs');
+const {collectPracticeLessons}=require('./practice-answer-inventory.cjs');
 const assert=require('node:assert/strict');
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../..');
@@ -95,7 +96,27 @@ const server=http.createServer((req,res)=>{
  const additionalVectorAnswers={"1076-1":["-1","-2/3"],"1076-2":["-1","2"],"1076-3":["1","3"],"1076-4":["2","-4"],"1077-1":["-1","125"],"1077-2":["4","100"],"1077-3":["5","205"],"1077-4":["-18","180"],"1078":["6","4"]};
  const coordinateReviewAnswers={"j1":["-2","3"],"j2":["2","-1"],"j3":["3","-2"],"j4":["-3","-4"],"j5":["1","-2"],"j6":["-2","-1"],"j7":["2","-2"],"j8":["-1","-7"],"j9":["-4","3"],"j10":["-3","-5"],"j11":["4","-1"],"j12":["25","13"],"j13":["5","100"],"j14":["15","43"],"j15":["5","-2"],"j16":["9","5"],"j17":["5","25"],"j18":["1","3"],"j19":["-2","3"],"j20":["0","-1"],"j21":["3","4"],"j22":["0","1"],"j23":["2","1"],"j24":["8","-1"]};
  const reviewAnswers={r1:['7','0'],r2:['-3','0'],r3:['5','13'],r4:['2','5'],r5:['2','4'],r6:['4','6'],r7:['2','3'],r8:['3','8'],r9:['2','3'],r10:['4','-2'],r11:['3','-5'],r12:['3','-3'],r13:['-3','3'],r14:['-3','2'],'r15-1':['0','12'],'r15-2':['0','5'],r16:['-3','0'],r17:['-6','6'],r18:['-2','14'],r19:['5','7'],r20:['6','15']};
- const lessons=Object.entries({...answers,...reviewAnswers,...coordinateAnswers,...relationAnswers,...gridAnswers,...actionAnswers,...positionAnswers,...tableAnswers,...distanceAnswers,...figureAnswers,...courierAnswers,...methodAnswers,...curveAnswers,...intersectionAnswers,...equationAnswers,...lineAnswers,...locusAnswers,...coordinateReviewAnswers,...additionalVectorAnswers,...additionalFigureAnswers,...endCoordinateAnswers,...semicircleAnswers,...trigRayAnswers,...triangleAreaAnswers,...solvedTriangleAnswers,...fieldTrigAnswers,...scalarProductAnswers,...scalarCoordinateAnswers,...scalarGeometryAnswers,...trigonometryReviewAnswers,...triangleReviewAnswers,...vectorProductReviewAnswers,...additionalAreaAnswers,...additionalSolveAnswers,...additionalScalarVectorAnswers,...chapterTwelveFinalAnswers,...regularDefinitionAnswers,...regularAngleAnswers,...regularCenterAnswers,...regularTableAnswers,...polygonCircleAnswers,...polygonAreaAnswers,...polygonCompassAnswers,...circumferenceAnswers,...incircleLengthAnswers,...practicalLengthAnswers,...arcDeviceAnswers,...radianTableAnswers,...radianConstructionAnswers,...diskTableAnswers,...inDiskAnswers,...annulusAnswers,...cutDiskAnswers,...sectorAreaAnswers,...extraPerimeterAnswers,...polygonDiagonalAnswers,...extraCircleAnswers,...arcSimilarityAnswers,...compassFinaleAnswers,...polygonReviewAnswers,...circleReviewAnswers,...planeIsometryAnswers,...isometryInvariantAnswers,...isometricShapeAnswers,...determinationAnswers,...constructionAnswers,...motionCompositionAnswers,...translationAnswers,...parallelConstructionAnswers,...rotationAnswers,...rotatedSetAnswers,...rotationCenterAnswers,...symmetryTheoryAnswers,...quadrilateralSymmetryAnswers,...regularSymmetryAnswers,...boundedAnswers,...tilingAnswers,...applicationsAnswers,...starAnswers,...altitudeAnswers,...finalMotionAnswers,...mapReviewAnswers,...congruenceReviewAnswers,...finalReviewAnswers});
+ const validated=collectPracticeLessons({
+   answers, reviewAnswers, coordinateAnswers, relationAnswers, gridAnswers,
+   actionAnswers, positionAnswers, tableAnswers, distanceAnswers, figureAnswers,
+   courierAnswers, methodAnswers, curveAnswers, intersectionAnswers, equationAnswers,
+   lineAnswers, locusAnswers, coordinateReviewAnswers, additionalVectorAnswers, additionalFigureAnswers,
+   endCoordinateAnswers, semicircleAnswers, trigRayAnswers, triangleAreaAnswers, solvedTriangleAnswers,
+   fieldTrigAnswers, scalarProductAnswers, scalarCoordinateAnswers, scalarGeometryAnswers, trigonometryReviewAnswers,
+   triangleReviewAnswers, vectorProductReviewAnswers, additionalAreaAnswers, additionalSolveAnswers, additionalScalarVectorAnswers,
+   chapterTwelveFinalAnswers, regularDefinitionAnswers, regularAngleAnswers, regularCenterAnswers, regularTableAnswers,
+   polygonCircleAnswers, polygonAreaAnswers, polygonCompassAnswers, circumferenceAnswers, incircleLengthAnswers,
+   practicalLengthAnswers, arcDeviceAnswers, radianTableAnswers, radianConstructionAnswers, diskTableAnswers,
+   inDiskAnswers, annulusAnswers, cutDiskAnswers, sectorAreaAnswers, extraPerimeterAnswers,
+   polygonDiagonalAnswers, extraCircleAnswers, arcSimilarityAnswers, compassFinaleAnswers, polygonReviewAnswers,
+   circleReviewAnswers, planeIsometryAnswers, isometryInvariantAnswers, isometricShapeAnswers, determinationAnswers,
+   constructionAnswers, motionCompositionAnswers, translationAnswers, parallelConstructionAnswers, rotationAnswers,
+   rotatedSetAnswers, rotationCenterAnswers, symmetryTheoryAnswers, quadrilateralSymmetryAnswers, regularSymmetryAnswers,
+   boundedAnswers, tilingAnswers, applicationsAnswers, starAnswers, altitudeAnswers,
+   finalMotionAnswers, mapReviewAnswers, congruenceReviewAnswers, finalReviewAnswers
+ },__filename);
+ // Numeric exercise keys retain the established order used for browser shards.
+ const lessons=Object.entries(Object.fromEntries(validated));
  if(process.argv[2]==='--matrix'){
   console.log(JSON.stringify(practice.shardNumbers()));
   return;
