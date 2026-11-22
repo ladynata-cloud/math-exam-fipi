@@ -68,7 +68,8 @@ async function verify(width,url){
   await submit(page,'2;√3;1');assert.match(await page.locator('#answer-form .feedback').innerText(),/коэффициент B/);
   await submit(page,'√3;-3;√3/2');assert(await page.evaluate(()=>MakarychevApp.getState().tasks['p27-source-670-a'].correct));
   const control=cards.find(c=>c.title==='§ 9, контрольный вопрос 1');
-  await page.evaluate(i=>{history.replaceState(null,'','#lesson/p27/'+i);MakarychevApp.route();},control.i);
+  await page.evaluate(i=>{history.replaceState(null,'','#lesson/p27/'+i);MakarychevApp.route();},control.index);
+  assert.equal(await page.locator('.task-heading h2').innerText(),control.title);
   await submit(page,'3/2;8;-5;0');assert.match(await page.locator('[data-equation-pair]').innerText(),/1 \/ .* = 0/);
   assert(await page.evaluate(()=>MakarychevApp.getState().tasks['p27-source-check-1'].independent));
   await openNumber(page,660,'№ 660');

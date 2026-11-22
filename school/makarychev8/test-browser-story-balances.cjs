@@ -65,7 +65,8 @@ async function verify(width,url){
   await submit(page,'(2x-3)(2x-3)');assert.match(await page.locator('#answer-form .feedback').innerText(),/формы/);
   await submit(page,'(3-2x)^2');assert(await page.evaluate(()=>MakarychevApp.getState().tasks['p32-source-731-a'].independent));
   const control=cards.find(c=>c.title==='§ 10, контрольный вопрос 1');
-  await page.evaluate(i=>{history.replaceState(null,'','#lesson/p32/'+i);MakarychevApp.route();},control.i);
+  await page.evaluate(i=>{history.replaceState(null,'','#lesson/p32/'+i);MakarychevApp.route();},control.index);
+  assert.equal(await page.locator('.task-heading h2').innerText(),control.title);
   await submit(page,'(7;-1/2)');assert.equal(await page.locator('[data-point-x="7"]').count(),1);
   await openNumber(page,721);await page.getByRole('link',{name:'№ 721',exact:true}).click();assert.equal(await page.locator('[data-source-annotation]').count(),0);
   await submit(page,'40;25');assert.match(await page.locator('[data-source-annotation]').innerText(),/90 изделий/);

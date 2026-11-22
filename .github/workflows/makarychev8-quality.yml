@@ -34,8 +34,8 @@ jobs:
           NODE_PATH="$RUNNER_TEMP/makarychev-dom/node_modules" node --max-old-space-size=1024 school/makarychev8/test-ui.cjs
   course:
     runs-on: ubuntu-latest
-    # Includes the new chapter and every earlier worked solution.
-    timeout-minutes: 45
+    # Includes the full sequential Chromium suite in addition to source and state checks.
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
