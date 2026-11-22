@@ -190,8 +190,12 @@
       if(parts.length!==target.answer.length||parts.some(part=>root.Vilenkin5PrintedDigits.natural(part)===null&&M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
     }
     if(target.answerFormat==='v5-unit-fraction'&&!M.parse(root.Vilenkin5PartsOfUnits.normalized(value)))return 'Запиши число. Для доли подходят десятичная, обыкновенная и смешанная дроби. Пока это черновик.';
+    if(root.Vilenkin5InequalityChains?.custom(target))return root.Vilenkin5InequalityChains.inputIssue(value,target);
+    if(target.answerFormat==='v5-written-inequality')return root.Vilenkin5InequalityEntry.inputIssue(value,target);
+    if(target.answerFormat==='v5-coordinate-order')return root.Vilenkin5CoordinateOrder.inputIssue(value,target);
     if(target.answerFormat==='v5-ray-label'&&!root.Vilenkin5PrintedRay.read(value))return 'Запиши одну букву с луча. Число можно заменить буквой без потери попытки.';
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
+    if(target.answerFormat==='v5-garage-view')return root.Vilenkin5ClassesAndViews.asChoice(value)?'':'Выбери букву б, в, г, д или введи номер от 1 до 4. Пока это черновик.';
     if(target.answerFormat==='v5-object-shape'&&!root.Vilenkin5RoundObjects.read(value))return 'В ответе к рисунку нужно название формы: окружность, круг, цилиндр или шар. Свои предметы запиши в «Мои четыре примера». Написанное можно уточнить.';
     if(target.answerFormat==='v5-arc'&&!/^[ABCDKMPST]{3}$/.test(root.Vilenkin5Numbered.readArc(value)))return 'Нужны три буквы. Сначала запиши начало дуги, затем промежуточную метку и конец.';
     if(target.answerFormat==='v5-membership-set'&&!root.Vilenkin5DiskMembership.read(value))return 'Укажи буквы с этого рисунка. Их можно разделять запятыми или пробелами.';
@@ -240,12 +244,19 @@
     const cleanInput=event=>{if('value'in event.target&&event.target.type!=='number'&&event.target.type!=='range'){const safe=safeDraft(event.target.value);if(safe!==event.target.value)event.target.value=safe;}};
     host.addEventListener('input',cleanInput,true);
     const d=detail(session),captured=session;
-    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onDrawing:value=>{
+    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,
+      markRow:session.mode==='learn'&&session.step<session.task.steps.length&&!session.correct?session.step:null,
+      setMarkedCoordinates:value=>{
+        if(readOnly||captured!==connection?.getSession?.())return;
+        const input=root.document.querySelector('#answer');if(!input||input.disabled)return;
+        input.value=value;input.dispatchEvent(new root.Event('input',{bubbles:true}));input.focus();
+      },onDrawing:value=>{
       if(readOnly||captured!==connection?.getSession?.()||!['learn','practice'].includes(session.mode))return;
       const next=session.task.data.checkPositions?root.Vilenkin5CircleCheck.selection(session.task,value):session.task.data.threeCompass?root.Vilenkin5ThreeCompassPoints.selection(session.task,value):root.Vilenkin5PrintedBuildablePaths.selection(session.task,value);
       if(next!==null&&M.generate(session.id,next).conditionKey!==session.task.conditionKey)connection?.chooseSourceDrawing?.(next);
     },onChange:value=>{
       if(readOnly||captured!==connection?.getSession?.())return;
+      if(session.task.data?.comparisonRows&&value.say&&!session.correct)session.assisted=true;
       d.model=Models.normalize(lesson,value);connection.save?.();
     }});
     cleanupModel=()=>{host.removeEventListener('input',cleanInput,true);dispose?.();};
