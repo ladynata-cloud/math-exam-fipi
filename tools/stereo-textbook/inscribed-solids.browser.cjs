@@ -57,7 +57,16 @@ const groups = {
   spatialPointsAndCentroid: {manifests:[require('./spatial-points-and-centroid.json')],count:14},
   midpointsAndVectorLengths: {manifests:[require('./midpoints-and-vector-lengths.json')],count:20},
   spatialDistancesAndEqualLoci: {manifests:[require('./spatial-distances-and-equal-loci.json')],count:18},
-  coordinateSpheresSectionEnd: {manifests:[require('./coordinate-spheres-section-end.json')],count:13}
+  coordinateSpheresSectionEnd: {manifests:[require('./coordinate-spheres-section-end.json')],count:13},
+  scalarProductAnglesAndCube: {manifests:[require('./scalar-product-angles-and-cube.json')],count:20},
+  dotProductsCoordinateParameters: {manifests:[require('./dot-products-coordinate-parameters.json')],count:16},
+  spatialDirectionCosinesAndSquare: {manifests:[require('./spatial-direction-cosines-and-square.json')],count:12},
+  spatialScalarIdentitiesAndOppositeEdges: {manifests:[require('./spatial-scalar-identities-and-opposite-edges.json')],count:15},
+  anglesWithLinesAndCoordinateFaces: {manifests:[require('./angles-with-lines-and-coordinate-faces.json')],count:20},
+  cubeProofsAndScalarProductSectionEnd: {manifests:[require('./cube-proofs-and-scalar-product-section-end.json')],count:7},
+  spatialSymmetriesAndFixedSets: {manifests:[require('./spatial-symmetries-and-fixed-sets.json')],count:14},
+  isometriesOfSpaceSectionEnd: {manifests:[require('./isometries-of-space-section-end.json')],count:14},
+  coordinatesChapterSevenSelfCheck: {manifests:[require('./coordinates-chapter-seven-self-check.json')],count:39}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

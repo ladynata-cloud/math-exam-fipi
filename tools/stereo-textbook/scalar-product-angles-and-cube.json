@@ -1,0 +1,785 @@
+{
+  "parts": {
+    "682": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж",
+      "з"
+    ],
+    "683": [
+      null
+    ],
+    "684": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж"
+    ],
+    "theory-76": [
+      null
+    ],
+    "theory-77": [
+      null
+    ],
+    "theory-78": [
+      null
+    ],
+    "theory-79": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "682": {
+      "id": "source-main-0682",
+      "kind": "exercise",
+      "title": "Задача № 682",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "682",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "683": {
+      "id": "source-main-0683",
+      "kind": "exercise",
+      "title": "Задача № 683",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "683",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "684": {
+      "id": "source-main-0684",
+      "kind": "exercise",
+      "title": "Задача № 684",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "684",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-76": {
+      "id": "source-theory-076",
+      "kind": "theory",
+      "title": "76. Угол между векторами",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "76",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          171
+        ],
+        "pdfPages": [
+          173
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-77": {
+      "id": "source-theory-077",
+      "kind": "theory",
+      "title": "77. Скалярное произведение векторов",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "77",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          171,
+          172
+        ],
+        "pdfPages": [
+          173,
+          174
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-78": {
+      "id": "source-theory-078",
+      "kind": "theory",
+      "title": "78. Вычисление углов между прямыми и плоскостями",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "78",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          173,
+          174
+        ],
+        "pdfPages": [
+          175,
+          176
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-79": {
+      "id": "source-theory-079",
+      "kind": "theory",
+      "title": "79. Уравнение плоскости",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "79",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          174,
+          175
+        ],
+        "pdfPages": [
+          176,
+          177
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "theory-076": {
+      "raw": "28b620c562e7cb22cc33daf07aea028c06f0553406122f441c967483da08ad0c",
+      "authored": "ec6ffe52abc6d007fc4d70e4f49280d78736a74ab42d0d436179daa4d7aa6a42",
+      "integrated": "c2e7289d9abaedbc99d421e026898aa9a5eb0e4d79b8092a8c3898d6f0bd6189"
+    },
+    "theory-077": {
+      "raw": "d4fc766a6bc7011ca3f30393ddd979b0085994e1340cbf8c7b7b7cb56c6a760a",
+      "authored": "5950c21fd4ccf835934dbc108e8d542c6efcf3565009430f16c573e856a4e18a",
+      "integrated": "be32a3a9bf4ed9cc4af44afa2ef9a7a145c0d119a45c0df9237c6a692259e635"
+    },
+    "theory-078": {
+      "raw": "6a1c87f41eeea517c87049005b1046d5055df4baca9a5dab92e8f74a77657a7b",
+      "authored": "fbb2974edcc30b113326ce967411d9296ee58b6c84f3de8157624763e4f032d6",
+      "integrated": "9ceba96215fc7e9662eb56182152981e27f61d033546004a6383073a8e6fb94d"
+    },
+    "theory-079": {
+      "raw": "9351d7261672ab6609c072272d14695eb27a6d41142893e507ed07d587acb179",
+      "authored": "121a43fdc108e0cd457bfa98af96fcda7039064aa100856edbaf7787d2eb01db",
+      "integrated": "011ce1e2a0b3cc819384d3fc9d04e199885ad8958c59ca93f44ae70ffff44ea7"
+    },
+    "ex-main-0682-a": {
+      "raw": "b22c91d06ba05f57e93756fdcfb05bd494398a97b38a2d3d054d282140e1658b",
+      "authored": "8a36251db1b6ad9e74de48692a2e8d38ac27e52128523a4677acfc09068aa956",
+      "integrated": "49a9ee6294a80c3a23a08deb231b7890b85d93876ff14f500399eedc057ad2e4"
+    },
+    "ex-main-0682-b": {
+      "raw": "0c2127d7647ecbc9339cf5045f6ee671f7087534766625d981b71ec6666bed5f",
+      "authored": "37e370a2f1cfac76e9f1b34b55a228a5208405ed043d8d44cd202146164b7880",
+      "integrated": "88f238b63c790c912c85f26cf0ca152600a0cc2b31daea7b55fa545d1a5650c0"
+    },
+    "ex-main-0682-c": {
+      "raw": "72b0b16558d1faa306991bff7648b9e2863892f6069d557b343ebfeca2f58b24",
+      "authored": "58f0595fcf0fdf6db55833301a7abbc6a56000aac987273ef5d99df46361b4de",
+      "integrated": "2b481a7c49b76714019aa266ffe6b75a6acb83ecc0a9ebb8940046431f26a7dc"
+    },
+    "ex-main-0682-d": {
+      "raw": "1519a1e2e65e01b839bea49b1900953d49c570e158edbaaf32f1c1f1752b6694",
+      "authored": "042f3965953a161d4e1782d89d1e2b2b7d9d625c2dafcae5ce1a39a24620c4cb",
+      "integrated": "9ee28742ad881b48978880f897743075edde4eb9379d667bd8b8d590e34ca359"
+    },
+    "ex-main-0682-e": {
+      "raw": "a4915507713283cfda77aa94c3319456ead413259eb5293da2e5fdb60403921c",
+      "authored": "22ad051bb4c07fed2ed032d1e9ea056a43a2d4b502ce1b19701572caf1f5960e",
+      "integrated": "c5fb13290857d9a6dab800c01066b07aec593e0d4edeeb59d52006d6a4ac556b"
+    },
+    "ex-main-0682-f": {
+      "raw": "51f50dfd4c0fc78801855306540e62002e95f96bfac7bcfe279f2ade4a0c7e06",
+      "authored": "891e4ede080a214ee3273ca9f07153770721cde2348a7a98e46aba4ce64b1f94",
+      "integrated": "e539ddb937160b27de97d9fca07b89cad6ca240c023b89f25f6200bac1bf00af"
+    },
+    "ex-main-0682-g": {
+      "raw": "ad8a6166040631d01085e1c902dd987c3f2b423d588a680d83fc0306f3db34af",
+      "authored": "cd30cd689a624efb8503a25f011676febe412e6e2035f39db38c575af88a024b",
+      "integrated": "463bc1f995a295876b48e3744e431fa4beea2f88f585df4e95f7176367a1db50"
+    },
+    "ex-main-0682-h": {
+      "raw": "b709f5129b6ba2c81fcd761283470a86afe6c5b45d10366df6a719bd08813d5e",
+      "authored": "1b3334354f9d71269edd9ba59edccde86a354a6c1224b784aea91293041c73c3",
+      "integrated": "bd82724e7c54537db48f7a3f85e8ca7aa7257b8d0c57b3d8f0825e115feb438a"
+    },
+    "ex-main-0683": {
+      "raw": "f24d2a95f7d30b242180295b435b79d1f1970432bb228b6930ba351104d735ff",
+      "authored": "c314302437d752ef87d1061bdc98fc04289c2beda9a76883b53bea85b0ebbe46",
+      "integrated": "6c99d0a29bc26dd61de0bdba0b4ec01907221663136c174a516e02bb2dae2b0e"
+    },
+    "ex-main-0684-a": {
+      "raw": "47401d5f56a99c734bdcce86fbc1c0a22b2a98210452b3e77f787b9370eb1295",
+      "authored": "314b721684555df206a1b136ee5c56072cce52c67d1f781e5d4a000629317fe3",
+      "integrated": "69d1700135131815ccc83bb82b56707b9426037f11286cb1e7837f61f66bddc0"
+    },
+    "ex-main-0684-b": {
+      "raw": "51307e42dadc0f0c7c1aefc048507371f78451bd33155e9773ccb59d2726eee0",
+      "authored": "8ec068f27caa3faa07f7f1cafe4075407b9cf2a4ec2474e1cce76bf247b35e2b",
+      "integrated": "12c6461614131eda9136311ed4ee1057c5c55d89fdeba746e41a8bcce7aefed6"
+    },
+    "ex-main-0684-c": {
+      "raw": "341d80f3fa4fafd69f4b022e53db97c83e2647d55a5e10a4b573a9922318fbf7",
+      "authored": "d2d520e08e45fbda146877dd34a4112b4e5b358b03f3c86d0513e1449a2228b6",
+      "integrated": "28bdc323d2a44b391e48a94d02c19adf897899c4f77aa4e1afb9ffe4e9572455"
+    },
+    "ex-main-0684-d": {
+      "raw": "a691df63c9029dd10657b1795bc20576b29ae71e34cd3c849e6270fef50dee2e",
+      "authored": "e13e2c9670db54905093b04561253372ddff164370c46004608a91e5e7b2b1ed",
+      "integrated": "66ef845b94d3729c8821c7f7a97ed7f0d36469e651bac3e855cf370fbdef3285"
+    },
+    "ex-main-0684-e": {
+      "raw": "18a6f7daa908496fbac6a3da5dd77c2db2eb5179176e88b4fd5001b36a85aecd",
+      "authored": "918db371110279437196ab7cb698738a33335cc61eb40b9f547b2d067e63396c",
+      "integrated": "e2ba111299f7eb8785dda271ebb5c82da4c6427b2b0c4aeaa547088a2ba26eb7"
+    },
+    "ex-main-0684-f": {
+      "raw": "fad2ea7c460d0e04d050a67d2127ee51abd8d480a23b24d3320c8078fd981686",
+      "authored": "74de378ae2ee7a2a4f5a8140be7619ce5efdfb61ea3b3d3d5041630616081a44",
+      "integrated": "f002b6b9cac6921feee799c746f9ccd4905d4803f32c224a50039939a5f5252a"
+    },
+    "ex-main-0684-g": {
+      "raw": "95e55cb724d36704529d16919109cdc1b64442c013ae52b7f3009789929b0a80",
+      "authored": "7e5e775b928b7ba97818423d6645fe06d2c836c882fedff429a34fb5dab9ba49",
+      "integrated": "13d096f50a2746221f6b7c76d09252fc6c61f1f5b4766b1a61bf70819bd10c46"
+    }
+  },
+  "cases": [
+    [
+      "theory-076|condition",
+      "scalar-product-angles-and-cube-theory-076-condition"
+    ],
+    [
+      "theory-076|help:h1",
+      "scalar-product-angles-and-cube-theory-076-help-h1"
+    ],
+    [
+      "theory-076|help:h2",
+      "scalar-product-angles-and-cube-theory-076-help-h2"
+    ],
+    [
+      "theory-076|step-1",
+      "scalar-product-angles-and-cube-theory-076-step-1"
+    ],
+    [
+      "theory-076|step-2",
+      "scalar-product-angles-and-cube-theory-076-step-2"
+    ],
+    [
+      "theory-076|step-3",
+      "scalar-product-angles-and-cube-theory-076-step-3"
+    ],
+    [
+      "theory-077|condition",
+      "scalar-product-angles-and-cube-theory-077-condition"
+    ],
+    [
+      "theory-077|help:h1",
+      "scalar-product-angles-and-cube-theory-077-help-h1"
+    ],
+    [
+      "theory-077|help:h2",
+      "scalar-product-angles-and-cube-theory-077-help-h2"
+    ],
+    [
+      "theory-077|step-1",
+      "scalar-product-angles-and-cube-theory-077-step-1"
+    ],
+    [
+      "theory-077|step-2",
+      "scalar-product-angles-and-cube-theory-077-step-2"
+    ],
+    [
+      "theory-077|step-3",
+      "scalar-product-angles-and-cube-theory-077-step-3"
+    ],
+    [
+      "theory-078|condition",
+      "scalar-product-angles-and-cube-theory-078-condition"
+    ],
+    [
+      "theory-078|help:h1",
+      "scalar-product-angles-and-cube-theory-078-help-h1"
+    ],
+    [
+      "theory-078|help:h2",
+      "scalar-product-angles-and-cube-theory-078-help-h2"
+    ],
+    [
+      "theory-078|step-1",
+      "scalar-product-angles-and-cube-theory-078-step-1"
+    ],
+    [
+      "theory-078|step-2",
+      "scalar-product-angles-and-cube-theory-078-step-2"
+    ],
+    [
+      "theory-078|step-3",
+      "scalar-product-angles-and-cube-theory-078-step-3"
+    ],
+    [
+      "theory-079|condition",
+      "scalar-product-angles-and-cube-theory-079-condition"
+    ],
+    [
+      "theory-079|help:h1",
+      "scalar-product-angles-and-cube-theory-079-help-h1"
+    ],
+    [
+      "theory-079|help:h2",
+      "scalar-product-angles-and-cube-theory-079-help-h2"
+    ],
+    [
+      "theory-079|step-1",
+      "scalar-product-angles-and-cube-theory-079-step-1"
+    ],
+    [
+      "theory-079|step-2",
+      "scalar-product-angles-and-cube-theory-079-step-2"
+    ],
+    [
+      "theory-079|step-3",
+      "scalar-product-angles-and-cube-theory-079-step-3"
+    ],
+    [
+      "ex-main-0682-a|condition",
+      "scalar-product-angles-and-cube-ex-main-0682-a-condition"
+    ],
+    [
+      "ex-main-0682-a|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0682-a-help-h1"
+    ],
+    [
+      "ex-main-0682-a|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0682-a-help-h2"
+    ],
+    [
+      "ex-main-0682-a|step-1",
+      "scalar-product-angles-and-cube-ex-main-0682-a-step-1"
+    ],
+    [
+      "ex-main-0682-a|step-2",
+      "scalar-product-angles-and-cube-ex-main-0682-a-step-2"
+    ],
+    [
+      "ex-main-0682-a|step-3",
+      "scalar-product-angles-and-cube-ex-main-0682-a-step-3"
+    ],
+    [
+      "ex-main-0682-b|condition",
+      "scalar-product-angles-and-cube-ex-main-0682-b-condition"
+    ],
+    [
+      "ex-main-0682-b|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0682-b-help-h1"
+    ],
+    [
+      "ex-main-0682-b|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0682-b-help-h2"
+    ],
+    [
+      "ex-main-0682-b|step-1",
+      "scalar-product-angles-and-cube-ex-main-0682-b-step-1"
+    ],
+    [
+      "ex-main-0682-b|step-2",
+      "scalar-product-angles-and-cube-ex-main-0682-b-step-2"
+    ],
+    [
+      "ex-main-0682-b|step-3",
+      "scalar-product-angles-and-cube-ex-main-0682-b-step-3"
+    ],
+    [
+      "ex-main-0682-c|condition",
+      "scalar-product-angles-and-cube-ex-main-0682-c-condition"
+    ],
+    [
+      "ex-main-0682-c|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0682-c-help-h1"
+    ],
+    [
+      "ex-main-0682-c|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0682-c-help-h2"
+    ],
+    [
+      "ex-main-0682-c|step-1",
+      "scalar-product-angles-and-cube-ex-main-0682-c-step-1"
+    ],
+    [
+      "ex-main-0682-c|step-2",
+      "scalar-product-angles-and-cube-ex-main-0682-c-step-2"
+    ],
+    [
+      "ex-main-0682-c|step-3",
+      "scalar-product-angles-and-cube-ex-main-0682-c-step-3"
+    ],
+    [
+      "ex-main-0682-d|condition",
+      "scalar-product-angles-and-cube-ex-main-0682-d-condition"
+    ],
+    [
+      "ex-main-0682-d|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0682-d-help-h1"
+    ],
+    [
+      "ex-main-0682-d|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0682-d-help-h2"
+    ],
+    [
+      "ex-main-0682-d|step-1",
+      "scalar-product-angles-and-cube-ex-main-0682-d-step-1"
+    ],
+    [
+      "ex-main-0682-d|step-2",
+      "scalar-product-angles-and-cube-ex-main-0682-d-step-2"
+    ],
+    [
+      "ex-main-0682-d|step-3",
+      "scalar-product-angles-and-cube-ex-main-0682-d-step-3"
+    ],
+    [
+      "ex-main-0682-e|condition",
+      "scalar-product-angles-and-cube-ex-main-0682-e-condition"
+    ],
+    [
+      "ex-main-0682-e|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0682-e-help-h1"
+    ],
+    [
+      "ex-main-0682-e|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0682-e-help-h2"
+    ],
+    [
+      "ex-main-0682-e|step-1",
+      "scalar-product-angles-and-cube-ex-main-0682-e-step-1"
+    ],
+    [
+      "ex-main-0682-e|step-2",
+      "scalar-product-angles-and-cube-ex-main-0682-e-step-2"
+    ],
+    [
+      "ex-main-0682-e|step-3",
+      "scalar-product-angles-and-cube-ex-main-0682-e-step-3"
+    ],
+    [
+      "ex-main-0682-f|condition",
+      "scalar-product-angles-and-cube-ex-main-0682-f-condition"
+    ],
+    [
+      "ex-main-0682-f|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0682-f-help-h1"
+    ],
+    [
+      "ex-main-0682-f|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0682-f-help-h2"
+    ],
+    [
+      "ex-main-0682-f|step-1",
+      "scalar-product-angles-and-cube-ex-main-0682-f-step-1"
+    ],
+    [
+      "ex-main-0682-f|step-2",
+      "scalar-product-angles-and-cube-ex-main-0682-f-step-2"
+    ],
+    [
+      "ex-main-0682-f|step-3",
+      "scalar-product-angles-and-cube-ex-main-0682-f-step-3"
+    ],
+    [
+      "ex-main-0682-g|condition",
+      "scalar-product-angles-and-cube-ex-main-0682-g-condition"
+    ],
+    [
+      "ex-main-0682-g|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0682-g-help-h1"
+    ],
+    [
+      "ex-main-0682-g|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0682-g-help-h2"
+    ],
+    [
+      "ex-main-0682-g|step-1",
+      "scalar-product-angles-and-cube-ex-main-0682-g-step-1"
+    ],
+    [
+      "ex-main-0682-g|step-2",
+      "scalar-product-angles-and-cube-ex-main-0682-g-step-2"
+    ],
+    [
+      "ex-main-0682-g|step-3",
+      "scalar-product-angles-and-cube-ex-main-0682-g-step-3"
+    ],
+    [
+      "ex-main-0682-h|condition",
+      "scalar-product-angles-and-cube-ex-main-0682-h-condition"
+    ],
+    [
+      "ex-main-0682-h|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0682-h-help-h1"
+    ],
+    [
+      "ex-main-0682-h|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0682-h-help-h2"
+    ],
+    [
+      "ex-main-0682-h|step-1",
+      "scalar-product-angles-and-cube-ex-main-0682-h-step-1"
+    ],
+    [
+      "ex-main-0682-h|step-2",
+      "scalar-product-angles-and-cube-ex-main-0682-h-step-2"
+    ],
+    [
+      "ex-main-0682-h|step-3",
+      "scalar-product-angles-and-cube-ex-main-0682-h-step-3"
+    ],
+    [
+      "ex-main-0683|condition",
+      "scalar-product-angles-and-cube-ex-main-0683-condition"
+    ],
+    [
+      "ex-main-0683|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0683-help-h1"
+    ],
+    [
+      "ex-main-0683|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0683-help-h2"
+    ],
+    [
+      "ex-main-0683|step-1",
+      "scalar-product-angles-and-cube-ex-main-0683-step-1"
+    ],
+    [
+      "ex-main-0683|step-2",
+      "scalar-product-angles-and-cube-ex-main-0683-step-2"
+    ],
+    [
+      "ex-main-0683|step-3",
+      "scalar-product-angles-and-cube-ex-main-0683-step-3"
+    ],
+    [
+      "ex-main-0684-a|condition",
+      "scalar-product-angles-and-cube-ex-main-0684-a-condition"
+    ],
+    [
+      "ex-main-0684-a|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0684-a-help-h1"
+    ],
+    [
+      "ex-main-0684-a|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0684-a-help-h2"
+    ],
+    [
+      "ex-main-0684-a|step-1",
+      "scalar-product-angles-and-cube-ex-main-0684-a-step-1"
+    ],
+    [
+      "ex-main-0684-a|step-2",
+      "scalar-product-angles-and-cube-ex-main-0684-a-step-2"
+    ],
+    [
+      "ex-main-0684-a|step-3",
+      "scalar-product-angles-and-cube-ex-main-0684-a-step-3"
+    ],
+    [
+      "ex-main-0684-b|condition",
+      "scalar-product-angles-and-cube-ex-main-0684-b-condition"
+    ],
+    [
+      "ex-main-0684-b|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0684-b-help-h1"
+    ],
+    [
+      "ex-main-0684-b|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0684-b-help-h2"
+    ],
+    [
+      "ex-main-0684-b|step-1",
+      "scalar-product-angles-and-cube-ex-main-0684-b-step-1"
+    ],
+    [
+      "ex-main-0684-b|step-2",
+      "scalar-product-angles-and-cube-ex-main-0684-b-step-2"
+    ],
+    [
+      "ex-main-0684-b|step-3",
+      "scalar-product-angles-and-cube-ex-main-0684-b-step-3"
+    ],
+    [
+      "ex-main-0684-c|condition",
+      "scalar-product-angles-and-cube-ex-main-0684-c-condition"
+    ],
+    [
+      "ex-main-0684-c|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0684-c-help-h1"
+    ],
+    [
+      "ex-main-0684-c|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0684-c-help-h2"
+    ],
+    [
+      "ex-main-0684-c|step-1",
+      "scalar-product-angles-and-cube-ex-main-0684-c-step-1"
+    ],
+    [
+      "ex-main-0684-c|step-2",
+      "scalar-product-angles-and-cube-ex-main-0684-c-step-2"
+    ],
+    [
+      "ex-main-0684-c|step-3",
+      "scalar-product-angles-and-cube-ex-main-0684-c-step-3"
+    ],
+    [
+      "ex-main-0684-d|condition",
+      "scalar-product-angles-and-cube-ex-main-0684-d-condition"
+    ],
+    [
+      "ex-main-0684-d|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0684-d-help-h1"
+    ],
+    [
+      "ex-main-0684-d|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0684-d-help-h2"
+    ],
+    [
+      "ex-main-0684-d|step-1",
+      "scalar-product-angles-and-cube-ex-main-0684-d-step-1"
+    ],
+    [
+      "ex-main-0684-d|step-2",
+      "scalar-product-angles-and-cube-ex-main-0684-d-step-2"
+    ],
+    [
+      "ex-main-0684-d|step-3",
+      "scalar-product-angles-and-cube-ex-main-0684-d-step-3"
+    ],
+    [
+      "ex-main-0684-e|condition",
+      "scalar-product-angles-and-cube-ex-main-0684-e-condition"
+    ],
+    [
+      "ex-main-0684-e|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0684-e-help-h1"
+    ],
+    [
+      "ex-main-0684-e|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0684-e-help-h2"
+    ],
+    [
+      "ex-main-0684-e|step-1",
+      "scalar-product-angles-and-cube-ex-main-0684-e-step-1"
+    ],
+    [
+      "ex-main-0684-e|step-2",
+      "scalar-product-angles-and-cube-ex-main-0684-e-step-2"
+    ],
+    [
+      "ex-main-0684-e|step-3",
+      "scalar-product-angles-and-cube-ex-main-0684-e-step-3"
+    ],
+    [
+      "ex-main-0684-f|condition",
+      "scalar-product-angles-and-cube-ex-main-0684-f-condition"
+    ],
+    [
+      "ex-main-0684-f|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0684-f-help-h1"
+    ],
+    [
+      "ex-main-0684-f|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0684-f-help-h2"
+    ],
+    [
+      "ex-main-0684-f|step-1",
+      "scalar-product-angles-and-cube-ex-main-0684-f-step-1"
+    ],
+    [
+      "ex-main-0684-f|step-2",
+      "scalar-product-angles-and-cube-ex-main-0684-f-step-2"
+    ],
+    [
+      "ex-main-0684-f|step-3",
+      "scalar-product-angles-and-cube-ex-main-0684-f-step-3"
+    ],
+    [
+      "ex-main-0684-g|condition",
+      "scalar-product-angles-and-cube-ex-main-0684-g-condition"
+    ],
+    [
+      "ex-main-0684-g|help:h1",
+      "scalar-product-angles-and-cube-ex-main-0684-g-help-h1"
+    ],
+    [
+      "ex-main-0684-g|help:h2",
+      "scalar-product-angles-and-cube-ex-main-0684-g-help-h2"
+    ],
+    [
+      "ex-main-0684-g|step-1",
+      "scalar-product-angles-and-cube-ex-main-0684-g-step-1"
+    ],
+    [
+      "ex-main-0684-g|step-2",
+      "scalar-product-angles-and-cube-ex-main-0684-g-step-2"
+    ],
+    [
+      "ex-main-0684-g|step-3",
+      "scalar-product-angles-and-cube-ex-main-0684-g-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "ac31a932ab5ffdc921def24e2be35784caa74edf6bc20d9fde4061c1b0c348b7",
+      "afterSHA256": "c257d7376f303b900ff6577b30e1760fd73711edb148734fd3f20647e42ddc3b"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "69e7e23dd5d20fba45db97705c0be4383e9921ecd568bce053549c539702142c",
+      "afterSHA256": "659c25cffa158f006c82080ca78a61c47fcc4971d3b06897fb73f09615aa0aff"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:49:04Z",
+    "scope": "Chapters I–VI and complete chapter VII paragraph 1: points 71–75 and all 45 exercises 637–681, with 1,221 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "d60624eae068001cd0983c31f0e490e38b2f9e8febfc775b8baf2eb77b00cbe7",
+    "index": "eee5675d95fc11ff83e36eb89ab87f3cda35dac79a0dadda485a4999b13a0320",
+    "registry": "1740eff16fc6a71853fe895660ebd22f89ae6fe2d4d5419be055148d76530f87",
+    "cases": "3513311f7d4ec21ea63aa3bdff1eaac63672e17ed8d8380cf726923f6f2c5282"
+  }
+}

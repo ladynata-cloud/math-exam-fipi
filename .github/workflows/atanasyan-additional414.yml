@@ -90,6 +90,15 @@ jobs:
           node tools/stereo-textbook/midpoints-and-vector-lengths.test.cjs
           node tools/stereo-textbook/spatial-distances-and-equal-loci.test.cjs
           node tools/stereo-textbook/coordinate-spheres-section-end.test.cjs
+          node tools/stereo-textbook/scalar-product-angles-and-cube.test.cjs
+          node tools/stereo-textbook/dot-products-coordinate-parameters.test.cjs
+          node tools/stereo-textbook/spatial-direction-cosines-and-square.test.cjs
+          node tools/stereo-textbook/spatial-scalar-identities-and-opposite-edges.test.cjs
+          node tools/stereo-textbook/angles-with-lines-and-coordinate-faces.test.cjs
+          node tools/stereo-textbook/cube-proofs-and-scalar-product-section-end.test.cjs
+          node tools/stereo-textbook/spatial-symmetries-and-fixed-sets.test.cjs
+          node tools/stereo-textbook/isometries-of-space-section-end.test.cjs
+          node tools/stereo-textbook/coordinates-chapter-seven-self-check.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -356,6 +365,51 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: coordinateSpheresSectionEnd
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-spheres-section-end
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check vector angles, dot products, signed reversals and all fifteen cube pairs
+        env:
+          TEXTBOOK_PRACTICE_GROUP: scalarProductAnglesAndCube
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/scalar-product-angles-and-cube
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check coordinate products, acute and obtuse angles, and the changing parameter
+        env:
+          TEXTBOOK_PRACTICE_GROUP: dotProductsCoordinateParameters
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/dot-products-coordinate-parameters
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check the printed direction-angle discrepancy, radical inputs, triangle area and exact cube cosines
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialDirectionCosinesAndSquare
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-direction-cosines-and-square
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check scalar distributivity, projections and the complete opposite-edge proofs
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialScalarIdentitiesAndOppositeEdges
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-scalar-identities-and-opposite-edges
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check the actual lines, projected face normals, prism height and independently corrected angle 708b
+        env:
+          TEXTBOOK_PRACTICE_GROUP: anglesWithLinesAndCoordinateFaces
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/angles-with-lines-and-coordinate-faces
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all final scalar-product proofs, every pair of cube diagonals and both centroid signs
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cubeProofsAndScalarProductSectionEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cube-proofs-and-scalar-product-section-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all 21 original point images, rotations, reflections, translations and fixed sets
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialSymmetriesAndFixedSets
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-symmetries-and-fixed-sets
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check two-sided proofs of all isometry images, including disjoint planes and space circles
+        env:
+          TEXTBOOK_PRACTICE_GROUP: isometriesOfSpaceSectionEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/isometries-of-space-section-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check every printed coordinate-and-motion self-check on page 186
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinatesChapterSevenSelfCheck
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinates-chapter-seven-self-check
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -442,5 +496,14 @@ jobs:
             artifacts/midpoints-and-vector-lengths/
             artifacts/spatial-distances-and-equal-loci/
             artifacts/coordinate-spheres-section-end/
+            artifacts/scalar-product-angles-and-cube/
+            artifacts/dot-products-coordinate-parameters/
+            artifacts/spatial-direction-cosines-and-square/
+            artifacts/spatial-scalar-identities-and-opposite-edges/
+            artifacts/angles-with-lines-and-coordinate-faces/
+            artifacts/cube-proofs-and-scalar-product-section-end/
+            artifacts/spatial-symmetries-and-fixed-sets/
+            artifacts/isometries-of-space-section-end/
+            artifacts/coordinates-chapter-seven-self-check/
           retention-days: 14
           if-no-files-found: error

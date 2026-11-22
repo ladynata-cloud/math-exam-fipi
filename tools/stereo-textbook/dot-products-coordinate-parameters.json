@@ -1,0 +1,638 @@
+{
+  "parts": {
+    "685": [
+      null
+    ],
+    "686": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ],
+    "687": [
+      "а",
+      "б",
+      "в"
+    ],
+    "688": [
+      "а",
+      "б",
+      "в"
+    ],
+    "689": [
+      "а",
+      "б",
+      "в"
+    ],
+    "690": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "685": {
+      "id": "source-main-0685",
+      "kind": "exercise",
+      "title": "Задача № 685",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "685",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "686": {
+      "id": "source-main-0686",
+      "kind": "exercise",
+      "title": "Задача № 686",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "686",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "687": {
+      "id": "source-main-0687",
+      "kind": "exercise",
+      "title": "Задача № 687",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "687",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "688": {
+      "id": "source-main-0688",
+      "kind": "exercise",
+      "title": "Задача № 688",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "688",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "689": {
+      "id": "source-main-0689",
+      "kind": "exercise",
+      "title": "Задача № 689",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "689",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "690": {
+      "id": "source-main-0690",
+      "kind": "exercise",
+      "title": "Задача № 690",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "690",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          176
+        ],
+        "pdfPages": [
+          178
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0685": {
+      "raw": "346641595135700b09fd3ce79fca9f1caaef16cdf7f3229032192eaa3fba67c7",
+      "authored": "cc228a4ef213ff22724c3b5f4924b1cf9f70595b6c9e351e4a79fe08662ae833",
+      "integrated": "0c62690f8cbfaf1a53470808307901bcde245dfacbb852efbfdf4891c24c0c9d"
+    },
+    "ex-main-0686-a": {
+      "raw": "0039be6f5152a6a2f559612af7612ceb65a2c580a2e2a7df1d1f6745d83309c5",
+      "authored": "f4293313f2f33312ebc82cc6e1cb5afde4556f4ac805d39c63ffe3b9abdb8ec8",
+      "integrated": "1c4eeb344768d3749852f143dd78792b2693c176e147eeb661f5c183d020a481"
+    },
+    "ex-main-0686-b": {
+      "raw": "e980285789c94ff6568b0b2fab8196a1c6f8c618f662b59c21997c52efe0e7dd",
+      "authored": "6836129b070cc9451ec68b82dfb9b9100962c9be51f778323d5fb6f5d8439d81",
+      "integrated": "0eb1ae1e50518f3b392abf64da53eeda6b5b7b2aebf336cf2ddadfbb611dde81"
+    },
+    "ex-main-0686-c": {
+      "raw": "17ebd582071e78fb739e3905c2fdd713c54e016e7457a8319d75d021dcbf621d",
+      "authored": "d9aa890b61efafbd4c019aab345221900934c8bc10e9aa8fc7f28fdef25c2988",
+      "integrated": "d13ed1221f7b3f6605762aecfa0e4fa09aa92bfa82bfa8959429f66ab945f122"
+    },
+    "ex-main-0686-d": {
+      "raw": "502b9acdc2beabf5a32d6b175472249e6ef2b04451cdc32882bbe18425c74fa3",
+      "authored": "f893d47447edf201cd11d80a5a49b8feebedd8488e832a51be0d01b1e71f9f3e",
+      "integrated": "ab1882860c0a71a7bc1ccfa2b314d7579099a20535828a6d855ac106c10ee711"
+    },
+    "ex-main-0686-e": {
+      "raw": "8eb0ef12918dbbfcc82c35b9c8d900d8743119cfdfae1918db5adff9416ef5a5",
+      "authored": "903e487b4ac04937d481225b1cf7004c64fd1784e74ac6db1fa89190128b0649",
+      "integrated": "7e5455a75170746892856af15f345e4bbdd86326abca1fec6dbfaaf121ed2ead"
+    },
+    "ex-main-0687-a": {
+      "raw": "2387c18900fd15da3483b277be33aa143e30cbf9d44e00c4379b20273cb76436",
+      "authored": "ec727cefb8afcec056eaacd8ae8c175791683a6b13f694f3c849f2df16c8df0e",
+      "integrated": "bd021ca9c24b13033bf5c20edd225e8a4824656ade947e18663dc1e470c988bc"
+    },
+    "ex-main-0687-b": {
+      "raw": "7da2aebc89c5d4bdca1f80c1053d91aa21bbdb221dc94f2cd495288bb9bd356a",
+      "authored": "1be3ec0668748cd252549857627aa3ea1198279a90328fa995f3dede4603d7fb",
+      "integrated": "7ee2b5528d8d65e611d6758e69d9060ef078d45d3e3174bdabe2609a6d8b19bb"
+    },
+    "ex-main-0687-c": {
+      "raw": "4edd38f6fce64335a2d96e8d10f64c192b6d0c239afa633c1b64cf217e17fdd7",
+      "authored": "f20ca87eed759f31427d21ee30293542d8145646fbc868ecd5f68b1e835d8b94",
+      "integrated": "4c652dd96a441739101991d71efe06d46110937fd6c482ac1977cdaf9f9eed90"
+    },
+    "ex-main-0688-a": {
+      "raw": "13cabeb7f4bf03fff10c3db7b741a6c5c807a34c09d318da7f003d87743a937c",
+      "authored": "ebe0f6cbe8c18faf25cc450ab325503303d724e6dc4b245f622817dd78054dd0",
+      "integrated": "a3135cdfdd8ed86300ba4772cdf26f556488e77fba45df28e08cca44cda0d76c"
+    },
+    "ex-main-0688-b": {
+      "raw": "fee5ee4396d173fe81d90fe4b1b1d5d99b1ea2f450e5a13bd9f0007cae12bcbb",
+      "authored": "ce458ad58b8fb18e6d0bac594e247293ae464ac27077f48a433cd72bb3c2c808",
+      "integrated": "ba8a0ba34d43363917c6602b8c0ce4c03d5c6e08ac8dc8ed5aae1cf6ceb485b6"
+    },
+    "ex-main-0688-c": {
+      "raw": "e2a5a77fde956f12f16059f2dd977107c879d2c1c9121bf751a753cf9c7b2309",
+      "authored": "64a6c79a7a1e474efd932a423b51e9150e705275732c559a40c4524db732a3d8",
+      "integrated": "3ff2448100c2c020d994bac0bab0129bc94d3f93582a55f8f1de1ff8ad5d5824"
+    },
+    "ex-main-0689-a": {
+      "raw": "85ccbe8b7c415fefc222019b671337ebc8a71a728ff8656a2fd701c0eaa3dab4",
+      "authored": "3ab93c8a975a99debe42b637c97f9c308188b107c0ef3f2ba3c26183184eb091",
+      "integrated": "45f2b887326d10a3a2d915fbe6846ac3e4d754595c777791a40c61040b73ccad"
+    },
+    "ex-main-0689-b": {
+      "raw": "15fd2384f3bf465d2d216527de432645e357ff47329020a73c169166133efb87",
+      "authored": "3d2f5a7b72afe527a51b58ef994adab3e83489e25d3c02dbeb07932d1f9e4687",
+      "integrated": "6240911369fc3db099d19a240f353c4707198311cec320c8d20496646f2c4024"
+    },
+    "ex-main-0689-c": {
+      "raw": "da18fe6eb16aef05978b5122845ed7446709ebfaced3a23eed5e926bd3057911",
+      "authored": "56f0c483c3cf2c91b49cc9df9a28689b461cebae7ecdf1828ed69833e9eb76c6",
+      "integrated": "349e4debe64758e5ded431f5f13eb342ee011e3f9203dee9afbab147eef5a12e"
+    },
+    "ex-main-0690": {
+      "raw": "16145b7c1e007daa7f5d4cb7f22a7ea6130295471503a2bdfacf70def1c2cb8e",
+      "authored": "e41e9089afbbf5386385485756ad02bc731991d232671fda96e76c65d534b427",
+      "integrated": "8d9a350b31afd587a301ac25ccfd9f65093a94fe72475ac64525e1a1370bb6c6"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0685|condition",
+      "dot-products-coordinate-parameters-ex-main-0685-condition"
+    ],
+    [
+      "ex-main-0685|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0685-help-h1"
+    ],
+    [
+      "ex-main-0685|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0685-help-h2"
+    ],
+    [
+      "ex-main-0685|step-1",
+      "dot-products-coordinate-parameters-ex-main-0685-step-1"
+    ],
+    [
+      "ex-main-0685|step-2",
+      "dot-products-coordinate-parameters-ex-main-0685-step-2"
+    ],
+    [
+      "ex-main-0685|step-3",
+      "dot-products-coordinate-parameters-ex-main-0685-step-3"
+    ],
+    [
+      "ex-main-0686-a|condition",
+      "dot-products-coordinate-parameters-ex-main-0686-a-condition"
+    ],
+    [
+      "ex-main-0686-a|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0686-a-help-h1"
+    ],
+    [
+      "ex-main-0686-a|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0686-a-help-h2"
+    ],
+    [
+      "ex-main-0686-a|step-1",
+      "dot-products-coordinate-parameters-ex-main-0686-a-step-1"
+    ],
+    [
+      "ex-main-0686-a|step-2",
+      "dot-products-coordinate-parameters-ex-main-0686-a-step-2"
+    ],
+    [
+      "ex-main-0686-a|step-3",
+      "dot-products-coordinate-parameters-ex-main-0686-a-step-3"
+    ],
+    [
+      "ex-main-0686-b|condition",
+      "dot-products-coordinate-parameters-ex-main-0686-b-condition"
+    ],
+    [
+      "ex-main-0686-b|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0686-b-help-h1"
+    ],
+    [
+      "ex-main-0686-b|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0686-b-help-h2"
+    ],
+    [
+      "ex-main-0686-b|step-1",
+      "dot-products-coordinate-parameters-ex-main-0686-b-step-1"
+    ],
+    [
+      "ex-main-0686-b|step-2",
+      "dot-products-coordinate-parameters-ex-main-0686-b-step-2"
+    ],
+    [
+      "ex-main-0686-b|step-3",
+      "dot-products-coordinate-parameters-ex-main-0686-b-step-3"
+    ],
+    [
+      "ex-main-0686-c|condition",
+      "dot-products-coordinate-parameters-ex-main-0686-c-condition"
+    ],
+    [
+      "ex-main-0686-c|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0686-c-help-h1"
+    ],
+    [
+      "ex-main-0686-c|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0686-c-help-h2"
+    ],
+    [
+      "ex-main-0686-c|step-1",
+      "dot-products-coordinate-parameters-ex-main-0686-c-step-1"
+    ],
+    [
+      "ex-main-0686-c|step-2",
+      "dot-products-coordinate-parameters-ex-main-0686-c-step-2"
+    ],
+    [
+      "ex-main-0686-c|step-3",
+      "dot-products-coordinate-parameters-ex-main-0686-c-step-3"
+    ],
+    [
+      "ex-main-0686-d|condition",
+      "dot-products-coordinate-parameters-ex-main-0686-d-condition"
+    ],
+    [
+      "ex-main-0686-d|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0686-d-help-h1"
+    ],
+    [
+      "ex-main-0686-d|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0686-d-help-h2"
+    ],
+    [
+      "ex-main-0686-d|step-1",
+      "dot-products-coordinate-parameters-ex-main-0686-d-step-1"
+    ],
+    [
+      "ex-main-0686-d|step-2",
+      "dot-products-coordinate-parameters-ex-main-0686-d-step-2"
+    ],
+    [
+      "ex-main-0686-d|step-3",
+      "dot-products-coordinate-parameters-ex-main-0686-d-step-3"
+    ],
+    [
+      "ex-main-0686-e|condition",
+      "dot-products-coordinate-parameters-ex-main-0686-e-condition"
+    ],
+    [
+      "ex-main-0686-e|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0686-e-help-h1"
+    ],
+    [
+      "ex-main-0686-e|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0686-e-help-h2"
+    ],
+    [
+      "ex-main-0686-e|step-1",
+      "dot-products-coordinate-parameters-ex-main-0686-e-step-1"
+    ],
+    [
+      "ex-main-0686-e|step-2",
+      "dot-products-coordinate-parameters-ex-main-0686-e-step-2"
+    ],
+    [
+      "ex-main-0686-e|step-3",
+      "dot-products-coordinate-parameters-ex-main-0686-e-step-3"
+    ],
+    [
+      "ex-main-0687-a|condition",
+      "dot-products-coordinate-parameters-ex-main-0687-a-condition"
+    ],
+    [
+      "ex-main-0687-a|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0687-a-help-h1"
+    ],
+    [
+      "ex-main-0687-a|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0687-a-help-h2"
+    ],
+    [
+      "ex-main-0687-a|step-1",
+      "dot-products-coordinate-parameters-ex-main-0687-a-step-1"
+    ],
+    [
+      "ex-main-0687-a|step-2",
+      "dot-products-coordinate-parameters-ex-main-0687-a-step-2"
+    ],
+    [
+      "ex-main-0687-a|step-3",
+      "dot-products-coordinate-parameters-ex-main-0687-a-step-3"
+    ],
+    [
+      "ex-main-0687-b|condition",
+      "dot-products-coordinate-parameters-ex-main-0687-b-condition"
+    ],
+    [
+      "ex-main-0687-b|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0687-b-help-h1"
+    ],
+    [
+      "ex-main-0687-b|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0687-b-help-h2"
+    ],
+    [
+      "ex-main-0687-b|step-1",
+      "dot-products-coordinate-parameters-ex-main-0687-b-step-1"
+    ],
+    [
+      "ex-main-0687-b|step-2",
+      "dot-products-coordinate-parameters-ex-main-0687-b-step-2"
+    ],
+    [
+      "ex-main-0687-b|step-3",
+      "dot-products-coordinate-parameters-ex-main-0687-b-step-3"
+    ],
+    [
+      "ex-main-0687-c|condition",
+      "dot-products-coordinate-parameters-ex-main-0687-c-condition"
+    ],
+    [
+      "ex-main-0687-c|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0687-c-help-h1"
+    ],
+    [
+      "ex-main-0687-c|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0687-c-help-h2"
+    ],
+    [
+      "ex-main-0687-c|step-1",
+      "dot-products-coordinate-parameters-ex-main-0687-c-step-1"
+    ],
+    [
+      "ex-main-0687-c|step-2",
+      "dot-products-coordinate-parameters-ex-main-0687-c-step-2"
+    ],
+    [
+      "ex-main-0687-c|step-3",
+      "dot-products-coordinate-parameters-ex-main-0687-c-step-3"
+    ],
+    [
+      "ex-main-0688-a|condition",
+      "dot-products-coordinate-parameters-ex-main-0688-a-condition"
+    ],
+    [
+      "ex-main-0688-a|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0688-a-help-h1"
+    ],
+    [
+      "ex-main-0688-a|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0688-a-help-h2"
+    ],
+    [
+      "ex-main-0688-a|step-1",
+      "dot-products-coordinate-parameters-ex-main-0688-a-step-1"
+    ],
+    [
+      "ex-main-0688-a|step-2",
+      "dot-products-coordinate-parameters-ex-main-0688-a-step-2"
+    ],
+    [
+      "ex-main-0688-a|step-3",
+      "dot-products-coordinate-parameters-ex-main-0688-a-step-3"
+    ],
+    [
+      "ex-main-0688-b|condition",
+      "dot-products-coordinate-parameters-ex-main-0688-b-condition"
+    ],
+    [
+      "ex-main-0688-b|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0688-b-help-h1"
+    ],
+    [
+      "ex-main-0688-b|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0688-b-help-h2"
+    ],
+    [
+      "ex-main-0688-b|step-1",
+      "dot-products-coordinate-parameters-ex-main-0688-b-step-1"
+    ],
+    [
+      "ex-main-0688-b|step-2",
+      "dot-products-coordinate-parameters-ex-main-0688-b-step-2"
+    ],
+    [
+      "ex-main-0688-b|step-3",
+      "dot-products-coordinate-parameters-ex-main-0688-b-step-3"
+    ],
+    [
+      "ex-main-0688-c|condition",
+      "dot-products-coordinate-parameters-ex-main-0688-c-condition"
+    ],
+    [
+      "ex-main-0688-c|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0688-c-help-h1"
+    ],
+    [
+      "ex-main-0688-c|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0688-c-help-h2"
+    ],
+    [
+      "ex-main-0688-c|step-1",
+      "dot-products-coordinate-parameters-ex-main-0688-c-step-1"
+    ],
+    [
+      "ex-main-0688-c|step-2",
+      "dot-products-coordinate-parameters-ex-main-0688-c-step-2"
+    ],
+    [
+      "ex-main-0688-c|step-3",
+      "dot-products-coordinate-parameters-ex-main-0688-c-step-3"
+    ],
+    [
+      "ex-main-0689-a|condition",
+      "dot-products-coordinate-parameters-ex-main-0689-a-condition"
+    ],
+    [
+      "ex-main-0689-a|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0689-a-help-h1"
+    ],
+    [
+      "ex-main-0689-a|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0689-a-help-h2"
+    ],
+    [
+      "ex-main-0689-a|step-1",
+      "dot-products-coordinate-parameters-ex-main-0689-a-step-1"
+    ],
+    [
+      "ex-main-0689-a|step-2",
+      "dot-products-coordinate-parameters-ex-main-0689-a-step-2"
+    ],
+    [
+      "ex-main-0689-a|step-3",
+      "dot-products-coordinate-parameters-ex-main-0689-a-step-3"
+    ],
+    [
+      "ex-main-0689-b|condition",
+      "dot-products-coordinate-parameters-ex-main-0689-b-condition"
+    ],
+    [
+      "ex-main-0689-b|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0689-b-help-h1"
+    ],
+    [
+      "ex-main-0689-b|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0689-b-help-h2"
+    ],
+    [
+      "ex-main-0689-b|step-1",
+      "dot-products-coordinate-parameters-ex-main-0689-b-step-1"
+    ],
+    [
+      "ex-main-0689-b|step-2",
+      "dot-products-coordinate-parameters-ex-main-0689-b-step-2"
+    ],
+    [
+      "ex-main-0689-b|step-3",
+      "dot-products-coordinate-parameters-ex-main-0689-b-step-3"
+    ],
+    [
+      "ex-main-0689-c|condition",
+      "dot-products-coordinate-parameters-ex-main-0689-c-condition"
+    ],
+    [
+      "ex-main-0689-c|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0689-c-help-h1"
+    ],
+    [
+      "ex-main-0689-c|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0689-c-help-h2"
+    ],
+    [
+      "ex-main-0689-c|step-1",
+      "dot-products-coordinate-parameters-ex-main-0689-c-step-1"
+    ],
+    [
+      "ex-main-0689-c|step-2",
+      "dot-products-coordinate-parameters-ex-main-0689-c-step-2"
+    ],
+    [
+      "ex-main-0689-c|step-3",
+      "dot-products-coordinate-parameters-ex-main-0689-c-step-3"
+    ],
+    [
+      "ex-main-0690|condition",
+      "dot-products-coordinate-parameters-ex-main-0690-condition"
+    ],
+    [
+      "ex-main-0690|help:h1",
+      "dot-products-coordinate-parameters-ex-main-0690-help-h1"
+    ],
+    [
+      "ex-main-0690|help:h2",
+      "dot-products-coordinate-parameters-ex-main-0690-help-h2"
+    ],
+    [
+      "ex-main-0690|step-1",
+      "dot-products-coordinate-parameters-ex-main-0690-step-1"
+    ],
+    [
+      "ex-main-0690|step-2",
+      "dot-products-coordinate-parameters-ex-main-0690-step-2"
+    ],
+    [
+      "ex-main-0690|step-3",
+      "dot-products-coordinate-parameters-ex-main-0690-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "c257d7376f303b900ff6577b30e1760fd73711edb148734fd3f20647e42ddc3b",
+      "afterSHA256": "d5e050157af78ba32e9764124460fc72d9b4aa034699e05d26b262a4ddee2ca3"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "659c25cffa158f006c82080ca78a61c47fcc4971d3b06897fb73f09615aa0aff",
+      "afterSHA256": "33c1febd8da07aa106c6d3d826d42a87a271d809613b2b6190b79ff495f224cf"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:57:09Z",
+    "scope": "Chapters I–VI and chapter VII points 71–79, complete paragraph 1 and exercises 682–684, with 1,241 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "97696e099433a5572295af38ff468122a6089ec21b0140ec4505d60b7bb8615d",
+    "index": "f579e7f0f32a0a2bfd5443c870636eda5d0b671e478eeb6708772b54950a426f",
+    "registry": "bb33dc33070987578fa9e477277c3326ea44cf35ff9723cf94889d6593ade580",
+    "cases": "5b005e3bfb709cd65bcb883ed6ac8ef0dab689a0644b79465646b04a20795563"
+  }
+}
