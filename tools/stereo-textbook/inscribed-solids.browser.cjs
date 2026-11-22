@@ -81,7 +81,8 @@ const groups = {
   surfacePathsAndParallelSections: {manifests:[require('./surface-paths-and-parallel-sections.json')],count:3},
   tetrahedraAndCubeTilings: {manifests:[require('./tetrahedra-and-cube-tilings.json')],count:3},
   monotonePathsAndDualSolids: {manifests:[require('./monotone-paths-and-dual-solids.json')],count:4},
-  skewLinesAndCornerReflection: {manifests:[require('./skew-lines-and-corner-reflection.json')],count:4}
+  skewLinesAndCornerReflection: {manifests:[require('./skew-lines-and-corner-reflection.json')],count:4},
+  tetrahedronAltitudesAndDirectedAngles: {manifests:[require('./tetrahedron-altitudes-and-directed-angles.json')],count:4}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
