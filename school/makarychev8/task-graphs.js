@@ -40,6 +40,7 @@ function curveValue(curve,x){
  if(curve.kind==='absolute-reciprocal')return x===0?NaN:curve.k/Math.abs(x);
  if(curve.kind==='sign-linear')return x===curve.h?NaN:Math.sign(x-curve.h)*(curve.k*x+curve.b);
  if(curve.kind==='abs-linear')return curve.k*Math.abs(x)+curve.b;
+ if(curve.kind==='bounded-increasing')return x/(1+Math.abs(x));
  if(curve.kind==='trip-distance')return tripCurve(x);
  if(curve.kind==='behavior-function')return behaviorHeight(curve.mode,x);
  if(curve.kind==='behavior-linear-points'){
@@ -947,6 +948,47 @@ function sumOfRoot(form,k,x) {
  if(x<0)return NaN;
  return (form==='linear'?k*x:x*x)+Math.sqrt(x);
 }
+function monotoneExampleValue(g, q) {
+ const n=q.n,d=q.d;
+ if(g.mode==='unique')return [sectionFraction(n,d+Math.abs(n))];
+ const s=g.mode==='increasing'?1:-1,a=g.a||2,b=g.b||1;
+ return [sectionFraction(s*a*n-d,d),sectionFraction(s*b*n+3*d,d),sectionFraction(s*(a+b)*n+2*d,d)];
+}
+function monotoneReasonView(host,g) {
+ host.className='task-graphs quantity-model';
+ const equation=g.mode==='sqrt-square'||g.mode==='cubic-linear',pair=String(g.partial?.[0]||'').split(';').map(x=>M.parse(x));
+ const trial=pair[0],x=trial?trial.n/trial.d:null,curves=[],points=[];
+ let xr,yr;
+ if(equation){
+  const root=g.mode==='sqrt-square',level=g.target;
+  const curve=root?{kind:'sum-with-root',form:'square',k:1}:{kind:'quotient',numerator:[0,g.coefficient,0,1],denominator:[1]};
+  curves.push(curve,{kind:'line',k:0,b:level,dashed:true});
+  xr=root?[-.5,Math.sqrt(level)+1.5]:[-3,Math.max(3,Math.cbrt(level)+2)];
+  yr=[root?-1:-level/2,level*1.5+1];
+  if(trial){
+   const y=curveValue(curve,x);
+   if(!Number.isFinite(y))boundNote(host,'При отрицательном аргументе действительный квадратный корень не определён.').dataset.monotoneProbe='outside';
+   else{
+    points.push([x,y,'']);boundNote(host,'При x = '+M.answer(trial)+' левая часть ≈ '+Number(y.toPrecision(8)).toString().replace('.',',')+'; нужный уровень '+level+'.').dataset.monotoneProbe=M.answer(trial);
+   }
+  }
+ }else{
+  const unique=g.mode==='unique',sign=g.mode==='increasing'?1:-1,a=g.a||2,b=g.b||1;
+  if(unique)curves.push({kind:'bounded-increasing'},{kind:'line',k:0,b:1,dashed:true});
+  else curves.push({kind:'line',k:sign*a,b:-1},{kind:'line',k:sign*b,b:3},{kind:'line',k:sign*(a+b),b:2});
+  xr=[-3,3];yr=unique?[-1.5,1.5]:[-(a+b)*2-2,(a+b)*2+3];
+  boundNote(host,unique?'Для примера взята f(x) = x/(1 + |x|). Пунктир показывает y = 1. Общий довод строй из строгого возрастания.':'На примере f(x) = '+(sign*a)+'x − 1 и g(x) = '+(sign*b)+'x + 3 построены три прямые: бирюзовая f, охристая g, фиолетовая сумма. Для общего вывода используй определение.');
+  if(pair.length===2&&pair.every(Boolean)){
+   const first=pair[0],second=pair[1],valid=BigInt(first.n)*BigInt(second.d)<BigInt(second.n)*BigInt(first.d);
+   if(valid){
+    for(const q of pair){const outputs=monotoneExampleValue(g,q),xx=q.n/q.d,ordinate=unique?xx/(1+Math.abs(xx)):sign*(a+b)*xx+2;
+     points.push([xx,ordinate,'']);boundNote(host,'x = '+M.answer(q)+(unique?' даёт f = '+outputs[0]:': f = '+outputs[0]+', g = '+outputs[1]+', сумма = '+outputs[2])+'.').dataset.monotoneSample=M.answer(q);}
+   }else boundNote(host,'Первый аргумент должен быть строго меньше второго.').dataset.monotoneProbe='order';
+  }
+ }
+ host.append(rootGraph({curves,points,xRange:xr,yRange:yr,label:equation?'Левая часть уравнения и требуемый горизонтальный уровень':'Числовой пример для сравнения двух аргументов'},''));
+}
+
 function tripStops(g) {
  const to=g.distance/g.downstream,leave=to+g.rest,back=leave+g.distance/g.upstream;
  return [[0,0],[to,g.distance],[leave,g.distance],[back,2*g.distance]];
@@ -2750,6 +2792,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-monotone-reason'){monotoneReasonView(host,config);return;}
  if(config.type==='source-route-and-range'){riverDomainView(host,config,value);return;}
  if(config.type==='source-domain-and-sections'){movingSectionView(host,config,value);return;}
  if(config.type==='source-floor-parts'){floorPartsView(host,config,value);return;}
@@ -2860,5 +2903,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,tripStops,graphKnots,compoundDomainTrial,floorPiece,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,monotoneExampleValue,tripStops,graphKnots,compoundDomainTrial,floorPiece,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

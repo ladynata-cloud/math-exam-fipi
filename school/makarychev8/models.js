@@ -940,6 +940,9 @@
   }
 
   const finalFunctionSkills=[
+   {id:'zeros-and-poles',title:'Нуль и запрет знаменателя',description:'Подставь кандидата в исходную дробь и проверь допустимость.'},
+   {id:'monotone-proof',title:'Сложение строгих неравенств',description:'Сравни значения двух функций в выбранных точках и собери общий довод.'},
+   {id:'monotone-equation',title:'Решение и единственность',description:'Найди точку заданного уровня для строго возрастающей функции.'},
    {id:'rational-axis-location',title:'Дробь и координатные оси',description:'Определи положение положительной дроби при перемене аргумента.'},
    {id:'boat-cumulative-path',title:'Путь и положение катера',description:'Построй четыре события рейса на графике времени и всего пройденного пути.'},
    {id:'graph-full-range',title:'Своя ломаная с заданными границами',description:'Выбери вершины, чтобы обе проекции заполнили указанные отрезки.'},
@@ -959,6 +962,20 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='zeros-and-poles'){
+    const zero=(seed%2?-1:1)*(1+(seed+level)%10),pole=zero+1+(Math.floor(seed/4)+level)%6,hint='Проверяй нуль числителя, затем подставляй его в знаменатель.';
+    return {...common,prompt:'Найди нули y = (x − ('+zero+'))/(x − ('+pole+')).',kind:'set',answer:String(zero),graph:{type:'source-function-values',mode:'zeros',target:0,numerator:[String(-zero),'1'],denominator:[String(-pole),'1'],poles:[pole],diagnoseZeros:true,xRange:[Math.min(-3,zero-2),Math.max(3,pole+2)],yRange:[-4,4]},steps:[probe,step('Какой аргумент обращает знаменатель в нуль?',pole,hint)],hint,correction:hint,explanation:'x = '+zero+' допустим и даёт нулевой числитель.'};
+   }
+   if(id==='monotone-proof'){
+    const inc=(seed+level)%2===0,sign=inc?'<':'>',word=inc?'возрастают':'убывают',a=1+(seed+level)%7,b=1+Math.floor(seed/3)%6;
+    const claims=['Изменения отдельных значений можно просто вычесть.', 'При любых x₁ < x₂ значения обеих функций сравниваются знаком '+sign+'.','Сложение двух строгих сравнений даёт тот же знак между суммами.','Следовательно, их сумма строго '+(inc?'возрастает.':'убывает.')];
+    const hint='Попарно сравни значения при одних и тех же аргументах и сложи неравенства.';
+    return {...common,prompt:'На числовом примере f(x) = '+(inc?a:-a)+'x − 1, g(x) = '+(inc?b:-b)+'x + 3 проверь поведение. Затем докажи общий вывод для любых двух функций, которые строго '+word+'.',kind:'proof-chain',answer:'2;3;4',proofClaims:claims,graph:{type:'source-monotone-reason',mode:inc?'increasing':'decreasing',a,b},steps:[{...step('Испытай свои x₁ < x₂ через точку с запятой.','-1;2',hint,'source-domain-sample'),sourceDomain:'lt-pair',probeCount:2},step('Как сравниваются значения суммы?',sign,hint,'text')],hint,correction:hint,explanation:'Общность выбора x₁ и x₂ распространяет строгий знак на всю область.'};
+   }
+   if(id==='monotone-equation'){
+    const root=1+(seed+level)%5,k=1+Math.floor(seed/3)%8,cube=seed%2===0,x=cube?root:root*root,target=cube?x*x*x+k*x:root+x*x,expr=cube?'x³ + '+k+'x':'√x + x²',hint='Проверь корень подстановкой. На допустимых аргументах каждое слагаемое строго возрастает.';
+    return {...common,prompt:'Найди все решения '+expr+' = '+target+'.',kind:'set',answer:String(x),graph:{type:'source-monotone-reason',mode:cube?'cubic-linear':'sqrt-square',target,coefficient:k},steps:[probe,step('Сколько корней возможно после того, как один найден?',1,hint)],hint,correction:hint,explanation:'Подстановка '+x+' даёт '+target+'. Строгое возрастание исключает другие решения.'};
+   }
    if(id==='rational-axis-location'){
     const c=1+seed%13,k=1+(Math.floor(seed/3)+level)%8,hint='На вертикальной оси абсцисса равна нулю.';
     return {...common,prompt:'Найди ординату на оси y для y = '+c+'/(x² + '+k+').',kind:'number',answer:c+'/'+k,graph:{type:'source-route-and-range',group:'rational',mode:'oy',c,k},steps:[probe,step('При каком x линия пересекает ось y?',0,hint)],hint,correction:hint,explanation:'При x = 0 остаётся '+c+'/'+k+'.'};
