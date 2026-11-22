@@ -1258,6 +1258,17 @@ async function run(browser, origin, backend, failures) {
   await same(teacherFrame,studentFrame,'both radii and draft survive');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'accept any positive radius under four')).scene.correct);
   await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('4,01');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'accept any radius greater than four')).scene.correct);await narrow(student,studentFrame,'two-equal-circle-radii');
 
+  phase = 'source 5.78: wall length, rows and layers';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-78"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.78'}).waitFor();
+  for(const v of ['400','12','4800','10']){await teacherFrame.locator('#answer').fill(v);await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'wall unit '+v)).scene.correct);await teacherFrame.locator('[data-cmd=next]').click();}
+  await teacherFrame.locator('#answer').fill('4800');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'one layer as entire wall')).scene.message,/нижний слой/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=count]').selectOption({value:'2'});await studentFrame.locator('[data-v5-prediction]').fill('9600');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('48000');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const wallDraft=await same(studentFrame,teacherFrame,'two layers and draft restored');assert(wallDraft.scene.model.seen);assert.equal(wallDraft.scene.model.count,2);assert.equal(wallDraft.scene.savedInput,'48000');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'both wall views restored');
+  await teacherFrame.locator('#answer-form button').click();const fullWall=await same(teacherFrame,studentFrame,'all ten layers');assert(fullWall.scene.correct);assert.equal(fullWall.scene.attempt,2);await narrow(student,studentFrame,'all-wall-layers');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
