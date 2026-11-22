@@ -940,6 +940,17 @@
   }
 
   const finalFunctionSkills=[
+   {id:'estimate-root-reciprocal',title:'Округление графического корня',description:'Приближай пересечение возрастающей и убывающей ветвей.'},
+   {id:'build-four-powers',title:'Четыре ординаты над своим x',description:'Строй четыре связанные функции по одному рациональному аргументу.'},
+   {id:'compare-four-powers',title:'Порядок четырёх графиков',description:'Определи, какой график выше слева и справа от единицы.'},
+   {id:'build-piecewise-branches',title:'Два участка одного графика',description:'Строй каждую ветвь по своей формуле и учитывай границы.'},
+   {id:'study-piecewise-values',title:'Свойства функции по частям',description:'Сопоставь вершину, стык и правый край на новых данных.'},
+   {id:'rank-reflected-roots',title:'Упорядочивание значений корня',description:'Сравни ординаты на разных рациональных аргументах.'},
+   {id:'cross-line-root',title:'Пересечение прямой с корнем',description:'Подбирай абсциссы и сравнивай взаимное положение графиков.'},
+   {id:'punctured-root-slope',title:'Наклон и удалённая точка',description:'Исследуй число пересечений гиперболы с прямой.'},
+   {id:'line-intersection-location',title:'Пересечение в выбранном месте',description:'Придумай собственную прямую через ось или нужную четверть.'},
+   {id:'parallel-at-point',title:'Параллельная через точку',description:'Сохрани наклон и вычисли свободный член на новых данных.'},
+   {id:'line-parameter-direction',title:'Параметр и направление',description:'Исследуй параметр, при котором наклон меняет знак.'},
    {id:'strict-sign-study',title:'Строгий знак функции',description:'Проверь нуль и возможные знаки для новой формулы.'},
    {id:'identify-transformed-graph',title:'Вершина и граница графика',description:'Используй конечную точку корня или вершину модуля для распознавания.'},
    {id:'absolute-reciprocal-study',title:'Две положительные ветви',description:'Поставь свои точки по разным сторонам вертикальной оси.'},
@@ -965,6 +976,68 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='estimate-root-reciprocal'){
+    const k=1+(seed*3+level)%15,center=Math.cbrt(k*k),rounded=Math.round(center*10)/10;
+    const hint='Сравни высоты при двух близких положительных абсциссах и округли единственное пересечение.';
+    return {...common,kind:'number',prompt:'С помощью двух графиков оцени решение √x = '+k+'/x. Запиши абсциссу до десятых.',answer:String(rounded),graph:{type:'source-root-and-powers',group:'estimate',k},steps:[probe,step('Какая высота у гиперболы при x = 1?',k,hint)],hint,correction:hint,explanation:'Абсцисса пересечения при округлении до десятых равна '+rounded+'.'};
+   }
+   if(id==='build-four-powers'){
+    const n=2+(seed+level)%7,d=1+(Math.floor(seed/3)+level)%4,x=n*n+'/'+(d*d),hint='Выбери положительный рациональный квадрат и проверь все четыре ординаты.';
+    const pick=n===d?n+1:n,a=pick*pick,b=d*d,answer=[a+'/'+b,a+'/'+b,a*a+'/'+(b*b),a**3+'/'+b**3,pick+'/'+d].join(';');
+    return {...common,kind:'four-power-marks',prompt:'Построй прямую, квадрат, куб и корень по своему положительному аргументу, кроме 1. Для проверки сравни их ещё и при x = '+x+'.',answer,graph:{type:'source-root-and-powers',group:'powers',mode:'draw',sample:x},steps:[probe,step('Чему равна высота корня при контрольном x = '+x+'?',n+'/'+d,hint)],inputNote:'Введи x; x; x²; x³; √x для выбранного аргумента.',hint,correction:hint,explanation:'Для положительного x обе степени и корень лежат в первой четверти.'};
+   }
+   if(id==='compare-four-powers'){
+    const small=(seed+level)%2===0,n=small?1+seed%7:2+seed%13,d=small?n+1+level:1,sample=n+'/'+d,ascending=(Math.floor(seed/2)+level)%2===0,low=small?['куб','квадрат','прямая','корень']:['корень','прямая','квадрат','куб'];
+    const hint='Сравни аргумент с единицей, затем выбери нужное направление чтения.';
+    return {...common,kind:'four-power-order',prompt:'При x = '+sample+' расположи x, x², x³ и √x в порядке '+(ascending?'возрастания':'убывания')+'.',answer:(ascending?low:[...low].reverse()).join(';'),graph:{type:'source-root-and-powers',group:'powers',mode:'order',sample,side:small?'left':'right',ascending},inputNote:'Раздели обозначения формул точкой с запятой.',steps:[probe,step('Дай числитель контрольной дроби x = '+sample+'.',n,hint)],hint,correction:hint,explanation:'Для дроби между нулём и единицей возведение в степень уменьшает величину, а для x > 1 увеличивает.'};
+   }
+   if(id==='build-piecewise-branches'||id==='study-piecewise-values'){
+    const vertex=(seed%7)-3,join=vertex+1,root=(seed+level)%2===0,last=root?null:join+1+level%2,slope=-(1+(seed+level)%4),intercept=1-slope*join;
+    const right=root?'√(x − ('+join+') + 1)':slope+'x + ('+intercept+')';
+    const definition='y = (x − ('+vertex+'))² при x ≤ '+join+'; y = '+right+' при x > '+join+(root?'':' и x ≤ '+last)+'. ';
+    const graph={type:'source-piecewise-properties',vertex,join,last,shape:root?'root':'line',slope,intercept};
+    const hint='Применяй каждую строку только на её области и учитывай точку стыка.';
+    const steps=[probe,step('Какова высота в стыке?',1,hint)];
+    if(id==='build-piecewise-branches'){
+     const x1=root?join+3:join+.5,x2=root?join+8:join+1,y1=root?2:slope*x1+intercept,y2=root?3:slope*x2+intercept;
+     return {...common,kind:'piecewise-marks',prompt:definition+'Выбери по две точки каждой части.',answer:'('+vertex+';0),('+join+';1) | ('+x1+';'+y1+'),('+x2+';'+y2+')',graph:{...graph,mode:'graph'},steps,inputNote:'Две точки первой ветви | две точки второй ветви.',hint,correction:hint,explanation:'На границе x = '+join+' действует квадратичная формула; на правой ветви x строго больше.'};
+    }
+    const mode=['domain','range','increase','decrease'][(Math.floor(seed/2)+level)%4];
+    const ans=mode==='domain'?(root?'(-∞;+∞)':'(-∞;'+last+']'):mode==='range'?'['+(root?0:Math.min(0,slope*last+intercept))+';+∞)':mode==='increase'?'['+vertex+';'+(root?'+∞)':join+']'):'(-∞;'+vertex+']'+(root?'':'∪['+join+';'+last+']');
+    const labels={domain:'Укажи область определения.',range:'Укажи множество значений.',increase:'Укажи максимальный промежуток возрастания.',decrease:'Перечисли отдельно максимальные промежутки убывания через знак объединения.'};
+    return {...common,kind:'system-single',variable:mode==='range'?'y':'x',prompt:definition+labels[mode],answer:ans,graph:{...graph,mode},steps,hint,correction:hint,explanation:'Граница формул x = '+join+', вершина параболы при x = '+vertex+'. Получается '+ans+'.'};
+   }
+   if(id==='rank-reflected-roots'){
+    const shift=(seed+level)%9-2,half=3+seed%2,big=3+level+seed%4;
+    const xs=['1','0',String(big*big),String(half*half)+'/4','1/4'];
+    const answer=[shift-big,shift-half/2,shift-1,shift-0.5,shift].join(';');
+    const hint='Найди каждый корень, вычти его и упорядочь высоты от меньшей к большей.';
+    return {...common,kind:'sorted-root-values',prompt:'Расположи значения y = '+shift+' − √x при x = '+xs.join('; ')+' по возрастанию.',answer,graph:{type:'source-root-crossings',group:'rank',shift,xs},steps:[probe,step('Чему равно значение функции при x = 0?',shift,hint)],inputNote:'Разделяй значения точкой с запятой.',hint,correction:hint,explanation:'После упорядочения получаем '+answer+'.'};
+   }
+   if(id==='cross-line-root'){
+    const n=1+(seed+level)%6,b=1+Math.floor(seed/3)%5,yes=(seed+level)%3!==1,m=yes?(seed%2?n:-n):-n,intercept=yes?(m<0?b:-b):-b;
+    const map={type:'source-root-crossings',group:'cross',slope:[m,1],intercept,window:[0,b+4]};
+    const hint=yes?'Сравни взаимное положение в начале ветви и дальше вправо.':'Проверь, может ли прямая принять неотрицательное значение справа от нуля.';
+    return {...common,kind:'choice',prompt:'Имеют ли общую точку y = √x и y = '+m+'x + ('+intercept+')?',choices:['Есть общая точка','Общих точек нет'],answer:yes?'Есть общая точка':'Общих точек нет',graph:map,steps:[probe,step('Чему равна высота прямой при x = 0?',intercept,hint)],hint,correction:hint,explanation:yes?'Непрерывные графики меняют взаимное положение на неотрицательной полуоси.':'На неотрицательной полуоси прямая отрицательна, корень неотрицателен.'};
+   }
+   if(id==='punctured-root-slope'){
+    const k=1+(seed+level)%6,h=1+Math.floor(seed/2)%7,d=2+level,sign=seed%2?1:-1,ans=k*d*d+'/'+(h*h);
+    const hint='Прямая должна пройти через пропущенную точку и симметричную ей точку другой ветви.';
+    return {...common,kind:'number',prompt:'Из графика y = '+k+'/x удалили точку с абсциссой '+(sign*h)+'/'+d+'. При каком наклоне m у y = mx с оставшимся графиком ровно одна общая точка?',answer:ans,graph:{type:'source-root-crossings',group:'hole',mode:'slope',k,hole:[sign*h,d]},steps:[step('Проверь свой наклон.',1,hint,'rational-probe'),step('Сколько общих точек было бы у полных графиков при положительном наклоне?',2,hint)],hint,correction:hint,explanation:'Из m x² = '+k+' и координаты отсутствующей точки получаем m = '+ans+'.'};
+   }
+   if(id==='line-intersection-location'||id==='parallel-at-point'){
+    const k=1+(seed+level)%6,b=-(1+Math.floor(seed/2)%9)*k,x=-(1+seed%5),y=k*x+b;
+    const mode=id==='parallel-at-point'?'parallel':['third','ox','oy'][(seed+level)%3],offset=b+1+seed%4,point=[x,k*x+offset];
+    const answer=mode==='parallel'?'y='+k+'x+('+offset+')':mode==='third'?'y='+y:mode==='ox'?'y=0':'y='+b;
+    const hint=mode==='parallel'?'Равенство наклонов проверяет параллельность, подстановка обеих координат проверяет точку.':'Выбери подходящую точку исходной прямой и проведи через неё прямую с другим наклоном.';
+    const goal=mode==='parallel'?'параллельна ей и проходит через ('+point.join(';')+')':mode==='third'?'пересекает её в третьей четверти':mode==='ox'?'пересекает её на оси x':'пересекает её на оси y';
+    return {...common,prompt:'Дана y = '+k+'x + ('+b+'). Введи формулу другой прямой, которая '+goal+'.',kind:'affine-condition',answer,inputNote:'Запиши уравнение с y, например y = 2x + 3.',graph:{type:'source-affine-conditions',mode,line:[-k,1,b],point:mode==='parallel'?point:null},steps:[probe,step('Чему равна ордината исходной прямой при x = 0?',b,hint)],hint,correction:hint,explanation:hint+' Один пример: '+answer+'.'};
+   }
+   if(id==='line-parameter-direction'){
+    const offset=1+(seed+level)%13,intercept=(seed%9)-4,feat=['inc','dec','const'][(seed+level)%3],word={inc:'возрастает',dec:'убывает',const:'постоянна'}[feat],answer=feat==='inc'?'('+offset+';+∞)':feat==='dec'?'(-∞;'+offset+')':'['+offset+';'+offset+']';
+    const hint='Сравни коэффициент при x с нулём.';
+    return {...common,prompt:'Какие a дают функцию y = (a − '+offset+')x + ('+intercept+'), которая '+word+'?',kind:'system-single',variable:'a',answer,graph:{type:'source-affine-conditions',mode:'parameter',feature:feat,offset,intercept},steps:[step('Испытай свой параметр a.',0,hint,'rational-probe'),step('Чему равен a при горизонтальной прямой?',offset,hint)],hint,correction:hint,explanation:'Коэффициент при x обращается в нуль при a = '+offset+'.'};
+   }
    if(id==='strict-sign-study'){
     const code=[2,3,6,8,9][(seed+level)%5],param=1+Math.floor(seed/3)%13,positive=code!==3&&code!==6;
     const formula=({2:'x² + '+(5+param),3:'2x + '+(5+param),6:'−x² − '+(4+param),8:'√x + '+(1+param),9:'x⁴ + x² + '+(6+param)})[code];

@@ -1,0 +1,236 @@
+{
+  "parts": {
+    "783": [
+      null
+    ],
+    "784": [
+      null
+    ],
+    "785": [
+      null
+    ],
+    "786": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "783": {
+      "id": "source-main-0783",
+      "kind": "exercise",
+      "title": "Задача № 783",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "783",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "784": {
+      "id": "source-main-0784",
+      "kind": "exercise",
+      "title": "Задача № 784",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "784",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "785": {
+      "id": "source-main-0785",
+      "kind": "exercise",
+      "title": "Задача № 785",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "785",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "786": {
+      "id": "source-main-0786",
+      "kind": "exercise",
+      "title": "Задача № 786",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "786",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0783": {
+      "raw": "318abe494e8c64cf08cb472f8b2c3b299e5cd17c550083a05690a792b7aec1c2",
+      "authored": "c8ae4619264c365751059561e5e8e4b68afa58ba0955d1333f9c8b9110bb1120",
+      "integrated": "fbe97397e6329745735c665ea4715724754759944705ddf9a0da754d35ffc2ed"
+    },
+    "ex-main-0784": {
+      "raw": "f5f243594757e93bce0afdfc8d77778bd1f7514296fb3390d973366b6acae640",
+      "authored": "fdcaae7c280f44e644144438320af51fb6c4c3a4c993b15e22915c91d44bc3d5",
+      "integrated": "62c2be5e9489f13a941cc44b9ec1d2e8fbcc8da3eb2cd0093032d7a12a174678"
+    },
+    "ex-main-0785": {
+      "raw": "8593b8bf8a008cd715ddbb85f7caf32e2a9d2ae36009dbca5ee55c3533b99157",
+      "authored": "4f3f60775b2f659efc9281f24b4f881218e9f7cdbd14b7621ef6dda68363203b",
+      "integrated": "91623cdf42dc43288bbd5de149dc5c379369df72a98cea8d1a71764b9461b0ea"
+    },
+    "ex-main-0786": {
+      "raw": "e99b1cc7b11afe21d7022ccf5f222809519be6433fa290ecd73488d3fb770b44",
+      "authored": "f6e736c08fbedf80df7cc139cc01a7b712c865f178087145a109a38838463332",
+      "integrated": "e276711cbf40d8b0db96c6486bd69a453dd29dbb4820f58e5558f3fd9aa3700d"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0783|condition",
+      "monotone-paths-and-dual-solids-ex-main-0783-condition"
+    ],
+    [
+      "ex-main-0783|help:h1",
+      "monotone-paths-and-dual-solids-ex-main-0783-help-h1"
+    ],
+    [
+      "ex-main-0783|help:h2",
+      "monotone-paths-and-dual-solids-ex-main-0783-help-h2"
+    ],
+    [
+      "ex-main-0783|step-1",
+      "monotone-paths-and-dual-solids-ex-main-0783-step-1"
+    ],
+    [
+      "ex-main-0783|step-2",
+      "monotone-paths-and-dual-solids-ex-main-0783-step-2"
+    ],
+    [
+      "ex-main-0783|step-3",
+      "monotone-paths-and-dual-solids-ex-main-0783-step-3"
+    ],
+    [
+      "ex-main-0784|condition",
+      "monotone-paths-and-dual-solids-ex-main-0784-condition"
+    ],
+    [
+      "ex-main-0784|help:h1",
+      "monotone-paths-and-dual-solids-ex-main-0784-help-h1"
+    ],
+    [
+      "ex-main-0784|help:h2",
+      "monotone-paths-and-dual-solids-ex-main-0784-help-h2"
+    ],
+    [
+      "ex-main-0784|step-1",
+      "monotone-paths-and-dual-solids-ex-main-0784-step-1"
+    ],
+    [
+      "ex-main-0784|step-2",
+      "monotone-paths-and-dual-solids-ex-main-0784-step-2"
+    ],
+    [
+      "ex-main-0784|step-3",
+      "monotone-paths-and-dual-solids-ex-main-0784-step-3"
+    ],
+    [
+      "ex-main-0785|condition",
+      "monotone-paths-and-dual-solids-ex-main-0785-condition"
+    ],
+    [
+      "ex-main-0785|help:h1",
+      "monotone-paths-and-dual-solids-ex-main-0785-help-h1"
+    ],
+    [
+      "ex-main-0785|help:h2",
+      "monotone-paths-and-dual-solids-ex-main-0785-help-h2"
+    ],
+    [
+      "ex-main-0785|step-1",
+      "monotone-paths-and-dual-solids-ex-main-0785-step-1"
+    ],
+    [
+      "ex-main-0785|step-2",
+      "monotone-paths-and-dual-solids-ex-main-0785-step-2"
+    ],
+    [
+      "ex-main-0785|step-3",
+      "monotone-paths-and-dual-solids-ex-main-0785-step-3"
+    ],
+    [
+      "ex-main-0786|condition",
+      "monotone-paths-and-dual-solids-ex-main-0786-condition"
+    ],
+    [
+      "ex-main-0786|help:h1",
+      "monotone-paths-and-dual-solids-ex-main-0786-help-h1"
+    ],
+    [
+      "ex-main-0786|help:h2",
+      "monotone-paths-and-dual-solids-ex-main-0786-help-h2"
+    ],
+    [
+      "ex-main-0786|step-1",
+      "monotone-paths-and-dual-solids-ex-main-0786-step-1"
+    ],
+    [
+      "ex-main-0786|step-2",
+      "monotone-paths-and-dual-solids-ex-main-0786-step-2"
+    ],
+    [
+      "ex-main-0786|step-3",
+      "monotone-paths-and-dual-solids-ex-main-0786-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "53b462585a98b87d3d3c4d7d41aad0bf9b171a773203bdfb34da2ef781581d84",
+      "afterSHA256": "dc7eee5b6439b9e4ae07901132fba4ee8ec93552b154f125951ff912547a25d2"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "7ca407c6496d30d02356b491d7c8c26773718c01c259479f7aa483fd78e060bc",
+      "afterSHA256": "097c8885e77f2f779df400044effbdeab31895f24896d7b986d321b2d44aed7b"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T02:40:00Z",
+    "scope": "All final-review parts of 764–767 and advanced source exercises 768–782 are complete. The remaining advanced exercises begin at 783."
+  },
+  "before": {
+    "course": "25514cacbd8b20af4a84b1aa9828a4074fd69cffc0e261fb6453e4e7b3ff39fe",
+    "index": "b3f9d72f1be91c93c619067443c160e916494c7286af26dab947da441033931e",
+    "registry": "0d5883db6aed2a634972136cee3b1047ae15f56e1f9c74269204a29f1005d44d",
+    "cases": "51202918ab1822aba9a9136abd5d7d1290ed6a082309cb3e46b01ea5e89b64f2"
+  }
+}

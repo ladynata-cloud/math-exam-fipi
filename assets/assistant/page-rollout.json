@@ -2256,10 +2256,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "d6e287b6dd942f2fae9559645c414618acf1be2fbab33f4969635d9d50e9257d",
-      "afterSha256": "2d26b7142bc440d53ceebd3826b9c851959b5240ecd15a4c90313f728a47d39a",
+      "beforeSha256": "2604b3a60df04b36cb986326ceaad2aa34111aab0ca133390f63265265da3b89",
+      "afterSha256": "d96b836b64134c03fe5076406a4488a1b58812eb62a8160038e001efd4d71330",
       "placement": "before-head-close",
-      "sourceSha": "feec3de6a2a19bf17dc98bdbb2bc7a3238c67eb3"
+      "sourceSha": "a0f58aeb3262584a67c0fabd45cc41df08922146"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -7965,6 +7965,42 @@
         "school/index.html"
       ],
       "boundary": "Проверены шесть преобразований единиц и связь кубического сантиметра с миллилитром, четыре объёма воды, три части периметра и доля урока. Состояния моделей восстанавливаются у учителя и ученика."
+    },
+    {
+      "previousBaseSha": "feec3de6a2a19bf17dc98bdbb2bc7a3238c67eb3",
+      "sourceBaseSha": "77fae5c90de1bf71bfcb751ed4222a0e7013dbb5",
+      "task": "docs/tasks/MAKARYCHEV8_1158_1160.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "77fae5c90de1bf71bfcb751ed4222a0e7013dbb5",
+      "sourceBaseSha": "5a04c193f47f54e77613e853d7aa783f1124f07e",
+      "task": "docs/tasks/MAKARYCHEV8_1161_1163.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5a04c193f47f54e77613e853d7aa783f1124f07e",
+      "sourceBaseSha": "676894ba420103d3daf06727754378228d8f85ae",
+      "task": "docs/tasks/MAKARYCHEV8_1164.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "676894ba420103d3daf06727754378228d8f85ae",
+      "sourceBaseSha": "a0f58aeb3262584a67c0fabd45cc41df08922146",
+      "task": "docs/tasks/MAKARYCHEV8_1165_1166.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
