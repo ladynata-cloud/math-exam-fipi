@@ -182,6 +182,139 @@
     return {ok:false,text:opHint[x.op]};
   }
 
+  const orderStems=[
+    'У числа 79 399 есть предыдущее натуральное число. Выбери его.',
+    'Прочитай запись 12 705 320. Какая цифра занимает разряд десятков тысяч?',
+    'В числе 9 876 543 210 найди цифру сотен миллионов.',
+    'Рассмотри дробь 0,123456789. Какая цифра записана в разряде миллионных?',
+    'У числа 3 2/9 назови знаменатель дробной части.',
+    'Какое действие подразумевается между целой и дробной частями смешанного числа?',
+    'Запиши числом разрядную сумму 80 000 000 + 3 000 000 + 4 000 + 20.',
+    'Какое число равно сумме 3 · 10⁵ + 5 · 10⁴ + 8 · 10² + 7?'
+  ];
+  const orderClues=[
+    'Предыдущее число на единицу меньше данного.','От единиц, двигаясь влево, дойди до пятой позиции.',
+    'Разбей запись на классы по три цифры справа. В классе миллионов выбери сотни.',
+    'Справа от запятой миллионные занимают шестую позицию.','Знаменатель показывает, на сколько равных частей разделена единица. В записи дроби он стоит под чертой.',
+    'Смешанное число состоит из целых единиц и добавленной к ним дробной части.',
+    'Оставь нули в тех разрядах, которые не названы.','Расставь коэффициенты по степеням десятки. Если слагаемого для разряда нет, оставь в этом разряде ноль.'
+  ];
+  const contrast=(part)=>part.prompt.split(/\s+и\s+/).map(s=>s.trim());
+  function compareSource(number,part){
+    if(number===14)return part.id==='014-itog'?'Восстанови по порядку восемь букв выбранных окончаний из предыдущих подпунктов. Объяснение можно записать отдельно.':orderStems[Number(part.id.slice(4))-1];
+    const [a,b]=contrast(part);return number===15?'Сравни числа '+a+' и '+b+'. Выбери знак между ними. Проверь целые части и первый различающийся разряд.':'Сравни дроби '+a+' и '+b+'. Выбери знак. Попробуй объяснить решение через общий знаменатель, сравнение с единицей или расстояние до единицы.';
+  }
+  function fractionHint(id){
+    return {'016-a':'При равных знаменателях сравни числители.','016-b':'При одинаковых положительных числителях большему знаменателю соответствует меньшая доля.','016-v':'Сравни каждую дробь с единицей. У какой числитель больше знаменателя?','016-g':'Приведи обе дроби к общему знаменателю или сравни перекрёстные произведения.','016-d':'Обе дроби близки к единице. Какая из них недобирает меньшую долю?'}[id];
+  }
+  function sourceSupport(number,part){
+    if(number===14){
+      if(part.id==='014-itog')return numberTiles(['1','2','3','4','5','6','7','8'],'Одна буква для каждой позиции. Порядок важен.');
+      const i=Number(part.id.slice(4))-1,tokens=[['до','79 399','после'],['12','705','320'],['9','876','543','210'],['1','2','3','4','5','6','7','8','9'],['целая часть','числитель','знаменатель'],['три целых','ещё две девятых'],['миллионы','тысячи','единицы'],['10⁵','10⁴','10³','10²','10¹','10⁰']][i];
+      return numberTiles(tokens,['Соседи числа','Классы по три цифры','Классы по три цифры','Цифры после запятой, слева направо','Части смешанного числа','Две величины в одной записи','Разрядные классы','Степени десяти'][i]);
+    }
+    const row=contrast(part);
+    if(number===15){
+      const pieces=row.map(v=>v.replace(/\s/g,'').split(',')),w=Math.max(...pieces.map(v=>v[0].length)),d=Math.max(...pieces.map(v=>v[1]?.length||0));
+      const bands=pieces.map(([a,b=''])=>{const str=a.padStart(w,' ')+b.padEnd(d,'0');return '<div style="display:grid;grid-template-columns:repeat('+str.length+',minmax(0,1fr));margin:.3em 0" aria-label="'+U.esc(a+(b?','+b:''))+'">'+[...str].map((c,i)=>'<span style="text-align:center;background:#edf4ed;border:1px solid #90aa9b;'+(i===w-1&&d?'border-right:3px solid #395b48':'')+'">'+(c===' '?' ':c)+'</span>').join('')+'</div>';}).join('');
+      return '<figure style="margin:.5em 0"><figcaption>Одинаковые разряды стоят друг под другом.</figcaption>'+bands+'<p>У десятичной дроби справа можно дописать нули, сохранив значение.</p></figure>';
+    }
+    return fractionMethods(part);
+  }
+  function fractionMethods(part,selected=0,interactive=false){
+    const [a,b]=contrast(part),[an,ad]=a.split('/').map(Number),[bn,bd]=b.split('/').map(Number);
+    let l=ad,r=bd;while(r){const next=l%r;l=r;r=next;}
+    const den=ad/l*bd,names=['Исходные дроби','Сравнение с единицей','Общий знаменатель','Дополнение до единицы'];
+    const options=interactive?'<label>Способ <select data-fraction-method>'+names.map((v,i)=>'<option value="'+i+'"'+(i===selected?' selected':'')+'>'+v+'</option>').join('')+'</select></label>':'';
+    const unit=(n,d)=>n===d?'равна единице':n<d?'меньше единицы':'больше единицы';
+    let text;
+    if(selected===1)text=a+' '+unit(an,ad)+', '+b+' '+unit(bn,bd)+'. Если обе дроби по одну сторону от 1, нужен ещё один способ.';
+    else if(selected===2)text='При знаменателе '+den+' числитель первой дроби равен '+an*(den/ad)+', второй — '+bn*(den/bd)+'. Какой числитель больше?';
+    else if(selected===3){const missing=(n,d)=>n===d?'уже равна 1':n<d?'до 1 не хватает '+(d-n)+'/'+d:'превышает 1 на '+(n-d)+'/'+d;
+      text='Первая дробь: '+missing(an,ad)+'. Вторая: '+missing(bn,bd)+'. У меньшей правильной дроби недостающая часть больше.';}
+    else text='Проверь, что уже одинаково, и выбери подходящий способ.';
+    return '<figure data-fraction-host style="margin:.5em 0"><figcaption>Выбери способ сравнения дробей</figcaption><div style="display:flex;gap:1em;align-items:center">'+U.fmt(a)+'<span>?</span>'+U.fmt(b)+'</div>'+options+'<p>'+U.fmt(text)+'</p></figure>';
+  }
+  function mountFraction(main,part,work,save){
+    let host=main.querySelector('[data-fraction-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=fractionMethods(part,work.fractionView||0,true);host=main.querySelector('[data-fraction-host]');
+      const select=host.querySelector('select');select.onchange=()=>{const n=Number(select.value);if(n)work.fractionView=n;else delete work.fractionView;save();draw();host.querySelector('select').focus({preventScroll:true});};
+    }
+    draw();
+  }
+
+  function orderResponse(number,part,input,correct){
+    if(number<14||number>16)return null;
+    if(part.id==='014-itog'){
+      const actual=input.toLowerCase().replace(/[\s,;.)]/g,''),expected='вбабвббб';
+      if(!/^[абв]{8}$/.test(actual))return {ok:false,text:'Нужно восемь букв а, б или в по порядку. Разбор останется в твоих записях.'};
+      const i=[...actual].findIndex((v,j)=>v!==expected[j]);return i<0?{ok:true,text:'Восемь букв совпали с проверкой. Запись остаётся доступной для просмотра учителем.'}:{ok:false,text:'Проверь ответ '+(i+1)+'. '+orderClues[i]};
+    }
+    if(correct)return null;
+    if(number===14)return {ok:false,text:orderClues[Number(part.id.slice(4))-1]};
+    if(number===16)return {ok:false,text:fractionHint(part.id)};
+    const [a,b]=contrast(part),parts=[a,b].map(v=>v.replace(/\s/g,'').split(','));
+    if(parts[0][0].length!==parts[1][0].length)return {ok:false,text:'Сначала посчитай цифры в целой части. Большее количество цифр у положительного целого означает большее значение.'};
+    return {ok:false,text:'Сравнивай слева направо, начиная с наибольшего разряда. Большая длина дробной части сама по себе не определяет большее число.'};
+  }
+
+  function campQuestion(number,part){
+    if(number===18)return 'Рассмотри восемь планет Солнечной системы. Обозначь их множество C; множество планет, чьё русское название начинается на М, — M; группу планет-гигантов — Г. Изобрази их области и поставь точку Земля. Объясни свой выбор.';
+    return part.id==='017-a'?'В лагере три отряда. В первом 25 ребят, во втором в 1,2 раза больше, чем в первом, а в третьем на 7 ребят меньше, чем во втором. Всех ребят поделили поровну на две команды. Сколько человек в каждой команде?':'За 28 дней в лагере израсходована тонна картофеля. Первые 12 дней ежедневно расходовалось 38 кг, а во все оставшиеся дни ежедневный расход был одинаковым. Сколько килограммов расходовалось за день во второй период?';
+  }
+  const relationNames=['Выбери расположение','Раздельные области','Области пересекаются','M целиком внутри Г','Г целиком внутри M'];
+  const planetZones=['Выбери место для Земли','В C вне M и Г','Только в M','Только в Г','В пересечении M и Г','Вне C'];
+  function astronomy(work,interactive){
+    const relation=work.planetRelation||0,zone=work.earthZone||0;
+    const positions=[[],[[82,68,40],[190,68,40]],[[105,68,47],[156,68,47]],[[107,68,22],[131,68,56]],[[132,68,56],[152,68,23]]][relation];
+    const options=(labels,key,active)=>'<label>'+key+' <select '+(key==='Области'?'data-planet-relation':'data-planet-zone')+'>'+labels.map((label,i)=>'<option value="'+i+'"'+(i===active?' selected':'')+'>'+label+'</option>').join('')+'</select></label>';
+    const shapes=positions.map(([cx,cy,r],i)=>'<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+(i?'#9c5435':'#417457')+'" stroke-width="2"/><text x="'+(cx+(i?1:-1)*Math.floor(r*.33))+'" y="'+(cy-r+16)+'" text-anchor="middle">'+(i?'Г':'М')+'</text>').join('');
+    const locations=[null,[135,136],relation===3?[105,71]:relation===4?[96,75]:relation===2?[75,72]:[81,70],relation===4?[153,71]:relation===3?[161,71]:relation===2?[188,72]:[191,70],relation===3?[105,71]:relation===4?[152,71]:[130,70],[136,171]];
+    const impossible=(zone===4&&relation===1)||(zone===2&&relation===3)||(zone===3&&relation===4);
+    const position=(relation||zone===1||zone===5)&&!impossible?locations[zone]:null;
+    const earth=position?'<circle cx="'+position[0]+'" cy="'+position[1]+'" r="3" fill="#16476a"/><text x="'+(position[0]+6)+'" y="'+(position[1]+3)+'" style="font-size:11px">Земля</text>':'';
+    const description=relationNames[relation]+'. '+(zone?planetZones[zone]:planetZones[0])+'.';
+    return '<figure data-planet-host style="margin:.5em 0"><figcaption>Диаграмма множеств планет</figcaption>'+(interactive?'<div style="display:grid;gap:.4em">'+options(relationNames,'Области',relation)+options(planetZones,'Земля',zone)+'</div>':'')+
+      '<svg viewBox="0 0 276 185" style="width:100%;max-width:450px;display:block" role="img" aria-label="'+U.esc(description)+'"><rect x="8" y="8" width="260" height="146" rx="20" fill="#f3f7f2" stroke="#34594d" stroke-width="2"/><text x="18" y="29">C</text>'+shapes+earth+'</svg>'+
+      (impossible?'<p>При выбранном расположении такой области нет. Измени расположение или место для Земли.</p>':'')+
+      (interactive?'<button class="secondary" type="button" data-planet-use>Перенести мой рисунок в ответ</button>':'')+'</figure>';
+  }
+  function mountPlanets(main,work,save){
+    let host=main.querySelector('[data-planet-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=astronomy(work,true);host=main.querySelector('[data-planet-host]');
+      for(const [selector,key] of [['[data-planet-relation]','planetRelation'],['[data-planet-zone]','earthZone']]){
+        host.querySelector(selector).onchange=e=>{const n=Number(e.target.value);if(n)work[key]=n;else delete work[key];save();draw();host.querySelector(selector).focus({preventScroll:true});};
+      }
+      const use=host.querySelector('[data-planet-use]');use.disabled=!work.planetRelation||!work.earthZone;
+      use.onclick=()=>{
+        const input=main.querySelector('#answer');if(!input)return;
+        input.value='Мой рисунок: '+relationNames[work.planetRelation]+'. Земля: '+planetZones[work.earthZone]+'.';
+        input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();
+      };
+    }
+    draw();
+  }
+  function campSupport(number,part){
+    if(number===18)return astronomy({},false);
+    const people=part.id==='017-a';
+    const sections=people?[['Первый отряд','25 ребят'],['Второй отряд','в 1,2 раза больше первого'],['Третий отряд','на 7 меньше второго'],['Две равные команды','все три отряда вместе']]:[['Весь запас','1 т = 1000 кг'],['Первая часть смены','12 дней по 38 кг'],['Остальная часть смены','28 − 12 дней'],['Во второй период','одинаковый расход в каждый день']];
+    return '<figure style="margin:.5em 0"><figcaption>'+(people?'Как связаны три отряда и команды':'Как разделить срок и запас на две части')+'</figcaption><dl>'+sections.map(([a,b])=>'<dt><strong>'+a+'</strong></dt><dd style="margin-left:.6em">'+b+'</dd>').join('')+'</dl></figure>';
+  }
+  function campResponse(number,part,input,correct,work){
+    if(number===17&&!correct){
+      const match=n=>root.PetersonBook.M.equal(input,n);
+      if(part.id==='017-a')return {ok:false,text:match(78)?'Это общее число детей во всех отрядах. На сколько равных команд их разделили?':match(30)||match(23)?'Ты нашёл численность одного отряда. В команды входят дети из всех трёх отрядов.':'«В 1,2 раза» требует умножения, а «на 7 меньше» — вычитания. Сначала найди численность каждого отряда.'};
+      return {ok:false,text:match(544)?'Это весь оставшийся запас в килограммах. В ответе нужен расход за один день.':match(16)?'Такова длительность второго периода. Раздели оставшийся запас на это число дней.':'Найди, сколько килограммов потратили за 12 дней. Из тонны вычти этот расход и раздели остаток на оставшиеся дни.'};
+    }
+    if(number!==18||!input.startsWith('Мой рисунок: '))return null;
+    const described='Мой рисунок: '+relationNames[work.planetRelation]+'. Земля: '+planetZones[work.earthZone]+'.';if(input!==described)return null;
+    if(work.planetRelation!==1)return {ok:false,text:'Назови планеты на М, затем четыре гиганта. Есть ли хотя бы одна планета сразу в обоих списках?'};
+    if(work.earthZone!==1)return {ok:false,text:'Земля входит в Солнечную систему, её название начинается с З. Проверь, входит ли она в группу гигантов.'};
+    return {ok:true,text:'Расположение областей и Земли совпало. Подпиши, какие планеты входят в каждую группу. Письменное объяснение остаётся для проверки учителем.'};
+  }
+
   function normalizeNumber(raw) {
     const s=raw.trim().replace(/\.$/,'').replace(/\s*\/\s*/g,'/').replace(/\s+/g,' ');
     return /^\d{1,3}(?: \d{3})+$/.test(s)?s.replace(/ /g,''):s.replace(/(?<=\d)\.(?=\d)/g,',');
@@ -228,7 +361,72 @@
     return items.length===6?{ok:true,text:'Все шесть чисел расположены по возрастанию. Прочитай их вслух, называя миллионы, тысячи и единицы.'}:{ok:false,text:'Порядок верный. Проверь, все ли шесть позиций второй пятёрки использованы.'};
   }
 
+  const factChecks=[
+    ['Бруно следовал астрономическому учению Птолемея.','Бруно развивал представление Коперника о движении Земли.','Бруно не следовал этому учению Птолемея.','Бруно не занимался астрономией.','Птолемей следовал учению Бруно.','Отрицай именно указанную связь учёного с учением. Занятия астрономией сами по себе её не устанавливают.','https://plato.stanford.edu/entries/bruno/','Стэнфордская энциклопедия философии'],
+    ['Рекорд высоты среди деревьев принадлежит пальмам.','Выше всех известных ныне живущих деревьев вырастают вечнозелёные секвойи.','Рекорд высоты среди деревьев не принадлежит пальмам.','Все пальмы низкие.','Ни одно другое дерево не выше пальмы.','Высокое дерево может и не быть рекордсменом. Утверждение о первенстве опровергает более высокий вид.','https://home.nps.gov/articles/000/coast-redwood.htm','Служба национальных парков США'],
+    ['По массе в земном воздухе кислорода не меньше, чем азота.','В 100 кг сухого воздуха около 23,1 кг кислорода и 75,5 кг азота.','По массе кислорода меньше, чем азота.','По массе кислорода не больше, чем азота.','По массе кислорода столько же, сколько азота.','При равенстве исходное «не меньше» уже верно. Можно ли оставить равенство в его отрицании?','https://assets.publishing.service.gov.uk/media/5e18b963ed915d3b08797c2e/Volume_10_Meteorology__CFS_version_.pdf','Метеорологический справочник, таблица 1'],
+    ['Территория Германии больше территории Франции.','Справочные площади: Германия около 358 тысяч км², Франция более 550 тысяч км².','Территория Германии не больше территории Франции.','Территории этих стран равны.','Германия больше любой другой страны.','Отрицание знака «больше» охватывает сразу два случая: меньше и равно. Верное наблюдение и точное отрицание — разные требования.','https://european-union.europa.eu/principles-countries-history/eu-countries/france_en','Справочник ЕС о странах'],
+    ['Год основания Санкт-Петербурга — 1704 или 1705.','Датой основания города считают закладку крепости в 1703 году.','Город не был основан ни в 1704, ни в 1705 году.','Город основан не в 1704 году, зато в 1705.','Город основан не в 1705 году, зато в 1704.','Для отрицания «или» исключи оба года. Если оставить один из них, исходная версия по-прежнему возможна.','https://www.prlib.ru/history/619267','Президентская библиотека'],
+    ['Альтернативы в высказывании о кенгуру — жить в Австралии или в Антарктиде. Под «или» здесь понимаем «выполнена хотя бы одна альтернатива».','Рыжий кенгуру обитает в Австралии.','Пропустить при записи ложных высказываний.','Записать как ложное, потому что Антарктида не подходит.','Записать как ложное, потому что нужны оба материка.','Логическое «или» истинно уже при одной верной альтернативе. Исходное задание просит отрицать только ложные высказывания.','https://australian.museum/learn/animals/mammals/red-kangaroo/','Австралийский музей']
+  ];
+  const relationChecks=[
+    ['Число x меньше пяти девятых.',['x < 5/9','x ≤ 5/9','x > 5/9'],['x ≥ 5/9','x > 5/9','x ≤ 5/9'],'Подставь x = 5/9. Слово «меньше» равенства не допускает.'],
+    ['Число y не меньше трёх целых четырёх тысячных.',['y ≥ 3,004','y > 3,004','y ≥ 3,04'],['y < 3,004','y ≤ 3,004','y > 3,004'],'Проверь тысячные, затем возьми y = 3,004. Равенство уже входит в исходную фразу.'],
+    ['Если из a вычесть b, получится c.',['a − b = c','b − a = c','a + b = c'],['a − b ≠ c','a − b < c','b − a ≠ c'],'Порядок уменьшаемого и вычитаемого сохраняется. Два неравных числа могут стоять в любом порядке.'],
+    ['Квадрат числа n отличается от 16.',['n² ≠ 16','n² = 16','2n ≠ 16'],['n² = 16','n² < 16','n = 16'],'Подставь n = −4. Решение должно учитывать и положительные, и отрицательные значения n.'],
+    ['Значение x больше квадрата этого же числа.',['x > x²','x ≥ x²','x² > x'],['x ≤ x²','x < x²','x ≥ x²'],'Попробуй x = 0, затем x = 0,5. Ровно одна из двух записей должна выполняться каждый раз.'],
+    ['Значение x на единицу меньше квадрата этого же числа.',['x = x² − 1','x < x²','x² = x − 1'],['x ≠ x² − 1','x ≥ x²','x = x² + 1'],'«На единицу» задаёт точную разность. Для отрицания достаточно любой другой разности, в том числе двух.']
+  ];
+  function logicCard(number,part){
+    const i=Number(part.id.split('-')[1])-1;
+    if(number===19){
+      const [statement,fact,denial,a,b,hint,url,sourceName]=factChecks[i];
+      return {prompt:'Реши, верно ли утверждение. Если оно ложно, вырази его отрицание. Обоснуй своё решение. '+statement,
+        reference:fact,url,sourceName,leftTitle:'Оценка утверждения',left:['Истинно','Ложно'],li:i===5?0:1,rightTitle:'Что записать',right:[denial,a,b],ri:0,hint};
+    }
+    if(number===20){
+      const [statement,left,right,hint]=relationChecks[i];
+      return {prompt:'Переведи фразу в математическую запись, затем запиши её отрицание. '+statement,
+        reference:'Проверка пары: при одном и том же выборе чисел первая запись и её отрицание должны давать противоположные ответы.',leftTitle:'Первая запись',left,li:0,rightTitle:'Её отрицание',right,ri:0,hint};
+    }
+    return {prompt:'Проверь высказывание «каждая река впадает в Каспийское море». Сформулируй его отрицание и объясни, почему из двух фраз истинна ровно одна.',
+      reference:'Волга заканчивает свой путь в Каспийском море, а Нева относится к бассейну Балтийского моря.',url:'https://bigenc.ru/c/vostochno-evropeiskaia-ravnina-e8ecd2',sourceName:'Большая российская энциклопедия',
+      leftTitle:'Как звучит отрицание?',left:['Есть река, не впадающая в Каспийское море.','Ни одна река не впадает в Каспийское море.','Есть река, впадающая в Каспийское море.'],li:0,
+      rightTitle:'Как проверить исходную фразу?',right:['Указать реку, которая впадает в другое море.','Достаточно найти реку, впадающую в Каспийское море.','Убедиться, что ни одна река не впадает в Каспийское море.'],ri:0,
+      hint:'Для опровержения слов «все реки» достаточно одного контрпримера. Отдельная река, впадающая в Каспий, исходную фразу ещё не доказывает.'};
+  }
+  function logicConstruction(number,part,interactive){
+    const card=logicCard(number,part);
+    const group=(side,title,options)=>{
+      const offset=(Number(part.id.split('-')[1])+number+(side==='left'?0:1))%options.length;
+      return '<label style="display:grid;gap:.2em">'+U.esc(title)+'<select style="max-width:100%;width:100%;min-width:0" data-logic-'+side+'><option value="">Выбери вариант</option>'+options.map((_,j)=>{const i=(j+offset)%options.length;return '<option value="'+(i+1)+'">'+U.esc(options[i])+'</option>';}).join('')+'</select></label>';
+    };
+    return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
+  }
+  function logicText(card,work){return (card.left[work.logicLeft-1]||'…')+' / '+(card.right[work.logicRight-1]||'…');}
+  function mountLogic(main,number,part,work,save){
+    const host=main.querySelector('[data-logic-host]');if(!host)return;
+    host.outerHTML=logicConstruction(number,part,true);
+    const card=logicCard(number,part),left=main.querySelector('[data-logic-left]'),right=main.querySelector('[data-logic-right]'),use=main.querySelector('[data-logic-use]');
+    function update(){left.value=work.logicLeft||'';right.value=work.logicRight||'';main.querySelector('[data-logic-summary]').textContent=logicText(card,work);use.disabled=!work.logicLeft||!work.logicRight;}
+    for(const [select,key] of [[left,'logicLeft'],[right,'logicRight']])select.onchange=()=>{if(select.value)work[key]=Number(select.value);else delete work[key];update();save();};
+    use.onclick=()=>{const field=main.querySelector('#answer');field.value=logicText(card,work);field.dispatchEvent(new Event('input',{bubbles:true}));field.focus();};
+    const reference=main.querySelector('[data-logic-reference]');reference.open=Boolean(work.logicReference);
+    reference.ontoggle=()=>{if(reference.open===Boolean(work.logicReference))return;work.logicReference=reference.open;if(reference.open)root.PetersonBook.assist(work);save();};
+    update();
+  }
+  function logicResponse(number,part,input,work){
+    if(number<19||number>21)return null;
+    const card=logicCard(number,part);if(input!==logicText(card,work))return null;
+    if(work.logicLeft!==card.li+1)return {ok:false,text:number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
+    if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
+    return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
+  }
+
   function openingQuestion(number,part) {
+    if(number>=19&&number<=21)return logicCard(number,part).prompt;
+    if(number===17||number===18)return campQuestion(number,part);
+    if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
     if(number>=11&&number<=13)return number===11?'Вычисли устно. Выбери удобный способ: разряды, перенос запятой или проверку обратным действием.':number===12?'Выполни указанное действие с десятичными дробями. Для записи по разрядам или промежуточных вычислений открой черновик.':'Найди значение всего выражения. Выдели внутренние действия и запиши промежуточные результаты перед последним действием.';
     const index=Number(part.id.split('-')[1])-1;
@@ -273,6 +471,9 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
+    if(item.number>=19&&item.number<=21)drawing=logicConstruction(item.number,part,false);
+    if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
+    if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
     if(item.number>=7&&item.number<=10)drawing=pageSevenFigure(item.number,part);
     if(item.number===240) drawing=angleSet();
@@ -297,5 +498,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse};
 })(globalThis);

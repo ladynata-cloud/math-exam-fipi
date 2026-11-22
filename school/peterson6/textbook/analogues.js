@@ -153,13 +153,115 @@
     return {kind:'expression',expression:calculation,prompt,answer:E.M.answer(E.exact(calculation)),mistake:hint,id:'analog-'+part.id+'-'+attempt,family:'decimal-'+part.id,match:'skill'};
   }
 
+  function comparisonPractice(number,part,attempt){
+    const v=seed(part.id)%47+attempt,t=2+v%7,numeric=(prompt,answer,hint)=>({...numerical(prompt,answer,'Проверь разряд или часть числа.',hint),mistake:hint});
+    const sign=(a,b)=>{const M=E.M,r=M.operation('subtract',a,b);return r.n<0?'<':r.n>0?'>':'=';};
+    let model;
+    if(number===14){
+      const i=part.id==='014-itog'?8:Number(part.id.slice(4))-1;
+      if(i===0){const n=36101+13*(v%211);model=numeric('Назови натуральное число прямо перед '+n+'.',n-1,'Требуется уменьшить данное число ровно на единицу.');}
+      if(i===1||i===2){const power=i===1?4:8,n=(i===1?12007033:2007346012)+t*10**power;model=numeric('Какая цифра стоит в разряде '+(i===1?'десятков тысяч':'сотен миллионов')+' числа '+n+'?',Math.floor(n/10**power)%10,'Разбей число на классы по три цифры справа, затем найди нужную позицию в классе.');}
+      if(i===3){const digits='34782'+t+'19';model=numeric('Найди цифру миллионных у числа 0,'+digits+'.',t,'Отсчитай шесть позиций от запятой вправо.');}
+      if(i===4){model=numeric('У смешанного числа '+(2+t)+' 1/'+(8+t)+' какой знаменатель дробной части?',8+t,'Знаменатель расположен под дробной чертой.');}
+      if(i===5){const whole=t+1,den=t+4,answer=whole+' + 2/'+den,options=[whole+' × 2/'+den,answer,whole+' − 2/'+den];model=choice('Какая запись передаёт значение смешанного числа '+whole+' 2/'+den+'?',options,answer,'Целая и дробная части складываются.');}
+      if(i===6||i===7){const base=i===6?10**6:10**5,a=1+(v+3)%8,b=2+v%6;const total=a*base+b*1000+40+2;
+        model=numeric(i===6?'Собери число по разрядной сумме '+(a*base)+' + '+(b*1000)+' + 40 + 2.':'Запиши обычным числом сумму '+a+' · 10⁵ + '+b+' · 10³ + 4 · 10 + 2.',total,'Поставь цифры на названные позиции, остальные заполни нулями.');}
+      if(i===8){const base=3000+t*10,items=['а) '+(base+1),'б) '+(base-1),'в) '+base],order=v%3,permuted=items.slice(order).concat(items.slice(0,order)).map((x,i)=>'абв'[i]+') '+x.slice(3));const right=permuted.find(x=>Number(x.slice(3))===base-1);
+        model=choice('Число перед '+base+' записано одним из вариантов. Выбери букву вместе с верной записью.',permuted,right,'Сначала вычисли предыдущее число, затем прочитай букву именно его варианта.');}
+    }else{
+      const key=part.id.slice(4),fmt=(n,p)=>E.M.decimal(E.M.operation('divide',n,10**p));let a,b,clue;
+      if(number===15){
+        if(key==='a'){a=1000000+t*100001;b=100000+t*1010;}
+        else if(key==='b'){a=2710000+t*100+5;b=2710000+t*10+8;}
+        else if(key==='v'){a=fmt(1000*t+329,3);b=fmt(t*10+6,1);}
+        else if(key==='g'){a=fmt(1000*t-17,3);b=t;}
+        else if(key==='d'){a=fmt(t*111+2,1);b=fmt(t*10017+942,4);}
+        else {a=fmt(t,4);b=fmt(t-1,3);}
+        clue='Сравни целые части, затем десятые, сотые и следующие разряды.';
+      }else{
+        if(key==='a'){a=(t+1)+'/'+(t+5);b=t+'/'+(t+5);}
+        else if(key==='b'){a=t+'/'+(t+6);b=t+'/'+(t+4);}
+        else if(key==='v'){a=(t+8)+'/'+(t+3);b=(t+4)+'/'+(t+7);}
+        else if(key==='g'){a=(t+1)+'/'+(2*t+3);b=t+'/'+(2*t+1);}
+        else {a=(t+6)+'/'+(t+7);b=(t+7)+'/'+(t+8);}
+        clue=key==='d'?'Обе дроби меньше единицы на одну долю. Сравни размеры недостающих долей.':'Общий знаменатель позволяет сравнить числители; можно также сравнить каждую дробь с единицей.';
+      }
+      if(v%2)[a,b]=[b,a];
+      model=choice('Сравни '+a+' и '+b+'. Какой знак нужно поставить между ними?', ['<','=','>'],sign(a,b),clue);model.mistake=clue;
+    }
+    return {...model,id:'analog-'+part.id+'-'+attempt,family:'comparison-'+part.id,match:'skill'};
+  }
+
+  function campPractice(number,part,attempt){
+    const n=seed(part.id)%29+attempt;
+    let task;
+    if(number===18){
+      const list=['Меркурий','Венера','Земля','Марс','Юпитер','Сатурн','Уран','Нептун'],giants=list.slice(4),letters=['М','В','Н','С','З','Ю','У'],letter=letters[n%7],planet=list[n%8],inM=planet[0]===letter,inG=giants.includes(planet);
+      const choices=['В обеих группах','Только в группе по букве','Только в группе гигантов','Вне обеих групп'],answer=choices[inM&&inG?0:inM?1:inG?2:3];
+      task=choice('Восемь планет в нашей модели: '+list.join(', ')+'. Одна группа объединяет названия на '+letter+', вторая — гигантов ('+giants.join(', ')+'). Где окажется '+planet+'?',choices,answer,'Сначала проверь первую букву, затем сверь название со списком гигантов. Оба признака независимы.');
+      task.mistake='Нужно проверить оба признака. Определи первую букву и найди выбранную планету в списке гигантов.';
+    }else if(part.id==='017-a'){
+      const a=20+5*(n%15),b=a*6/5,offset=4+2*(n%4)+a%2,c=b-offset,answer=(a+b+c)/2;
+      task=numerical('В первом отряде '+a+' ребят, во втором их в 1,2 раза больше, а в третьем на '+offset+' меньше, чем во втором. Всех детей делят поровну на две команды. Сколько ребят в одной?',answer,'Найди общее число ребят, затем раздели на две команды.','При умножении на 1,2 прибавляется одна пятая от исходного числа.');
+      task.mistake='Проверь, что учтены три отряда, а делишь ты на число команд.';
+    }else{
+      const first=6+n%8,last=8+n%9,rate=20+n%7,later=13+n%11,total=first*rate+last*later;
+      task=numerical('Запас составляет '+total+' кг. В первые '+first+' дней брали по '+rate+' кг в день. Запаса хватило ровно на '+(first+last)+' дней, причём после первого периода расход был постоянным. Сколько килограммов в день брали в конце?',later,'Раздели оставшийся запас на число оставшихся дней.','Отдели расход и длительность первого периода от общего запаса и срока.');
+      task.mistake='Вычти потраченные килограммы из всего запаса; из полной длительности вычти первые дни.';
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'camp-'+part.id,match:'skill'};
+  }
+
+  function logicPractice(number,part,attempt){
+    const i=Number(part.id.split('-')[1])-1,k=seed(part.id)%23+attempt,t=2+k%13,shift=(options)=>options.slice(k%options.length).concat(options.slice(0,k%options.length));
+    let prompt,options,answer,hint;
+    if(number===19){
+      let truth,denials;
+      if(i===0){
+        const people=['Ира','Нина','Олег','Яна'],person=people[k%4],mentor=people[(k+1)%4],other=people[(k+2)%4],subject=k%2?mentor:other;
+        prompt='В списке кружка для карточки «'+person+'» указан только один наставник — '+mentor+'. Проверяем фразу: «На карточке «'+person+'» указан наставник '+subject+'».';
+        denials=['На карточке «'+person+'» наставником указан не '+subject+'.','На карточке «'+subject+'» не указан наставник '+person+'.','У всех участников один наставник.'];truth=subject===mentor;hint='Сопоставь имя указанного наставника со списком, сохрани роли участника и наставника.';
+      }else if(i===1){
+        const h=t+8,high=k%2===0;prompt='Два измеренных дерева имеют высоту '+h+' м и '+(h+3)+' м. Проверяем фразу: «Из этих деревьев выше то, чья высота '+(high?h+3:h)+' м».';
+        denials=['Дерево высотой '+(high?h+3:h)+' м не выше второго.','Оба дерева одной высоты.','Оба дерева ниже '+h+' м.'];truth=high;hint='У двух чисел высот сравни значения в одинаковых единицах.';
+      }else if(i===2||i===3){
+        const a=t+4,b=a+(k%3-1)*2;
+        prompt=i===2?'В смеси '+a+' г песка и '+b+' г соли. Проверяем фразу: «Масса песка не меньше массы соли».':'Площади двух участков A и Б составляют '+a+' м² и '+b+' м². Проверяем фразу: «Площадь A больше площади Б».';
+        denials=i===2?['Песка меньше, чем соли.','Песка не больше, чем соли.','Песка и соли поровну.']:['Площадь A не больше площади Б.','Площадь A меньше площади Б.','Участки имеют равную площадь.'];truth=i===2?a>=b:a>b;hint=i===2?'«Не меньше» включает равенство. Сравни две массы.':'Слово «больше» не включает равенство. Формальным отрицанием будет «не больше».';
+      }else{
+        const year=1710+t,a=year+(k%3-1),b=a+2;
+        if(i===4){prompt='В календаре кружка отмечен единственный год постройки башни — '+year+'. Проверяем фразу: «Это произошло в '+a+' или '+b+' году».';denials=['Год постройки отличен и от '+a+', и от '+b+'.','Год постройки отличен от '+a+' или от '+b+'.','Год постройки — '+a+'.'];truth=year===a||year===b;}
+        else{const bags=['синем','зелёном','белом','жёлтом'],x=k%4,y=(x+1)%4,z=(x+1+k%3)%4;prompt='В этом опыте бусина лежит в '+bags[z]+' мешочке. Проверяем фразу: «Бусина в '+bags[x]+' или '+bags[y]+' мешочке».';denials=['Бусины нет ни в '+bags[x]+', ни в '+bags[y]+' мешочке.','Бусины нет в '+bags[x]+' мешочке.','Бусина в обоих мешочках.'];truth=z===x||z===y;}
+        hint='Проверь обе альтернативы. Для «или» достаточно одной верной, а для его отрицания обе должны быть ложны.';
+      }
+      options=['Исходная фраза истинна, её отрицание ложно','Исходная фраза ложна, её отрицание истинно'];answer=options[truth?0:1];if(attempt%2){options=denials;answer=options[0];prompt+=' Выбери точное отрицание проверяемой фразы.';}else prompt+=' Какая оценка верна?';
+    }else if(number===20){
+      const x=['u','v','t','s'][k%4],f=(t+1)+'/'+(t+3),d=t+',00'+(1+k%8);
+      const data=[
+        ['«'+x+' меньше '+f+'»',[x+' ≥ '+f,x+' > '+f,x+' ≤ '+f],'Проверь отдельно равенство дроби.'],
+        ['«'+x+' не меньше '+d+'»',[x+' < '+d,x+' ≤ '+d,x+' > '+d],'Равенство уже включено в «не меньше».'],
+        ['«Разность '+x+' и '+t+' равна '+(t+4)+'»',[x+' − '+t+' ≠ '+(t+4),t+' − '+x+' ≠ '+(t+4),x+' − '+t+' < '+(t+4)],'Сохрани порядок вычитания. Отрицание равенства допускает оба направления неравенства.'],
+        ['«Квадрат '+x+' отличается от '+t*t+'»',[x+'² = '+t*t,x+' = '+t*t,x+'² < '+t*t],'Сохрани квадрат и измени только знак отношения.'],
+        ['«Число '+x+' больше, чем его квадрат минус '+t+'»',[x+' ≤ '+x+'² − '+t,x+' < '+x+'² − '+t,x+' ≥ '+x+'² − '+t],'Сохрани обе части сравнения. В отрицании строгого «больше» учти равенство.'],
+        ['«Число '+x+' на '+t+' меньше своего квадрата»',[x+' ≠ '+x+'² − '+t,x+' ≥ '+x+'²',x+' = '+x+'² + '+t],'Слова «на столько-то» задают точное равенство, которое можно нарушить по-разному.']
+      ][i];prompt='Выбери точное отрицание фразы '+data[0]+'.';options=data[1];answer=options[0];hint=data[2];
+    }else{
+      const counts=[t+1,t-1,t+3],names=['А','Б','В'],j=k%3;const shown=counts.map((v,n)=>names[(n+j)%3]+' — '+v).join(', ');
+      prompt='На трёх полках книги: '+shown+'. Какую полку достаточно указать, чтобы опровергнуть фразу «на каждой полке не меньше '+t+' книг»?';options=names.map(v=>'Полка '+v);answer=options[(1+j)%3];hint='Для слова «каждая» нужен один контрпример. Найди полку, где число меньше порога.';
+    }
+    const exercise=choice(prompt,shift(options),answer,hint);return {...exercise,id:'analog-'+part.id+'-'+attempt,family:'logic-page9-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>10)return createLegacy(number,part,attempt);
+    if(number<7||number>21)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=19)return logicPractice(number,part,attempt);
+    if(number>=17)return campPractice(number,part,attempt);
+    if(number>=14)return comparisonPractice(number,part,attempt);
     const model=repeatNumberWork(number,part,attempt);
     return {...model,id:'analog-'+part.id+'-'+attempt,family:'page7-'+part.id,match:'skill'};
   }
@@ -188,7 +290,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=10&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=21&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -210,7 +312,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=10&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=21&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

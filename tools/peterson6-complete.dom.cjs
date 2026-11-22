@@ -493,3 +493,55 @@ test('printed 11–13 retain exact source values, independent decimal models and
  const old=s.w.PetersonBook.blank(p);old.note='Черновик к исходному выражению.';s.w.PetersonBook.submit(p,old,'1,5');
  const stable=s.w.PetersonBook.sanitize(p,old);assert.equal(stable.note,old.note);assert(stable.independent);assert.equal(stable.decimalView,undefined);
 });
+test('page 8 statement endings, place-value comparisons and fraction methods agree with the issued volume',async t=>{
+ const s=await surface(t,BOOK+'#map'),bank=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(13,16),answers=[['в) 79 398','б) 0','а) 8','б) 6','в) 9','б) сложения','б) 83 004 020','б) 350 807','вбабвббб.'],['>','>','<','<','>','<'],['>','<','>','<','<']];
+ assert.equal(element(s,'[aria-label="Задания на странице 8"]').querySelectorAll('a').length,5);
+ for(const [j,item] of bank.entries())for(const [i,p] of item.parts.entries()){
+  assert.equal(p.answer,answers[j][i]);await route(s,'#n/'+item.number+'/'+p.id);
+  const pane=sourcePresent(s);assert.match(pane.textContent,/Всё условие/);assert(pane.querySelector('figure'));
+  assert(pane.querySelector('.problem').textContent.length>35);
+  for(let n=0;n<8;n++){const model=s.w.PetersonAnalogues.create(item.number,p,n);assert.equal(model.family,'comparison-'+p.id);assert(s.w.PetersonBook.check(model,model.answer));
+   if(item.number!==14){const match=model.prompt.match(/Сравни (.+?) и (.+?)\./);assert(match);
+    const value=v=>{const [a,b]=v.replace(/,/g,'.').split('/');return Number(a)/(b===undefined?1:Number(b));};
+    const v1=value(match[1]),v2=value(match[2]);assert.equal(model.answer,v1===v2?'=':v1<v2?'<':'>');
+   }
+  }
+  if(item.number===16){const m=element(s,'[data-fraction-method]');m.value='2';m.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.equal(bookWork(s,p.id).fractionView,2);assert(!bookWork(s,p.id).assisted);assert.match(element(s,'[data-fraction-host]').textContent,/числитель первой/);}
+  input(s,'#answer',p.id==='014-itog'?'В Б А Б В Б Б Б':p.answer);submit(s,'#answer-form');const work=bookWork(s,p.id);
+  if(p.id==='014-itog'){assert(!work.independent&&!work.correct&&work.submitted);assert.match(element(s,'#feedback').textContent,/Восемь букв/);}
+  else assert(work.correct&&work.independent,p.id);
+ }
+});
+test('camp quantities and the independently built planet diagram are checked from the selected source part',async t=>{
+ const s=await surface(t,BOOK+'#n/17/017-a'),bank=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(16,18);
+ for(const [i,p] of bank[0].parts.entries()){
+  await route(s,'#n/17/'+p.id);const text=sourcePresent(s).querySelector('.problem').textContent;assert.match(text,i?/тонна/:/1,2 раза/);
+  input(s,'#answer',i?'544':'78');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,i?/оставшийся запас/:/общее число/);
+  input(s,'#answer',i?'34':'39');submit(s,'#answer-form');const work=bookWork(s,p.id);assert(work.correct&&!work.assisted&&!work.independent);
+  for(let n=0;n<33;n++){const model=s.w.PetersonAnalogues.create(17,p,n),nums=model.prompt.match(/\d+(?:,\d+)?/g).map(v=>Number(v.replace(',','.')));
+   const result=i?(nums[0]-nums[1]*nums[2])/(nums[3]-nums[1]):(nums[0]+nums[0]*nums[1]*2-nums[2])/2;assert.equal(Number(model.answer),result);assert(Number.isInteger(result));}
+ }
+ await route(s,'#n/18/018-1');
+ const change=(selector,v)=>{const el=element(s,selector);el.value=String(v);el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ change('[data-planet-relation]',2);change('[data-planet-zone]',1);click(s,'[data-planet-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/в обоих списках/);assert.equal(bookWork(s,'018-1').planetRelation,2);
+ change('[data-planet-relation]',1);change('[data-planet-zone]',3);click(s,'[data-planet-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/название начинается/);
+ change('[data-planet-zone]',1);click(s,'[data-planet-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/совпало/);const work=bookWork(s,'018-1');assert(work.submitted&&!work.independent&&!work.correct);assert.equal(work.earthZone,1);
+ const restored=await surface(t,BOOK+'#n/18/018-1',storage(s));assert.equal(element(restored,'[data-planet-zone]').value,'1');assert.equal(element(restored,'[data-planet-relation]').value,'1');assert.equal(element(restored,'#answer').value,work.draft);
+ const answers=new Set();for(let n=0;n<56;n++){const model=s.w.PetersonAnalogues.create(18,bank[1].parts[0],n);assert(s.w.PetersonBook.check(model,model.answer));answers.add(model.answer);}assert.equal(answers.size,4);
+});
+test('source page 9 contrasts truth with exact negation, keeps reasons reviewable and remembers the chosen pair',async t=>{
+ const s=await surface(t,BOOK+'#n/19/019-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(18,21);
+ function change(key,v){const input=element(s,'[data-logic-'+key+']');input.value=String(v);input.dispatchEvent(new s.w.Event('change',{bubbles:true}));}
+ for(const row of rows)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  const correctLeft=row.number===19&&p.id!=='019-6'?2:1;assert.equal(element(s,'[data-logic-use]').disabled,true);
+  change('left',correctLeft);change('right',2);click(s,'[data-logic-use]');submit(s,'#answer-form');
+  assert.match(element(s,'#feedback').className,/error/);assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct);
+  change('right',1);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Пара записей подходит/);
+  const w=bookWork(s,p.id);assert.equal(w.logicLeft,correctLeft);assert.equal(w.logicRight,1);assert(w.submitted&&!w.correct&&!w.independent);
+  const first=s.w.PetersonAnalogues.create(row.number,p,0),next=s.w.PetersonAnalogues.create(row.number,p,1);assert.notEqual(first.prompt,next.prompt);
+  for(let attempt=0;attempt<22;attempt++){const task=s.w.PetersonAnalogues.create(row.number,p,attempt);assert.equal(new Set(task.choices).size,task.choices.length);assert(task.choices.includes(task.answer));assert(s.w.PetersonBook.check(task,task.answer));}
+ }
+ const p=rows[1].parts[0];await route(s,'#n/20/'+p.id);const reference=element(s,'[data-logic-reference]');reference.open=true;reference.dispatchEvent(new s.w.Event('toggle'));assert(bookWork(s,p.id).assisted);
+ const restored=await surface(t,BOOK+'#n/20/'+p.id,storage(s));assert.equal(element(restored,'[data-logic-reference]').open,true);assert.equal(element(restored,'[data-logic-right]').value,'1');assert.match(element(restored,'#answer').value,/≥/);
+});
