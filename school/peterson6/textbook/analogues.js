@@ -400,14 +400,25 @@
     return {...choice(prompt,choices.slice(shift).concat(choices.slice(0,shift)),choices[0],hint),id:'analog-'+part.id+'-'+attempt,family:'divisor-'+part.id,match:'skill',mistake:hint};
   }
 
+  function flowPractice(part,attempt){
+    const first=part.id.split('-')[1]==='1',k=seed(part.id)%79+attempt,R=E.M.operation,show=E.M.decimal,threshold=first?R('divide',2+k%7,10):R('multiply',2+k%7,10),side=k%3-1;
+    const v=R('add',threshold,R('multiply',side,first?'0.01':1)),a=R(first?'multiply':'divide',v,10),yes=first?side>=0:side<0;
+    const yesValue=first?R('divide',2+k%7,100):R('divide',31+k%13,10),noValue=first?R('divide',3+k%7,100):R('divide',42+k%13,10);
+    const answer=first?R(yes?'subtract':'add',v,yes?yesValue:noValue):R(yes?'add':'subtract',v,yes?yesValue:noValue);
+    const prompt='Алгоритм: a = '+show(a)+'. '+(first?'Умножь на 0,1':'Раздели на 0,1')+'. Если промежуточное значение '+(first?'≥ ':'< ')+show(threshold)+', '+(first?'вычти ':'прибавь ')+show(yesValue)+', иначе '+(first?'прибавь ':'вычти ')+show(noValue)+'. Найди выход x.';
+    const hint='Проверяй условие после первого действия. На границе «≥» разрешает равенство, а «<» — нет.';
+    return {...numerical(prompt,show(answer),'Запиши конечное значение x.',hint),id:'analog-'+part.id+'-'+attempt,family:'flow-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>29)return createLegacy(number,part,attempt);
+    if(number<7||number>30)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===30)return flowPractice(part,attempt);
     if(number===29)return divisibilityPractice(part,attempt);
     if(number===28)return scopePractice(part,attempt);
     if(number===27)return witnessPractice(part,attempt);
@@ -445,7 +456,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=29&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=30&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -467,7 +478,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=29&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=30&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

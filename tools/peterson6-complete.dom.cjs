@@ -658,3 +658,20 @@ test('the divisibility lab calculates all factors, shared factors and generated 
  }
  const r=await surface(t,BOOK+'#n/29/029-6',storage(s));assert.equal(element(r,'[data-divisor-m]').value,'12');assert.equal(element(r,'[data-divisor-n]').value,'15');assert.match(element(r,'[data-divisor-results]').textContent,/Общие делители: 1, 3/);
 });
+test('both printed decision diagrams and all table rows honour equality and preserve corrected and unaided work',async t=>{
+ const s=await surface(t,BOOK+'#n/30/030-1-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[29],a=[0.08,0.6,2.9,3,7.2,20.5];
+ const setBranch=choice=>{const el=element(s,'[data-flow-branch]');el.value=choice;el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/30/'+p.id);const first=i<6,v=first?a[i%6]/10:a[i%6]*10,yes=first?v>=0.3:v<30,actual=first?(yes?v-.09:v+.05):(yes?v+5.4:v-7.2),wrong=first?(yes?v+.05:v-.09):(yes?v-7.2:v+5.4);
+  assert.equal(element(s,'[aria-label="Таблица значений алгоритма"] tbody').children.length,6);assert.match(sourcePresent(s).textContent,/Вход a/);
+  input(s,'[data-flow-value]',String(Math.round(v*1000)/1000));setBranch(yes?'no':'yes');click(s,'[data-flow-check]');assert.match(element(s,'[data-flow-feedback]').textContent,i%6===3?/равенстве порогу/:/Сравни/);
+  const once=bookWork(s,p.id).errors;click(s,'[data-flow-check]');assert.equal(bookWork(s,p.id).errors,once);assert(once>0);
+  setBranch(yes?'yes':'no');click(s,'[data-flow-check]');assert.match(element(s,'[data-flow-feedback]').textContent,/ветвь верны/);
+  input(s,'#answer',String(Math.round(wrong*1000)/1000));submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/противоположная ветвь/);input(s,'#answer',String(Math.round(actual*1000)/1000));submit(s,'#answer-form');
+  const w=bookWork(s,p.id);assert(w.correct&&!w.independent&&!w.assisted);assert.match(element(s,'[data-flow-output="'+p.id+'"]').textContent,/проверено/);
+  for(let j=0;j<35;j++){const task=s.w.PetersonAnalogues.create(30,p,j),nums=task.prompt.match(/\d+(?:[,.]\d+)?/g).map(x=>Number(x.replace(',','.')));assert.equal(nums.length,5);const interim=first?nums[0]*nums[1]:nums[0]/nums[1],comp=Math.round((interim-nums[2])*1e6),cond=first?comp>=0:comp<0;
+   const x=first?(cond?interim-nums[3]:interim+nums[4]):(cond?interim+nums[3]:interim-nums[4]);assert(Math.abs(x-Number(task.answer.replace(',','.')))<1e-8);assert(s.w.PetersonBook.check(task,task.answer));}
+ }
+ const r=await surface(t,BOOK+'#n/30/030-1-4',storage(s));assert.equal(element(r,'[data-flow-branch]').value,'yes');assert.match(element(r,'[data-flow-feedback]').textContent,/ветвь верны/);assert.equal(r.document.querySelectorAll('[data-flow-output]').length,6);for(const td of r.document.querySelectorAll('[data-flow-output]'))assert.match(td.textContent,/проверено/);
+ const independent=await surface(t,BOOK+'#n/30/030-1-4');input(independent,'#answer','0,21');submit(independent,'#answer-form');assert(bookWork(independent,'030-1-4').independent);
+});

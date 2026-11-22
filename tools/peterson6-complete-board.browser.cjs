@@ -75,9 +75,40 @@ async function same(a,b,label){
  }));
  assert.deepEqual(await view(b),await view(a),label+' visible');return scene;
 }
+async function reloadFrame(page,wrapper){
+  await page.reload({waitUntil:'domcontentloaded'});
+  await waitConnected(page);
+  return frameFor(page,wrapper);
+}
+async function transferTo(teacher,student,destination){
+  const expectsStudent=destination==='student';
+  await Promise.all([waitConnected(teacher),waitConnected(student)]);
+  await teacher.locator('#openShare').click();
+  const toggle=teacher.locator('#controlToggle');
+  const owner=(page,expected)=>page.waitForFunction(v=>document.body.classList.contains('control-owner')===v,expected,{polling:50});
+  const read=page=>page.evaluate(()=>({connected:document.querySelector('#shareStatus')?.textContent,mirror:document.querySelector('#mirrorStatus')?.dataset.mirrorStatus,
+    owner:document.body.classList.contains('control-owner'),label:document.querySelector('#controlToggle')?.textContent,control:document.querySelector('#controlBadge')?.textContent}));
+  try{
+    await Promise.all([owner(teacher,expectsStudent),owner(student,!expectsStudent)]);
+    assert.equal((await toggle.textContent()).trim(),expectsStudent?'Передать ход':'Забрать ход');
+    await toggle.click();
+    await Promise.all([owner(teacher,!expectsStudent),owner(student,expectsStudent)]);
+  }catch(error){
+    const [teacherState,studentState]=await Promise.all([read(teacher),read(student)]);
+    throw new Error('Control transfer to '+destination+': '+JSON.stringify({teacher:teacherState,student:studentState})+'; '+error.message);
+  }
+  await teacher.locator('#sharePanel [data-close-panel]').click();
+}
 async function waitConnected(page) {
-  await page.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' &&
-    document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected', null, { polling: 50, timeout: 15000 });
+  try{
+    await page.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' &&
+      document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected', null, { polling: 50, timeout: 15000 });
+  }catch(error){
+    const state=await page.evaluate(()=>({share:document.querySelector('#shareStatus')?.textContent,mirror:document.querySelector('#mirrorStatus')?.dataset.mirrorStatus,
+      mirrorLabel:document.querySelector('#mirrorStatus')?.textContent,control:document.querySelector('#controlBadge')?.textContent,
+      frame:document.querySelector('#trainerFrame')?.contentDocument?.querySelector('h1')?.textContent,role:document.body.className}));
+    throw new Error('Room and trainer connection: '+JSON.stringify(state)+'; '+error.message);
+  }
 }
 async function verifyEarlierRegistry(browser, origin, backend, failures) {
   const ids=['peterson6-textbook','peterson6-workshop'];
@@ -134,7 +165,7 @@ async function run(browser, origin, backend, failures, published) {
     await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
     await teacher.waitForFunction(()=>document.querySelector('#studentLink').value.includes('role=student')&&document.querySelector('#shareStatus').textContent==='подключено');
     const link=await teacher.locator('#studentLink').inputValue();
-    await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(link);
+    await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(link,{waitUntil:'domcontentloaded'});
     await teacher.locator('#chooseTrainer').click();await teacher.locator('#pickerSearch').fill(id);
     await teacher.locator('#pickerResults .picker-item').filter({hasText:byId(id).title}).first().click();
     await Promise.all([waitConnected(teacher),waitConnected(student)]);
@@ -161,10 +192,8 @@ async function run(browser, origin, backend, failures, published) {
     }
     const before=await same(a,b,'exercise, guidance, feedback and notes');
     assert.equal(before.work.assisted,true);assert.equal(before.work.independent,false);
-    await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'observer reload');
-    await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();
-    await student.waitForFunction(()=>document.body.classList.contains('control-owner'));
-    await teacher.locator('#sharePanel [data-close-panel]').click();
+    b=await reloadFrame(student,wrapper);await same(a,b,'observer reload');
+    await transferTo(teacher,student,'student');
     await b.locator('#note').fill('Если a<b и c>d, то x<0. Записано ~l.');
     await same(b,a,'student keeps working in the same variant');
     assert.equal(await a.locator('#note').inputValue(),'Если a<b и c>d, то x<0. Записано ~l.');
@@ -196,9 +225,9 @@ async function run(browser, origin, backend, failures, published) {
       await b.locator('#answer-form button').click();const listed=await same(b,a,'set correction, manual work pending');assert(!listed.work.correct&&listed.work.submitted);assert.match(listed.message.text,/все нужные элементы/);
       const panel=b.locator('.equivalent-exercise');await panel.locator('summary').first().click();await panel.getByRole('button',{name:'Другой пример'}).click();
       await panel.locator('select').selectOption({index:1});await panel.locator('form button').click();const practiced=await same(b,a,'separate author variant and selected answer');assert.equal(practiced.analogue.attempt,1);assert(practiced.analogue.work.draft);
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'observer reload restores the exact exercise, picks and practice attempt');
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
-      await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'pupil reload restores same controls');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'observer reload restores the exact exercise, picks and practice attempt');
+      await transferTo(teacher,student,'teacher');
+      b=await reloadFrame(student,wrapper);await same(a,b,'pupil reload restores same controls');
       await a.locator('#number-input').fill('10');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №10');await a.locator('#answer').fill('6 702 058');await a.locator('#answer-form button').click();const dictation=await same(a,b,'grouped millions accepted in shared dictation');assert(dictation.work.correct);assert.equal(dictation.work.draft,'6 702 058');
       await a.locator('#number-input').fill('11');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №11');await a.locator('[data-decimal-position]').selectOption('2');
       const cells=await same(a,b,'decimal position selected by the teacher');assert.equal(cells.route,'#n/11/011-a-1');assert.equal(cells.work.decimalView,2);assert.equal(await b.locator('[data-decimal-position]').inputValue(),'2');
@@ -209,73 +238,76 @@ async function run(browser, origin, backend, failures, published) {
         if(PetersonVolumeRoom.getState().analogue!==null)throw Error('Restored original room must keep its absent practice panel');
       },oldScene);
       await a.locator('[data-decimal-position]').selectOption('1');await same(a,b,'first controller change after old snapshot');
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await transferTo(teacher,student,'student');
       await b.locator('#answer').fill('15');await b.locator('#answer-form button').click();const scaleError=await same(b,a,'pupil shifted the decimal point');assert.match(scaleError.message.text,/разряд/);assert.equal(scaleError.work.firstErrors.final,'15');
       await b.locator('#answer').fill('1,5');await b.locator('#answer-form button').click();assert((await same(b,a,'corrected decimal on both screens')).work.correct);
       const decimalPanel=b.locator('.equivalent-exercise');await decimalPanel.locator('summary').first().click();await decimalPanel.getByRole('button',{name:'Другой пример'}).click();await decimalPanel.locator('input').fill('6,04');
       const varied=await same(b,a,'independent decimal variant and its draft');assert.equal(varied.analogue.attempt,1);assert.equal(varied.analogue.work.draft,'6,04');
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'decimal exercise, attempt and place survive teacher reconnect');
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
-      await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'decimal exercise, attempt and place survive pupil reconnect');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'decimal exercise, attempt and place survive teacher reconnect');
+      await transferTo(teacher,student,'teacher');
+      b=await reloadFrame(student,wrapper);await same(a,b,'decimal exercise, attempt and place survive pupil reconnect');
       await a.locator('#number-input').fill('16');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №16');await a.locator('.part-picker a[href="#n/16/016-d"]').click();await a.waitForFunction(()=>PetersonVolumeRoom.getState().route==='#n/16/016-d'&&document.querySelector('.part-picker a[aria-current="page"],.part-picker a.active')?.getAttribute('href')==='#n/16/016-d');await a.locator('[data-fraction-method]').selectOption('3');
       const fractionView=await same(a,b,'two roles inspect missing unit fractions');assert.equal(fractionView.work.fractionView,3);assert.equal(await b.locator('[data-fraction-host] [aria-label="1 разделить на 46"]').count(),1);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await transferTo(teacher,student,'student');
       await b.locator('#answer').selectOption('>');await b.locator('#answer-form button').click();const unitMiss=await same(b,a,'incorrect comparison near one');assert.match(unitMiss.message.text,/недобирает/);
       await b.locator('[data-fraction-method]').selectOption('2');await b.locator('#answer').selectOption('<');await b.locator('#answer-form button').click();const correctedMethod=await same(b,a,'new method and correction');assert.equal(correctedMethod.work.fractionView,2);assert(correctedMethod.work.correct);assert.equal(correctedMethod.work.firstErrors.final,'>');
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'teacher reload preserves fraction method and answer');
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
-      await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'pupil reload preserves fraction method and handoff');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'teacher reload preserves fraction method and answer');
+      await transferTo(teacher,student,'teacher');
+      b=await reloadFrame(student,wrapper);await same(a,b,'pupil reload preserves fraction method and handoff');
       await a.locator('#number-input').fill('18');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №18');
       await a.locator('[data-planet-relation]').selectOption('2');await a.locator('[data-planet-zone]').selectOption('1');await a.locator('[data-planet-use]').click();await a.locator('#answer-form button').click();
       const overlapPlanet=await same(a,b,'incorrect overlap in planet diagram');assert.equal(overlapPlanet.work.planetRelation,2);assert.equal(overlapPlanet.work.earthZone,1);assert.match(overlapPlanet.message.text,/в обоих списках/);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await transferTo(teacher,student,'student');
       await b.locator('[data-planet-relation]').selectOption('1');await b.locator('[data-planet-zone]').selectOption('3');await b.locator('[data-planet-use]').click();await b.locator('#answer-form button').click();
       const giantEarth=await same(b,a,'pupil changes Earth placement');assert.equal(giantEarth.work.earthZone,3);assert.match(giantEarth.message.text,/название начинается/);
       await b.locator('[data-planet-zone]').selectOption('1');await b.locator('[data-planet-use]').click();await b.locator('#answer-form button').click();const earthDone=await same(b,a,'drawing corrected and submitted for human review');assert.match(earthDone.message.text,/совпало/);assert(earthDone.work.submitted&&!earthDone.work.correct&&!earthDone.work.independent);
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'constructed areas survive teacher reload');
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'constructed areas survive pupil reload');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'constructed areas survive teacher reload');
+      await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'constructed areas survive pupil reload');
       await a.locator('#number-input').fill('20');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №20');
       await a.locator('[data-logic-left]').selectOption('1');await a.locator('[data-logic-right]').selectOption('2');await a.locator('[data-logic-use]').click();await a.locator('#answer-form button').click();const boundaryGap=await same(a,b,'strict inequality leaves the boundary unclaimed');assert.equal(boundaryGap.work.logicRight,2);assert.match(boundaryGap.message.text,/равенства/);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await transferTo(teacher,student,'student');
       await b.locator('[data-logic-right]').selectOption('1');await b.locator('[data-logic-use]').click();await b.locator('#answer-form button').click();const correctedPair=await same(b,a,'pupil includes the boundary and leaves the explanation for review');assert.equal(correctedPair.work.logicRight,1);assert(correctedPair.work.submitted&&!correctedPair.work.correct);assert.match(correctedPair.message.text,/Пара записей подходит/);
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'constructed negation remains after teacher reload');
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'negation fields remain after pupil reload');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'constructed negation remains after teacher reload');
+      await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'negation fields remain after pupil reload');
       await a.locator('#number-input').fill('22');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №22');await a.locator('.part-picker a[href$="022-slovo"]').click();await a.locator('[data-cipher-letter="Б"]').click();await a.locator('[data-cipher-use]').click();await a.locator('#answer-form button').click();
       const falseLetter=await same(a,b,'false letter in arithmetic cipher');assert.equal(falseLetter.work.cipherLetters,'Б');assert.match(falseLetter.message.text,/Для буквы Б/);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await b.locator('[data-cipher-letter="Б"]').click();
+      await transferTo(teacher,student,'student');await b.locator('[data-cipher-letter="Б"]').click();
       for(const letter of 'АСТЕРОИД')await b.locator('[data-cipher-letter="'+letter+'"]').click();await b.locator('[data-cipher-use]').click();await b.locator('#answer-form button').click();const cipherDone=await same(b,a,'pupil orders the eight true rows');assert.equal(cipherDone.work.cipherLetters,'АСТЕРОИД');assert(cipherDone.work.submitted&&!cipherDone.work.correct);assert.match(cipherDone.message.text,/астрономический термин/);
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'cipher survives teacher reload');await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'cipher survives pupil reload');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'cipher survives teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'cipher survives pupil reload');
       await a.locator('#number-input').fill('25');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №25');
       for(const [i,letter] of [...'ЛЕТОПЁ'].entries())await a.locator('[data-puzzle-letter="'+letter+'"]').selectOption('634217'[i]);await a.locator('[data-puzzle-use]').click();await a.locator('#answer-form button').click();const badCarry=await same(a,b,'one wrong carry in sum rebus');assert.equal(badCarry.work.puzzleDigits,'634217');assert.match(badCarry.message.text,/разряде десятков/);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await b.locator('[data-puzzle-letter="Ё"]').selectOption('8');await b.locator('[data-puzzle-use]').click();await b.locator('#answer-form button').click();
+      await transferTo(teacher,student,'student');await b.locator('[data-puzzle-letter="Ё"]').selectOption('8');await b.locator('[data-puzzle-use]').click();await b.locator('#answer-form button').click();
       const goodCarry=await same(b,a,'pupil corrects one letter');assert.equal(goodCarry.work.puzzleDigits,'634218');assert.equal(goodCarry.work.draft,'6342 + 6342 = 12684');assert(goodCarry.work.submitted&&!goodCarry.work.correct);
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'letter identities survive reconnection');await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'letter identities survive pupil reload');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'letter identities survive reconnection');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'letter identities survive pupil reload');
       await a.locator('#number-input').fill('26');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №26');await a.locator('.part-picker a[href$="026-12"]').click();await a.waitForFunction(()=>document.querySelector('.part-picker a[aria-current="page"]')?.getAttribute('href')?.endsWith('026-12'));
       await a.locator('[data-logic-left]').selectOption('1');await a.locator('[data-logic-right]').selectOption('2');await a.locator('[data-logic-use]').click();await a.locator('#answer-form button').click();const halfNegation=await same(a,b,'one arm of inclusive disjunction was left in the negation');assert.match(halfNegation.message.text,/острый или тупой/);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await transferTo(teacher,student,'student');
       await b.locator('[data-logic-right]').selectOption('1');await b.locator('[data-logic-other]').fill('Не все углы острые или тупые. Например, угол 90°.');await b.locator('[data-logic-use]').click();await b.locator('#answer-form button').click();const twoForms=await same(b,a,'second logical formulation travels with the selected clauses');assert.match(twoForms.work.logicOther,/90°/);assert(twoForms.work.submitted&&!twoForms.work.correct);assert.match(twoForms.message.text,/Второе отрицание сохранено/);
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'second wording survives teacher reload');await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'second wording survives pupil reload');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'second wording survives teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'second wording survives pupil reload');
       await a.locator('#number-input').fill('27');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №27');await a.locator('.part-picker a[href$="027-2"]').click();await a.waitForFunction(()=>document.querySelector('.part-picker a[aria-current="page"]')?.getAttribute('href')?.endsWith('027-2'));
       await a.locator('[data-logic-left]').selectOption('2');await a.locator('[data-logic-right]').selectOption('2');await a.locator('[data-logic-use]').click();await a.locator('#answer-form button').click();const beyond=await same(a,b,'invalid endpoint is not evidence');assert.match(beyond.message.text,/исключает 3/);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await b.locator('[data-logic-right]').selectOption('1');await b.locator('[data-logic-other]').fill('Число 2 — натуральное и удовлетворяет обеим границам.');await b.locator('[data-logic-use]').click();await b.locator('#answer-form button').click();
+      await transferTo(teacher,student,'student');await b.locator('[data-logic-right]').selectOption('1');await b.locator('[data-logic-other]').fill('Число 2 — натуральное и удовлетворяет обеим границам.');await b.locator('[data-logic-use]').click();await b.locator('#answer-form button').click();
       const endpoint=await same(b,a,'pupil uses included endpoint');assert.match(endpoint.work.logicOther,/обеим границам/);assert(endpoint.work.submitted&&!endpoint.work.correct);
-      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'counterexample survives teacher reload');await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'counterexample survives pupil reload');
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'counterexample survives teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'counterexample survives pupil reload');
       await a.locator('#number-input').fill('28');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №28');await a.locator('.part-picker a[href$="028-10"]').click();await a.waitForFunction(()=>document.querySelector('.part-picker a[aria-current="page"]')?.getAttribute('href')?.endsWith('028-10'));
       await a.locator('[data-logic-left]').selectOption('1');await a.locator('[data-logic-right]').selectOption('2');await a.locator('[data-logic-use]').click();await a.locator('#answer-form button').click();const allClocks=await same(a,b,'replacing the rule by another universal claim');assert.match(allClocks.message.text,/два обобщения/);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await b.locator('[data-logic-right]').selectOption('1');await b.locator('[data-logic-other]').fill('Я сверил часы в 12:00 — они показали точное время.');await b.locator('[data-logic-use]').click();await b.locator('#answer-form button').click();
-      const oneClock=await same(b,a,'pupil limits the witness to one clock and one instant');assert.match(oneClock.work.logicOther,/12:00/);assert(oneClock.work.submitted&&!oneClock.work.correct);await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'scope after teacher reload');await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'scope after pupil reload');
+      await transferTo(teacher,student,'student');await b.locator('[data-logic-right]').selectOption('1');await b.locator('[data-logic-other]').fill('Я сверил часы в 12:00 — они показали точное время.');await b.locator('[data-logic-use]').click();await b.locator('#answer-form button').click();
+      const oneClock=await same(b,a,'pupil limits the witness to one clock and one instant');assert.match(oneClock.work.logicOther,/12:00/);assert(oneClock.work.submitted&&!oneClock.work.correct);a=await reloadFrame(teacher,wrapper);await same(b,a,'scope after teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'scope after pupil reload');
       await a.locator('#number-input').fill('29');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №29');await a.locator('.part-picker a[href$="029-6"]').click();await a.waitForFunction(()=>document.querySelector('.part-picker a[aria-current="page"]')?.getAttribute('href')?.endsWith('029-6'));await a.locator('[data-divisor-m]').selectOption('12');await a.locator('[data-divisor-n]').selectOption('15');
       const common=await same(a,b,'two selected numbers are shared');assert.equal(common.work.divisorM,12);assert.equal(common.work.divisorN,15);assert.match(await b.locator('[data-divisor-results]').textContent(),/Общие делители: 1, 3/);
-      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await b.locator('[data-divisor-n]').selectOption('25');await b.locator('[data-logic-left]').selectOption('3');await b.locator('[data-logic-right]').selectOption('1');await b.locator('[data-logic-other]').fill('Для пары из условия общий делитель 3. Для сравнения у 12 и 25 общий делитель только 1.');await b.locator('[data-logic-use]').click();await b.locator('#answer-form button').click();
-      const coprime=await same(b,a,'pupil independently varies second operand');assert.equal(coprime.work.divisorN,25);assert.match(await a.locator('[data-divisor-results]').textContent(),/Общие делители: 1\./);assert(coprime.work.submitted&&!coprime.work.correct);await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'divisibility lab survives teacher reload');await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'divisibility lab survives pupil reload');
+      await transferTo(teacher,student,'student');await b.locator('[data-divisor-n]').selectOption('25');await b.locator('[data-logic-left]').selectOption('3');await b.locator('[data-logic-right]').selectOption('1');await b.locator('[data-logic-other]').fill('Для пары из условия общий делитель 3. Для сравнения у 12 и 25 общий делитель только 1.');await b.locator('[data-logic-use]').click();await b.locator('#answer-form button').click();
+      const coprime=await same(b,a,'pupil independently varies second operand');assert.equal(coprime.work.divisorN,25);assert.match(await a.locator('[data-divisor-results]').textContent(),/Общие делители: 1\./);assert(coprime.work.submitted&&!coprime.work.correct);a=await reloadFrame(teacher,wrapper);await same(b,a,'divisibility lab survives teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'divisibility lab survives pupil reload');
+      await a.locator('#number-input').fill('30');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №30');await a.locator('[aria-label="Таблица значений алгоритма"] a[href$="030-1-4"]').click();await a.waitForFunction(()=>document.querySelector('.part-picker a[aria-current="page"]')?.getAttribute('href')?.endsWith('030-1-4'));await a.locator('[data-flow-value]').fill('0,3');await a.locator('[data-flow-branch]').selectOption('no');await a.locator('[data-flow-check]').click();const branchError=await same(a,b,'equality cannot use the no branch');assert.equal(branchError.work.flowBranch,'no');assert.equal(branchError.work.flowValue,'0,3');assert.match(await b.locator('[data-flow-feedback]').textContent(),/равенстве порогу/);
+      await transferTo(teacher,student,'student');await b.locator('[data-flow-branch]').selectOption('yes');await b.locator('[data-flow-check]').click();await b.locator('#answer').fill('0,21');await b.locator('#answer-form button').click();const branchFixed=await same(b,a,'pupil saves output after choosing boundary branch');assert.equal(branchFixed.work.flowBranch,'yes');assert(branchFixed.work.correct&&!branchFixed.work.independent);assert.match(await a.locator('[data-flow-output="030-1-4"]').textContent(),/0,21 · проверено/);
+      a=await reloadFrame(teacher,wrapper);await same(b,a,'algorithm survives teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'algorithm survives pupil reload');
 
 
 
 
     }
-    const late=await session(browser,origin,backend,id+'-late',failures);await late.page.goto(link);
+    const late=await session(browser,origin,backend,id+'-late',failures);await late.page.goto(link,{waitUntil:'domcontentloaded'});
     await waitConnected(late.page);const c=await frameFor(late.page,wrapper);await same(b,c,'late participant receives open work');
-    await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'teacher reload');
+    a=await reloadFrame(teacher,wrapper);await same(b,a,'teacher reload');
     await b.evaluate(()=>{const bad={...PetersonVolumeRoom.getState(),records:{}};if(PetersonVolumeRoom.validateState(bad))throw Error('Unexpected history in room snapshot');try{PetersonVolumeRoom.applyState(bad);}catch(_){return;}throw Error('Invalid state accepted');});
     for(const [client,frame] of [[teacherSession,a],[studentSession,b],[late,c]]){
       assert.equal(await frame.evaluate(()=>window.__privateAccess),0);

@@ -464,6 +464,65 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const flowInputs=['0,08','0,6','2,9','3','7,2','20,5'];
+  function flowSpec(part){
+    const [,algorithm,index]=part.id.split('-'),first=algorithm==='1';
+    return {first,a:flowInputs[Number(index)-1],op:first?'· 0,1':': 0,1',test:first?'≥ 0,3':'< 30',yes:first?'− 0,09':'+ 5,4',no:first?'+ 0,05':'− 7,2'};
+  }
+  function flowTable(part,progress){
+    const algorithm=part.id.split('-')[1];
+    const rows=flowInputs.map((value,i)=>{
+      const id='030-'+algorithm+'-'+(i+1),work=progress[id],hasDraft=Boolean(work?.draft?.trim());
+      const answer=hasDraft?U.esc(work.draft)+(work.correct?' · проверено':' · черновик'):'—';
+      return '<tr><th scope="row"><a href="#n/30/'+id+'"'+(id===part.id?' aria-current="true"':'')+'>'+value+'</a></th><td data-flow-output="'+id+'">'+answer+'</td></tr>';
+    });
+    return '<section aria-label="Таблица значений алгоритма"><h3>Таблица a и x · алгоритм '+algorithm+'</h3><table style="width:100%;table-layout:fixed"><thead><tr><th scope="col">Вход a</th><th scope="col">Мой выход x</th></tr></thead><tbody>'+rows.join('')+'</tbody></table><p>Чтобы заполнить другую строку, выбери её вход a.</p></section>';
+  }
+  function flowAnswer(part){
+    const spec=flowSpec(part),M=root.PetersonBook.M,v=M.operation(spec.first?'multiply':'divide',spec.a,'0.1'),cmp=M.operation('subtract',v,spec.first?'0.3':'30').n;
+    return {value:v,yes:spec.first?cmp>=0:cmp<0,equal:cmp===0};
+  }
+  function flowQuestion(part){
+    const s=flowSpec(part);
+    return 'Вход a = '+s.a+'. Сначала выполни '+s.op+' с числом a. Проверь, выполняется ли условие «промежуточное число '+s.test+'». При ответе «да» выполни '+s.yes+', при «нет» — '+s.no+'. Запиши итоговое значение x. Исследуй каждое из шести значений a в отдельной строке.';
+  }
+  function branchReport(part,work){
+    const s=flowSpec(part),m=root.PetersonBook.M,expected=flowAnswer(part),typed=m.parse(work.flowValue||'');
+    if(!typed)return {ok:false,text:'Введи числовое значение после первого действия.'};
+    if(!m.equal(typed,expected.value))return {ok:false,text:s.first?'При умножении на 0,1 исходное положительное число уменьшается в 10 раз. Перенеси запятую на один разряд влево.':'При делении на 0,1 исходное положительное число увеличивается в 10 раз. Перенеси запятую на один разряд вправо.'};
+    if(!work.flowBranch)return {ok:false,text:'Промежуточное число верно. Выбери один из выходов из ромба.'};
+    if((work.flowBranch==='yes')!==expected.yes)return {ok:false,text:expected.equal?(s.first?'При равенстве порогу условие «≥» выполнено. Проверь выбор ветви.':'При равенстве порогу строгое условие «<» не выполнено. Проверь выбор ветви.'):'Промежуточное число верно. Сравни его с порогом ромба и выбери «да» или «нет».'};
+    return {ok:true,text:'Первое действие и ветвь верны. Выполни последнее действие этой ветви, затем сам введи x в ответ.'};
+  }
+  function flowFigure(part,work,interactive){
+    const s=flowSpec(part),chooses=work.flowBranch||'',active='#e5eee8',ink='#294e44',neutral='#fff';
+    const rect=(x,y,w,h,label,fill=neutral)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="5" fill="'+fill+'" stroke="'+ink+'"/><text x="'+(x+w/2)+'" y="'+(y+h/2+4)+'" text-anchor="middle">'+label+'</text>';
+    const show=(label,x,y)=>'<text x="'+x+'" y="'+y+'" text-anchor="middle">'+label+'</text>';
+    const line=d=>'<path d="'+d+'" fill="none" stroke="'+ink+'" stroke-width="1.5"/>';
+    const diamond='<path d="M132 64 L182 84 L132 104 L82 84 Z" fill="#f4f6e9" stroke="'+ink+'"/>'+show(U.esc(s.test)+'?',132,88);
+    const graphic='<svg viewBox="0 0 264 182" style="display:block;width:100%;max-width:360px" role="img" aria-label="После первого действия проверь '+U.esc(s.test)+'. Да: '+U.esc(s.yes)+'. Нет: '+U.esc(s.no)+'."><g font-size="13" fill="#1c332d">'+line('M132 25 V33 M132 55 V64 M82 84 H49 V116 M182 84 H214 V116 M49 138 V161 H101 M214 138 V161 H163')+rect(98,3,68,22,'a = '+s.a)+rect(98,33,68,22,s.op)+diamond+show('нет',55,78)+show('да',207,78)+rect(16,116,66,22,s.no,chooses==='no'?active:neutral)+rect(181,116,66,22,s.yes,chooses==='yes'?active:neutral)+rect(101,150,62,22,'x')+'</g></svg>';
+    const report=work.flowChecked?branchReport(part,work):null;
+    return '<figure data-flow-host style="margin:.5em 0"><figcaption>Как пройти по схеме</figcaption>'+graphic+'<p>Входы a для этой таблицы: '+flowInputs.join('; ')+'.</p>'+(interactive?'<label>После первого действия <input data-flow-value inputmode="decimal" maxlength="80" value="'+U.esc(work.flowValue||'')+'"></label><label>Выход из ромба <select data-flow-branch><option value="">Выбери</option><option value="yes"'+(chooses==='yes'?' selected':'')+'>Да</option><option value="no"'+(chooses==='no'?' selected':'')+'>Нет</option></select></label><button type="button" class="secondary" data-flow-check>Проверить ход</button><p data-flow-feedback role="status">'+(report?U.esc(report.text):'')+'</p>':'')+'</figure>';
+  }
+  function mountFlow(main,part,work,save){
+    let host=main.querySelector('[data-flow-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=flowFigure(part,work,true);host=main.querySelector('[data-flow-host]');
+      const input=host.querySelector('[data-flow-value]'),select=host.querySelector('[data-flow-branch]'),feedback=host.querySelector('[data-flow-feedback]');
+      input.oninput=()=>{work.flowValue=input.value.slice(0,80);delete work.flowChecked;feedback.textContent='';save();};
+      select.onchange=()=>{work.flowBranch=select.value;delete work.flowChecked;save();draw();host.querySelector('[data-flow-branch]').focus({preventScroll:true});};
+      host.querySelector('[data-flow-check]').onclick=()=>{const report=branchReport(part,work),hasEntry=root.PetersonBook.M.parse(work.flowValue||'')&&work.flowBranch;if(hasEntry&&!report.ok&&!work.flowChecked)work.errors=Math.min(10000,(work.errors||0)+1);work.flowChecked=true;save();draw();host.querySelector('[data-flow-check]').focus({preventScroll:true});};
+    }draw();
+  }
+  function flowResponse(number,part,input,correct){
+    if(number!==30||correct)return null;
+    const s=flowSpec(part),m=root.PetersonBook.M,v=flowAnswer(part);
+    if(m.equal(input,v.value))return {ok:false,text:'Это промежуточное значение после первого действия, а не выход x. Дойди от ромба до конца выбранной ветви.'};
+    const other=s.first?(v.yes?m.operation('add',v.value,'0.05'):m.operation('subtract',v.value,'0.09')):(v.yes?m.operation('subtract',v.value,'7.2'):m.operation('add',v.value,'5.4'));
+    if(m.equal(input,other))return {ok:false,text:'Такой ответ даёт противоположная ветвь. '+(v.equal?'Здесь промежуточное число ровно на границе. ':'')+'Проверь условие '+s.test+'.'};
+    return {ok:false,text:'Проверь первое действие и сравнение в ромбе. После ветвления выполняется только одно из двух последних действий.'};
+  }
+
   const divisorClaims=[
     ['Всякое натуральное число делится без остатка на себя и на единицу.',0,['Любое n можно записать и как 1 · n, и как n · 1.','У каждого числа обязательно два различных делителя.','Достаточно проверить только 12.'],'При n=1 оба названных делителя совпадают, но делимость сохраняется.'],
     ['Существуют числа ровно с одним натуральным делителем.',1,['У числа 1 ровно один натуральный делитель — оно само.','У каждого простого числа только один делитель.','Примером служит 2 с делителями 1 и 2.'],'Слово «существуют» требует хотя бы одного примера. Посчитай различные делители единицы.'],
@@ -633,6 +692,7 @@
   }
 
   function openingQuestion(number,part) {
+    if(number===30)return flowQuestion(part);
     if(number===25)return 'Замени одинаковые буквы одинаковыми цифрами, а разные буквы — различными. Первая цифра числа не может быть нулём. Найди верную подстановку для '+(part.id==='025-1'?'ЛЕТО + ЛЕТО = ПОЛЁТ.':'ПЧЁЛКА × 7 = ЖЖЖЖЖЖ.')+' Объясни, как проверил результат.';
     if(number===22)return codewordQuestion(part);
     if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
@@ -687,6 +747,7 @@
     if(item.number===22)drawing=part.id==='022-slovo'?cipherView({},false):decimalModel(part);
     if(item.number===23)drawing=decimalModel(part);
     if(item.number===24)drawing=honeySupport();
+    if(item.number===30)drawing=flowFigure(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
@@ -715,5 +776,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable};
 })(globalThis);

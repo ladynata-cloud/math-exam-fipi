@@ -55,6 +55,11 @@ function sanitize(part,input){
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='022-slovo'&&typeof input.cipherLetters==='string'&&/^[РУНОЕДГБИЖАКТЯС]{1,15}$/.test(input.cipherLetters)&&new Set(input.cipherLetters).size===input.cipherLetters.length)clean.cipherLetters=input.cipherLetters;
+ if(part.id.startsWith('030-')){
+  if(typeof input.flowValue==='string'&&input.flowValue)clean.flowValue=cut(input.flowValue,80);
+  if(['yes','no'].includes(input.flowBranch))clean.flowBranch=input.flowBranch;
+  if(input.flowChecked===true)clean.flowChecked=true;
+ }
  if(part.id.startsWith('029-'))for(const key of ['divisorM','divisorN'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=100)clean[key]=input[key];
  if(part.id==='018-1'){
   if(Number.isInteger(input.planetRelation)&&input.planetRelation>=1&&input.planetRelation<=4)clean.planetRelation=input.planetRelation;
