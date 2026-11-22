@@ -51,4 +51,4 @@ for(const {id} of P.finalFunctionSkills){
  }
  assert(variants.size>=8,id);
 }
-console.log('PASS 14 source cards, 36 steps, arbitrary fractional points on both branches, range membership, roots, 480 practice samples, and printed inequality boundaries.');
+console.log('PASS 14 source cards, 36 steps, arbitrary fractional points on both branches, range membership, roots, practice samples for each registered skill, and printed inequality boundaries.');

@@ -120,7 +120,41 @@
     else model=G.generate(key,1+(value%3),value);
     return {...model,id:'analog-'+part.id+'-'+attempt,family:key,match:specific?'skill':'chapter'};
   }
+  function decimalPractice(number,part,attempt){
+    const x=part.expression,tag=seed(part.id)%17+attempt,k=1+tag%11;
+    const R=E.M.operation,show=v=>E.M.decimal(v),scale=(a,b)=>R('multiply',a,b),add=(a,b)=>R('add',a,b);
+    const places=v=>String(v).split('.')[1]?.length||0;
+    let calculation,hint;
+    if(number===13){
+      calculation=JSON.parse(JSON.stringify(x));
+      if(part.id==='013-a'){
+        calculation.left.right=show(R('divide',8+tag%5,10));
+        calculation.right.left.left.left=show(R('divide',1+tag%4,10));
+      }else{
+        calculation.left.left.right.right=show(R('subtract',49,scale('0.96',5+tag%19)));
+        calculation.right.left.left=show(scale('2.7',1+tag%9));
+      }
+      hint='Начни с действий в скобках. Цепочку умножений и делений на одном уровне выполняй слева направо.';
+    }else{
+      let left=x.left,right=x.right;
+      const increment=v=>R('divide',k,10**Math.max(1,places(v)));
+      if(x.op==='divide'){
+        const quotient=E.exact(x),delta=R('divide',k,10**Math.max(1,places(show(quotient).replace(',','.'))));
+        left=show(scale(add(quotient,delta),right));
+        hint=E.M.parse(right).d===1?'Проверь частное умножением на делитель.':'Умножь и делимое, и делитель на одну степень десяти, чтобы делитель стал целым.';
+      }else{
+        if(x.op==='multiply'&&['100','0.1'].includes(String(left)))right=show(add(right,increment(right)));
+        else left=show(add(left,increment(left)));
+        hint=x.op==='multiply'?'Определи, во сколько раз каждый множитель меньше соответствующего целого числа. Учти оба масштаба.':'Выравнивай числа по запятой: единицы под единицами, десятые под десятыми, сотые под сотыми.';
+      }
+      calculation={op:x.op,left,right};
+    }
+    const prompt=number===11?'Вычисли устно на новых числах.':number===12?'Вычисли новое выражение с тем же действием.':'Найди значение нового выражения. Действия и вложенные скобки сохранили порядок исходной задачи.';
+    return {kind:'expression',expression:calculation,prompt,answer:E.M.answer(E.exact(calculation)),mistake:hint,id:'analog-'+part.id+'-'+attempt,family:'decimal-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
+    if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
     if(number<7||number>10)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
@@ -186,15 +220,19 @@
   function shared(item,part,raw) {
     const model=part&&create(item.number,part);
     if(!model)return null;
+    if(raw===null&&item.number>=11&&item.number<=13)return null;
     const active=document.querySelector('.equivalent-exercise');
     const row=record(part)[1];
+    if(!raw&&row.formerlyAbsent&&!active?.open)return null;
+    if(!raw&&active?.open)row.formerlyAbsent=false;
     if(!raw) return {attempt:row.attempt,work:root.PetersonVolumeBoard.work(create(item.number,part,row.attempt,row.work||row.raw),row.work||row.raw),
       open:!!active?.open,hint:!!active?.querySelector('details')?.open,status:root.PetersonVolumeBoard.safeText(active?.querySelector('[role=status]')?.textContent,600)};
     if(!Number.isInteger(raw.attempt)||raw.attempt<0||raw.attempt>99999)throw TypeError('Некорректный вариант');
     return {attempt:raw.attempt,work:root.PetersonVolumeBoard.work(create(item.number,part,raw.attempt,raw.work),raw.work),open:raw.open===true,hint:raw.hint===true,status:root.PetersonVolumeBoard.safeText(raw.status,600)};
   }
   function restoreShared(part,scene) {
-    if(!scene||!document.body.dataset.petersonBoard)return;
+    if(!document.body.dataset.petersonBoard)return;
+    if(!scene){if(/^01[123]-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
     const row=record(part)[1];Object.assign(row,{attempt:scene.attempt,work:scene.work,status:scene.status,open:scene.open,hint:scene.hint});
   }
   function resetShared(){if(document.body.dataset.petersonBoard)states.clear();}

@@ -65,6 +65,23 @@ async function verify(width,url,offline=false){
  }
  await submit(p,'[1/2;15)');assert.equal(await p.locator('#task-graph [data-axis-end=closed]').count(),2);
  await p.reload();await p.waitForFunction(()=>MakarychevApp.getState().tasks['p45-source-1135-intersection']?.correct);
+ for(const card of require('./exercises-1136.json')){
+  await openNumber(p,1136,card.title);
+  const svg=p.locator('#task-graph svg');
+  assert.equal(await svg.locator('[data-surd-area]').count(),0);
+  assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ }
+ await openNumber(p,1136,'№ 1136г');
+ await p.locator('[data-action=choice][data-choice="0"]').click();
+ await p.locator('#answer-form button[type=submit]').click();
+ assert.match(await p.locator('#problem').innerText(),/отрицательны/);
+ await p.locator('[data-action=guided]').click();
+ for(const [i,val] of ['4','20','23'].entries()){
+  await p.locator('#step-answer-'+i).fill(val);await p.locator('[data-step-form="'+i+'"] .answer-controls button').first().click();
+ }
+ await p.locator('[data-action=choice][data-choice="2"]').click();await p.locator('#answer-form button[type=submit]').click();
+ await p.reload();await p.waitForFunction(()=>MakarychevApp.getState().tasks['p45-source-1136-g']?.correct);
+ assert.deepEqual(await p.locator('#task-graph [data-surd-area]').evaluateAll(nodes=>nodes.map(n=>n.dataset.surdArea)),['20','23']);
  assert.deepEqual(errors,[]);await ctx.close();
 }
 (async()=>{
@@ -74,6 +91,6 @@ async function verify(width,url,offline=false){
   for(const w of [320,390,1024])await verify(w,url);
   const offline=path.join(root,'downloads/trainers/makarychev8-algebra/makarychev8-algebra.html');
   await verify(320,require('node:url').pathToFileURL(offline).href,true);
-  console.log('PASS source 1131–1135 on 320/390/1024px and 320px offline; distinct error feedback, both branches and restored inequality intersection.');
+  console.log('PASS source 1131–1136 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
  }finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

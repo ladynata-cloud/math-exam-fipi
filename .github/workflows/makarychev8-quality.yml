@@ -164,6 +164,7 @@ jobs:
           node school/makarychev8/test-line-position.cjs
           node school/makarychev8/test-root-study.cjs
           node school/makarychev8/test-final-functions.cjs
+          node school/makarychev8/test-surd-cancellation.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check

@@ -42,6 +42,11 @@ function sanitize(part,input){
   const value=firstError(step.kind,step.choices,v=>checkStep(step,v),input.firstErrors?.steps?.[i]);
   if(value)clean.firstErrors.steps[i]=value;
  }
+ if(/^01[123]-/.test(part.id)&&part.expression&&Number.isInteger(input.decimalView)&&input.decimalView>0){
+  const operands=[part.expression.left,part.expression.right].map(v=>String(v).replace(',','.').split('.'));
+  const limit=part.id.startsWith('013-')?ss.length:Math.max(...operands.map(x=>x[0].length))+Math.max(...operands.map(x=>x[1]?.length||0));
+  if(input.decimalView<=limit)clean.decimalView=input.decimalView;
+ }
  clean.draft=cut(input.draft,MAX_TEXT);clean.note=cut(input.note);clean.noteOpen=input.noteOpen===true;clean.errors=Number.isInteger(input.errors)?Math.max(0,Math.min(10000,input.errors)):0;
  clean.errors=Math.max(clean.errors,Object.keys(clean.firstErrors.steps).length+(clean.firstErrors.final?1:0));
  clean.guided=input.guided===true;clean.showSolution=input.showSolution===true;clean.stepDrafts=ss.map((_,i)=>cut(input.stepDrafts?.[i],MAX_TEXT));

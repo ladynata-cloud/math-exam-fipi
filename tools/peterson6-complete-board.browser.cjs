@@ -200,6 +200,24 @@ async function run(browser, origin, backend, failures, published) {
       await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
       await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'pupil reload restores same controls');
       await a.locator('#number-input').fill('10');await a.locator('#number-form button').click();await a.locator('#answer').fill('6 702 058');await a.locator('#answer-form button').click();const dictation=await same(a,b,'grouped millions accepted in shared dictation');assert(dictation.work.correct);assert.equal(dictation.work.draft,'6 702 058');
+      await a.locator('#number-input').fill('11');await a.locator('#number-form button').click();await a.locator('[data-decimal-position]').selectOption('2');
+      const cells=await same(a,b,'decimal position selected by the teacher');assert.equal(cells.route,'#n/11/011-a-1');assert.equal(cells.work.decimalView,2);assert.equal(await b.locator('[data-decimal-position]').inputValue(),'2');
+      const oldScene={...cells,analogue:null};delete oldScene.work.decimalView;
+      await b.evaluate(scene=>{
+        if(!PetersonVolumeRoom.validateState(scene))throw Error('Earlier decimal room is no longer valid');
+        PetersonVolumeRoom.applyState(scene);
+        if(PetersonVolumeRoom.getState().analogue!==null)throw Error('Restored original room must keep its absent practice panel');
+      },oldScene);
+      await a.locator('[data-decimal-position]').selectOption('1');await same(a,b,'first controller change after old snapshot');
+      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await b.locator('#answer').fill('15');await b.locator('#answer-form button').click();const scaleError=await same(b,a,'pupil shifted the decimal point');assert.match(scaleError.message.text,/разряд/);assert.equal(scaleError.work.firstErrors.final,'15');
+      await b.locator('#answer').fill('1,5');await b.locator('#answer-form button').click();assert((await same(b,a,'corrected decimal on both screens')).work.correct);
+      const decimalPanel=b.locator('.equivalent-exercise');await decimalPanel.locator('summary').first().click();await decimalPanel.getByRole('button',{name:'Другой пример'}).click();await decimalPanel.locator('input').fill('6,04');
+      const varied=await same(b,a,'independent decimal variant and its draft');assert.equal(varied.analogue.attempt,1);assert.equal(varied.analogue.work.draft,'6,04');
+      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'decimal exercise, attempt and place survive teacher reconnect');
+      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'decimal exercise, attempt and place survive pupil reconnect');
+
 
     }
     const late=await session(browser,origin,backend,id+'-late',failures);await late.page.goto(link);
