@@ -113,6 +113,7 @@ jobs:
           node tools/stereo-textbook/surface-paths-and-parallel-sections.test.cjs
           node tools/stereo-textbook/tetrahedra-and-cube-tilings.test.cjs
           node tools/stereo-textbook/monotone-paths-and-dual-solids.test.cjs
+          node tools/stereo-textbook/skew-lines-and-corner-reflection.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -494,6 +495,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: monotonePathsAndDualSolids
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/monotone-paths-and-dual-solids
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify skew line distance, projected face area, all four body diagonals and the finite corner reflector
+        env:
+          TEXTBOOK_PRACTICE_GROUP: skewLinesAndCornerReflection
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/skew-lines-and-corner-reflection
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -603,5 +609,6 @@ jobs:
             artifacts/surface-paths-and-parallel-sections/
             artifacts/tetrahedra-and-cube-tilings/
             artifacts/monotone-paths-and-dual-solids/
+            artifacts/skew-lines-and-corner-reflection/
           retention-days: 14
           if-no-files-found: error
