@@ -202,6 +202,11 @@
     if(target.answerFormat==='v5-coordinate-order')return root.Vilenkin5CoordinateOrder.inputIssue(value,target);
     if(target.answerFormat==='v5-ray-label'&&!root.Vilenkin5PrintedRay.read(value))return 'Запиши одну букву с луча. Число можно заменить буквой без потери попытки.';
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
+    if(target.answerFormat==='v5-single-coordinate-label')return /^[ABCDEK]$/.test(root.Vilenkin5ChainsAndEqualPoints.labelValue(value))?'':'Назови одну точку буквой с рисунка.';
+    if(target.answerFormat==='v5-coincident-groups')return root.Vilenkin5ChainsAndEqualPoints.canonical(value)?'':'Запиши равные имена через =, а разные группы раздели точкой с запятой. Эту запись можно уточнить.';
+    if(target.answerFormat==='v5-ordered-fractions')return root.Vilenkin5OrderAndCompare.orderIssue(value,target,M);
+    if(target.answerFormat==='v5-fraction-sign')return ['<','>','='].includes(root.Vilenkin5OrderAndCompare.symbol(value))?'':'Поставь знак <, > или =. Можно выбрать его на рисунке.';
+    if(target.answerFormat==='v5-rightmost-label')return ['K','P','C','D'].includes(root.Vilenkin5OrderAndCompare.point(value))?'':'Укажи букву одной из точек этой задачи. Можно нажать её под рисунком.';
     if(target.answerFormat==='v5-refined-area'){
       const area=root.Vilenkin5EquivalentArea;
       if(!area.parse(value))return 'Укажи два ответа: дробь по новым частям; число частей в одной старой. Пока это черновик.';
@@ -286,6 +291,8 @@
     active=session;host.dataset.v5Quality='lesson';root.document.body.classList.add('v5-quality-active');
     const head=host.querySelector('.lesson-head'),task=host.querySelector('#task-panel'),model=host.querySelector('#model'),theory=host.querySelector('.v6-theory'),claim=host.querySelector('#claim-feedback')?.closest('section'),d=detail(session);
     if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
+    if(session.task.data?.orderedFractions||session.task.data?.compareFractions)root.Vilenkin5OrderAndCompare.bind(task,session.task,session,()=>readOnly,M,mathText);
+    if(session.task.data?.pointSets)root.Vilenkin5PlotFractionSets.bind(task,session.task,session,()=>readOnly);
     if(session.task.data?.fractionLine)root.Vilenkin5FractionCellLine.bind(task,session.task,session,()=>readOnly);
     if(lesson.fullKey==='printed-check-2-2'&&['learn','practice'].includes(session.mode)){
       const choose=root.document.createElement('form');

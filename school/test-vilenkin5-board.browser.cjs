@@ -1850,6 +1850,53 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('[data-line-why="1"]').check();await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'equal coordinates explained')).scene.correct);
   await narrow(student,studentFrame,'paired-coordinate-points');
 
+  phase = 'source 5.101 and 5.102: multiple fraction marks and two extremes';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-101"]').click();await studentFrame.locator('h1').filter({hasText:'№5.101'}).waitFor();
+  await teacherFrame.locator('#answer').fill('1;4;6;8;10');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'first misplaced point A')).scene.message,/A \(1\/6\)/);
+  await ownership(teacher,student,true);
+  const cellPick=async(frame,i,n)=>{const range=frame.locator('[data-set-mark="'+i+'"]');await range.focus();await range.press('Home');for(let j=0;j<n;j++)await range.press('ArrowRight');};
+  await cellPick(studentFrame,0,2);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('1;3;5;7;9;11');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'all eleven marks checked')).scene.correct);
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-102"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.102'}).waitFor();
+  await cellPick(studentFrame,0,6);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  assert.equal((await same(studentFrame,teacherFrame,'one mark and five blanks restored')).scene.savedInput,'6;;;;;');
+  for(const [i,v] of [4,2,1,8,9].entries())await cellPick(studentFrame,i+1,v);
+  await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-set-end="6"]').selectOption('4');await studentFrame.locator('[data-set-end="7"]').selectOption('6');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'correct markings but extremes reversed')).scene.message,/порядок/);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await teacherFrame.locator('[data-set-end="6"]').selectOption('6');await teacherFrame.locator('[data-set-end="7"]').selectOption('4');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'six points and both extremes')).scene.correct);
+  await narrow(student,studentFrame,'six-fractions-placed');
+
+  phase = 'source 5.103 to 5.106: ordered cards, signs, smaller fractions and rightmost points';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-103"]').click();await studentFrame.locator('h1').filter({hasText:'№5.103'}).waitFor();
+  await teacherFrame.locator('[data-order-item="1/13"]').click();await teacherFrame.locator('[data-order-item="4/13"]').click();await teacherFrame.locator('[data-undo-fraction]').click();assert.equal((await same(teacherFrame,studentFrame,'partial ordered strip')).scene.savedInput,'1/13');
+  await ownership(teacher,student,true);await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  for(const n of [3,4,5,7,9,10,12])await studentFrame.locator('[data-order-item="'+n+'/13"]').click();
+  await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'pupil added the other seven')).scene.correct);
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('16/17;13/17;9/17;6/17;5/17;4/17;1/17');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'descending as well')).scene.correct);
+  for(const [n,list] of [[104,['<','>','<','>']],[105,['2/7','3/21','21/100','78/10000']],[106,['K','D']]]){
+    await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-'+n+'"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.'+n}).waitFor();
+    for(const [i,v] of list.entries()){
+      if(i)await studentFrame.locator('[data-cmd=next]').click();
+      if(n===105&&i===3){await studentFrame.locator('[data-frac-choice="87/10000"]').click();await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'larger ten-thousandths')).scene.message,/большую/);}
+      await studentFrame.locator('[data-frac-choice="'+v+'"]').click();await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'compare '+n+' '+i)).scene.correct);
+    }
+  }
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  assert((await same(teacherFrame,studentFrame,'named rightmost point after return')).scene.correct);await narrow(student,studentFrame,'zoomed-comparison-points');
+
+  phase = 'source 5.107 to 5.109: chained actions, spoken fractions and coincident points';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-107"]').click();await studentFrame.locator('h1').filter({hasText:'№5.107'}).waitFor();
+  await teacherFrame.locator('#answer').fill('7');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('371');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'applied multiplication to starting value')).scene.message,/верхнего числа/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('49');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'corrected chain')).scene.correct);
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-108"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.108'}).waitFor();
+  await studentFrame.locator('[data-v5-param=row]').selectOption({value:'10'});await studentFrame.locator('[data-v5-param=part]').selectOption('1');await studentFrame.locator('[data-v5-prediction]').fill('987');await studentFrame.locator('[data-v5-predict] button').click();
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);assert.equal((await same(studentFrame,teacherFrame,'the last spoken fraction survives reconnect')).scene.model.row,10);
+  await studentFrame.locator('#answer').fill('одна четвертая');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'fraction read aloud in words')).scene.correct);
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-109"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.109'}).waitFor();
+  for(const [i,v] of ['3','D','A=B;C=E'].entries()){if(i)await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill(v);await studentFrame.locator('#answer-form button').click();}
+  assert.match((await same(studentFrame,teacherFrame,'unequal positions must not be joined')).scene.message,/разные координаты/);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await teacherFrame.locator('#answer').fill('K=B;E=A=C');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'two exact equivalence classes')).scene.correct);await narrow(student,studentFrame,'coincident-points-across-notes');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
