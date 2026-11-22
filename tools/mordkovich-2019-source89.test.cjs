@@ -19,13 +19,13 @@ assert.deepEqual(Array.from(paragraphs,r=>r.page),printedPages);
 for(const [i,row] of paragraphs.entries()) {
   assert.equal(row.sectionLabel,'§ '+(i+1));
   assert.equal(row.sourcePath,'https://pdf.my-uchebnik.ru/pdf/algebra/00000069.pdf#page='+(row.page+1));
-  assert.equal(row.coverage,i<17?'module':'source');
-  if(i<17)assert.equal(row.externalPath,row.boardPath);
+  assert.equal(row.coverage,i<19?'module':'source');
+  if(i<19)assert.equal(row.externalPath,row.boardPath);
   else assert(row.bookOnly&&!row.externalPath&&!row.boardPath);
 }
 const dir='trainers/mordkovich-2019/';
-const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','1-q1','1-q2','1-q3','1-q4','1-q5','1-q6','1-q7','1-q8','1-q9','1-q10','1-q11','1-q12','2-q1-add','2-q1-div','2-q2','2-q3','2-q4','3-ex1','3-ex2','3-q1','3-q2','3-q3','4-ex1','4-ex2','4-q1','4-q2','4-q3','4-q4','4-q5-a','4-q5-b','4-q5-c','4-q6','4-q7','4-q8-a','4-q8-b','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded','7-intro-1','7-intro-2','7-intro-3','7-intro-4','7-intro-5','7-intro-6','7-intro-7','7-intro-8','7-intro-9','7-intro-10','7-ex1','7-ex2-a','7-ex2-b','7-ex2-c','7-ex2-d','7-q1','7-q2','7-q3','7-q4','7-q5','7-q6','7-q7','7-q8','7-q9','8-ex1-a','8-ex1-b','8-ex1-c','8-ex1-d','8-ex2-rect','8-ex2-x','8-ex2-y','8-ex2-o','8-q1','8-q2','8-q3-a','8-q3-b','8-q3-c','8-q3-d','8-q4-a','8-q4-b','8-q5-a','8-q5-b','8-q6','8-q7-x','8-q7-y','8-q7-o','9-trains','9-ex1','9-ex2','9-ex3','9-case1','9-case2','9-case3','9-case4','9-case5','9-ex4','9-ex5','9-ex6','9-ex7-a','9-ex7-b','9-ex7-c','9-ex7-d','9-q1','9-q2','9-q3','9-q4','9-q5','9-q6','9-q7','9-q8','9-q9-h','9-q9-v','9-q10-yes','9-q10-no','10-convert','10-ex1','10-stock-in','10-stock-out','10-walk','10-ex2-a','10-ex2-b','10-ex3','10-ex4-a','10-ex4-b','10-ex4-c','10-ex4-d','10-ex4-e','10-ex5-a','10-ex5-b','10-ex5-c','10-ex5-d','10-ex6','10-q1','10-q2','10-q3','10-q4-segment','10-q4-interval','10-q5','10-q6-zero','10-q6-positive','10-q6-negative','10-q7','10-q8','10-q9','10-q10','10-q11-up','10-q11-down','11-ex1-a','11-ex1-b','11-ex2','11-ex3','11-q1','11-q2','11-q3','11-q4-a','11-q4-b','11-q5-up','11-q5-down','11-q6','12-ex1-a','12-ex1-b','12-ex1-c','12-ex1-d','12-median-odd-three','12-median-odd-nine','12-median-even-four','12-median-even-ten','12-unpack','12-ex2','12-q1','12-q2','12-q3','12-q4','12-q5','12-q6','12-q7','12-q8-gt','12-q8-lt','12-q8-eq','12-q9-gt','12-q9-lt','12-q9-eq','12-q10-gt','12-q10-lt','12-q10-eq','13-intro-1','13-intro-2','13-intro-3','13-intro-4','13-garden','13-ex1','13-ex2','13-ex3','13-q1','13-q2','13-q3','13-q4-a','13-q4-b','13-q4-c','13-q5','13-q6','13-q7','13-q8','14-garden','14-ex1','14-ex2','14-q1','14-q2','15-intro','15-ex1','15-ex2','15-ex3','15-ex4','15-ex5-a-plus','15-ex5-a-minus','15-ex5-b-pp','15-ex5-b-pn','15-ex5-b-np','15-ex5-b-nn','15-ex6','15-q1','15-q2-a','15-q2-b','16-ex1','16-ex2','16-ex3','16-ex4','16-q1','16-q2','17-football','17-ex1','17-ex2-a','17-ex2-b','17-ex2-c','17-ex2-d','17-q1-a','17-q1-b','17-q1-c','17-q1-d','17-q1-e','17-q1-f','17-q1-g','17-q1-h','17-q2','17-q3'];
-const printed=[6,9,9,9,10,10,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,14,15,17,17,17,19,20,21,21,21,21,21,21,21,21,21,21,21,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36,37,37,37,37,37,37,37,37,37,37,38,39,39,39,39,40,40,40,40,40,40,40,40,40,46,46,46,46,47,47,47,47,47,47,47,47,47,47,47,47,47,47,48,48,48,48,48,49,50,51,52,52,52,52,52,52,54,54,56,56,56,56,59,59,59,59,59,60,60,60,60,60,60,60,60,62,65,65,66,67,67,68,69,69,69,69,69,70,70,70,70,72,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,74,74,75,76,76,76,76,76,76,77,77,77,77,77,77,77,78,79,79,79,79,80,81,81,81,81,81,81,81,82,82,82,82,82,82,82,82,82,85,85,85,85,86,86,87,88,89,89,89,89,89,89,89,89,89,89,89,91,92,92,92,93,93,94,95,95,96,96,96,96,96,96,96,97,97,97,98,100,101,101,102,102,103,104,104,104,104,104,105,105,105,105,105,105,105,105,106,106];
+const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','1-q1','1-q2','1-q3','1-q4','1-q5','1-q6','1-q7','1-q8','1-q9','1-q10','1-q11','1-q12','2-q1-add','2-q1-div','2-q2','2-q3','2-q4','3-ex1','3-ex2','3-q1','3-q2','3-q3','4-ex1','4-ex2','4-q1','4-q2','4-q3','4-q4','4-q5-a','4-q5-b','4-q5-c','4-q6','4-q7','4-q8-a','4-q8-b','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded','7-intro-1','7-intro-2','7-intro-3','7-intro-4','7-intro-5','7-intro-6','7-intro-7','7-intro-8','7-intro-9','7-intro-10','7-ex1','7-ex2-a','7-ex2-b','7-ex2-c','7-ex2-d','7-q1','7-q2','7-q3','7-q4','7-q5','7-q6','7-q7','7-q8','7-q9','8-ex1-a','8-ex1-b','8-ex1-c','8-ex1-d','8-ex2-rect','8-ex2-x','8-ex2-y','8-ex2-o','8-q1','8-q2','8-q3-a','8-q3-b','8-q3-c','8-q3-d','8-q4-a','8-q4-b','8-q5-a','8-q5-b','8-q6','8-q7-x','8-q7-y','8-q7-o','9-trains','9-ex1','9-ex2','9-ex3','9-case1','9-case2','9-case3','9-case4','9-case5','9-ex4','9-ex5','9-ex6','9-ex7-a','9-ex7-b','9-ex7-c','9-ex7-d','9-q1','9-q2','9-q3','9-q4','9-q5','9-q6','9-q7','9-q8','9-q9-h','9-q9-v','9-q10-yes','9-q10-no','10-convert','10-ex1','10-stock-in','10-stock-out','10-walk','10-ex2-a','10-ex2-b','10-ex3','10-ex4-a','10-ex4-b','10-ex4-c','10-ex4-d','10-ex4-e','10-ex5-a','10-ex5-b','10-ex5-c','10-ex5-d','10-ex6','10-q1','10-q2','10-q3','10-q4-segment','10-q4-interval','10-q5','10-q6-zero','10-q6-positive','10-q6-negative','10-q7','10-q8','10-q9','10-q10','10-q11-up','10-q11-down','11-ex1-a','11-ex1-b','11-ex2','11-ex3','11-q1','11-q2','11-q3','11-q4-a','11-q4-b','11-q5-up','11-q5-down','11-q6','12-ex1-a','12-ex1-b','12-ex1-c','12-ex1-d','12-median-odd-three','12-median-odd-nine','12-median-even-four','12-median-even-ten','12-unpack','12-ex2','12-q1','12-q2','12-q3','12-q4','12-q5','12-q6','12-q7','12-q8-gt','12-q8-lt','12-q8-eq','12-q9-gt','12-q9-lt','12-q9-eq','12-q10-gt','12-q10-lt','12-q10-eq','13-intro-1','13-intro-2','13-intro-3','13-intro-4','13-garden','13-ex1','13-ex2','13-ex3','13-q1','13-q2','13-q3','13-q4-a','13-q4-b','13-q4-c','13-q5','13-q6','13-q7','13-q8','14-garden','14-ex1','14-ex2','14-q1','14-q2','15-intro','15-ex1','15-ex2','15-ex3','15-ex4','15-ex5-a-plus','15-ex5-a-minus','15-ex5-b-pp','15-ex5-b-pn','15-ex5-b-np','15-ex5-b-nn','15-ex6','15-q1','15-q2-a','15-q2-b','16-ex1','16-ex2','16-ex3','16-ex4','16-q1','16-q2','17-football','17-ex1','17-ex2-a','17-ex2-b','17-ex2-c','17-ex2-d','17-q1-a','17-q1-b','17-q1-c','17-q1-d','17-q1-e','17-q1-f','17-q1-g','17-q1-h','17-q2','17-q3','18-ex1','18-ex2','18-ex3','18-ex4-a','18-ex4-b','18-ex4-c','18-ex4-d','18-ex4-e','18-ex4-f','18-ex4-g','18-ex4-h','18-ex5','18-q1','18-q2','18-q3','18-q4','19-ex1','19-ex2','19-q1-even','19-q1-odd','19-q2','19-q3','19-q4'];
+const printed=[6,9,9,9,10,10,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,14,15,17,17,17,19,20,21,21,21,21,21,21,21,21,21,21,21,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36,37,37,37,37,37,37,37,37,37,37,38,39,39,39,39,40,40,40,40,40,40,40,40,40,46,46,46,46,47,47,47,47,47,47,47,47,47,47,47,47,47,47,48,48,48,48,48,49,50,51,52,52,52,52,52,52,54,54,56,56,56,56,59,59,59,59,59,60,60,60,60,60,60,60,60,62,65,65,66,67,67,68,69,69,69,69,69,70,70,70,70,72,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,74,74,75,76,76,76,76,76,76,77,77,77,77,77,77,77,78,79,79,79,79,80,81,81,81,81,81,81,81,82,82,82,82,82,82,82,82,82,85,85,85,85,86,86,87,88,89,89,89,89,89,89,89,89,89,89,89,91,92,92,92,93,93,94,95,95,96,96,96,96,96,96,96,97,97,97,98,100,101,101,102,102,103,104,104,104,104,104,105,105,105,105,105,105,105,105,106,106,108,109,109,109,109,109,109,109,109,109,109,110,110,110,110,110,111,112,113,113,113,113,113];
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
   .filter(x=>!x.startsWith('/')&&!x.includes('board-bridge')).map(x=>read(path.join(dir,x)));
@@ -354,6 +354,28 @@ function expected(i,s) {
     case '17-q1-e':{const n=s+1,g=1+s%3;return [3,n+g,(4*n+5*g)/(n+g)];}
     case '17-q2':return [1+s%2,s+3+s%2,0];
     case '17-q3':return [s+2,3+s%3,s+5+s%3];
+    case '18-ex1':return [2+s%4,2+s%5,1+s%5];
+    case '18-ex2':{const n=1+s%3,v=(2+s%4)**(2*n);return [n,v,-v];}
+    case '18-ex3':return [(s+1)**3,(s+2)**3,((s+1)/(s+2))**3];
+    case '18-ex4-a':return [2*s+1,4,(s+.5)**2];
+    case '18-ex4-b':return [1,(s+2)**4,1/(s+2)**4];
+    case '18-ex4-c':return [-s-1,-2*s-2,s+1];
+    case '18-ex4-d':return [s+1,1,-1];
+    case '18-ex4-e':return [s+1,-1,1];
+    case '18-ex4-f':case '18-ex4-g':return [0,s+3,0];
+    case '18-ex4-h':return [1,s+4,s+3];
+    case '18-ex5':{const a=1+s%3,b=2+s%2;return [a*a,-(b**3),-(s+2)*a*a*b**3];}
+    case '18-q1':{const n=2+s%3,a=s+3;return [n*a,a**n,a];}
+    case '18-q2':return [-s-.5,s+.5,2];
+    case '18-q3':return [s+3,1+s%3,(s+3)**(1+s%3)];
+    case '18-q4':{const g=2+s%3;return [2**g,s+1,2*g];}
+    case '19-ex1':return [2+s%6,2+s%4,s%6-s%4];
+    case '19-ex2':return [0,2,(2+s%3)**2];
+    case '19-q1-even':return [100+s,0,1];
+    case '19-q1-odd':return [100+s,1,-1];
+    case '19-q2':return [s+20,s+21,s+18];
+    case '19-q3':return [0,1,1];
+    case '19-q4':return [1,10+s,9+s];
     default:throw new Error('Unexpected lesson');
   }
 }
@@ -410,4 +432,4 @@ for(const [i,entry] of book.exercises.entries()){
   assert.notEqual(JSON.parse(reopened.w.localStorage.getItem(key)).variant,0);
   reopened.dom.window.close();dom.window.close();
 }
-console.log('Source 89: 48 printed paragraphs, 269 student routes, 8877 independently checked questions and 269 personal draft round trips.');
+console.log('Source 89: 48 printed paragraphs, 292 student routes, 9636 independently checked questions and 292 personal draft round trips.');
