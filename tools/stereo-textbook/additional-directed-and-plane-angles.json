@@ -1,0 +1,890 @@
+{
+  "parts": {
+    "749": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ],
+    "750": [
+      "а",
+      "б",
+      "в"
+    ],
+    "751": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "752": [
+      "а",
+      "б"
+    ],
+    "753": [
+      "а",
+      "б"
+    ],
+    "754": [
+      null
+    ],
+    "755": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "756": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "749": {
+      "id": "source-main-0749",
+      "kind": "exercise",
+      "title": "Задача № 749",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "749",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "750": {
+      "id": "source-main-0750",
+      "kind": "exercise",
+      "title": "Задача № 750",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "750",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "751": {
+      "id": "source-main-0751",
+      "kind": "exercise",
+      "title": "Задача № 751",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "751",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "752": {
+      "id": "source-main-0752",
+      "kind": "exercise",
+      "title": "Задача № 752",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "752",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "753": {
+      "id": "source-main-0753",
+      "kind": "exercise",
+      "title": "Задача № 753",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "753",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "754": {
+      "id": "source-main-0754",
+      "kind": "exercise",
+      "title": "Задача № 754",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "754",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "755": {
+      "id": "source-main-0755",
+      "kind": "exercise",
+      "title": "Задача № 755",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "755",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "756": {
+      "id": "source-main-0756",
+      "kind": "exercise",
+      "title": "Задача № 756",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "756",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0749-a": {
+      "raw": "ad85be14bbf9c54d5734f142235fb8a5564ee66a31d21215c7092dcdeaee5219",
+      "authored": "119d5fa29a7fccb8c3187e0be1462b095a1cadd24dfd156496ee64aec846ffc1",
+      "integrated": "ad4327d9f87fd674d3a2998c6c95550cfa21bbdc9d77f5939ba44c3de20ab203"
+    },
+    "ex-main-0749-b": {
+      "raw": "42020ea68af40739cddb5f4776798c1d8c0184694adcf953dea64e120eaa128a",
+      "authored": "d56aac7e23d315b95cede1ba72955657aa10f3ba4c49c0f588fef733632b05d9",
+      "integrated": "debc77538d86e41335115b01906d777e7e4a71dc51e7d783fc54126e7295dd11"
+    },
+    "ex-main-0749-c": {
+      "raw": "811fe5d6ff40e28bda373720fe57d38995bee7c9c9fc2482fc74d6c28b9f2605",
+      "authored": "0ed3c66c6f17c569503f5c2f936f554ed9f3cfbcbe02a78866e1109ef4c82df1",
+      "integrated": "1cbc3d3f5565df65948ff492b7d3ee6c8b831caca95ee9aed8525077de1b0612"
+    },
+    "ex-main-0749-d": {
+      "raw": "1a3ee1bc1eaf2f8e7748116953bdc5408f156ed84c77d520cf810a444e9d9019",
+      "authored": "f6afeb97c5f6c3f1644d418c9470f52d88f9938257605c22b0cb42a9936799a9",
+      "integrated": "8a1c544866201cc0595030e8d77511b3fbce333fd45cc547e5954e91809d72ad"
+    },
+    "ex-main-0749-e": {
+      "raw": "c2c3adc334e37c15f9993eb4c04ea3a0454cf62d63d4699b62a39eb70b49ab3b",
+      "authored": "ffa41d819c29b0e12546ae22e3ce1884ef3c754ba6b3aa68c20ef6fad2386755",
+      "integrated": "a2571700dd6ab97684cd285bd5e7b37e79d0a9a413c2f0d9f74a386cdf7f30b5"
+    },
+    "ex-main-0750-a": {
+      "raw": "7f359f2532525a78ea838582adf0c2bf791d3522ce36e03380c07c1a288bd01d",
+      "authored": "c54cc0b5425154bfc87a63db996463119fa5d0f063a8a314c6b8aedee1e0db61",
+      "integrated": "c73f900e42296038d8be783a02ddd68004c685ed2ff6debb86a2067c6646f2ac"
+    },
+    "ex-main-0750-b": {
+      "raw": "43a65feeb26f2bf9d94c3e6d7a644189a1d8b67523068130185c6a2bb8d506fb",
+      "authored": "b81bc120e53e6c241b3b2fd755cb4107aad13cc7d51bf224d2b34031f37c9091",
+      "integrated": "0eb14e967bfb2a23e2aed3c34eb0ecc5e95c6501734b1d785e479de7a7f9921e"
+    },
+    "ex-main-0750-c": {
+      "raw": "e6b2c5c994ae59280431e3e85040149105b82ea26b247d391eb3236a08dabebf",
+      "authored": "5270e949dc4bb3d59cdc94a49aa5c0f833605f7dfc04def8a0ae7730dbc7cc3e",
+      "integrated": "1ec47d7627c31c24da188c5e0563c985b319d69a99a4412985fac638e96f83e3"
+    },
+    "ex-main-0751-a": {
+      "raw": "db01c7197656527c85a08a2cf76e48c69f34e65577cd92c2cc225ace0b4d2634",
+      "authored": "b0c839e9c87845c73516dc5cf75064aca07dd68b543f39112adfc40740e39f30",
+      "integrated": "876b446ef375d6ca4b427827bcb084bc272a63d16de9f04913c95e0414e1ee0c"
+    },
+    "ex-main-0751-b": {
+      "raw": "3437dc0889abf6be2e15bd0efb15f7b7defd0a91fb6e274cb29ddaba2374283d",
+      "authored": "57512a7d5c467d9a4654d473dc6a13333dcc5895465d65d6ec92e1436b360f48",
+      "integrated": "11e75533304e6b18545a88800b508014952aa29ccc21cd7289cfee78b02e167e"
+    },
+    "ex-main-0751-c": {
+      "raw": "385ad3bcf488dfba4bb2efa1f6358056521329cd5afbdc0bbd47eec06b143cb7",
+      "authored": "b1564fffdd26a87242589d87ced97927a4355a43ee6b4afcbf62d233ce3a6c08",
+      "integrated": "2167c1ba6480955aaddac77208377bdd68156b5ab7171591f4071011ac6ec2b2"
+    },
+    "ex-main-0751-d": {
+      "raw": "6b043a1b1e30d19a8aca7ba8d1e5d25fbf87759bfeabd79935c513cd858b8fe3",
+      "authored": "4ee04e2e1a9244a161ae63ba4fb169e373dd5bf7b6e834f0f87e586e24a7aa40",
+      "integrated": "77bb9b301edcb98661f1577b3afd1cfa912820b7ea50b2fd6683e024139e802a"
+    },
+    "ex-main-0752-a": {
+      "raw": "710b5393d7a80969f87aab83b0cba3ce899058ba067cb9aafe4d338fd85088d5",
+      "authored": "ffa6fb55459e908abd0ffc70ddbde58ec8e75b479d4a736db1a9f2637b6ad2f9",
+      "integrated": "980943d351b19ed52fe3753eca408961b7256bb21749db3767e1ec08c88678c7"
+    },
+    "ex-main-0752-b": {
+      "raw": "3bad7152ddb587070c30b42db45a5d4639cf3da24086ba124e3c5bfccf1aea08",
+      "authored": "da89ebcd4098399e3d8264658213f2ee972ca99b443fdc3297fcbb4eeab3a585",
+      "integrated": "600f6116a38e92287b694766d8bfa0000a18acc2d3a6846c2efb6dd8cf508c58"
+    },
+    "ex-main-0753-a": {
+      "raw": "4e65447fa14c12b2741cac7cb1dc95b449fdeb07fc3aebf64a004912a5e4352c",
+      "authored": "a3d5faec5119a546602ebcee2d0f94e676675b912f409d833ff182c2b32b4803",
+      "integrated": "a2624334dbe3d2833039fa2a54a144588a23ca34fe41a75145b1790f1bf76e9c"
+    },
+    "ex-main-0753-b": {
+      "raw": "7d3d0c625b1c3a263278853a33c22022871544625a09805c76d120fd2f7e4281",
+      "authored": "6e8cc191d9daba05c7e1ca1e915ef7962c76a819851742e571b7dfdc3d1ab6e9",
+      "integrated": "111ca71fcb8cce3ce5ec186321d9c7d8e272ac1d4b6b327ece6405ad63044fb0"
+    },
+    "ex-main-0754": {
+      "raw": "51819b16cc67d548795ac99ae9282515c49c501e382b56fca8ac326f2e88a78e",
+      "authored": "90d0a490f5ee18fb1a1388895832084caacc56a77032b448fa4e016e56985429",
+      "integrated": "78e950d795dc49196a386fb4b47dd90948ed3ae90bfae9663b54064eccab863c"
+    },
+    "ex-main-0755-a": {
+      "raw": "f33d51a8d50abc65370151854de9a543efdc07b7d3fc37629123c3a9719c0bda",
+      "authored": "c47b7d04d5c12cdb04fc751f18a08bbf0630b2e60f699a3377d5fcdb302fb6f0",
+      "integrated": "a7c1175460b4b90059a8bfa1b2bd47a7196ad0a12614f77f69220f28b7ad0674"
+    },
+    "ex-main-0755-b": {
+      "raw": "3e54834b3f3df32ccbb2bfd048988a4c3f3aa087a129279fbbb5716711518139",
+      "authored": "2ae62404aef648899e3eac2d61e53b331f007c4802c86ab478c0c3e543ced627",
+      "integrated": "8df99b127d6987277b51a4f8132302ca361a9c2df64a958cb955b23a19f4eda5"
+    },
+    "ex-main-0755-c": {
+      "raw": "6ae38d99bca7869c5ff32c2717af948ce4ec202c9d5334499f5b553127708c13",
+      "authored": "0bb31a659069ad7a73171a8b97aa1f90755fe9e2f3546a00b02da5100d71dd02",
+      "integrated": "0ef7da84708b19717892a2abb21789abbeb59c1005a836af2eba157d680fcee4"
+    },
+    "ex-main-0755-d": {
+      "raw": "9460876171b8e6bb6d6825444c07817cafa5049512c8edccfa46c9d471f8d1cf",
+      "authored": "a06e28c5f06b6375ecf484c79c5046fc5e79b182d556a61324b145079a540987",
+      "integrated": "c050560ab2cb02908ffded0355bf8206371ee359950a2ace40349b6fef436923"
+    },
+    "ex-main-0756-a": {
+      "raw": "53a81a5aebed68e024d3ffd0918c93eed94d4e5b50238f882796ddf0091b95af",
+      "authored": "094f388d8d7c572b39ddbd9617ddee88031a48142114ab2a63ca1e91c509deb5",
+      "integrated": "ea87e70af4c04efd1f93c806336b88251085a9445d0a12fcb1adef45abd496cd"
+    },
+    "ex-main-0756-b": {
+      "raw": "ca3b315d88777bdd97f2e3009043090ec3072710687d0dd65abe4efe30322fb2",
+      "authored": "ac3304ab6baef098fc1b0b8eae689dff68c6596bd3ad45812f919f923b928dd3",
+      "integrated": "4e585b2576a665b8e5bba75998836f85a0de975341de054ae319f8cb386722fc"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0749-a|condition",
+      "additional-directed-and-plane-angles-ex-main-0749-a-condition"
+    ],
+    [
+      "ex-main-0749-a|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0749-a-help-h1"
+    ],
+    [
+      "ex-main-0749-a|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0749-a-help-h2"
+    ],
+    [
+      "ex-main-0749-a|step-1",
+      "additional-directed-and-plane-angles-ex-main-0749-a-step-1"
+    ],
+    [
+      "ex-main-0749-a|step-2",
+      "additional-directed-and-plane-angles-ex-main-0749-a-step-2"
+    ],
+    [
+      "ex-main-0749-a|step-3",
+      "additional-directed-and-plane-angles-ex-main-0749-a-step-3"
+    ],
+    [
+      "ex-main-0749-b|condition",
+      "additional-directed-and-plane-angles-ex-main-0749-b-condition"
+    ],
+    [
+      "ex-main-0749-b|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0749-b-help-h1"
+    ],
+    [
+      "ex-main-0749-b|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0749-b-help-h2"
+    ],
+    [
+      "ex-main-0749-b|step-1",
+      "additional-directed-and-plane-angles-ex-main-0749-b-step-1"
+    ],
+    [
+      "ex-main-0749-b|step-2",
+      "additional-directed-and-plane-angles-ex-main-0749-b-step-2"
+    ],
+    [
+      "ex-main-0749-b|step-3",
+      "additional-directed-and-plane-angles-ex-main-0749-b-step-3"
+    ],
+    [
+      "ex-main-0749-c|condition",
+      "additional-directed-and-plane-angles-ex-main-0749-c-condition"
+    ],
+    [
+      "ex-main-0749-c|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0749-c-help-h1"
+    ],
+    [
+      "ex-main-0749-c|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0749-c-help-h2"
+    ],
+    [
+      "ex-main-0749-c|step-1",
+      "additional-directed-and-plane-angles-ex-main-0749-c-step-1"
+    ],
+    [
+      "ex-main-0749-c|step-2",
+      "additional-directed-and-plane-angles-ex-main-0749-c-step-2"
+    ],
+    [
+      "ex-main-0749-c|step-3",
+      "additional-directed-and-plane-angles-ex-main-0749-c-step-3"
+    ],
+    [
+      "ex-main-0749-d|condition",
+      "additional-directed-and-plane-angles-ex-main-0749-d-condition"
+    ],
+    [
+      "ex-main-0749-d|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0749-d-help-h1"
+    ],
+    [
+      "ex-main-0749-d|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0749-d-help-h2"
+    ],
+    [
+      "ex-main-0749-d|step-1",
+      "additional-directed-and-plane-angles-ex-main-0749-d-step-1"
+    ],
+    [
+      "ex-main-0749-d|step-2",
+      "additional-directed-and-plane-angles-ex-main-0749-d-step-2"
+    ],
+    [
+      "ex-main-0749-d|step-3",
+      "additional-directed-and-plane-angles-ex-main-0749-d-step-3"
+    ],
+    [
+      "ex-main-0749-e|condition",
+      "additional-directed-and-plane-angles-ex-main-0749-e-condition"
+    ],
+    [
+      "ex-main-0749-e|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0749-e-help-h1"
+    ],
+    [
+      "ex-main-0749-e|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0749-e-help-h2"
+    ],
+    [
+      "ex-main-0749-e|step-1",
+      "additional-directed-and-plane-angles-ex-main-0749-e-step-1"
+    ],
+    [
+      "ex-main-0749-e|step-2",
+      "additional-directed-and-plane-angles-ex-main-0749-e-step-2"
+    ],
+    [
+      "ex-main-0749-e|step-3",
+      "additional-directed-and-plane-angles-ex-main-0749-e-step-3"
+    ],
+    [
+      "ex-main-0750-a|condition",
+      "additional-directed-and-plane-angles-ex-main-0750-a-condition"
+    ],
+    [
+      "ex-main-0750-a|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0750-a-help-h1"
+    ],
+    [
+      "ex-main-0750-a|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0750-a-help-h2"
+    ],
+    [
+      "ex-main-0750-a|step-1",
+      "additional-directed-and-plane-angles-ex-main-0750-a-step-1"
+    ],
+    [
+      "ex-main-0750-a|step-2",
+      "additional-directed-and-plane-angles-ex-main-0750-a-step-2"
+    ],
+    [
+      "ex-main-0750-a|step-3",
+      "additional-directed-and-plane-angles-ex-main-0750-a-step-3"
+    ],
+    [
+      "ex-main-0750-b|condition",
+      "additional-directed-and-plane-angles-ex-main-0750-b-condition"
+    ],
+    [
+      "ex-main-0750-b|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0750-b-help-h1"
+    ],
+    [
+      "ex-main-0750-b|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0750-b-help-h2"
+    ],
+    [
+      "ex-main-0750-b|step-1",
+      "additional-directed-and-plane-angles-ex-main-0750-b-step-1"
+    ],
+    [
+      "ex-main-0750-b|step-2",
+      "additional-directed-and-plane-angles-ex-main-0750-b-step-2"
+    ],
+    [
+      "ex-main-0750-b|step-3",
+      "additional-directed-and-plane-angles-ex-main-0750-b-step-3"
+    ],
+    [
+      "ex-main-0750-c|condition",
+      "additional-directed-and-plane-angles-ex-main-0750-c-condition"
+    ],
+    [
+      "ex-main-0750-c|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0750-c-help-h1"
+    ],
+    [
+      "ex-main-0750-c|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0750-c-help-h2"
+    ],
+    [
+      "ex-main-0750-c|step-1",
+      "additional-directed-and-plane-angles-ex-main-0750-c-step-1"
+    ],
+    [
+      "ex-main-0750-c|step-2",
+      "additional-directed-and-plane-angles-ex-main-0750-c-step-2"
+    ],
+    [
+      "ex-main-0750-c|step-3",
+      "additional-directed-and-plane-angles-ex-main-0750-c-step-3"
+    ],
+    [
+      "ex-main-0751-a|condition",
+      "additional-directed-and-plane-angles-ex-main-0751-a-condition"
+    ],
+    [
+      "ex-main-0751-a|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0751-a-help-h1"
+    ],
+    [
+      "ex-main-0751-a|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0751-a-help-h2"
+    ],
+    [
+      "ex-main-0751-a|step-1",
+      "additional-directed-and-plane-angles-ex-main-0751-a-step-1"
+    ],
+    [
+      "ex-main-0751-a|step-2",
+      "additional-directed-and-plane-angles-ex-main-0751-a-step-2"
+    ],
+    [
+      "ex-main-0751-a|step-3",
+      "additional-directed-and-plane-angles-ex-main-0751-a-step-3"
+    ],
+    [
+      "ex-main-0751-b|condition",
+      "additional-directed-and-plane-angles-ex-main-0751-b-condition"
+    ],
+    [
+      "ex-main-0751-b|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0751-b-help-h1"
+    ],
+    [
+      "ex-main-0751-b|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0751-b-help-h2"
+    ],
+    [
+      "ex-main-0751-b|step-1",
+      "additional-directed-and-plane-angles-ex-main-0751-b-step-1"
+    ],
+    [
+      "ex-main-0751-b|step-2",
+      "additional-directed-and-plane-angles-ex-main-0751-b-step-2"
+    ],
+    [
+      "ex-main-0751-b|step-3",
+      "additional-directed-and-plane-angles-ex-main-0751-b-step-3"
+    ],
+    [
+      "ex-main-0751-c|condition",
+      "additional-directed-and-plane-angles-ex-main-0751-c-condition"
+    ],
+    [
+      "ex-main-0751-c|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0751-c-help-h1"
+    ],
+    [
+      "ex-main-0751-c|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0751-c-help-h2"
+    ],
+    [
+      "ex-main-0751-c|step-1",
+      "additional-directed-and-plane-angles-ex-main-0751-c-step-1"
+    ],
+    [
+      "ex-main-0751-c|step-2",
+      "additional-directed-and-plane-angles-ex-main-0751-c-step-2"
+    ],
+    [
+      "ex-main-0751-c|step-3",
+      "additional-directed-and-plane-angles-ex-main-0751-c-step-3"
+    ],
+    [
+      "ex-main-0751-d|condition",
+      "additional-directed-and-plane-angles-ex-main-0751-d-condition"
+    ],
+    [
+      "ex-main-0751-d|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0751-d-help-h1"
+    ],
+    [
+      "ex-main-0751-d|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0751-d-help-h2"
+    ],
+    [
+      "ex-main-0751-d|step-1",
+      "additional-directed-and-plane-angles-ex-main-0751-d-step-1"
+    ],
+    [
+      "ex-main-0751-d|step-2",
+      "additional-directed-and-plane-angles-ex-main-0751-d-step-2"
+    ],
+    [
+      "ex-main-0751-d|step-3",
+      "additional-directed-and-plane-angles-ex-main-0751-d-step-3"
+    ],
+    [
+      "ex-main-0752-a|condition",
+      "additional-directed-and-plane-angles-ex-main-0752-a-condition"
+    ],
+    [
+      "ex-main-0752-a|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0752-a-help-h1"
+    ],
+    [
+      "ex-main-0752-a|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0752-a-help-h2"
+    ],
+    [
+      "ex-main-0752-a|step-1",
+      "additional-directed-and-plane-angles-ex-main-0752-a-step-1"
+    ],
+    [
+      "ex-main-0752-a|step-2",
+      "additional-directed-and-plane-angles-ex-main-0752-a-step-2"
+    ],
+    [
+      "ex-main-0752-a|step-3",
+      "additional-directed-and-plane-angles-ex-main-0752-a-step-3"
+    ],
+    [
+      "ex-main-0752-b|condition",
+      "additional-directed-and-plane-angles-ex-main-0752-b-condition"
+    ],
+    [
+      "ex-main-0752-b|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0752-b-help-h1"
+    ],
+    [
+      "ex-main-0752-b|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0752-b-help-h2"
+    ],
+    [
+      "ex-main-0752-b|step-1",
+      "additional-directed-and-plane-angles-ex-main-0752-b-step-1"
+    ],
+    [
+      "ex-main-0752-b|step-2",
+      "additional-directed-and-plane-angles-ex-main-0752-b-step-2"
+    ],
+    [
+      "ex-main-0752-b|step-3",
+      "additional-directed-and-plane-angles-ex-main-0752-b-step-3"
+    ],
+    [
+      "ex-main-0753-a|condition",
+      "additional-directed-and-plane-angles-ex-main-0753-a-condition"
+    ],
+    [
+      "ex-main-0753-a|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0753-a-help-h1"
+    ],
+    [
+      "ex-main-0753-a|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0753-a-help-h2"
+    ],
+    [
+      "ex-main-0753-a|step-1",
+      "additional-directed-and-plane-angles-ex-main-0753-a-step-1"
+    ],
+    [
+      "ex-main-0753-a|step-2",
+      "additional-directed-and-plane-angles-ex-main-0753-a-step-2"
+    ],
+    [
+      "ex-main-0753-a|step-3",
+      "additional-directed-and-plane-angles-ex-main-0753-a-step-3"
+    ],
+    [
+      "ex-main-0753-b|condition",
+      "additional-directed-and-plane-angles-ex-main-0753-b-condition"
+    ],
+    [
+      "ex-main-0753-b|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0753-b-help-h1"
+    ],
+    [
+      "ex-main-0753-b|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0753-b-help-h2"
+    ],
+    [
+      "ex-main-0753-b|step-1",
+      "additional-directed-and-plane-angles-ex-main-0753-b-step-1"
+    ],
+    [
+      "ex-main-0753-b|step-2",
+      "additional-directed-and-plane-angles-ex-main-0753-b-step-2"
+    ],
+    [
+      "ex-main-0753-b|step-3",
+      "additional-directed-and-plane-angles-ex-main-0753-b-step-3"
+    ],
+    [
+      "ex-main-0754|condition",
+      "additional-directed-and-plane-angles-ex-main-0754-condition"
+    ],
+    [
+      "ex-main-0754|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0754-help-h1"
+    ],
+    [
+      "ex-main-0754|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0754-help-h2"
+    ],
+    [
+      "ex-main-0754|step-1",
+      "additional-directed-and-plane-angles-ex-main-0754-step-1"
+    ],
+    [
+      "ex-main-0754|step-2",
+      "additional-directed-and-plane-angles-ex-main-0754-step-2"
+    ],
+    [
+      "ex-main-0754|step-3",
+      "additional-directed-and-plane-angles-ex-main-0754-step-3"
+    ],
+    [
+      "ex-main-0755-a|condition",
+      "additional-directed-and-plane-angles-ex-main-0755-a-condition"
+    ],
+    [
+      "ex-main-0755-a|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0755-a-help-h1"
+    ],
+    [
+      "ex-main-0755-a|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0755-a-help-h2"
+    ],
+    [
+      "ex-main-0755-a|step-1",
+      "additional-directed-and-plane-angles-ex-main-0755-a-step-1"
+    ],
+    [
+      "ex-main-0755-a|step-2",
+      "additional-directed-and-plane-angles-ex-main-0755-a-step-2"
+    ],
+    [
+      "ex-main-0755-a|step-3",
+      "additional-directed-and-plane-angles-ex-main-0755-a-step-3"
+    ],
+    [
+      "ex-main-0755-b|condition",
+      "additional-directed-and-plane-angles-ex-main-0755-b-condition"
+    ],
+    [
+      "ex-main-0755-b|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0755-b-help-h1"
+    ],
+    [
+      "ex-main-0755-b|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0755-b-help-h2"
+    ],
+    [
+      "ex-main-0755-b|step-1",
+      "additional-directed-and-plane-angles-ex-main-0755-b-step-1"
+    ],
+    [
+      "ex-main-0755-b|step-2",
+      "additional-directed-and-plane-angles-ex-main-0755-b-step-2"
+    ],
+    [
+      "ex-main-0755-b|step-3",
+      "additional-directed-and-plane-angles-ex-main-0755-b-step-3"
+    ],
+    [
+      "ex-main-0755-c|condition",
+      "additional-directed-and-plane-angles-ex-main-0755-c-condition"
+    ],
+    [
+      "ex-main-0755-c|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0755-c-help-h1"
+    ],
+    [
+      "ex-main-0755-c|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0755-c-help-h2"
+    ],
+    [
+      "ex-main-0755-c|step-1",
+      "additional-directed-and-plane-angles-ex-main-0755-c-step-1"
+    ],
+    [
+      "ex-main-0755-c|step-2",
+      "additional-directed-and-plane-angles-ex-main-0755-c-step-2"
+    ],
+    [
+      "ex-main-0755-c|step-3",
+      "additional-directed-and-plane-angles-ex-main-0755-c-step-3"
+    ],
+    [
+      "ex-main-0755-d|condition",
+      "additional-directed-and-plane-angles-ex-main-0755-d-condition"
+    ],
+    [
+      "ex-main-0755-d|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0755-d-help-h1"
+    ],
+    [
+      "ex-main-0755-d|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0755-d-help-h2"
+    ],
+    [
+      "ex-main-0755-d|step-1",
+      "additional-directed-and-plane-angles-ex-main-0755-d-step-1"
+    ],
+    [
+      "ex-main-0755-d|step-2",
+      "additional-directed-and-plane-angles-ex-main-0755-d-step-2"
+    ],
+    [
+      "ex-main-0755-d|step-3",
+      "additional-directed-and-plane-angles-ex-main-0755-d-step-3"
+    ],
+    [
+      "ex-main-0756-a|condition",
+      "additional-directed-and-plane-angles-ex-main-0756-a-condition"
+    ],
+    [
+      "ex-main-0756-a|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0756-a-help-h1"
+    ],
+    [
+      "ex-main-0756-a|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0756-a-help-h2"
+    ],
+    [
+      "ex-main-0756-a|step-1",
+      "additional-directed-and-plane-angles-ex-main-0756-a-step-1"
+    ],
+    [
+      "ex-main-0756-a|step-2",
+      "additional-directed-and-plane-angles-ex-main-0756-a-step-2"
+    ],
+    [
+      "ex-main-0756-a|step-3",
+      "additional-directed-and-plane-angles-ex-main-0756-a-step-3"
+    ],
+    [
+      "ex-main-0756-b|condition",
+      "additional-directed-and-plane-angles-ex-main-0756-b-condition"
+    ],
+    [
+      "ex-main-0756-b|help:h1",
+      "additional-directed-and-plane-angles-ex-main-0756-b-help-h1"
+    ],
+    [
+      "ex-main-0756-b|help:h2",
+      "additional-directed-and-plane-angles-ex-main-0756-b-help-h2"
+    ],
+    [
+      "ex-main-0756-b|step-1",
+      "additional-directed-and-plane-angles-ex-main-0756-b-step-1"
+    ],
+    [
+      "ex-main-0756-b|step-2",
+      "additional-directed-and-plane-angles-ex-main-0756-b-step-2"
+    ],
+    [
+      "ex-main-0756-b|step-3",
+      "additional-directed-and-plane-angles-ex-main-0756-b-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "c8c961a182dcc44505ff196b1e5b52976764b63128ad469b86c670af8d803a18",
+      "afterSHA256": "bd8fb4d1e500c5bda4d8cef516c3b32d9958e56dcdedea07b266da0aa9be19cd"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "a02c9f593e5c1c794b6a2741ede7c5f409f4e6cc27a14a4409dccb18ba8ee02a",
+      "afterSHA256": "569c55200a3921fb366dc03ecdbee068446a008d096d699f3c18bfebe68a273c"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T00:06:15Z",
+    "scope": "Chapters I–VI, chapter VII points 71–84, every self-check on page 186 and consecutive source exercises through 748. The later inventory is still draft."
+  },
+  "before": {
+    "course": "db695be88b6f8d911b24726ed7a3a4cc2a12bff1961521ba25d2df276737e976",
+    "index": "400b71b88df3cfd001b5bb34c4456ecc92d5e4460af331cd916ccff03a695ae5",
+    "registry": "16f660229767cdff972637fc7bcebdb24b9139ccc7df2b2ec04f5f0012c8fdb6",
+    "cases": "fed7ce4db376cf03ee28226afeca4c0305b84e8ed50c4812765c6df1b45158b3"
+  }
+}
