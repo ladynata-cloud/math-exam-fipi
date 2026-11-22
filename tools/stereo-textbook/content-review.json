@@ -2,7 +2,7 @@
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
   "registeredAt": "2026-11-22T01:35:00Z",
-  "scope": "Chapters I–VII and the first three final-review exercises, 764–766, are complete in all eighteen printed parts. The remaining final-review and advanced exercises from 767 are inventoried separately.",
+  "scope": "Chapters I–VII and the complete final-review set, 764–767, include all 24 printed parts. The separately inventoried advanced problems begin at 768.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2449,6 +2449,21 @@
       ],
       "evidence": "tools/stereo-textbook/final-triangular-pyramid-review.json",
       "mathematicalReport": "tools/stereo-textbook/final-triangular-pyramid-review.test.cjs"
+    },
+    {
+      "reviewer": "Codex: original 2024 exercise 767 on printed page 189 and answer key on page 272, with independent axial and coordinate derivations.",
+      "reviewedAt": "2026-11-22T01:35:00Z",
+      "scope": "All six parts of exercise 767 on printed page 189. Coordinate normals independently identify the two angles transposed in the answer key on page 272. The location of K as the midpoint of base edge AB in part д was checked directly in the issued PDF, including the line break. A separate raised point is used only for transfer.",
+      "cardIds": [
+        "ex-main-0767-a",
+        "ex-main-0767-b",
+        "ex-main-0767-c",
+        "ex-main-0767-d",
+        "ex-main-0767-e",
+        "ex-main-0767-f"
+      ],
+      "evidence": "tools/stereo-textbook/end-of-final-pyramid-review.json",
+      "mathematicalReport": "tools/stereo-textbook/end-of-final-pyramid-review.test.cjs"
     }
   ],
   "cards": [
@@ -8271,6 +8286,30 @@
     {
       "id": "ex-main-0766-f",
       "sha256": "de335e90b91d0b2a6f662fa7f08451074f514d6d5f7049939a6ebf04c2923b88"
+    },
+    {
+      "id": "ex-main-0767-a",
+      "sha256": "0613adbf40c27a0d43ea6208beb83db16df9984e9d799f7be1d389f17b1092c3"
+    },
+    {
+      "id": "ex-main-0767-b",
+      "sha256": "b4b7fbaaf07f76cefcf3c17819656bab61b9541a9f395a4cea8ff3f263087b29"
+    },
+    {
+      "id": "ex-main-0767-c",
+      "sha256": "e97f07689405cdb1a89e84a45b3dadd8e47de85130c8bc28338a5aab7ff5719e"
+    },
+    {
+      "id": "ex-main-0767-d",
+      "sha256": "0a812565e72d4d95a8c9b6bbe7ea96b68a9287fef506e2ca2797e04c2803e7a1"
+    },
+    {
+      "id": "ex-main-0767-e",
+      "sha256": "3d876615562c980160edda1b2f9cafd3793e89ac3c6160aa5b8bd988e791190f"
+    },
+    {
+      "id": "ex-main-0767-f",
+      "sha256": "83ceae8520b9e2845ec0fac60d55494c446464d8334cd466a3b0973eea93e8e9"
     }
   ]
 }

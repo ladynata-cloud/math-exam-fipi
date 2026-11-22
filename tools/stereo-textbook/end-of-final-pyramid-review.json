@@ -1,0 +1,233 @@
+{
+  "parts": {
+    "767": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е"
+    ]
+  },
+  "previousCatalog": {
+    "767": {
+      "id": "source-main-0767",
+      "kind": "exercise",
+      "title": "Задача № 767",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "767",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          189
+        ],
+        "pdfPages": [
+          191
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0767-a": {
+      "raw": "b6c1db0fe416e2cf632659aa9dbd5a3e80e4689bf0ee5dff0cbb2bce0f6f793e",
+      "authored": "0613adbf40c27a0d43ea6208beb83db16df9984e9d799f7be1d389f17b1092c3",
+      "integrated": "b30b77f923e6595eb5646b64f1bbe71908fd25327472e6da571aa25277228fb9"
+    },
+    "ex-main-0767-b": {
+      "raw": "e1ed5074d3dd76bef9071c6e8a4df0f03a6ec1f5599139850795db12fbd818ed",
+      "authored": "b4b7fbaaf07f76cefcf3c17819656bab61b9541a9f395a4cea8ff3f263087b29",
+      "integrated": "57276652dbbee447bdbf4e30df1a1340d23b2b6c8accc806e59112b34b390bf6"
+    },
+    "ex-main-0767-c": {
+      "raw": "b18d36b52d02d2e7bc337fa6c82c63b893464bcfc658b71d3e09fec5fb55261e",
+      "authored": "e97f07689405cdb1a89e84a45b3dadd8e47de85130c8bc28338a5aab7ff5719e",
+      "integrated": "acf0392b1db157a88a3abe5f0a01bd6d254c7fc958d7339d3b361d176c059ffd"
+    },
+    "ex-main-0767-d": {
+      "raw": "71486746920c51cc52787078a8b72686e30c4b67007f61f0e55110c2872f40d4",
+      "authored": "0a812565e72d4d95a8c9b6bbe7ea96b68a9287fef506e2ca2797e04c2803e7a1",
+      "integrated": "71068bd369c71fd5d6732627ce0cead313662f71abc2c2a985f526f7ac38734d"
+    },
+    "ex-main-0767-e": {
+      "raw": "6b14d08748fda2ef4584489c94041a19e6d2087712f7687cd6bbc8dc701b243f",
+      "authored": "3d876615562c980160edda1b2f9cafd3793e89ac3c6160aa5b8bd988e791190f",
+      "integrated": "70246d7cba7c71b56433cf9a46cee31a71900e6f9fa676507c2ad98862db4549"
+    },
+    "ex-main-0767-f": {
+      "raw": "03a62a6bf462ec8e3c7d18c49c3e1488cf8f6b2b6355ee4485dbe83aa35cb99f",
+      "authored": "83ceae8520b9e2845ec0fac60d55494c446464d8334cd466a3b0973eea93e8e9",
+      "integrated": "34b657954c8f6860a105b6f017f7c43e59d2ce93801d027921d3a96e84086029"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0767-a|condition",
+      "end-of-final-pyramid-review-ex-main-0767-a-condition"
+    ],
+    [
+      "ex-main-0767-a|help:h1",
+      "end-of-final-pyramid-review-ex-main-0767-a-help-h1"
+    ],
+    [
+      "ex-main-0767-a|help:h2",
+      "end-of-final-pyramid-review-ex-main-0767-a-help-h2"
+    ],
+    [
+      "ex-main-0767-a|step-1",
+      "end-of-final-pyramid-review-ex-main-0767-a-step-1"
+    ],
+    [
+      "ex-main-0767-a|step-2",
+      "end-of-final-pyramid-review-ex-main-0767-a-step-2"
+    ],
+    [
+      "ex-main-0767-a|step-3",
+      "end-of-final-pyramid-review-ex-main-0767-a-step-3"
+    ],
+    [
+      "ex-main-0767-b|condition",
+      "end-of-final-pyramid-review-ex-main-0767-b-condition"
+    ],
+    [
+      "ex-main-0767-b|help:h1",
+      "end-of-final-pyramid-review-ex-main-0767-b-help-h1"
+    ],
+    [
+      "ex-main-0767-b|help:h2",
+      "end-of-final-pyramid-review-ex-main-0767-b-help-h2"
+    ],
+    [
+      "ex-main-0767-b|step-1",
+      "end-of-final-pyramid-review-ex-main-0767-b-step-1"
+    ],
+    [
+      "ex-main-0767-b|step-2",
+      "end-of-final-pyramid-review-ex-main-0767-b-step-2"
+    ],
+    [
+      "ex-main-0767-b|step-3",
+      "end-of-final-pyramid-review-ex-main-0767-b-step-3"
+    ],
+    [
+      "ex-main-0767-c|condition",
+      "end-of-final-pyramid-review-ex-main-0767-c-condition"
+    ],
+    [
+      "ex-main-0767-c|help:h1",
+      "end-of-final-pyramid-review-ex-main-0767-c-help-h1"
+    ],
+    [
+      "ex-main-0767-c|help:h2",
+      "end-of-final-pyramid-review-ex-main-0767-c-help-h2"
+    ],
+    [
+      "ex-main-0767-c|step-1",
+      "end-of-final-pyramid-review-ex-main-0767-c-step-1"
+    ],
+    [
+      "ex-main-0767-c|step-2",
+      "end-of-final-pyramid-review-ex-main-0767-c-step-2"
+    ],
+    [
+      "ex-main-0767-c|step-3",
+      "end-of-final-pyramid-review-ex-main-0767-c-step-3"
+    ],
+    [
+      "ex-main-0767-d|condition",
+      "end-of-final-pyramid-review-ex-main-0767-d-condition"
+    ],
+    [
+      "ex-main-0767-d|help:h1",
+      "end-of-final-pyramid-review-ex-main-0767-d-help-h1"
+    ],
+    [
+      "ex-main-0767-d|help:h2",
+      "end-of-final-pyramid-review-ex-main-0767-d-help-h2"
+    ],
+    [
+      "ex-main-0767-d|step-1",
+      "end-of-final-pyramid-review-ex-main-0767-d-step-1"
+    ],
+    [
+      "ex-main-0767-d|step-2",
+      "end-of-final-pyramid-review-ex-main-0767-d-step-2"
+    ],
+    [
+      "ex-main-0767-d|step-3",
+      "end-of-final-pyramid-review-ex-main-0767-d-step-3"
+    ],
+    [
+      "ex-main-0767-e|condition",
+      "end-of-final-pyramid-review-ex-main-0767-e-condition"
+    ],
+    [
+      "ex-main-0767-e|help:h1",
+      "end-of-final-pyramid-review-ex-main-0767-e-help-h1"
+    ],
+    [
+      "ex-main-0767-e|help:h2",
+      "end-of-final-pyramid-review-ex-main-0767-e-help-h2"
+    ],
+    [
+      "ex-main-0767-e|step-1",
+      "end-of-final-pyramid-review-ex-main-0767-e-step-1"
+    ],
+    [
+      "ex-main-0767-e|step-2",
+      "end-of-final-pyramid-review-ex-main-0767-e-step-2"
+    ],
+    [
+      "ex-main-0767-e|step-3",
+      "end-of-final-pyramid-review-ex-main-0767-e-step-3"
+    ],
+    [
+      "ex-main-0767-f|condition",
+      "end-of-final-pyramid-review-ex-main-0767-f-condition"
+    ],
+    [
+      "ex-main-0767-f|help:h1",
+      "end-of-final-pyramid-review-ex-main-0767-f-help-h1"
+    ],
+    [
+      "ex-main-0767-f|help:h2",
+      "end-of-final-pyramid-review-ex-main-0767-f-help-h2"
+    ],
+    [
+      "ex-main-0767-f|step-1",
+      "end-of-final-pyramid-review-ex-main-0767-f-step-1"
+    ],
+    [
+      "ex-main-0767-f|step-2",
+      "end-of-final-pyramid-review-ex-main-0767-f-step-2"
+    ],
+    [
+      "ex-main-0767-f|step-3",
+      "end-of-final-pyramid-review-ex-main-0767-f-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "33b1126be2a56c6c6d97c8e8bfc0d144241d42e9761aa5744c605d7357ba70e2",
+      "afterSHA256": "3eef3045afdd8664f83451434b4746835cde70538a8a6b2f8cf169971a136f2b"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "3a80591bb3362d66552dbb68effe0f171eba0a9d56864679615c199127b2d4a4",
+      "afterSHA256": "6f59631a7e698a0d8f3d1d204b158fd1eb3863acbee938df3cda13c3e3211042"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T01:35:00Z",
+    "scope": "Chapters I–VII and the first three final-review exercises, 764–766, are complete in all eighteen printed parts. The remaining final-review and advanced exercises from 767 are inventoried separately."
+  },
+  "before": {
+    "course": "5be7819a462f64e77645fb9725e2e4dcca46886dba164d4ea71e1c659680a491",
+    "index": "cb05241e0c0c640cac35072825f1d4612f769996877bed6413a52459c96010c5",
+    "registry": "d0f1f31d23b908eb9390fddf0bac32c6cf2cd526830e94d0a760be1f26de8088",
+    "cases": "67fed59bb933e937a9b6942c9052932531dbf18ceb6f07fb28eddc23f6ab698c"
+  }
+}

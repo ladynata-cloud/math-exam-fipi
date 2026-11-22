@@ -186,20 +186,21 @@
     for(const path of v.paths||[])for(const [px,py] of path){xs.push(px);ys.push(py);}
     if(v.vertical!==undefined)xs.push(v.vertical);
     if(v.horizontal!==undefined)ys.push(v.horizontal);
-    const loX=Math.min(-1,...xs)-1,hiX=Math.max(1,...xs)+1,loY=Math.min(-1,...ys)-1,hiY=Math.max(1,...ys)+1;
+    const loX=Math.floor(Math.min(-1,...xs))-1,hiX=Math.ceil(Math.max(1,...xs))+1,loY=Math.floor(Math.min(-1,...ys))-1,hiY=Math.ceil(Math.max(1,...ys))+1;
     const scale=Math.min(223/(hiX-loX),143/(hiY-loY),31);
-    const x=n=>144+(n-(hiX+loX)/2)*scale,y=n=>86-(n-(hiY+loY)/2)*scale;
-    const step=Math.ceil(15/scale);
+    const sx=v.separateScales?223/(hiX-loX):scale, sy=v.separateScales?143/(hiY-loY):scale;
+    const x=n=>144+(n-(hiX+loX)/2)*sx,y=n=>86-(n-(hiY+loY)/2)*sy;
+    const stepX=Math.ceil(15/sx),stepY=Math.ceil(15/sy);
     const line=(x1,y1,x2,y2,color,width=1,dash='')=>'<path d="M'+x1+' '+y1+'L'+x2+' '+y2+'" stroke="'+color+'" stroke-width="'+width+'" stroke-dasharray="'+dash+'" fill="none"/>';
     const label=(px,py,value,size=10,anchor='middle')=>'<text x="'+px+'" y="'+py+'" font-size="'+size+'" text-anchor="'+anchor+'">'+value+'</text>';
     let grid='',ticks='';
     for(let n=loX;n<=hiX;n++){
-      if(scale>=8||n%step===0)grid+=line(x(n),y(loY),x(n),y(hiY),'#d5e2e1');
-      if(n!==0&&n%step===0)ticks+=label(x(n),y(0)+12,n);
+      if(sx>=8||n%stepX===0)grid+=line(x(n),y(loY),x(n),y(hiY),'#d5e2e1');
+      if(n!==0&&n%stepX===0)ticks+=label(x(n),y(0)+12,n);
     }
     for(let n=loY;n<=hiY;n++){
-      if(scale>=8||n%step===0)grid+=line(x(loX),y(n),x(hiX),y(n),'#d5e2e1');
-      if(n!==0&&n%step===0)ticks+=label(x(0)-4,y(n)+3,n,10,'end');
+      if(sy>=8||n%stepY===0)grid+=line(x(loX),y(n),x(hiX),y(n),'#d5e2e1');
+      if(n!==0&&n%stepY===0)ticks+=label(x(0)-4,y(n)+3,n,10,'end');
     }
     let overlay='';
     if(v.wholePlane)overlay+='<rect x="'+x(loX)+'" y="'+y(hiY)+'" width="'+(x(hiX)-x(loX))+'" height="'+(y(loY)-y(hiY))+'" fill="#72ada1" fill-opacity=".25"/>';
@@ -228,7 +229,17 @@
       if(v.diagonal) for(const [a,b] of [[pts[0],pts[2]],[pts[1],pts[3]]])overlay+=line(x(a[1]),y(a[2]),x(b[1]),y(b[2]),'#50867e',1,'3 2');
     }
     if(v.segment){const [a,b]=v.points;overlay+=line(x(a[1]),y(a[2]),x(b[1]),y(b[2]),'#437974',2,'4 2');}
-    const marks=v.points.map(([t,px,py])=>'<circle cx="'+x(px)+'" cy="'+y(py)+'" r="3.6" fill="#8d4129"/>'+label(x(px)+5,y(py)-5,t,11,'start')).join('');
+    const tip=v.ray==='left'?0:v.ray==='right'?1:-1;
+    const marks=v.points.map(([t,px,py],i)=>{
+      const cx=x(px),cy=y(py);
+      if(i===tip){
+        const [,ax,ay]=v.points[1-tip];
+        const dx=cx-x(ax),dy=cy-y(ay),len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len;
+        return '<polygon points="'+(cx+5*ux)+','+(cy+5*uy)+' '+(cx-5*ux+3*uy)+','+(cy-5*uy-3*ux)+' '+(cx-5*ux-3*uy)+','+(cy-5*uy+3*ux)+'" fill="#277a72"/>';
+      }
+      const open=(v.openPoints||[]).includes(i);
+      return '<circle cx="'+cx+'" cy="'+cy+'" r="3.6" fill="'+(open?'white':'#8d4129')+'" stroke="#8d4129"/>'+label(cx+5,cy-5,t,11,'start');
+    }).join('');
     return '<svg viewBox="0 0 288 183" role="img" aria-label="'+v.caption+'"><g font-family="sans-serif" fill="#263f43">'+grid+line(x(loX),y(0),x(hiX)+5,y(0),'#344f52',1.5)+line(x(0),y(loY),x(0),y(hiY)-5,'#344f52',1.5)+ticks+label(x(0)-3,y(0)+12,'0',10,'end')+label(x(hiX)+9,y(0)-4,'x')+label(x(0)+8,y(hiY)-3,'y')+overlay+marks+'</g></svg>';
   }
   window.MathExamMordkovich7Coordinates={register,figure};
