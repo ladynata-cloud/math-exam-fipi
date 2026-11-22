@@ -74,7 +74,8 @@ const groups = {
   finalTriangularPrismReview: {manifests:[require('./final-triangular-prism-review.json')],count:6},
   finalSquarePyramidReview: {manifests:[require('./final-square-pyramid-review.json')],count:6},
   finalTriangularPyramidReview: {manifests:[require('./final-triangular-pyramid-review.json')],count:6},
-  endOfFinalPyramidReview: {manifests:[require('./end-of-final-pyramid-review.json')],count:6}
+  endOfFinalPyramidReview: {manifests:[require('./end-of-final-pyramid-review.json')],count:6},
+  firstAdvancedPyramidProblems: {manifests:[require('./first-advanced-pyramid-problems.json')],count:3}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
