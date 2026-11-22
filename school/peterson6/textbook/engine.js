@@ -52,10 +52,10 @@ function sanitize(part,input){
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
- if(/^(019|020|021|026|027|028|029|039|040)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id)){
+ if(/^(019|020|021|026|027|028|029|039|040|050|051)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id)){
   for(const key of ['logicLeft','logicRight'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
   if(input.logicReference===true)clean.logicReference=true;
-  if((/^(02[6789]|039|040)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
+  if((/^(02[6789]|039|040|050|051)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='038-termin'&&typeof input.cipherMeaning==='string'&&input.cipherMeaning)clean.cipherMeaning=cut(input.cipherMeaning,600);
@@ -76,6 +76,9 @@ function sanitize(part,input){
   if(input.filterDivision===true&&clean.filterProbe!==undefined)clean.filterDivision=true;
   if(Array.isArray(input.filterItems)&&input.filterItems.length<=allowed.length)clean.filterItems=[...new Set(input.filterItems.filter(v=>allowed.includes(v)))].sort((a,b)=>a-b);
   if(input.filterEmpty===true&&!clean.filterItems?.length)clean.filterEmpty=true;
+ }
+ if(/^05[01]-/.test(part.id)&&Number.isInteger(input.proofProbe)){
+  const tiger=part.id.startsWith('050-');if(input.proofProbe>=(tiger?0:1)&&input.proofProbe<=(tiger?3:60))clean.proofProbe=input.proofProbe;
  }
  if(part.id.startsWith('049-')){
   if(['front','side','base'].includes(input.boxFace))clean.boxFace=input.boxFace;

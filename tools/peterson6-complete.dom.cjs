@@ -860,3 +860,22 @@ test('printed cuboid dimensions support face pairs, separate units, rounding and
  }
  const re=await surface(t,BOOK+'#n/49/049-3',storage(s));assert.equal(element(re,'[data-box-names]').value,'xyh');assert.equal(element(re,'[data-box-field="0"]').value,'S=2(xy+xh+yh)');
 });
+test('tiger quantifiers and six original divisibility claims separate one witness from a universal proof',async t=>{
+ const s=await surface(t,BOOK+'#n/50/050-1'),ex=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(49,51),values=[0,2,9,18,6,5,1],truths=[true,false,false,true,false,true,false];
+ const select=(selector,v)=>{const e=element(s,selector);e.value=String(v);e.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ let k=0;
+ for(const row of ex)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);select('[data-proof-probe]',values[k]);
+  if(k===0){assert.match(element(s,'[data-proof-result]').textContent,/истинна/);select('[data-proof-probe]',1);assert.match(element(s,'[data-proof-result]').textContent,/ложна/);}
+  else{const n=values[k],ds=Array.from({length:n},(_,i)=>i+1).filter(d=>n%d===0);assert.match(element(s,'[data-proof-result]').textContent,new RegExp('Всего '+ds.length+'\\.'));}
+  const left=truths[k]?1:2;select('[data-logic-left]',left===1?2:1);select('[data-logic-right]',1);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.equal(element(s,'#feedback').classList.contains('error'),true);
+  select('[data-logic-left]',left);select('[data-logic-right]',1);input(s,'[data-logic-other]',p.answer);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,k===0?/обе формы|Обе формы/:/Обоснование/);
+  assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct);assert.equal(bookWork(s,p.id).proofProbe,k===0?1:values[k]);
+  for(let j=0;j<36;j++){const m=s.w.PetersonAnalogues.create(row.number,p,j);assert.equal(new Set(m.choices).size,3);assert(m.choices.includes(m.answer));
+   if(k===1)assert.match(m.answer,/составное/);if(k===2){const v=Number(m.answer),bound=Number(m.prompt.match(/большее (\d+)/)[1]);assert(v>bound&&v%2===1&&v%3===0);}
+   if(k===4){const [d,t]=m.prompt.match(/\d+/g).map(Number);assert(Number(m.answer)%d===0&&Number(m.answer)%t!==0);}
+   if(k===6)assert.equal(m.answer,'1');
+  }k++;
+ }
+ const re=await surface(t,BOOK+'#n/51/051-6',storage(s));assert.equal(element(re,'[data-proof-probe]').value,'1');assert.match(element(re,'[data-logic-other]').value,/не простое/);
+});

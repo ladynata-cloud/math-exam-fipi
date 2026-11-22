@@ -474,6 +474,36 @@
   }
 
   const filterDivisors={42:[2,5,10,100,25,4],43:[3,9,6,15,18,90]},printedSet=[315,79,8181,490,102],digits=Array.from({length:10},(_,i)=>i);
+  const primeClaims=[
+    ['Каждое простое число нечётно.',false,'2 — простое чётное число.','3 — простое нечётное число.','4 — чётное составное число.','Контрпример обязан быть простым. Попробуй наименьшее простое число.'],
+    ['Каждое нечётное число простое.',false,'9 нечётно и делится на 3.','11 нечётно и просто.','4 составное и чётное.','Нужен нечётный пример с дополнительным делителем или единица.'],
+    ['Любое число, кратное 9, кратно 3.',true,'При n = 9k имеем n = 3 · (3k).','Это верно только для 9 и 18.','Каждое кратное 3 кратно 9.','Докажи для любого множителя k. Кратности одного примера недостаточно.'],
+    ['Любое число, кратное 3, кратно 9.',false,'6 кратно 3 и не кратно 9.','18 кратно и 3, и 9.','4 не кратно ни 3, ни 9.','Сначала выполни условие кратности 3. Потом проверь делимость на 9.'],
+    ['У каждого простого числа не больше двух положительных делителей.',true,'По определению у простого числа ровно два различных положительных делителя.','У каждого простого числа только один делитель.','Только у числа 2 есть два делителя.','Сравни «ровно два» с «не больше двух».'],
+    ['Всякое натуральное число, у которого не больше двух положительных делителей, является простым.',false,'1 имеет один положительный делитель и не является простым.','У 4 больше двух делителей.','У 3 ровно два делителя, и оно простое.','Слова «не больше двух» допускают один делитель. Проверь начало натурального ряда.']
+  ];
+  function primeLogic(number,part){
+    if(number===50)return {prompt:'Даны слова «Все тигры живут в Африке». Запиши отрицание несколькими равносильными способами. Сохрани и группу животных, и конкретное место. Сколько исключений опровергает исходную фразу?',
+      leftTitle:'Отрицание со словами «не все»',left:['Не все тигры живут в Африке.','Ни один тигр не живёт в Африке.','Не все животные Африки — тигры.'],li:0,rightTitle:'То же отрицание со словами «хотя бы один»',right:['Существует хотя бы один тигр, живущий вне Африки.','Есть хотя бы одно другое животное вне Африки.','Существует тигр, живущий в Африке.'],ri:0,hint:'Проверь воображаемый случай: два тигра живут в Африке, один — вне её. Какие фразы истинны именно как отрицание исходной?',reference:'Чтобы опровергнуть утверждение обо всех тиграх, достаточно одного тигра, живущего вне указанного места. Для других тигров место может быть любым.',extra:'Ещё один способ сказать то же самое'};
+    const [claim,truth,proof,w1,w2,hint]=primeClaims[Number(part.id.split('-')[1])-1];
+    return {prompt:'Работаем с натуральными числами от 1. Проверь эту общую фразу: «'+claim+'» Если она ложна, укажи контрпример и запиши отрицание, начав «Существует хотя бы одно…». Для истинной фразы объясни общее правило.',
+      leftTitle:'Оценка общей фразы',left:['Истинна','Ложна'],li:truth?0:1,rightTitle:'Контрпример или общее обоснование',right:[proof,w1,w2],ri:0,hint,reference:truth?'Общее обоснование должно объяснять фразу для произвольного натурального числа. Для проверки отдельного числа можно воспользоваться таблицей делителей.':'Контрпример должен одновременно удовлетворять первой части фразы и нарушать заключение. После «существует» опиши оба свойства.',extra:truth?'Моё доказательство без перебора примеров':'Моё отрицание со словами «существует хотя бы одно»'};
+  }
+  function primeExplore(number,part,work,interactive){
+    const isTiger=number===50,n=work.proofProbe;
+    const select='<label>'+(isTiger?'Сколько из трёх условных тигров за пределами Африки?':'Исследуй одно натуральное число')+' <select data-proof-probe><option value="">Выбери</option>'+Array.from({length:isTiger?4:60},(_,i)=>isTiger?i:i+1).map(x=>'<option value="'+x+'"'+(x===n?' selected':'')+'>'+x+'</option>').join('')+'</select></label>';
+    let msg=isTiger?'Модель описывает вымышленную группу из трёх животных. Проверь, как одно исключение меняет утверждение обо всей группе.':'Выбери натуральное число. Проверь сначала, входит ли оно в названную группу, затем — выполняется ли заключение.';
+    if(Number.isInteger(n)){
+      if(isTiger){msg='В Африке: '+(3-n)+'. За пределами Африки: '+n+'. '+(n?'Фраза «все трое живут в Африке» ложна.':'Фраза «все трое живут в Африке» истинна.');}
+      else{const ds=Array.from({length:n},(_,i)=>i+1).filter(d=>n%d===0);msg='Делители '+n+': '+ds.join(', ')+'. Всего '+ds.length+'. Число '+(n%2?'нечётное':'чётное')+'. Остатки при делении на 3 и 9: '+(n%3)+' и '+(n%9)+'.';}
+    }
+    return '<section data-proof-host><h3>'+(isTiger?'Проверь область действия слова «все»':'Проверь кандидата в контрпримеры')+'</h3>'+(interactive?select:'')+'<p data-proof-result aria-live="polite">'+msg+'</p></section>';
+  }
+  function mountProof(main,number,part,work,save){
+    let host=main.querySelector('[data-proof-host]');if(!host)return;
+    function draw(){host.outerHTML=primeExplore(number,part,work,true);host=main.querySelector('[data-proof-host]');const f=host.querySelector('select');f.onchange=()=>{if(f.value==='')delete work.proofProbe;else work.proofProbe=Number(f.value);save();draw();host.querySelector('select').focus({preventScroll:true});};}draw();
+  }
+
   function boxTask(part){
     if(part.id==='049-1-obhardyom')return 'У прямоугольного параллелепипеда три измерения: ширина 4,3 см, длина 6,1 см и высота 8,5 см. Найди объём в кубических сантиметрах. Округли окончательный результат до десятых.';
     if(part.id==='049-1-poverhnostsoft')return 'У прямоугольного параллелепипеда ширина 4,3 см, длина 6,1 см и высота 8,5 см. Найди площадь всей поверхности в квадратных сантиметрах. Округли итог до десятых.';
@@ -1160,6 +1190,7 @@
     ['Значение x на единицу меньше квадрата этого же числа.',['x = x² − 1','x < x²','x² = x − 1'],['x ≠ x² − 1','x ≥ x²','x = x² + 1'],'«На единицу» задаёт точную разность. Для отрицания достаточно любой другой разности, в том числе двух.']
   ];
   function logicCard(number,part){
+    if(number===50||number===51)return primeLogic(number,part);
     if(number===26)return universalCard(part);
     if(number===27)return witnessCard(part);
     if(number===28)return scopeCard(part);
@@ -1207,17 +1238,19 @@
   }
   function logicResponse(number,part,input,work){
     const periodRule=(number===35||number===36)&&part.id.endsWith('pravilo');
-    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&!periodRule)return null;
+    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&number!==50&&number!==51&&!periodRule)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
-    if((number>=27&&number<=29)||number===39||number===40||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if(number===50)return {ok:true,text:work.logicOther?.trim()?'Обе формы описывают одно исключение. Твоя дополнительная запись сохранена для проверки.':'Обе формы подходят. Напиши ещё одно равносильное отрицание своими словами.'};
+    if((number>=27&&number<=29)||number===39||number===40||number===51||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
 
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
+    if(number===50||number===51)return primeLogic(number,part).prompt;
     if(number===49)return boxTask(part);
     if(number>=45&&number<=48)return commonQuestion(number,part);
     if(number>=42&&number<=44)return filterQuestion(number,part);
@@ -1293,6 +1326,7 @@
     if(item.number===37)drawing=geometryFigure(part,{},false);
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
+    if(item.number===50||item.number===51)drawing=logicConstruction(item.number,part,false)+primeExplore(item.number,part,{},false);
     if(item.number===49)drawing=boxView(part,{},false);
     if(item.number>=45&&item.number<=48)drawing=commonFactorView(item.number,part,{},false);
     if(item.number>=42&&item.number<=44)drawing=filterView(item.number,part,{},false);
@@ -1325,5 +1359,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof};
 })(globalThis);
