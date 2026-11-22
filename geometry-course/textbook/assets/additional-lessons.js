@@ -94,7 +94,23 @@
       ['/geometry-course/textbook/data/regular-polygon-tables.json', 'п. 116 и №1176–1177'],
       ['/geometry-course/textbook/data/polygon-circle-applications.json', 'п. 117 и №1178–1182'],
       ['/geometry-course/textbook/data/regular-polygon-areas.json', '№1183–1187'],
-      ['/geometry-course/textbook/data/regular-polygon-constructions.json', '№1188–1189']
+      ['/geometry-course/textbook/data/regular-polygon-constructions.json', '№1188–1189'],
+      ['/geometry-course/textbook/data/circumference-lengths.json', 'п. 118 и №1190–1192'],
+      ['/geometry-course/textbook/data/inscribed-circle-lengths.json', '№1193–1194'],
+      ['/geometry-course/textbook/data/circle-length-applications.json', '№1195–1199'],
+      ['/geometry-course/textbook/data/measured-arc-devices.json', '№1200–1202'],
+      ['/geometry-course/textbook/data/radian-table.json', 'п. 119 и №1203'],
+      ['/geometry-course/textbook/data/radian-constructions.json', '№1204'],
+      ['/geometry-course/textbook/data/disk-area-table.json', 'п. 120 и №1205–1206'],
+      ['/geometry-course/textbook/data/areas-of-inscribed-disks.json', '№1207–1208'],
+      ['/geometry-course/textbook/data/disks-and-annuli.json', '№1209–1213'],
+      ['/geometry-course/textbook/data/cut-disks-and-semicircles.json', '№1214–1216'],
+      ['/geometry-course/textbook/data/sector-areas.json', 'п. 121, №1217–1220'],
+      ['/geometry-course/textbook/data/additional-regular-perimeters.json', '№1221–1224'],
+      ['/geometry-course/textbook/data/regular-polygon-diagonals.json', '№1225–1228'],
+      ['/geometry-course/textbook/data/arc-routes-and-incircles.json', '№1229–1232'],
+      ['/geometry-course/textbook/data/major-arcs-and-similar-circles.json', '№1233–1235'],
+      ['/geometry-course/textbook/data/regular-compass-finale.json', '№1236–1239']
   ];
 
   async function forCourse(base) {
