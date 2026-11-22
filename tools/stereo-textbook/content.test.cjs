@@ -127,4 +127,5 @@ require('./final-triangular-prism-review.test.cjs');
 require('./final-square-pyramid-review.test.cjs');
 require('./final-triangular-pyramid-review.test.cjs');
 require('./end-of-final-pyramid-review.test.cjs');
+require('./first-advanced-pyramid-problems.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

@@ -842,9 +842,11 @@
   if(relations)relations.register({card,model,question,branches});
   const linearFunctions=window.MathExamMordkovich7Functions;
   if(linearFunctions)linearFunctions.register({card,model,question});
+  const distributions=window.MathExamMordkovich7Distributions;
+  if(distributions)distributions.register({card,model,question});
   const previous={grade:course.grade, source:course.source, next:course.nextId, figure:course.figure};
   course.grade=b=>b===89?'7 класс · часть 1 · 11-е издание · 2019':previous.grade(b);
   course.source=(b,p)=>b===89?'https://pdf.my-uchebnik.ru/pdf/algebra/00000069.pdf#page='+(p+1):previous.source(b,p);
   course.nextId=l=>l.book===89?order[order.indexOf(l.id)+1]:previous.next(l);
-  course.figure=d=>d.chart==='coordinates89'?coordinates.figure(d.visual):d.chart==='statistics89'?statistics.figure(d.visual):d.chart==='theory89'?figure(d):previous.figure(d);
+  course.figure=d=>d.chart==='ranked89'?distributions.figure(d.visual):d.chart==='coordinates89'?coordinates.figure(d.visual):d.chart==='statistics89'?statistics.figure(d.visual):d.chart==='theory89'?figure(d):previous.figure(d);
 })();

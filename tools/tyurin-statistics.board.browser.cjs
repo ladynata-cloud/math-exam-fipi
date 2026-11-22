@@ -104,7 +104,7 @@ const catalogue=process.argv.includes('--dorofeev9')?{
 } : process.argv.includes('--mordkovich7-2013') ? {
   directory:'mordkovich-2013',entries:[[97,47,23]],uniqueLessons:22,search:'mordkovich-2013',match:'выражения',lesson:'97-q14',chart:'svg[aria-label*="Направление шага"]',storage:'math:mordkovich-2013:v1:'
 } : process.argv.includes('--mordkovich7-theory-2019') ? {
-  directory:'mordkovich-2019',entries:[[89,66,181]],uniqueLessons:171,search:'mordkovich-2019',match:'порядок действий',lesson:'89-3-ex2',chart:'svg[aria-label*="Температура по часам"]',storage:'math:mordkovich-2019:v1:'
+  directory:'mordkovich-2019',entries:[[89,66,221]],uniqueLessons:209,search:'mordkovich-2019',match:'порядок действий',lesson:'89-3-ex2',chart:'svg[aria-label*="Температура по часам"]',storage:'math:mordkovich-2019:v1:'
 } : process.argv.includes('--mordkovich8-workbook-2019') ? {
   directory:'mordkovich-2019',entries:[[67,54,38]],uniqueLessons:37,search:'mordkovich-2019',match:'область определения',lesson:'67-1-10',chart:'svg[aria-label*="Подстановка на числовой прямой"]',storage:'math:mordkovich-2019:v1:'
 } : process.argv.includes('--mordkovich7-workbook-2019') ? {
@@ -190,7 +190,9 @@ async function run(browser, origin, serverOrigin) {
         ['89-7-q1','Частоты наблюдений'],
         ['89-8-ex2-o','Прямоугольник, середина диагонали'],
         ['89-9-ex7-d','Закрашенная область и отдельный луч'],
-        ['89-10-ex4-e','Убывание на левом луче']
+        ['89-10-ex4-e','Убывание на левом луче'],
+        ['89-11-ex3','Горизонтальная прямая тоже удовлетворяет условиям'],
+        ['89-12-median-even-four','Позиции в упорядоченном ряду']
       ];
       for(const [id,caption] of diagrams){
         await t.locator('#lesson').selectOption(id);await value(student,'lesson',id);
