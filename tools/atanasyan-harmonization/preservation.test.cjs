@@ -73,6 +73,7 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
+  "geometry-course/textbook/data/regular-polygon-symmetries.json": "fa6c295ea99bd491ceb8a1b357779cbd561adeac2dfa2ed6af1a590490c8af66",
   "geometry-course/textbook/data/quadrilateral-symmetries.json": "679dde670227d32a3978571c0bb83289fbf923da1aa26cc223c0c678d022d9cd",
   "geometry-course/textbook/data/symmetry-applications.json": "59eae6a56f74469c315716df3e58c4457738a5fdf5b42793702bb09d61df69a4",
   "geometry-course/textbook/data/rotation-centers.json": "389bb8621f88f47483690437214e321fd13fff53042e2bb27813114115206870",
@@ -163,7 +164,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "788d39bff796f05280041d346bf521f4a5a0bd072188c7c32c8c47adc2f5c432",
+  "geometry-course/textbook/assets/additional-lessons.js": "1e6273347c58b999fd9a6e13f725ca3cacee1af1b7e901c9125c523df8358544",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
