@@ -73,6 +73,7 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
+  "geometry-course/textbook/data/similarity-laws.json": "0c9b823a0e18c5979e3df4f6231646f140168d89c5ff735e8e490844dfdc3b4a",
   "geometry-course/textbook/data/homothetic-grid-figures.json": "a5ca830c997a4755d6a577929fa48cb88669beeb855ffbe91bba6f2878eb6e63",
   "geometry-course/textbook/data/homothetic-lines-circles.json": "9f52c1107c33174d9cb0eff21c7143f47089664f9bfac8ae3ee90a9ff3182511",
   "geometry-course/textbook/data/homothety-centers.json": "ff92d7d8d0acc93bf618b4f0b0ad96c0b1d998db196f1e04d4dfa13fa107ad1c",
@@ -180,7 +181,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "2b511292fb24a2e14979d0bf0c25f0ebedadb69e3980075327314c3f39f9e567",
+  "geometry-course/textbook/assets/additional-lessons.js": "be249c1ef02f6da6da7c1479a8aef32df348be3322b7acb2b03c4c27c9b604d3",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
