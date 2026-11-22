@@ -2254,10 +2254,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "d23bd9bc1176c48d551b97bc1640c96ec2d11de975a604b2523fb2f376d21787",
-      "afterSha256": "761d3034881da8294f8ef77ef2de3bbe25ea34e1fb21d16e171f236740de51a0",
+      "beforeSha256": "9a3fc372c718e3b966db787218f8c48a47421a12e424313c3e637cddb5f3d96f",
+      "afterSha256": "8955052323cf5e243e39cfe022db0025531ae7135d37e383574b1a1567e89ba8",
       "placement": "before-head-close",
-      "sourceSha": "7b21f6551d6e0046125e3b84035b339f0edf643e"
+      "sourceSha": "ee213101633b08535eff2f0d0389f9ad5354ec6e"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -7246,6 +7246,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Формула в условиях снова видна в браузере, автономном HTML и на доске. В №250 отображаются обе части тождества Эйлера. Графические задания сохранили предметный рисунок и указание номера печатной страницы."
+    },
+    {
+      "previousBaseSha": "7b21f6551d6e0046125e3b84035b339f0edf643e",
+      "sourceBaseSha": "ee213101633b08535eff2f0d0389f9ad5354ec6e",
+      "task": "docs/tasks/MAKARYCHEV8_1109_1113.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Проверенный прямой ряд Макарычева: №1–1075 и №1077–1113. На месте №1076 остаётся отдельно обозначенное авторское упражнение. После №1087 добавлены чтение графиков, собственные построения, нули функций, графические пересечения, тождества и сравнения."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",

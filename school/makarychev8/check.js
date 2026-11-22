@@ -707,6 +707,13 @@ function linearRay(raw,variable){
  if(left===variable)return asThreshold(sides[2],right);
  if(right!==variable)return null;return asThreshold({'<':'>','>':'<','<=':'>=','>=':'<='}[sides[2]],left);
 }
+function landmarkInput(raw,landmarks){
+ let text=String(raw??'');
+ const left=/(?:альфа|alpha|α|a)/gi,right=/(?:бета|beta|β|b)/gi;
+ if(!left.test(text)||!right.test(text))return null;
+ text=text.replace(left,String(landmarks[0])).replace(right,String(landmarks[1]));
+ return systemInput(text,'x');
+}
 function systemInput(raw,variable){
  const text=String(raw??'').trim().replace(/−/g,'-').replace(/≤/g,'<=').replace(/≥/g,'>=');
  if(/^(нет решений|пустое множество)$/i.test(text))return '∅';
@@ -871,8 +878,21 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='review-precision'){const v=M.parse(user);return Boolean(v&&v.d===1&&v.n>=1&&v.n<=6);}
+ if(target.kind==='intersection-points'){
+  const list=pointGroups(user),expected=pointGroups(target.answer);
+  if(list?.length!==1||list[0].length!==expected[0].length)return false;
+  const key=pair=>pair.map(v=>v.n+'/'+v.d).join(';');
+  return list[0].map(key).sort().join('|')===expected[0].map(key).sort().join('|');
+ }
  if(target.kind==='rational-probe')return Boolean(M.parse(user));
  if(target.kind==='linear-ray'){const u=linearRay(user,target.graph.variable);return Boolean(u&&equalAxisSets(u,asThreshold(target.graph.relation,target.graph.threshold)));}
+ if(target.kind==='trip-table'){
+  const a=G.domainCoefficients(user,4),b=G.domainCoefficients(target.answer,4);return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
+ }
+ if(target.kind==='behavior-table'){
+  const fields=G.domainCoefficients(user,target.graph.xs.length),expected=target.graph.tableValues;return Boolean(fields&&fields.every((q,i)=>M.equal(M.answer(q),expected[i])));
+ }
  if(target.kind==='feature-points'){
   const n=target.graph.constructionXs.length,a=G.domainCoefficients(user,n),b=G.domainCoefficients(target.answer,n);return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
  }
@@ -888,6 +908,9 @@ function check(user,target){
   const a=G.domainCoefficients(user,3),b=G.domainCoefficients(target.answer,3);
   return Boolean(a&&b&&a.every((v,i)=>M.equal(M.answer(v),M.answer(b[i]))));
  }
+ if(target.kind==='monotone-construction'||target.kind==='zero-construction')return G.witnessMarks(target.graph,user).valid;
+ if(target.kind==='grid-estimate'){const a=M.parse(user),b=M.parse(target.answer);return Boolean(a&&b&&Math.abs(a.n/a.d-b.n/b.d)<=target.tolerance);}
+ if(target.kind==='landmark-interval'){const marks=G.propertyCurve(target.graph).landmarks;return equalAxisSets(landmarkInput(user,marks),landmarkInput(target.answer,marks));}
  if(target.kind==='system-single'||target.kind==='system-intersection')return equalAxisSets(systemInput(user,target.variable||target.graph?.variable),target.answer);
  if(target.kind==='system-examples')return systemExamples(user,target);
  if(target.kind==='linear-examples')return linearExamples(user,target);
@@ -988,5 +1011,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {systemInput,linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {landmarkInput,systemInput,linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });
