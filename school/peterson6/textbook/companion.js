@@ -504,6 +504,44 @@
     function draw(){host.outerHTML=primeExplore(number,part,work,true);host=main.querySelector('[data-proof-host]');const f=host.querySelector('select');f.onchange=()=>{if(f.value==='')delete work.proofProbe;else work.proofProbe=Number(f.value);save();draw();host.querySelector('select').focus({preventScroll:true});};}draw();
   }
 
+  const bookExistence=[
+    ['Черепахи могут доживать до 300 лет.','существует черепаха, способная дожить до этого возраста','все черепахи обязательно доживают до этого возраста','ни одна черепаха не может дожить до этого возраста','есть черепаха, которая не доживёт до 300 лет','Одна короткая жизнь не опровергает возможность для другой черепахи. Рассматривай именно способность дожить до возраста из фразы.'],
+    ['Часть млекопитающих обитает в воде.','существует млекопитающее, обитающее в воде','каждое водное животное является млекопитающим','ни одно млекопитающее не обитает в воде','существует млекопитающее, живущее на суше','Сохрани исходную группу — млекопитающих. Сухопутный пример ничего не говорит обо всех водных.'],
+    ['Некоторые животные внесены в Красную книгу.','существует животное из Красной книги','каждое животное внесено в Красную книгу','ни одно животное не внесено в Красную книгу','не все животные внесены в Красную книгу','Отсутствие одного животного в книге совместимо с присутствием другого.'],
+    ['Не все птицы России улетают на юг зимой.','существует птица России, не улетающая зимой на юг','существует птица России, улетающая зимой на юг','все птицы России улетают зимой на юг','ни одна птица России не улетает на юг зимой','В исходной фразе уже есть «не все». Контрпример к всеобщему отлёту — одна остающаяся птица.'],
+    ['Предложение может обходиться без подлежащего.','существует предложение без подлежащего','ни в одном предложении нет подлежащего','в каждом предложении имеется подлежащее','есть предложение, в котором имеется подлежащее','Отсутствие подлежащего — свойство искомого предложения. Что получится, если таких предложений вовсе нет?'],
+    ['Бывают словари, включающие все слова русского языка.','существует словарь, включающий каждое слово русского языка','у каждого слова есть какой-то словарь, в котором оно записано','в каждом словаре отсутствует хотя бы одно слово русского языка','существует одно и то же слово, которого нет ни в одном словаре','Порядок важен: для каждого словаря может отсутствовать своё слово.'],
+    ['В некоторых книгах меньше 112 страниц.','существует книга, в которой строго меньше 112 страниц','существует книга, где не больше 112 страниц','у каждой книги не меньше 112 страниц','в каждой книге больше 112 страниц','Книга ровно со 112 страницами относится к отрицанию: это уже не меньше 112.'],
+    ['Высказывание может быть вопросительным предложением.','существует вопросительное предложение, являющееся высказыванием','каждый вопрос является высказыванием','ни одно высказывание не является вопросительным предложением','существует высказывание, которое не является вопросом','Оставь одновременно два признака одного предложения. Разбирай логическую форму независимо от фактической истинности.'],
+    ['Высказывания иногда бывают восклицательными предложениями.','существует высказывание в форме восклицательного предложения','восклицательным бывает любое высказывание','ни одно высказывание не является восклицательным предложением','не все высказывания восклицательные','«Иногда» требует хотя бы одного случая. Чтобы его опровергнуть, приходится исключить каждый случай.'],
+    ['Некоторые художники эпохи Возрождения жили в Италии.','существует художник эпохи Возрождения, живший в Италии','все художники, жившие в Италии, относятся к эпохе Возрождения','ни один художник эпохи Возрождения не жил в Италии','есть художник той эпохи, живший вне Италии','Сохрани одновременно эпоху, профессию и место. Отрицание исключает все совпадения этих признаков.'],
+    ['Среди стран Европы есть островные государства.','существует европейская страна, которая является островным государством','любое островное государство находится в Европе','ни одна страна Европы не является островным государством','не каждая европейская страна является островной','Одной неостровной европейской страны недостаточно, чтобы исключить все островные.'],
+    ['Не все страны согласны с существующими границами.','существует страна, не согласная с существующими границами','существует страна, согласная с существующими границами','все страны согласны с существующими границами','ни одна страна не согласна с существующими границами','Слово «не все» указывает на возможное исключение. Отрицание говорит, что исключений нет.']
+  ];
+  function existenceCard(number,part){
+    if(number===60)return {prompt:'Разными словами передай мысль «некоторые дроби при сокращении уменьшаются». Построй её отрицание тоже несколькими способами. Отдельно установи истинность каждой фразы: сравни значение дроби до и после правильного сокращения.',
+      leftTitle:'Что утверждает исходная фраза?',left:['Хотя бы одна дробь при сокращении теряет часть своего значения.','При сокращении иногда уменьшаются числитель и знаменатель.','Каждая дробь становится больше.'],li:0,rightTitle:'Каково точное отрицание и верно ли оно?',right:['Ни одна дробь при сокращении не уменьшается. Это верно.','Есть дробь, которая не уменьшается. Этого достаточно для отрицания.','Любая дробь становится больше. Это верно.'],ri:0,hint:'Размер числителя отдельно ещё не равен значению дроби. Делить нужно и числитель, и знаменатель на один и тот же общий делитель.',reference:'При ненулевом знаменателе b и общем множителе k > 1 отношения (ka)/(kb) и a/b равны. Поэтому исходная фраза ложна, её отрицание истинно.',extra:'Мои другие формулировки и вывод об истинности'};
+    const [claim,pos,wrong,neg,wrongNeg,hint]=bookExistence[Number(part.id.split('-')[1])-1];
+    return {prompt:'Передай эту мысль словами «существует хотя бы один…», затем отрицай всю фразу. Объясни закон исключённого третьего для полученной пары. Исходная мысль: '+claim,
+      leftTitle:'Как выразить существование?',left:[pos,wrong],li:0,rightTitle:'Точное отрицание',right:[neg,wrongNeg],ri:0,hint,reference:'Зафиксируй один круг объектов и один смысл свойства. Либо хотя бы один объект с этим свойством существует, либо таких объектов нет. Обе фразы вместе истинными быть не могут.',extra:'Почему ровно одна фраза из двух истинна?'};
+  }
+  function existenceView(number,work,interactive){
+    if(number===59){
+      const marked=work.witnessMask||0,k=[1,2,4].filter(bit=>marked&bit).length;
+      return '<section data-existence-host><h3>Условная модель из трёх объектов</h3><p>Каждая метка означает, что у этого объекта есть нужное свойство. Это модель логической связи. Для конкретного высказывания в книге круг объектов может быть другим.</p>'+(interactive?[0,1,2].map(i=>'<button data-witness-toggle="'+i+'" class="secondary" type="button" aria-pressed="'+Boolean(marked&(1<<i))+'">Объект '+(i+1)+(marked&(1<<i)?' · есть свойство':' · без свойства')+'</button>').join(' '):'')+'<p data-witness-result aria-live="polite">Объектов со свойством: '+k+'. «Существует такой объект» — '+(k?'истинно':'ложно')+'. «Таких объектов нет» — '+(k?'ложно':'истинно')+'.</p></section>';
+    }
+    const n=work.reduceTop||18,d=work.reduceBottom||24,k=work.reduceBy||2,allowed=n%k===0&&d%k===0;
+    const select=(label,key,values,chosen)=>'<label>'+label+' <select data-reduce="'+key+'">'+values.map(v=>'<option value="'+v+'"'+(v===chosen?' selected':'')+'>'+v+'</option>').join('')+'</select></label>';
+    return '<section data-existence-host><h3>Что сохраняется при сокращении?</h3>'+(interactive?select('Числитель','reduceTop',[6,8,12,15,18,20,24,30],n)+select('Знаменатель','reduceBottom',[8,10,12,16,18,20,24,30],d)+select('Разделить обе части на','reduceBy',[2,3,4,5,6],k):'')+'<p data-reduction-result aria-live="polite">'+(!work.reduceTop&&!work.reduceBottom&&!work.reduceBy?'Измени дробь или общий делитель и сравни обе записи.':allowed?n+'/'+d+' = '+(n/k)+'/'+(d/k)+'. Числитель и знаменатель уменьшились; отношение сохранилось.':'Для '+n+'/'+d+' число '+k+' не является общим делителем: остатки '+(n%k)+' и '+(d%k)+'. Такие части дроби сократить на '+k+' нельзя.')+'</p></section>';
+  }
+  function mountExistence(main,number,work,save){
+    let host=main.querySelector('[data-existence-host]');if(!host)return;
+    function draw(){host.outerHTML=existenceView(number,work,true);host=main.querySelector('[data-existence-host]');
+      for(const b of host.querySelectorAll('[data-witness-toggle]'))b.onclick=()=>{work.witnessMask=(work.witnessMask||0)^(1<<Number(b.dataset.witnessToggle));save();draw();host.querySelector('[data-witness-toggle="'+b.dataset.witnessToggle+'"]').focus({preventScroll:true});};
+      for(const f of host.querySelectorAll('[data-reduce]'))f.onchange=()=>{const key=f.dataset.reduce;work[key]=Number(f.value);save();draw();host.querySelector('[data-reduce="'+key+'"]').focus({preventScroll:true});};
+    }draw();
+  }
+
   const mushroomNames=['Алик','Боря','Витя','Гена'],cipherAlphabet=['АБВ','ГДЕ','ЖЗИ','ЙКЛ','МНО','ПРС','ТУФ','ХЦЧ','ШЩЪ','ЫЬЭ','ЮЯ '],printedCipher=['61551491','2','6561','051','51516566'];
   function mushroomView(work,interactive){
     const values=work.mushroomValues||['','','',''],order=work.mushroomOrder||[],valid=values.every(x=>/^\d{1,6}$/.test(x)),[a,b,v,g]=values.map(Number);
@@ -1315,6 +1353,7 @@
     ['Значение x на единицу меньше квадрата этого же числа.',['x = x² − 1','x < x²','x² = x − 1'],['x ≠ x² − 1','x ≥ x²','x = x² + 1'],'«На единицу» задаёт точную разность. Для отрицания достаточно любой другой разности, в том числе двух.']
   ];
   function logicCard(number,part){
+    if(number===59||number===60)return existenceCard(number,part);
     if(number===50||number===51)return primeLogic(number,part);
     if(number===26)return universalCard(part);
     if(number===27)return witnessCard(part);
@@ -1363,12 +1402,12 @@
   }
   function logicResponse(number,part,input,work){
     const periodRule=(number===35||number===36)&&part.id.endsWith('pravilo');
-    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&number!==50&&number!==51&&!periodRule)return null;
+    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&number!==50&&number!==51&&number!==59&&number!==60&&!periodRule)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
     if(number===50)return {ok:true,text:work.logicOther?.trim()?'Обе формы описывают одно исключение. Твоя дополнительная запись сохранена для проверки.':'Обе формы подходят. Напиши ещё одно равносильное отрицание своими словами.'};
-    if((number>=27&&number<=29)||number===39||number===40||number===51||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if((number>=27&&number<=29)||number===39||number===40||number===51||number===59||number===60||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
@@ -1376,6 +1415,7 @@
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
     if(number===50||number===51)return primeLogic(number,part).prompt;
+    if(number===59||number===60)return existenceCard(number,part).prompt;
     if(number===57)return 'Алик и Боря вместе нашли столько же грибов, сколько Витя и Гена вместе. Общая корзина Алика и Гены меньше общей корзины Бори и Вити. У Гены грибов больше, чем у Вити. Расставь четверых по убыванию их личных результатов и докажи порядок.';
     if(number===58)return 'В каждом столбце таблицы одна цифра обозначает любую из трёх букв. Звёздочка означает Ю, Я или пробел. Какую пословицу можно прочитать в строке 61551491 * 2 * 6561 * 051 * 51516566? Проверь каждое слово по кодам и по смыслу.';
     if(number===55||number===56)return roomQuestion(number,part);
@@ -1455,6 +1495,7 @@
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
     if(item.number===50||item.number===51)drawing=logicConstruction(item.number,part,false)+primeExplore(item.number,part,{},false);
+    if(item.number===59||item.number===60)drawing=logicConstruction(item.number,part,false)+existenceView(item.number,{},false);
     if(item.number===57)drawing=mushroomView({},false);
     if(item.number===58)drawing=cipherDesk({},false);
     if(item.number===55||item.number===56)drawing=roomView(part,{},false);
@@ -1490,5 +1531,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse,mountMushrooms,mushroomResponse,mountSecret,secretResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse,mountMushrooms,mushroomResponse,mountSecret,secretResponse,mountExistence};
 })(globalThis);

@@ -53,10 +53,10 @@ function sanitize(part,input){
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
- if(/^(019|020|021|026|027|028|029|039|040|050|051)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id)){
+ if(/^(019|020|021|026|027|028|029|039|040|050|051|059|060)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id)){
   for(const key of ['logicLeft','logicRight'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
   if(input.logicReference===true)clean.logicReference=true;
-  if((/^(02[6789]|039|040|050|051)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
+  if((/^(02[6789]|039|040|050|051|059|060)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='038-termin'&&typeof input.cipherMeaning==='string'&&input.cipherMeaning)clean.cipherMeaning=cut(input.cipherMeaning,600);
@@ -80,6 +80,10 @@ function sanitize(part,input){
  }
  if(/^05[01]-/.test(part.id)&&Number.isInteger(input.proofProbe)){
   const tiger=part.id.startsWith('050-');if(input.proofProbe>=(tiger?0:1)&&input.proofProbe<=(tiger?3:60))clean.proofProbe=input.proofProbe;
+ }
+ if(part.id.startsWith('059-')&&Number.isInteger(input.witnessMask)&&input.witnessMask>=0&&input.witnessMask<=7)clean.witnessMask=input.witnessMask;
+ if(part.id==='060-1'){
+  for(const [key,allowed] of [['reduceTop',[6,8,12,15,18,20,24,30]],['reduceBottom',[8,10,12,16,18,20,24,30]],['reduceBy',[2,3,4,5,6]]])if(allowed.includes(input[key]))clean[key]=input[key];
  }
  if(part.id==='057-1'){
   if(Array.isArray(input.mushroomValues)&&input.mushroomValues.length===4)clean.mushroomValues=input.mushroomValues.map(v=>typeof v==='string'?cut(v,6):'');

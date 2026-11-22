@@ -933,3 +933,16 @@ test('source 57 ranks all valid mushroom assignments, source 58 admits only comp
  for(let i=0;i<48;i++){const m=model.create(58,bank[57].parts[0],i),wordCode=m.prompt.match(/записи (\d+)\?/)[1];assert.deepEqual([...m.choices].filter(w=>code(w)===wordCode),[m.answer]);}
  const re=await surface(t,BOOK+'#n/58/058-1',storage(s));assert.equal(element(re,'[data-secret-word]').value,'4');assert.equal(element(re,'[data-secret-input]').value,'ПЕРЕТРУТ');
 });
+test('all twelve statements of existence keep their domain and the two truth values oppose each other',async t=>{
+ const s=await surface(t,BOOK+'#n/59/059-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(58,60);
+ const select=(sel,v)=>{const f=element(s,sel);f.value=String(v);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const row of rows)for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);if(row.number===59){
+   if(i===5)assert.match(element(s,'.problem').textContent,/все слова/);if(i===6)assert.match(element(s,'.problem').textContent,/112/);
+   assert.match(element(s,'[data-witness-result]').textContent,/— ложно.*— истинно/);click(s,'[data-witness-toggle="0"]');click(s,'[data-witness-toggle="2"]');assert.match(element(s,'[data-witness-result]').textContent,/свойством: 2.*— истинно.*— ложно/);
+  }else{select('[data-reduce="reduceTop"]',15);select('[data-reduce="reduceBottom"]',20);select('[data-reduce="reduceBy"]',3);assert.match(element(s,'[data-reduction-result]').textContent,/остатки 0 и 2/);select('[data-reduce="reduceBy"]',5);assert.match(element(s,'[data-reduction-result]').textContent,/15\/20 = 3\/4/);}
+  select('[data-logic-left]',1);select('[data-logic-right]',2);click(s,'[data-logic-use]');submit(s,'#answer-form');assert(element(s,'#feedback').classList.contains('error'));select('[data-logic-right]',1);input(s,'[data-logic-other]',p.answer);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование/);assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct);
+  for(let j=0;j<32;j++){const m=s.w.PetersonAnalogues.create(row.number,p,j);assert.equal(new Set(m.choices).size,3);if(row.number===60){const [n,d,k]=m.prompt.match(/\d+/g).map(Number);assert.equal(m.answer,(n/k)+'/'+(d/k)+', значение прежнее');}else{assert.equal(m.choices.filter(x=>x===m.answer).length,1);assert(!m.prompt.includes('«'+m.answer+'»'));}}
+ }
+ const re=await surface(t,BOOK+'#n/59/059-6',storage(s));assert.equal(bookWork(re,'059-6').witnessMask,5);assert.match(element(re,'[data-witness-result]').textContent,/свойством: 2/);
+});

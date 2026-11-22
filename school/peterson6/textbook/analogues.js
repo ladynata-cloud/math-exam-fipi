@@ -626,6 +626,32 @@
     return {...choice(prompt,options.slice(shift).concat(options.slice(0,shift)),options[0],hint),id:'analog-'+part.id+'-'+attempt,family:'mushroom-cipher-'+part.id,match:'skill',mistake:hint};
   }
 
+  function existentialPractice(number,part,attempt){
+    const k=seed(part.id)%83+attempt,shift=k%3,size=10+k%41,color=['зелёный','синий','жёлтый','красный'][k%4],count=3+k%7;
+    let prompt,options,hint;
+    if(number===60){
+      const p=2+k%7,q=p+1,f=2+k%5;prompt='Дробь '+(p*f)+'/'+(q*f)+' сокращают на '+f+'. Как меняется её значение?';options=[p+'/'+q+', значение прежнее',p+'/'+(q*f)+', значение уменьшилось',(p*f)+'/'+q+', значение выросло'];hint='Раздели обе части на один и тот же ненулевой общий множитель.';
+    }else{
+      const index=Number(part.id.split('-')[1])-1;
+      const rows=[
+        ['Хотя бы одна лампа работает '+size+' часов.','Ни одна лампа не работает '+size+' часов.','Одна лампа работает меньше.'],
+        ['Есть фигура внутри круга номер '+count+'.','Ни одной фигуры внутри круга номер '+count+' нет.','Не все фигуры находятся внутри этого круга.'],
+        ['Некоторые карточки вошли в набор '+count+'.','Ни одна карточка не вошла в набор '+count+'.','Хотя бы одна карточка не вошла в набор.'],
+        ['Не все ученики выбрали '+color+' карандаш.','Все ученики выбрали '+color+' карандаш.','Ни один ученик не выбрал такой карандаш.'],
+        ['Есть строка без символа «'+count+'».','Каждая строка содержит символ «'+count+'».','Есть строка с таким символом.'],
+        ['Существует альбом, где есть все '+count+' марок.','В каждом альбоме отсутствует хотя бы одна из этих марок.','Есть одна марка, отсутствующая сразу во всех альбомах.'],
+        ['Некоторые тетради содержат менее '+size+' страниц.','В каждой тетради не меньше '+size+' страниц.','В каждой тетради больше '+size+' страниц.'],
+        ['Есть карточка, которая содержит вопрос '+count+'.','Ни одна карточка не содержит вопрос '+count+'.','Есть карточка без этого вопроса.'],
+        ['Некоторые строки заканчиваются '+count+' восклицательными знаками.','Ни одна строка не заканчивается '+count+' восклицательными знаками.','Не все строки заканчиваются столькими знаками.'],
+        ['Некоторые участники группы '+count+' рисовали пейзаж.','Ни один участник группы '+count+' не рисовал пейзаж.','В другой группе рисовали пейзаж.'],
+        ['Хотя бы один из '+count+' участков окружён водой.','Ни один из '+count+' участков не окружён водой.','Есть участок, не окружённый водой.'],
+        ['Не все команды согласились с правилом '+count+'.','Все команды согласились с правилом '+count+'.','Ни одна команда не согласилась с правилом.']
+      ];
+      const [claim,neg,other]=rows[index];prompt='Каково точное отрицание? «'+claim+'»';options=[neg,other,claim];hint='Сохрани круг объектов и свойство. Если утверждается хотя бы один случай, отрицание должно исключить каждый такой случай.';
+    }
+    return {...choice(prompt,options.slice(shift).concat(options.slice(0,shift)),options[0],hint),id:'analog-'+part.id+'-'+attempt,family:'exists-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number===56&&part.expression)return measurePractice(number,part,attempt);
     if(number===49&&part.expression)return cuboidPractice(part,attempt);
@@ -634,11 +660,12 @@
     if(number===34||number===52)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>58)return createLegacy(number,part,attempt);
+    if(number<7||number>60)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=59)return existentialPractice(number,part,attempt);
     if(number>=57)return basketCipherPractice(number,part,attempt);
     if(number>=55)return measurePractice(number,part,attempt);
     if(number===54)return commonPractice(number,part,attempt);
@@ -691,7 +718,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=58&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=60&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -713,7 +740,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=58&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=60&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
