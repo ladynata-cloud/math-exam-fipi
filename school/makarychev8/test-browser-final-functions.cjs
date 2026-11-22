@@ -130,6 +130,7 @@ async function verify(width,url,offline=false){
  await openNumber(p,1152,'№ 1152');await p.locator('[data-action=guided]').click();await p.locator('#step-answer-0').fill('-2;3');await p.locator('[data-monotone-sample="3"]').waitFor();
  await submit(p,'3;2;1');assert.match(await p.locator('#problem').innerText(),/не обещает пересечения/);
  await submit(p,'3;2;4');await p.reload();await p.locator('[data-monotone-sample="-2"]').waitFor();await p.locator('[data-monotone-sample="3"]').waitFor();
+ assert(await p.locator('#task-graph svg text').evaluateAll(labels=>labels.every(t=>t.getBBox().x>=0)), 'All negative fractional tick labels fit the SVG');
  assert.deepEqual(errors,[]);await ctx.close();
 }
 (async()=>{

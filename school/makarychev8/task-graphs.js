@@ -986,7 +986,7 @@ function monotoneReasonView(host,g) {
    }else boundNote(host,'Первый аргумент должен быть строго меньше второго.').dataset.monotoneProbe='order';
   }
  }
- host.append(rootGraph({curves,points,xRange:xr,yRange:yr,label:equation?'Левая часть уравнения и требуемый горизонтальный уровень':'Числовой пример для сравнения двух аргументов'},''));
+ host.append(rootGraph({curves,points,xRange:xr,yRange:yr,compactTicks:g.mode==='unique',label:equation?'Левая часть уравнения и требуемый горизонтальный уровень':'Числовой пример для сравнения двух аргументов'},''));
 }
 
 function tripStops(g) {
