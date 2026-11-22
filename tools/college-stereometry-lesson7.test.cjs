@@ -229,6 +229,9 @@ test('public page and download package are anonymous and contain only student fi
     assert(!/Artem|Арт[её]м|\/workspace\//i.test(files.get(name).toString('utf8')), `${name}: no private data`);
   }
   const offline = files.get('Trainer.html').toString('utf8');
+  assert.doesNotMatch(offline, /<script\b[^>]*\bsrc\s*=/i, 'offline lesson has no remote script dependency');
+  const offlineRuntime = [...offline.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].find(match => match[2].includes('function parseMath('))[2];
+  assert.equal(offlineRuntime, mainScript, 'online and offline lesson runtime agree');
   assert.match(offline, /href=["']\.\/Homework\.pdf["']/);
   const offlineData = [...offline.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].find(match => /\bid=["']task-data["']/.test(match[1]))[2];
   assert.deepEqual(JSON.parse(offlineData), bank, 'online and offline exercise banks agree');

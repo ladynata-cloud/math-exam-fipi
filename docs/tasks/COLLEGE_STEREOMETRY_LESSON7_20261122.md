@@ -30,6 +30,8 @@ this prepared lesson. The existing site is served by GitHub Pages.
 - Publish `/trainers/college-stereometry/polyhedra-sections/` as lesson 7.
 - Add the lesson to the college course, update both static and dynamic catalog
   descriptions, and register its canonical URL in the sitemap inputs/output.
+- Connect the public page to the existing navigator and update its exact
+  source/coverage receipts; preserve the self-contained offline package.
 - Publish a neutral student homework PDF and an offline package containing
   only `Trainer.html`, `Homework.pdf`, and student instructions.
 - Fix the reviewed cube-to-prism parameter leak; draw established right angles
@@ -59,6 +61,8 @@ and the separate teacher answer sheet are not public repository deliverables.
 - `node tools/college-stereometry-pyramids.test.cjs` for retained lesson 6.
 - JavaScript syntax; PDF page/text checks and rendered visual inspection;
   archive integrity and absence of teacher/private content.
+- Public home-return coverage, navigator source preservation and explicit
+  source-binding checks; no navigation runtime or test exception changes.
 - `python3 tools/seo-sitemap.test.py`, `python3 tools/build-sitemap.py --check`,
   `python3 tools/seo-check.py`, and `node tools/seo-catalog.test.cjs`.
 - After commit: `python3 tools/seo-new-trainers.py --base <base SHA>`.
