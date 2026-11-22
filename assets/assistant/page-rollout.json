@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "eaa11edb92292906e7d003c3c4bace62cf0ffba8455fa30959d23bf0af368ea8",
-      "afterSha256": "a367aca77d7279622bd4db3db4df414e52c55bd493157a847e2749f4f0c4ae34",
+      "beforeSha256": "6adfa9438081608421e90b6e378aeaa64f7c644c372ea8825e375a491229c9e6",
+      "afterSha256": "20b7df19f6ee4ccfc99d0a37e79e0ad34d2fef6c983f54894afafd0a2a5b659f",
       "placement": "before-head-close",
-      "sourceSha": "1ca107d91090c214c69aa3dd2ca936ffe6af0a66"
+      "sourceSha": "bc4ba686d04f58301730aadbf4ac72502fbe045b"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6975,6 +6975,15 @@
         "school/index.html"
       ],
       "boundary": "Полностью проверена печатная страница 18 второй части Виленкина: три измерения в №5.90, выбор положения точки на окружности, четыре исходных подпункта №5.91, обе роли и обе перезагрузки."
+    },
+    {
+      "previousBaseSha": "1ca107d91090c214c69aa3dd2ca936ffe6af0a66",
+      "sourceBaseSha": "bc4ba686d04f58301730aadbf4ac72502fbe045b",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, печатная страница 19. Проверены четыре вычисления по классам и пространственные виды гаража, мобильный вход и возвращение обоих участников."
     }
   ],
   "coverageUpdates": [
