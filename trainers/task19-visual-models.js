@@ -441,12 +441,25 @@
       const onReset=()=>{if(active){const initial=restoreModel(hint,null);params=initial.params;measured=false;draw();publish();}};
       reset.addEventListener('click',onReset);listeners.push([reset,'click',onReset]);host.insertBefore(reset,readout);
     }
-    const highlight=event=>{
-      const item=event.target.closest?.('[data-geometry-group]'),group=item&&host.contains(item)?item.dataset.geometryGroup:null;
+    const linkedItem=target=>target?.closest?.('[data-geometry-group]');
+    const showLinked=item=>{
+      const group=item&&host.contains(item)?item.dataset.geometryGroup:null;
       host.querySelectorAll('[data-geometry-group]').forEach(node=>node.classList.toggle('t19-linked-active',!!group&&node.dataset.geometryGroup===group));
     };
-    const clearHighlight=event=>{if(!host.contains(event.relatedTarget))host.querySelectorAll('.t19-linked-active').forEach(node=>node.classList.remove('t19-linked-active'));};
-    for(const type of ['pointerover','focusin','click']){host.addEventListener(type,highlight);listeners.push([host,type,highlight]);}
+    let lastPointerItem;
+    const highlight=event=>{
+      const item=linkedItem(event.target);
+      // Scrolling can produce pointerover without a physical mouse movement.
+      if(event.type==='pointermove'&&item===lastPointerItem)return;
+      lastPointerItem=event.type==='pointermove'?item:undefined;
+      showLinked(item);
+    };
+    const clearHighlight=event=>{
+      if(host.contains(event.relatedTarget))return;
+      lastPointerItem=undefined;
+      showLinked(event.type==='pointerout'?linkedItem(doc.activeElement):null);
+    };
+    for(const type of ['pointermove','focusin','click']){host.addEventListener(type,highlight);listeners.push([host,type,highlight]);}
     for(const type of ['pointerout','focusout']){host.addEventListener(type,clearHighlight);listeners.push([host,type,clearHighlight]);}
     draw();publish();
     return ()=>{active=false;listeners.forEach(([element,type,listener])=>element.removeEventListener(type,listener));host.replaceChildren();};
