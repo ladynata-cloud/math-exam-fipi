@@ -115770,7 +115770,15 @@ function firstErrorsHTML(t,s){
  const saved=state.tasks[current.id];
  return saved&&(saved.methodVersion||1)<(current.methodVersion||1)?resolveTask(current.id,saved.methodVersion||1):current;
 }
-  function currentCredit(task){const saved=ts(task.id);return boardSession||(saved.methodVersion||1)===(task.methodVersion||1);}
+  function currentCredit(task) {
+    const saved = state.tasks[task.id];
+    return !!saved && (boardSession || (saved.methodVersion || 1) === (task.methodVersion || 1));
+  }
+  function taskStatus(task) {
+    const saved = state.tasks[task.id];
+    if (saved?.correct && currentCredit(task)) return '✓';
+    return task.kind === 'manual' && saved?.value === 'recorded' ? '•' : '';
+  }
   function archiveTask(id,saved){
  if(boardSession)return;
  const list=state.history[id]||(state.history[id]=[]),copy=JSON.parse(JSON.stringify(saved));
@@ -115912,8 +115920,8 @@ function firstErrorsHTML(t,s){
     if(location.hash!==hash)location.hash=hash;
     route();
   }
-  function count(lesson){return lesson.tasks.filter(t=>currentCredit(t)&&ts(t.id).correct).length;}
-  function independent(lesson){return lesson.tasks.filter(t=>currentCredit(t)&&ts(t.id).independent).length;}
+  function count(lesson){return lesson.tasks.filter(t=>state.tasks[t.id]?.correct&&currentCredit(t)).length;}
+  function independent(lesson){return lesson.tasks.filter(t=>state.tasks[t.id]?.independent&&currentCredit(t)).length;}
   function returnBanner(){return state.origin?'<div class="return-banner"><div><strong>Тренируем отдельный навык</strong><br><span class="small">Условие, ответы и шаги исходной задачи сохранены.</span></div>'+button('← Вернуться к задаче','return')+'</div>':'';}
   function skillLinks(ids){return (ids||[]).filter(id=>skills[id]).map(id=>button(e(skills[id].title),'detour','data-skill="'+id+'"',true)).join('');}
   function home() {
@@ -116016,7 +116024,7 @@ ${[1, 2, 3]
     active={lesson:l,task:t,index,practice:false,checking:false};
     state.last={hash:'#lesson/'+id+'/'+index};
     save();
-    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+order.map((i,ordinal)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(ordinal+1)+'. '+e(q.title)+'</button>'}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position+1<order.length?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):next?'<a class="button quiet" href="'+nextLessonRoute+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
+    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+order.map((i,ordinal)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+taskStatus(q)+'</span>'+(ordinal+1)+'. '+e(q.title)+'</button>'}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position+1<order.length?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):next?'<a class="button quiet" href="'+nextLessonRoute+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
     renderProblem();
     cleanup=window.PetersonModels?.mount(document.getElementById('model'),l,boardSession?{task:t}:{
       task:t,inquiry:true,state:ts(t.id).inquiry,onChange(value){
@@ -116186,12 +116194,8 @@ ${[1, 2, 3]
     const t=active.task,s=ts(t.id),manual=t.kind==='manual',checking=active.checking,host=document.getElementById('problem');
     if (active.lesson)
       main.querySelectorAll('.side-list [data-index]').forEach((el) => {
-        const task=active.lesson.tasks[Number(el.dataset.index)],record=ts(task.id);
-        el.querySelector('.status').textContent = currentCredit(task) && record.correct
-          ? '✓'
-          : task.kind === 'manual' && record.value === 'recorded'
-            ? '•'
-            : '';
+        const task = active.lesson.tasks[Number(el.dataset.index)];
+        el.querySelector('.status').textContent = taskStatus(task);
       });
     boardStepFeedback = '';
     const help=checking?'':('<div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+(t.steps?.length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p>'+methodModel(t)+'</div>':'')+(s.guided?renderSteps(t,s):''));
@@ -116349,7 +116353,7 @@ ${[1, 2, 3]
       '</tbody></table></div><p class="small">Записано для проверки: ' +
       D.lessons
         .flatMap((l) => l.tasks)
-        .filter((t) => t.kind === 'manual' && ts(t.id).value === 'recorded').length +
+        .filter((t) => t.kind === 'manual' && state.tasks[t.id]?.value === 'recorded').length +
       '. Эти работы не входят в автоматический зачёт.</p><p><a href="#diagnostic">Рекомендации и новые проверки →</a></p><h2>Отдельные тренировки</h2><p>Решено ' +
       pr.length +
       ' примеров, из них ' +
