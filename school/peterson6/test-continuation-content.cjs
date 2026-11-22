@@ -55,6 +55,13 @@ for(const [i,l]of D.lessons.entries()){
   }
  }
 }
+const logicPage=D.lessons.find(l=>l.id==='p41').tasks.filter(t=>t.logicDirection);
+assert.deepEqual(Array.from(logicPage,t=>[t.source.exercise,t.source.subpart,t.source.page]),[[231,'а',51],[231,'б',51],[232,'в',51],[232,'г',51],[232,'д',51],[232,'е',51],[233,'в',51],[233,'г',51]]);
+for(const t of logicPage){assert.equal(t.steps[0].answer,t.logicDirection.p);assert.equal(t.steps[1].answer,t.logicDirection.q);assert.notDeepEqual(Array.from(t.logicDirection.examples[0]),Array.from(t.logicDirection.examples[1]));}
+for(let n=1;n<=999;n++)assert.equal(n%3,Array.from(String(n),Number).reduce((a,b)=>a+b,0)%3);
+for(let d=1;d<=9;d++)for(let a=0;a<10;a++)for(let b=0;b<10;b++)assert.equal((d*a+d*b)%d,0);
+assert.equal((1+3)%2,0);assert.equal(1%2,1);assert.equal(3%2,1);
+for(let a=-4;a<=4;a++)for(let b=-4;b<=4;b++){assert.equal(a>b,b<a);assert.equal(a<=b,b>=a);}
 const prop199=D.lessons.find(l=>l.id==='p22').tasks.filter(t=>t.proportionPair);
 assert.deepEqual(Array.from(prop199,t=>[t.source.exercise,t.source.subpart,t.source.page]),[[197,'3',52],[197,'4',52],[198,'2',52],[199,'1',53],[199,'2',53],[199,'3',53],[199,'4',53]]);
 const propOriginals=[[20,9,14,6.3],[5,14,3,8.4],[180,8,200,7.2],[27,4.5,300,50],[250,48,150,80],[25,310,40,496],[32,215,40,172]];
@@ -69,7 +76,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1510);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1518);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
