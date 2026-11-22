@@ -65,6 +65,7 @@ async function checkFigureLabels(page,id,width,stage){
   }
   // Two real tabs share saved work; an old tab must not overwrite a later condition.
   await page.goto(base+'#box');await page.reload();await page.locator('[data-action=new]').click();await page.fill('#answer','старый локальный черновик');
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('mathExamStereo.v1'))?.units.box.taskFirst.mainDraft === 'старый локальный черновик');
   const second=await page.context().newPage();second.on('pageerror',e=>errors.push(e.message));await second.goto(base+'#box');await second.locator('#answer').waitFor();await second.locator('[data-action=new]').click();await second.fill('#answer','новая сохранённая работа');await second.locator('[data-action=help]').click();
   const latest=await second.evaluate(()=>localStorage.getItem('mathExamStereo.v1'));await page.locator('[data-recover-latest]').waitFor({state:'visible'});assert(await page.locator('#answer-form button').isDisabled());
   await page.locator('#answer-form').evaluate(el=>el.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));assert.equal(await second.evaluate(()=>localStorage.getItem('mathExamStereo.v1')),latest);assert.equal(await page.locator('[data-recovery-drafts] textarea').first().inputValue(),'старый локальный черновик');

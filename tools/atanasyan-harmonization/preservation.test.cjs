@@ -14,7 +14,8 @@ const supplements = [
   require('./preservation-supplement-651.json'),
   require('./preservation-supplement-651-ci.json'),
   require('./preservation-supplement-651-legacy-segments.json'),
-  require('./preservation-supplement-693-board.json')
+  require('./preservation-supplement-693-board.json'),
+  require('./preservation-supplement-incident-edges.json')
 ];
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 assert.equal(baseline.schemaVersion, 1);
@@ -49,12 +50,21 @@ assert.equal(legacySegmentsSupplement.sourceCommit, '78853df87a48dddd5a96bf5f2ad
 assert.equal(legacySegmentsSupplement.task, 'FINAL651_LEGACY_VIEW_SEGMENTS_20261119');
 assert.deepEqual(Object.keys(legacySegmentsSupplement.files), ['ege-profil/atanasyan-10-11/model.js']);
 assert.deepEqual(Object.keys(supplements[4].files), ['geometry-course/textbook/assets/grade7-board-session.js']);
+assert.deepEqual(Object.keys(supplements[5].files), ['ege-profil/atanasyan-10-11/model.js'], 'synchronize only the generated legacy viewer');
 const sphere = require('./preservation-sphere-414.json');
 const { ids: sphereIds } = require('../stereo-textbook/additional414-baseline.cjs');
 assert.deepEqual(Object.keys(sphere.additions).sort(), [...sphereIds].map(id => 'stereo-course/textbook/lessons/' + id + '.json').sort());
 assert.deepEqual(Object.keys(sphere.files).sort(), ['stereo-course/textbook/data/course.json', 'stereo-course/textbook/source-index.json']);
+const mixed = require('../stereo-textbook/inscribed-solids.json');
+const circumspheres = require('../stereo-textbook/circumspheres.json');
+const round = require('../stereo-textbook/round-bodies.json');
+const volumes = require('../stereo-textbook/box-volumes.json');
+const prismVolumes = require('../stereo-textbook/prism-volumes.json');
+const sections = require('../stereo-textbook/cross-sections.json');
+const oblique = require('../stereo-textbook/oblique-prisms.json');
+const extraCards = Object.fromEntries(Object.entries({...mixed.cards, ...circumspheres.cards, ...round.cards, ...volumes.cards, ...prismVolumes.cards, ...sections.cards, ...oblique.cards}).map(([id,row]) => ['stereo-course/textbook/lessons/' + id + '.json', row.raw]));
 const amendmentChains = {};
-for (const supplement of [...supplements, sphere]) {
+for (const supplement of [...supplements, sphere, mixed, circumspheres, round, volumes, prismVolumes, sections, oblique]) {
   for (const [file, amendment] of Object.entries(supplement.files)) {
     const chain = amendmentChains[file] ||= [];
     if (chain.length) assert.equal(amendment.beforeSHA256, chain.at(-1).afterSHA256, 'exact amendment chain: ' + file);
@@ -70,14 +80,18 @@ function filesAt(relative) {
     return filesAt(path.posix.join(relative, entry.name));
   });
 }
-// Independently authored assets in source commit 4a7c2d1; the old textbook bank stays byte-identical.
+// Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
-  "geometry-course/textbook/assets/additional-lessons.js": "82e927e05ed568da30843ad7f79d4a75463e0fc096c827aa6cba2551b2ee68eb",
-  "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4"
+  "geometry-course/textbook/assets/additional-lessons.js": "1114f6deb3feb16910065a5a38cf3f40a9c96c2917c3e61f79126452b82da985",
+  "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
+  "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",
+  "geometry-course/textbook/data/area-similarity-lessons.json": "a03d352a79dda749b3ed61d60c1ac40460a4a4e5f5eabdccaadd4bbe9401aa43",
+  "geometry-course/textbook/data/midpoint-lessons.json": "e61b548a9e236e0d8dcabb90dc0ca2820b8dd344fb3b6c85a1e9faf9427dbe71"
 };
+const newGroups = {geometry_textbook: approvedAreaFiles, stereo_textbook: {...sphere.additions, ...extraCards}};
 function verify(group, read = file => fs.readFileSync(path.join(root, file)), extra = []) {
   const files = [...new Set(group.paths.flatMap(filesAt).concat(extra))].filter(file => !group.excluded.includes(file)).sort();
-  const additions = {geometry_textbook: approvedAreaFiles, stereo_textbook: sphere.additions}[group.group] || {};
+  const additions = newGroups[group.group] || {};
   assert.equal(files.length, group.fileCount + Object.keys(additions).length, group.group + ': exact protected file set size');
   for (const file of Object.keys(additions)) assert(files.includes(file), 'required reviewed addition: ' + file);
   const digest = crypto.createHash('sha256');
@@ -98,7 +112,7 @@ function verify(group, read = file => fs.readFileSync(path.join(root, file)), ex
 for (const group of baseline.groups) verify(group);
 const geometry = require(root + '/geometry-course/textbook/data/course.json');
 const currentStereo = require(root + '/stereo-course/textbook/data/course.json');
-assert.equal(currentStereo.lessons.length, 688);
+assert.equal(currentStereo.lessons.length, 781);
 const stereo = require('../stereo-textbook/additional414-baseline.cjs').previousCourse(currentStereo, require(root + '/stereo-course/textbook/source-index.json'));
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 const literacy = require(root + '/stereo-course/literacy/data/course.json');
@@ -119,7 +133,6 @@ for (const file of Object.keys(amendmentChains)) {
   assert(group, 'every exact amendment remains inside the original protected inventory');
   assert.throws(() => verify(group, name => name === file ? Buffer.concat([fs.readFileSync(path.join(root, name)), Buffer.from('\nUNREVIEWED')]) : fs.readFileSync(path.join(root, name))), /exact reviewed amendment/);
 }
-const newGroups = {geometry_textbook: approvedAreaFiles, stereo_textbook: sphere.additions};
 for (const group of baseline.groups.filter(group => newGroups[group.group])) {
   const sample = Object.keys(newGroups[group.group])[0];
   assert.throws(() => verify(group, file => file === sample ? Buffer.from('CHANGED') : fs.readFileSync(path.join(root, file))), /exact reviewed new source/);

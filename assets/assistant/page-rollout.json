@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+  "baseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 628,
-    "covered": 626,
+    "total": 630,
+    "covered": 628,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -34,10 +34,12 @@
     "pedagogam/raboty/istochniki.html",
     "trainers/index.html",
     "trainers/long-division-claude.html",
+    "trainers/merzlyak9-2014/index.html",
     "trainers/oge-basics/multiplication-division/division-checkpoint.html",
     "trainers/oge-basics/multiplication-division/division-path.html",
     "trainers/school-workshop-check/index.html",
-    "trainers/tyurin-statistics/index.html"
+    "trainers/tyurin-statistics/index.html",
+    "trainers/makarychev9-2017/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -2223,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "2e6f71f2721ee996b509db6d903ae3468436f860f072e56ab908dd800b82907c",
-      "afterSha256": "fb5054ce3397d6d2b6bd6d0f27022b08aa40445a2576dec57d665c7ef2ddadcc",
+      "beforeSha256": "61bd39644310cb24adcb82f5119e86eb7dc3c68891e93fa22536d532e0497264",
+      "afterSha256": "882d9b05d90532834aca6cf3541d7f7e6d868bf501c8f7c96052943cfd5c3e49",
       "placement": "before-head-close",
-      "sourceSha": "b0d4b70bdc9cf5f17dac3ce32f58f68940c761cb"
+      "sourceSha": "00a70523fa4d69dc815999f5de9c9918281e6d1d"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -2240,10 +2242,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "fd6531ed04d845b57ad1d5c364474ed3dd161031849322a406e9ea8e6fd06d2c",
-      "afterSha256": "47dd6866cd62c8ce1c48419d9fd24d5585d97aa57bdb606dca7829811a0dc3e2",
+      "beforeSha256": "42a19a7e9ffacf60fee4f37fd5a931b5cf615cb148051975fd1152e6645803b1",
+      "afterSha256": "f4d15bd1c0c1a39a615c80a3f15e1845fe071b28b8123ff241030c264436f2fd",
       "placement": "before-head-close",
-      "sourceSha": "a7dbcc7b0a2be11d7dbf6e969ff5f905bcbfef01"
+      "sourceSha": "81dd1b8f78d1043df5e4cae07da27aacf403815d"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -2297,9 +2299,10 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "55872530edc3ec6e29bf5585b649cd322882e7922dd5b5de4f4dcc49339d4b2c",
-      "afterSha256": "7d039da497be36c544da989a3a34bb8439e70c526f9cc59c710f012c9be4532f",
-      "placement": "before-head-close"
+      "beforeSha256": "0487d4709a4df979876b962a436befae891424b3a961f5695cf93415f121f3a0",
+      "afterSha256": "69aecef55fcb12b3255e2481e260c6fb47464cdb2f37b7e527dab88034bb34e4",
+      "placement": "before-head-close",
+      "sourceSha": "a063e8a62817bbea594089453d28d24551b37371"
     },
     "stereo-course/merzlyak-10-base/index.html": {
       "beforeSha256": "5ec4467e0bffdc283921d9bc2aac8449f549474b77be4f7fbba7d29289758cfb",
@@ -4021,7 +4024,9 @@
     "trainers/school-workshop-check/index.html": "school/index.html",
     "trainers/tyurin-statistics/index.html": "school/index.html",
     "school/peterson6/textbook/index.html": "sitemap",
-    "trainers/peterson6-workshop/index.html": "sitemap"
+    "trainers/peterson6-workshop/index.html": "sitemap",
+    "trainers/merzlyak9-2014/index.html": "school/index.html",
+    "trainers/makarychev9-2017/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6549,9 +6554,101 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "d0575a63a6351578f6d7faa236fe57d2739c4fe3",
+      "task": "docs/tasks/MAKARYCHEV8_150_180.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "ea563c469d1a2d7b2a2eb8afb959d951625e39f0",
+      "task": "docs/tasks/MAKARYCHEV8_181_200.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7bb21b102ca2fa265bc930c6e101f5a08116d53c",
+      "sourceBaseSha": "43d1098f3308de17c480a31dfa6dc6c702cb9d5d",
+      "task": "docs/tasks/MAKARYCHEV8_201_211.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "43d1098f3308de17c480a31dfa6dc6c702cb9d5d",
+      "sourceBaseSha": "449a1a102a85297b5d8ab9e99949662682bd8000",
+      "task": "docs/tasks/MAKARYCHEV8_212_214.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "449a1a102a85297b5d8ab9e99949662682bd8000",
+      "sourceBaseSha": "88aceee2219255b5c8df02aade540503ad98032e",
+      "task": "docs/tasks/MAKARYCHEV8_215_220.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "88aceee2219255b5c8df02aade540503ad98032e",
+      "sourceBaseSha": "43d2983c08daf6153d9575a7d618a3402e90ecb2",
+      "task": "docs/tasks/MAKARYCHEV8_221_230.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "43d2983c08daf6153d9575a7d618a3402e90ecb2",
+      "sourceBaseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "19b33486332fce8cfaaea77fad4b782eb9ecaad4",
+      "sourceBaseSha": "00a70523fa4d69dc815999f5de9c9918281e6d1d",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверен общий вход в новые книги Мастерской и Виленкина. Два авторских опыта различают исправление прогноза и открытие полного объяснения."
+    },
+    {
+      "previousBaseSha": "85ceeb823ddf1ab06c9a78e3391858c85712367a",
+      "sourceBaseSha": "a063e8a62817bbea594089453d28d24551b37371",
+      "task": "docs/tasks/STEREO_HIDDEN_LINES.md",
+      "changedPaths": [
+        "stereo-course/index.html"
+      ],
+      "boundary": "Автономная сборка содержит проверенный движок видимости. Для №467 проверены собственная грань, перекрытие другой гранью и повёрнутые модели."
+    },
+    {
       "previousBaseSha": "5d9880ad6df769fb2a951ac8f38128b535c1ac60",
       "sourceBaseSha": "c1aaa7ae9eacd9b6b4666a4542cdfd24c3834520",
       "task": "docs/tasks/MAKARYCHEV8_134_149.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
+      "previousBaseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+      "sourceBaseSha": "f24eff9a5e474470847498d23cf056833ddc200c",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
       "changedPaths": [
         "school/makarychev8/index.html"
       ],
@@ -6567,6 +6664,15 @@
       "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
     },
     {
+      "previousBaseSha": "f24eff9a5e474470847498d23cf056833ddc200c",
+      "sourceBaseSha": "5a8d6abefb5e478fa54a590d77291f17042b0c3a",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Обновлены адреса проверяющих скриптов курса Макарычева. Уточнение разрывов внутри цифр не засчитывает задачу и не расходует попытку; допустимые пробелы в смешанной дроби сохраняют смысл."
+    },
+    {
       "previousBaseSha": "2dcdaa2b0b0c0ab7d3bcd13eb32d88788ffc3416",
       "sourceBaseSha": "a7dbcc7b0a2be11d7dbf6e969ff5f905bcbfef01",
       "task": "docs/tasks/MAKARYCHEV8_134_149.md",
@@ -6574,6 +6680,33 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
+    },
+    {
+      "previousBaseSha": "5a8d6abefb5e478fa54a590d77291f17042b0c3a",
+      "sourceBaseSha": "adcd6cfa74d06cf43243b322d05a2f6c284969ad",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Личный курс и вход доски одновременно загружают проверенный вариант графиков. В №353 рисунок с подписью целиком доступен при ширине 320 пикселей с системным шрифтом DejaVu Sans; номер и страница сохранены прямо под ним."
+    },
+    {
+      "previousBaseSha": "adcd6cfa74d06cf43243b322d05a2f6c284969ad",
+      "sourceBaseSha": "e71d6a23654aefee32ad74eee8a377337a56c3c1",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Формула в условиях снова видна в браузере, автономном HTML и на доске. В №250 отображаются обе части тождества Эйлера. Графические задания сохранили предметный рисунок и указание номера печатной страницы."
+    },
+    {
+      "previousBaseSha": "e71d6a23654aefee32ad74eee8a377337a56c3c1",
+      "sourceBaseSha": "81dd1b8f78d1043df5e4cae07da27aacf403815d",
+      "task": "docs/tasks/MAKARYCHEV8_231_267.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Формула в условиях снова видна в браузере, автономном HTML и на доске. В №250 отображаются обе части тождества Эйлера. Графические задания сохранили предметный рисунок и указание номера печатной страницы."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
@@ -6714,6 +6847,22 @@
         "trainers/tyurin-statistics/index.html"
       ],
       "reason": "New canonical practice entry discovered from the verified edition cards and included in the navigator."
+    },
+    {
+      "sourceBaseSha": "2d344c04e318527b2bc8b6636d7b4ffddf941edd",
+      "task": "docs/tasks/MERZLYAK9_2014_20261121.md",
+      "addedPages": [
+        "trainers/merzlyak9-2014/index.html"
+      ],
+      "reason": "New canonical interactive entry for all 26 verified textbook sections."
+    },
+    {
+      "sourceBaseSha": "f9e5ab5026349aa4995d8b3738f805fc329ee56d",
+      "task": "docs/tasks/MAKARYCHEV9_2017_PRACTICE.md",
+      "addedPages": [
+        "trainers/makarychev9-2017/index.html"
+      ],
+      "reason": "Сверенные пункты 1–4 издания 2017 года и самостоятельная практика."
     },
     {
       "sourceBaseSha": "ac152cc3e5458a29ccf480c0a9cc6e2b5b107c8a",

@@ -74,6 +74,126 @@ test('source ratios and brackets diagnose the entered error and restore the work
  } finally {f.close();}
 });
 
+test('numbered applications distinguish part from whole and a rate from its reciprocal',async()=>{
+ const f=fixture(null,null,true);
+ try {
+  f.nav('#lesson/p15/9');
+  f.event('#final-answer','2,5');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/массу воды/);
+  assert.equal(f.state().tasks['p15-t10'].correct,false);
+  f.click('[data-action="hint"]');
+  assert.match(f.q('.help figure').textContent,/масса воды \+ масса соли/);
+  f.event('#final-answer','100/41');f.submit('#answer-form');
+  assert.equal(f.state().tasks['p15-t10'].correct,true);
+  assert.equal(f.state().tasks['p15-t10'].assisted,true);
+  f.click('[data-action="independent-check"]');await f.settle();
+  assert.equal(f.w.location.hash,'#check/percent-ratio/1');
+  f.nav('#lesson/p15/6');f.event('#final-answer','9');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/без всходов/);
+  f.event('#final-answer','91');f.submit('#answer-form');
+  assert.match(f.q('.task-heading').textContent,/Исправлено без подсказки/);
+  f.nav('#lesson/p15/11');f.click('[data-choice="0"]');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/обратный вопрос/);
+  f.click('[data-action="hint"]');assert.match(f.q('.help figure').textContent,/4 м.*2 мин/);
+  f.click('[data-choice="1"]');f.submit('#answer-form');
+  assert.equal(f.state().tasks['p15-t12'].correct,true);
+  f.click('#problem [data-action="task"][data-index="12"]');await f.settle();
+  assert.equal(f.w.location.hash,'#lesson/p15/12');
+  assert.equal(f.state().tasks['p15-t13'].correct,false);
+  f.nav('#home');
+  f.event('#book-part','2','change');f.event('#exercise-number','11');f.submit('#number-form');
+  assert.equal(f.d.querySelectorAll('#number-result a[href^="#lesson/p15/"]').length,6);
+ } finally {f.close();}
+});
+
+test('source equations retain a signed correction and the comparison of sides',async()=>{
+ const f=fixture(null,null,true);
+ try{
+  f.nav('#lesson/p33/15');
+  f.event('#final-answer','-3,6');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/для −k/);
+  f.event('#final-answer','3,6');f.submit('#answer-form');
+  assert.match(f.q('.task-heading').textContent,/Исправлено без подсказки/);
+  f.nav('#lesson/p33/17');
+  f.event('#final-answer','17,3');f.submit('#answer-form');
+  assert.match(f.q('.answer-form .feedback').textContent,/большая/);
+  f.click('[data-action="hint"]');assert.match(f.q('.help figure').textContent,/y см и ещё 1,9 см/);
+  f.event('#final-answer','15,4');f.submit('#answer-form');
+  assert.equal(f.state().tasks['p33-t18'].assisted,true);
+  f.click('#problem [data-action="task"][data-index="16"]');await f.settle();
+  assert.equal(f.w.location.hash,'#lesson/p33/16');
+  assert.match(f.q('.prompt').textContent,/конкурс/);
+ }finally{f.close();}
+});
+
+test('segment construction measures AC and CB on one scale without assigning credit',async()=>{
+ const f=fixture(null,null,true);
+ try{
+  for(const [i,valid] of [[17,[6]],[18,[7,8,9,10,11]],[19,[0,1,2,3,4,5]],[20,[8]]]){
+   f.nav('#lesson/p15/'+i);
+   const model=f.q('[data-lesson-help="model"]');if(!model.open)f.click('[data-lesson-help="model"] > summary');
+   for(let position=0;position<=12;position++){
+    f.event('#model select',String(position),'change');
+    const text=f.q('#model .pm-result').textContent;
+    if(position===12)assert.match(text,/не определено/);
+    else{
+     assert.equal(text.includes('положение подходит для'),valid.includes(position));
+     assert.match(text,new RegExp('AC = '+position+', CB = '+(12-position)));
+    }
+    assert.equal(f.q('#model svg circle').getAttribute('cx'),String(24+26*position));
+   }
+   assert.equal(f.d.querySelector('#answer-form'),null);
+   assert.equal(f.state().tasks['p15-t'+(i+1)].correct,false);
+  }
+  f.event('#model select','8','change');
+  f.event('#notebook','Взял отрезок 12 см. AC = 8 см, CB = 4 см.');
+  f.click('[data-action="record-manual"]');
+  const saved=f.state(),g=fixture(saved,null,true);
+  try{g.nav('#lesson/p15/20');assert.equal(g.q('#model select').value,'8');assert.match(g.q('#notebook').value,/8 см/);
+   assert.equal(g.state().tasks['p15-t21'].correct,false);
+  }finally{g.close();}
+ }finally{f.close();}
+});
+
+test('ratio constructions preserve scale, right angles and the angular partition',()=>{
+ const f=fixture(null,null,true);
+ try {
+  for(const [index,kind] of ['segments','rectangle','triangle','angle'].entries()) {
+   const number=21+index;
+   f.nav('#lesson/p15/'+number);
+   const model=f.q('[data-lesson-help="model"]');
+   if(!model.open)f.click('[data-lesson-help="model"] > summary');
+   for(const value of (kind==='angle'?[0,10,20,30,40,50,60]:[1,2,3])) {
+    f.event('#model select',String(value),'change');
+    const diagram=f.q('#model svg'),feedback=f.q('#model .pm-result').textContent;
+    if(kind==='segments') {
+     const lines=[...diagram.querySelectorAll('line')].filter(line=>line.getAttribute('x1')!==line.getAttribute('x2'));
+     const lengths=lines.map(line=>Number(line.getAttribute('x2'))-Number(line.getAttribute('x1')));
+     assert.deepEqual(lengths,[34*value,51*value]);
+    } else if(kind==='rectangle') {
+     const side=diagram.querySelector('rect');
+     assert.equal(Number(side.getAttribute('width')),85*value);
+     assert.equal(Number(side.getAttribute('height')),51*value);
+    } else if(kind==='triangle') {
+     const [p,q,r]=diagram.querySelector('polygon').getAttribute('points').split(' ').map(pair=>pair.split(',').map(Number));
+     assert.equal(p[1],q[1]);assert.equal(p[0],r[0]);
+     assert.equal(Math.hypot(q[0]-r[0],q[1]-r[1]),85*value);
+     assert.match(feedback,/Короткий катет.*Длинный катет/);
+    } else {
+     const ray=diagram.querySelector('line[stroke-dasharray]');
+     const radians=Math.atan2(199-Number(ray.getAttribute('y2')),Number(ray.getAttribute('x2'))-47);
+     assert(Math.abs(radians*180/Math.PI-value)<1e-9);
+     if(value===0||value===60)assert.match(feedback,/совпал со стороной/);
+     else if(value===20||value===40)assert.match(feedback,/часть занимает одну долю/);
+     else assert.match(feedback,/больший угол должен быть/);
+    }
+    assert.equal(f.d.querySelector('#answer-form'),null);
+    assert.equal(f.state().tasks['p15-t'+(number+1)].correct,false);
+   }
+  }
+ } finally { f.close(); }
+});
+
 test('fresh practice uses its own operands and withholds cues during an independent check',async()=>{
  const f=fixture(null,null,true);
  try {

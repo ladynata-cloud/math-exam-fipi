@@ -352,7 +352,14 @@ function createApp(root,options){
   function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
   if(lesson.answer?.mode==='exact'&&lesson.answer.feedback){const explanation=el('button','Сверить с объяснением ответа',{type:'button','data-answer-explanation':''});explanation.addEventListener('click',()=>{if(assisted())setDisplayText(main.querySelector('[data-final-feedback]'),lesson.answer.feedback);});helpBody.append(explanation);}
-  side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{lessonId:lesson.id,savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});
+  side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{
+   lessonId:lesson.id,
+   // Volume lessons have a reviewed phone layout that keeps their full diagram above the fold.
+   get compactPreview(){
+    return lesson.source.chapter === 'V. Объёмы тел' && model.clientWidth > 0 && model.clientWidth < 400;
+   },
+   savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}
+  });
   const guide=el('details',undefined,{class:'textbook-model-guide'});guide.append(el('summary','Как работать с рисунком'));for(const note of model.querySelectorAll('.am-help,.am-note'))guide.append(note);guide.append(el('p',lesson.visualization.caption));main.insertBefore(guide,main.querySelector('[data-final-form]'));
   if(cached&&cached.base!==expected)freeze();
   return true;

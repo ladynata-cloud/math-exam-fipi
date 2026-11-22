@@ -33,6 +33,23 @@ async function offlinePeterson(width){
  const s=await current();assert.equal(s.correct,true);assert.equal(s.value,'14');assert.deepEqual(s.firstErrors.final,{value:'99',assisted:false});assert.equal(s.independent,false);
  await page.locator('.first-errors > summary').focus();await page.keyboard.press('Enter');assert((await page.locator('.first-errors').innerText()).includes('Исправлено: 14'));
  await capture(page,'peterson6-offline-'+(width===320?'zip':'html'),width,page.locator('.first-errors'));
+ for(const lesson of ['p15','p33']){
+  await page.goto(pathToFileURL(file).href+'#lesson/'+lesson+'/0');
+  await page.locator('[data-action="hint"]').click();
+  const figure=page.locator('.help figure'),helper=page.locator('.peterson-help');
+  assert.equal(await helper.evaluate(el=>getComputedStyle(el).position),'static','closed helper leaves the model readable');
+  assert(await figure.evaluate(el=>{
+   const help=el.closest('.help'),style=getComputedStyle(help);
+   const contentWidth=help.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
+   return el.getBoundingClientRect().width>=contentWidth-1;
+  }),'the diagram uses the space available inside the hint');
+  if(lesson==='p15')assert(await figure.locator('meter').first().evaluate(el=>el.getBoundingClientRect().width>=115),'ratio bars stay legible');
+  await capture(page,'peterson6-model-'+lesson,width,figure);
+  await helper.locator('.peterson-help-launcher').click();
+  assert.equal(await helper.evaluate(el=>getComputedStyle(el).position),'fixed','opened helper remains available');
+  await page.keyboard.press('Escape');
+  assert.equal(await helper.evaluate(el=>getComputedStyle(el).position),'static');
+ }
  assert.deepEqual(network,[],'offline attempt flow makes no network request');
  report.scenarios.push({name:'Peterson 6 offline '+(width===320?'ZIP':'HTML')+' format/error/correction/reload/no network',width,status:'PASS'});await browser.close();
 }

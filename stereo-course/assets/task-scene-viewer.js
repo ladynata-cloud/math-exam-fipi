@@ -610,7 +610,12 @@
         const sphereSurfaces = source.planar ? [] : geometry.spheres.map(sphere => ({
           sphere: { center: rotated(sub(sphere.center, data.center)), radius: sphere.radius }, surface: sphere.surfaceEdges.has(edgeKey(...names))
         }));
-        const parts = visibilityParts(rotated(sub(a, data.center)), rotated(sub(b, data.center)), [...surfaces, ...sphereSurfaces], data.radius * 1e-8);
+        // A polygon cannot hide its own boundary. Rounded world coordinates on
+        // a nearly edge-on face can otherwise move that boundary behind its
+        // supporting plane. Other faces still occlude it normally.
+        const incident = coordinates ? undefined : geometry.adjacency.get(edgeKey(...names));
+        const occluders = incident ? surfaces.filter((_, index) => !incident.includes(index)) : surfaces;
+        const parts = visibilityParts(rotated(sub(a, data.center)), rotated(sub(b, data.center)), [...occluders, ...sphereSurfaces], data.radius * 1e-8);
         for (const part of parts) {
           const p = project(add(a, mul(sub(b, a), part.start))), q = project(add(a, mul(sub(b, a), part.end)));
           const attrs = Object.assign({

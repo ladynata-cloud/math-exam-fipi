@@ -32,6 +32,12 @@ for (const unit of course.units) {
 const textbook = require(root + '/geometry-course/textbook/data/course.json');
 const first = require(root + '/learning/atanasyan-first-steps/course.json');
 assert.deepEqual(embedded('textbook/index.html', 'geometry-offline-textbook'), textbook);
+const {unitFiles,append}=require('../../geometry-course/textbook/assets/additional-lessons.js');
+const completeTextbook=unitFiles.reduce((course,file)=>{
+  const unit=JSON.parse(source(file.slice(1)));
+  assert.deepEqual(embedded('textbook/index.html','geometry-offline-'+path.basename(file,'.json')),unit);
+  return append(course,unit);
+},textbook);
 assert.deepEqual(embedded('first-steps/index.html', 'geometry-offline-first-steps'), first);
 assert.equal(textbook.lessons.length, 1425);
 assert.equal(first.lessons.length, 255);
@@ -72,11 +78,11 @@ const manifest = require(root + '/downloads/trainers-manifest.json');
 const entry = manifest.trainers.find(item => item.slug === 'geometry-course');
 assert.match(entry.title, /7–9/);
 assert.match(entry.level, /7–9/);
-assert.match(read('README.txt'), /1425/);
+assert(read('README.txt').includes('Доступно карточек в задачнике: ' + completeTextbook.lessons.length + '.'), 'readme matches the fully embedded bank');
 for (const entrypoint of ['index.html', 'geometry-course.html']) {
   assert.match(read(entrypoint), /href="https:\/\/mathexam\.space\/geometry-course\/ichenskaya-7-works\//, 'adjacent course remains an explicit website link');
   assert(!/href="(?:\.\/)?ichenskaya-7-works\//.test(read(entrypoint)), 'an uncopied adjacent bank must not be offered as an offline course');
 }
-console.log('ATANASYAN_HARMONIZATION_DOWNLOAD_OK ' + JSON.stringify({topics: 63, textbookCards: 1425, firstSteps: 255, legacy: 70, localResources: resources, zipFiles: files.length}));
-module.exports = {folder, root, course, textbook, first};
+console.log('ATANASYAN_HARMONIZATION_DOWNLOAD_OK ' + JSON.stringify({topics: 63, textbookCards: completeTextbook.lessons.length, firstSteps: 255, legacy: 70, localResources: resources, zipFiles: files.length}));
+module.exports = {folder, root, course, textbook, first, completeTextbook};
 if (require.main === module) fs.rmSync(folder, {recursive: true, force: true});

@@ -59,6 +59,57 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,204);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,237);assert(manual>0);
+const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
+assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
+ ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
+]);
+const constructions=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===13);
+assert.deepEqual(Array.from(constructions,t=>[t.source.subpart,t.source.page,t.kind,t.ratioConstruction]),[
+ ['1',7,'manual','segments'],['2',7,'manual','rectangle'],['3',7,'manual','triangle'],['4',7,'manual','angle'],
+]);
+const keys=task=>Array.from(task.steps.filter(step=>step.answer),step=>step.answer);
+assert.deepEqual(keys(constructions[0]),['6']);
+assert.deepEqual(keys(constructions[1]),['2','10']);
+assert.deepEqual(keys(constructions[2]),['3/5','4/5']);
+assert.deepEqual(keys(constructions[3]),['3','20','40']);
+const applications=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise>=9&&t.source.exercise<=11);
+assert.deepEqual(Array.from(applications,t=>[t.source.exercise,t.source.subpart,t.source.page]),[
+ [9,'1',7],[9,'2',7],[10,'1',7],[10,'2',7],[10,'3',7],
+ ...['а','б','в','г','д','е'].map(part=>[11,part,7]),
+]);
+assert(M.equal(applications[0].answer,273/300*100));
+const concentration=M.parse(applications[3].answer);
+assert.equal(concentration.n*(5600+140),concentration.d*100*140,'salt mass divided by the mass of the whole solution');
+assert.equal(Number(applications[4].answer)+18+7,3*10,'mass-weighted mean for three equal portions');
+const rates=[[4,2,'м/мин'],[25,4,'км/ч'],[280,7,'руб./м'],[120,5,'руб./кг'],[6,3,'детали/мин'],[50,2,'страниц/ч']];
+for(const [i,[amount,measure,unit]]of rates.entries()){
+ const t=applications[5+i];
+ assert.equal(t.steps[0].answer,unit);
+ assert(M.equal(t.steps[1].answer,amount/measure));
+ assert(t.answer.startsWith(String(amount/measure).replace('.',',')+' '+unit+' — '));
+}
+const signs=D.lessons.find(l=>l.id==='p33').tasks.filter(t=>[4,5,6].includes(t.source.exercise));
+assert.deepEqual(Array.from(signs,t=>[t.source.exercise,t.source.subpart,t.source.page]),[
+ ...[...'абвгдежз'].map(s=>[4,s,5]),...[...'абвг'].map(s=>[5,s,5]),[6,'а',5],[6,'б',5],
+]);
+const originalForms=[
+ [x=>2.8-(x-1.4),'4,2 − a'],[x=>-(-x+3.2)+0.7,'b − 2,5'],
+ [x=>x-(1.6+x),'−1,6'],[x=>(-5.9+x)-x,'−5,9'],
+ [x=>(6.4-x)-(5.8+x),'0,6 − 2x'],[x=>x-(4.3+x)+3.9,'−0,4'],
+ [x=>(-0.7-x)-(-x+0.5),'−1,2'],[x=>-(1.2-x)+(x-0.8),'2n − 2'],
+];
+for(const [i,[original,simplified]]of originalForms.entries()){
+ const task=signs[i],[coeff,constant]=task.steps.map(s=>Number(s.answer));
+ assert.equal(task.answer,simplified);
+ for(const value of [-3,0,2])assert(Math.abs(original(value)-coeff*value-constant)<1e-10,task.id);
+}
+const solutions=signs.slice(8).map(t=>Number(t.answer));
+assert.equal(-43-(-18-solutions[0]*10),30);
+assert.equal(solutions[1]*10-30,-48);
+assert.equal((solutions[2]*10-60)-(45-solutions[2]*10),-15);
+assert.equal(22*5-(solutions[3]*60-7*5)+25*5,54);
+assert.equal(28+(solutions[4]-6)+solutions[4],80);
+assert.equal(158+10*solutions[5]+(10*solutions[5]+19),485);
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));

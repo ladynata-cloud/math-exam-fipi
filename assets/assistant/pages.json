@@ -520,6 +520,8 @@
   "trainers/logic-trainer/index.html",
   "trainers/long-division-claude.html",
   "trainers/long-division-stepwise.html",
+  "trainers/makarychev9-2017/index.html",
+  "trainers/merzlyak9-2014/index.html",
   "trainers/motion-grade6/index.html",
   "trainers/motion-grade6/river-lab.html",
   "trainers/multiplication-table/elevator-sprint.html",
