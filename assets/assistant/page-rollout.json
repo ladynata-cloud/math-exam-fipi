@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "adc237e9d78fb024bc03c565f9c1fbd31ca4cd3e0829ae7623003346b8ea0d37",
-      "afterSha256": "76b2e6ec98925278a34f4b4bd8332410bf08d62befbdc6bfe56e4cc83016a184",
+      "beforeSha256": "99d4a5e37f36a3cf32a3ab922151e07c0a26b224f29a704da1466b923db788f7",
+      "afterSha256": "452e8e5fe292afe45ce5c38fa92e3cb44a4d9f529af702f2d400b1b24855359f",
       "placement": "before-head-close",
-      "sourceSha": "2e59fa17a6ca05a187d2d18640ab4648092f46c1"
+      "sourceSha": "21cc3add74f3e33a85ae64100a4f48265b759599"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6930,6 +6930,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены №5.75–5.77 второй части, печатная страница 17. Ученик управляет растворами, отмечает общие точки и может выбрать любой верный дробный радиус. Проверены 320/375 и обе роли после перезагрузки."
+    },
+    {
+      "previousBaseSha": "2e59fa17a6ca05a187d2d18640ab4648092f46c1",
+      "sourceBaseSha": "21cc3add74f3e33a85ae64100a4f48265b759599",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Завершена печатная страница 17 второй части. Сверены размеры блока и стены, все шесть мест и обе задачи о равных прибавках, геометрический фрагмент, новые данные, мобильные экраны и две роли."
     }
   ],
   "coverageUpdates": [
