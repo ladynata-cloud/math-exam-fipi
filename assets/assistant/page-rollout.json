@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "50c60463af45705adf8527b632c8cc39c1f310a694e3e83924030f45b489dc2a",
-      "afterSha256": "f7b4eaeb0367a9a13b13e40f1378e4433bfa324cc84b0e82ff525b45e7cdb843",
+      "beforeSha256": "1c540cf1c65dfe958a2e32dfcf8cd1fcdd4542020701ad4d101c17483b12c6e7",
+      "afterSha256": "d031d64a67b7f8347b04e88c84078953254301b988b6e21584667eced2cdf50c",
       "placement": "before-head-close",
-      "sourceSha": "d04a8a933255251c6176323d257a2649b3156343"
+      "sourceSha": "297e0112c54a5f722979793f07830fefa2c96147"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7388,6 +7388,15 @@
         "school/index.html"
       ],
       "boundary": "Сверена страница 31 первого тома, упражнения 1.155–1.158, включая отдельные подпункты, математический разбор и сохранение модели."
+    },
+    {
+      "previousBaseSha": "d04a8a933255251c6176323d257a2649b3156343",
+      "sourceBaseSha": "297e0112c54a5f722979793f07830fefa2c96147",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, обе части 2023: 158 исходных номеров первой части и 91 второй, восемь печатных проверочных. На странице 18 второго тома — две хорды и диаметр с электронной линейкой и все четыре доли единиц площади и объёма."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
