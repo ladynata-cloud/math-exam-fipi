@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T02:23:00Z",
-  "scope": "All final-review parts of 764–767 and advanced source exercises 768–776 are complete. The remaining advanced exercises begin at 777.",
+  "registeredAt": "2026-11-22T02:31:00Z",
+  "scope": "All final-review parts of 764–767 and advanced source exercises 768–779 are complete. The remaining advanced exercises begin at 780.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2500,6 +2500,18 @@
       ],
       "evidence": "tools/stereo-textbook/cube-sections-distances-and-division.json",
       "mathematicalReport": "tools/stereo-textbook/cube-sections-distances-and-division.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued Atanasyan 2024 volume, advanced problems on printed page 190 (PDF page 192), answers and hints on printed page 273.",
+      "reviewedAt": "2026-11-22T02:31:00Z",
+      "scope": "Advanced exercises 777–779 on printed page 190 and issued hints on page 273. Checked unfolded surface routes against the lattice lower bound, strict clearance for all square-prism generators through the diagonal cube projection, and clipped hexagonal pyramid sections with independent polygon and trapezoid calculations.",
+      "cardIds": [
+        "ex-main-0777",
+        "ex-main-0778",
+        "ex-main-0779"
+      ],
+      "evidence": "tools/stereo-textbook/surface-paths-and-parallel-sections.json",
+      "mathematicalReport": "tools/stereo-textbook/surface-paths-and-parallel-sections.test.cjs"
     }
   ],
   "cards": [
@@ -8382,6 +8394,18 @@
     {
       "id": "ex-main-0776",
       "sha256": "db63f8dc673b3628ab906720cc7598b62b217bd1e3f41149eb2e7aaa3c26f32c"
+    },
+    {
+      "id": "ex-main-0777",
+      "sha256": "a6d3fffbe4818bbbc8b4db8636e1f74f6fc29a8d9f325d07e57a4fdf2e4b412f"
+    },
+    {
+      "id": "ex-main-0778",
+      "sha256": "0c2187a062945c66a548bd379aad897308a62de44e65de427b2532b60ebc7367"
+    },
+    {
+      "id": "ex-main-0779",
+      "sha256": "97809352702d8627497a78737a994c751dc91d5c03054855bc6677d275483716"
     }
   ]
 }

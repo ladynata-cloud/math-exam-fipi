@@ -77,7 +77,8 @@ const groups = {
   endOfFinalPyramidReview: {manifests:[require('./end-of-final-pyramid-review.json')],count:6},
   firstAdvancedPyramidProblems: {manifests:[require('./first-advanced-pyramid-problems.json')],count:3},
   dihedralBisectorsAndMidplanes: {manifests:[require('./dihedral-bisectors-and-midplanes.json')],count:3},
-  cubeSectionsDistancesAndDivision: {manifests:[require('./cube-sections-distances-and-division.json')],count:3}
+  cubeSectionsDistancesAndDivision: {manifests:[require('./cube-sections-distances-and-division.json')],count:3},
+  surfacePathsAndParallelSections: {manifests:[require('./surface-paths-and-parallel-sections.json')],count:3}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
