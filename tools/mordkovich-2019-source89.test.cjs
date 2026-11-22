@@ -24,8 +24,8 @@ for(const [i,row] of paragraphs.entries()) {
   else assert(row.bookOnly&&!row.externalPath&&!row.boardPath);
 }
 const dir='trainers/mordkovich-2019/';
-const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2','4-ex1','4-ex2','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded'];
-const printed=[6,9,9,9,12,12,12,14,15,19,20,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36];
+const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2','4-ex1','4-ex2','4-q1','4-q2','4-q3','4-q4','4-q5-a','4-q5-b','4-q5-c','4-q6','4-q7','4-q8-a','4-q8-b','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded'];
+const printed=[6,9,9,9,12,12,12,14,15,19,20,21,21,21,21,21,21,21,21,21,21,21,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36];
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
   .filter(x=>!x.startsWith('/')&&!x.includes('board-bridge')).map(x=>read(path.join(dir,x)));
@@ -60,6 +60,18 @@ function expected(i,s) {
       const l=(s+3)/5, r=(s+2)/2;
       return [10*l,10*(l-r),((s+1)/5+(s+3)/2)/(l-r)];
     }
+    case '4-q1':{const h=s+2, b=(s+1)*h+s+3;return [h,b,-b/h];}
+    case '4-q2':return [1-2*s,s+2,-s];
+    case '4-q3':return [(s+2)*(s+1),s+2,0];
+    case '4-q4':return [2,s+1,1];
+    case '4-q5-a':case '4-q5-b':case '4-q5-c':{
+      const root=ids[i]==='4-q5-a'?0:ids[i]==='4-q5-b'?s+1:-s-1;
+      return [(s+2)*root,s+4,(s+2)*(root+1)+s+4];
+    }
+    case '4-q6':return [-2*s-5,-s-2,(2*s+5)/(s+2)];
+    case '4-q7':return [-s-3,-(s+2)*(s+3),s+2];
+    case '4-q8-a':return [s+2,s+3,0];
+    case '4-q8-b':return [3*s+4,s+2,2*s+2];
     case '5-ex2':{
       const t=2+s%3, lead=t*(s+2)-(s+3), pedestrian=(t*(s+2)-lead)/(t+1-t);
       return [t+1,pedestrian,pedestrian*(t+1)];
@@ -173,4 +185,4 @@ for(const [i,entry] of book.exercises.entries()){
   assert.notEqual(JSON.parse(reopened.w.localStorage.getItem(key)).variant,0);
   reopened.dom.window.close();dom.window.close();
 }
-console.log('Source 89: 48 printed paragraphs, 36 student routes, 1188 independently checked questions and 36 personal draft round trips.');
+console.log('Source 89: 48 printed paragraphs, 47 student routes, 1551 independently checked questions and 47 personal draft round trips.');
