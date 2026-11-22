@@ -442,7 +442,14 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'bounds-'+part.id,match:'skill'};
   }
 
+  function calcPractice(part,attempt){
+    const old=decimalPractice(12,part,attempt),places=part.rounding.places,names={'-1':'десятков',0:'единиц',1:'десятых',2:'сотых'};
+    return {...old,rounding:{places},answer:E.M.answer(E.rounded(E.exact(old.expression),places)),prompt:'Вычисли новое выражение. Округли его значение до '+names[places]+'.',
+      family:'calc-round-'+part.id,mistake:'Вычисли точное значение и сохрани требуемый разряд. Определи первую цифру, отбрасываемую справа.'};
+  }
+
   function create(number,part,attempt=0,savedWork){
+    if(number===34)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
     if(number<7||number>33)return createLegacy(number,part,attempt);
@@ -522,7 +529,7 @@
   function shared(item,part,raw) {
     const model=part&&create(item.number,part);
     if(!model)return null;
-    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23))return null;
+    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34))return null;
     const active=document.querySelector('.equivalent-exercise');
     const row=record(part)[1];
     if(!raw&&row.formerlyAbsent&&!active?.open)return null;
@@ -534,7 +541,7 @@
   }
   function restoreShared(part,scene) {
     if(!document.body.dataset.petersonBoard)return;
-    if(!scene){if(part.expression&&/^(01[123]|02[23])-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
+    if(!scene){if(part.expression&&/^(01[123]|02[23]|034)-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
     const row=record(part)[1];Object.assign(row,{attempt:scene.attempt,work:scene.work,status:scene.status,open:scene.open,hint:scene.hint});
   }
   function resetShared(){if(document.body.dataset.petersonBoard)states.clear();}

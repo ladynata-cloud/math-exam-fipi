@@ -464,6 +464,42 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const roundingNames={'-1':'десятков',0:'единиц',1:'десятых',2:'сотых'};
+  function resultQuestion(part){
+    return 'Выполни указанное действие точно и только затем округли полученное значение до '+roundingNames[part.rounding.places]+'. В основной ответ введи округлённое число.';
+  }
+  function roundingDigit(part,input){
+    const E=root.PetersonBook,M=E.M,v=M.parse(input);if(!v)return null;
+    const places=part.rounding.places,index=places+1,multiplier=10**Math.abs(index),r=M.operation(index>=0?'multiply':'divide',v,multiplier);
+    return Number((BigInt(Math.abs(r.n))/BigInt(r.d))%10n);
+  }
+  function calculationView(part,work,interactive){
+    const places=part.rounding.places,discard=({[-1]:'единиц',0:'десятых',1:'сотых',2:'тысячных'})[places];
+    const model=interactive?'<label>Мой результат до округления <input style="display:block;box-sizing:border-box;max-width:100%;width:100%" data-calc-exact maxlength="80" inputmode="decimal" value="'+U.esc(work.calcExact||'')+'"></label><label>Первая отбрасываемая цифра <select data-calc-digit><option value="">Выбери цифру</option>'+Array.from({length:10},(_,i)=>'<option value="'+i+'"'+(work.calcDigit===String(i)?' selected':'')+'>'+i+'</option>').join('')+'</select></label><button type="button" class="secondary" data-calc-check>Проверить промежуточную запись</button><p data-calc-feedback role="status">'+(work.calcChecked?U.esc(calcCheck(part,work).text):'')+'</p>':'';
+    return '<section data-calc-host><h3>Какой разряд решает?</h3><p>Сохраняем разряд '+roundingNames[places]+'. Смотрим на следующую цифру разряда '+discard+'. Сначала найди точный результат, затем исследуй его запись.</p>'+model+'</section>';
+  }
+  function calcCheck(part,work){
+    const E=root.PetersonBook,M=E.M,raw=M.parse(work.calcExact||'');if(!raw)return {ok:false,text:'Запиши число, которое получилось до округления.'};
+    if(!M.equal(raw,E.exact(part.expression)))return {ok:false,text:M.equal(raw,E.finalAnswer(part))?'В поле промежуточного действия записан уже округлённый ответ. Вернись к исходным операндам.':'Сначала проверь само действие. '+opHint[part.expression.op]};
+    if(work.calcDigit===undefined)return {ok:false,text:'Точное значение верно. Выбери первую отбрасываемую цифру.'};
+    if(Number(work.calcDigit)!==roundingDigit(part,raw))return {ok:false,text:'Само вычисление верно. Начни у цифры сохраняемого разряда и передвинься ровно на один разряд вправо.'};
+    return {ok:true,text:'Точное значение и решающая цифра верны. Примени правило округления и запиши число в основной ответ.'};
+  }
+  function mountCalc(main,part,work,save){
+    let host=main.querySelector('[data-calc-host]');if(!host)return;host.outerHTML=calculationView(part,work,true);host=main.querySelector('[data-calc-host]');
+    const field=host.querySelector('[data-calc-exact]'),digit=host.querySelector('[data-calc-digit]'),result=host.querySelector('[data-calc-feedback]');
+    function reset(){delete work.calcChecked;result.textContent='';save();}
+    field.oninput=()=>{work.calcExact=field.value.slice(0,80);reset();};digit.onchange=()=>{if(digit.value==='')delete work.calcDigit;else work.calcDigit=digit.value;reset();};
+    host.querySelector('[data-calc-check]').onclick=()=>{const checked=calcCheck(part,work);if(!checked.ok&&!work.calcChecked&&root.PetersonBook.M.parse(work.calcExact||'')&&work.calcDigit!==undefined)work.errors=Math.min(10000,(work.errors||0)+1);work.calcChecked=true;result.textContent=checked.text;save();};
+  }
+  function calcResponse(number,part,input,correct){
+    if(number!==34||correct)return null;
+    const E=root.PetersonBook,M=E.M,raw=E.exact(part.expression);
+    if(M.equal(input,raw))return {ok:false,text:'Действие выполнено точно. В окончательном ответе округли это число до '+roundingNames[part.rounding.places]+'.'};
+    if(M.equal(input,E.rounded(raw,part.rounding.places+1)))return {ok:false,text:'Посмотри на разряд ответа: сохранена лишняя цифра. Требуемая точность — до '+roundingNames[part.rounding.places]+'.'};
+    return {ok:false,text:'Раздели работу на два этапа: сначала проверь точное действие, потом выбери первую отбрасываемую цифру.'};
+  }
+
   const precisionUnits=[
     ['сотен','100'],['десятков','10'],['единиц','1'],['десятых','0.1'],['сотых','0.01'],['тысячных','0.001']
   ];
@@ -798,6 +834,7 @@
   }
 
   function openingQuestion(number,part) {
+    if(number===34)return resultQuestion(part);
     if(number===33)return roundingQuestion(part);
     if(number===31)return 'Прочитай неравенство '+part.prompt+' и перечисли все натуральные значения x, удовлетворяющие обеим границам. Если их нет, запиши пустое множество.';
     if(number===32)return 'В промежутке 0,5 ≤ x ≤ 0,6 найди три разных решения. Придумай способ получить 1000 различных решений; проверь, можно ли получить 10 000. Объясни, почему границы не нарушаются.';
@@ -860,6 +897,7 @@
     if(item.number===31)drawing=integerView(part,{},false);
     if(item.number===32)drawing=intervalSequence({},false);
     if(item.number===33)drawing=roundingFigure(part,{},false);
+    if(item.number===34)drawing=calculationView(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
@@ -888,5 +926,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse};
 })(globalThis);

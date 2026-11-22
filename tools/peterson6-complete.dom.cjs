@@ -709,3 +709,14 @@ test('six decimal scales separate enclosing bounds from rounding and keep the ty
  }
  const restored=await surface(t,BOOK+'#n/33/033-2-6',storage(s));assert.equal(element(restored,'[data-round-mark]').value,'right');assert.equal(element(restored,'[data-round-single]').value,'149.503');
 });
+test('all sixteen printed calculations round at the requested place and independently verify their fresh variants',async t=>{
+ const s=await surface(t,BOOK+'#n/34/034-a-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[33];
+ const select=v=>{const f=element(s,'[data-calc-digit]');f.value=String(v);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));},E=s.w.PetersonBook;
+ for(const p of row.parts){
+  await route(s,'#n/34/'+p.id);assert.match(sourcePresent(s).textContent,/только затем округли/);const exact=E.exact(p.expression),place=p.rounding.places,number=exact.n/exact.d,digit=Math.floor(number*10**(place+1)+1e-9)%10;
+  input(s,'[data-calc-exact]',E.M.decimal(exact));select((digit+1)%10);click(s,'[data-calc-check]');assert.match(element(s,'[data-calc-feedback]').textContent,/на один разряд вправо/);select(digit);click(s,'[data-calc-check]');assert.match(element(s,'[data-calc-feedback]').textContent,/решающая цифра верны/);
+  input(s,'#answer',p.answer);submit(s,'#answer-form');const w=bookWork(s,p.id);assert(w.correct&&!w.independent&&!w.assisted);assert.equal(w.calcDigit,String(digit));
+  for(let n=0;n<31;n++){const sample=s.w.PetersonAnalogues.create(34,p,n),expr=sample.expression,l=Number(String(expr.left).replace(',','.')),r=Number(String(expr.right).replace(',','.')),value=({add:()=>l+r,subtract:()=>l-r,multiply:()=>l*r,divide:()=>l/r})[expr.op](),scale=10**place,target=Math.sign(value)*Math.floor(Math.abs(value)*scale+.5+1e-9)/scale,provided=E.M.parse(sample.answer);assert(Math.abs(provided.n/provided.d-target)<1e-7);assert(E.check(sample,sample.answer));}
+ }
+ const r=await surface(t,BOOK+'#n/34/034-a-1',storage(s));assert.match(element(r,'[data-calc-feedback]').textContent,/решающая цифра верны/);assert.equal(element(r,'[data-calc-exact]').value,'2995,25');assert.equal(element(r,'[data-calc-digit]').value,'5');
+});

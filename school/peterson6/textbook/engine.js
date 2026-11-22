@@ -55,6 +55,11 @@ function sanitize(part,input){
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='022-slovo'&&typeof input.cipherLetters==='string'&&/^[РУНОЕДГБИЖАКТЯС]{1,15}$/.test(input.cipherLetters)&&new Set(input.cipherLetters).size===input.cipherLetters.length)clean.cipherLetters=input.cipherLetters;
+ if(part.id.startsWith('034-')){
+  if(typeof input.calcExact==='string'&&input.calcExact)clean.calcExact=cut(input.calcExact,80);
+  if(typeof input.calcDigit==='string'&&/^[0-9]$/.test(input.calcDigit))clean.calcDigit=input.calcDigit;
+  if(input.calcChecked===true)clean.calcChecked=true;
+ }
  if(part.id.startsWith('033-')){
   for(const key of ['precisionLow','precisionHigh','precisionRounded'])if(typeof input[key]==='string'&&input[key])clean[key]=cut(input[key],50);
   if(['left','right'].includes(input.precisionMark))clean.precisionMark=input.precisionMark;
