@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "05e92d891570748e838b35cfbf6ab64806eac11965e55e0c98ce4a24ead39df5",
-      "afterSha256": "856bce70336e453950498cb57019f51a66dbaeaa8f2edb1733b03a6a1d9cdad0",
+      "beforeSha256": "e68ad6d86c958581d159d3abacdf7816391e9543438b3e01f1ceb8dff009d3e4",
+      "afterSha256": "c2b78fde6a53e7b4f14508946dc15e26381eba93222b786932a0c577eedccb55",
       "placement": "before-head-close",
-      "sourceSha": "909f584cb2297f98e24e67753a60c65a4d9b16a6"
+      "sourceSha": "1c44a671fb0e9f3445199ef001a07855c17d3ae5"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6912,6 +6912,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены №5.69–5.71 второй части, печатная страница 17. Восемь расстояний в двух разных фигурах, определение радиуса с сохранением рассуждения и сектор проверены на двух мобильных ширинах и в двух ролях."
+    },
+    {
+      "previousBaseSha": "909f584cb2297f98e24e67753a60c65a4d9b16a6",
+      "sourceBaseSha": "1c44a671fb0e9f3445199ef001a07855c17d3ae5",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены №5.72–5.74 второй части, печатная страница 17. Проверены 12 подпунктов с единицами времени, пять отражений и два совпадения циферблатов, условия повтора, мобильные ширины и две роли."
     }
   ],
   "coverageUpdates": [
