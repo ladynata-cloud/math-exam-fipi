@@ -109,6 +109,7 @@ jobs:
           node tools/stereo-textbook/end-of-final-pyramid-review.test.cjs
           node tools/stereo-textbook/first-advanced-pyramid-problems.test.cjs
           node tools/stereo-textbook/dihedral-bisectors-and-midplanes.test.cjs
+          node tools/stereo-textbook/cube-sections-distances-and-division.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -470,6 +471,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: dihedralBisectorsAndMidplanes
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/dihedral-bisectors-and-midplanes
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify regular cube sections, the distance invariant and partition into six congruent tetrahedra
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cubeSectionsDistancesAndDivision
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cube-sections-distances-and-division
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -575,5 +581,6 @@ jobs:
             artifacts/end-of-final-pyramid-review/
             artifacts/first-advanced-pyramid-problems/
             artifacts/dihedral-bisectors-and-midplanes/
+            artifacts/cube-sections-distances-and-division/
           retention-days: 14
           if-no-files-found: error
