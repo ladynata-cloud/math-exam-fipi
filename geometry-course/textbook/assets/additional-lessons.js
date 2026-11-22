@@ -130,7 +130,8 @@
       ['/geometry-course/textbook/data/bounded-symmetries.json', '№1274–1278'],
       ['/geometry-course/textbook/data/tiling-symmetries.json', '№1279а–1280б'],
       ['/geometry-course/textbook/data/motion-applications.json', '№1281–1285'],
-      ['/geometry-course/textbook/data/star-rays-perimeter.json', '№1286–1288']
+      ['/geometry-course/textbook/data/star-rays-perimeter.json', '№1286–1288'],
+      ['/geometry-course/textbook/data/medians-translated-altitudes.json', '№1289–1291']
   ];
 
   async function forCourse(base) {
