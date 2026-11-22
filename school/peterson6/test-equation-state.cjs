@@ -124,6 +124,48 @@ async function test(name, action) {
 
 (async () => {
   const cases = [
+    ['browsing the course and progress creates no work for untouched cards', () => {
+      const rt = boot({ hash: '#home' });
+      const solved = () => rt.select('.stats .stat:last-child strong').textContent;
+      assert.deepEqual(Object.keys(rt.state().tasks), []);
+      assert.equal(solved(), '0');
+      rt.go('#progress');
+      assert.deepEqual(Object.keys(rt.state().tasks), []);
+      rt.go(ROUTE);
+      assert.deepEqual(Object.keys(rt.state().tasks), [ID]);
+      assert.equal(rt.state().tasks[ID].correct, false);
+      assert.equal(rt.state().tasks[ID].independent, false);
+      rt.go('#home');
+      assert.equal(solved(), '0');
+      assert.equal(rt.select('.hero .button').hash, ROUTE);
+      rt.go('#progress');
+      assert.deepEqual(Object.keys(rt.state().tasks), [ID]);
+      const saved = JSON.parse(rt.w.localStorage.getItem(KEY));
+      assert.deepEqual(Object.keys(saved.tasks), [ID]);
+      assert.equal(saved.last.hash, ROUTE);
+      assert.equal(rt.errors.length, 0);
+    }],
+    ['reading progress preserves started work, manual records and independent credit', () => {
+      const state = empty();
+      const manual = Object.values(currentTasks).find(task => task.kind === 'manual');
+      const finished = Object.values(currentTasks).find(task => task.kind === 'number' && task.id !== ID);
+      state.tasks[ID] = partial(oldTasks[ID]);
+      state.tasks[finished.id] = completed(finished, finished.methodVersion || 1);
+      state.tasks[manual.id] = { value: 'recorded', note: 'Чертёж в тетради' };
+      const rt = boot({ state, hash: '#home' });
+      const before = rt.state().tasks;
+      assert.equal(rt.select('.stats .stat:last-child strong').textContent, '1');
+      rt.go('#progress');
+      assert.match(rt.select('#main').textContent, /Записано для проверки: 1/);
+      assert.deepEqual(rt.state().tasks, before);
+      rt.go(ROUTE);
+      assert.equal(rt.state().tasks[ID].note, state.tasks[ID].note);
+      assert.equal(rt.state().tasks[ID].step, 1);
+      assert.deepEqual(Object.keys(rt.state().tasks).sort(), Object.keys(state.tasks).sort());
+      assert.equal(rt.state().tasks[finished.id].independent, true);
+      assert.equal(rt.state().tasks[manual.id].value, 'recorded');
+      assert.equal(rt.errors.length, 0);
+    }],
     ['compiled overlay preserves every legacy condition and complete old task', () => {
       assert.equal(D.methodVersion, 2);
       assert.equal(Object.keys(D.legacyTasks).length, 98);
