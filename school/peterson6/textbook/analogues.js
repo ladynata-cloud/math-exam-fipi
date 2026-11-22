@@ -364,14 +364,32 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'witness-'+part.id,match:'skill'};
   }
 
+  function scopePractice(part,attempt){
+    const row=Number(part.id.split('-')[1])-1,k=seed(part.id)%71+attempt,entities=[
+      ['утки','утка','плавает'],['коляски','коляска','стоит на колёсах'],['ученики','ученик','сидит за первой партой'],['члены семьи','член семьи','старше ведущего'],
+      ['жетоны','жетон','имеет надпись с обеих сторон'],['участницы соревнования','участница','вошла в финал'],['дни наблюдения','день','отмечен снегопадом'],
+      ['животные в приюте','питомец','дружит с котёнком'],['попугаи в вольере','попугай','повторяет слово'],['часы в мастерской','экземпляр часов','спешит'],
+      ['арбузы на грядке','арбуз','имеет полосы'],['велосипеды в коллекции','велосипед','имеет четыре колеса']
+    ];
+    const [group,item,property]=entities[row],id=1+k%47,forms=['На каждой карточке из группы «'+group+'» написано: «'+item+' '+property+'».','В группе «'+group+'» нашлась карточка, на которой написано: «'+item+' '+property+'».','На карточке №'+id+' из группы «'+group+'» написано: «'+item+' '+property+'».'],index=k%3;
+    const types=['О каждом объекте','О существовании хотя бы одного','Об одном указанном объекте'],order=(Math.floor(k/3)+row)%3,hint='Смотри на способ выбора: «каждая», «нашлась хотя бы одна» или «вот эта карточка». Состояние отдельной карточки не заменяет общее правило.';
+    let practice=choice(forms[index]+' Какого вида высказывание по охвату карточек?',types.slice(order).concat(types.slice(0,order)),types[index],hint);
+    if(attempt%2&&[0,3,8,9,10].includes(row)){
+      const labels=['ни на одной карточке нет такой отметки','хотя бы на одной карточке нет такой отметки','хотя бы на одной карточке есть такая отметка'];
+      practice=choice('Проверяют группу «'+group+'» из '+(3+k%9)+' карточек. Фраза: «на каждой карточке есть отметка: '+item+' '+property+'». Какая формулировка является её точным отрицанием?',labels.slice(order).concat(labels.slice(0,order)),labels[1],'Для отрицания «на каждой» нужна одна карточка без отметки. Об остальных ничего утверждать не надо.');
+    }
+    return {...practice,id:'analog-'+part.id+'-'+attempt,family:'scope-'+part.id,match:'skill',mistake:practice.steps[0].hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>27)return createLegacy(number,part,attempt);
+    if(number<7||number>28)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===28)return scopePractice(part,attempt);
     if(number===27)return witnessPractice(part,attempt);
     if(number===26)return universalPractice(part,attempt);
     if(number===25)return letterPractice(part,attempt);
@@ -407,7 +425,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=27&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=28&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -429,7 +447,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=27&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=28&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

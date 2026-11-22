@@ -627,3 +627,18 @@ test('the ten mathematical claims separate a proof for all values from one admis
  }
  const r=await surface(t,BOOK+'#n/27/027-10',storage(s));assert.match(element(r,'[data-logic-other]').value,/1\/3/);
 });
+test('all twelve everyday statements distinguish universal, existential and individual scope, including a two-level claim',async t=>{
+ const s=await surface(t,BOOK+'#n/28/028-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[27],types=[1,1,3,1,1,2,3,2,1,1,1,2];
+ const set=(key,val)=>{const f=element(s,'[data-logic-'+key+']');f.value=String(val);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/28/'+p.id);assert.match(sourcePresent(s).textContent,/Определи вид/);set('left',types[i]);set('right',2);
+  click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').className,/error/);if(i===9)assert.match(element(s,'#feedback').textContent,/два обобщения/);
+  set('right',1);input(s,'[data-logic-other]',p.answer);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование/);
+  const w=bookWork(s,p.id);assert.equal(w.logicOther,p.answer);assert(w.submitted&&!w.correct&&!w.independent);const seen=new Set();
+  for(let j=0;j<24;j++){const sample=s.w.PetersonAnalogues.create(28,p,j);assert(s.w.PetersonBook.check(sample,sample.answer));seen.add(sample.answer);
+    if(sample.prompt.includes('точным отрицанием'))assert.equal(sample.answer,'хотя бы на одной карточке нет такой отметки');else assert.equal(sample.answer,sample.prompt.startsWith('На каждой')?'О каждом объекте':sample.prompt.startsWith('В группе')?'О существовании хотя бы одного':'Об одном указанном объекте');
+  }assert(seen.size>=3);
+ }
+ assert.match(row.parts[0].explanation,/Onychoprion fuscatus/);await route(s,'#n/28/028-1');assert.match(element(s,'[data-logic-reference] a').href,/allaboutbirds/);
+ const kept=await surface(t,BOOK+'#n/28/028-10',storage(s));assert.equal(element(kept,'[data-logic-left]').value,'1');assert.match(element(kept,'[data-logic-other]').value,/часы/);
+});

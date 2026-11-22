@@ -48,10 +48,10 @@ function sanitize(part,input){
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
- if(/^(019|020|021|026|027)-/.test(part.id)){
+ if(/^(019|020|021|026|027|028)-/.test(part.id)){
   for(const key of ['logicLeft','logicRight'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
   if(input.logicReference===true)clean.logicReference=true;
-  if(/^02[67]-/.test(part.id)&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
+  if(/^02[678]-/.test(part.id)&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='022-slovo'&&typeof input.cipherLetters==='string'&&/^[РУНОЕДГБИЖАКТЯС]{1,15}$/.test(input.cipherLetters)&&new Set(input.cipherLetters).size===input.cipherLetters.length)clean.cipherLetters=input.cipherLetters;
