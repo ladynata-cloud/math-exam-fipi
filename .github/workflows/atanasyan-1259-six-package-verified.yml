@@ -1,0 +1,107 @@
+name: Verify the five-course assembly and build the geometry archive through 1259
+on:
+  push:
+    branches: ['work/school-six-geometry-1259-20261122']
+    paths: ['.github/workflows/atanasyan-1259-six-package-verified.yml']
+permissions:
+  contents: write
+jobs:
+  verify-and-create-feature-branch:
+    if: github.repository == 'ladynata-cloud/math-exam-fipi' && github.ref == 'refs/heads/work/school-six-geometry-1259-20261122'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SOURCE_SHA: bf27ba80c99dd73b241afcad632e8f331a7bc249
+      SOURCE_TREE: 4b3bbcfdbd11f1c7664db8292dda7e7a558782d4
+      SOURCE_BRANCH: integration/school-1098-1259-source89-20261122
+      TARGET_BRANCH: integration/school-1098-1259-source89-offline-20261122
+      ZIP_PATH: downloads/trainers/geometry-course/geometry-course-package.zip
+      PREVIOUS_BLOB: 0282e3cc9a7fe6424e3b2443d63a5f8494e14f59
+      EXPECTED_BLOB: 66b9f94bc6f4638cff59b9937df1777d408770cc
+      EXPECTED_TREE: ce14d58ffb5262b4099de4009a1cfdeb5edfd1b1
+      PATCH_FOLDER: .github/atanasyan-offline-build/geometry-1259
+      PATCH_BLOB: 300cbfd2cfa139d515b69d19cfecd41d7bc31373
+    steps:
+      - name: Check out the dedicated builder and its direct source parent
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/workflows/atanasyan-1259-six-package-verified.yml
+            /.github/atanasyan-offline-build/geometry-1259/
+            /geometry-course/
+            /scripts/
+            /assets/assistant/page-rollout.json
+            /assets/assistant/home-link.js
+            /assets/download-panel.css
+            /assets/geometry-step-views.js
+            /assets/site.css
+            /ege-baza/return-to-course.js
+            /learning/atanasyan-first-steps/
+            /learning/ichenskaya-grade7-works/app.js
+            /tools/public-navigator-preservation.cjs
+            /tools/geometry-textbook/
+            /content-drafts/atanasyan-grade8-area-842-844/
+            /downloads/trainers-manifest.json
+            /downloads/trainers/geometry-course/
+      - name: Verify the source, every unpacked member, the binary and the clean result tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "${GITHUB_SHA}^")" = "$SOURCE_SHA"
+          test "$(git rev-parse "${SOURCE_SHA}^{tree}")" = "$SOURCE_TREE"
+          cat "$PATCH_FOLDER"/part-* > "$RUNNER_TEMP/reviewed-geometry.patch"
+          test "$(git hash-object "$RUNNER_TEMP/reviewed-geometry.patch")" = "$PATCH_BLOB"
+          git switch --detach "$SOURCE_SHA"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/$SOURCE_BRANCH" | cut -f1)" = "$SOURCE_SHA"
+          test -z "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH")"
+          test "$(git hash-object "$ZIP_PATH")" = "$PREVIOUS_BLOB"
+          for book_unit in motion_composition translations_and_rotations; do
+            python3 "tools/geometry-textbook/${book_unit}.py" --check
+          done
+          for check in motion_composition translations_and_rotations; do
+            python3 "tools/geometry-textbook/check_${check}.py"
+          done
+          node scripts/build-trainer-downloads.mjs --only=geometry-course --downloads-only
+          # The repository-wide export date does not belong to the single-book change.
+          python3 - <<'PYCODE'
+          import json, subprocess
+          path = 'downloads/trainers-manifest.json'
+          before = json.loads(subprocess.check_output(['git','show','HEAD:'+path]))
+          with open(path, encoding='utf-8') as stream:
+              after = json.load(stream)
+          before.pop('updated'); after.pop('updated')
+          assert before == after
+          PYCODE
+          git restore -- downloads/trainers-manifest.json
+          mv "$ZIP_PATH" "$RUNNER_TEMP/rebuilt.zip"
+          git restore -- "$ZIP_PATH"
+          git apply --binary "$RUNNER_TEMP/reviewed-geometry.patch"
+          test "$(git hash-object "$ZIP_PATH")" = "$EXPECTED_BLOB"
+          test "$(wc -c < "$ZIP_PATH")" = "18444110"
+          test "$(sha256sum "$ZIP_PATH" | cut -d' ' -f1)" = "5d6467b59669f26162cfbd3927afce58fafa126218d6fe813b0ba38b14092a92"
+          python3 - "$RUNNER_TEMP/rebuilt.zip" "$ZIP_PATH" <<'PY'
+          from pathlib import PurePosixPath
+          import sys, zipfile
+          with zipfile.ZipFile(sys.argv[1]) as built, zipfile.ZipFile(sys.argv[2]) as reviewed:
+              assert built.testzip() is None and reviewed.testzip() is None
+              names = built.namelist()
+              assert names == reviewed.namelist() and len(names) == len(set(names)) == 383
+              assert 'Доступно карточек в задачнике: 2280.' in reviewed.read('README.txt').decode()
+              for name in names:
+                  assert not PurePosixPath(name).is_absolute() and '..' not in PurePosixPath(name).parts
+                  assert built.read(name) == reviewed.read(name), name
+                  before, after = built.getinfo(name), reviewed.getinfo(name)
+                  assert (before.date_time, before.compress_type, before.external_attr) == (after.date_time, after.compress_type, after.external_attr), name
+          PY
+          test "$(git diff --name-only)" = "$ZIP_PATH"
+          git add -- "$ZIP_PATH"
+          test "$(git diff --cached --name-only)" = "$ZIP_PATH"
+          test "$(git write-tree)" = "$EXPECTED_TREE"
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Собрать 2280 карточек автономного задачника с движениями до №1259 и сохранить рабочие курсы'
+          test "$(git rev-parse HEAD^)" = "$SOURCE_SHA"
+          test "$(git rev-parse 'HEAD^{tree}')" = "$EXPECTED_TREE"
+          git push --force-with-lease="refs/heads/${TARGET_BRANCH}:" origin "HEAD:refs/heads/${TARGET_BRANCH}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"
+          echo "Verified $SOURCE_SHA -> $(git rev-parse HEAD), $EXPECTED_TREE, $EXPECTED_BLOB" >> "$GITHUB_STEP_SUMMARY"
