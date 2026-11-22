@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 630,
-    "covered": 628,
+    "total": 631,
+    "covered": 629,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -3306,10 +3306,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/college-stereometry/index.html": {
-      "beforeSha256": "080a1458a1a6dd07a92c7d000473fef194390b5dc9607c05234e6bc805ad3378",
-      "afterSha256": "b562cd3652993d75a58cff993fe5b2cd0bed8e8504add89d1d0bf712b4ba87b1",
+      "beforeSha256": "c3ddb0045cc745a09c64354a193b8ec5d2b27bcf6b23c105b629f9c3238f4ddb",
+      "afterSha256": "36f0d33a898ed9f847b70442fbca10c2e97338f564501b3e3bdf66fb53e88dab",
       "placement": "before-head-close",
-      "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
+      "sourceSha": "2fc93633c9818d9a07c0aa9550fb945e0d7cbdb3"
     },
     "trainers/college-stereometry/lessons/index.html": {
       "beforeSha256": "5a59f4b901a0a8954dde3ce2dddbe6eb18090e90683296ca2250ea26fac94308",
@@ -3358,6 +3358,12 @@
       "afterSha256": "a30b427437cbdde7f3ea4f161886122b127f6f3c5e43662712e1d0a90607d534",
       "placement": "before-head-close",
       "sourceSha": "d04a8dd8ae7b8d4a85a147e74233790173079612"
+    },
+    "trainers/college-stereometry/polyhedra-sections/index.html": {
+      "beforeSha256": "02ba5ea30a0a2fcad229cfb3275a294d2ecca923c3523978338b30b491fd40e1",
+      "afterSha256": "1d12911ed5e4e2aa43bb81a9932a7b268ccd7de15c01bbf450376f88c858ab6b",
+      "placement": "before-head-close",
+      "sourceSha": "2fc93633c9818d9a07c0aa9550fb945e0d7cbdb3"
     }
   },
   "provenance": {
@@ -4026,7 +4032,8 @@
     "school/peterson6/textbook/index.html": "sitemap",
     "trainers/peterson6-workshop/index.html": "sitemap",
     "trainers/merzlyak9-2014/index.html": "school/index.html",
-    "trainers/makarychev9-2017/index.html": "school/index.html"
+    "trainers/makarychev9-2017/index.html": "school/index.html",
+    "trainers/college-stereometry/polyhedra-sections/index.html": "trainers/college-stereometry/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6739,6 +6746,14 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Bind the reviewed first-action page and preserve other navigator receipts."
+    },
+    {
+      "sourceBaseSha": "2fc93633c9818d9a07c0aa9550fb945e0d7cbdb3",
+      "task": "docs/tasks/COLLEGE_STEREOMETRY_LESSON7_20261122.md",
+      "changedPaths": [
+        "trainers/college-stereometry/index.html"
+      ],
+      "reason": "Bind the reviewed seven-lesson course entrance; preserve every unrelated navigator receipt."
     }
   ],
   "coverageUpdates": [
@@ -6871,6 +6886,14 @@
         "books/index.html"
       ],
       "reason": "The canonical book catalog is linked from the homepage and sitemap and carries the shared public navigator."
+    },
+    {
+      "sourceBaseSha": "2fc93633c9818d9a07c0aa9550fb945e0d7cbdb3",
+      "task": "docs/tasks/COLLEGE_STEREOMETRY_LESSON7_20261122.md",
+      "addedPages": [
+        "trainers/college-stereometry/polyhedra-sections/index.html"
+      ],
+      "reason": "Publish the seventh college stereometry lesson with the existing public navigator; retain its standalone student download."
     }
   ]
 }
