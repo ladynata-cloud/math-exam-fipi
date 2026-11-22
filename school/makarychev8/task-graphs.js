@@ -57,6 +57,7 @@ function curveValue(curve,x){
  }
  if(curve.kind==='root-study-segment')return x<curve.lower||x>curve.upper?NaN:Math.sqrt(x);
  if(curve.kind==='scaled-root-study'){const n=curve.inside*x;return n<0?NaN:curve.scale*Math.sqrt(n);}
+ if(curve.kind==='elementary-function')return elementaryHeight(curve.shape,curve.scale,x);
  if(curve.kind==='piecewise-half')return piecewiseLocation(curve.g,x)===curve.side?piecewiseHeight(curve.g,x):NaN;
  if(curve.kind==='reflected-root')return x<0?NaN:curve.shift-Math.sqrt(x);
  if(curve.kind==='sqrt-affine'){const radicand=curve.k*x+curve.b;return radicand>=0?Math.sqrt(radicand):NaN;}
@@ -951,6 +952,51 @@ function sumOfRoot(form,k,x) {
  if(x<0)return NaN;
  return (form==='linear'?k*x:x*x)+Math.sqrt(x);
 }
+function elementaryProfile(g){return g.shape==='absolute'?{kind:'abs-linear',h:0,k:g.scale||1,b:0}:{kind:'elementary-function',shape:g.shape,scale:g.scale||1};}
+function elementaryHeight(shape,scale,x){
+ if(shape==='square')return scale*x*x;
+ if(shape==='cube')return scale*x**3;
+ if(shape==='absolute')return scale*Math.abs(x);
+ return x<0?NaN:scale*Math.sqrt(x);
+}
+function belongsToReciprocal(k,x,y){return BigInt(x.n)*BigInt(y.n)===BigInt(k)*BigInt(x.d)*BigInt(y.d)&&x.n!==0;}
+function elementaryStudyView(host,g,raw){
+ host.className='task-graphs quantity-model';
+ const C=window.MakarychevCheck,trial=M.parse(g.partial?.[0]),x=trial?trial.n/trial.d:null,fmt=v=>Number(v.toPrecision(7)).toString().replace('.',',');
+ if(g.group==='profile'){
+  const scale=g.scale||1,curve=elementaryProfile(g),points=[[0,0,'']],outside=trial&&g.shape==='sqrt'&&x<0;
+  if(trial){
+   if(outside)boundNote(host,'При отрицательном аргументе у ветви корня нет точки.').dataset.elementaryTrial='outside';
+   else{const y=elementaryHeight(g.shape,scale,x);points.push([x,y,'']);boundNote(host,'При x = '+M.answer(trial)+' высота приблизительно равна '+fmt(y)+'.').dataset.elementaryTrial=M.answer(trial);}
+  }
+  const limit=trial&&!outside&&Math.abs(x)<=6?Math.max(3,Math.ceil(Math.abs(x))):3;
+  const y=trial&&!outside?elementaryHeight(g.shape,scale,x):0,span=Math.min(40,Math.max(4,scale*4,Math.abs(y)<=40?Math.ceil(Math.abs(y))+1:0));
+  host.append(rootGraph({curves:[curve],points,xRange:[-limit-0.5,limit+0.5],yRange:[g.shape==='cube'?-span:-2,span],compactTicks:true,label:'Авторский график функции для исследования её свойств'},''));
+  if(['domain','range'].includes(g.mode)){
+   const rows=C.axisRanges(C.systemInput(raw,g.mode==='range'?'y':'x'));if(rows)intervalNumberLine(host,{givenRows:[],proposal:rows,points:[]},'');
+  }else if(g.mode==='sign'||g.mode==='direction'){
+   const fields=String(raw||'').split('|');
+   if(fields.length===2)fields.forEach((v,i)=>{const rows=C.axisRanges(C.systemInput(v,'x'));if(rows){boundNote(host,(g.mode==='sign'?['Положительные ординаты','Отрицательные ординаты']:['Возрастание','Убывание'])[i]);intervalNumberLine(host,{givenRows:[],proposal:rows,points:[]},'');}});
+  }
+  return;
+ }
+ const curves=[{kind:'hyperbola',k:g.k}],points=[];
+ if(g.group==='identify')curves.push({kind:'line',k:1/g.k,b:0,dashed:true});
+ if(trial){
+  if(trial.n===0)boundNote(host,g.group==='identify'?'При нулевой абсциссе у гиперболы нет точки. Прямая проходит через начало координат.':'Нулевая абсцисса исключена из области гиперболы.').dataset.elementaryTrial='outside';
+  else{points.push([x,g.k/x,'']);if(g.group==='identify')points.push([x,x/g.k,'']);boundNote(host,'При x = '+M.answer(trial)+' у гиперболы y = '+sectionFraction(g.k*trial.d,trial.n)+(g.group==='identify'?', у прямой y = '+sectionFraction(trial.n,g.k*trial.d):'')+'.').dataset.elementaryTrial=M.answer(trial);}
+ }
+ if(g.group==='membership'){
+  const selected=setTokens(raw,false)||[];
+  g.points.forEach(([px,py],i)=>{const a=M.parse(px),b=M.parse(py),picked=selected.includes(String(i+1));
+   if(picked)points.push([a.n/a.d,b.n/b.d,'']);
+   const note=boundNote(host,(i+1)+'. ('+M.answer(a)+'; '+M.answer(b)+')'+(picked?' — выбрана':''));note.dataset.candidatePoint=String(i+1);note.dataset.selected=String(picked);
+  });
+ }
+ const xrange=g.group==='membership'?[-12,12]:[-5,5], extent=g.group==='membership'?Math.max(12,...g.points.map(([,v])=>Math.abs(Number(v)||0)))+4:8;
+ host.append(rootGraph({curves,points,xRange:xrange,yRange:[-extent,extent],compactTicks:true,label:g.group==='identify'?'Гипербола и прямая через начало координат':'Гипербола и выбранные точки из списка'},''));
+}
+
 function rootReciprocalProbe(k,q){
  if(!q)return null;
  if(q.n<0)return {status:'negative'};
@@ -3053,6 +3099,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-elementary-properties'){elementaryStudyView(host,config,value);return;}
  if(config.type==='source-root-and-powers'){rootPowersView(host,config,value);return;}
  if(config.type==='source-piecewise-properties'){piecewiseStudyView(host,config,value);return;}
  if(config.type==='source-root-crossings'){rootCrossingsView(host,config,value);return;}
@@ -3169,5 +3216,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,rootReciprocalProbe,fourPowerMarks,parseFourPowerOrder,piecewiseMarks,piecewiseHeight,piecewiseLocation,puncturedPoints,puncturedIntersections,radicalLineTrial,signCurve,monotoneExampleValue,tripStops,graphKnots,compoundDomainTrial,floorPiece,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,elementaryHeight,belongsToReciprocal,rootReciprocalProbe,fourPowerMarks,parseFourPowerOrder,piecewiseMarks,piecewiseHeight,piecewiseLocation,puncturedPoints,puncturedIntersections,radicalLineTrial,signCurve,monotoneExampleValue,tripStops,graphKnots,compoundDomainTrial,floorPiece,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

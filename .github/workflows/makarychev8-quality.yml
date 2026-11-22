@@ -155,6 +155,7 @@ jobs:
           node school/makarychev8/test-additional-root-crossings.cjs
           node school/makarychev8/test-additional-piecewise.cjs
           node school/makarychev8/test-additional-power-graphs.cjs
+          node school/makarychev8/test-additional-basic-properties.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
