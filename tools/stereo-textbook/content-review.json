@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T02:45:00Z",
-  "scope": "All final-review parts of 764–767 and advanced source exercises 768–786 are complete. The remaining advanced exercises begin at 787.",
+  "registeredAt": "2026-11-22T02:52:00Z",
+  "scope": "All final-review parts of 764–767 and advanced source exercises 768–790 are complete. The remaining advanced exercises begin at 791.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2537,6 +2537,19 @@
       ],
       "evidence": "tools/stereo-textbook/monotone-paths-and-dual-solids.json",
       "mathematicalReport": "tools/stereo-textbook/monotone-paths-and-dual-solids.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued Atanasyan 2024 volume, advanced problem on printed page 191 (PDF page 193), answers and hints on printed page 273.",
+      "reviewedAt": "2026-11-22T02:52:00Z",
+      "scope": "Advanced exercises 787–790 on printed page 191, hints on page 273. Read the two radical heights directly from the issued page. Verified the exact perpendicular feet, projected face areas, all four body diagonals and actual first-hit ray traces for a triple reflection and a counterexample to unconditional retroreflection by a finite corner.",
+      "cardIds": [
+        "ex-main-0787",
+        "ex-main-0788",
+        "ex-main-0789",
+        "ex-main-0790"
+      ],
+      "evidence": "tools/stereo-textbook/skew-lines-and-corner-reflection.json",
+      "mathematicalReport": "tools/stereo-textbook/skew-lines-and-corner-reflection.test.cjs"
     }
   ],
   "cards": [
@@ -8459,6 +8472,22 @@
     {
       "id": "ex-main-0786",
       "sha256": "f6e736c08fbedf80df7cc139cc01a7b712c865f178087145a109a38838463332"
+    },
+    {
+      "id": "ex-main-0787",
+      "sha256": "481013b7fcd12afdf7308ffd3c07c433df15f89d4a301e007a9ff1c08a2c8716"
+    },
+    {
+      "id": "ex-main-0788",
+      "sha256": "524fb1ee21b1afa7c86d76dda334202a56f6020f763ccaeced1c92d55efaf1df"
+    },
+    {
+      "id": "ex-main-0789",
+      "sha256": "18061b79cf9aed0300f3eb5bc45e52d61f5583eae166e188b10bf6c7a7d72bb8"
+    },
+    {
+      "id": "ex-main-0790",
+      "sha256": "c6289ad7ec1296babd8d01c41a8bd03e1812ba91a52dcceccf53663349c15104"
     }
   ]
 }

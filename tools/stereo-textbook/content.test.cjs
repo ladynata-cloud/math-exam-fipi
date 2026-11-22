@@ -133,4 +133,5 @@ require('./cube-sections-distances-and-division.test.cjs');
 require('./surface-paths-and-parallel-sections.test.cjs');
 require('./tetrahedra-and-cube-tilings.test.cjs');
 require('./monotone-paths-and-dual-solids.test.cjs');
+require('./skew-lines-and-corner-reflection.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

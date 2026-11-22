@@ -1,0 +1,240 @@
+{
+  "parts": {
+    "787": [
+      null
+    ],
+    "788": [
+      null
+    ],
+    "789": [
+      null
+    ],
+    "790": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "787": {
+      "id": "source-main-0787",
+      "kind": "exercise",
+      "title": "Задача № 787",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "787",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "788": {
+      "id": "source-main-0788",
+      "kind": "exercise",
+      "title": "Задача № 788",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "788",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "789": {
+      "id": "source-main-0789",
+      "kind": "exercise",
+      "title": "Задача № 789",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "789",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "790": {
+      "id": "source-main-0790",
+      "kind": "exercise",
+      "title": "Задача № 790",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "790",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0787": {
+      "raw": "a742ecb4cf16fd0291a0c4a67fe3c794f6b6a96bf822a9cdff66c4a241d8e217",
+      "authored": "481013b7fcd12afdf7308ffd3c07c433df15f89d4a301e007a9ff1c08a2c8716",
+      "integrated": "83d97d458eef6d071d93b0b60a9b6ac00678e0c702b0dd596efa537b1a1834ff"
+    },
+    "ex-main-0788": {
+      "raw": "de0467e1639a15332c40dcc3aa8827234fe321260205c3d8508fee1c6434b48a",
+      "authored": "524fb1ee21b1afa7c86d76dda334202a56f6020f763ccaeced1c92d55efaf1df",
+      "integrated": "d1066776719dcc7aba71417c1cf1eddb805dc32ac21246435afa02c06d0389fa"
+    },
+    "ex-main-0789": {
+      "raw": "5d6ba56e63514becd17003389f454eff0443bd8b68c808d894d88ce3c30df807",
+      "authored": "18061b79cf9aed0300f3eb5bc45e52d61f5583eae166e188b10bf6c7a7d72bb8",
+      "integrated": "53a8c4be7c8225f3e978469993ee550b0f8d6fc26aff0ae70f7d5d9408372cf8"
+    },
+    "ex-main-0790": {
+      "raw": "22ea8fb3b5dde1f9a8f66eac0337774c21ddeb051d3981c57a89083dd4bc590a",
+      "authored": "c6289ad7ec1296babd8d01c41a8bd03e1812ba91a52dcceccf53663349c15104",
+      "integrated": "64ce69c474c7b7f426febf6ab06bba0fa3764b78ff80baee08c64314cfff475c"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0787|condition",
+      "skew-lines-and-corner-reflection-ex-main-0787-condition"
+    ],
+    [
+      "ex-main-0787|help:h1",
+      "skew-lines-and-corner-reflection-ex-main-0787-help-h1"
+    ],
+    [
+      "ex-main-0787|help:h2",
+      "skew-lines-and-corner-reflection-ex-main-0787-help-h2"
+    ],
+    [
+      "ex-main-0787|step-1",
+      "skew-lines-and-corner-reflection-ex-main-0787-step-1"
+    ],
+    [
+      "ex-main-0787|step-2",
+      "skew-lines-and-corner-reflection-ex-main-0787-step-2"
+    ],
+    [
+      "ex-main-0787|step-3",
+      "skew-lines-and-corner-reflection-ex-main-0787-step-3"
+    ],
+    [
+      "ex-main-0788|condition",
+      "skew-lines-and-corner-reflection-ex-main-0788-condition"
+    ],
+    [
+      "ex-main-0788|help:h1",
+      "skew-lines-and-corner-reflection-ex-main-0788-help-h1"
+    ],
+    [
+      "ex-main-0788|help:h2",
+      "skew-lines-and-corner-reflection-ex-main-0788-help-h2"
+    ],
+    [
+      "ex-main-0788|step-1",
+      "skew-lines-and-corner-reflection-ex-main-0788-step-1"
+    ],
+    [
+      "ex-main-0788|step-2",
+      "skew-lines-and-corner-reflection-ex-main-0788-step-2"
+    ],
+    [
+      "ex-main-0788|step-3",
+      "skew-lines-and-corner-reflection-ex-main-0788-step-3"
+    ],
+    [
+      "ex-main-0789|condition",
+      "skew-lines-and-corner-reflection-ex-main-0789-condition"
+    ],
+    [
+      "ex-main-0789|help:h1",
+      "skew-lines-and-corner-reflection-ex-main-0789-help-h1"
+    ],
+    [
+      "ex-main-0789|help:h2",
+      "skew-lines-and-corner-reflection-ex-main-0789-help-h2"
+    ],
+    [
+      "ex-main-0789|step-1",
+      "skew-lines-and-corner-reflection-ex-main-0789-step-1"
+    ],
+    [
+      "ex-main-0789|step-2",
+      "skew-lines-and-corner-reflection-ex-main-0789-step-2"
+    ],
+    [
+      "ex-main-0789|step-3",
+      "skew-lines-and-corner-reflection-ex-main-0789-step-3"
+    ],
+    [
+      "ex-main-0790|condition",
+      "skew-lines-and-corner-reflection-ex-main-0790-condition"
+    ],
+    [
+      "ex-main-0790|help:h1",
+      "skew-lines-and-corner-reflection-ex-main-0790-help-h1"
+    ],
+    [
+      "ex-main-0790|help:h2",
+      "skew-lines-and-corner-reflection-ex-main-0790-help-h2"
+    ],
+    [
+      "ex-main-0790|help:h3",
+      "skew-lines-and-corner-reflection-ex-main-0790-help-h3"
+    ],
+    [
+      "ex-main-0790|step-1",
+      "skew-lines-and-corner-reflection-ex-main-0790-step-1"
+    ],
+    [
+      "ex-main-0790|step-2",
+      "skew-lines-and-corner-reflection-ex-main-0790-step-2"
+    ],
+    [
+      "ex-main-0790|step-3",
+      "skew-lines-and-corner-reflection-ex-main-0790-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "dc7eee5b6439b9e4ae07901132fba4ee8ec93552b154f125951ff912547a25d2",
+      "afterSHA256": "1250037a5fa30ba4ea47ff2f03b08aaffa8d5dd073e7e67b1b624254a4c179f8"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "097c8885e77f2f779df400044effbdeab31895f24896d7b986d321b2d44aed7b",
+      "afterSHA256": "d15d621dff331166c47977a4953011976384adda9dd5e0ccebb8a88bf7c5a8bc"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T02:45:00Z",
+    "scope": "All final-review parts of 764–767 and advanced source exercises 768–786 are complete. The remaining advanced exercises begin at 787."
+  },
+  "before": {
+    "course": "343991b4e0133a5e965c41377f700302539c3adeb2f05757e8834370109ee8bc",
+    "index": "5ffd370b0547541539015e706ea1f4d107917a9f3df22dc342f335abd4d88f06",
+    "registry": "2fe187dde7933ff5b7bdb6c63dbb690e98670eb5d4b10739bbbe02f3c3b98335",
+    "cases": "718409911347e09dc3aeea09fa4d919861497b9cee7b440027004d7d45fbb204"
+  }
+}
