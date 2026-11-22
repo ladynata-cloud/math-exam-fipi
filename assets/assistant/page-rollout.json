@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "a5774cf8ae48d6f36d2ec3b1b4025168684772e0aac493b2f5f951d9b61e01ea",
-      "afterSha256": "2301b68d9ada3d5a7369a9b6927060c19f7b65ba2796c627ad4e744afeaa4d40",
+      "beforeSha256": "a5d3e8ddcfbcc9e72fcf9a9c55c9a0cad8b8592af6f85d29a72ada0fc6887eb6",
+      "afterSha256": "b0c8cc1962ae8627b7898d0af54ee05c6bd78e60a2e78743d2a4a295718f0252",
       "placement": "before-head-close",
-      "sourceSha": "6f6028338feea0907c1aee63a008a661c774040f"
+      "sourceSha": "c072826a7ed7ed08a5d24a109aeca70276e93c2b"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7065,6 +7065,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены пять подпунктов №5.110 на с. 23 и доли их площадей по координатам. Выбор целого и части, ошибка и собственное исправление восстановлены у двух участников."
+    },
+    {
+      "previousBaseSha": "6f6028338feea0907c1aee63a008a661c774040f",
+      "sourceBaseSha": "c072826a7ed7ed08a5d24a109aeca70276e93c2b",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены исходная фигура и условие №5.111, с. 23. Для всех пар граней независимо рассчитана длина пути через пять точек сгиба. Выбор граней и исправленный ответ выдержали передачу управления и перезагрузку обеих сторон."
     }
   ],
   "coverageUpdates": [
