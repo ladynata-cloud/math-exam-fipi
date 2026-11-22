@@ -149,7 +149,9 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
    await nav('#home');
    for(const l of lessons.filter(l=>l.studyOrder)){
     const chapter=scope.window.MakarychevCourse.chapters.find(c=>c.title===l.chapter);
-    const entry=page.locator('#chapter-'+chapter.id+' .lesson-card').filter({has:page.getByText(l.title,{exact:true})});
+    const paragraph=String(l.order).padStart(2,'0');
+    const entry=page.locator('#chapter-'+chapter.id+' .lesson-card').filter({has:page.locator('.lesson-number').filter({hasText:new RegExp('^'+paragraph+'$')})});
+    assert.equal(await entry.locator('h3').innerText(),l.title,'visible title for paragraph '+paragraph);
     assert.equal(await entry.getAttribute('href'),'#lesson/'+l.id+'/'+l.studyOrder[0],'chapter entry starts in source order '+l.id);
    }
    const first=lessons.find(l=>l.id==='p10');await nav('#lesson/p10/'+first.studyOrder[0]);

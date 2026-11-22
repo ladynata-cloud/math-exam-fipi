@@ -592,7 +592,7 @@
       invalidateTrainerBridge();pausedTrainerBridge=paused;bridgeReloadNeeded=true;latestTrainerState=null;
       shared.roomId='';shared.token='';shared.studentToken='';shared.studentLink='';shared.me=null;shared.control='';shared.controlVersion=0;studentLink.value='';
       const socket=shared.socket;shared.socket=null;
-      if(socket){socket.removeAllListeners();socket.disconnect()}
+      if(socket){socket.io?.off('reconnect_attempt',showRoomReconnection);socket.removeAllListeners();socket.disconnect()}
       setParticipants([]);applyRole();setMirrorStatus('room-unavailable');
       guestConnectionHint(message+'. Попросите учителя прислать новую ссылку.');
       setStatus(restoredTeacher?'Сессия учителя недействительна. Создайте новую комнату.':message,'bad')
@@ -630,6 +630,7 @@
         }
       }
       if(['trainers/ege-profile-log-trig.html','trainers/ege-profile-circle.html','trainers/vpr-math/index.html'].includes(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
+    function showRoomReconnection(){setStatus('переподключение','wait')}
     async function connectRoom(){
       shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);
       if(!shared.server||!shared.roomId||!shared.token){setStatus('локальный режим','');return}
@@ -638,7 +639,7 @@
       serverUrl.value=shared.server;localStorage.setItem(SERVER_KEY,shared.server);setStatus('подключение','wait');
       try{
         await loadSocketClient(shared.server);
-        if(shared.socket){shared.socket.disconnect();shared.socket.removeAllListeners()}
+        if(shared.socket){shared.socket.io?.off('reconnect_attempt',showRoomReconnection);shared.socket.disconnect();shared.socket.removeAllListeners()}
         shared.socket=io(shared.server,{transports:['polling','websocket'],tryAllTransports:true,reconnection:true});
         let socketConnectedOnce=false;
         shared.socket.on('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключено','ok');shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
@@ -648,7 +649,7 @@
           guestConnectionHint('Ждём ответа сервера. Можно повторить подключение.',true);
         });
         shared.socket.on('disconnect',()=>{imageImportEpoch++;cancelGesture(false);clearPendingHistory();pruneSharedRedo();shared.connected=false;roomStateReceived=false;if(mirrorEntryFromUrl(state.trainerUrl))setMirrorStatus('pending');setStatus('нет связи','bad');updateControlUi()});
-        shared.socket.on('reconnect_attempt',()=>setStatus('переподключение','wait'));
+        shared.socket.io.on('reconnect_attempt',showRoomReconnection);
         shared.socket.on('room:error',handleRoomError);
         shared.socket.on('room:state',payload=>{
           clearPendingHistory();

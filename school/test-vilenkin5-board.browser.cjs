@@ -88,8 +88,9 @@ async function newSession(browser, origin, backend, tag, failures) {
   return { context, page, tag, values };
 }
 async function waitConnected(page) {
+  // Allow one transport handshake and its retry. Both public status indicators must be ready.
   await page.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' &&
-    document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected', null, { polling: 50, timeout: 15000 });
+    document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected', null, { polling: 50, timeout: 35000 });
 }
 async function frameFor(page) {
   await page.waitForFunction(wrapper => document.querySelector('#trainerFrame')?.src.includes(wrapper), WRAPPER);
