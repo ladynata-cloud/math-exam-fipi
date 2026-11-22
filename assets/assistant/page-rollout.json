@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 644,
-    "covered": 642,
+    "total": 645,
+    "covered": 643,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -53,7 +53,8 @@
     "trainers/alimov-algebra-7-9/index.html",
     "trainers/nikolsky-algebra-7-9/index.html",
     "trainers/dorofeev-algebra-7-9/index.html",
-    "trainers/mordkovich-2019/index.html"
+    "trainers/mordkovich-2019/index.html",
+    "trainers/rubin-chulkov7-2015/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4054,7 +4055,8 @@
     "trainers/alimov-algebra-7-9/index.html": "school/index.html",
     "trainers/nikolsky-algebra-7-9/index.html": "school/index.html",
     "trainers/dorofeev-algebra-7-9/index.html": "school/index.html",
-    "trainers/mordkovich-2019/index.html": "school/index.html"
+    "trainers/mordkovich-2019/index.html": "school/index.html",
+    "trainers/rubin-chulkov7-2015/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -8245,6 +8247,14 @@
         "trainers/mordkovich-2019/index.html"
       ],
       "reason": "Мордкович и Николаев, 7 класс, вторая часть углублённого учебника 2019 года. Все подпункты первых четырёх упражнений о порядке действий."
+    },
+    {
+      "sourceBaseSha": "4a4ba8086f95d0b635795077b17d4a7c866c3445",
+      "task": "docs/tasks/WORKSHOP_RUBIN_CHULKOV_7_2015.md",
+      "addedPages": [
+        "trainers/rubin-chulkov7-2015/index.html"
+      ],
+      "reason": "Карта своего издания и самостоятельные разборы всех восьми подпунктов №1."
     }
   ]
 }
