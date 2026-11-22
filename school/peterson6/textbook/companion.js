@@ -504,6 +504,71 @@
     function draw(){host.outerHTML=primeExplore(number,part,work,true);host=main.querySelector('[data-proof-host]');const f=host.querySelector('select');f.onchange=()=>{if(f.value==='')delete work.proofProbe;else work.proofProbe=Number(f.value);save();draw();host.querySelector('select').focus({preventScroll:true});};}draw();
   }
 
+  function roomQuestion(number,part){
+    if(number===55)return 'Измерь в метрах длину и ширину своей прямоугольной комнаты с точностью до десятых. По своим измерениям найди периметр пола в метрах и его площадь в квадратных метрах. Округли оба ответа до целых. Для тренировки без измерительной ленты открой задачу с другими данными.';
+    if(part.id==='056-1')return 'В комнате длина 4,2 м, ширина 3,6 м, высота 3,5 м. Найди объём в кубических метрах и округли ответ до целого.';
+    return 'Оклей четыре стены комнаты длиной 4,2 м, шириной 3,6 м и высотой 3,5 м. Окно 2 м на 1,5 м и дверь 1,2 м на 2,5 м не оклеивают. Предусмотри запас 10% от площади, которую нужно покрыть. Длина обоев в рулоне 15 м, ширина 0,8 м. Сколько целых рулонов купить? Считай по площади, как в задании.';
+  }
+  function measuredAnswer(vals){return 'a = '+vals[0]+' м, b = '+vals[1]+' м | P = '+vals[2]+' м ≈ '+vals[4]+' м | S = '+vals[3]+' м² ≈ '+vals[5]+' м²';}
+  function roomStages(part){
+    if(part.id==='055-1')return ['Моя длина, м','Моя ширина, м','Точный периметр, м','Точная площадь пола, м²','Периметр до целых, м','Площадь до целых, м²'];
+    if(part.id==='056-1')return ['Площадь пола, м²','Точный объём, м³','Объём до целых, м³'];
+    return ['Все четыре стены, м²','Без окна и двери, м²','С запасом, м²','Площадь одного рулона, м²','Частное до покупки','Целых рулонов'];
+  }
+  function roomSketch(part,work){
+    const own=part.id==='055-1',wall=part.id==='056-2',e=work.roomValues||[],layer=work.roomLayer||'outline',M=root.PetersonBook.M;
+    const amt=x=>{const r=M.parse(x||'');return r?r.n/r.d:0;};
+    const L=own?amt(e[0]):4.2,W=own?amt(e[1]):3.6;
+    if(wall){
+      const scale=13,origin=17,top=32,wallH=3.5*scale,wl=4.2*scale,ww=3.6*scale,outline=layer==='outline',holes=layer==='openings';
+      let geometry='',left=origin;
+      for(const [i,len] of [wl,ww,wl,ww].entries()){
+        geometry+='<rect x="'+left+'" y="'+top+'" width="'+len+'" height="'+wallH+'" fill="'+(outline?'#e2ebe5':'#a9d7bd')+'" stroke="#355944"/><text x="'+(left+len/2)+'" y="95" text-anchor="middle" font-size="11">'+(i%2?'3,6':'4,2')+'</text>';left+=len;
+      }
+      if(holes)geometry+='<rect x="30" y="43" width="26" height="19.5" fill="white" stroke="#a54522"/><rect x="86" y="'+(top+wallH-2.5*scale)+'" width="'+1.2*scale+'" height="'+2.5*scale+'" fill="white" stroke="#a54522"/>';
+      return '<figure style="margin:.4em 0"><svg viewBox="0 0 254 111" role="img" aria-label="Полоса четырёх стен одинаковой высоты; размеры на рисунке в метрах" style="width:100%;display:block;max-width:450px">'+geometry+'<text x="228" y="58" font-size="11">3,5</text></svg><figcaption>'+ (holes?'Белые прямоугольники — окно и дверь. Вычти их площади до прибавления запаса.':'Развёртка стен по периметру пола. Все четыре прямоугольника имеют высоту 3,5 м.')+'</figcaption></figure>';
+    }
+    if(own&&(!(L>0)||!(W>0)))return '<p>Введи два положительных измерения, чтобы построить план пола в твоих пропорциях.</p>';
+    const scale=Math.min(174/L,94/W),w=L*scale,h=W*scale,x=32,y=24;
+    const shape='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+(layer==='area'?'#a9d7bd':'#f3f5ef')+'" stroke="#355944" stroke-width="'+(layer==='outline'?3:1.5)+'"/>';
+    return '<figure style="margin:.4em 0"><svg viewBox="0 0 254 151" style="width:100%;display:block;max-width:390px" role="img" aria-label="План прямоугольного пола в пропорциях выбранных измерений">'+shape+'<text x="'+(x+w/2)+'" y="'+(y+h+17)+'" text-anchor="middle" font-size="12">'+U.esc(own?e[0]:'4,2')+' м</text><text x="'+(x+w+4)+'" y="'+(y+h/2)+'" font-size="12">'+U.esc(own?e[1]:'3,6')+' м</text></svg><figcaption>'+ (own?(layer==='area'?'Вся закрашенная часть — площадь пола, измеряемая в м².':'Внешняя граница — две длины и две ширины, измеряемые в метрах.'):'Это нижняя грань комнаты. Чтобы получить объём, учти высоту 3,5 м.')+'</figcaption></figure>';
+  }
+  function roomView(part,work,interactive){
+    const stages=roomStages(part),vals=work.roomValues||[],wall=part.id==='056-2',choices=wall?[['outline','Все стены'],['openings','Окно и дверь']]:[['outline','Граница'],['area','Площадь пола']];
+    const fields=stages.map((label,i)=>'<label style="display:block">'+label+' <input data-room-field="'+i+'" inputmode="decimal" maxlength="30" style="display:block;width:100%;max-width:100%;box-sizing:border-box" value="'+U.esc(vals[i]||'')+'"></label>').join('');
+    return '<section data-room-model><h3>'+(wall?'Четыре стены в развороте':'План пола')+'</h3><div data-room-sketch>'+roomSketch(part,work)+'</div>'+(interactive?choices.map(([key,lab])=>'<button class="secondary" data-room-layer="'+key+'" type="button" aria-pressed="'+((work.roomLayer||'outline')===key)+'">'+lab+'</button>').join(' ')+fields+'<button class="secondary" data-room-check type="button">Проверить вычисления</button><p data-room-feedback role="status">'+(work.roomChecked?U.esc(roomCheck(part,vals).text):'')+'</p><button class="secondary" data-room-use type="button">Перенести мой ответ</button>':'')+'</section>';
+  }
+  function roomCheck(part,vals){
+    const M=root.PetersonBook.M,R=M.operation,own=part.id==='055-1',volume=part.id==='056-1';let targets,hints,begin=0;
+    if(own){
+      for(let i=0;i<2;i++){const v=M.parse(vals[i]||'');if(!v||v.n<=0||!/^\d+([,.]\d)?$/.test((vals[i]||'').trim()))return {ok:false,text:'Сначала укажи положительные длину и ширину в метрах с точностью до десятых. Например, для целого числа метров можно добавить ,0.'};}
+      const p=R('multiply',2,R('add',vals[0],vals[1])),s=R('multiply',vals[0],vals[1]);targets=[null,null,p,s,root.PetersonBook.rounded(p,0),root.PetersonBook.rounded(s,0)];begin=2;
+      hints=['','','Периметр — длина всей границы. Сложи обе длины и обе ширины.','Площадь пола равна произведению длины на ширину. Единица — квадратный метр.','Округляй точный периметр до целых метров по цифре десятых.','Округляй точную площадь до целых квадратных метров по цифре десятых.'];
+    }else if(volume){targets=['15.12','52.92','53'];hints=['Сначала найди площадь нижней грани: 4,2 · 3,6.','Умножь площадь основания на высоту 3,5 м.','Округли точный объём 52,92 до целых кубических метров.'];}
+    else{targets=['54.6','48.6','53.46','12','4.455','5'];hints=['Умножь периметр пола на высоту стены. Пол и потолок здесь не оклеивают.','Вычти из площади четырёх стен и площадь окна, и площадь двери.','К оставшейся площади прибавь десятую её часть.','Длинная полоса бумаги — прямоугольник; площадь одного рулона равна 15 · 0,8.','Раздели площадь с запасом на число квадратных метров в одном рулоне.','Часть рулона купить нельзя. Выбери наименьшее целое, которого хватит.'];}
+    for(let i=begin;i<targets.length;i++){if(!M.parse(vals[i]||''))return {ok:false,text:'Заполни поле «'+roomStages(part)[i]+'». '+hints[i]};if(!M.equal(vals[i],targets[i]))return {ok:false,text:hints[i]};}
+    return {ok:true,text:own?'Периметр и площадь проверены по твоим измерениям. Перенеси их вместе с единицами в письменное решение.':'Промежуточные вычисления и итог согласуются. Перенеси итог в основной ответ.'};
+  }
+  function mountRoomMeasure(main,part,work,save){
+    let host=main.querySelector('[data-room-model]');if(!host)return;
+    function draw(){host.outerHTML=roomView(part,work,true);host=main.querySelector('[data-room-model]');
+      const vals=work.roomValues||roomStages(part).map(()=>''),own=part.id==='055-1',use=host.querySelector('[data-room-use]'),feedback=host.querySelector('[data-room-feedback]');
+      const enable=()=>{use.disabled=own?vals.some(v=>!v.trim()):!vals.at(-1)?.trim();};enable();
+      for(const b of host.querySelectorAll('[data-room-layer]'))b.onclick=()=>{work.roomLayer=b.dataset.roomLayer;save();draw();host.querySelector('[data-room-layer="'+work.roomLayer+'"]').focus({preventScroll:true});};
+      for(const f of host.querySelectorAll('[data-room-field]'))f.oninput=()=>{const i=Number(f.dataset.roomField);vals[i]=f.value.slice(0,30);work.roomValues=vals;delete work.roomChecked;feedback.textContent='';enable();if(own&&i<2)host.querySelector('[data-room-sketch]').innerHTML=roomSketch(part,work);save();};
+      host.querySelector('[data-room-check]').onclick=()=>{const r=roomCheck(part,vals);if(!r.ok&&!work.roomChecked)work.errors=Math.min(10000,(work.errors||0)+1);work.roomChecked=true;feedback.textContent=r.text;save();};
+      use.onclick=()=>{const f=main.querySelector('#answer');f.value=own?measuredAnswer(vals):vals.at(-1);f.dispatchEvent(new Event('input',{bubbles:true}));f.focus();};
+    }draw();
+  }
+  function roomResponse(number,part,input,correct,work){
+    if(number===55){const xs=work.roomValues;if(!xs||input!==measuredAnswer(xs))return null;return roomCheck(part,xs);}
+    if(number!==56||correct)return null;
+    const M=root.PetersonBook.M;if(part.id==='056-1')return {ok:false,text:M.equal(input,'52.92')?'Это точный объём. Требуется округлить его до целых.':M.equal(input,'15.12')?'Получена площадь пола. Умножь её на высоту для объёма.':'Найди произведение трёх измерений и округли его только в самом конце.'};
+    if(M.equal(input,4)||M.equal(input,'4.455'))return {ok:false,text:'Четыре рулона покрывают только 48 м². Нужен запас, и рулон продаётся целиком. Здесь округляют вверх.'};
+    if(M.equal(input,'53.46'))return {ok:false,text:'Это площадь с запасом в м². Чтобы назвать число рулонов, раздели на площадь одного рулона.'};
+    return {ok:false,text:'От площади четырёх стен вычти проёмы. После этого прибавь запас, найди площадь рулона и проверь, хватит ли целого числа рулонов.'};
+  }
+
   function boxTask(part){
     if(part.id==='049-1-obhardyom')return 'У прямоугольного параллелепипеда три измерения: ширина 4,3 см, длина 6,1 см и высота 8,5 см. Найди объём в кубических сантиметрах. Округли окончательный результат до десятых.';
     if(part.id==='049-1-poverhnostsoft')return 'У прямоугольного параллелепипеда ширина 4,3 см, длина 6,1 см и высота 8,5 см. Найди площадь всей поверхности в квадратных сантиметрах. Округли итог до десятых.';
@@ -1258,6 +1323,7 @@
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
     if(number===50||number===51)return primeLogic(number,part).prompt;
+    if(number===55||number===56)return roomQuestion(number,part);
     if(number===49)return boxTask(part);
     if((number>=45&&number<=48)||number===54)return commonQuestion(number,part);
     if((number>=42&&number<=44)||number===53)return filterQuestion(number,part);
@@ -1334,6 +1400,7 @@
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
     if(item.number===50||item.number===51)drawing=logicConstruction(item.number,part,false)+primeExplore(item.number,part,{},false);
+    if(item.number===55||item.number===56)drawing=roomView(part,{},false);
     if(item.number===49)drawing=boxView(part,{},false);
     if((item.number>=45&&item.number<=48)||item.number===54)drawing=commonFactorView(item.number,part,{},false);
     if((item.number>=42&&item.number<=44)||item.number===53)drawing=filterView(item.number,part,{},false);
@@ -1349,7 +1416,7 @@
     if(part.id==='282-3') drawing=coordinateTriangle();
     if(item.number===293) drawing=part.id==='293-a'?squares():triangles();
     const mode=hasCompletePrompt(item,part)?'Всё условие для этого подпункта приведено здесь.':'Для этого подпункта используй формулировку, таблицу или рисунок из своего учебника.';
-    return ref+'<p class="small">'+mode+'</p><p class="problem">'+U.fmt(prompt)+'</p>'+(part.expression&&item.number!==49?'<div class="math-line" aria-label="Выражение">'+U.expression(part.expression)+'</div>':'')+drawing;
+    return ref+'<p class="small">'+mode+'</p><p class="problem">'+U.fmt(prompt)+'</p>'+(part.expression&&item.number!==49&&item.number!==56?'<div class="math-line" aria-label="Выражение">'+U.expression(part.expression)+'</div>':'')+drawing;
   }
   function pane(item,part) {
     const link=pdfUrl?'<p><a href="'+U.esc(pdfUrl)+'#page='+item.page+'" target="_blank" rel="noopener noreferrer">Открыть с. '+item.page+' в моём PDF ↗</a></p>':'';
@@ -1366,5 +1433,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse};
 })(globalThis);

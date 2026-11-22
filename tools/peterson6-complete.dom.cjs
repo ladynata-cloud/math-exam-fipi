@@ -900,3 +900,22 @@ test('printed 52–54 distinguish accuracy, interval endpoints, prime exponents 
  }
  const re=await surface(t,BOOK+'#n/53/053-3',storage(s));assert.deepEqual(bookWork(re,'053-3').filterItems,[300,303,306,309,312]);
 });
+test('personal floor dimensions and the printed room distinguish area, volume and purchase rounding',async t=>{
+ const s=await surface(t,BOOK+'#n/55/055-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(54,56);
+ const fields={'055-1':['4,1','3,2','14,6','13,12','15','13'],'056-1':['15,12','52,92','53'],'056-2':['54,6','48,6','53,46','12','4,455','5']};
+ for(const row of rows)for(const p of row.parts){await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);assert(!bookWork(s,p.id).correct);
+  const vals=fields[p.id],put=(i,v)=>input(s,'[data-room-field="'+i+'"]',v);vals.forEach((v,i)=>put(i,v));const stage=p.id==='055-1'?2:p.id==='056-1'?1:5;put(stage,'4');click(s,'[data-room-check]');assert.match(element(s,'[data-room-feedback]').textContent,/Периметр|на высоту|целое/);put(stage,vals[stage]);
+  const layer=p.id==='056-2'?'openings':'area';click(s,'[data-room-layer="'+layer+'"]');click(s,'[data-room-check]');assert.match(element(s,'[data-room-feedback]').textContent,/проверены|согласуются/);
+  if(p.id==='055-1'){const draft=element(s,'[data-room-sketch]').textContent;assert.match(draft,/4,1 м/);assert.match(draft,/3,2 м/);}
+  if(p.id==='056-2'){assert.equal(element(s,'[data-room-sketch] svg').querySelectorAll('rect').length,6);input(s,'#answer','4');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/48 м²/);}
+  click(s,'[data-room-use]');submit(s,'#answer-form');const w=bookWork(s,p.id);assert.equal(w.roomLayer,layer);if(p.kind==='written')assert(w.submitted&&!w.correct);else assert(w.correct&&!w.independent);
+  for(let j=0;j<45;j++){const model=s.w.PetersonAnalogues.create(row.number,p,j),[a,b]=model.prompt.match(/длину ([\d,]+) м и ширину ([\d,]+) м/).slice(1).map(x=>Math.round(10*Number(x.replace(',','.'))));
+   let answer;if(row.number===55)answer=model.prompt.includes('периметр')?Math.round(2*(a+b)/10):Math.floor((a*b+50)/100);else{
+    const h=Math.round(10*Number(model.prompt.match(/Высота ([\d,]+) м/)[1].replace(',','.')));
+    if(p.id==='056-1')answer=Math.floor((a*b*h+500)/1000);
+    else{const nums=[...model.prompt.matchAll(/(?:окно |дверь )([\d,]+) ×/g)].map(z=>Math.round(Number(z[1].replace(',','.'))*10)),r=Number(model.prompt.match(/рулонов по (\d+) м²/)[1]),net=2*(a+b)*h-nums[0]*15-nums[1]*20;answer=Math.ceil(net*11/(r*1000));}
+   }assert(s.w.PetersonBook.M.equal(model.answer,String(answer)),p.id+' '+model.prompt);
+  }
+ }
+ const re=await surface(t,BOOK+'#n/55/055-1',storage(s));assert.equal(element(re,'[data-room-field="0"]').value,'4,1');assert.match(element(re,'#answer').value,/13,12 м²/);
+});

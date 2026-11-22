@@ -81,6 +81,12 @@ function sanitize(part,input){
  if(/^05[01]-/.test(part.id)&&Number.isInteger(input.proofProbe)){
   const tiger=part.id.startsWith('050-');if(input.proofProbe>=(tiger?0:1)&&input.proofProbe<=(tiger?3:60))clean.proofProbe=input.proofProbe;
  }
+ if(/^05[56]-/.test(part.id)){
+  const wall=part.id==='056-2',num=part.id==='056-1'?3:6;
+  if(['outline',wall?'openings':'area'].includes(input.roomLayer))clean.roomLayer=input.roomLayer;
+  if(Array.isArray(input.roomValues)&&input.roomValues.length===num)clean.roomValues=input.roomValues.map(v=>typeof v==='string'?cut(v,30):'');
+  if(input.roomChecked===true)clean.roomChecked=true;
+ }
  if(part.id.startsWith('049-')){
   if(['front','side','base'].includes(input.boxFace))clean.boxFace=input.boxFace;
   if(!part.expression&&['abc','xyh'].includes(input.boxNames))clean.boxNames=input.boxNames;

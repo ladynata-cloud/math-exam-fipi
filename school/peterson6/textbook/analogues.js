@@ -597,18 +597,36 @@
     const [prompt,options,hint]=row,shift=k%3;return {...choice(prompt,options.slice(shift).concat(options.slice(0,shift)),options[0],hint),id:'analog-'+part.id+'-'+attempt,family:'counterexample-'+part.id,match:'skill',mistake:hint};
   }
 
+  function measurePractice(number,part,attempt){
+    const k=seed(part.id)%83+attempt,a=31+k%20,b=24+(3*k)%16,h=25+(7*k)%12,show=n=>E.M.decimal(E.M.operation('divide',n,10));
+    const prompt='Комната имеет длину '+show(a)+' м и ширину '+show(b)+' м',height=' Высота '+show(h)+' м.';let task;
+    if(number===55){
+      const per=k%2===0,v=per?(2*(a+b)/10):(a*b/100),hint=per?'Нужна длина всех четырёх стен у пола. Складывай обе длины и обе ширины.':'Умножь длину на ширину. Единица площади — м².';
+      task={...numerical(prompt+'. Найди '+(per?'периметр пола в метрах':'площадь пола в м²')+' с точностью до целых.',Math.round(v),'До какого целого округлится точное '+(per?'значение периметра?':'значение площади?'),hint),mistake:hint};
+    }else if(part.id==='056-1'){
+      const hint='Перемножь три измерения. Округляй до целого один раз в конце.';task={...numerical(prompt+'.'+height+' Найди объём в м³ с точностью до целого.',Math.floor((a*b*h+500)/1000),'Каков округлённый объём?',hint),mistake:hint};
+    }else{
+      const windowDm=10+k%8,doorDm=8+k%3,roll=8+k%5,wallDm2=2*(a+b)*h,netDm2=wallDm2-15*windowDm-20*doorDm,num=netDm2*11,den=roll*1000,answer=Math.ceil(num/den);
+      const hint='Из площади четырёх стен вычти два проёма, затем прибавь 10%. Раздели результат на площадь рулона; покупают целое число рулонов.';
+      task={...numerical(prompt+'.'+height+' Вычти одно окно '+show(windowDm)+' × 1,5 м и одну дверь '+show(doorDm)+' × 2 м. Нужен запас 10% от оставшейся площади. Сколько рулонов по '+roll+' м² нужно купить?',answer,'Каково наименьшее достаточное число целых рулонов?',hint),mistake:hint};
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'measurement-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
+    if(number===56&&part.expression)return measurePractice(number,part,attempt);
     if(number===49&&part.expression)return cuboidPractice(part,attempt);
     if(number===38&&part.expression)return termPractice(part,attempt);
     if(number===36&&part.expression)return periodPractice(number,part,attempt);
     if(number===34||number===52)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>54)return createLegacy(number,part,attempt);
+    if(number<7||number>56)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=55)return measurePractice(number,part,attempt);
     if(number===54)return commonPractice(number,part,attempt);
     if(number===53)return divisorFilterPractice(number,part,attempt);
     if(number>=50)return counterexamplePractice(number,part,attempt);
@@ -659,7 +677,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=54&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=56&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -681,7 +699,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=54&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=56&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
@@ -691,7 +709,7 @@
   function shared(item,part,raw) {
     const model=part&&create(item.number,part);
     if(!model)return null;
-    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34||item.number===36||item.number===38||item.number===49||item.number===52))return null;
+    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34||item.number===36||item.number===38||item.number===49||item.number===52||item.number===56))return null;
     const active=document.querySelector('.equivalent-exercise');
     const row=record(part)[1];
     if(!raw&&row.formerlyAbsent&&!active?.open)return null;
@@ -703,7 +721,7 @@
   }
   function restoreShared(part,scene) {
     if(!document.body.dataset.petersonBoard)return;
-    if(!scene){if(part.expression&&/^(01[123]|02[23]|03[468]|049|052)-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
+    if(!scene){if(part.expression&&/^(01[123]|02[23]|03[468]|049|052|056)-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
     const row=record(part)[1];Object.assign(row,{attempt:scene.attempt,work:scene.work,status:scene.status,open:scene.open,hint:scene.hint});
   }
   function resetShared(){if(document.body.dataset.petersonBoard)states.clear();}
