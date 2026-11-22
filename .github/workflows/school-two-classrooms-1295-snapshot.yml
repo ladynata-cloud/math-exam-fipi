@@ -1,0 +1,33 @@
+name: Two complete synthetic school classrooms for the 1295 snapshot
+on:
+  push:
+    branches: [work/school-two-classrooms-1295-20261122]
+    paths: ['.github/workflows/school-two-classrooms-1295-snapshot.yml']
+permissions:
+  contents: read
+jobs:
+  classrooms:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: e2b82bb02495a81e66390862059f5f61edae7eab
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+      - name: Verify the integrated tree and install the locked local server and browser
+        id: install
+        run: |
+          test "$(git rev-parse HEAD)" = "e2b82bb02495a81e66390862059f5f61edae7eab"
+          test "$(git rev-parse 'HEAD^{tree}')" = "1a73e956c8030fc8c0396731fc1219e654d0f375"
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/classroom-qa" --no-save --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/classroom-qa/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/classroom-qa/node_modules" >> "$GITHUB_ENV"
+      - name: Peterson numbered book and independent workshop with teacher and pupil
+        run: node tools/peterson6-complete-board.browser.cjs
+      - name: Both Vilenkin volumes with restored teacher and pupil sessions
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: node school/test-vilenkin5-board.browser.cjs
