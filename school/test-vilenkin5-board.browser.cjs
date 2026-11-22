@@ -534,6 +534,18 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.165: read a large inequality and retain the distinction between formatting, correction and help';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-165"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№1.165'}).waitFor();
+  await teacherFrame.locator('#answer').fill('0 < 21');await teacherFrame.locator('#answer-form button').click();
+  const equivalentOrder=await same(teacherFrame,studentFrame,'true comparison in the other form');assert.equal(equivalentOrder.scene.attempt,0);assert.match(equivalentOrder.scene.message,/Сравнение верно/);
+  await teacherFrame.locator('#answer').fill('0 > 21');await teacherFrame.locator('#answer-form button').click();const falseOrder=await same(teacherFrame,studentFrame,'false comparison');assert.equal(falseOrder.scene.attempt,1);assert.match(falseOrder.scene.message,/Острый кончик/);
+  await ownership(teacher,student,true);await studentFrame.locator('#answer').fill('21 > 0');await studentFrame.locator('#answer-form button').click();
+  const truthful=await same(studentFrame,teacherFrame,'independent mathematical correction');assert(truthful.scene.correct);assert.deepEqual(truthful.scene.hintLevels,{});assert.equal(truthful.scene.attempt,2);
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-v5-param=row]').selectOption({value:'4'});await studentFrame.locator('[data-v5-param=say]').selectOption({value:'1'});await studentFrame.locator('#answer').fill('38 > 17');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const spokenDraft=await same(studentFrame,teacherFrame,'spoken model marked as help');assert(spokenDraft.scene.assisted);assert.equal(spokenDraft.scene.model.row,4);assert.equal(spokenDraft.scene.savedInput,'38 > 17');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'reload spoken comparison and ownership');await teacherFrame.locator('#answer-form button').click();
+  assert((await same(teacherFrame,studentFrame,'second inequality after oral support')).scene.correct);await narrow(student,studentFrame,'spoken-inequalities');
   phase = 'source 1.164: compare neighbouring coordinates and return control';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-164"]').click();
   await studentFrame.locator('h1').filter({hasText:'№1.164'}).waitFor();

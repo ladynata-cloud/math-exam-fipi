@@ -189,6 +189,7 @@
       if(parts.length!==target.answer.length||parts.some(part=>root.Vilenkin5PrintedDigits.natural(part)===null&&M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
     }
     if(target.answerFormat==='v5-unit-fraction'&&!M.parse(root.Vilenkin5PartsOfUnits.normalized(value)))return 'Запиши число. Для доли подходят десятичная, обыкновенная и смешанная дроби. Пока это черновик.';
+    if(target.answerFormat==='v5-written-inequality')return root.Vilenkin5InequalityEntry.inputIssue(value,target);
     if(target.answerFormat==='v5-coordinate-order')return root.Vilenkin5CoordinateOrder.inputIssue(value,target);
     if(target.answerFormat==='v5-ray-label'&&!root.Vilenkin5PrintedRay.read(value))return 'Запиши одну букву с луча. Число можно заменить буквой без потери попытки.';
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
@@ -246,6 +247,7 @@
       if(next!==null&&M.generate(session.id,next).conditionKey!==session.task.conditionKey)connection?.chooseSourceDrawing?.(next);
     },onChange:value=>{
       if(readOnly||captured!==connection?.getSession?.())return;
+      if(session.task.data?.comparisonRows&&value.say&&!session.correct)session.assisted=true;
       d.model=Models.normalize(lesson,value);connection.save?.();
     }});
     cleanupModel=()=>{host.removeEventListener('input',cleanInput,true);dispose?.();};
