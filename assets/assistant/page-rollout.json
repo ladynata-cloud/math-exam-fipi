@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "2b6e031739f152dc2f655ab3aaa7fe74a4d30aeb51ab751897de653985c3a813",
-      "afterSha256": "39b1afd529bcd7a345715251915b0df5eaec703546b1476d85d34c31ea7645d7",
+      "beforeSha256": "86241e4033ae36c2112402b61331b519951b928461f49baa8b5c295dce84895e",
+      "afterSha256": "2066404c7a7a1408612a37de16c76cf1432721842e2393f56557ddbb36999c78",
       "placement": "before-head-close",
-      "sourceSha": "3926b57c4da269e00b40f8b30565894e19223ddf"
+      "sourceSha": "839905093f80b54e8ca2cfc69d9df9784040b009"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7556,6 +7556,15 @@
       "boundary": "Добавлены печатные упражнения №14–21, задачи на пересечение множеств и модели отрицания при самостоятельной работе и на общей доске."
     },
     {
+      "previousBaseSha": "3926b57c4da269e00b40f8b30565894e19223ddf",
+      "sourceBaseSha": "839905093f80b54e8ca2cfc69d9df9784040b009",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "За упражнениями №1–97 второй части Виленкина добавлены обе проверочные работы §26 на печатной с.20. Проверены самостоятельное исправление диаграммы и ход занятия на доске."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
@@ -7730,6 +7739,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "15cce95e1ab67367164d8f565dd8487a9ebdd557",
+      "sourceBaseSha": "22f3517000bbe1a3bd93ddb65ea105408082cc6a",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Обе печатные проверочные части 2 на с. 20 проверены шаг за шагом. У диаграммы сохраняются исходные высоты в первой попытке и итоговые высоты после своего исправления. Сверены общий вход, телефон и два участника."
     }
   ],
   "coverageUpdates": [
