@@ -1,0 +1,42 @@
+name: Проверить и собрать учебные пропорции Петерсона, часть 2
+on:
+  push:
+    branches: ['work/peterson6-ratio199-from-e2b82-20261122']
+    paths: ['.github/workflows/peterson6-ratio199-reviewed.yml']
+permissions:
+  contents: write
+jobs:
+  verified-course:
+    if: github.repository == 'ladynata-cloud/math-exam-fipi' && github.ref == 'refs/heads/work/peterson6-ratio199-from-e2b82-20261122'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      VERIFIED_BASE: e2b82bb02495a81e66390862059f5f61edae7eab
+      VERIFIED_TREE: fc2b72ad50108fe8763a68a66a5f295a2e6904a1
+      OUTPUT_BRANCH: content/peterson6-volume2-proportions-197-199-20261122
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Verify the reviewed changes, mathematical answers, bank and offline package
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "$VERIFIED_BASE"
+          cp .github/peterson6-proof/ratio199.patch "$RUNNER_TEMP/ratio199.patch"
+          echo '2fee06e01f45a4acda330800e42100dab801447b139c2e27a2caa97b62192942  FILE' | sed "s@FILE@$RUNNER_TEMP/ratio199.patch@" | sha256sum -c -
+          git checkout --quiet --detach "$VERIFIED_BASE"
+          git apply --index "$RUNNER_TEMP/ratio199.patch"
+          node school/peterson6/build.cjs
+          node school/peterson6/build.cjs --check
+          node school/peterson6/test-continuation-content.cjs
+          node school/peterson6/test-continuation-math.cjs
+          node scripts/build-trainer-downloads.mjs --only=peterson6-math --downloads-only
+          git add -- school/peterson6/data.js trainers/board-picker.js downloads/trainers/peterson6-math/peterson6-math.html downloads/trainers/peterson6-math/peterson6-math-package.zip
+          test "$(git write-tree)" = "$VERIFIED_TREE"
+          git -c user.name='MathExam' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Петерсон, часть 2. Семь пропорций №197–199 и восстановление общей таблицы'
+          test "$(git rev-parse HEAD^)" = "$VERIFIED_BASE"
+          test -z "$(git ls-remote --heads origin "refs/heads/$OUTPUT_BRANCH")"
+          git push origin "HEAD:refs/heads/$OUTPUT_BRANCH"
