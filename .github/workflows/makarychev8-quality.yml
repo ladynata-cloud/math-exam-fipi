@@ -13,6 +13,25 @@ on:
 permissions:
   contents: read
 jobs:
+  worked-solutions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        partition: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Solve every assigned task and restore its saved steps
+        env:
+          M8_UI_SHARD_INDEX: ${{ matrix.partition }}
+          M8_UI_SHARD_COUNT: ${{ strategy.job-total }}
+        run: |
+          npm install --prefix "$RUNNER_TEMP/makarychev-dom" --no-audit --no-fund --ignore-scripts jsdom@26.1.0
+          NODE_PATH="$RUNNER_TEMP/makarychev-dom/node_modules" node --max-old-space-size=1024 school/makarychev8/test-ui.cjs
   course:
     runs-on: ubuntu-latest
     # Includes the new chapter and every earlier worked solution.
@@ -151,9 +170,8 @@ jobs:
         run: |
           npm install --prefix "$RUNNER_TEMP/makarychev-qa" --no-audit --no-fund --ignore-scripts jsdom@26.1.0 playwright@1.62.1
           node "$RUNNER_TEMP/makarychev-qa/node_modules/playwright/cli.js" install --with-deps chromium
-      - name: Every worked solution and saved-work journey
+      - name: Saved-work import and learning audit
         run: |
-          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --max-old-space-size=1024 school/makarychev8/test-ui.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-import.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --expose-gc school/makarychev8/test-audit-learning.cjs
       - name: Square roots and two board participants

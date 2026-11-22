@@ -6,14 +6,16 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 // processes: jsdom retains native resources after close until its process exits.
 if(process.argv[2]!=='--overview'){
  const invoke=(file,args)=>JSON.parse(require('node:child_process').execFileSync(process.execPath,[file,...args],{encoding:'utf8'}));
- const {taskIDs,totalSteps,lessons,...overview}=invoke(__filename,['--overview']);
+ const {taskIDs,totalSteps,...overview}=invoke(__filename,['--overview']);
  const checked=[];let checkedSteps=0;
- for(let first=0;first<lessons;first+=3){
-  const r=invoke(path.join(__dirname,'test-course-journeys.cjs'),[String(first),String(Math.min(first+3,lessons))]);
+ // Bound each jsdom by card count: a single printed topic can contain hundreds of cards.
+ const batchSize=16;
+ for(let first=0;first<taskIDs.length;first+=batchSize){
+  const r=invoke(path.join(__dirname,'test-course-journeys.cjs'),['--cards',String(first),String(Math.min(first+batchSize,taskIDs.length))]);
   checked.push(...r.ids);checkedSteps+=r.steps;
  }
- assert.deepEqual(checked,taskIDs);assert.equal(checked.length,overview.renderedTasks);assert.equal(checkedSteps,totalSteps);
- console.log(JSON.stringify({ok:true,...overview,tokenCheckedTaskJourneys:checked.length,allSourceSteps:checkedSteps,visualBrowserQA:false}));
+ assert.deepEqual(checked,taskIDs);assert.equal(checked.length,taskIDs.length);assert.equal(checkedSteps,totalSteps);
+ console.log(JSON.stringify({ok:true,...overview,renderedTasks:checked.length,tokenCheckedTaskJourneys:checked.length,allSourceSteps:checkedSteps,visualBrowserQA:false}));
 } else {
 const errors=[], dom=new JSDOM(fs.readFileSync(path.join(__dirname,'index.html'),'utf8'),{url:'https://peterson.test/',runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,d=w.document;
@@ -27,12 +29,6 @@ function input(selector,value){const el=d.querySelector(selector);assert(el,'Mis
 function submit(selector){const el=d.querySelector(selector);assert(el,'Missing '+selector);el.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}
 async function run() {
   assert(d.querySelector('h1').textContent.includes('Разобраться'));
-  let rendered = 0;
-  for(const l of w.PetersonCourse.lessons)for(let i=0;i<l.tasks.length;i++){
- nav('#lesson/'+l.id+'/'+i);assert(d.querySelector('.prompt'),l.id+' '+i+' failed');assert(d.querySelector('#model').textContent.trim());
- const t=l.tasks[i];if(t.kind==='manual'){assert(d.querySelector('.manual-work'));assert(!d.querySelector('#final-answer'));}else{assert(d.querySelector('.answer-form label').textContent.trim());if(t.kind==='choice')assert.equal(d.querySelectorAll('.choices button').length,t.choices.length);else assert(d.querySelector('#final-answer'));}if(t.figure){assert(d.querySelector('#task-figure').textContent.trim()||d.querySelector('#task-figure svg'),t.id+' required figure');assert.equal(d.querySelector('#task-figure').closest('details'),null,'required figure remains visible');}
- assert(!d.querySelector('.error-page'));assert.doesNotMatch(d.querySelector('#main').textContent,/\{\{(?:frac|mix|mathfrac):/,t.id+' initial source/theory');rendered++;
-}
   nav('#lesson/p08/0');
   click('[data-action="guided"]');
   input('[data-step-input="0"]','1/2');
@@ -107,7 +103,7 @@ async function run() {
   const taskIDs=Array.from(w.PetersonCourse.lessons.flatMap(l=>l.tasks.map(t=>t.id)));
   const totalSteps=w.PetersonCourse.lessons.flatMap(l=>l.tasks).reduce((n,t)=>n+t.steps.length,0);
   assert.equal(errors.length,0,errors.join('\n'));
-  console.log(JSON.stringify({renderedTasks:rendered,practiceScreens:practices,equationTasks,equationSteps,lessons:w.PetersonCourse.lessons.length,taskIDs,totalSteps}));
+  console.log(JSON.stringify({practiceScreens:practices,equationTasks,equationSteps,lessons:w.PetersonCourse.lessons.length,taskIDs,totalSteps}));
   dom.window.close();
 }
 run().catch(e=>{console.error(e);dom.window.close();process.exitCode=1;});
