@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "9d9221aeb529458a49e32241f4155b75eb74dc475737348f732be9a275b9969d",
-      "afterSha256": "8a87b08e32f62b83e7ff328553984b115b63c81f028fa19d71086c8656a702d0",
+      "beforeSha256": "05e92d891570748e838b35cfbf6ab64806eac11965e55e0c98ce4a24ead39df5",
+      "afterSha256": "856bce70336e453950498cb57019f51a66dbaeaa8f2edb1733b03a6a1d9cdad0",
       "placement": "before-head-close",
-      "sourceSha": "f80304716dbd1dfd1066eb0deec549613f2c05c4"
+      "sourceSha": "909f584cb2297f98e24e67753a60c65a4d9b16a6"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6903,6 +6903,15 @@
         "school/index.html"
       ],
       "boundary": "Добавлены №5.67 и №5.68 части 2, страница 17. Проверены все 25 переходов в пяти столбиках, три шага уменьшения числа, новая практика, два мобильных размера и восстановление работы двух участников."
+    },
+    {
+      "previousBaseSha": "f80304716dbd1dfd1066eb0deec549613f2c05c4",
+      "sourceBaseSha": "909f584cb2297f98e24e67753a60c65a4d9b16a6",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены №5.69–5.71 второй части, печатная страница 17. Восемь расстояний в двух разных фигурах, определение радиуса с сохранением рассуждения и сектор проверены на двух мобильных ширинах и в двух ролях."
     }
   ],
   "coverageUpdates": [
