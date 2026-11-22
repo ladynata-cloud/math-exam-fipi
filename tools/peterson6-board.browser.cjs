@@ -409,6 +409,18 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);await synchronized(teacherFrame,studentFrame,'logic survives pupil reconnect');await narrowShot(student,studentFrame,'logic-role-table-320','#task-figure');
   await teacherFrame.locator('header nav a[href="#home"]').click();await synchronized(teacherFrame,studentFrame,'return to number search');await teacherFrame.locator('#book-part').selectOption('1');
 
+  phase = 'part two: a fixed dividend and no compulsory rooster ratio';
+  await teacherFrame.locator('#book-part').selectOption('2');await teacherFrame.locator('#exercise-number').fill('201');await teacherFrame.locator('#number-form button').click();
+  assert.equal(await teacherFrame.locator('#number-result a[href^="#lesson/p22/"]').count(),3);await teacherFrame.locator('#number-result a[href="#lesson/p22/17"]').click();await synchronized(teacherFrame,studentFrame,'number 201 second printed subproblem');
+  await teacherFrame.locator('#final-answer').fill('60');await teacherFrame.locator('#answer-form button[type=submit]').click();assert.match(await teacherFrame.locator('.feedback').first().innerText(),/делитель/);await synchronized(teacherFrame,studentFrame,'dividend mistaken for divisor');
+  await ownership(teacher,student,true);await openModel(studentFrame);await studentFrame.locator('#model select').first().selectOption('1');await studentFrame.locator('#final-answer').fill('10');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await courseFrame(teacher);await synchronized(studentFrame,teacherFrame,'reopened independent draft with new dividend');assert.equal(await teacherFrame.locator('#final-answer').inputValue(),'10');
+  await studentFrame.locator('#final-answer').fill('100');await studentFrame.locator('#answer-form button[type=submit]').click();await synchronized(studentFrame,teacherFrame,'original divisor corrected');
+  await lesson(studentFrame,'p22',19);await openModel(studentFrame);await studentFrame.locator('#model select').first().selectOption('2');await synchronized(studentFrame,teacherFrame,'five separate rooms are a possible additional assumption');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);await synchronized(teacherFrame,studentFrame,'hearing arrangement survives pupil reload');assert.equal(await studentFrame.locator('#model .pm-visual tbody tr').count(),5);
+  await teacherFrame.locator('[data-choice]').filter({hasText:'недостаточно'}).click();await teacherFrame.locator('#answer-form button[type=submit]').click();await synchronized(teacherFrame,studentFrame,'absence of a fixed ratio');
+  await teacherFrame.locator('header nav a[href="#home"]').click();await synchronized(teacherFrame,studentFrame,'back to the search field');await teacherFrame.locator('#book-part').selectOption('1');
+
   phase = 'textbook lookup, partial drafts and saved disclosures';
   await teacherFrame.locator('#exercise-number').fill('177');
   await teacherFrame.locator('#number-form button').click();

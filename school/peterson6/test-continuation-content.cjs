@@ -62,7 +62,16 @@ for(let n=1;n<=999;n++)assert.equal(n%3,Array.from(String(n),Number).reduce((a,b
 for(let d=1;d<=9;d++)for(let a=0;a<10;a++)for(let b=0;b<10;b++)assert.equal((d*a+d*b)%d,0);
 assert.equal((1+3)%2,0);assert.equal(1%2,1);assert.equal(3%2,1);
 for(let a=-4;a<=4;a++)for(let b=-4;b<=4;b++){assert.equal(a>b,b<a);assert.equal(a<=b,b>=a);}
-const prop199=D.lessons.find(l=>l.id==='p22').tasks.filter(t=>t.proportionPair);
+const page53=D.lessons.find(l=>l.id==='p22').tasks.filter(t=>t.source.exercise>=200&&t.source.exercise<=203);
+assert.deepEqual(Array.from(page53,t=>[t.source.exercise,t.source.subpart||'',t.source.page]),[[200,'1',53],[200,'2',53],[200,'3',53],[201,'1',53],[201,'2',53],[201,'3',53],[202,'',53],[203,'',53]]);
+const correctPage53=[75*12/100,76/80*100,81/0.06,3.5/(28/3)*0.8,28*(15/7)/0.6,1.44/(7.68/240),null,4.5*(5/3)/1.5];
+for(const [i,t] of page53.entries()){
+ if(t.kind==='choice'){assert(t.roosterGroups);assert.equal(t.steps[1].answer,'5');continue;}
+ assert(Math.abs(Number(t.answer.replace(',','.'))-correctPage53[i])<1e-9);
+ for(const [j,[x,y,z]] of t.proportionPair.examples.entries()){const result=t.proportionPair.inverse?x*y/z:y*z/x;
+  if(t.proportionPair.exact)assert(Math.abs(result-Number(t.proportionPair.exact[j][3].replace(',','.')))<1e-9);}
+}
+const prop199=D.lessons.find(l=>l.id==='p22').tasks.filter(t=>t.proportionPair&&t.source.exercise<=199);
 assert.deepEqual(Array.from(prop199,t=>[t.source.exercise,t.source.subpart,t.source.page]),[[197,'3',52],[197,'4',52],[198,'2',52],[199,'1',53],[199,'2',53],[199,'3',53],[199,'4',53]]);
 const propOriginals=[[20,9,14,6.3],[5,14,3,8.4],[180,8,200,7.2],[27,4.5,300,50],[250,48,150,80],[25,310,40,496],[32,215,40,172]];
 for(const [i,t] of prop199.entries()){
@@ -76,7 +85,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1518);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1526);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
