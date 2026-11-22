@@ -1789,3 +1789,15 @@ test('finish all source numbers in the coordinate section with new values, divis
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('all missing printed graph contexts include correct endpoints, inverse slopes and physical units',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=['(4,5; 27)','(4,5; 27)','(4,5; 27)','2 ≤ y ≤ 8','(4; 6)','(4; 6)','(4; 6)','(12; 1)','(12; 2)','(12; 3)','2 ≤ x ≤ 5','1,6 ≤ x ≤ 4'];
+  for(let i=0;i<expected.length;i++){
+   f.nav('#lesson/p21/'+(6+i));if(i===3||i>=10)assert.equal(f.d.querySelectorAll('#task-figure [data-proportion-curve]').length,1);
+   f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);assert.equal(f.d.querySelectorAll('#model [data-proportion-reading]').length,0);f.event(stage,'1','change');assert.equal(f.d.querySelectorAll('#model [data-proportion-reading]').length,1);
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(expected[i]));if(i>=7&&i<=9)assert.equal(f.d.querySelectorAll('#model [data-proportion-curve]').length,4);
+   const original=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,original);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
