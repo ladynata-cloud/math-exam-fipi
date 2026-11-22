@@ -105,7 +105,11 @@
   const generators={'1.3':schedule,'1.4':columns,'1.5':arithmetic,'1.6':arithmeticOrder,'1.7':transport};
   const bounds={'1.3':{day0:[0,3,0],day1:[0,3,0],day2:[0,3,0]},'1.4':{column:[0,7,4],left:[0,120,20],right:[0,120,10]},'1.5':{row:[0,5,0]},'1.6':{row:[0,11,0],stage:[0,1,0]},'1.7':{vehicle:[0,2,0],hours:[0,8,1],rate:[5,125,40]}};
   function fields(input,M){const tokens=String(input).split(';');if(tokens.length!==3)return null;const nums=tokens.map(token=>M.parse(token));if(nums.some(v=>!v||v.d!==1||!Number.isSafeInteger(v.n)))return null;return nums.map(v=>v.n);}
-  function columnFits(values,given){return values&&values.every(n=>n>=0)&&values[0]+values[1]===values[2]&&given.every((n,i)=>n===null||n===values[i]);}
+  function columnFits(values,given,operation){
+    if(!values||values.some(n=>n<0)||given.some((n,i)=>n!==null&&n!==values[i]))return false;
+    const result=operation==='multiply'?values[0]*values[1]:values[0]+values[1];
+    return result===values[2];
+  }
   function mistake(input,target,M){
     if(target.orderRules){
       const tokens=String(input).split(';'),r=target.orderRules;
@@ -116,6 +120,7 @@
     if(target.columnRules){
       if(values.some(n=>n<0))return 'Здесь заполняем таблицу неотрицательными целыми числами. Проверь знаки.';
       if(target.columnRules.some((n,i)=>n!==null&&n!==values[i]))return 'В исходной таблице уже записано число. Сохрани его именно на своём месте.';
+      if(target.columnOperation==='multiply')return values[0]*values[1]===values[2]?'':'Умножь выбранные первые два числа. Если произведение уже записано в условии, подбери другой свободный множитель.';
       if(values[0]+values[1]!==values[2])return 'Выбранные слагаемые можно оставить. Заново сложи первые два числа и поправь сумму.';
     }
     if(target.scheduleRules){

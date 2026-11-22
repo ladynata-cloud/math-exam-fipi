@@ -534,6 +534,15 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.142, independently chosen factors in an open product column';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-142"]').click();await studentFrame.locator('h1').filter({hasText:'№1.142'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=column]').selectOption({value:'6'});await teacherFrame.locator('[data-v5-param=left]').fill('19');await teacherFrame.locator('[data-v5-param=left]').press('Tab');await teacherFrame.locator('[data-v5-param=right]').fill('5');await teacherFrame.locator('[data-v5-param=right]').press('Tab');
+  await teacherFrame.locator('[data-v5-prediction]').fill('24');await teacherFrame.locator('[data-v5-predict] button').click();const sumError=await same(teacherFrame,studentFrame,'addition is a different operation from finding the product');assert.equal(sumError.scene.model.first,'24');assert.equal(sumError.scene.model.seen,false);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-prediction]').fill('95');await studentFrame.locator('[data-v5-predict] button').click();
+  for(const ans of ['26;4;104','12;8;96','33;2;66','4;23;92','18;3;54','13;10;130']){await studentFrame.locator('#answer').fill(ans);await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();}
+  await studentFrame.locator('#answer').fill('19;5;');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const openColumn=await same(studentFrame,teacherFrame,'restore chosen pair from the paper table');assert.equal(openColumn.scene.savedInput,'19;5;');assert.equal(openColumn.scene.model.first,'24');assert.equal(openColumn.scene.model.prediction,'95');
+  await ownership(teacher,student,false);await teacherFrame.locator('#answer').fill('19;5;95');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'a reversed pair is a valid multiplication')).scene.correct);
+
   phase = 'source 1.138 and 1.140, moving in either direction on the same coordinate line';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-138"]').click();await studentFrame.locator('h1').filter({hasText:'№1.138'}).waitFor();
   await teacherFrame.locator('[data-v5-param=side]').selectOption('0');await teacherFrame.locator('[data-v5-prediction]').fill('1');await teacherFrame.locator('[data-v5-predict] button').click();
