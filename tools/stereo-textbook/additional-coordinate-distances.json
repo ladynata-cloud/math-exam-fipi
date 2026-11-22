@@ -1,0 +1,542 @@
+{
+  "parts": {
+    "739": [
+      null
+    ],
+    "740": [
+      null
+    ],
+    "741": [
+      null
+    ],
+    "742": [
+      null
+    ],
+    "743": [
+      null
+    ],
+    "744": [
+      null
+    ],
+    "745": [
+      null
+    ],
+    "746": [
+      null
+    ],
+    "747": [
+      null
+    ],
+    "748": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "739": {
+      "id": "source-main-0739",
+      "kind": "exercise",
+      "title": "Задача № 739",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "739",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "740": {
+      "id": "source-main-0740",
+      "kind": "exercise",
+      "title": "Задача № 740",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "740",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "741": {
+      "id": "source-main-0741",
+      "kind": "exercise",
+      "title": "Задача № 741",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "741",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "742": {
+      "id": "source-main-0742",
+      "kind": "exercise",
+      "title": "Задача № 742",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "742",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "743": {
+      "id": "source-main-0743",
+      "kind": "exercise",
+      "title": "Задача № 743",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "743",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "744": {
+      "id": "source-main-0744",
+      "kind": "exercise",
+      "title": "Задача № 744",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "744",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "745": {
+      "id": "source-main-0745",
+      "kind": "exercise",
+      "title": "Задача № 745",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "745",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "746": {
+      "id": "source-main-0746",
+      "kind": "exercise",
+      "title": "Задача № 746",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "746",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "747": {
+      "id": "source-main-0747",
+      "kind": "exercise",
+      "title": "Задача № 747",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "747",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "748": {
+      "id": "source-main-0748",
+      "kind": "exercise",
+      "title": "Задача № 748",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "748",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          188
+        ],
+        "pdfPages": [
+          190
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0739": {
+      "raw": "6f72a280bfd61ddb647d0ad3bff918c899c22ba7633bea771d6db2faec433090",
+      "authored": "a2781f01968ce165b560a928afb80537c8211e2718c590045b791053fc514a0b",
+      "integrated": "7d8e697135f4a7f5d836866c16faa297797adac03057fc7e5a7d057eea8b9473"
+    },
+    "ex-main-0740": {
+      "raw": "ed7d9502ce9e41df116729990f5a1ada0d75c0b8f8d36428379e6e76c5d499bd",
+      "authored": "b5f13538aafd77471fc9fbb8ae40485aa9c11b4cf49a9d9d4cad3fdf410e4f24",
+      "integrated": "abcbf1af8f3abe457bd6388f5c17b7c01b5915dc41dd4a33df2ad060ff7920b6"
+    },
+    "ex-main-0741": {
+      "raw": "27f2a700cbe681b2efd35037056dc2e4655acfa4050c615189f07c139aa0a56c",
+      "authored": "90a24cdf8e9dcfc453fd44214032fd647b853d7d64bf19c42765117410a50279",
+      "integrated": "337befaefd49425a9d8ce1cb1fa74765a10dbbbfaf0497b6a8ea1aef9044f42f"
+    },
+    "ex-main-0742": {
+      "raw": "4d934606880af90ef473b63ef5f37987f4ede23abcb2ee2ff81b5e0512728b64",
+      "authored": "5e4468e2de28f29ba57b7190c507ca7287bd24e9afab43153785d4f1053b9db4",
+      "integrated": "6a92abd39673b30f8abea05a46fd42f33406da2ecbee93de77431db60a7680a8"
+    },
+    "ex-main-0743": {
+      "raw": "450831d5d954653ef45913b0bfff0ec890750a43d90b779e17903509a21694b7",
+      "authored": "1f62cfe13a36b0d4a2692902b00f7a269c51611c33a5fdf80b661a9bec81ac0b",
+      "integrated": "73d4d54bb649714a666b9e522e051635a8ef192d97f6b97c2bde7968f73e6036"
+    },
+    "ex-main-0744": {
+      "raw": "370cbb19bdab888347e31b4c9b4ff183d7b20c39e67182c77ef909e0da41a0d9",
+      "authored": "bc1abf21788b73fa35b818c24c1e6292b2c69f9b6a02cc53215cb124f996822d",
+      "integrated": "63e3c7bf49e841ef16c8e3cd79f950142dbc1acb6b39800fc92ca1a2b54a1d21"
+    },
+    "ex-main-0745": {
+      "raw": "c72dd15cc193e1876fe10a8d7c9c000970e7cfa25383245231eacd2ed348e004",
+      "authored": "634eddaa25c8d41d1f4be5bd65a3d41a76776894db984c815f22cda3f605c9b2",
+      "integrated": "4b4f622f997a6f5a41ed47fe2a326791f81cb9bf6948ad56a09943c21465f712"
+    },
+    "ex-main-0746": {
+      "raw": "95d761a789a56c08c2e198413b19c404444b0dd4ef6f1e6738cdf02dc273bb39",
+      "authored": "ec68c7f30a772dd139d7cd8eebb026ba7c3cd06f230a4512f755b1fb30d34070",
+      "integrated": "edadf30bfd238faeb5222ec387f810159a1ede6d3a0f9ac5c3a063bbd4103190"
+    },
+    "ex-main-0747": {
+      "raw": "ce267dd1b84c61749469a790bf694d65c054a09e79731cd94647fb2994a4244a",
+      "authored": "8c9d0d547473cd2644a72319cb8692bf45c47ac5e97660b73c48a32649cc5bfd",
+      "integrated": "7dc5f95508879ae8046046935c400b4fadcc252c4829958387c25981e9099069"
+    },
+    "ex-main-0748": {
+      "raw": "e9369bdf5f9250fe515efa02c2e1d604ffd493db69ed1e4cdfabf7725025e532",
+      "authored": "0859159275d89c162a0967e0313a18394007a8d2040842a45df887fe90c6787a",
+      "integrated": "0d850a757a0eca8ffeeca4fa2a5e73c9ef582274e3c5d1f2f36d08052bd1b9c4"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0739|condition",
+      "additional-coordinate-distances-ex-main-0739-condition"
+    ],
+    [
+      "ex-main-0739|help:h1",
+      "additional-coordinate-distances-ex-main-0739-help-h1"
+    ],
+    [
+      "ex-main-0739|help:h2",
+      "additional-coordinate-distances-ex-main-0739-help-h2"
+    ],
+    [
+      "ex-main-0739|step-1",
+      "additional-coordinate-distances-ex-main-0739-step-1"
+    ],
+    [
+      "ex-main-0739|step-2",
+      "additional-coordinate-distances-ex-main-0739-step-2"
+    ],
+    [
+      "ex-main-0739|step-3",
+      "additional-coordinate-distances-ex-main-0739-step-3"
+    ],
+    [
+      "ex-main-0740|condition",
+      "additional-coordinate-distances-ex-main-0740-condition"
+    ],
+    [
+      "ex-main-0740|help:h1",
+      "additional-coordinate-distances-ex-main-0740-help-h1"
+    ],
+    [
+      "ex-main-0740|help:h2",
+      "additional-coordinate-distances-ex-main-0740-help-h2"
+    ],
+    [
+      "ex-main-0740|step-1",
+      "additional-coordinate-distances-ex-main-0740-step-1"
+    ],
+    [
+      "ex-main-0740|step-2",
+      "additional-coordinate-distances-ex-main-0740-step-2"
+    ],
+    [
+      "ex-main-0740|step-3",
+      "additional-coordinate-distances-ex-main-0740-step-3"
+    ],
+    [
+      "ex-main-0741|condition",
+      "additional-coordinate-distances-ex-main-0741-condition"
+    ],
+    [
+      "ex-main-0741|help:h1",
+      "additional-coordinate-distances-ex-main-0741-help-h1"
+    ],
+    [
+      "ex-main-0741|help:h2",
+      "additional-coordinate-distances-ex-main-0741-help-h2"
+    ],
+    [
+      "ex-main-0741|step-1",
+      "additional-coordinate-distances-ex-main-0741-step-1"
+    ],
+    [
+      "ex-main-0741|step-2",
+      "additional-coordinate-distances-ex-main-0741-step-2"
+    ],
+    [
+      "ex-main-0741|step-3",
+      "additional-coordinate-distances-ex-main-0741-step-3"
+    ],
+    [
+      "ex-main-0742|condition",
+      "additional-coordinate-distances-ex-main-0742-condition"
+    ],
+    [
+      "ex-main-0742|help:h1",
+      "additional-coordinate-distances-ex-main-0742-help-h1"
+    ],
+    [
+      "ex-main-0742|help:h2",
+      "additional-coordinate-distances-ex-main-0742-help-h2"
+    ],
+    [
+      "ex-main-0742|step-1",
+      "additional-coordinate-distances-ex-main-0742-step-1"
+    ],
+    [
+      "ex-main-0742|step-2",
+      "additional-coordinate-distances-ex-main-0742-step-2"
+    ],
+    [
+      "ex-main-0742|step-3",
+      "additional-coordinate-distances-ex-main-0742-step-3"
+    ],
+    [
+      "ex-main-0743|condition",
+      "additional-coordinate-distances-ex-main-0743-condition"
+    ],
+    [
+      "ex-main-0743|help:h1",
+      "additional-coordinate-distances-ex-main-0743-help-h1"
+    ],
+    [
+      "ex-main-0743|help:h2",
+      "additional-coordinate-distances-ex-main-0743-help-h2"
+    ],
+    [
+      "ex-main-0743|step-1",
+      "additional-coordinate-distances-ex-main-0743-step-1"
+    ],
+    [
+      "ex-main-0743|step-2",
+      "additional-coordinate-distances-ex-main-0743-step-2"
+    ],
+    [
+      "ex-main-0743|step-3",
+      "additional-coordinate-distances-ex-main-0743-step-3"
+    ],
+    [
+      "ex-main-0744|condition",
+      "additional-coordinate-distances-ex-main-0744-condition"
+    ],
+    [
+      "ex-main-0744|help:h1",
+      "additional-coordinate-distances-ex-main-0744-help-h1"
+    ],
+    [
+      "ex-main-0744|help:h2",
+      "additional-coordinate-distances-ex-main-0744-help-h2"
+    ],
+    [
+      "ex-main-0744|step-1",
+      "additional-coordinate-distances-ex-main-0744-step-1"
+    ],
+    [
+      "ex-main-0744|step-2",
+      "additional-coordinate-distances-ex-main-0744-step-2"
+    ],
+    [
+      "ex-main-0744|step-3",
+      "additional-coordinate-distances-ex-main-0744-step-3"
+    ],
+    [
+      "ex-main-0745|condition",
+      "additional-coordinate-distances-ex-main-0745-condition"
+    ],
+    [
+      "ex-main-0745|help:h1",
+      "additional-coordinate-distances-ex-main-0745-help-h1"
+    ],
+    [
+      "ex-main-0745|help:h2",
+      "additional-coordinate-distances-ex-main-0745-help-h2"
+    ],
+    [
+      "ex-main-0745|step-1",
+      "additional-coordinate-distances-ex-main-0745-step-1"
+    ],
+    [
+      "ex-main-0745|step-2",
+      "additional-coordinate-distances-ex-main-0745-step-2"
+    ],
+    [
+      "ex-main-0745|step-3",
+      "additional-coordinate-distances-ex-main-0745-step-3"
+    ],
+    [
+      "ex-main-0746|condition",
+      "additional-coordinate-distances-ex-main-0746-condition"
+    ],
+    [
+      "ex-main-0746|help:h1",
+      "additional-coordinate-distances-ex-main-0746-help-h1"
+    ],
+    [
+      "ex-main-0746|help:h2",
+      "additional-coordinate-distances-ex-main-0746-help-h2"
+    ],
+    [
+      "ex-main-0746|step-1",
+      "additional-coordinate-distances-ex-main-0746-step-1"
+    ],
+    [
+      "ex-main-0746|step-2",
+      "additional-coordinate-distances-ex-main-0746-step-2"
+    ],
+    [
+      "ex-main-0746|step-3",
+      "additional-coordinate-distances-ex-main-0746-step-3"
+    ],
+    [
+      "ex-main-0747|condition",
+      "additional-coordinate-distances-ex-main-0747-condition"
+    ],
+    [
+      "ex-main-0747|help:h1",
+      "additional-coordinate-distances-ex-main-0747-help-h1"
+    ],
+    [
+      "ex-main-0747|help:h2",
+      "additional-coordinate-distances-ex-main-0747-help-h2"
+    ],
+    [
+      "ex-main-0747|step-1",
+      "additional-coordinate-distances-ex-main-0747-step-1"
+    ],
+    [
+      "ex-main-0747|step-2",
+      "additional-coordinate-distances-ex-main-0747-step-2"
+    ],
+    [
+      "ex-main-0747|step-3",
+      "additional-coordinate-distances-ex-main-0747-step-3"
+    ],
+    [
+      "ex-main-0748|condition",
+      "additional-coordinate-distances-ex-main-0748-condition"
+    ],
+    [
+      "ex-main-0748|help:h1",
+      "additional-coordinate-distances-ex-main-0748-help-h1"
+    ],
+    [
+      "ex-main-0748|help:h2",
+      "additional-coordinate-distances-ex-main-0748-help-h2"
+    ],
+    [
+      "ex-main-0748|step-1",
+      "additional-coordinate-distances-ex-main-0748-step-1"
+    ],
+    [
+      "ex-main-0748|step-2",
+      "additional-coordinate-distances-ex-main-0748-step-2"
+    ],
+    [
+      "ex-main-0748|step-3",
+      "additional-coordinate-distances-ex-main-0748-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "f40811e195a60e61278356dd1a8bf2b2141ad7ac8ec7bb6f8c0ec9039f46e188",
+      "afterSHA256": "c8c961a182dcc44505ff196b1e5b52976764b63128ad469b86c670af8d803a18"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "08050b61247d67e07287da02278d1bb4056a5d6549cce5530e176806c32f4326",
+      "afterSHA256": "a02c9f593e5c1c794b6a2741ede7c5f409f4e6cc27a14a4409dccb18ba8ee02a"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T00:00:16Z",
+    "scope": "Chapters I–VI, chapter VII points 71–84, every self-check on page 186 and consecutive source exercises through 738. The later inventory is still draft."
+  },
+  "before": {
+    "course": "c054bcd6d717937d1a1580c84638c9a166224cdd4a7b0f85350a0bf25b1313f3",
+    "index": "51baa2e8f44f967c9d00edec7123a3cc3da909a29aa436e09b3274ce37c043a1",
+    "registry": "fb5f5a52654edf78e27bd3d3b6a159b678b8fc8ea1968667a48478d05f1e6e85",
+    "cases": "e38bbf5de07769a91c4a9ebdc5e12829c923f3059e658bd7fee2a5bdf66f842b"
+  }
+}
