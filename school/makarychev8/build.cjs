@@ -203,8 +203,10 @@ phasesLesson.tasks.push(...witnessBlock);
 phasesLesson.studyOrder.splice(phasesLesson.studyOrder.indexOf(0),0,...witnessBlock.map((_,i)=>witnessStart+i));
 const zeroBlock=read('exercises-1106-1108.json'),zeroStart=phasesLesson.tasks.length;
 phasesLesson.tasks.push(...zeroBlock);
-phasesLesson.tasks[0].graph={type:'source-formula-zeros',formula:'linear-old',original:'−0,8x + 12',legacy:true};
-phasesLesson.tasks[1].graph={type:'source-formula-zeros',formula:'rational-old',original:'(4 + 2x) / (x² + 5)',legacy:true};
+phasesLesson.taskModels={
+ 'p43-t01':{type:'source-formula-zeros',formula:'linear-old',original:'−0,8x + 12',legacy:true},
+ 'p43-t02':{type:'source-formula-zeros',formula:'rational-old',original:'(4 + 2x) / (x² + 5)',legacy:true}
+};
 phasesLesson.studyOrder.splice(phasesLesson.studyOrder.indexOf(0),2,0,zeroStart,1,...zeroBlock.slice(1).map((_,i)=>zeroStart+1+i));
 const review43Block=read('exercises-1109-1113.json'),review43Start=phasesLesson.tasks.length;
 phasesLesson.tasks.push(...review43Block);
