@@ -1314,6 +1314,25 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('90');await teacherFrame.locator('#answer-form button').click();
   assert((await same(teacherFrame,studentFrame,'unused satin')).scene.correct);await narrow(student,studentFrame,'satin-remainder');
 
+  phase = 'source 5.90: move the inscribed vertex and read the ruler';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-90"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.90'}).waitFor();
+  await teacherFrame.locator('#answer').fill('40');await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'radius mistaken for diameter')).scene.message,/две такие половины/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=place]').selectOption({value:'7'});
+  await studentFrame.locator('[data-v5-param=edge]').selectOption({value:'2'});await studentFrame.locator('[data-v5-prediction]').fill('57');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('80');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const chordDraft=await same(studentFrame,teacherFrame,'same lower arc and draft');assert(chordDraft.scene.model.seen);assert.equal(chordDraft.scene.model.place,7);assert.equal(chordDraft.scene.model.edge,2);assert.equal(chordDraft.scene.savedInput,'80');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'restore selected chord on handoff');
+  for(const [i,v] of ['80','69','41','BN'].entries()){
+    if(i)await teacherFrame.locator('[data-cmd=next]').click();
+    await teacherFrame.locator('#answer').fill(v);await teacherFrame.locator('#answer-form button').click();
+    assert((await same(teacherFrame,studentFrame,'correct inscribed segment '+i)).scene.correct);
+  }
+  await narrow(student,studentFrame,'diameter-and-moving-chord');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
