@@ -1,0 +1,23 @@
+name: Rebuild the advanced Atanasyan exercises 771 through 773
+on:
+  push:
+    branches:
+      - staging/atanasyan-advanced-771-773-banks-20261122
+permissions:
+  contents: write
+jobs:
+  reviewed-book-bank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            stereo-course
+            tools/stereo-textbook
+            .stereo-transfer
+          persist-credentials: false
+      - name: Rebuild source, check the geometry, verify both digests and record the bank
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .stereo-transfer/verify.py
