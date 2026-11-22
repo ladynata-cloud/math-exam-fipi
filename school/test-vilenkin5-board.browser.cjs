@@ -1293,6 +1293,27 @@ async function run(browser, origin, backend, failures) {
   await same(teacherFrame,studentFrame,'keep three eighths on handoff');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'accept exact fractional area')).scene.correct);
   await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('[data-v5-param=division]').selectOption({value:'1'});await teacherFrame.locator('#answer').fill('12');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'third of the original 36')).scene.correct);await narrow(student,studentFrame,'fractional-square-area');
 
+  phase = 'source 5.87: two costumes from one roll';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-87"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.87'}).waitFor();
+  await teacherFrame.locator('#answer').fill('150'); await teacherFrame.locator('#answer-form button').click();
+  assert((await same(teacherFrame,studentFrame,'stage costume')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click(); await teacherFrame.locator('#answer').fill('100');
+  await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'two fifths of remaining cloth')).scene.message,/от остатка/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=cut]').selectOption({value:'2'});
+  await studentFrame.locator('[data-v5-prediction]').fill('90');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('160'); await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const clothDraft=await same(studentFrame,teacherFrame,'remember both cuttings and draft');
+  assert(clothDraft.scene.model.seen);assert.equal(clothDraft.scene.model.cut,2);assert.equal(clothDraft.scene.savedInput,'160');
+  await ownership(teacher,student,false); await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'teacher takes back satin');await teacherFrame.locator('#answer-form button').click();
+  assert((await same(teacherFrame,studentFrame,'dance costumes')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('90');await teacherFrame.locator('#answer-form button').click();
+  assert((await same(teacherFrame,studentFrame,'unused satin')).scene.correct);await narrow(student,studentFrame,'satin-remainder');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
