@@ -74,6 +74,28 @@ async function highlighted(page,group){
  const state=await page.evaluate(group=>({active:[...document.querySelectorAll('#visualHost .t19-linked-active')].map(e=>e.dataset.geometryGroup),svg:document.querySelectorAll(`#visualHost svg [data-geometry-group="${group}"].t19-linked-active`).length,rows:document.querySelectorAll(`#visualHost li[data-geometry-group="${group}"].t19-linked-active`).length,controls:document.querySelectorAll(`#visualHost .t19-model-control[data-geometry-group="${group}"].t19-linked-active`).length}),group);
  assert(state.active.length>=6,'geometry, readout and pair are linked');assert(state.active.every(g=>g===group),'only selected opposite pair is highlighted');assert.equal(state.svg,2);assert.equal(state.rows,2);assert.equal(state.controls,2);
 }
+async function keyboardPairAfterScroll(page){
+ const svgB=page.locator('#visualHost svg [data-geometry-group="opposite-B"]').first();
+ const start=async()=>{
+  await svgB.evaluate(el=>el.focus({preventScroll:true}));
+  await page.evaluate(()=>window.scrollTo(0,0));
+ };
+ const backToA=async()=>{
+  await page.keyboard.press('Shift+Tab');
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  assert.equal(await page.locator('#visualHost svg [data-geometry-group="opposite-A"]:focus').count(),1,'keyboard reaches the preceding A pair');
+  await highlighted(page,'opposite-A');
+ };
+ // First isolate keyboard focus from the preceding hover.
+ await page.mouse.move(1,1);await start();await backToA();
+ // The same keyboard scroll will next move a B mark under a stationary pointer.
+ const mark=page.locator('#visualHost svg [data-geometry-group="opposite-B"] line').first();
+ const point=await mark.evaluate(line=>{const p=line.getPointAtLength(line.getTotalLength()/2);const v=new DOMPoint(p.x,p.y).matrixTransform(line.getScreenCTM());return {x:v.x,y:v.y};});
+ const underPointer=()=>page.evaluate(({x,y})=>document.elementFromPoint(x,y)?.closest('[data-geometry-group]')?.dataset.geometryGroup,point);
+ assert.equal(await underPointer(),'opposite-B','B lies at the calibrated screen position');
+ await start();await page.mouse.move(point.x,point.y);assert.notEqual(await underPointer(),'opposite-B','B starts away from the pointer');
+ await backToA();assert.equal(await underPointer(),'opposite-B','keyboard scroll moved B under the stationary pointer');
+}
 async function main(){
  fs.mkdirSync(artifacts,{recursive:true});const {s,base}=await server();let browser;const failures=[],errors=[],coverage=[];
  const check=async(name,fn,page)=>{try{await fn();console.log('PASS '+name);}catch(e){failures.push(name+': '+e.stack);console.error('FAIL '+name+': '+e.message);if(page)await page.screenshot({path:path.join(artifacts,'FAIL-'+name.replace(/[^a-z0-9_-]+/gi,'-')+'.png'),fullPage:true}).catch(()=>{});}};
@@ -96,7 +118,11 @@ async function main(){
     await fresh(page,base,'reference-014');await measure(page);const before=await saved(page);assert.equal(await page.locator('.t19-model-control[data-pair="opposite-A"]').count(),2);
     if(mode.hasTouch){
      const arc=page.locator('#visualHost svg [data-geometry-group="opposite-A"] [data-geometry-mark="angle"] path').first();await arc.scrollIntoViewIfNeeded();const point=await arc.evaluate(p=>{const q=p.getPointAtLength(p.getTotalLength()/2),s=new DOMPoint(q.x,q.y).matrixTransform(p.getScreenCTM());return{x:s.x,y:s.y};});await page.touchscreen.tap(point.x,point.y);
-    }else{await page.locator('#visualHost svg [data-geometry-group="opposite-A"]').first().focus();}
+    }else{
+     await page.locator('#visualHost .t19-model-control[data-geometry-group="opposite-B"]').first().hover();
+     await highlighted(page,'opposite-B');
+     await keyboardPairAfterScroll(page);
+    }
     await highlighted(page,'opposite-A');
     const slider=page.locator('input[data-key="sideA"]');if(mode.hasTouch){await slider.scrollIntoViewIfNeeded();const b=await slider.boundingBox();await slider.tap({position:{x:b.width*.7,y:b.height/2}});}else{await slider.focus();await page.keyboard.press('ArrowRight');}
     const baseSlider=page.locator('input[data-key="sideC"]');await baseSlider.focus();await page.keyboard.press('ArrowLeft');await valid(page,'linked slider');await unanswered(page,before,'linked pair');
