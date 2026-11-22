@@ -136,4 +136,5 @@ require('./monotone-paths-and-dual-solids.test.cjs');
 require('./skew-lines-and-corner-reflection.test.cjs');
 require('./tetrahedron-altitudes-and-directed-angles.test.cjs');
 require('./sphere-chords-centres-and-inradii.test.cjs');
+require('./tangent-balls-cone-and-prism-ratios.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);

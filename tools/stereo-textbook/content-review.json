@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T03:04:00Z",
-  "scope": "All final-review parts of 764–767 and advanced source exercises 768–798 are complete. The remaining advanced exercises begin at 799.",
+  "registeredAt": "2026-11-22T03:12:00Z",
+  "scope": "All final-review parts of 764–767 and advanced source exercises 768–802 are complete. The remaining advanced exercises begin at 803.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2576,6 +2576,19 @@
       ],
       "evidence": "tools/stereo-textbook/sphere-chords-centres-and-inradii.json",
       "mathematicalReport": "tools/stereo-textbook/sphere-chords-centres-and-inradii.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued Atanasyan 2024 volume, advanced problem on printed page 192 (PDF page 194), answers and hints on printed page 273.",
+      "reviewedAt": "2026-11-22T03:12:00Z",
+      "scope": "Advanced exercises 799–802 on printed page 192, original answers on page 273. Confirmed the inclusive ordered-radius threshold, all possible upper support triples, exterior finite cone tangencies at positive heights including lambda equal to two, and the four volumes of a sheared prism.",
+      "cardIds": [
+        "ex-main-0799",
+        "ex-main-0800",
+        "ex-main-0801",
+        "ex-main-0802"
+      ],
+      "evidence": "tools/stereo-textbook/tangent-balls-cone-and-prism-ratios.json",
+      "mathematicalReport": "tools/stereo-textbook/tangent-balls-cone-and-prism-ratios.test.cjs"
     }
   ],
   "cards": [
@@ -8546,6 +8559,22 @@
     {
       "id": "ex-main-0798",
       "sha256": "57fe4ead5d9fccc594f3f32c5314274e9add98fab45f4699c49b67a6dcbaadf4"
+    },
+    {
+      "id": "ex-main-0799",
+      "sha256": "6deb8790819bdf3d597a154749d2a85153b7c22a4d9e56bde009ef5f17a137e7"
+    },
+    {
+      "id": "ex-main-0800",
+      "sha256": "ad3ac61d1f9b5f5618eb2eeb68a7a271a777478adfb4d2b094ed121076b3c475"
+    },
+    {
+      "id": "ex-main-0801",
+      "sha256": "cfed50877518fbe1ece4a7db4a5752ee0c959f07e21243911ad8d8334a80afe7"
+    },
+    {
+      "id": "ex-main-0802",
+      "sha256": "23aa906b2b11484ded6f65fdeb9cb526b89e737a453bca478122e4b1121526fb"
     }
   ]
 }
