@@ -675,3 +675,167 @@ test('both printed decision diagrams and all table rows honour equality and pres
  const r=await surface(t,BOOK+'#n/30/030-1-4',storage(s));assert.equal(element(r,'[data-flow-branch]').value,'yes');assert.match(element(r,'[data-flow-feedback]').textContent,/ветвь верны/);assert.equal(r.document.querySelectorAll('[data-flow-output]').length,6);for(const td of r.document.querySelectorAll('[data-flow-output]'))assert.match(td.textContent,/проверено/);
  const independent=await surface(t,BOOK+'#n/30/030-1-4');input(independent,'#answer','0,21');submit(independent,'#answer-form');assert(bookWork(independent,'030-1-4').independent);
 });
+test('integer endpoints, the empty set and dense decimal intervals use the selected model without grading a written explanation',async t=>{
+ const s=await surface(t,BOOK+'#n/31/031-a'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(30,32),sets=[[15,16,17],[4,5,6,7],[2],[]];
+ const set=(selector,value)=>{const e=element(s,selector);e.value=String(value);e.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of rows[0].parts.entries()){
+  await route(s,'#n/31/'+p.id);assert.match(sourcePresent(s).textContent,/натуральные/);if(!i){click(s,'[data-integer-value="18"]');click(s,'[data-integer-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/открытой границе/);click(s,'[data-integer-value="18"]');}
+  if(sets[i].length){for(const x of sets[i])click(s,'[data-integer-value="'+x+'"]');}else click(s,'[data-integer-empty]');click(s,'[data-integer-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,sets[i].length?/точки найдены/:/натуральных чисел нет/);const w=bookWork(s,p.id);assert(w.submitted&&!w.correct&&!w.independent);
+  const rr=await surface(t,BOOK+'#n/31/'+p.id,storage(s));if(sets[i].length)assert.equal(rr.document.querySelectorAll('[data-integer-value][aria-pressed="true"]').length,sets[i].length);else assert.equal(element(rr,'[data-integer-empty]').getAttribute('aria-pressed'),'true');
+  for(let a=0;a<24;a++){const sample=s.w.PetersonAnalogues.create(31,p,a),m=sample.prompt.match(/([\d,]+) (≤|<) y (≤|<) ([\d,]+)/);let selected=[];for(let value=1;value<=25;value++){const lo=Number(m[1].replace(',','.')),hi=Number(m[4].replace(',','.'));if((m[2]==='≤'?lo<=value:lo<value)&&(m[3]==='≤'?value<=hi:value<hi))selected.push(value);}assert.equal(sample.answer,selected.length?selected.join('; '):'∅');}
+ }
+ const p=rows[1].parts[0];await route(s,'#n/32/'+p.id);const entry=(i,x)=>input(s,'[data-sequence-x="'+i+'"]',x),use=()=>{click(s,'[data-sequence-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ entry(0,'0,5');entry(1,'1/2');entry(2,'0,65');set('[data-sequence-den]',100);assert.match(use(),/число 3/);entry(2,'0,6');assert.match(use(),/одно и то же/);entry(1,'0,55');assert.match(use(),/вышло за 0,6/);set('[data-sequence-den]',10000);assert.match(use(),/тоже в промежутке/);set('[data-sequence-count]',10000);assert.match(use(),/вышло за 0,6/);set('[data-sequence-den]',100000);assert.match(use(),/тоже в промежутке/);
+ assert.match(element(s,'[data-sequence-tape]').textContent,/0,59999/);assert(!bookWork(s,p.id).correct);const restored=await surface(t,BOOK+'#n/32/'+p.id,storage(s));assert.equal(element(restored,'[data-sequence-den]').value,'100000');assert.equal(element(restored,'[data-sequence-x="1"]').value,'0,55');
+ for(let j=0;j<37;j++){const task=s.w.PetersonAnalogues.create(32,p,j),nums=task.prompt.match(/\d+(?:,\d+)?/g).map(v=>Number(v.replace(',','.')));assert(Math.abs(nums[1]+(nums[0]-1)*nums[2]/nums[3]-Number(task.answer.replace(',','.')))<1e-9);}
+});
+test('six decimal scales separate enclosing bounds from rounding and keep the typed numeric result independent of the chosen side',async t=>{
+ const s=await surface(t,BOOK+'#n/33/033-1-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[32];
+ const scales=[100,10,1,.1,.01,.001],lo=[100,140,149,149.5,149.50,149.502],hi=[200,150,150,149.6,149.51,149.503],rounded=[100,150,150,149.5,149.5,149.503];
+ const use=()=>{click(s,'[data-round-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const [i,p] of row.parts.entries()){
+  const j=i%6;await route(s,'#n/33/'+p.id);assert.match(sourcePresent(s).textContent,/149,5027/);
+  if(i<6){
+   input(s,'[data-round-low]',String(lo[j]));input(s,'[data-round-high]',String(Math.round((hi[j]+scales[j])*1e6)/1e6));assert.match(use(),/расстояние между ними/);
+   input(s,'[data-round-high]',String(hi[j]));assert.match(use(),/Обе ближайшие границы/);assert(!bookWork(s,p.id).correct);
+  }else{
+   const mark=element(s,'[data-round-mark]');mark.value=lo[j]===rounded[j]?'left':'right';mark.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert(element(s,'[data-round-use]').disabled);
+   input(s,'[data-round-single]',String(rounded[j]===lo[j]?hi[j]:lo[j]));assert.match(use(),/соседняя отметка/);input(s,'[data-round-single]',String(rounded[j]));use();const w=bookWork(s,p.id);assert(w.correct&&!w.independent&&!w.assisted);
+  }
+  for(let n=0;n<38;n++){const task=s.w.PetersonAnalogues.create(33,p,n),target=Number(task.prompt.match(/(?:t = |Округли )([\d,]+)/)[1].replace(',','.')),u=scales[j],ref=Math.floor(target/u+1e-7)*u;
+   if(i<6){const limits=task.answer.split(' < t < ').map(x=>Number(x.replace(',','.')));assert(Math.abs(limits[0]-ref)<1e-8&&Math.abs(limits[1]-ref-u)<1e-8);}
+   else assert(Math.abs(Number(task.answer.replace(',','.'))-Math.floor(target/u+.5+1e-7)*u)<1e-8);
+  }
+ }
+ const restored=await surface(t,BOOK+'#n/33/033-2-6',storage(s));assert.equal(element(restored,'[data-round-mark]').value,'right');assert.equal(element(restored,'[data-round-single]').value,'149.503');
+});
+test('all sixteen printed calculations round at the requested place and independently verify their fresh variants',async t=>{
+ const s=await surface(t,BOOK+'#n/34/034-a-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[33];
+ const select=v=>{const f=element(s,'[data-calc-digit]');f.value=String(v);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));},E=s.w.PetersonBook;
+ for(const p of row.parts){
+  await route(s,'#n/34/'+p.id);assert.match(sourcePresent(s).textContent,/только затем округли/);const exact=E.exact(p.expression),place=p.rounding.places,number=exact.n/exact.d,digit=Math.floor(number*10**(place+1)+1e-9)%10;
+  input(s,'[data-calc-exact]',E.M.decimal(exact));select((digit+1)%10);click(s,'[data-calc-check]');assert.match(element(s,'[data-calc-feedback]').textContent,/на один разряд вправо/);select(digit);click(s,'[data-calc-check]');assert.match(element(s,'[data-calc-feedback]').textContent,/решающая цифра верны/);
+  input(s,'#answer',p.answer);submit(s,'#answer-form');const w=bookWork(s,p.id);assert(w.correct&&!w.independent&&!w.assisted);assert.equal(w.calcDigit,String(digit));
+  for(let n=0;n<31;n++){const sample=s.w.PetersonAnalogues.create(34,p,n),expr=sample.expression,l=Number(String(expr.left).replace(',','.')),r=Number(String(expr.right).replace(',','.')),value=({add:()=>l+r,subtract:()=>l-r,multiply:()=>l*r,divide:()=>l/r})[expr.op](),scale=10**place,target=Math.sign(value)*Math.floor(Math.abs(value)*scale+.5+1e-9)/scale,provided=E.M.parse(sample.answer);assert(Math.abs(provided.n/provided.d-target)<1e-7);assert(E.check(sample,sample.answer));}
+ }
+ const r=await surface(t,BOOK+'#n/34/034-a-1',storage(s));assert.match(element(r,'[data-calc-feedback]').textContent,/решающая цифра верны/);assert.equal(element(r,'[data-calc-exact]').value,'2995,25');assert.equal(element(r,'[data-calc-digit]').value,'5');
+});
+test('period detection compares exact periodic values, checks each long-division step and retains independent rule proofs',async t=>{
+ const s=await surface(t,BOOK+'#n/35/035-a'),items=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(34,36);
+ const fracById={'035-a':[1,3,'0,(3)','0,333'],'035-b':[2,11,'0,(18)','0,182'],'035-v':[23,90,'0,2(5)','0,256'],'035-g':[32,33,'0,(96)','0,970'],'036-a':[250,3],'036-b':[2,75]};
+ const set=(selector,v)=>{const el=element(s,selector);el.value=String(v);el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const item of items)for(const p of item.parts){
+  await route(s,'#n/'+item.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  if(p.id.endsWith('pravilo')){
+   set('[data-logic-left]',item.number===35?2:1);set('[data-logic-right]',1);input(s,'[data-logic-other]',p.answer);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование/);assert(!bookWork(s,p.id).correct);
+  }else{
+   const [n,d,notation,approx]=fracById[p.id];let rem=n%d;
+   for(let step=0;step<5;step++){const x=rem*10,digit=Math.floor(x/d);rem=x%d;
+    input(s,'[data-period-digit]',String(digit));input(s,'[data-period-rem]',String(d));click(s,'[data-period-check]');assert.match(element(s,'[data-period-feedback]').textContent,/меньше делителя/);
+    input(s,'[data-period-rem]',String(rem));click(s,'[data-period-check]');assert.equal(bookWork(s,p.id).periodStep,step+1);
+   }
+   if(item.number===35){
+    const attempt=(f,r)=>{input(s,'[data-period-notation]',f);input(s,'[data-period-approx]',r);click(s,'[data-period-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+    assert.match(attempt('0,(7)',approx),/какой остаток/);assert.match(attempt(notation,'1'),/четвёртый/);assert.match(attempt(notation,approx),/запись и округление верны/);if(p.id==='035-a')assert.match(attempt('0,3(33)',approx),/запись и округление верны/);assert(!bookWork(s,p.id).correct);
+   }else{input(s,'#answer',p.answer);submit(s,'#answer-form');assert(bookWork(s,p.id).correct&&!bookWork(s,p.id).independent);}
+  }
+  for(let a=0;a<30;a++){const sample=s.w.PetersonAnalogues.create(item.number,p,a);assert(s.w.PetersonBook.check(sample,sample.answer));const M=s.w.PetersonBook.M;
+   if(sample.expression){const x=M.parse(sample.expression.left),y=M.parse(sample.expression.right),exact=x.n/x.d/(y.n/y.d),r=M.parse(sample.answer);assert(Math.abs(r.n/r.d-Math.round(exact*10000)/10000)<1e-8);}
+   else if(!p.id.endsWith('pravilo')){const frac=sample.prompt.match(/(\d+)\/(\d+)/),val=Number(frac[1])/Number(frac[2]);if(a%2){const r=M.parse(sample.answer);assert(Math.abs(r.n/r.d-Math.round(val*1000)/1000)<1e-8);}else{const m=sample.answer.match(/^0,(\d*)\((\d+)\)$/),float=(Number(m[1]||0)+Number(m[2])/(10**m[2].length-1))/10**m[1].length;assert(Math.abs(float-val)<1e-9);}}
+  }
+ }
+ const r=await surface(t,BOOK+'#n/35/035-v',storage(s));assert.equal(bookWork(r,'035-v').periodStep,5);assert.equal(element(r,'[data-period-notation]').value,'0,2(5)');assert.match(element(r,'[data-period-tape]').textContent,/0,25555/);
+});
+test('the rectangle and square formulas distinguish contour and area, and both corner cuts preserve perimeter',async t=>{
+ const s=await surface(t,BOOK+'#n/37/037-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[36],set=(q,v)=>{const f=element(s,q);f.value=String(v);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));},use=()=>{click(s,'[data-geo-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/37/'+p.id);assert.match(sourcePresent(s).textContent,/периметр|периметра/i);set('[data-geo-mode]',i===2?'cuts':'area');
+  if(i<2){
+   if(i===1)set('[data-geo-side]','x');set('[data-geo-p]',1);set('[data-geo-s]',2);assert.match(use(),/все четыре стороны/);set('[data-geo-p]',2);set('[data-geo-s]',1);assert.match(use(),/внутреннюю часть/);set('[data-geo-s]',2);assert.match(use(),/Обе формулы/);if(i===1)assert.match(element(s,'#answer').value,/4 · x; S = x²/);
+  }else{
+   const svg=element(s,'[data-geometry-host] svg');assert.equal(svg.querySelector('polygon').getAttribute('points').split(' ').length,8);assert.equal(svg.querySelectorAll('rect').length,3);
+   const entry=(i,v)=>input(s,'[data-geo-number="'+i+'"]',v);entry(0,'42');entry(1,'112,36');entry(2,'85,8');assert.match(use(),/два внешних/);entry(0,'42,4');assert.match(use(),/полного квадрата/);entry(1,'85,88');assert.match(use(),/цифру сотых/);entry(2,'85,9');assert.match(use(),/согласуются/);set('[data-geo-mode]','area');assert.match(element(s,'[data-geometry-host]').textContent,/верхняя часть/);
+  }
+  const w=bookWork(s,p.id);assert(w.submitted&&!w.correct&&!w.independent);
+  for(let a=0;a<36;a++){const sample=s.w.PetersonAnalogues.create(37,p,a),nums=sample.prompt.match(/\d+(?:,\d+)?/g).map(x=>Number(x.replace(',','.'))),r=s.w.PetersonBook.M.parse(sample.answer);let val;
+   if(i===0)val=a%2?nums[0]*nums[1]:2*(nums[0]+nums[1]);else if(i===1)val=a%2?nums[0]*nums[0]:4*nums[0];else{const [size,top,bottom,h]=nums;val=a%2?size*size-(size-top)*(size-h)-(size-bottom)*h:4*size;}assert(Math.abs(r.n/r.d-val)<1e-8);
+  }
+ }
+ const restored=await surface(t,BOOK+'#n/37/037-3',storage(s));assert.equal(element(restored,'[data-geo-mode]').value,'area');assert.equal(element(restored,'[data-geo-number="1"]').value,'85,88');
+});
+test('the twelve original assertions decode by descending value; the meaning remains separate from the checked code',async t=>{
+ const s=await surface(t,BOOK+'#n/38/038-m'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[37],matches=[];
+ for(const p of row.parts){
+  await route(s,'#n/38/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);const E=s.w.PetersonBook,M=E.M;
+  if(p.expression){const text=sourcePresent(s).querySelector('.problem').textContent,claim=text.match(/ = ([\d,]+)\./)[1],v=E.exact(p.expression);if(M.equal(claim,v))matches.push([p.label,v.n/v.d]);else{input(s,'#answer',claim);submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/проверяемой строки/);}
+   input(s,'#answer',p.answer);submit(s,'#answer-form');assert(bookWork(s,p.id).correct);const sort=element(s,'[data-decimal-position]');sort.value='1';sort.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.equal(bookWork(s,p.id).decimalView,1);}
+  for(let attempt=0;attempt<25;attempt++){const task=s.w.PetersonAnalogues.create(38,p,attempt);assert(E.check(task,task.answer));if(p.expression){const factor=M.operation('divide',E.exact(task.expression),E.exact(p.expression));assert(factor.n>factor.d);assert(M.equal(task.answer,M.operation('multiply',factor,E.exact(p.expression))));}
+   else{const labels=task.prompt.match(/[А-ЯЁ] · \d+ [−+] \d+ = \d+/g).map(line=>{const [,letter,x,op,y,claim]=line.match(/([А-ЯЁ]) · (\d+) ([−+]) (\d+) = (\d+)/);return [letter,op==='+'?Number(x)+Number(y):Number(x)-Number(y),Number(claim)];});assert.equal(labels.filter(l=>l[1]===l[2]).sort((a,b)=>b[1]-a[1]).map(l=>l[0]).join(''),task.answer);}
+  }
+ }
+ assert.equal(matches.sort((a,b)=>b[1]-a[1]).map(r=>r[0]).join(''),'ДЕЛИМОСТЬ');
+ const pick=c=>click(s,'[data-cipher-letter="'+c+'"]'),send=()=>{click(s,'[data-cipher-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ pick('Р');assert.match(send(),/Для буквы Р/);pick('Р');pick('Е');pick('Д');assert.match(send(),/должны убывать/);pick('Е');for(const c of 'ЕЛИМОСТЬ')pick(c);assert.match(send(),/Объясни его смысл/);input(s,'[data-cipher-meaning]','При делении одного натурального числа на другое остаток равен нулю.');assert.match(send(),/сохранено для проверки/);const w=bookWork(s,'038-termin');assert.equal(w.cipherLetters,'ДЕЛИМОСТЬ');assert(w.submitted&&!w.correct&&!w.independent);const back=await surface(t,BOOK+'#n/38/038-termin',storage(s));assert.match(element(back,'[data-cipher-meaning]').value,/остаток равен нулю/);
+});
+test('parameter models describe all permitted values, and the eight prime-factor subsets give exactly D(42)',async t=>{
+ const s=await surface(t,BOOK+'#n/39/039-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(38,41),set=(q,v)=>{const el=element(s,q);el.value=String(v);el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const row of rows)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  if(row.number<41){
+   const value=row.number===39?3:0;set('[data-factor-parameter]',value);assert.equal(bookWork(s,p.id).formulaInput,value);
+   if(p.id==='040-5'){set('[data-factor-remainder]',0);assert.match(element(s,'[data-factor-output]').textContent,/не подходит/);set('[data-factor-remainder]',2);assert.match(element(s,'[data-factor-output]').textContent,/не кратно 3/);}
+   if(p.id==='039-2')assert.match(element(s,'[data-factor-output]').textContent,/= 14/);set('[data-logic-left]',1);set('[data-logic-right]',1);input(s,'[data-logic-other]',p.explanation);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование/);assert(!bookWork(s,p.id).correct);
+  }else{
+   input(s,'[data-basket-value]','41');click(s,'[data-basket-add]');click(s,'[data-basket-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Умножь/);input(s,'[data-basket-value]','42');
+   for(const bit of [0,1,0,2,0,1,0]){click(s,'[data-factor-bit="'+bit+'"]');click(s,'[data-basket-add]');}
+   click(s,'[data-basket-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/восемь/);assert.deepEqual([...bookWork(s,p.id).divisorBasket],[1,2,3,6,7,14,21,42]);assert(!bookWork(s,p.id).correct);
+   click(s,'[data-basket-remove]');assert.equal(bookWork(s,p.id).divisorBasket.length,7);const fresh=await surface(t,BOOK+'#n/41/041-1',storage(s));assert.equal(element(fresh,'[data-basket-value]').value,'42');assert.equal(bookWork(fresh,p.id).divisorBasket.length,7);
+  }
+  for(let j=0;j<36;j++){
+   const sample=s.w.PetersonAnalogues.create(row.number,p,j);assert(s.w.PetersonBook.check(sample,sample.answer));if(row.number===41){const [,prime,index]=sample.prompt.match(/2 · 3 · (\d+).*назови (\d+)-й/),n=6*Number(prime),answers=Array.from({length:n},(_,k)=>k+1).filter(d=>n%d===0);assert.equal(sample.answer,String(answers[Number(index)-1]));}
+  }
+ }
+});
+test('all nineteen printed divisibility filters match exhaustive substitution, including empty solutions and zero',async t=>{
+ const s=await surface(t,BOOK+'#n/42/042-a'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(41,44),factors={42:[2,5,10,100,25,4],43:[3,9,6,15,18,90],44:[2,5,10,3,9,6,15]};
+ for(const row of rows)for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);const d=factors[row.number][i],all=row.number===44?[315,79,8181,490,102]:[0,1,2,3,4,5,6,7,8,9],from=v=>row.number===42?2730+v:row.number===43?5012+100*v:v,correct=all.filter(v=>from(v)%d===0),wrong=all.find(v=>!correct.includes(v)),probe=element(s,'[data-filter-probe]');probe.value=String(wrong);probe.dispatchEvent(new s.w.Event('change',{bubbles:true}));click(s,'[data-filter-divide]');assert.match(element(s,'[data-filter-result]').textContent,new RegExp('остаток '+from(wrong)%d));
+  const pick=x=>click(s,'[data-filter-pick="'+x+'"]'),use=()=>{click(s,'[data-filter-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};pick(wrong);assert.match(use(),new RegExp('не делится на '+d));pick(wrong);if(correct.length)correct.forEach(pick);else click(s,'[data-filter-empty]');assert.match(use(),correct.length?/все подходящие/:/действительно нет/);
+  const w=bookWork(s,p.id);assert(w.assisted&&w.submitted&&!w.correct&&!w.independent);const originalNumbers=Array.from(p.answer.matchAll(/\d+/g),m=>Number(m[0]));assert.deepEqual(originalNumbers.sort((a,b)=>a-b),[...correct].sort((a,b)=>a-b));
+  for(let j=0;j<32;j++){const sample=s.w.PetersonAnalogues.create(row.number,p,j);assert.equal(new Set(sample.choices).size,3);let answers;
+   if(row.number===44)answers=sample.prompt.match(/B = \{([^}]+)\}/)[1].split('; ').map(Number).filter(v=>v%d===0);
+   else{const pattern=sample.prompt.match(/числе ([\d□]+)/)[1];answers=Array.from({length:10},(_,x)=>x).filter(x=>Number(pattern.replace('□',x))%d===0);}
+   assert.equal(sample.answer,answers.length?'{'+answers.join('; ')+'}':'∅');
+  }
+ }
+ const x=await surface(t,BOOK+'#n/42/042-a',storage(s));assert.deepEqual([...bookWork(x,'042-a').filterItems],[0,2,4,6,8]);assert(element(x,'[data-filter-pick="0"]').getAttribute('aria-pressed')==='true');assert.match(element(x,'[data-filter-result]').textContent,/остаток/);
+});
+test('all nine printed common-divisor and common-multiple investigations retain the prime divisions, sets and evidence',async t=>{
+ const s=await surface(t,BOOK+'#n/45/045-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(44,48);
+ const source=[[12,15],[6,8],[90,70],[250,21],[6,420],[125,150],[210,2730],[35,72],[60,75,111]];
+ const divisors=n=>Array.from({length:n},(_,j)=>j+1).filter(x=>n%x===0),intersection=ns=>divisors(ns[0]).filter(x=>ns.every(n=>n%x===0)),multiple=ns=>{let l=Math.max(...ns);while(!ns.every(n=>l%n===0))l+=Math.max(...ns);return l;};
+ const set=ns=>'{'+ns.join('; ')+'}',early=n=>'{'+[n,2*n,3*n,'…'].join('; ')+'}',primes=n=>{let d=2;const a=[];while(n>1){if(n%d===0){a.push(d);n/=d;}else d++;}return a;};
+ let rowIndex=0;
+ for(const row of rows)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  const ns=source[rowIndex++],g=intersection(ns).at(-1),l=multiple(ns);
+  const start=ns[0],bad=[2,3,5,7,11].find(d=>start%d);click(s,'[data-prime-take="'+bad+'"]');assert.match(element(s,'[data-common-host] [role=status]').textContent,new RegExp('равен '+start%bad));
+  for(const [i,n] of ns.entries()){
+   const sel=element(s,'[data-prime-row]');sel.value=String(i);sel.dispatchEvent(new s.w.Event('change',{bubbles:true}));
+   for(const d of primes(n))click(s,'[data-prime-take="'+d+'"]');assert.match(element(s,'[data-factor-chain="'+i+'"]').textContent,/готово/);
+  }
+  assert.deepEqual(bookWork(s,p.id).primePaths,ns.map(primes));click(s,'[data-prime-hint]');assert.match(element(s,'[data-common-host]').textContent,/множитель в наименьшей степени/);
+  const vals=row.number===45?[...ns.map(n=>set(divisors(n))),set(intersection(ns)),String(g)]:row.number===46?[...ns.map(early),early(l),String(l)]:[String(g),String(l)];
+  const send=()=>{click(s,'[data-common-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+  vals.forEach((v,i)=>input(s,'[data-common-entry="'+i+'"]',v));
+  if(row.number===45){input(s,'[data-common-entry="2"]','{1;3;5}');assert.match(send(),/делитель обязан делить/);input(s,'[data-common-entry="2"]',vals[2]);}
+  if(row.number===46){input(s,'[data-common-entry="2"]','{24;48;72}');assert.match(send(),/бесконечно/);input(s,'[data-common-entry="2"]',vals[2]);}
+  if(row.number>46){input(s,'[data-common-entry="1"]',String(2*l));assert.match(send(),/есть меньшее/);input(s,'[data-common-entry="1"]',String(l));}
+  assert.match(send(),/вычисления согласуются/);assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct&&!bookWork(s,p.id).independent);assert(bookWork(s,p.id).assisted);
+  for(let j=0;j<30;j++){const sample=s.w.PetersonAnalogues.create(row.number,p,j),text=sample.prompt.split('чисел ')[1].replace(/\.$/,'');const xs=row.number===47?text.split(', ').map(line=>line.split(' = ')[1].split(' · ').map(Number).reduce((a,b)=>a*b)):text.split(', ').map(Number);
+   const G=intersection(xs).at(-1),L=multiple(xs);assert.equal(sample.answer,row.number===45?String(G):row.number===46?String(L):'НОД '+G+', НОК '+L);
+   if(sample.choices)assert.equal(new Set(sample.choices).size,3);
+  }
+ }
+ const re=await surface(t,BOOK+'#n/48/048-g',storage(s));assert.match(element(re,'[data-factor-chain="2"]').textContent,/3 · 37/);assert.equal(element(re,'[data-common-entry="1"]').value,'11100');
+});

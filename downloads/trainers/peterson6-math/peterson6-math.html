@@ -3353,6 +3353,8 @@ function changeBars(before,after,labels=['Было','Стало']) {
  return pic;
 }
 function configFor(lesson,task){
+ if(lesson?.id==='p41'&&task?.logicDirection)return {title:'Условие и заключение',controls:[c('Пример',[[0,'Первый'],[1,'Другой пример']]),c('Что открыть',[[0,'Только условие'],[1,'Заключение']])],initial:[0,0]};
+ if(lesson?.id==='p22'&&task?.proportionPair)return {title:'Две величины в таблице',controls:[c('Данные',[[0,'Из книги'],[1,'Для тренировки']]),c('Что показать',[[0,'Только условие'],[1,'Что постоянно'],[2,'Проверить ответ']])],initial:[0,0]};
  if(lesson?.id==='p40'&&task?.functionReview)return {title:({224:'Формула в двух направлениях',225:'Три прямые на одной плоскости',226:'Наклоны трёх прямых',227:'Одна дробь',228:'Один маршрут',229:'Две большие дроби',230:'Шаг между дробями'})[task.source.exercise],controls:[c('Данные',[[0,'Из упражнения'],[1,'Новый пример']]),c('Шаг',[[0,'Самостоятельно'],[1,'Показать опору'],[2,'Сверить результат']])],initial:[0,0]};
  if(lesson?.id==='p40'&&task?.page48Study)return {title:task.source.exercise===221?'Расстояние на числовой прямой':task.source.exercise>=222?'Один путь, две скорости':task.source.exercise===220?'Проверка высказывания':'Преобразование дроби',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новый пример']]),c('Шаг',[[0,'Самостоятельно'],[1,'Показать опору'],[2,'Сверить результат']])],initial:[0,0]};
  if(lesson?.id==='p40'&&task?.functionArithmetic)return {title:'Формула и её значения',controls:[c('Данные',[[0,'Из упражнения'],[1,'Новый пример']]),c('Шаг',[[0,'Самостоятельно'],[1,'Сверить вычисления'],[2,'Сверить результат']])],initial:[0,0]};
@@ -3678,12 +3680,12 @@ function platonicData(shape){const f=(1+Math.sqrt(5))/2,points=[];if(shape==='do
 function platonicWire(shape){const s=chart('Каркасная схема правильного многогранника; показаны все рёбра'),data=platonicData(shape),rot=data.points.map(([x,y,z])=>{const xx=x*Math.cos(.42)+z*Math.sin(.42),zz=-x*Math.sin(.42)+z*Math.cos(.42);return [xx,y*Math.cos(.31)-zz*Math.sin(.31)];}),scale=125/Math.max(...rot.flat().map(Math.abs)),pts=rot.map(([x,y])=>[300+x*scale,185-y*scale]);for(const[a,b]of data.edges)ln(s,...pts[a],...pts[b],{'stroke-width':2});pts.forEach(p=>s.append(svg('circle',{cx:p[0],cy:p[1],r:3,fill:'#236a4b'})));return s;}
 function solidFigure(shape){if(['dodecahedron','icosahedron'].includes(shape))return platonicWire(shape);const s=chart('Схема пространственной фигуры: '+shape);if(['cube','cuboid','prism','tetrahedron','octahedron'].includes(shape)){let pts,edges;if(shape==='tetrahedron'){pts=[[110,285],[430,285],[270,65],[325,215]];edges=[[0,1],[0,2],[1,2],[0,3,1],[1,3,1],[2,3,1]];}else if(shape==='prism'){pts=[[100,280],[290,280],[195,100],[310,220],[500,220],[405,40]];edges=[[0,1],[0,2],[1,2],[3,4],[3,5],[4,5],[0,3,1],[1,4],[2,5]];}else if(shape==='octahedron'){pts=[[150,185],[300,260],[450,185],[300,130],[300,45],[300,330]];edges=[[0,1],[1,2],[2,3,1],[3,0,1],[4,0],[4,1],[4,2],[4,3,1],[5,0],[5,1],[5,2],[5,3,1]];}else{const w=shape==='cube'?210:300;pts=[[100,290],[100+w,290],[100+w,100],[100,100],[180,240],[180+w,240],[180+w,50],[180,50]];edges=[[0,1],[1,2],[2,3],[3,0],[4,5,1],[5,6],[6,7],[7,4,1],[0,4,1],[1,5],[2,6],[3,7]];}edges.forEach(([a,b,hidden])=>ln(s,...pts[a],...pts[b],hidden?{'stroke-dasharray':'7 6',stroke:'#779888'}:{}));pts.forEach((p,i)=>dot(s,...p,String.fromCharCode(65+i)));}else if(shape==='sphere'){s.append(svg('circle',{cx:300,cy:185,r:120,fill:'#e9f4ee',stroke:'#235b46','stroke-width':3}));s.append(svg('ellipse',{cx:300,cy:185,rx:120,ry:35,fill:'none',stroke:'#779888','stroke-dasharray':'7 5'}));ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else if(['cylinder','cone'].includes(shape)){const cone=shape==='cone';s.append(svg('ellipse',{cx:300,cy:290,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));if(cone){ln(s,190,290,300,65);ln(s,410,290,300,65);}else{s.append(svg('ellipse',{cx:300,cy:80,rx:110,ry:30,fill:'#e9f4ee',stroke:'#235b46','stroke-width':2}));ln(s,190,80,190,290);ln(s,410,80,410,290);}ln(s,300,45,300,325,{'stroke-dasharray':'5 6',stroke:'#b88128'});}else txt(s,300,185,'Неизвестная пространственная фигура');return s;}
 function angleFigure(deg,vertex='O',arms=['A','B'],protractor=true){const s=chart(protractor?'Угол '+deg+' градусов':'Данный угол');s.setAttribute('class','pm-chart pcm-dense');const cx=300,cy=290,r=210;ln(s,cx,cy,cx+r,cy);const x=cx+r*Math.cos(deg*Math.PI/180),y=cy-r*Math.sin(deg*Math.PI/180);ln(s,cx,cy,x,y);dot(s,cx,cy,vertex);txt(s,530,315,arms[0]);txt(s,x,y-15,arms[1]);if(protractor)for(let d=0;d<=180;d+=15){const a=d*Math.PI/180;ln(s,cx+175*Math.cos(a),cy-175*Math.sin(a),cx+185*Math.cos(a),cy-185*Math.sin(a),{stroke:'#7b9b89','stroke-width':1.5});txt(s,cx+208*Math.cos(a),cy-208*Math.sin(a),d,{'font-size':14});}if(protractor)s.append(svg('path',{d:'M 475 290 A 175 175 0 0 0 125 290',fill:'none',stroke:'#a9c6b5'}));return s;}
-function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p40-law-data'){picture=table(['x','y'],lawXs[f.index].map(x=>[num(x),num(lawFunctions[f.index](x))]));}else if(f.type==='p40-vertical-sheet'){picture=exploreFunctionCurves('vertical',f.index,false,0).graph;}else if(f.type==='p21-facade'){picture=printedFacade(f.index,false,0).graph;}else if(f.type==='p21-calculation-sheet'){picture=table(['№','Выражение'],f.entries.map((e,i)=>[i+1,printedArithmetic(e,false).expression]));}else if(f.type==='p21-code-sheet'){picture=table(['Клетка','Число'],f.key.map((k,i)=>[i+1,printDecimal(k)]));}else if(f.type==='p21-graph-sheet'){picture=printedProportionGraph(f.kind,f.index,false,0).graph;}else if(f.type==='p39-cipher-sheet'){const v=coordinateCipher(f.index,false,0);picture=el('div');picture.append(v.graph,table(['Номер','Координаты'],v.rows.map(row=>row.slice(0,2))));}else if(f.type==='p39-outline-sheet'){picture=table(['№','(x; y)','№','(x; y)'],Array.from({length:17},(_,i)=>[i+1,outlineText(printedOutline[i]),i+18,outlineText(printedOutline[i+17])]));}else if(f.type==='p39-blank-paper'){picture=paperPlane([-6,6,-1,6],1,2,'Сетка для авторских ломаных.').graph;}else if(f.type==='p39-pine-observations'){picture=table(['Возраст, годы','Высота, м'],pineObservations.map((v,i)=>[i*10,num(v)]));}else if(f.type==='p39-grid-application'){picture=f.spec==='lines'?intersectDrawings(f.index,false,0).graph:table(['t, мин','T, °C','t, мин','T, °C'],Array.from({length:6},(_,i)=>[i,waterReadings[i],i+6,waterReadings[i+6]]));}else if(f.type==='p39-read-measurement'){picture=measuredPaperFigure(f.curve,'x',0,0).graph;}else if(f.type==='p39-print-construction'){picture=sourcePaperConstruction(f);}else if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
+function renderFigure(container,f){if(!container)return;addStyles();container.replaceChildren();if(!f||typeof f!=='object')return;const wrap=el('figure','pm-task-figure');let picture;if(f.type==='p41-implication'){picture=table(['Часть записи','Содержание'],[['Условие',f.left],['Следствие',f.right]]);}else if(f.type==='p22-two-quantities'){const [a,b,x]=f.given;picture=table(f.labels,[[num(a),num(b)],[num(x),'?']]);}else if(f.type==='p40-law-data'){picture=table(['x','y'],lawXs[f.index].map(x=>[num(x),num(lawFunctions[f.index](x))]));}else if(f.type==='p40-vertical-sheet'){picture=exploreFunctionCurves('vertical',f.index,false,0).graph;}else if(f.type==='p21-facade'){picture=printedFacade(f.index,false,0).graph;}else if(f.type==='p21-calculation-sheet'){picture=table(['№','Выражение'],f.entries.map((e,i)=>[i+1,printedArithmetic(e,false).expression]));}else if(f.type==='p21-code-sheet'){picture=table(['Клетка','Число'],f.key.map((k,i)=>[i+1,printDecimal(k)]));}else if(f.type==='p21-graph-sheet'){picture=printedProportionGraph(f.kind,f.index,false,0).graph;}else if(f.type==='p39-cipher-sheet'){const v=coordinateCipher(f.index,false,0);picture=el('div');picture.append(v.graph,table(['Номер','Координаты'],v.rows.map(row=>row.slice(0,2))));}else if(f.type==='p39-outline-sheet'){picture=table(['№','(x; y)','№','(x; y)'],Array.from({length:17},(_,i)=>[i+1,outlineText(printedOutline[i]),i+18,outlineText(printedOutline[i+17])]));}else if(f.type==='p39-blank-paper'){picture=paperPlane([-6,6,-1,6],1,2,'Сетка для авторских ломаных.').graph;}else if(f.type==='p39-pine-observations'){picture=table(['Возраст, годы','Высота, м'],pineObservations.map((v,i)=>[i*10,num(v)]));}else if(f.type==='p39-grid-application'){picture=f.spec==='lines'?intersectDrawings(f.index,false,0).graph:table(['t, мин','T, °C','t, мин','T, °C'],Array.from({length:6},(_,i)=>[i,waterReadings[i],i+6,waterReadings[i+6]]));}else if(f.type==='p39-read-measurement'){picture=measuredPaperFigure(f.curve,'x',0,0).graph;}else if(f.type==='p39-print-construction'){picture=sourcePaperConstruction(f);}else if(f.type==='p39-construction'){picture=sourceConstruction(f.design,false,0).graph;}else if(f.type==='p39-source-grid'){picture=gridRoute(f.diagram,'',false,0).graph;}else if(f.type==='p20-law-pairs'){picture=table(['x','y'],f.data.xs.map((x,i)=>[x,f.data.ys[i]]));}else if(f.type==='p20-paper-table'){picture=blanksPicture(f.table,false,false);}else if(f.type==='p38-ordered-points'){picture=birdTable();}else if(f.type==='p38-source-rectangles'){picture=rulerRectangles(f.focus,false).picture;}else if(f.type==='p38-station-graph'){picture=stationSourceFigure();}else if(f.type==='p38-source-area'){picture=paperArea(f.variant,false,false,true).picture;}else if(f.type==='printed-car-start'){picture=startingCarDiagram(f.route);}else if(f.type==='base-height-triangle'){picture=baseHeightTriangle(6,4);}else if(f.type==='paper-quantity-graph'){picture=f.variant==='flights'?sourceChart('flights',planeProfiles):f.variant==='apples'?sourceChart('apples',[[[0,0],[4,320]]]):sourceChart('fuel',[[[0,0],[100,8]]]);}else if(f.type==='school-hobby-bars'){picture=el('div');picture.append(sourceHobbyFigure(hobbyFigures),table(['Буква','Занятие'],hobbyNames.map((n,i)=>['абвгдежз'[i],n])));}else if(f.type==='unit-blanks'){picture=missingUnitsTable(f);}else if(f.type==='sum-fraction-percent'){picture=fractionPairFigure();}else if(f.type==='fraction-routes'){picture=fractionRouteFigure(f,-1,-1);}else if(f.type==='equation-cycle'){picture=cycleDiagram(f,f.start,0);}else if(f.type==='cut-cell-figure'){picture=cutGridFigure(f.design,null,0);}else if(f.type==='seven-score-rows'){picture=scoreFigure(f.rows);}else if(f.type==='parallel-triangle'){picture=sectionTriangle(0,0).svg;}else if(f.type==='parallel-ray-intercepts'){picture=rayInterceptFigure(20,2,0);}else if(f.type==='thales-proportions'){picture=thalesRows(f.rows);}else if(f.type==='reciprocal-chain'){picture=reciprocalOperations();}else if(f.type==='semicircle-angle'){picture=diameterAngleFigure(3,60,false);}else if(f.type==='four-proportion-expressions'){picture=table(['Буква','Вычисление'],f.rows.map((v,i)=>[['A','B','C','D'][i],v]));}else if(f.type==='copy-construction'){picture=copyConstruction(f.drawing,1);}else if(f.type==='similar-pentagons'){picture=pairedPentagons(1.6,false);}else if(f.type==='crossed-chords'){picture=chordExperiment(0,false).picture;}else if(f.type==='coded-ratios'){picture=codedRatioTable(f.rows);}else if(f.type==='nested-numeric-fraction'){picture=nestedFractionFigure();}else if(f.type==='altitude-example'){picture=altitudeDiagram(f.diagram);}else if(f.type==='operation-wheel'){picture=wheelFigure(f);}else if(f.type==='hundred-table'){picture=fullHundredGrid();}else if(f.type==='garden-ground'){picture=gardenScale();}else if(f.type==='road-ratio'){picture=roadTriangle();}else if(f.type==='city-scale-map'){picture=cityScaleFigure(f.city);}else if(f.type==='notched-parcel'){picture=parcelPicture();}else if(f.type==='six-room-flat'){picture=el('div');picture.append(apartmentPicture(),el('p','pm-note',flats.map(room=>room.tag+' — '+room.name.toLowerCase()).join(', ')));}else if(f.type==='five-lines'){picture=fiveLinePicture();}else if(f.type==='nested-tangents'){picture=tangentNest(-1,0);}else if(f.type==='pythagoras-dissection'){picture=el('div','pcm-two-arrangements');picture.append(dissectionFigure(3,4,false),dissectionFigure(3,4,true));}else if(f.type==='ratio-triangle')picture=trigFigure(f.measurable===true,null);else if(f.type==='plane')picture=planeFigure(f);else if(f.type==='line')picture=axisFigure(f.points||[],f.min??-8,f.max??8);else if(f.type==='geometry')picture=geometryFigure(f);else if(f.type==='solid')picture=solidFigure(f.shape);else if(f.type==='angle')picture=angleFigure(f.degrees,f.vertex,f.arms,f.protractor===true);else if(f.type==='proportion'){picture=eq(frac(f.leftTop,f.leftBottom),' = ',frac(f.rightTop,f.rightBottom));}else if(f.type==='parts'){picture=el('div');(f.parts||[]).forEach(p=>{const row=el('div','pcm-parts');row.append(el('span','',p.label));for(let i=0;i<p.count;i++)row.append(el('span','pcm-part',''));picture.append(row);});if(f.totalLabel)picture.append(el('p','',f.totalLabel));}else{picture=el('p','', 'Рисунок этого типа пока не поддерживается. Открой рисунок в учебнике.');}wrap.append(picture);const generic=['geometry','solid','parts'].includes(f.type)?'Схема. Размеры следует брать из условия, а не измерять на экране.':'';const caption=f.caption||generic;wrap.append(el('figcaption','pm-note',['geometry','solid','angle'].includes(f.type)&&!/^Схема[.:]/i.test(caption)?'Схема. '+caption:caption));container.append(wrap);}
 let sequence=0;
 function addStyles(){if(document.getElementById('peterson-continuation-styles'))return;const s=el('style');s.id='peterson-continuation-styles';s.textContent='.pcm-pentagon-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:.3rem}.pcm-pentagon-pair>svg.pm-chart{flex:0 1 13rem;width:13rem;min-width:0;max-width:100%;height:auto}.pcm-printed-fraction{display:grid;gap:0;max-width:33rem;margin:.8rem auto;text-align:center;line-height:1.65;font-variant-numeric:lining-nums}.pcm-sum-fractions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.4rem}.pcm-sum-fractions .pcm-printed-fraction{margin:.3rem 0;max-width:100%}.pcm-sum-symbol{font-size:1.4rem}.pcm-fraction-numerator{padding:.2rem .3rem;border-bottom:2px solid currentColor}.pcm-fraction-denominator{padding:.2rem .3rem}.pcm-two-arrangements{display:flex;flex-wrap:wrap;gap:.6rem}.pcm-two-arrangements svg{width:clamp(130px,43%,225px);height:auto;max-width:100%}.pcm-parts{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:12px 0}.pcm-parts>span:first-child{flex-basis:100%}.pcm-part{display:inline-block;width:42px;height:35px;background:#a7d6bd;border:2px solid #3c7d60}.pcm-step{background:white;border-left:4px solid #4c9470;padding:10px 14px;margin:8px 0}.pm-task-figure{margin:12px 0;border:1px solid #b8d0c3;border-radius:12px;padding:14px;background:#fcfefc;overflow:auto}.pm-task-figure .pm-chart{max-height:400px}.pcm-chip{display:inline-block;margin:5px;padding:8px 12px;border-radius:8px;border:1px solid #aac7b5;background:white}.pcm-true{background:#d5ecd9}.pcm-false{background:#f7e0d5}.pcm-proof{border:1px solid #b79551;padding:12px;background:#fff9ed}.pcm-net{display:grid;grid-template-columns:repeat(4,44px);gap:0;justify-content:center}.pcm-net span{height:44px;border:1px solid #48745d;background:#cde8d8}.pcm-net .empty{visibility:hidden}.pcm-diagram{font-size:21px;text-align:center;padding:15px}.pm-control select{font:inherit;min-height:44px;width:100%}.pm-task-figure svg{width:100%;height:auto;min-width:360px}.pm-visual .pcm-dense,.pm-task-figure .pcm-dense{min-width:480px;max-height:none}.pm-task-figure svg.pcm-route-fractions,.pm-visual svg.pcm-route-fractions{min-width:0;width:100%;max-width:23rem;height:auto}.pm-task-figure .pm-note{max-width:65ch}.pm-task-figure .pm-equation{display:flex;align-items:center;justify-content:center;gap:14px;font-size:26px;line-height:1.7}.pm-task-figure .pm-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.25;min-width:1.2em}.pm-task-figure .pm-fraction>span:first-child{padding:0 4px 3px;border-bottom:2px solid currentColor}.pm-task-figure .pm-fraction>span:last-child{padding:3px 4px 0}';document.head.append(s);}
 function mount(container,lesson,task){const conf=configFor(lesson,task);if(!container||!conf||lesson.model!=='continuation'||!task||typeof task.id!=='string')return ()=>{};addStyles();const n=Number(lesson.id.slice(1));let state={lessonId:lesson.id,kind:'continuation',taskId:task.id,values:conf.initial.slice(),stage:0};
  if(n===39&&task.figure?.type==='plane'){const p=(task.figure.points||[])[0];if(p&&allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))state.values=[p.x,p.y];}
- const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.decimalPrint||task.functionReview||task.page48Study||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
+ const host=el('section','pm-model'),title=el('h3','pm-title',conf.title),intro=el('p','pm-note',task.logicDirection||task.proportionPair||task.proportionOpening||task.convertGroup||Number.isInteger(task.walkingGap)||task.stationGraph||task.mentalSeries||task.decimalPrint||task.functionReview||task.page48Study||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory||task.marketDistanceGraph||task.composeSourceRatio||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)||Number.isInteger(task.geometryQuantity)||task.productUnits||task.unitBlanks||task.approachFormula||task.remainingStory||task.expressionGroup||task.percentDoubleFraction||task.threeDigits||task.lifeTimeline||task.fractionRoutes||task.mixedRule||task.mixedSeries||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||task.equationSituation||task.linearEquationStudy||task.reviewRatio||task.cancelRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.tariffStudy||task.scoreRanking||task.triangleSection||task.classParts||task.simpleMonths||task.gridDivision||task.fiveMultiples||task.missingOperation||task.wholeFromExtras||task.outputRates||task.derivedProof||task.deriveThree||task.parallelIntercept||task.thalesCipher||task.sourceRearrangement||task.constantRateStory||task.quantifiedEquation||task.storyBalance||task.naturalTrials||task.finalRootFamily||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.fixedRectangle||task.diameterAngle||task.proportionExpressions||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.twoPercentBases||task.percentTransform||task.motionPercent||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.affineRatios||task.linkedRatios||task.copierRatio||task.reorderSymbols||task.codedRatios||task.missingRatio||task.integerTrial||task.lunchStudy||task.reverseRateStudy||task.appleSaleStudy||task.fractionTreeStudy||task.oldCoinStudy||Number.isInteger(task.logicalIdentity)||task.altitudeStudy||task.percentagePortion||task.percentageChange||task.percentNarrative||task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.factorSum||task.differenceSquareStudy||task.proportionReading||task.symbolProportion||task.ratioCollection||task.ratioTarget||task.fourPlaces||task.likeTermsStudy||task.scaleExamples||task.crossScale||task.ownMapStudy||task.ownRoomStudy||task.ladderStudy||task.squareGridStudy||task.gardenPlan||task.classroomPlan||task.scaleTransfer||task.patternStudy||task.gearRatio||task.commissionStudy||task.roadSlope||task.linearStudy||task.regroupStudy||task.logicalPower||task.squareSum||task.numberTrick||task.coefficientStudy||task.coefficientContrast||Number.isInteger(task.cityMap)||task.parcelScale||task.flatScale||task.scaleReading||task.midpointStudy||task.lineRelation||task.letterStudy||task.verifyEquation||task.circusStudy||task.neighborStudy||task.steamerStudy||task.moneyStudy||task.teaStudy||task.comparisonStory||task.rateStudy||task.mixStudy||task.similarTangents||task.differenceStudy?'Предскажи результат. Измени данные модели и проверь своё объяснение.':task.oralStudy||task.chainStudy||task.travelStudy?'Сначала работай без ответа. Затем сравни свою запись с моделью.':task.nestStudy?'Сначала сформулируй свой прогноз. Меняй числа и объясняй, почему правило сохраняется.':task.pythagorasStudy?'Сосчитай одинаковые треугольники. Переключи раскладку и сравни белую площадь.':task.balanceStudy?'Предскажи, совпадут ли значения обеих сторон. Проверь подстановкой.':task.changeStudy?'Предскажи, станет ли число больше исходного. Сравни две полосы и проверь действие на другом числе.':task.partComparison?'Сначала назови сравниваемые группы. Выбери их в полях и проверь своё предположение на полосах одинакового масштаба.':task.groupRule?'Выбери небольшие числа b и c, сравни два способа вычисления и нарисуй свой пример в тетради.':task.trigStudy?'Выбери острый угол и найди обе роли катетов. Рисунок задачи остаётся выше.':task.ratioConstruction?'Измени модель и проверь своё предположение. Построение выполни в тетради и запиши проверку.':task.segmentRatio?'В модели отрезок AB состоит из 12 клеток. Меняй положение C и проверяй отношение. Затем построй свой отрезок в тетради.':n===39&&task.figure?.type==='plane'&&(task.figure.points||[]).some(p=>allowed(conf.controls[0],p.x)&&allowed(conf.controls[1],p.y))?'Модель начинается с координат точки из задачи. Изменения здесь не меняют исходный чертёж.':'Авторский пример для понимания темы. Условие выбранной задачи и её рисунок остаются на странице.'),controls=el('div','pm-controls'),visual=el('div','pm-visual'),result=el('div','pm-result'),steps=el('div'),actions=el('div','row');result.setAttribute('aria-live','polite');result.setAttribute('aria-atomic','true');host.setAttribute('aria-label','Модель: '+lesson.title);host.append(title,intro,controls,visual,result,steps,actions);container.replaceChildren(host);
  const selects=conf.controls.map((control,index)=>{const wrap=el('div','pm-control'),id='pcm-'+(++sequence),lab=el('label','',control.label),select=el('select');lab.htmlFor=id;select.id=id;control.values.forEach(v=>{const [value,label]=Array.isArray(v)?v:[v,String(v)],o=el('option','',label);o.value=String(value);select.append(o);});select.value=String(state.values[index]);select.addEventListener('change',()=>{const v=Number(select.value);if(!Number.isInteger(v)||!allowed(control,v)){select.value=String(state.values[index]);return;}state.values[index]=v;
   let hiddenControl=null;
   if((task.quantifiedEquation||task.decimalPrint||task.mentalSeries||task.stationGraph||task.convertGroup||task.proportionOpening||Number.isInteger(task.walkingGap)) && index<conf.controls.length-1)hiddenControl=conf.controls.length-1;
@@ -3694,7 +3696,7 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   if((task.collectedEquation||task.packingStudy||task.patrolStudy||task.spokeStudy||task.differenceSquareStudy?.free) && index<2)hiddenControl=2;
   if((task.factorSum||task.differenceSquareStudy&&!task.differenceSquareStudy.free) && index===0)hiddenControl=1;
   if((task.proportionReading||task.symbolProportion) && index===0)hiddenControl=1;
-  if((task.functionReview||task.page48Study||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
+  if((task.logicDirection||task.proportionPair||task.functionReview||task.page48Study||task.functionArithmetic||task.functionPlane||task.scaleConversion||task.finalProportions||task.graphSectionReview||task.scaleAndWork||task.proportionInvestigation||task.graphStudy||Number.isInteger(task.endCoordinates)||task.paperInvestigation||task.rateCipher||task.gridAlgebra||task.modulusReview||task.gridApplication||task.paperIntersection||task.paperGridTask||task.gridGeometry||task.coordinateRule||task.gridRead||task.dilutionSource||Number.isInteger(task.oddQuotient)||task.printedPropRoot||task.paperLawGraph||task.prefixMultiple||task.classifyLaw||task.fillProportionTable||task.physicalLaw||task.changedPhysicalLaw||task.countingPaper||task.p38Tour||task.paperMeasure||task.calendarBalance||task.formulaWords||task.p38Shape||task.sizeRule||task.percentBasis||task.reduceStudy||Number.isInteger(task.squareClaim)||task.sharedRate||task.portionRow||task.printedJourney||task.appliedCompare||task.appliedBalance||task.ratioRewrite||task.printedRateStory&&task.printedRateStory!=='trains'||task.composeSourceRatio||Number.isInteger(task.geometryQuantity)||Number.isInteger(task.quantityFamily)&&task.quantityFamily<2||task.productUnits||task.remainingStory==='park'||task.expressionGroup||task.percentDoubleFraction||task.lifeTimeline||task.rationalChain||task.fractionCompare||task.papyrusBlock||task.directedCycle||task.operationRole||['languages','journey','workers'].includes(task.equationSituation)||task.reviewRatio||task.reviewMap||task.reviewPercentageWord||task.reviewArithmetic||task.classParts||task.simpleMonths||task.wholeFromExtras||task.outputRates||task.derivedProof||task.thalesCipher||task.constantRateStory||task.finalRootFamily||task.identityProof||task.rootFamily||task.unarySequence||task.equationNotation||task.rootProbe||task.rootCount||task.ratioRectangle||task.roadMeeting||task.proportionExpressions||task.fallCurve||task.currencyCipher||task.copyDrawing||task.proportionClaim||task.percentTransform||task.motionPercent&&task.motionPercent!=='meeting'||task.similarPentagon||task.alloyParts||task.circleRatio||task.crossedChords||task.oddExpressions||task.codedRatios||task.linkedRatios||task.copierRatio) && index===0)hiddenControl=1;
   if((task.printedRateStory==='trains'||task.marketDistanceGraph||task.oilCans||task.sourceFuelGraph||task.flightGraph||task.sectionFlow||task.hobbySurvey||task.legoSurvey||Number.isInteger(task.gapDirection)||Number.isInteger(task.quantityFamily)&&task.quantityFamily>=2||task.unitBlanks||task.approachFormula||['fuel','vegetables'].includes(task.remainingStory)||task.fractionRoutes||task.mixedRule||task.mixedSeries||['milk','honey','grains'].includes(task.equationSituation)||task.linearEquationStudy||task.cancelRatio||task.tariffStudy||task.scoreRanking||task.triangleSection||task.gridDivision||task.fiveMultiples||task.missingOperation||task.deriveThree||task.sourceRearrangement||task.storyBalance||task.naturalTrials||task.newtonCapital||Number.isInteger(task.rootDomain)||task.inverseChain||task.fixedRectangle||task.diameterAngle||task.pandigitalStudy||task.reverseSquare||task.classOrderStudy||task.boatGap||task.twoPercentBases||task.motionPercent==='meeting'||task.missingRatio||task.affineRatios) && index<2)hiddenControl=2;
   if((task.ratioCollection||task.fourPlaces) && index<2)hiddenControl=2;
   if((task.likeTermsStudy||task.crossScale||task.ownMapStudy||task.ownRoomStudy) && index<2)hiddenControl=2;
@@ -3707,7 +3709,12 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
  const next=el('button','pm-button','Следующий шаг модели'),reset=el('button','pm-button','Начать модель заново');next.type=reset.type='button';next.addEventListener('click',()=>{state.stage=Math.min(5,state.stage+1);draw();});reset.addEventListener('click',()=>{state.values=conf.initial.slice();state.stage=0;selects.forEach((s,i)=>s.value=String(state.values[i]));draw();});actions.append(next,reset);
  function say(text){result.append(el('p','',text));}function formula(...s){result.append(eq(...s));}function show(node){visual.append(node);}function stepList(lines){explanations=lines;}
  function draw(){visual.replaceChildren();result.replaceChildren();steps.replaceChildren();explanations=[];const [a,b]=state.values;
- if(n===34 && task.linearStudy){
+ if(n===41 && task.logicDirection){
+  const d=task.logicDirection,example=d.examples[a];
+  show(table(['Проверка','Твой пример'],[['Условие',example[0]],['Заключение',b?example[1]:'Сформулируй самостоятельно.']]));
+  if(b)say('Сопоставь пример со словами: «'+d.p+' ⇒ '+d.q+'».');
+  stepList(['Назови, что принято за условие.','Скажи своими словами, что утверждается в заключении.','Для контрпримера нужно истинное условие при ложном заключении.']);
+ }else if(n===34 && task.linearStudy){
   const groups=task.linearStudy.groups.map((g,index)=>({...g,scale:index===0&&a===1?g.scale+Math.sign(g.scale):g.scale}));
   const names=[...new Set(groups.flatMap(g=>Object.keys(g.terms)))].sort(),z={};for(const v of names)z[v]=0;
   say(a===0?task.linearStudy.original:'Те же скобки. Новый первый внешний множитель: '+num(groups[0].scale)+'.');
@@ -5288,6 +5295,15 @@ function mount(container,lesson,task){const conf=configFor(lesson,task);if(!cont
   formula(v.query);show(v.graph);show(table(v.labels,v.tableRows));if(b===2)say(v.result);
   stepList(['Подпиши величины и единицы по осям.','Сверь положение точки с таблицей.','Вернись к физическому смыслу обеих координат.']);
  } else if(n===21){const poly=[];for(let x=b?0.5:0;x<=6;x+=0.1){const y=b?a/x:a*x;if(y<=12)poly.push([x,y]);}show(planeFigure({xMin:0,xMax:6,yMin:0,yMax:12,polylines:[poly],points:[{name:'A',x:2,y:b?a/2:2*a}],caption:b?'График обратной пропорциональности при x > 0':'График y = kx при x ≥ 0'}));show(table(['x',1,2,3,6],[[b?'k : x':'kx',... [1,2,3,6].map(x=>b?exactRatio(a,x):a*x)]]));say(b?'Точки обратной пропорциональности не лежат на одной прямой. x = 0 запрещён.':'График прямой пропорциональности лежит на прямой через начало координат.');}
+ else if(n===22&&task.proportionPair){
+  const problem=task.proportionPair,[x0,y0,x1]=problem.examples[a];
+  const answer=problem.inverse?x0*y0/x1:y0*x1/x0;
+  show(table(problem.labels,[[num(x0),num(y0)],[num(x1),b===2?num(answer):'?']]));
+  if(b===0)say('Сравни строки. Попробуй предсказать, больше или меньше окажется ответ.');
+  if(b===1)say(problem.why);
+  if(b===2){const proportion=problem.inverse?num(x0)+' · '+num(y0)+' = '+num(x1)+' · '+num(answer):num(y0)+' / '+num(x0)+' = '+num(answer)+' / '+num(x1);say('Проверь равенство: '+proportion+'.');}
+  stepList(['Прочитай подписи обеих величин.','Выбери, что одинаково для двух строк: отношение или произведение.','Подставь найденное значение вместо вопроса и проверь равенство.']);
+ }
  else if(n===22){show(table(['Масса, кг','Стоимость, р.'],[[2,6],[a,3*a]]));formula(frac(2,a),' = ',frac(6,3*a));stepList(['Цена неизменна: 6 : 2 = 3 р. за килограмм.','Масса и стоимость прямо пропорциональны. Сохраняй одинаковый порядок строк.','Стоимость '+a+' кг: 3 · '+a+' = '+3*a+' р.']);}
  else if(n===23){const f=el('div');renderFigure(f,{type:'parts',parts:[{label:'Первая часть',count:2},{label:'Вторая часть',count:3}],totalLabel:'Всего '+5*a,caption:'Каждый прямоугольник — одна и та же доля.'});show(f);stepList(['Всего 2 + 3 = 5 равных долей.','Одна доля: '+5*a+' : 5 = '+a+'.','Части: '+2*a+' и '+3*a+'. Проверка: сумма '+5*a+', отношение 2 : 3.']);}
  else if(n>=24&&n<=28){let pts=[{name:'A',x:a}],arrows=[];if(n===25)pts=[{name:'A',x:a},{name:'B',x:-a}];if(n===26)pts=[{name:'A',x:a},{name:'B',x:b}];if(n===27||n===28){const end=n===27?a+b:a-b;pts=[{name:'A',x:a},{name:'B',x:end}];arrows=[[a,end]];}show(axisFigure(pts,-11,11,arrows));if(n===24)say(a<0?'Число '+a+' левее нуля.':'Число '+a+(a===0?' равно нулю.':' правее нуля.'));if(n===25){formula('|'+a+'| = '+Math.abs(a));say('Противоположное число: '+(-a)+'. Расстояние до нуля у них одинаковое.');}if(n===26){formula(a+' '+(a>b?'>':a<b?'<':'=')+' '+b);say('Сравни положение, а не только модули. Среди отрицательных больше число с меньшим модулем.');}if(n===27||n===28){const move=n===27?b:-b,end=a+move;formula(a+(n===27?' + ':' − ')+'('+b+') = '+end);say('От '+a+' двигаемся '+(move<0?'влево':'вправо')+' на '+Math.abs(move)+' единиц.');if(n===28)formula(a+' + ('+(-b)+') = '+end);}}
@@ -51067,6 +51083,696 @@ window.PetersonCourse = {
      },
      "finalLabel": "Проценты, без знака %.",
      "answerFormat": "integer"
+    },
+    {
+     "id": "p22-t07",
+     "title": "К задаче №197 (3) · Круги стадиона",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 52,
+      "exercise": 197,
+      "subpart": "3",
+      "reference": "№197 (3)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "answerFormat": "decimal",
+     "prompt": "Двадцать кругов стадиона составили 9 км. Сколько километров пробежит спортсмен за 14 таких же кругов?",
+     "answer": "6,3",
+     "finalLabel": "Введи ответ числом. Единица: км.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая это пропорциональная зависимость?",
+       "choices": [
+        "Прямая",
+        "Обратная"
+       ],
+       "answer": "Прямая",
+       "hint": "Длина круга остаётся прежней.",
+       "explanation": "Длина круга остаётся прежней."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Выбери равенство для таблицы. Буквой x обозначена искомая величина.",
+       "choices": [
+        "20 · 9 = 14 · x",
+        "9 / 20 = x / 14"
+       ],
+       "answer": "9 / 20 = x / 14",
+       "hint": "При прямой зависимости равно отношение величин. При обратной неизменно произведение.",
+       "explanation": "Длина круга остаётся прежней. Подходит 9 / 20 = x / 14."
+      },
+      {
+       "prompt": "Сколько километров приходится на один круг?",
+       "answer": "0,45",
+       "hint": "Подели весь путь на число одинаковых кругов.",
+       "explanation": "9 : 20 = 0,45 км."
+      }
+     ],
+     "hint": "Длина круга остаётся прежней.",
+     "explanation": "14 · 0,45 = 6,3 км.",
+     "skills": [
+      "proportion",
+      "direct-proportion"
+     ],
+     "errorCues": [
+      [
+       "126",
+       "Девять километров — это весь путь за 20 кругов. Узнай расстояние за один круг."
+      ],
+      [
+       "0,45",
+       "Ты нашёл длину одного круга. Сколько таких кругов предстоит пробежать?"
+      ]
+     ],
+     "relatedTask": "p22-t08",
+     "proportionPair": {
+      "labels": [
+       "Число кругов",
+       "Путь, км"
+      ],
+      "examples": [
+       [
+        20,
+        9,
+        14
+       ],
+       [
+        12,
+        6,
+        18
+       ]
+      ],
+      "inverse": false,
+      "why": "Длина круга остаётся прежней."
+     },
+     "figure": {
+      "type": "p22-two-quantities",
+      "labels": [
+       "Число кругов",
+       "Путь, км"
+      ],
+      "given": [
+       20,
+       9,
+       14
+      ],
+      "caption": "Вторая строка относится к вопросу задачи."
+     }
+    },
+    {
+     "id": "p22-t08",
+     "title": "К задаче №197 (4) · Расход ткани",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 52,
+      "exercise": 197,
+      "subpart": "4",
+      "reference": "№197 (4)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "answerFormat": "decimal",
+     "prompt": "На пять одинаковых платьев пошло 14 м ткани. Сколько метров потребуется для трёх платьев того же фасона и размера?",
+     "answer": "8,4",
+     "finalLabel": "Введи ответ числом. Единица: м.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая это пропорциональная зависимость?",
+       "choices": [
+        "Прямая",
+        "Обратная"
+       ],
+       "answer": "Прямая",
+       "hint": "Расход ткани на одно платье постоянен.",
+       "explanation": "Расход ткани на одно платье постоянен."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Выбери равенство для таблицы. Буквой x обозначена искомая величина.",
+       "choices": [
+        "5 · 14 = 3 · x",
+        "14 / 5 = x / 3"
+       ],
+       "answer": "14 / 5 = x / 3",
+       "hint": "При прямой зависимости равно отношение величин. При обратной неизменно произведение.",
+       "explanation": "Расход ткани на одно платье постоянен. Подходит 14 / 5 = x / 3."
+      },
+      {
+       "prompt": "Сколько метров уходит на одно платье?",
+       "answer": "2,8",
+       "hint": "Раздели 14 м между пятью одинаковыми платьями.",
+       "explanation": "14 : 5 = 2,8 м."
+      }
+     ],
+     "hint": "Расход ткани на одно платье постоянен.",
+     "explanation": "Три платья требуют 2,8 · 3 = 8,4 м.",
+     "skills": [
+      "proportion",
+      "direct-proportion"
+     ],
+     "errorCues": [
+      [
+       "2,8",
+       "Столько ткани нужно на одно платье. Проверь, сколько платьев в заказе."
+      ],
+      [
+       "42",
+       "14 м ушли на пять платьев. Для начала найди расход на одно."
+      ]
+     ],
+     "relatedTask": "p22-t07",
+     "proportionPair": {
+      "labels": [
+       "Число платьев",
+       "Ткань, м"
+      ],
+      "examples": [
+       [
+        5,
+        14,
+        3
+       ],
+       [
+        6,
+        15,
+        4
+       ]
+      ],
+      "inverse": false,
+      "why": "Расход ткани на одно платье постоянен."
+     },
+     "figure": {
+      "type": "p22-two-quantities",
+      "labels": [
+       "Число платьев",
+       "Ткань, м"
+      ],
+      "given": [
+       5,
+       14,
+       3
+      ],
+      "caption": "Вторая строка относится к вопросу задачи."
+     }
+    },
+    {
+     "id": "p22-t09",
+     "title": "К задаче №198 (2) · Один заказ для конвейера",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 52,
+      "exercise": 198,
+      "subpart": "2",
+      "reference": "№198 (2)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "answerFormat": "decimal",
+     "prompt": "Конвейер выпускал 180 деталей за минуту и выполнял весь заказ за 8 ч. Теперь он выпускает 200 деталей за минуту. Сколько часов займёт тот же заказ?",
+     "answer": "7,2",
+     "finalLabel": "Введи ответ числом. Единица: ч.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая это пропорциональная зависимость?",
+       "choices": [
+        "Прямая",
+        "Обратная"
+       ],
+       "answer": "Обратная",
+       "hint": "Количество деталей в заказе сохраняется. Более быстрый конвейер затратит меньше времени.",
+       "explanation": "Количество деталей в заказе сохраняется. Более быстрый конвейер затратит меньше времени."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Выбери равенство для таблицы. Буквой x обозначена искомая величина.",
+       "choices": [
+        "180 · 8 = 200 · x",
+        "8 / 180 = x / 200"
+       ],
+       "answer": "180 · 8 = 200 · x",
+       "hint": "При прямой зависимости равно отношение величин. При обратной неизменно произведение.",
+       "explanation": "Количество деталей в заказе сохраняется. Более быстрый конвейер затратит меньше времени. Подходит 180 · 8 = 200 · x."
+      },
+      {
+       "prompt": "За сколько минут работал прежний конвейер?",
+       "answer": "480",
+       "hint": "В одном часе 60 минут.",
+       "explanation": "8 · 60 = 480 мин."
+      }
+     ],
+     "hint": "Количество деталей в заказе сохраняется. Более быстрый конвейер затратит меньше времени.",
+     "explanation": "В заказе 180 · 480 = 86 400 деталей. При новой скорости нужно 432 мин, или 7 ч 12 мин = 7,2 ч.",
+     "skills": [
+      "proportion",
+      "inverse-proportion"
+     ],
+     "errorCues": [
+      [
+       "432",
+       "432 — правильное количество минут. В поле требуются часы."
+      ],
+      [
+       "7,12",
+       "12 минут — это 12/60 часа. Запиши время десятичной дробью."
+      ],
+      [
+       "86400",
+       "Ты верно посчитал число деталей. Теперь раздели его на новую производительность и переведи минуты в часы."
+      ]
+     ],
+     "relatedTask": "p22-t11",
+     "proportionPair": {
+      "labels": [
+       "Деталей за минуту",
+       "Время, ч"
+      ],
+      "examples": [
+       [
+        180,
+        8,
+        200
+       ],
+       [
+        120,
+        6,
+        180
+       ]
+      ],
+      "inverse": true,
+      "why": "Количество деталей в заказе сохраняется. Более быстрый конвейер затратит меньше времени."
+     },
+     "figure": {
+      "type": "p22-two-quantities",
+      "labels": [
+       "Деталей за минуту",
+       "Время, ч"
+      ],
+      "given": [
+       180,
+       8,
+       200
+      ],
+      "caption": "Вторая строка относится к вопросу задачи."
+     }
+    },
+    {
+     "id": "p22-t10",
+     "title": "К задаче №199 (1) · Скорость печати",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 53,
+      "exercise": 199,
+      "subpart": "1",
+      "reference": "№199 (1)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "answerFormat": "integer",
+     "prompt": "За 4,5 мин принтер напечатал 27 страниц. Сколько минут уйдёт на 300 страниц при том же режиме?",
+     "answer": "50",
+     "finalLabel": "Введи ответ числом. Единица: мин.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая это пропорциональная зависимость?",
+       "choices": [
+        "Прямая",
+        "Обратная"
+       ],
+       "answer": "Прямая",
+       "hint": "При одной скорости большему числу страниц соответствует большее время.",
+       "explanation": "При одной скорости большему числу страниц соответствует большее время."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Выбери равенство для таблицы. Буквой x обозначена искомая величина.",
+       "choices": [
+        "27 · 4,5 = 300 · x",
+        "4,5 / 27 = x / 300"
+       ],
+       "answer": "4,5 / 27 = x / 300",
+       "hint": "При прямой зависимости равно отношение величин. При обратной неизменно произведение.",
+       "explanation": "При одной скорости большему числу страниц соответствует большее время. Подходит 4,5 / 27 = x / 300."
+      },
+      {
+       "prompt": "Сколько страниц принтер выдаёт за минуту?",
+       "answer": "6",
+       "hint": "Раздели число напечатанных страниц на затраченное время.",
+       "explanation": "27 : 4,5 = 6 стр./мин."
+      }
+     ],
+     "hint": "При одной скорости большему числу страниц соответствует большее время.",
+     "explanation": "На каждую минуту приходится 6 страниц. Для 300 страниц нужно 300 : 6 = 50 мин.",
+     "skills": [
+      "proportion",
+      "direct-proportion"
+     ],
+     "errorCues": [
+      [
+       "6",
+       "Это производительность в страницах за минуту. Сколько минут её надо поддерживать?"
+      ],
+      [
+       "1800",
+       "За одну минуту выходят 6 страниц. Ищи число групп по шесть."
+      ]
+     ],
+     "relatedTask": "p22-t12",
+     "proportionPair": {
+      "labels": [
+       "Страницы",
+       "Время, мин"
+      ],
+      "examples": [
+       [
+        27,
+        4.5,
+        300
+       ],
+       [
+        36,
+        4.5,
+        160
+       ]
+      ],
+      "inverse": false,
+      "why": "При одной скорости большему числу страниц соответствует большее время."
+     },
+     "figure": {
+      "type": "p22-two-quantities",
+      "labels": [
+       "Страницы",
+       "Время, мин"
+      ],
+      "given": [
+       27,
+       4.5,
+       300
+      ],
+      "caption": "Вторая строка относится к вопросу задачи."
+     }
+    },
+    {
+     "id": "p22-t11",
+     "title": "К задаче №199 (2) · Другая фасовка чая",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 53,
+      "exercise": 199,
+      "subpart": "2",
+      "reference": "№199 (2)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "answerFormat": "integer",
+     "prompt": "Запас чая умещается в 48 пачках по 250 г. Сколько полных пачек получится, если в каждую положить по 150 г и использовать весь чай?",
+     "answer": "80",
+     "finalLabel": "Введи ответ числом. Единица: пачек.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая это пропорциональная зависимость?",
+       "choices": [
+        "Прямая",
+        "Обратная"
+       ],
+       "answer": "Обратная",
+       "hint": "Общая масса чая сохраняется. В более лёгких пачках того же чая получится больше.",
+       "explanation": "Общая масса чая сохраняется. В более лёгких пачках того же чая получится больше."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Выбери равенство для таблицы. Буквой x обозначена искомая величина.",
+       "choices": [
+        "250 · 48 = 150 · x",
+        "48 / 250 = x / 150"
+       ],
+       "answer": "250 · 48 = 150 · x",
+       "hint": "При прямой зависимости равно отношение величин. При обратной неизменно произведение.",
+       "explanation": "Общая масса чая сохраняется. В более лёгких пачках того же чая получится больше. Подходит 250 · 48 = 150 · x."
+      },
+      {
+       "prompt": "Сколько граммов чая во всём запасе?",
+       "answer": "12000",
+       "hint": "Умножь массу пачки на количество пачек до перефасовки.",
+       "explanation": "250 · 48 = 12 000 г."
+      }
+     ],
+     "hint": "Общая масса чая сохраняется. В более лёгких пачках того же чая получится больше.",
+     "explanation": "12 000 : 150 = 80 пачек. Проверка: 80 · 150 = 48 · 250.",
+     "skills": [
+      "proportion",
+      "inverse-proportion"
+     ],
+     "errorCues": [
+      [
+       "28,8",
+       "Меньшая пачка не может уменьшить число пачек для той же массы чая."
+      ],
+      [
+       "12000",
+       "Это масса запаса в граммах. Раздели её на массу новой пачки."
+      ]
+     ],
+     "relatedTask": "p22-t13",
+     "proportionPair": {
+      "labels": [
+       "Масса пачки, г",
+       "Количество пачек"
+      ],
+      "examples": [
+       [
+        250,
+        48,
+        150
+       ],
+       [
+        200,
+        60,
+        120
+       ]
+      ],
+      "inverse": true,
+      "why": "Общая масса чая сохраняется. В более лёгких пачках того же чая получится больше."
+     },
+     "figure": {
+      "type": "p22-two-quantities",
+      "labels": [
+       "Масса пачки, г",
+       "Количество пачек"
+      ],
+      "given": [
+       250,
+       48,
+       150
+      ],
+      "caption": "Вторая строка относится к вопросу задачи."
+     }
+    },
+    {
+     "id": "p22-t12",
+     "title": "К задаче №199 (3) · Расстояние на полном баке",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 53,
+      "exercise": 199,
+      "subpart": "3",
+      "reference": "№199 (3)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "answerFormat": "integer",
+     "prompt": "На 310 км автомобиль израсходовал 25 л. Найди запас хода в километрах для 40 л при таком же расходе на каждый километр.",
+     "answer": "496",
+     "finalLabel": "Введи ответ числом. Единица: км.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая это пропорциональная зависимость?",
+       "choices": [
+        "Прямая",
+        "Обратная"
+       ],
+       "answer": "Прямая",
+       "hint": "Один литр позволяет проехать одно и то же расстояние.",
+       "explanation": "Один литр позволяет проехать одно и то же расстояние."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Выбери равенство для таблицы. Буквой x обозначена искомая величина.",
+       "choices": [
+        "25 · 310 = 40 · x",
+        "310 / 25 = x / 40"
+       ],
+       "answer": "310 / 25 = x / 40",
+       "hint": "При прямой зависимости равно отношение величин. При обратной неизменно произведение.",
+       "explanation": "Один литр позволяет проехать одно и то же расстояние. Подходит 310 / 25 = x / 40."
+      },
+      {
+       "prompt": "Сколько километров приходится на один литр?",
+       "answer": "12,4",
+       "hint": "Подели пройденное расстояние на потраченные литры.",
+       "explanation": "310 : 25 = 12,4 км/л."
+      }
+     ],
+     "hint": "Один литр позволяет проехать одно и то же расстояние.",
+     "explanation": "За счёт 40 л автомобиль проедет 12,4 · 40 = 496 км.",
+     "skills": [
+      "proportion",
+      "direct-proportion"
+     ],
+     "errorCues": [
+      [
+       "193,75",
+       "Топлива больше 25 л, поэтому запас хода должен превысить 310 км."
+      ],
+      [
+       "12,4",
+       "Это путь на одном литре. Сколько литров помещается в бак?"
+      ]
+     ],
+     "relatedTask": "p22-t10",
+     "proportionPair": {
+      "labels": [
+       "Топливо, л",
+       "Путь, км"
+      ],
+      "examples": [
+       [
+        25,
+        310,
+        40
+       ],
+       [
+        30,
+        360,
+        45
+       ]
+      ],
+      "inverse": false,
+      "why": "Один литр позволяет проехать одно и то же расстояние."
+     },
+     "figure": {
+      "type": "p22-two-quantities",
+      "labels": [
+       "Топливо, л",
+       "Путь, км"
+      ],
+      "given": [
+       25,
+       310,
+       40
+      ],
+      "caption": "Вторая строка относится к вопросу задачи."
+     }
+    },
+    {
+     "id": "p22-t13",
+     "title": "К задаче №199 (4) · Две сцепленные шестерни",
+     "source": {
+      "type": "textbook",
+      "part": 2,
+      "page": 53,
+      "exercise": 199,
+      "subpart": "4",
+      "reference": "№199 (4)",
+      "isbn": "978-5-9963-4598-4"
+     },
+     "kind": "number",
+     "answerFormat": "integer",
+     "prompt": "У первой шестерни 32 зубца, у соседней 40. Первая сделала 215 полных оборотов. Сколько оборотов сделала вторая?",
+     "answer": "172",
+     "finalLabel": "Введи ответ числом. Единица: оборотов.",
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Какая это пропорциональная зависимость?",
+       "choices": [
+        "Прямая",
+        "Обратная"
+       ],
+       "answer": "Обратная",
+       "hint": "Мимо места сцепления проходит одинаковое число зубцов обеих шестерён.",
+       "explanation": "Мимо места сцепления проходит одинаковое число зубцов обеих шестерён."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Выбери равенство для таблицы. Буквой x обозначена искомая величина.",
+       "choices": [
+        "32 · 215 = 40 · x",
+        "215 / 32 = x / 40"
+       ],
+       "answer": "32 · 215 = 40 · x",
+       "hint": "При прямой зависимости равно отношение величин. При обратной неизменно произведение.",
+       "explanation": "Мимо места сцепления проходит одинаковое число зубцов обеих шестерён. Подходит 32 · 215 = 40 · x."
+      },
+      {
+       "prompt": "Сколько зубцов первой шестерни прошло через точку сцепления?",
+       "answer": "6880",
+       "hint": "За один оборот проходит 32 зубца.",
+       "explanation": "32 · 215 = 6880 прохождений зубцов."
+      }
+     ],
+     "hint": "Мимо места сцепления проходит одинаковое число зубцов обеих шестерён.",
+     "explanation": "У второй шестерни на полный оборот приходится 40 зубцов. Она сделает 6880 : 40 = 172 оборота.",
+     "skills": [
+      "proportion",
+      "inverse-proportion"
+     ],
+     "errorCues": [
+      [
+       "268,75",
+       "Большая шестерня поворачивается медленнее. Проверь, у какой больше зубцов."
+      ],
+      [
+       "6880",
+       "Это число прохождений зубцов. Подели его на число зубцов второй шестерни."
+      ]
+     ],
+     "relatedTask": "p22-t11",
+     "proportionPair": {
+      "labels": [
+       "Зубцов на шестерне",
+       "Обороты"
+      ],
+      "examples": [
+       [
+        32,
+        215,
+        40
+       ],
+       [
+        24,
+        150,
+        36
+       ]
+      ],
+      "inverse": true,
+      "why": "Мимо места сцепления проходит одинаковое число зубцов обеих шестерён."
+     },
+     "figure": {
+      "type": "p22-two-quantities",
+      "labels": [
+       "Зубцов на шестерне",
+       "Обороты"
+      ],
+      "given": [
+       32,
+       215,
+       40
+      ],
+      "caption": "Вторая строка относится к вопросу задачи."
+     }
     }
    ]
   },
@@ -101408,6 +102114,657 @@ window.PetersonCourse = {
      },
      "finalLabel": "Сформулируй и обоснуй решение. Проверь его с учителем.",
      "id": "p41-t04"
+    },
+    {
+     "id": "p41-t05",
+     "title": "К задаче №231 (а) · Кто кормит детёнышей молоком?",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 51,
+      "exercise": 231,
+      "subpart": "а",
+      "reference": "№231 (а)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Разбери связь «животное относится к млекопитающим ⇒ самки этого вида кормят детёнышей молоком». Составь фразу о признаке вида, сохранив направление следования.",
+     "answer": "Из принадлежности к млекопитающим следует кормление детёнышей молоком самками этого вида.",
+     "choices": [
+      "Любое животное, у которого есть детёныши, кормит их молоком.",
+      "Из того, что животное сейчас пьёт молоко, следует, что это млекопитающее.",
+      "Из принадлежности к млекопитающим следует кормление детёнышей молоком самками этого вида."
+     ],
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что в этой записи дано как условие?",
+       "choices": [
+        "самки этого вида кормят детёнышей молоком",
+        "животное относится к млекопитающим"
+       ],
+       "answer": "животное относится к млекопитающим",
+       "hint": "Прочитай фразу до стрелки.",
+       "explanation": "Условие: животное относится к млекопитающим."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что требуется получить как заключение?",
+       "choices": [
+        "животное относится к млекопитающим",
+        "самки этого вида кормят детёнышей молоком"
+       ],
+       "answer": "самки этого вида кормят детёнышей молоком",
+       "hint": "Проследи стрелку от условия к выводу.",
+       "explanation": "Заключение: самки этого вида кормят детёнышей молоком."
+      }
+     ],
+     "finalLabel": "Выбери верное объяснение.",
+     "hint": "Сначала назови условие, затем заключение. Смотри на то, в какую сторону направлена стрелка.",
+     "explanation": "Говорим о признаке вида. Одна отдельная взрослая особь сейчас может никого не кормить.",
+     "skills": [],
+     "errorCues": [
+      [
+       "Из того, что животное сейчас пьёт молоко, следует, что это млекопитающее.",
+       "Проверь этот вариант на отдельном примере. Говорим о признаке вида. Одна отдельная взрослая особь сейчас может никого не кормить."
+      ],
+      [
+       "Любое животное, у которого есть детёныши, кормит их молоком.",
+       "Ещё раз отдели условие от заключения. Говорим о признаке вида. Одна отдельная взрослая особь сейчас может никого не кормить."
+      ]
+     ],
+     "logicDirection": {
+      "p": "животное относится к млекопитающим",
+      "q": "самки этого вида кормят детёнышей молоком",
+      "examples": [
+       [
+        "Кит относится к млекопитающим.",
+        "Самка кита кормит китёнка молоком."
+       ],
+       [
+        "Утконос — млекопитающее.",
+        "Самка утконоса выкармливает детёнышей молоком."
+       ]
+      ],
+      "ref": "№231 (а)"
+     },
+     "figure": {
+      "type": "p41-implication",
+      "left": "животное относится к млекопитающим",
+      "right": "самки этого вида кормят детёнышей молоком",
+      "caption": "Читай запись в направлении стрелки."
+     }
+    },
+    {
+     "id": "p41-t06",
+     "title": "К задаче №231 (б) · Что известно о температуре при замерзании?",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 51,
+      "exercise": 231,
+      "subpart": "б",
+      "reference": "№231 (б)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Разбери связь «вода превратилась в лёд ⇒ температура в описанных условиях не выше 0 °C». Выбери фразу со словом «следует», которая сохраняет напечатанное направление. Речь об обычных условиях.",
+     "answer": "Из того, что вода замёрзла, следует, что её температура не выше нуля.",
+     "choices": [
+      "Из того, что термометр показывает ноль, следует, что вся вода уже замёрзла.",
+      "Из того, что вода замёрзла, следует, что её температура не выше нуля.",
+      "Из того, что вода замёрзла, следует, что температура строго ниже нуля."
+     ],
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что в этой записи дано как условие?",
+       "choices": [
+        "вода превратилась в лёд",
+        "температура в описанных условиях не выше 0 °C"
+       ],
+       "answer": "вода превратилась в лёд",
+       "hint": "Прочитай фразу до стрелки.",
+       "explanation": "Условие: вода превратилась в лёд."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что требуется получить как заключение?",
+       "choices": [
+        "температура в описанных условиях не выше 0 °C",
+        "вода превратилась в лёд"
+       ],
+       "answer": "температура в описанных условиях не выше 0 °C",
+       "hint": "Проследи стрелку от условия к выводу.",
+       "explanation": "Заключение: температура в описанных условиях не выше 0 °C."
+      }
+     ],
+     "finalLabel": "Выбери верное объяснение.",
+     "hint": "Сначала назови условие, затем заключение. Смотри на то, в какую сторону направлена стрелка.",
+     "explanation": "Слова «не выше» допускают ровно ноль. Вода и лёд могут сосуществовать при 0 °C.",
+     "skills": [],
+     "errorCues": [
+      [
+       "Из того, что термометр показывает ноль, следует, что вся вода уже замёрзла.",
+       "Проверь этот вариант на отдельном примере. Слова «не выше» допускают ровно ноль. Вода и лёд могут сосуществовать при 0 °C."
+      ],
+      [
+       "Из того, что вода замёрзла, следует, что температура строго ниже нуля.",
+       "Ещё раз отдели условие от заключения. Слова «не выше» допускают ровно ноль. Вода и лёд могут сосуществовать при 0 °C."
+      ]
+     ],
+     "logicDirection": {
+      "p": "вода превратилась в лёд",
+      "q": "температура в описанных условиях не выше 0 °C",
+      "examples": [
+       [
+        "В обычных условиях образовался лёд при 0 °C.",
+        "0 ≤ 0. Граничный случай включён."
+       ],
+       [
+        "Лёд охладили до −4 °C.",
+        "−4 ≤ 0. Температура ниже границы."
+       ]
+      ],
+      "ref": "№231 (б)"
+     },
+     "figure": {
+      "type": "p41-implication",
+      "left": "вода превратилась в лёд",
+      "right": "температура в описанных условиях не выше 0 °C",
+      "caption": "Читай запись в направлении стрелки."
+     }
+    },
+    {
+     "id": "p41-t07",
+     "title": "К задаче №232 (в) · От суммы цифр к числу",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 51,
+      "exercise": 232,
+      "subpart": "в",
+      "reference": "№232 (в)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Разбери связь «сумма цифр натурального числа кратна 3 ⇒ само число кратно 3». Как обосновать этот переход для любого натурального числа?",
+     "answer": "Степени десяти дают остаток 1 при делении на 3, поэтому число и сумма его цифр имеют одинаковый остаток.",
+     "choices": [
+      "Степени десяти дают остаток 1 при делении на 3, поэтому число и сумма его цифр имеют одинаковый остаток.",
+      "Число и сумма его цифр всегда равны.",
+      "Достаточно проверить одно трёхзначное число."
+     ],
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что в этой записи дано как условие?",
+       "choices": [
+        "само число кратно 3",
+        "сумма цифр натурального числа кратна 3"
+       ],
+       "answer": "сумма цифр натурального числа кратна 3",
+       "hint": "Прочитай фразу до стрелки.",
+       "explanation": "Условие: сумма цифр натурального числа кратна 3."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что требуется получить как заключение?",
+       "choices": [
+        "сумма цифр натурального числа кратна 3",
+        "само число кратно 3"
+       ],
+       "answer": "само число кратно 3",
+       "hint": "Проследи стрелку от условия к выводу.",
+       "explanation": "Заключение: само число кратно 3."
+      }
+     ],
+     "finalLabel": "Выбери верное объяснение.",
+     "hint": "Сначала назови условие, затем заключение. Смотри на то, в какую сторону направлена стрелка.",
+     "explanation": "При замене 10, 100 и 1000 единицами разности 9, 99 и 999 делятся на 3.",
+     "skills": [],
+     "errorCues": [
+      [
+       "Достаточно проверить одно трёхзначное число.",
+       "Проверь этот вариант на отдельном примере. При замене 10, 100 и 1000 единицами разности 9, 99 и 999 делятся на 3."
+      ],
+      [
+       "Число и сумма его цифр всегда равны.",
+       "Ещё раз отдели условие от заключения. При замене 10, 100 и 1000 единицами разности 9, 99 и 999 делятся на 3."
+      ]
+     ],
+     "logicDirection": {
+      "p": "сумма цифр натурального числа кратна 3",
+      "q": "само число кратно 3",
+      "examples": [
+       [
+        "У 123 сумма цифр 6, и 6 делится на 3.",
+        "123 = 3 · 41."
+       ],
+       [
+        "У 501 сумма цифр 6.",
+        "501 = 3 · 167."
+       ]
+      ],
+      "ref": "№232 (в)"
+     },
+     "figure": {
+      "type": "p41-implication",
+      "left": "сумма цифр натурального числа кратна 3",
+      "right": "само число кратно 3",
+      "caption": "Читай запись в направлении стрелки."
+     }
+    },
+    {
+     "id": "p41-t08",
+     "title": "К задаче №232 (г) · От числа к сумме цифр",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 51,
+      "exercise": 232,
+      "subpart": "г",
+      "reference": "№232 (г)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Разбери связь «натуральное число кратно 3 ⇒ сумма его цифр кратна 3». Как связаны это утверждение и соседнее утверждение о сумме цифр?",
+     "answer": "Они обратны друг другу, и оба верны по признаку делимости на 3.",
+     "choices": [
+      "Обратное утверждение всегда ложно.",
+      "Они совпадают дословно, условие осталось прежним.",
+      "Они обратны друг другу, и оба верны по признаку делимости на 3."
+     ],
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что в этой записи дано как условие?",
+       "choices": [
+        "натуральное число кратно 3",
+        "сумма его цифр кратна 3"
+       ],
+       "answer": "натуральное число кратно 3",
+       "hint": "Прочитай фразу до стрелки.",
+       "explanation": "Условие: натуральное число кратно 3."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что требуется получить как заключение?",
+       "choices": [
+        "сумма его цифр кратна 3",
+        "натуральное число кратно 3"
+       ],
+       "answer": "сумма его цифр кратна 3",
+       "hint": "Проследи стрелку от условия к выводу.",
+       "explanation": "Заключение: сумма его цифр кратна 3."
+      }
+     ],
+     "finalLabel": "Выбери верное объяснение.",
+     "hint": "Сначала назови условие, затем заключение. Смотри на то, в какую сторону направлена стрелка.",
+     "explanation": "Поменяй местами условие и вывод предыдущего подпункта. Равенство остатков сохраняется в обе стороны.",
+     "skills": [],
+     "errorCues": [
+      [
+       "Они совпадают дословно, условие осталось прежним.",
+       "Проверь этот вариант на отдельном примере. Поменяй местами условие и вывод предыдущего подпункта. Равенство остатков сохраняется в обе стороны."
+      ],
+      [
+       "Обратное утверждение всегда ложно.",
+       "Ещё раз отдели условие от заключения. Поменяй местами условие и вывод предыдущего подпункта. Равенство остатков сохраняется в обе стороны."
+      ]
+     ],
+     "logicDirection": {
+      "p": "натуральное число кратно 3",
+      "q": "сумма его цифр кратна 3",
+      "examples": [
+       [
+        "714 = 3 · 238.",
+        "Сумма цифр 7 + 1 + 4 = 12, она кратна 3."
+       ],
+       [
+        "81 = 3 · 27.",
+        "8 + 1 = 9 = 3 · 3."
+       ]
+      ],
+      "ref": "№232 (г)"
+     },
+     "figure": {
+      "type": "p41-implication",
+      "left": "натуральное число кратно 3",
+      "right": "сумма его цифр кратна 3",
+      "caption": "Читай запись в направлении стрелки."
+     }
+    },
+    {
+     "id": "p41-t09",
+     "title": "К задаче №232 (д) · От слагаемых к их сумме",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 51,
+      "exercise": 232,
+      "subpart": "д",
+      "reference": "№232 (д)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Разбери связь «каждое слагаемое делится на одно и то же натуральное число d ⇒ сумма делится на d». Какую запись можно применить к любым двум таким слагаемым?",
+     "answer": "dk + dm = d(k + m), значит сумма делится на d.",
+     "choices": [
+      "Если сумма чётная, оба слагаемых обязательно чётные.",
+      "dk + dm = d(k + m), значит сумма делится на d.",
+      "Делитель надо прибавить к каждому слагаемому."
+     ],
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что в этой записи дано как условие?",
+       "choices": [
+        "сумма делится на d",
+        "каждое слагаемое делится на одно и то же натуральное число d"
+       ],
+       "answer": "каждое слагаемое делится на одно и то же натуральное число d",
+       "hint": "Прочитай фразу до стрелки.",
+       "explanation": "Условие: каждое слагаемое делится на одно и то же натуральное число d."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что требуется получить как заключение?",
+       "choices": [
+        "каждое слагаемое делится на одно и то же натуральное число d",
+        "сумма делится на d"
+       ],
+       "answer": "сумма делится на d",
+       "hint": "Проследи стрелку от условия к выводу.",
+       "explanation": "Заключение: сумма делится на d."
+      }
+     ],
+     "finalLabel": "Выбери верное объяснение.",
+     "hint": "Сначала назови условие, затем заключение. Смотри на то, в какую сторону направлена стрелка.",
+     "explanation": "Вынеси общий делитель за скобки. Для большего числа слагаемых рассуждение такое же.",
+     "skills": [],
+     "errorCues": [
+      [
+       "Если сумма чётная, оба слагаемых обязательно чётные.",
+       "Проверь этот вариант на отдельном примере. Вынеси общий делитель за скобки. Для большего числа слагаемых рассуждение такое же."
+      ],
+      [
+       "Делитель надо прибавить к каждому слагаемому.",
+       "Ещё раз отдели условие от заключения. Вынеси общий делитель за скобки. Для большего числа слагаемых рассуждение такое же."
+      ]
+     ],
+     "logicDirection": {
+      "p": "каждое слагаемое делится на одно и то же натуральное число d",
+      "q": "сумма делится на d",
+      "examples": [
+       [
+        "18 и 24 делятся на 6.",
+        "18 + 24 = 6 · (3 + 4)."
+       ],
+       [
+        "15 и 25 делятся на 5.",
+        "15 + 25 = 5 · (3 + 5)."
+       ]
+      ],
+      "ref": "№232 (д)"
+     },
+     "figure": {
+      "type": "p41-implication",
+      "left": "каждое слагаемое делится на одно и то же натуральное число d",
+      "right": "сумма делится на d",
+      "caption": "Читай запись в направлении стрелки."
+     }
+    },
+    {
+     "id": "p41-t10",
+     "title": "К задаче №232 (е) · Достаточно ли проверить сумму?",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 51,
+      "exercise": 232,
+      "subpart": "е",
+      "reference": "№232 (е)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Разбери связь «сумма делится на натуральное число d ⇒ каждое слагаемое делится на d». Выбери контрпример к обратному утверждению. Условие должно выполняться, а заключение — нет.",
+     "answer": "1 + 3 = 4 делится на 2, хотя 1 и 3 нечётны.",
+     "choices": [
+      "1 + 3 = 4 делится на 2, хотя 1 и 3 нечётны.",
+      "1 + 2 = 3 не делится на 2.",
+      "2 + 4 = 6, все три числа чётны."
+     ],
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что в этой записи дано как условие?",
+       "choices": [
+        "сумма делится на натуральное число d",
+        "каждое слагаемое делится на d"
+       ],
+       "answer": "сумма делится на натуральное число d",
+       "hint": "Прочитай фразу до стрелки.",
+       "explanation": "Условие: сумма делится на натуральное число d."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что требуется получить как заключение?",
+       "choices": [
+        "каждое слагаемое делится на d",
+        "сумма делится на натуральное число d"
+       ],
+       "answer": "каждое слагаемое делится на d",
+       "hint": "Проследи стрелку от условия к выводу.",
+       "explanation": "Заключение: каждое слагаемое делится на d."
+      }
+     ],
+     "finalLabel": "Выбери верное объяснение.",
+     "hint": "Сначала назови условие, затем заключение. Проверь, выполняется ли условие в твоём примере.",
+     "explanation": "Первый пример нарушает вывод при верном условии. Пример с неверным условием сам по себе ничего не опровергает.",
+     "skills": [],
+     "errorCues": [
+      [
+       "2 + 4 = 6, все три числа чётны.",
+       "Проверь этот вариант на отдельном примере. Первый пример нарушает вывод при верном условии. Пример с неверным условием сам по себе ничего не опровергает."
+      ],
+      [
+       "1 + 2 = 3 не делится на 2.",
+       "Ещё раз отдели условие от заключения. Первый пример нарушает вывод при верном условии. Пример с неверным условием сам по себе ничего не опровергает."
+      ]
+     ],
+     "logicDirection": {
+      "p": "сумма делится на натуральное число d",
+      "q": "каждое слагаемое делится на d",
+      "examples": [
+       [
+        "1 + 3 = 4; сумма делится на 2.",
+        "1 и 3 не делятся на 2. Здесь вывод неверен."
+       ],
+       [
+        "2 + 4 = 6; сумма делится на 3.",
+        "Ни 2, ни 4 не делится на 3. Вывод снова неверен."
+       ]
+      ],
+      "ref": "№232 (е)"
+     },
+     "figure": {
+      "type": "p41-implication",
+      "left": "сумма делится на натуральное число d",
+      "right": "каждое слагаемое делится на d",
+      "caption": "Читай запись в направлении стрелки."
+     }
+    },
+    {
+     "id": "p41-t11",
+     "title": "К задаче №233 (в) · Два прочтения строгого сравнения",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 51,
+      "exercise": 233,
+      "subpart": "в",
+      "reference": "№233 (в)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Разбери связь «a > b ⇒ b \u003c a». Для каких рациональных a и b из a > b обязательно следует b \u003c a?",
+     "answer": "Для любых: обе записи описывают одно положение двух чисел.",
+     "choices": [
+      "Ни для каких: знак меньше означает ложное высказывание.",
+      "Только для положительных чисел.",
+      "Для любых: обе записи описывают одно положение двух чисел."
+     ],
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что в этой записи дано как условие?",
+       "choices": [
+        "b \u003c a",
+        "a > b"
+       ],
+       "answer": "a > b",
+       "hint": "Прочитай фразу до стрелки.",
+       "explanation": "Условие: a > b."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что требуется получить как заключение?",
+       "choices": [
+        "a > b",
+        "b \u003c a"
+       ],
+       "answer": "b \u003c a",
+       "hint": "Проследи стрелку от условия к выводу.",
+       "explanation": "Заключение: b \u003c a."
+      }
+     ],
+     "finalLabel": "Выбери верное объяснение.",
+     "hint": "Сначала назови условие, затем заключение. Смотри на то, в какую сторону направлена стрелка.",
+     "explanation": "Если a расположено правее b, то b расположено левее a. Перестановка имён требует развернуть знак сравнения.",
+     "skills": [],
+     "errorCues": [
+      [
+       "Только для положительных чисел.",
+       "Проверь этот вариант на отдельном примере. Если a расположено правее b, то b расположено левее a. Перестановка имён требует развернуть знак сравнения."
+      ],
+      [
+       "Ни для каких: знак меньше означает ложное высказывание.",
+       "Ещё раз отдели условие от заключения. Если a расположено правее b, то b расположено левее a. Перестановка имён требует развернуть знак сравнения."
+      ]
+     ],
+     "logicDirection": {
+      "p": "a > b",
+      "q": "b \u003c a",
+      "examples": [
+       [
+        "2 > −1.",
+        "−1 \u003c 2."
+       ],
+       [
+        "−2 > −5.",
+        "−5 \u003c −2."
+       ]
+      ],
+      "ref": "№233 (в)"
+     },
+     "figure": {
+      "type": "p41-implication",
+      "left": "a > b",
+      "right": "b \u003c a",
+      "caption": "Читай запись в направлении стрелки."
+     }
+    },
+    {
+     "id": "p41-t12",
+     "title": "К задаче №233 (г) · Что происходит при равенстве?",
+     "source": {
+      "type": "textbook",
+      "part": 3,
+      "page": 51,
+      "exercise": 233,
+      "subpart": "г",
+      "reference": "№233 (г)",
+      "isbn": "978-5-9963-4599-1"
+     },
+     "kind": "choice",
+     "prompt": "Разбери связь «a ≤ b ⇒ b ≥ a». Сопоставь все четыре печатных утверждения №233. В какой паре одно получается из другого обменом условия и заключения?",
+     "answer": "В подпунктах а и б: «кратно 8» и «кратно 4» поменялись местами.",
+     "choices": [
+      "В подпунктах в и г: любое строгое неравенство тождественно нестрогому.",
+      "В подпунктах а и б: «кратно 8» и «кратно 4» поменялись местами.",
+      "Во всех четырёх записях условие и заключение одинаковы."
+     ],
+     "steps": [
+      {
+       "kind": "choice",
+       "prompt": "Что в этой записи дано как условие?",
+       "choices": [
+        "a ≤ b",
+        "b ≥ a"
+       ],
+       "answer": "a ≤ b",
+       "hint": "Прочитай фразу до стрелки.",
+       "explanation": "Условие: a ≤ b."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Что требуется получить как заключение?",
+       "choices": [
+        "b ≥ a",
+        "a ≤ b"
+       ],
+       "answer": "b ≥ a",
+       "hint": "Проследи стрелку от условия к выводу.",
+       "explanation": "Заключение: b ≥ a."
+      },
+      {
+       "kind": "choice",
+       "prompt": "Верно ли исходное следование a ≤ b ⇒ b ≥ a при a = b?",
+       "choices": [
+        "Да",
+        "Нет"
+       ],
+       "answer": "Да",
+       "hint": "Проверь значение при a = b = 4.",
+       "explanation": "При равенстве обе нестрогие записи истинны."
+      }
+     ],
+     "finalLabel": "Выбери верное объяснение.",
+     "hint": "Сначала назови условие, затем заключение. Смотри на то, в какую сторону направлена стрелка.",
+     "explanation": "В подпункте г обе записи означают одно сравнение, включая равенство, поэтому следование верно. У подпункта в знак строгий.",
+     "skills": [],
+     "errorCues": [
+      [
+       "В подпунктах в и г: любое строгое неравенство тождественно нестрогому.",
+       "Проверь этот вариант на отдельном примере. В подпункте г обе записи означают одно сравнение, включая равенство, поэтому следование верно. У подпункта в знак строгий."
+      ],
+      [
+       "Во всех четырёх записях условие и заключение одинаковы.",
+       "Ещё раз отдели условие от заключения. В подпункте г обе записи означают одно сравнение, включая равенство, поэтому следование верно. У подпункта в знак строгий."
+      ]
+     ],
+     "logicDirection": {
+      "p": "a ≤ b",
+      "q": "b ≥ a",
+      "examples": [
+       [
+        "−2 ≤ 3.",
+        "3 ≥ −2."
+       ],
+       [
+        "4 ≤ 4.",
+        "4 ≥ 4. Знак допускает равенство."
+       ]
+      ],
+      "ref": "№233 (г)"
+     },
+     "figure": {
+      "type": "p41-implication",
+      "left": "a ≤ b",
+      "right": "b ≥ a",
+      "caption": "Читай запись в направлении стрелки."
+     }
     }
    ]
   },

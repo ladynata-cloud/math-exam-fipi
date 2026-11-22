@@ -410,14 +410,180 @@
     return {...numerical(prompt,show(answer),'Запиши конечное значение x.',hint),id:'analog-'+part.id+'-'+attempt,family:'flow-'+part.id,match:'skill',mistake:hint};
   }
 
+  function intervalPractice(number,part,attempt){
+    const n=seed(part.id)%61+attempt,v=2+n%15,shift=n%3;
+    let task;
+    if(number===31){
+      const rows=[
+        [v+' ≤ y < '+(v+3),v+'; '+(v+1)+'; '+(v+2),v+'; '+(v+1)+'; '+(v+2)+'; '+(v+3),(v+1)+'; '+(v+2)],
+        [v+',2 < y ≤ '+(v+3)+',6',(v+1)+'; '+(v+2)+'; '+(v+3),v+'; '+(v+1)+'; '+(v+2)+'; '+(v+3),(v+1)+'; '+(v+2)],
+        [v+',6 ≤ y ≤ '+(v+1),String(v+1),'∅',String(v)],
+        [v+' < y < '+v+',7','∅',String(v),String(v+1)]
+      ],idx=['031-a','031-b','031-v','031-g'].indexOf(part.id),[statement,answer,a,b]=rows[idx],choices=[answer,a,b],hint='Перечисли целые точки по порядку. Строгий знак не включает граничную точку.';
+      task={...choice('Выбери все натуральные решения '+statement+'.',choices.slice(shift).concat(choices.slice(0,shift)),answer,hint),mistake:hint};
+    }else{
+      const start=E.M.operation('divide',2+n%6,10),den=10**(3+n%3),count=10+n%47,answer=E.M.decimal(E.M.operation('add',start,(count-1)+'/'+den)),hint='Между первым и последним из N чисел ровно N − 1 одинаковых шагов.';
+      task={...numerical('В ряду '+count+' различных чисел. Первое равно '+E.M.decimal(start)+', каждое следующее больше на 1/'+den+'. Найди последнее число.',answer,'Посчитай шаги от первого числа к последнему.',hint),mistake:hint};
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'interval-'+part.id,match:'skill'};
+  }
+
+  function roundPractice(part,attempt){
+    const index=Number(part.id.split('-')[2])-1,unit=['100','10','1','0.1','0.01','0.001'][index],names=['сотен','десятков','единиц','десятых','сотых','тысячных'],k=seed(part.id)%43+attempt,M=E.M;
+    const lower=M.operation('multiply',12+k%27,unit),upper=M.operation('add',lower,unit),digit=1+k%9,target=M.operation('add',lower,M.operation('multiply',unit,digit+'/10')),show=M.decimal;
+    let task;
+    if(part.id.startsWith('033-1-')){
+      const pair=(a,b)=>show(a)+' < t < '+show(b),correct=pair(lower,upper),choices=[correct,pair(M.operation('subtract',lower,unit),upper),pair(lower,M.operation('add',upper,unit))],shift=k%3,hint='Границы должны быть и по разные стороны числа, и соседями на шкале заданного шага.';
+      task={...choice('Для t = '+show(target)+' выбери ближайшие приближения с недостатком и с избытком до '+names[index]+'.',choices.slice(shift).concat(choices.slice(0,shift)),correct,hint),mistake:hint};
+    }else{
+      const hint='Сравни отброшенную часть с половиной шага. При равенстве половине округляй положительное число вверх.';
+      task={...numerical('Округли '+show(target)+' до '+names[index]+'.',show(digit>=5?upper:lower),'Найди ближайшую круглую отметку нужного разряда.',hint),mistake:hint};
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'bounds-'+part.id,match:'skill'};
+  }
+
+  function calcPractice(part,attempt){
+    const old=decimalPractice(12,part,attempt),places=part.rounding.places,names={'-1':'десятков',0:'единиц',1:'десятых',2:'сотых'};
+    return {...old,rounding:{places},answer:E.M.answer(E.rounded(E.exact(old.expression),places)),prompt:'Вычисли новое выражение. Округли его значение до '+names[places]+'.',
+      family:'calc-round-'+part.id,mistake:'Вычисли точное значение и сохрани требуемый разряд. Определи первую цифру, отбрасываемую справа.'};
+  }
+
+  function periodPractice(number,part,attempt){
+    const E=root.PetersonBook,M=E.M,k=seed(part.id)%97+attempt,shift=k%3;
+    const choose=(prompt,choices,hint)=>({...choice(prompt,choices.slice(shift).concat(choices.slice(0,shift)),choices[0],hint),mistake:hint});
+    let task;
+    if(part.id==='035-pravilo'){
+      const x=2+k%15;task=choose('Какая из трёх дробей после сокращения не имеет конечной десятичной записи?',[x+'/'+(3*x),x+'/'+(4*x),x+'/'+(5*x)],'Сначала сократи каждую дробь. Проверь, остался ли в знаменателе простой множитель, отличный от 2 и 5.');
+    }else if(part.id==='036-pravilo'){
+      const a=(1+3*(k%9))+'/10',b='3/10',x=M.decimal(a),y=M.decimal(b);task=choose('Какое действие с двумя конечными дробями '+x+' и '+y+' даст бесконечную десятичную запись?',[x+' : '+y,x+' + '+y,x+' · '+y],'Проверь знаменатели результатов. Складывая и умножая конечные дроби, можно сохранить знаменатель — степень десяти.');
+    }else if(number===36){
+      const q=1+3*(k%17),first=part.id==='036-a',left=M.decimal(M.operation('divide',q,first?10:100)),right=first?'0,003':'1,5',expression={op:'divide',left,right},answer=M.answer(E.rounded(E.exact(expression),4));
+      task={kind:'expression',expression,rounding:{places:4},answer,prompt:'Раздели '+left+' на '+right+'. Округли частное до десятитысячных.',mistake:'Оставь четыре знака после запятой. Для округления найди пятую цифру, даже если остатки повторяются.'};
+    }else{
+      const d=part.id==='035-a'?[3,9][k%2]:part.id==='035-b'?[11,27][k%2]:part.id==='035-v'?[30,90,60,150][k%4]:[33,37][k%2];
+      const candidates=Array.from({length:d-1},(_,i)=>i+1).filter(a=>{const r=M.parse(a+'/'+d);return r.d===d;});
+      const numerator=candidates[k%candidates.length],value=M.parse(numerator+'/'+d),seen=new Map(),digits=[];let rem=numerator%d;
+      while(!seen.has(rem)){seen.set(rem,digits.length);rem*=10;digits.push(String(Math.floor(rem/d)));rem%=d;}
+      const index=seen.get(rem),prefix=digits.slice(0,index).join(''),loop=digits.slice(index).join(''),text='0,'+prefix+'('+loop+')',other=(Number(loop[0])+1)%10+loop.slice(1);
+      if(attempt%2){const hint='Записывай новые цифры деления до четвёртой после запятой. Она определяет округление до тысячных.';task={...numerical('Округли '+numerator+'/'+d+' до тысячных.',M.decimal(E.rounded(value,3)),'Введи округлённое значение.',hint),mistake:hint};}
+      else task=choose('Какова периодическая десятичная запись дроби '+numerator+'/'+d+'?',[text,'0,'+prefix+'('+other+')','1,'+prefix+'('+loop+')'],'Проверь целую часть и выпиши остатки. При первом повторе остатка начинается уже пройденный цикл цифр.');
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'period-'+part.id,match:'skill'};
+  }
+
+  function geometryPractice(part,attempt){
+    const k=seed(part.id)%61+attempt,area=attempt%2===1,E=root.PetersonBook;
+    let prompt,result,hint;
+    if(part.id==='037-1'||part.id==='037-2'){
+      const square=part.id==='037-2',a=4+k%8,b=square?a:2+k%7;
+      prompt=square?'Сторона квадрата '+a+' см. ':'Длина прямоугольника '+a+' см, ширина '+b+' см. ';
+      prompt+=area?'Найди площадь в квадратных сантиметрах.':'Найди периметр в сантиметрах.';
+      result=area?a*b:2*(a+b);hint=area?'Площадь равна произведению соседних сторон. Укажи числовое значение в квадратных единицах.':'Обойди всю границу. Учти каждую из двух пар равных сторон.';
+    }else{
+      const tenth=3+k%6,side=10+k%5,topWidth=side-2-k%2,lowWidth=side-1-k%3,lowerHeight=3+k%4;
+      const total=side*10+tenth,top=topWidth*10+1,lower=lowWidth*10+2,h=lowerHeight*10+3,show=n=>E.M.decimal(n+'/10');
+      prompt='Из двух противоположных углов квадрата со стороной '+show(total)+' см вырезали прямоугольники. Верхняя оставшаяся полоска имеет длину '+show(top)+' см, нижняя — '+show(lower)+' см и высоту '+show(h)+' см. Полоски соприкасаются, каждая заканчивается у внешнего края. ';
+      result=area?E.M.decimal((top*(total-h)+lower*h)+'/100'):show(4*total);
+      prompt+=area?'Найди точную площадь оставшейся фигуры в см².':'Найди оставшийся периметр в см.';
+      hint=area?'Высота верхней полоски равна стороне квадрата за вычетом высоты нижней. Сложи площади двух полосок.':'При прямоугольном вырезе в углу два утраченных внешних участка заменяются двумя равными им внутренними.';
+    }
+    return {...numerical(prompt,result,'Запиши числовое значение запрошенной величины.',hint),id:'analog-'+part.id+'-'+attempt,family:'geometry-'+part.id,match:'skill',mistake:hint};
+  }
+
+  function termPractice(part,attempt){
+    const M=E.M,k=seed(part.id)%97+attempt;
+    if(part.expression){
+      const factor=(11+k%17)+'/10';
+      function scaled(node){
+        if(typeof node!=='object')return M.decimal(M.operation('multiply',node,factor));
+        return {op:node.op,left:scaled(node.left),right:['add','subtract'].includes(node.op)?scaled(node.right):node.right};
+      }
+      const expression=scaled(part.expression),value=E.exact(expression),claim=k%2?value:M.operation('multiply',value,10);
+      return {kind:'expression',expression,prompt:'Проверь карточку. Её составитель получил '+M.decimal(claim)+'. Введи правильное значение выражения, соблюдая порядок действий.',answer:M.answer(value),id:'analog-'+part.id+'-'+attempt,family:'divisibility-cipher-'+part.id,match:'skill',
+        mistake:'Проверь скобки и выполни умножение и деление слева направо, прежде чем переходить к сложению и вычитанию.'};
+    }
+    const words=['МЕРА','УГОЛ','ДУГА','СЧЁТ'],word=words[k%4],v=3+k%19,order=[2,0,3,1],rows=order.map(i=>word[i]+' · '+v+' + '+(5-i)+' = '+(v+5-i));
+    rows.splice(k%5,0,'Я · '+v+' − 2 = '+(v+2));const choices=[word,[...word].reverse().join(''),word[0]+'Я'+word.slice(2)],shift=k%3;
+    const hint='Сначала оставь исходно верные равенства. Затем начни с наибольшего результата и последовательно переходи к меньшим.';
+    return {...choice('Карточки: '+rows.join('; ')+'. Прочитай слово по убыванию результатов верных равенств.',choices.slice(shift).concat(choices.slice(0,shift)),word,hint),id:'analog-'+part.id+'-'+attempt,family:'divisibility-cipher-'+part.id,match:'skill',mistake:hint};
+  }
+
+  function formulaPractice(number,part,attempt){
+    const i=Number(part.id.split('-')[1])-1,k=seed(part.id)%61+attempt,q=2+k%11,base=[4,5,6,7,8,9,10][k%7],shift=k%3,choice3=(prompt,options,hint)=>({...choice(prompt,options.slice(shift).concat(options.slice(0,shift)),options[0],hint),mistake:hint});
+    let task;
+    if(number===39){
+      if(i===0)task=choice3('Для всех натуральных n число a = '+(2*base)+'n. Какой делитель гарантирован формулой?',[String(base),'a + 1',String(2*base+1)],'Раскрой коэффициент 2 · '+base+'. Значение, которое больше a или не делит коэффициент при n=1, не гарантировано.');
+      else{const r=1+k%(base-1);task=choice3('При делении '+base+'k + '+r+' на '+base+' какой остаток получается при любом натуральном k?',[String(r),'0',String(base)],'Полные группы по '+base+' остатка не дают. Остаток должен быть меньше делителя.');}
+    }else if(number===41){
+      const other=[5,7,11,13][k%4],values=[1,2,3,6,other,2*other,3*other,6*other].sort((a,b)=>a-b),slot=k%values.length;
+      task={...numerical('Натуральное N = 2 · 3 · '+other+'. Найди все его делители и назови '+(slot+1)+'-й в порядке возрастания.',values[slot],'Составь произведения всех подмножеств трёх простых множителей, начиная с 1.','У каждого из трёх множителей два выбора: включить его или пропустить.'),mistake:'Проверь 1, одиночные множители, их пары и полное произведение. Только теперь упорядочь список.'};
+    }else{
+      const opts=[
+        ['Как записать все целые u, кратные '+base+'?',['u = '+base+'q',base+' = uq','u = q + '+base],'В записи u делителем является коэффициент при целом q.'],
+        ['Число '+base+' — делитель v. Какая запись это выражает?',['v = '+base+'q',base+' = vq','v = q − '+base],'Частное v : '+base+' должно быть целым.'],
+        ['Число v одновременно кратно 2 и '+(2*q+1)+'. Как описать все такие числа?',['v = '+(2*(2*q+1))+'q₁','v = '+(2*q+3)+'q₁','v кратно хотя бы одному из этих чисел'],'Два и нечётное число взаимно просты. Общие кратные кратны их произведению.'],
+        ['Почему число '+(2*q)+'n чётно при каждом целом n?',['Это 2 · ('+q+'n).','Это сумма нечётного числа и 2.','Достаточно случая n = 1.'],'Выдели множитель 2 из общей формулы.'],
+        ['Какое число из списка не кратно '+base+'?',[String(base*q+1),String(base*q),String(base*(q+1))],'Проверь остаток при делении на данный делитель.'],
+        ['Частное при делении положительного x на '+base+' равно '+q+', а остаток равен 1. Чему равно x?',[String(base*q+1),String(base*(q+1)),String(base*q)],'x = делитель · частное + остаток.']
+      ][i];task=choice3(...opts);
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'factor-form-'+part.id,match:'skill'};
+  }
+
+  function divisorFilterPractice(number,part,attempt){
+    const k=seed(part.id)%83+attempt,key=part.id.split('-')[1],d=key==='a'?(number===42?2:3):key==='b'?(number===42?5:9):key==='v'?10:Number(key);
+    let choices,prompt,correct;
+    const format=set=>set.length?'{'+set.join('; ')+'}':'∅';
+    if(number===44){
+      const first=20+k%23,values=[first*d,first*d+1,(first+2)*d-1,(first+3)*d,(first+5)*d+2];choices=values;
+      prompt='В множестве B = {'+values.join('; ')+'} оставь все элементы, кратные '+d+'. Каково B('+d+')?';correct=values.filter(v=>v%d===0);
+    }else{
+      const all=Array.from({length:10},(_,i)=>i),prefix=100+k%93,lead=1+k%8,suffix=(11*k+7)%100,tail=String(suffix).padStart(2,'0'),value=x=>number===42?10*prefix+x:lead*1000+x*100+suffix;choices=all;
+      prompt='В числе '+(number===42?prefix+'□':lead+'□'+tail)+' выбери все цифры для клетки, которые дадут делимость на '+d+'.';correct=all.filter(x=>value(x)%d===0);
+    }
+    const toggle=n=>choices.filter(x=>x===n?!correct.includes(x):correct.includes(x)),solutions=[format(correct),format(toggle(choices[k%choices.length])),format(toggle(choices[(k+1)%choices.length]))],shift=k%3,hint='Проверь все допустимые варианты. Для каждого число должно давать нулевой остаток при делении на '+d+'.';
+    return {...choice(prompt,solutions.slice(shift).concat(solutions.slice(0,shift)),solutions[0],hint),id:'analog-'+part.id+'-'+attempt,family:'filter-'+part.id,match:'skill',mistake:hint};
+  }
+
+  function commonPractice(number,part,attempt){
+    const k=seed(part.id)%71+attempt,scale=2+k%13,i=part.id.split('-')[1];
+    let values;
+    if(number===45)values=[4*scale,6*scale];
+    else if(number===46)values=[2*scale,3*scale];
+    else if(number===47){
+      values=i==='1'?[2*3*scale,2*5*scale]:i==='2'?[2**(2+k%5),3**(1+k%4)]:[3*scale,3*scale*(2+k%5)];
+    }else{
+      values=i==='a'?[4*scale,6*scale]:i==='b'?[scale,scale*(3+k%7)]:i==='v'?[2**(2+k%4),5**(1+k%3)]:[6*scale,10*scale,15*scale];
+    }
+    const gcd=(a,b)=>b?gcd(b,a%b):a,g=values.reduce(gcd),l=values.reduce((a,b)=>a/gcd(a,b)*b);
+    const factorize=v=>{const xs=[];for(let d=2;d*d<=v;d++)while(v%d===0){xs.push(d);v/=d;}if(v>1)xs.push(v);return xs.join(' · ');};
+    const prompt=(number===45?'Установи наибольший элемент пересечения множеств положительных делителей':number===46?'Установи наименьший элемент пересечения множеств положительных кратных':'Найди НОД и НОК')+' чисел '+(number===47?values.map((v,j)=>String.fromCharCode(97+j)+' = '+factorize(v)).join(', '):values.join(', '))+'.';
+    const hint=number===45?'Делитель должен делить каждое из обоих чисел. Сравни все общие делители.':number===46?'Выпиши кратные по порядку до первого совпадения. Исключи ноль.':'Сравни показатели каждого простого множителя. Для НОД берут меньший показатель, для НОК больший.';
+    let task;
+    if(number<=46)task=numerical(prompt,number===45?g:l,'Каково искомое положительное число?',hint);
+    else{const list=['НОД '+g+', НОК '+l,'НОД '+l+', НОК '+g,'НОД '+g+', НОК '+(2*l)],shift=k%3;task=choice(prompt,list.slice(shift).concat(list.slice(0,shift)),list[0],hint);}
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'common-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
+    if(number===38&&part.expression)return termPractice(part,attempt);
+    if(number===36&&part.expression)return periodPractice(number,part,attempt);
+    if(number===34)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>30)return createLegacy(number,part,attempt);
+    if(number<7||number>48)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=45)return commonPractice(number,part,attempt);
+    if(number>=42)return divisorFilterPractice(number,part,attempt);
+    if(number>=39)return formulaPractice(number,part,attempt);
+    if(number===38)return termPractice(part,attempt);
+    if(number===37)return geometryPractice(part,attempt);
+    if(number>=35)return periodPractice(number,part,attempt);
+    if(number===33)return roundPractice(part,attempt);
+    if(number>=31)return intervalPractice(number,part,attempt);
     if(number===30)return flowPractice(part,attempt);
     if(number===29)return divisibilityPractice(part,attempt);
     if(number===28)return scopePractice(part,attempt);
@@ -456,7 +622,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=30&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=48&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -478,7 +644,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=30&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=48&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
@@ -488,7 +654,7 @@
   function shared(item,part,raw) {
     const model=part&&create(item.number,part);
     if(!model)return null;
-    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23))return null;
+    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34||item.number===36||item.number===38))return null;
     const active=document.querySelector('.equivalent-exercise');
     const row=record(part)[1];
     if(!raw&&row.formerlyAbsent&&!active?.open)return null;
@@ -500,7 +666,7 @@
   }
   function restoreShared(part,scene) {
     if(!document.body.dataset.petersonBoard)return;
-    if(!scene){if(part.expression&&/^(01[123]|02[23])-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
+    if(!scene){if(part.expression&&/^(01[123]|02[23]|03[468])-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
     const row=record(part)[1];Object.assign(row,{attempt:scene.attempt,work:scene.work,status:scene.status,open:scene.open,hint:scene.hint});
   }
   function resetShared(){if(document.body.dataset.petersonBoard)states.clear();}
