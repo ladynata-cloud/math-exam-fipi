@@ -534,6 +534,15 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.171: plotted natural numbers shared without automatic mastery';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-171"]').click();await studentFrame.locator('h1').filter({hasText:'№1.171'}).waitFor();
+  for(const n of [0,1,2,3])await teacherFrame.locator('[data-v5-coordinate-bit="'+n+'"]').click();
+  await teacherFrame.locator('[data-v5-fill-marks]').click();await teacherFrame.locator('#answer-form button').click();
+  const badMarkers=await same(teacherFrame,studentFrame,'the origin was included');assert.match(badMarkers.scene.message,/единицы/);assert.equal(badMarkers.scene.model.marksA,15);
+  await ownership(teacher,student,true);for(const n of [0,4,5,6])await studentFrame.locator('[data-v5-coordinate-bit="'+n+'"]').click();
+  await studentFrame.locator('[data-v5-fill-marks]').click();await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const plottedSet=await same(studentFrame,teacherFrame,'partially marked ray after reload');assert.equal(plottedSet.scene.model.marksA,126);assert.equal(plottedSet.scene.savedInput,'1, 2, 3, 4, 5, 6');
+  await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'self-correction of the origin')).scene.correct);await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('[data-v5-param=row]').selectOption('1');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);await same(teacherFrame,studentFrame,'second ray and role after reload');for(const n of [1,2,3,4,5])await teacherFrame.locator('[data-v5-coordinate-bit="'+n+'"]').click();await teacherFrame.locator('[data-v5-fill-marks]').click();await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'new interval excludes both endpoints')).scene.correct);await narrow(student,studentFrame,'mark-available-naturals');
   phase = 'source 1.168: hidden digits, changed prediction and recovered ownership';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-168"]').click();await studentFrame.locator('h1').filter({hasText:'№1.168'}).waitFor();
   await teacherFrame.locator('#answer').fill('>');await teacherFrame.locator('#answer-form button').click();

@@ -59,6 +59,7 @@
   }
   function mistake(value,t){
     if(t.answerFormat===setFormat){const a=list(value)||[],[l,h]=t.boundaries;
+      if(t.markLine&&l===0&&a.includes(0))return 'Натуральный ряд в этом курсе начинается с единицы. Ноль — начало координат, его не отмечаем.';
       if(a.includes(l)||a.includes(h))return 'Одно из введённых чисел является границей. Слово «между» исключает обе границы.';
       if(new Set(a).size!==a.length)return 'В списке есть повтор. Каждое подходящее число назови один раз.';
       return a.length<t.inside.length?'В перечне пропущено число. Считай от левой границы по единице до правой.':'Проверь, лежит ли каждое названное число строго внутри промежутка.';}

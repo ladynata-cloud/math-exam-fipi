@@ -48,7 +48,7 @@
     return {...common,a:4,b:8,c:6};
   }
   function canReviseForecast(lesson) {
-    if(lesson.source?.part === 1 && ['1.126','1.127','1.128','1.129','1.130','1.131','1.132','1.133','1.134','1.135','1.136','1.137','1.138','1.139','1.140','1.141','1.142','1.143','1.144','1.145','1.146','1.147','1.148','1.149','1.150','1.151','1.152','1.153','1.154','1.155','1.156','1.157','1.158','1.159','1.160','1.161','1.162','1.163','1.164','1.165','1.166','1.167','1.168','1.169','1.170'].includes(lesson.number))return true;
+    if(lesson.source?.part === 1 && ['1.126','1.127','1.128','1.129','1.130','1.131','1.132','1.133','1.134','1.135','1.136','1.137','1.138','1.139','1.140','1.141','1.142','1.143','1.144','1.145','1.146','1.147','1.148','1.149','1.150','1.151','1.152','1.153','1.154','1.155','1.156','1.157','1.158','1.159','1.160','1.161','1.162','1.163','1.164','1.165','1.166','1.167','1.168','1.169','1.170','1.171','1.172'].includes(lesson.number))return true;
     return lesson.source?.part === 2 && ['5.15','5.16','5.17','5.18','5.19','5.20','5.21','5.22','5.23','5.24','5.25','5.26','5.27','5.28','5.29','5.30','5.31','5.32','5.33','5.34','5.35','5.36','5.37','5.38','5.39','check-25-1','check-25-2','check-25-3','5.40','5.41','5.42','5.43','5.44','5.45','5.46','5.47','5.48','5.49','5.50','5.51','5.52','5.53','5.54','5.55','5.56','5.57','5.58','5.59','5.60','5.61','5.62','5.63','5.64','5.65','5.66','5.67','5.68','5.69','5.70','5.71'].includes(lesson.number);
   }
   function normalize(lesson, raw) {
@@ -223,6 +223,9 @@
       if(d.kind==='arithmetic'){drawArithmetic();return;}
       const view=d.kind==='numbered'?root.Vilenkin5Numbered.explore(lesson,s,options.task):describe(lesson,s,M);
       host.innerHTML='<section class="v5q-model"><p class="eyebrow">'+(d.kind==='numbered'?'Исследуй данные этого задания':'Исследуй на отдельном примере')+'</p><h2>'+view.title+'</h2>'+controls(view.controls)+'<div class="v5q-visual">'+view.visual+'</div><form data-v5-predict><label>'+mathHTML(view.question)+'<input data-v5-prediction autocomplete="off" value="'+esc(s.prediction)+'"'+(s.seen?' disabled':'')+'></label><button'+(s.seen?' disabled':'')+'>Проверить прогноз</button></form><p class="v5q-model-feedback" role="status">'+mathHTML(s.notice)+'</p>'+(s.seen?'<p class="v5q-model-why">'+mathHTML(view.why)+'</p>':'<button type="button" class="quiet" data-v5-reveal>Посмотреть объяснение</button>')+'<p class="tiny">Меняй числа и проверяй закономерность. Исследование помогает понять правило; самостоятельный результат проверяется на новой задаче.</p></section>';
+      if(options.task?.data.naturalLine)root.Vilenkin5MarkedNaturals.bindMarks(host,options,s,(next,selector)=>{
+        s=normalize(lesson,next);publish();draw();host.querySelector(selector)?.focus();
+      });
       const applyDrawing=host.querySelector('[data-v5-apply-drawing]');
       if(applyDrawing)applyDrawing.onclick=()=>options.onDrawing?.(s);
       host.querySelectorAll('[data-v5-param]').forEach(input=>input.onchange=()=>{

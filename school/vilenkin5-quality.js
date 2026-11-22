@@ -242,7 +242,13 @@
     const cleanInput=event=>{if('value'in event.target&&event.target.type!=='number'&&event.target.type!=='range'){const safe=safeDraft(event.target.value);if(safe!==event.target.value)event.target.value=safe;}};
     host.addEventListener('input',cleanInput,true);
     const d=detail(session),captured=session;
-    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,onDrawing:value=>{
+    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,
+      markRow:session.mode==='learn'&&session.step<session.task.steps.length&&!session.correct?session.step:null,
+      setMarkedCoordinates:value=>{
+        if(readOnly||captured!==connection?.getSession?.())return;
+        const input=root.document.querySelector('#answer');if(!input||input.disabled)return;
+        input.value=value;input.dispatchEvent(new root.Event('input',{bubbles:true}));input.focus();
+      },onDrawing:value=>{
       if(readOnly||captured!==connection?.getSession?.()||!['learn','practice'].includes(session.mode))return;
       const next=session.task.data.checkPositions?root.Vilenkin5CircleCheck.selection(session.task,value):session.task.data.threeCompass?root.Vilenkin5ThreeCompassPoints.selection(session.task,value):root.Vilenkin5PrintedBuildablePaths.selection(session.task,value);
       if(next!==null&&M.generate(session.id,next).conditionKey!==session.task.conditionKey)connection?.chooseSourceDrawing?.(next);
