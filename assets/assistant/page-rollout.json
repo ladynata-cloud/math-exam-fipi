@@ -3330,10 +3330,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "b2373b6e85a4c50037786e42ff03e99122f5c9fb7d382dbecfc8f54542542edc",
-      "afterSha256": "18f0321800161105e98211b89b7b4a6df803852fee76341b12f73d7ac4a447f7",
+      "beforeSha256": "d819bfdd18564579ea76f6494a758e8a2ab59b6ded84eb6b72faf26a5cda64db",
+      "afterSha256": "dc2f1e588b2b846f0dc4d45a616f27b638fb7edeae986cd206e35de7730c2075",
       "placement": "before-head-close",
-      "sourceSha": "0f53fb5889e43479b3dbb27723bbc460d642c6ed"
+      "sourceSha": "bdd25451241c3a7ce8c9fb691377862142f4d5bc"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6763,6 +6763,16 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Bind the reviewed Arzhenikov investigations, zoomable journeys, historical sources and offline entrance; preserve all other page receipts. The GitHub integration source tree exactly matches the locally reviewed source tree.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "sourceBaseSha": "bdd25451241c3a7ce8c9fb691377862142f4d5bc",
+      "previousSourceSha": "0f53fb5889e43479b3dbb27723bbc460d642c6ed",
+      "task": "docs/tasks/ARZHENIKOV_COURSES_20261123.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Bind the reviewed forty guided courses, local progress and offline entrance. The remote source tree matches the locally validated source tree.",
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
