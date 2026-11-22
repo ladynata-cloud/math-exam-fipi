@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "771912058c6a960f78e3f575e728053a07b321bd1f1f9d545f4135ff542a76cb",
-      "afterSha256": "f06c83e1aa9a8a48db0b547b6f12e3f3748eef6a18d8fe6f68e3b485d219870a",
+      "beforeSha256": "2b6e031739f152dc2f655ab3aaa7fe74a4d30aeb51ab751897de653985c3a813",
+      "afterSha256": "39b1afd529bcd7a345715251915b0df5eaec703546b1476d85d34c31ea7645d7",
       "placement": "before-head-close",
-      "sourceSha": "d742157a53165477d4dc4a70a8cb072df704ff4a"
+      "sourceSha": "3926b57c4da269e00b40f8b30565894e19223ddf"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7538,6 +7538,15 @@
       "boundary": "Уточнена версия движка, проверок, схем разрядов и самостоятельных упражнений на странице задачника Петерсона."
     },
     {
+      "previousBaseSha": "d742157a53165477d4dc4a70a8cb072df704ff4a",
+      "sourceBaseSha": "3926b57c4da269e00b40f8b30565894e19223ddf",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены входы в оба тома Виленкина: упражнения №1–176 и №1–97 открываются в общем школьном маршруте вместе с проверенными книгами Мастерской."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
@@ -7694,6 +7703,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5748839a223539a18321ced0bc885b102623b465",
+      "sourceBaseSha": "15cce95e1ab67367164d8f565dd8487a9ebdd557",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Печатная с. 19 завершается номерами 5.96 и 5.97. Сверены площади каждого треугольника, равновеликие пары с перестановкой вершин и остаток груш при целых допустимых покупках. Проверены обе роли с перезагрузками."
     }
   ],
   "coverageUpdates": [
