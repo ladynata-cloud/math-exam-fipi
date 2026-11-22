@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "4d799604c0fe034b0b483d4ffc2dddae0382242152aa418b541b3b7beab2667d",
-      "afterSha256": "1a2f40416a4ade75d0ca13b87e26c9af342db70357a6f442740d6d06e3d3d4c4",
+      "beforeSha256": "1626779c97f50a1e64cc3031a7315823f5ed5c61fb3268e0b5c0984657202a7a",
+      "afterSha256": "f5ecb5aa7a0eb26001d11314f499dccf7157b46f388f0bc009c7885014fbb6d3",
       "placement": "before-head-close",
-      "sourceSha": "22f3517000bbe1a3bd93ddb65ea105408082cc6a"
+      "sourceSha": "873abb2c11d8c4092970e93b90c7d715ae4ab908"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7011,6 +7011,15 @@
         "school/index.html"
       ],
       "boundary": "Обе печатные проверочные части 2 на с. 20 проверены шаг за шагом. У диаграммы сохраняются исходные высоты в первой попытке и итоговые высоты после своего исправления. Сверены общий вход, телефон и два участника."
+    },
+    {
+      "previousBaseSha": "22f3517000bbe1a3bd93ddb65ea105408082cc6a",
+      "sourceBaseSha": "873abb2c11d8c4092970e93b90c7d715ae4ab908",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Для начала §27 добавлены все четыре примера №5.98 на с. 22, с построенными заново кругами и прямоугольниками, индивидуальной проверкой записей, объяснения и общей доской."
     }
   ],
   "coverageUpdates": [
