@@ -24,8 +24,8 @@ for(const [i,row] of paragraphs.entries()) {
   else assert(row.bookOnly&&!row.externalPath&&!row.boardPath);
 }
 const dir='trainers/mordkovich-2019/';
-const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2','4-ex1','4-ex2','4-q1','4-q2','4-q3','4-q4','4-q5-a','4-q5-b','4-q5-c','4-q6','4-q7','4-q8-a','4-q8-b','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded'];
-const printed=[6,9,9,9,12,12,12,14,15,19,20,21,21,21,21,21,21,21,21,21,21,21,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36];
+const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','1-q1','1-q2','1-q3','1-q4','1-q5','1-q6','1-q7','1-q8','1-q9','1-q10','1-q11','1-q12','2-q1-add','2-q1-div','2-q2','2-q3','2-q4','3-ex1','3-ex2','3-q1','3-q2','3-q3','4-ex1','4-ex2','4-q1','4-q2','4-q3','4-q4','4-q5-a','4-q5-b','4-q5-c','4-q6','4-q7','4-q8-a','4-q8-b','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded'];
+const printed=[6,9,9,9,10,10,10,10,10,10,11,11,11,11,11,11,12,12,12,12,12,14,15,17,17,17,19,20,21,21,21,21,21,21,21,21,21,21,21,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36];
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
   .filter(x=>!x.startsWith('/')&&!x.includes('board-bridge')).map(x=>read(path.join(dir,x)));
@@ -38,7 +38,7 @@ function open(entry,save) {
   return {dom,w,doc:w.document,key};
 }
 function expected(i,s) {
-  const u=s+2,v=s+4,a=s+2,b=i===1?s+4:-(s+1);
+  const u=s+2,v=s+4,a=s+2,b=ids[i]==='1-ex2-a'?s+4:-(s+1);
   const h=s+2,w=s+6,k=s+1, gap=s+3, initial=gap+2*k;
   switch(ids[i]) {
     case '1-ex1':return [-1/3,-3*(u+v),(-3*(u+v))/(5*s+5)];
@@ -130,6 +130,23 @@ function expected(i,s) {
       const values=Array.from({length:2*s+3},(_,k)=>k-s),b=s+2;
       return [values.length,values.filter(x=>x>-s&&x<b).length,values.filter(x=>x<b).length];
     }
+    case '1-q1':return [2*s+7,s+2,(2*s+7)*(s+2)];
+    case '1-q2':return [s+3,2*s+4,0];
+    case '1-q3':return [s+3,(s+3)*(s+2)+s+1,s+3];
+    case '1-q4':return [(s+2)**2,-(s+1)*(s+2),s+2];
+    case '1-q5':return [-s-3,s+4,0];
+    case '1-q6':return [s+4,s+2,(s+4)*(s+2)];
+    case '1-q7':return [4*s+3,10*s+10,13*s+12];
+    case '1-q8':return [4*s+12,100*s+100,(4*s+12)*25*(s+1)];
+    case '1-q9':return [s+2,(s+1)*(s+2),s+4];
+    case '1-q10':return [0,s+1,3];
+    case '1-q11':return [2,s+4,(s+5)/2];
+    case '1-q12':return [-s-3,s+2,2];
+    case '2-q1-add':{const d=(s+2)*(2+s%3);return [d/(s+2),3+s%3,1/(s+2)+1/d];}
+    case '2-q1-div':return [s+3,(s+2)*(s+3),(s+2)/(s+5)/(1/(s+3))];
+    case '3-q1':return [2*s+6,4*s+9,s+1];
+    case '3-q2':return [s+3,(s+2)*(s+1),s+3+(s+2)*(s+1)];
+    case '3-q3':{const cap=s+3,n=(s+2)*cap+1;return [Math.floor(n/cap),n%cap,Math.ceil(n/cap)];}
     default:throw new Error('Unexpected lesson');
   }
 }
@@ -185,4 +202,4 @@ for(const [i,entry] of book.exercises.entries()){
   assert.notEqual(JSON.parse(reopened.w.localStorage.getItem(key)).variant,0);
   reopened.dom.window.close();dom.window.close();
 }
-console.log('Source 89: 48 printed paragraphs, 47 student routes, 1551 independently checked questions and 47 personal draft round trips.');
+console.log('Source 89: 48 printed paragraphs, 64 student routes, 2112 independently checked questions and 64 personal draft round trips.');
