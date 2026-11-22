@@ -1870,3 +1870,10 @@ test('read the entire printed table, separate reciprocal branches, count true ve
   for(const [i,count] of [[3,3],[23,3],[24,2],[25,2],[26,2],[27,3],[28,2],[29,2]]){f.nav('#lesson/p40/'+i);f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert.equal(f.d.querySelectorAll('#model [data-curve-probe]').length,count);assert.equal(f.d.querySelectorAll('#model [data-family-branch]').length,count);const rows=f.q('#model table').textContent;f.event(d,'1','change');f.event(st,'2','change');assert.notEqual(f.q('#model table').textContent,rows);}
  }finally{f.close();}
 });
+
+test('verify all printed signed operations, own function examples, parameters and bracketed expressions on a second set',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=['1/5','-2/3','7/2','-1','-1/2','7/3','1/25','5','x = 0','отличен от нуля','y = kx²','y = kx + b','-36/25','-5/12','51/50','-441/100'];
+  expected.forEach((v,i)=>{f.nav('#lesson/p40/'+(30+i));f.click('[data-lesson-help="model"] > summary');const [d,st]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);f.event(st,'2','change');assert(f.q('#model .pm-result').textContent.includes(v),[i,f.q('#model').textContent]);const old=f.q('#model').textContent;f.event(d,'1','change');assert.equal(f.q(st).value,'0');f.event(st,'2','change');assert.notEqual(f.q('#model').textContent,old);if(i>=12)assert(f.q('#model .pm-result').textContent.includes(['-4/5','-6/5','93/100','-441/25'][i-12]));});
+ }finally{f.close();}
+});
