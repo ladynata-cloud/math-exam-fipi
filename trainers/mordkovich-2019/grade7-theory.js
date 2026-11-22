@@ -846,6 +846,8 @@
   if(distributions)distributions.register({card,model,question});
   const systems=window.MathExamMordkovich7Systems;
   if(systems)systems.register({card,model,question});
+  const nominal=window.MathExamMordkovich7Nominal;
+  if(nominal)nominal.register({card,model,question});
   const previous={grade:course.grade, source:course.source, next:course.nextId, figure:course.figure};
   course.grade=b=>b===89?'7 класс · часть 1 · 11-е издание · 2019':previous.grade(b);
   course.source=(b,p)=>b===89?'https://pdf.my-uchebnik.ru/pdf/algebra/00000069.pdf#page='+(p+1):previous.source(b,p);
