@@ -410,3 +410,26 @@ test('a child solves an altered-condition example without the book, separate fro
  const back=await surface(t,BOOK+'#n/497/497-b',storage(s));
  assert.match(element(back,'.equivalent-exercise [role=status]').textContent,/самостоятельно/);
 });
+
+test('all opening negations and the Euler diagram are available without a printed copy', async t => {
+  const s = await surface(t, BOOK + '#n/1/001-1');
+  const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'school/peterson6/textbook/content/001-175.json'))).exercises;
+  let count = 0;
+  for (const exercise of bank.slice(0, 6)) {
+    for (const part of exercise.parts) {
+      await route(s, '#n/' + exercise.number + '/' + part.id);
+      const pane = sourcePresent(s);
+      assert.match(pane.textContent, /Всё условие для этого подпункта/);
+      assert(pane.querySelector('.problem').textContent.length > 50, part.id);
+      if (exercise.number === 6) {
+        assert.equal(pane.querySelectorAll('svg ellipse').length, 3);
+        assert.equal(pane.querySelectorAll('svg circle').length, 2);
+        assert(pane.querySelector('.problem').textContent.includes(part.prompt));
+      }
+      const work = bookWork(s, part.id);
+      assert(!work?.correct && !work?.independent && !work?.submitted, part.id);
+      count++;
+    }
+  }
+  assert.equal(count, 41);
+});
