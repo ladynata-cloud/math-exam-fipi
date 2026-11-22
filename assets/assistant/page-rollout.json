@@ -7420,6 +7420,69 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Bind the reviewed first-action page and preserve other navigator receipts."
+    },
+    {
+      "previousBaseSha": "909f584cb2297f98e24e67753a60c65a4d9b16a6",
+      "sourceBaseSha": "1c44a671fb0e9f3445199ef001a07855c17d3ae5",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены №5.72–5.74 второй части, печатная страница 17. Проверены 12 подпунктов с единицами времени, пять отражений и два совпадения циферблатов, условия повтора, мобильные ширины и две роли."
+    },
+    {
+      "previousBaseSha": "1c44a671fb0e9f3445199ef001a07855c17d3ae5",
+      "sourceBaseSha": "2e59fa17a6ca05a187d2d18640ab4648092f46c1",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены №5.75–5.77 второй части, печатная страница 17. Ученик управляет растворами, отмечает общие точки и может выбрать любой верный дробный радиус. Проверены 320/375 и обе роли после перезагрузки."
+    },
+    {
+      "previousBaseSha": "2e59fa17a6ca05a187d2d18640ab4648092f46c1",
+      "sourceBaseSha": "21cc3add74f3e33a85ae64100a4f48265b759599",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Завершена печатная страница 17 второй части. Сверены размеры блока и стены, все шесть мест и обе задачи о равных прибавках, геометрический фрагмент, новые данные, мобильные экраны и две роли."
+    },
+    {
+      "previousBaseSha": "21cc3add74f3e33a85ae64100a4f48265b759599",
+      "sourceBaseSha": "8aafdfe3ba0e569bb1aa083b553a5d28039e6bee",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Страница 18, №5.81 и №5.82. Сверены оба числовых выражения и обе дроби. Касание секторов и клавиатура сохраняют две отдельные закраски, числовой ответ без построения не завершает упражнение. Подтверждены два мобильных размера, передача управления и обе перезагрузки."
+    },
+    {
+      "previousBaseSha": "8aafdfe3ba0e569bb1aa083b553a5d28039e6bee",
+      "sourceBaseSha": "ac29dc4e9560030c4a94f05504996a88cf02ff98",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Часть 2, страница 18, №5.83–5.85. Сверены доли объёма, площади и массы. Для площади принимаются 13,5 и 27/2. На двух мобильных ширинах и в двух ролях проверены шаги и сохранение модели квадрата."
+    },
+    {
+      "previousBaseSha": "ac29dc4e9560030c4a94f05504996a88cf02ff98",
+      "sourceBaseSha": "a6c5836b47a647db1d5f30523134ff2fc413a748",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, страница 18: проверены №5.86–5.89, четыре предметные модели, переход между двумя отрезами одного рулона, передача управления и восстановление у двух участников."
+    },
+    {
+      "previousBaseSha": "a6c5836b47a647db1d5f30523134ff2fc413a748",
+      "sourceBaseSha": "1ca107d91090c214c69aa3dd2ca936ffe6af0a66",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Полностью проверена печатная страница 18 второй части Виленкина: три измерения в №5.90, выбор положения точки на окружности, четыре исходных подпункта №5.91, обе роли и обе перезагрузки."
     }
   ],
   "coverageUpdates": [

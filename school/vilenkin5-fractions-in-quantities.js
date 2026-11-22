@@ -1,0 +1,40 @@
+/* Виленкин и соавторы, 5 класс, часть 2, §26, печатная с. 18. */
+(function(root){
+  'use strict';
+  const math=()=>typeof module!=='undefined'&&module.exports?require('./math.js'):root.WorkshopMath;
+  const lessons=[
+    [83,'Какая часть супа осталась в кастрюле?','Один и тот же полный объём служит целым и для съеденной, и для оставшейся части. Литры переводятся в доли делением на первоначальный объём.', 'Из 10 л взяли 4 л. Взяли 4/10, осталось 6/10. Обе доли вместе дают единицу.', 'Так как супа стало меньше, у оставшейся доли меняется знаменатель.'],
+    [84,'Две доли площади одного квадрата','Площадь относится ко всему квадрату. Для восьмых раздели её на восемь равных площадей. Для третей начни снова с того же полного квадрата.', 'Если площадь квадрата 25 см², её половина равна 12,5 см². Часть площади может содержать нецелое число квадратных сантиметров.', 'Площадь части квадрата обязательно выражается целым числом квадратных сантиметров.'],
+    [85,'Сколько килограммов капусты заквасили?','Сначала вычисли массу одной равной доли. Затем соедини столько долей, сколько показывает числитель.', 'Урожай 40 кг. Четверть — 10 кг, а три четверти — 30 кг.', 'Чтобы найти массу нескольких долей, достаточно разделить урожай на знаменатель.']
+  ].map(([n,title,explanation,example,misconception])=>({number:'5.'+n,key:'printed-5-'+n,part:2,point:26,page:18,title,requires:['v5f-printed-5-46'],related:['v5f-printed-5-66'],explanation,worked:[example],misconception,reflect:'Что здесь принято за целое и в каких единицах измеряется ответ?'}));
+  function generate(n,seed,r,step){
+    const M=math();
+    if(n===83){const litres=seed?r(6,15):8,taken=seed?r(1,litres-1):3,remain=litres-taken,intro='В кастрюле было '+litres+' л борща. За обедом съели '+taken+' л.';
+      return {steps:[step(intro+' Какую часть исходного объёма съели?',M.q(taken,litres),'Сравни съеденные литры со всеми первоначальными литрами.',taken===remain?[]:[{value:M.q(remain,litres),text:'Это то, что осталось. В первом вопросе нужна съеденная доля.'}]),step('Сколько литров осталось?',remain,'Вычти съеденные литры из первоначального объёма.',[])],prompt:intro+' Какая часть первоначального объёма осталась?',answer:M.q(remain,litres),inputPrompt:'Доля полного объёма',why:'Осталось '+remain+' л из '+litres+' л.',errors:[{value:remain,text:'Это литры. В ответе требуется доля исходного объёма.'}],data:{quantityParts:{n,litres,taken}},conditionKey:'soup/'+litres+'/'+taken};}
+    if(n===84){const side=seed?r(3,11):6,area=side*side,intro='Площадь квадрата равна '+area+' см².';
+      return {steps:[step(intro+' Чему равна одна восьмая площади, в см²?',M.q(area,8),'Раздели всю площадь на восемь.',[]),step('Чему равны три восьмых площади, в см²?',M.q(3*area,8),'Умножь одну восьмую площади на три.',[{value:M.q(area,8),text:'Это одна часть из восьми. В вопросе нужны три таких части.'}])],prompt:intro+' Чему равна треть площади в квадратных сантиметрах?',answer:M.q(area,3),inputPrompt:'Площадь в см²',why:'Раздели всю площадь на три.',errors:[{value:M.q(3*area,8),text:'Это площадь трёх восьмых. Для трети возьми одну из трёх одинаковых полос.'}],data:{quantityParts:{n,side,area}},conditionKey:'square-fractions/'+area};}
+    const share=seed?r(5,24):14,mass=share*8,parts=seed?r(2,7):5,portion=parts*share,prompt='Собрали '+mass+' кг капусты. Для закваски взяли '+parts+'/8 всего урожая.';
+    return {steps:[step(prompt+' Сколько килограммов приходится на одну восьмую?',share,'Раздели массу всего урожая на восемь.',[])],prompt:prompt+' Сколько килограммов заквасили?',answer:portion,inputPrompt:'Масса в кг',why:'В каждой из восьми полос '+share+' кг. Возьми '+parts+' таких полос.',errors:[{value:share,text:'Посчитана масса одной доли, а в условии взяли несколько.'},...(portion===mass-portion?[]:[{value:mass-portion,text:'Это масса оставшейся капусты. Нужна та часть, которую взяли для закваски.'}])],data:{quantityParts:{n,mass,parts}},conditionKey:'cabbage/'+mass+'/'+parts};
+  }
+  const shape=(tag,attrs)=>'<'+tag+' '+attrs+'/>';
+  function pot(p,taken){
+    const y=135-95*(p.litres-taken)/p.litres;
+    let marks='';for(let i=0;i<=p.litres;i++)marks+=shape('path','d="M80 '+(135-95*i/p.litres)+'h7" stroke="#31586b"');
+    return '<figure style="margin:.4em 0"><svg style="display:block;width:100%;max-width:280px" viewBox="0 0 240 158" role="img" aria-label="Объём до и после обеда"><rect x="80" y="40" width="85" height="95" fill="#faf3e9"/><rect x="80" y="'+y+'" width="85" height="'+(135-y)+'" fill="#cc8264"/><path d="M80 36V135H165V36M78 56H62V70H78M167 56H183V70H167" stroke="#31586b" stroke-width="3" fill="none"/>'+marks+'</svg><figcaption>До обеда '+p.litres+' л. '+taken+' л взяли. Цветной столбик показывает остаток.</figcaption></figure>';
+  }
+  function square(p,d,k){
+    const base=24,size=144;let grid='';
+    for(let i=1;i<p.side;i++){const pos=base+i*size/p.side;grid+=shape('path','d="M'+pos+' 24V168M24 '+pos+'H168" fill="none" stroke="#829a91" stroke-width=".8"');}
+    for(let i=1;i<d;i++){const pos=base+i*size/d;grid+=shape('path','d="M'+pos+' 24V168" stroke="#284c5d" stroke-width="1.7"');}
+    return '<figure style="margin:.4em 0"><svg viewBox="0 0 192 192" style="display:block;width:100%;max-width:260px" role="img" aria-label="Площадь квадрата, поделённая на равные полосы"><rect x="24" y="24" width="144" height="144" fill="#f3f5ed"/><rect x="24" y="24" width="'+size*k/d+'" height="144" fill="#8dc3ad"/>'+grid+'<rect x="24" y="24" width="144" height="144" fill="none" stroke="#244755" stroke-width="2"/></svg><figcaption>Квадрат '+p.side+' × '+p.side+' см. Каждая маленькая клетка — 1 см². Закрашено '+k+' из '+d+' одинаковых полос.</figcaption></figure>';
+  }
+  function harvest(p,k){return '<figure style="margin:.4em 0"><div style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:2px;max-width:330px" aria-label="Восемь равных частей урожая">'+Array.from({length:8},(_,i)=>'<span style="border:1px solid #38575f;min-height:2em;background:'+(i<k?'#87b98c':'#edf0e2')+'"></span>').join('')+'</div><figcaption>Вся полоса — '+p.mass+' кг. Закрашено долей: '+k+' из 8.</figcaption></figure>';}
+  function draw(t,s){const p=t.data.quantityParts,i=s?.mode==='learn'?s.step:t.steps.length;return p.n===83?pot(p,p.taken):p.n===85?harvest(p,i?p.parts:1):square(p,i===2?3:8,i===1?3:1);}
+  function explore(t,s){const p=t.data.quantityParts,M=math();
+    if(p.n===83){const k=Math.min(s.amount,p.litres);return {title:'Убери несколько литров',controls:[{key:'amount',title:'Сколько литров взяли',values:Array.from({length:p.litres+1},(_,i)=>[i,String(i)])}],visual:pot(p,k),question:'Какая часть исходного объёма осталась?',answer:M.q(p.litres-k,p.litres),why:'Раздели оставшиеся литры на первоначальный объём.'};}
+    if(p.n===84){const d=s.division?3:8,k=s.division?s.thirds:s.eighths;return {title:'Измерь площадь выбранных полос',controls:[{key:'division',title:'Деление квадрата',values:[[0,'На восьмые'],[1,'На трети']]},{key:s.division?'thirds':'eighths',title:'Сколько полос закрасить',values:Array.from({length:d+1},(_,i)=>[i,String(i)])}],visual:square(p,d,k),question:'Какова площадь выбранных полос в квадратных сантиметрах?',answer:M.q(p.area*k,d),why:'Площадь одной полосы равна площади квадрата, делённой на число равных полос.'};}
+    return {title:'Отбери часть урожая',controls:[{key:'amount',title:'Долей для закваски',values:Array.from({length:9},(_,i)=>[i,String(i)])}],visual:harvest(p,s.amount),question:'Сколько килограммов в выбранной части?',answer:p.mass*s.amount/8,why:'Массу одной восьмой умножь на число закрашенных долей.'};
+  }
+  const api={lessons,generators:Object.fromEntries([83,84,85].map(n=>['5.'+n,(s,r,f)=>generate(n,s,r,f)])),bounds:{'5.83':{amount:[0,15,0]},'5.84':{division:[0,1,0],thirds:[0,3,1],eighths:[0,8,1]},'5.85':{amount:[0,8,1]}},draw,explore};
+  if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.Vilenkin5FractionsInQuantities=api;
+})(typeof window!=='undefined'?window:globalThis);

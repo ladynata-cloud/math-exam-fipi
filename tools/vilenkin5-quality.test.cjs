@@ -152,6 +152,133 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function chordAndUnitsRegression(){
+  const f=boot(),api=f.w.Vilenkin5ChordAndUnits;
+  for(let seed=0;seed<64;seed++){
+    const t=f.M.generate('v5f-printed-5-90',seed),{radius,position}=t.data.chordStudy;
+    for(let place=0;place<10;place++){
+      const diam=api.measurement(radius,place,0),nk=api.measurement(radius,place,1),kb=api.measurement(radius,place,2);
+      ok(Math.abs(diam*diam-nk*nk-kb*kb)<1e-8);ok(nk<diam&&kb<diam);
+      for(let edge=0;edge<3;edge++)equal(api.explore(t,{place,edge}).answer,Math.round([diam,nk,kb][edge]));
+    }
+    t.steps.forEach((row,i)=>ok(f.M.accepts(String(Math.round(api.measurement(radius,position,i))),row)));
+    ok(f.M.accepts('BN',t));ok(!f.M.accepts('NK',t));
+    const u=f.M.generate('v5f-printed-5-91',seed),rows=[...u.steps,u];
+    for(let i=0;i<4;i++){
+      const total=api.explore(u,{pair:Math.floor(i/2),shape:i%2}).answer;
+      ok(f.M.accepts('1/'+total,rows[i]));ok(!f.M.accepts(String(total),rows[i]));
+    }
+    if(!seed){equal(t.steps.map(s=>s.answer).join(';'),'80;69;41');equal(rows.map(s=>s.answer.d).join(';'),'10000;1000000;1000000;1000000000');}
+  }
+  f.close();
+}
+
+function fourStoryStripsRegression() {
+  const f=boot(), api=f.w.Vilenkin5RouteClothConcert;
+  for(let seed=0;seed<58;seed++)for(const n of [86,87,88,89]){
+    const t=f.M.generate('v5f-printed-5-'+n,seed), p=t.data.storyStrip, all=[...t.steps,t];
+    const expected=n===86?[p.metres,p.metres/5,p.metres*p.count/5]:n===87?[p.total*3/8,p.total*2/5,p.total*9/40]:n===88?[p.before,p.before/3,p.before*5/3]:[p.taken/8,p.taken*11/8];
+    if(!seed)equal(expected.join(';'),({86:'3000;600;2400',87:'150;160;90',88:'120;40;200',89:'6;66'})[n]);
+    expected.forEach((s,i)=>ok(f.M.accepts(String(s),all[i])));
+    const cap=n===87?2:n===89?11:5;
+    for(let mark=0;mark<=cap;mark++){
+      const model=api.explore(t,{mark,cut:mark});
+      const known=n===86?p.metres*mark/5:n===87?p.total-[0,p.total*3/8,p.total*3/8+p.total*2/5][mark]:n===88?mark*p.before/3:mark*p.taken/8;
+      equal(model.answer,known);
+      ok(model.visual.includes('<figcaption>'));
+    }
+  }
+  f.close();
+}
+
+function quantityPartsRegression(){
+  const f=boot(),api=f.w.Vilenkin5FractionsInQuantities;
+  for(let seed=0;seed<58;seed++)for(const n of [83,84,85]){
+    const t=f.M.generate('v5f-printed-5-'+n,seed),p=t.data.quantityParts,all=[...t.steps,t];
+    if(n===83){const v=[p.taken+'/'+p.litres,p.litres-p.taken,(p.litres-p.taken)+'/'+p.litres];v.forEach((s,i)=>ok(f.M.accepts(String(s),all[i])));if(!seed)equal(v.join(';'),'3/8;5;5/8');
+      for(let amount=0;amount<=p.litres;amount++){const a=api.explore(t,{amount}).answer;equal(a.n*p.litres,(p.litres-amount)*a.d);}}
+    if(n===84){[p.area+'/8',3*p.area+'/8',p.area+'/3'].forEach((s,i)=>ok(f.M.accepts(s,all[i])));if(!seed){ok(f.M.accepts('13,5',all[1]));ok(f.M.accepts('12',t));}
+      for(const den of [8,3])for(let k=0;k<=den;k++){const a=api.explore(t,{division:den===3?1:0,eighths:k,thirds:k}).answer;equal(a.n*den,p.area*k*a.d);}}
+    if(n===85){ok(f.M.accepts(String(p.mass/8),all[0]));ok(f.M.accepts(String(p.mass*p.parts/8),t));if(!seed)equal(t.answer,70);
+      for(let k=0;k<=8;k++)equal(api.explore(t,{amount:k}).answer*8,p.mass*k);}
+  }
+  f.close();
+}
+
+function groupedAndDiskRegression(){
+  const f=boot(),disk=f.w.Vilenkin5CircleShading;
+  for(let seed=0;seed<49;seed++){
+    const t=f.M.generate('v5f-printed-5-81',seed),p=t.data.groupedExpression;
+    const [n,a,b,c,d]=p.left,[e,g,m,h,k]=p.right;
+    const ans=[a+b,c+d,n*(a+b),n*(a+b)-(c+d),e-g,h-k,(e-g)*m,(e-g)*m+h-k];
+    if(!seed)equal(JSON.stringify(ans),'[5926,63057,491858,428801,694,8988,52050,61038]');
+    [...t.steps,t].forEach((row,i)=>{ok(f.M.accepts(String(ans[i]),row));equal(f.w.Vilenkin5OrderOfOperations.explore(t,{form:Math.floor(i/4),stage:i%4}).answer,ans[i]);});
+    const task=f.M.generate('v5f-printed-5-82',seed),x=task.data.shadeDisks;if(!seed){equal(x.radius,3);equal(JSON.stringify(x.nums),'[1,5]');}
+    for(const [i,num] of x.nums.entries()){
+      const target=[...task.steps,task][i+1].sectorTarget;
+      for(let mask=0;mask<(1<<target.den);mask++){
+        const m={part:i,radius:x.radius,bitsA:mask,bitsB:mask};const count=[...mask.toString(2)].filter(d=>d==='1').length;
+        equal(disk.issue(target,m)==='',count===num);const expected=f.M.q(count,target.den),actual=disk.explore(task,m).answer;equal(expected.n,actual.n);equal(expected.d,actual.d);
+      }
+    }
+  }
+  f.close();
+}
+
+function wallBenchGroupsRegression(){
+  const f=boot(),api=f.w.Vilenkin5WallBenchGroups;
+  for(let seed=0;seed<81;seed++)for(const n of [78,79,80]){
+    const t=f.M.generate('v5f-printed-5-'+n,seed),p=t.data.wallBenchGroups,all=[...t.steps,t];
+    if(n===78){
+      const [l,w,h]=p.counts,v=p.sides.reduce((a,b)=>a*b,1),block=p.block.reduce((a,b)=>a*b,1);
+      [l,w,l*w,h,v/block].forEach((a,i)=>ok(f.M.accepts(String(a),all[i])));
+      if(!seed){equal(JSON.stringify(p.sides),'[4800,48,60]');equal(v/block,48000);}
+      for(const k of [0,1,h])equal(api.explore(t,{count:k}).answer,l*w*k);
+    }else if(n===79){
+      const ways=k=>k? k*ways(k-1):1;ok(f.M.accepts(String(ways(p.n)),t));if(!seed)equal(ways(p.n),720);
+      for(let k=0;k<=p.n;k++)equal(api.explore(t,{count:k}).answer,ways(p.n-k));
+    }else{
+      const [[a,b,x],[c,d,y]]=p.groups;[x+b,x,y+d,y].forEach((ans,i)=>ok(f.M.accepts(String(ans),all[i])));
+      equal(api.explore(t,{index:0}).answer,a*b);equal(api.explore(t,{index:1}).answer,c*d);if(!seed){equal(a*(x+b),34);equal(c*(y+d),120);}
+    }
+  }
+  f.close();
+}
+
+function twoCircleConstructionRegression(){
+  const f=boot(),api=f.w.Vilenkin5TwoCircleConstructions;
+  for(let seed=0;seed<72;seed++)for(const n of [75,76,77]){
+    const t=f.M.generate('v5f-printed-5-'+n,seed),p=t.data.circleLoci;
+    if(n===77){
+      [...t.steps,t].forEach((row,i)=>{for(const mm of [1,p.d/2-1,p.d/2,p.d/2+1,p.d*2]){
+        const count=2*mm===p.d?1:2*mm<p.d?0:2;equal(f.M.accepts(mm+'/10',row),count===p.order[i]);
+      }ok(!f.M.accepts('0',row));ok(!f.M.accepts('-1',row));});
+    }else{
+      if(!seed)equal([p.a,p.b,p.d],n===75?[70,70,70]:[15,25,30]);
+      const intersections=f.w.Vilenkin5CircleCrossings.geometry({a:p.a,b:p.b},p.d);
+      ok(f.M.accepts(String(intersections.length),t));for(const [x,y] of intersections){ok(Math.abs(Math.hypot(x,y)-p.a)<1e-7);ok(Math.abs(Math.hypot(x-p.d,y)-p.b)<1e-7);}
+    }
+    [1,p.d/2,p.d].forEach(radius=>{const v=api.explore(t,{a:radius,b:radius,mark:1});equal(v.answer,2*radius<p.d?0:2*radius===p.d?1:2);ok(v.visual.includes('штриховой'));});
+  }
+  f.close();
+}
+
+function durationAndMirrorRegression(){
+  const f=boot(),api=f.w.Vilenkin5DurationMirror;
+  for(let seed=0;seed<79;seed++){
+    for(const [n,answers] of [[72,[10,15,20,4,5,3]],[73,[240,20,720,10,15,30]]]){
+      const t=f.M.generate('v5f-printed-5-'+n,seed),p=t.data.durationMirror;
+      p.rows.forEach((x,i)=>{const v=x.total/x.div1/x.div2;ok(Number.isInteger(v));ok(f.M.accepts(String(v),[...t.steps,t][i]));if(!seed)equal(v,answers[i]);equal(api.explore(t,{index:i}).answer,v);});
+    }
+    const t=f.M.generate('v5f-printed-5-74',seed),p=t.data.durationMirror,actual=[...t.steps,t];
+    if(!seed)equal(JSON.stringify(p.vals),'[420,180,120,15,140]');
+    p.order.forEach((row,i)=>{if(row<0){ok(f.M.accepts('6;12',actual[i]));return;}const mm=(720-p.vals[row])%720,h=Math.floor(mm/60)||12;
+      ok(f.M.accepts(h+' ч '+mm%60+' мин',actual[i]));equal(api.explore(t,{index:row,show:1}).answer,mm%60);});
+    if(seed)equal(t.answerFormat,'v5-clock-time');
+  }
+  f.close();
+}
+
 function radiusChordSectorRegression(){
   const f=boot(),api=f.w.Vilenkin5RadiusChordSector;
   for(let seed=0;seed<64;seed++){
@@ -887,7 +1014,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:158},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50','v5f-printed-5-51','v5f-printed-5-52','v5f-printed-5-53','v5f-printed-5-54','v5f-printed-5-55','v5f-printed-5-56','v5f-printed-5-57','v5f-printed-5-58','v5f-printed-5-59','v5f-printed-5-60','v5f-printed-5-61','v5f-printed-5-62','v5f-printed-5-63','v5f-printed-5-64','v5f-printed-5-65','v5f-printed-5-66','v5f-printed-5-67','v5f-printed-5-68','v5f-printed-5-69','v5f-printed-5-70','v5f-printed-5-71'));
+  equal(plain(path.numbered),Array.from({length:158},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50','v5f-printed-5-51','v5f-printed-5-52','v5f-printed-5-53','v5f-printed-5-54','v5f-printed-5-55','v5f-printed-5-56','v5f-printed-5-57','v5f-printed-5-58','v5f-printed-5-59','v5f-printed-5-60','v5f-printed-5-61','v5f-printed-5-62','v5f-printed-5-63','v5f-printed-5-64','v5f-printed-5-65','v5f-printed-5-66','v5f-printed-5-67','v5f-printed-5-68','v5f-printed-5-69','v5f-printed-5-70','v5f-printed-5-71','v5f-printed-5-72','v5f-printed-5-73','v5f-printed-5-74','v5f-printed-5-75','v5f-printed-5-76','v5f-printed-5-77','v5f-printed-5-78','v5f-printed-5-79','v5f-printed-5-80','v5f-printed-5-81','v5f-printed-5-82','v5f-printed-5-83','v5f-printed-5-84','v5f-printed-5-85','v5f-printed-5-86','v5f-printed-5-87','v5f-printed-5-88','v5f-printed-5-89','v5f-printed-5-90','v5f-printed-5-91'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -2119,7 +2246,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    radiusChordSectorRegression,operationChainsRegression,knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    chordAndUnitsRegression,fourStoryStripsRegression,quantityPartsRegression,groupedAndDiskRegression,wallBenchGroupsRegression,twoCircleConstructionRegression,durationAndMirrorRegression,radiusChordSectorRegression,operationChainsRegression,knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
