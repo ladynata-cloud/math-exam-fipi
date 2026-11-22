@@ -474,6 +474,93 @@
   }
 
   const filterDivisors={42:[2,5,10,100,25,4],43:[3,9,6,15,18,90]},printedSet=[315,79,8181,490,102],digits=Array.from({length:10},(_,i)=>i);
+  const commonInputs=root.PetersonBook.commonInputs;
+  function commonQuestion(number,part){
+    if(number===45)return 'Найди все положительные делители 12 и 15. Запиши оба множества в фигурных скобках и их пересечение. Выбери в пересечении наибольшее число. Объясни с помощью простых множителей, почему это НОД(12, 15).';
+    if(number===46)return 'Выпиши начало двух бесконечных последовательностей положительных чисел: кратных 6 и кратных 8. Запиши их пересечение и покажи, как оно продолжается. Найди его наименьший элемент. Докажи через простые множители, что это НОК(6, 8).';
+    if(number===47)return 'По разложениям '+part.prompt+' определи сразу две величины: НОД(a, b) и НОК(a, b). Объясни, какие простые множители ты используешь в каждом случае.';
+    return 'Найди НОД и НОК чисел '+commonInputs[part.id].join(', ')+'. Разложи каждое число на простые множители и объясни выбор показателей степеней.';
+  }
+  function commonFields(number){
+    if(number===45)return ['D(12)','D(15)','Пересечение','НОД'];
+    if(number===46)return ['K(6)','K(8)','Пересечение','НОК'];
+    return ['НОД','НОК'];
+  }
+  function commonFactorView(number,part,work,interactive){
+    const inputs=commonInputs[part.id],active=work.primeRow||0,rows=work.primePaths||[],primes=[2,3,5,7,11,13,17,19,23,29,31,37];
+    const factorList=(j)=>rows[j]||[],product=xs=>xs.reduce((v,p)=>v*p,1);
+    const tracks=inputs.map((n,j)=>{const seq=factorList(j),left=n/product(seq),factorization=seq.length?seq.join(' · ')+(left>1?' · '+left:''):'ещё нет множителей';
+      return '<p data-factor-chain="'+j+'"><strong>'+n+'</strong> — '+factorization+(seq.length&&left>1?' (осталось разложить '+left+')':left===1?' (готово)':'')+'</p>';}).join('');
+    let controls='';
+    if(interactive){
+      const select='<label>Число для разложения <select data-prime-row>'+inputs.map((n,i)=>'<option value="'+i+'"'+(active===i?' selected':'')+'>'+n+'</option>').join('')+'</select></label>';
+      const left=inputs[active]/product(factorList(active));
+      const btns=primes.filter(p=>p<=Math.max(...inputs)).map(p=>'<button type="button" class="secondary" data-prime-take="'+p+'"'+(left===1?' disabled':'')+'>'+p+'</button>').join('');
+      controls=select+'<p>Раздели оставшуюся часть '+left+' на выбранное простое число.</p><div style="display:flex;flex-wrap:wrap;gap:.25em">'+btns+'</div><button type="button" class="text-button" data-prime-undo'+(factorList(active).length?'':' disabled')+'>Отменить последний множитель</button>';
+      if(work.primeRejected)controls+='<p role="status">Остаток от деления '+left+' на '+work.primeRejected+' равен '+(left%work.primeRejected)+'. Выбери делитель без остатка.</p>';
+    }
+    let table='';
+    const seen=[...new Set(rows.flat())].sort((a,b)=>a-b);
+    if(seen.length){
+      const exponent=(j,p)=>factorList(j).filter(d=>d===p).length;
+      table='<p>Показатели набранных простых множителей. Если простого множителя пока нет, его показатель равен 0.</p>'+seen.map(p=>'<p><strong>'+p+'</strong> — '+inputs.map((n,j)=>n+': '+exponent(j,p)).join(' · ')+'</p>').join('');
+    }
+    if(work.primeHint)table+='<p>Для НОД оставь каждый простой множитель в наименьшей степени среди всех строк. Нулевая степень даёт 1. Для НОК нужна наибольшая степень, чтобы все данные числа делили результат.</p>';
+    const fields=commonFields(number),entries=work.commonEntries||[];
+    const form=fields.map((name,i)=>'<label style="display:block">'+name+' <input data-common-entry="'+i+'" maxlength="150" style="box-sizing:border-box;display:block;width:100%;max-width:100%" value="'+U.esc(entries[i]||'')+'"></label>').join('');
+    return '<section data-common-host><h3>Разложи числа и сравни множители</h3>'+tracks+controls+table+(interactive?'<button type="button" class="text-button" data-prime-hint>Подсказка о показателях</button><p>'+(number===46?'Укажи первые три или больше членов каждого множества и многоточие, например {5; 10; 15; …}.':number===45?'Введи все элементы каждого множества. Разделяй их точкой с запятой.':'Запиши отдельно обе величины.')+'</p>'+form+'<button type="button" class="secondary" data-common-use>Перенести вычисления в решение</button>':'')+'</section>';
+  }
+  function mountCommon(main,number,part,work,save){
+    let host=main.querySelector('[data-common-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=commonFactorView(number,part,work,true);host=main.querySelector('[data-common-host]');
+      const inputs=commonInputs[part.id],j=work.primeRow||0,all=work.primePaths||inputs.map(()=>[]),row=all[j]||[],left=inputs[j]/row.reduce((v,p)=>v*p,1);
+      const update=()=>{save();draw();},select=host.querySelector('[data-prime-row]');
+      select.onchange=()=>{work.primeRow=Number(select.value);delete work.primeRejected;update();host.querySelector('[data-prime-row]').focus({preventScroll:true});};
+      for(const b of host.querySelectorAll('[data-prime-take]'))b.onclick=()=>{
+        const p=Number(b.dataset.primeTake);if(left%p)work.primeRejected=p;else{all[j]=[...row,p];work.primePaths=all;delete work.primeRejected;}
+        update();host.querySelector('[data-prime-take="'+p+'"]').focus({preventScroll:true});
+      };
+      host.querySelector('[data-prime-undo]').onclick=()=>{all[j]=row.slice(0,-1);work.primePaths=all;delete work.primeRejected;update();};
+      host.querySelector('[data-prime-hint]').onclick=()=>{work.primeHint=true;root.PetersonBook.assist(work);update();};
+      const fields=commonFields(number),entries=work.commonEntries||fields.map(()=>''),use=host.querySelector('[data-common-use]');
+      const enabled=()=>{use.disabled=fields.some((_,i)=>!entries[i]?.trim());};enabled();
+      for(const el of host.querySelectorAll('[data-common-entry]'))el.oninput=()=>{entries[Number(el.dataset.commonEntry)]=el.value.slice(0,150);work.commonEntries=entries;enabled();save();};
+      use.onclick=()=>{const answer=main.querySelector('#answer');answer.value=fields.map((s,i)=>s+' = '+entries[i].trim()).join(' | ');answer.dispatchEvent(new Event('input',{bubbles:true}));answer.focus();};
+    }draw();
+  }
+  function commonResponse(number,part,input){
+    if(number<45||number>48)return null;
+    const inputs=commonInputs[part.id],names=commonFields(number),fields=input.split('|').map(x=>x.trim().split(/\s*=\s*/));
+    if(fields.length!==names.length||fields.some(([name,x],i)=>names[i]!==name||!x))return null;
+    const gcd=(a,b)=>b?gcd(b,a%b):a,g=inputs.reduce(gcd),l=inputs.reduce((a,b)=>a/gcd(a,b)*b);
+    if(number<=46){
+      const ds=number===45?inputs.map(n=>Array.from({length:n},(_,i)=>i+1).filter(d=>n%d===0)):null;
+      const target=number===45?[...ds,ds[0].filter(d=>ds[1].includes(d))]:[6,8,24];
+      for(let i=0;i<3;i++){
+        const val=fields[i][1].trim(),infinite=/…|\.\.\./.test(val);
+        if(!/^\{[\d\s;,….]+\}$/.test(val))return {ok:false,text:names[i]+': помести элементы между фигурными скобками и раздели их точкой с запятой.'};
+        const nums=(val.match(/\d+/g)||[]).map(Number);
+        if(number===45){const extra=nums.find(n=>!target[i].includes(n));if(extra!==undefined)return {ok:false,text:names[i]+': проверь '+extra+'. '+(i===2?'Каждый общий делитель обязан делить без остатка оба числа.':'Каждый элемент должен делить '+inputs[i]+' без остатка.')};
+          if(infinite||nums.length!==target[i].length||new Set(nums).size!==nums.length)return {ok:false,text:names[i]+': выпиши все разные делители. Сопоставь каждому малому делителю парный; не забудь 1 и само число при составлении исходных множеств.'};
+        }else{
+          if(nums.length<3||nums.some((n,k)=>n!==(k+1)*target[i]))return {ok:false,text:names[i]+': начни с первого положительного кратного и прибавляй один и тот же шаг. В пересечении каждое число должно делиться и на 6, и на 8.'};
+          if(!infinite||!/((…|\.\.\.)\s*\})$/.test(val))return {ok:false,text:names[i]+': кратные продолжаются бесконечно. После первых членов оставь многоточие.'};
+        }
+      }
+    }
+    const test=(i,want,isGcd)=>{
+      const val=fields[i][1],x=Number(val);
+      if(!/^\d+$/.test(val)||x<1)return {ok:false,text:'В строке '+names[i]+' нужно одно положительное целое число.'};
+      if(x===want)return null;
+      const bad=inputs.find(n=>isGcd?n%x!==0:x%n!==0);
+      if(bad)return {ok:false,text:isGcd?'Число '+x+' не делит '+bad+' без остатка. Проверь простые множители, общие всем строкам.':'Число '+x+' не кратно '+bad+'. Сверь показатели всех простых множителей.'};
+      return {ok:false,text:isGcd?'Это общий делитель, но есть больший. Выбери меньший показатель каждого простого множителя, сравнивая все исходные числа.':'Это общее кратное, но есть меньшее положительное. Проверь, нет ли лишней степени простого множителя.'};
+    };
+    const err=number===45?test(3,g,true):number===46?test(3,l,false):test(0,g,true)||test(1,l,false);
+    return err||{ok:true,text:'Числа и вычисления согласуются. Допиши обоснование через простые множители. Письменное решение сохранено для проверки.'};
+  }
+
   function filterSpec(number,part){
     const key=part.id.split('-')[1],d=number===44?Number(key):key==='a'?filterDivisors[number][0]:key==='b'?filterDivisors[number][1]:key==='v'?filterDivisors[number][2]:Number(key);
     const values=number===44?printedSet:digits,from=v=>number===42?2730+v:number===43?5012+100*v:v;
@@ -1082,6 +1169,7 @@
 
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
+    if(number>=45&&number<=48)return commonQuestion(number,part);
     if(number>=42&&number<=44)return filterQuestion(number,part);
     if(number===41)return 'Число a задано произведением 2 · 3 · 7. Найди a и запиши множество D(a) всех его положительных делителей. Покажи, как убедился в полноте множества.';
     if(number===37)return cutoutQuestion(part);
@@ -1155,6 +1243,7 @@
     if(item.number===37)drawing=geometryFigure(part,{},false);
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
+    if(item.number>=45&&item.number<=48)drawing=commonFactorView(item.number,part,{},false);
     if(item.number>=42&&item.number<=44)drawing=filterView(item.number,part,{},false);
     if(item.number===35||item.number===36)drawing=part.id.endsWith('pravilo')?logicConstruction(item.number,part,false):divisionView(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
@@ -1185,5 +1274,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse};
 })(globalThis);

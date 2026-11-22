@@ -33,6 +33,10 @@ function mergeErrors(target,earlier,later){
  const final=earlier?.final||later?.final;
  if(final)target.firstErrors.final=final;
 }
+  const commonInputs={
+    '045-1':[12,15], '046-1':[6,8], '047-1':[90,70], '047-2':[250,21], '047-3':[6,420],
+    '048-a':[125,150], '048-b':[210,2730], '048-v':[35,72], '048-g':[60,75,111]
+  };
 function sanitize(part,input){
  const clean=blank(part);if(!input||typeof input!=='object'||Array.isArray(input)||(input.signature!==clean.signature&&(!part.previousSignature||input.signature!==part.previousSignature)))return clean;
  const ss=steps(part);
@@ -72,6 +76,17 @@ function sanitize(part,input){
   if(input.filterDivision===true&&clean.filterProbe!==undefined)clean.filterDivision=true;
   if(Array.isArray(input.filterItems)&&input.filterItems.length<=allowed.length)clean.filterItems=[...new Set(input.filterItems.filter(v=>allowed.includes(v)))].sort((a,b)=>a-b);
   if(input.filterEmpty===true&&!clean.filterItems?.length)clean.filterEmpty=true;
+ }
+ if(Object.hasOwn(commonInputs,part.id)){
+  const ns=commonInputs[part.id],allowed=[2,3,5,7,11,13,17,19,23,29,31,37],nFields=part.id.startsWith('045')||part.id.startsWith('046')?4:2;
+  if(Number.isInteger(input.primeRow)&&input.primeRow>=0&&input.primeRow<ns.length)clean.primeRow=input.primeRow;
+  if(Array.isArray(input.primePaths)&&input.primePaths.length===ns.length){
+   const rows=input.primePaths.map((xs,i)=>{let left=ns[i];if(!Array.isArray(xs)||xs.length>12)return [];for(const p of xs){if(!allowed.includes(p)||left%p)return [];left/=p;}return [...xs];});
+   clean.primePaths=rows;
+  }
+  if(allowed.includes(input.primeRejected)){const row=clean.primeRow||0,left=ns[row]/(clean.primePaths?.[row]||[]).reduce((v,d)=>v*d,1);if(left>1&&left%input.primeRejected)clean.primeRejected=input.primeRejected;}
+  if(input.primeHint===true)clean.primeHint=true;
+  if(Array.isArray(input.commonEntries)&&input.commonEntries.length===nFields)clean.commonEntries=input.commonEntries.map(x=>typeof x==='string'?cut(x,150):'');
  }
  if(part.id==='041-1'){
   if(typeof input.factorValue==='string'&&input.factorValue)clean.factorValue=cut(input.factorValue,50);
@@ -178,5 +193,5 @@ function microSteps(calculation){
  }
  put('Сократи результат и запиши число или дробь.',M.operation(calculation.op,a,b),'Раздели числитель и знаменатель на их общий делитель.');return out;
 }
-return {M,OPS,hash,exact,value,rounded,expressionText,expressionSteps,steps,finalAnswer,check,checkStep,signature,blank,sanitize,mergeErrors,assist,submit,submitStep,solutionOutcome,summarize,importState,mergeState,microSteps,MAX_PARTS};
+return {M,OPS,commonInputs,hash,exact,value,rounded,expressionText,expressionSteps,steps,finalAnswer,check,checkStep,signature,blank,sanitize,mergeErrors,assist,submit,submitStep,solutionOutcome,summarize,importState,mergeState,microSteps,MAX_PARTS};
 });

@@ -810,3 +810,32 @@ test('all nineteen printed divisibility filters match exhaustive substitution, i
  }
  const x=await surface(t,BOOK+'#n/42/042-a',storage(s));assert.deepEqual([...bookWork(x,'042-a').filterItems],[0,2,4,6,8]);assert(element(x,'[data-filter-pick="0"]').getAttribute('aria-pressed')==='true');assert.match(element(x,'[data-filter-result]').textContent,/остаток/);
 });
+test('all nine printed common-divisor and common-multiple investigations retain the prime divisions, sets and evidence',async t=>{
+ const s=await surface(t,BOOK+'#n/45/045-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(44,48);
+ const source=[[12,15],[6,8],[90,70],[250,21],[6,420],[125,150],[210,2730],[35,72],[60,75,111]];
+ const divisors=n=>Array.from({length:n},(_,j)=>j+1).filter(x=>n%x===0),intersection=ns=>divisors(ns[0]).filter(x=>ns.every(n=>n%x===0)),multiple=ns=>{let l=Math.max(...ns);while(!ns.every(n=>l%n===0))l+=Math.max(...ns);return l;};
+ const set=ns=>'{'+ns.join('; ')+'}',early=n=>'{'+[n,2*n,3*n,'…'].join('; ')+'}',primes=n=>{let d=2;const a=[];while(n>1){if(n%d===0){a.push(d);n/=d;}else d++;}return a;};
+ let rowIndex=0;
+ for(const row of rows)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  const ns=source[rowIndex++],g=intersection(ns).at(-1),l=multiple(ns);
+  const start=ns[0],bad=[2,3,5,7,11].find(d=>start%d);click(s,'[data-prime-take="'+bad+'"]');assert.match(element(s,'[data-common-host] [role=status]').textContent,new RegExp('равен '+start%bad));
+  for(const [i,n] of ns.entries()){
+   const sel=element(s,'[data-prime-row]');sel.value=String(i);sel.dispatchEvent(new s.w.Event('change',{bubbles:true}));
+   for(const d of primes(n))click(s,'[data-prime-take="'+d+'"]');assert.match(element(s,'[data-factor-chain="'+i+'"]').textContent,/готово/);
+  }
+  assert.deepEqual(bookWork(s,p.id).primePaths,ns.map(primes));click(s,'[data-prime-hint]');assert.match(element(s,'[data-common-host]').textContent,/множитель в наименьшей степени/);
+  const vals=row.number===45?[...ns.map(n=>set(divisors(n))),set(intersection(ns)),String(g)]:row.number===46?[...ns.map(early),early(l),String(l)]:[String(g),String(l)];
+  const send=()=>{click(s,'[data-common-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+  vals.forEach((v,i)=>input(s,'[data-common-entry="'+i+'"]',v));
+  if(row.number===45){input(s,'[data-common-entry="2"]','{1;3;5}');assert.match(send(),/делитель обязан делить/);input(s,'[data-common-entry="2"]',vals[2]);}
+  if(row.number===46){input(s,'[data-common-entry="2"]','{24;48;72}');assert.match(send(),/бесконечно/);input(s,'[data-common-entry="2"]',vals[2]);}
+  if(row.number>46){input(s,'[data-common-entry="1"]',String(2*l));assert.match(send(),/есть меньшее/);input(s,'[data-common-entry="1"]',String(l));}
+  assert.match(send(),/вычисления согласуются/);assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct&&!bookWork(s,p.id).independent);assert(bookWork(s,p.id).assisted);
+  for(let j=0;j<30;j++){const sample=s.w.PetersonAnalogues.create(row.number,p,j),text=sample.prompt.split('чисел ')[1].replace(/\.$/,'');const xs=row.number===47?text.split(', ').map(line=>line.split(' = ')[1].split(' · ').map(Number).reduce((a,b)=>a*b)):text.split(', ').map(Number);
+   const G=intersection(xs).at(-1),L=multiple(xs);assert.equal(sample.answer,row.number===45?String(G):row.number===46?String(L):'НОД '+G+', НОК '+L);
+   if(sample.choices)assert.equal(new Set(sample.choices).size,3);
+  }
+ }
+ const re=await surface(t,BOOK+'#n/48/048-g',storage(s));assert.match(element(re,'[data-factor-chain="2"]').textContent,/3 · 37/);assert.equal(element(re,'[data-common-entry="1"]').value,'11100');
+});

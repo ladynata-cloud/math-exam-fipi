@@ -545,17 +545,38 @@
     return {...choice(prompt,solutions.slice(shift).concat(solutions.slice(0,shift)),solutions[0],hint),id:'analog-'+part.id+'-'+attempt,family:'filter-'+part.id,match:'skill',mistake:hint};
   }
 
+  function commonPractice(number,part,attempt){
+    const k=seed(part.id)%71+attempt,scale=2+k%13,i=part.id.split('-')[1];
+    let values;
+    if(number===45)values=[4*scale,6*scale];
+    else if(number===46)values=[2*scale,3*scale];
+    else if(number===47){
+      values=i==='1'?[2*3*scale,2*5*scale]:i==='2'?[2**(2+k%5),3**(1+k%4)]:[3*scale,3*scale*(2+k%5)];
+    }else{
+      values=i==='a'?[4*scale,6*scale]:i==='b'?[scale,scale*(3+k%7)]:i==='v'?[2**(2+k%4),5**(1+k%3)]:[6*scale,10*scale,15*scale];
+    }
+    const gcd=(a,b)=>b?gcd(b,a%b):a,g=values.reduce(gcd),l=values.reduce((a,b)=>a/gcd(a,b)*b);
+    const factorize=v=>{const xs=[];for(let d=2;d*d<=v;d++)while(v%d===0){xs.push(d);v/=d;}if(v>1)xs.push(v);return xs.join(' · ');};
+    const prompt=(number===45?'Установи наибольший элемент пересечения множеств положительных делителей':number===46?'Установи наименьший элемент пересечения множеств положительных кратных':'Найди НОД и НОК')+' чисел '+(number===47?values.map((v,j)=>String.fromCharCode(97+j)+' = '+factorize(v)).join(', '):values.join(', '))+'.';
+    const hint=number===45?'Делитель должен делить каждое из обоих чисел. Сравни все общие делители.':number===46?'Выпиши кратные по порядку до первого совпадения. Исключи ноль.':'Сравни показатели каждого простого множителя. Для НОД берут меньший показатель, для НОК больший.';
+    let task;
+    if(number<=46)task=numerical(prompt,number===45?g:l,'Каково искомое положительное число?',hint);
+    else{const list=['НОД '+g+', НОК '+l,'НОД '+l+', НОК '+g,'НОД '+g+', НОК '+(2*l)],shift=k%3;task=choice(prompt,list.slice(shift).concat(list.slice(0,shift)),list[0],hint);}
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'common-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number===38&&part.expression)return termPractice(part,attempt);
     if(number===36&&part.expression)return periodPractice(number,part,attempt);
     if(number===34)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>44)return createLegacy(number,part,attempt);
+    if(number<7||number>48)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=45)return commonPractice(number,part,attempt);
     if(number>=42)return divisorFilterPractice(number,part,attempt);
     if(number>=39)return formulaPractice(number,part,attempt);
     if(number===38)return termPractice(part,attempt);
@@ -601,7 +622,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=44&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=48&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -623,7 +644,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=44&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=48&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
