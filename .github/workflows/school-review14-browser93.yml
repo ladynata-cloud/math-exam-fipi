@@ -1,0 +1,61 @@
+name: Verify every newly included plane geometry exercise at both widths
+on:
+  push:
+    branches: [work/school-review14-browser93-20261122]
+    paths: ['.github/workflows/school-review14-browser93.yml']
+permissions:
+  contents: read
+jobs:
+  exact-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 32
+    strategy:
+      fail-fast: false
+      matrix:
+        portion: [1, 2]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: edc537cad46b2abe84f883b2afdce5e2c1cbb3c2
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+      - name: Install the browser and verify the exact release tree
+        run: |
+          test "$(git rev-parse HEAD)" = "edc537cad46b2abe84f883b2afdce5e2c1cbb3c2"
+          test "$(git rev-parse 'HEAD^{tree}')" = "d2ccc7cb3b85ce9c55d68f88797e77788241c17b"
+          npm install --prefix "$RUNNER_TEMP/plane-qa" --no-save --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
+          "$RUNNER_TEMP/plane-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Run the complete native lesson scenarios for all newly connected models
+        env:
+          NODE_PATH: ${{ runner.temp }}/plane-qa/node_modules
+          AREA_SHARD_INDEX: ${{ matrix.portion }}
+          AREA_SHARD_COUNT: 2
+          AREA_COVERAGE_DIR: ${{ runner.temp }}/exercise-coverage
+        run: |
+          node --input-type=commonjs <<'JS'
+          const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),Module=require('node:module');
+          const filename=path.resolve('tools/geometry-textbook/area-lessons.browser.cjs');
+          const targets=["1250","1251","1252","1254","1255","1256","1258","1261","1262","1264","1265","1266","1269","1272","1274","1275","1276","1277","1278","1281","1282","1283","1284","1285","1286","1287","1288","1289","1290","1291","1292","1293","1294","1295","1253-1","1253-2","1253-3","1257-1","1257-2","t125","t126","1259-1","1259-2","1260-1","1260-2","1263-1","1263-2","1263-3","1267-1","1267-2","1268-1","1268-2","1270-1","1270-2","t127","t128","t129","1271-1","1271-2","1271-3","1271-4","1273-1","1273-2","1273-3","1279-1","1279-2","1279-3","1280-1","1280-2","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m12","m13","m14","m15","m16","m17","m18","m19","m20","m21","m22","m23","m24"];
+          assert.equal(new Set(targets).size,93);
+          const text=fs.readFileSync(filename,'utf8'),declaration=' const lessons=Object.entries(',branch=" if(process.argv[2]==='--matrix'){";
+          assert.equal(text.split(declaration).length,2);assert.equal(text.split(branch).length,2);
+          const limit=" const targets=new Set("+JSON.stringify(targets)+"); const lessons=allLessons.filter(([key])=>targets.has(key)); assert.equal(allLessons.length,932); assert.equal(lessons.length,93);\n";
+          const body=text.replace(declaration,' const allLessons=Object.entries(').replace(branch,limit+branch);
+          const native=new Module(filename,module);native.filename=filename;native.paths=Module._nodeModulePaths(path.dirname(filename));native._compile(body,filename);
+          JS
+          node --input-type=commonjs <<'JS'
+          const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+          const n=Number(process.env.AREA_SHARD_INDEX),expected=n===1?94:92;
+          const report=JSON.parse(fs.readFileSync(path.join(process.env.AREA_COVERAGE_DIR,'practice-'+n+'.json')));
+          assert.equal(report.count,2);assert.equal(report.shard,n);assert.equal(report.completed.length,expected);assert.equal(new Set(report.completed).size,expected);
+          for(const width of [320,1280])assert.equal(report.completed.filter(key=>key.startsWith(width+'/')).length,expected/2);
+          console.log('Completed '+expected+' native Chromium lesson/width checks, including both 320px and 1280px.');
+          JS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: review14-learning-coverage-${{ matrix.portion }}
+          path: ${{ runner.temp }}/exercise-coverage
+          if-no-files-found: error
+          retention-days: 14
