@@ -504,6 +504,47 @@
     function draw(){host.outerHTML=primeExplore(number,part,work,true);host=main.querySelector('[data-proof-host]');const f=host.querySelector('select');f.onchange=()=>{if(f.value==='')delete work.proofProbe;else work.proofProbe=Number(f.value);save();draw();host.querySelector('select').focus({preventScroll:true});};}draw();
   }
 
+  const fractionSeries=[
+    [[27,54],[270,360],[405,486],[210,240],[225,250]],
+    [[13,280],[1,21],[1,20],[3,56],[7,120]]
+  ];
+  function fractionSeriesQuestion(part){
+    const first=part.id==='063-1',terms=fractionSeries[first?0:1].map(([a,b])=>a+'/'+b).join('; ');
+    return (first?'Сократи каждую из пяти дробей до несократимой формы.':'Приведи пять дробей к наименьшему общему знаменателю.')+' Исходные дроби: '+terms+'. Найди закономерность полученного ряда, допиши ещё два члена и объясни правило.';
+  }
+  function fractionSeriesView(part,work,interactive){
+    const first=part.id==='063-1',terms=fractionSeries[first?0:1],idx=work.seriesRow||0,[n,d]=terms[idx],value=work.seriesFactor||'',f=/^\d{1,6}$/.test(value)?Number(value):0,checked=work.seriesChecked;
+    let message='Выбери дробь и задай '+(first?'общий делитель.':'общий знаменатель. Выбирай наименьший из возможных.');
+    if(checked){if(!f)message=first?'Введи натуральный общий делитель.':'Введи положительный общий знаменатель.';else if(first)message=n%f||d%f?'Обе части должны делиться на одно число. Остатки: '+n%f+' и '+d%f+'.':'После деления обеих частей на '+f+': '+n/f+'/'+(d/f)+'. Проверь, остался ли общий делитель больше 1.';
+      else if(f%d)message='Предложенный знаменатель '+f+' не делится на '+d+': остаток '+(f%d)+'. Выбери кратное исходного знаменателя.';else message=n+'/'+d+' = '+(n*(f/d))+'/'+f+'. Множитель перехода '+f/d+'. Проверь остальные четыре знаменателя и наименьшее возможное значение.';}
+    const entries=work.seriesTerms||[],controls='<label>Исходная дробь <select data-series-row>'+terms.map(([a,b],i)=>'<option value="'+i+'"'+(idx===i?' selected':'')+'>'+a+'/'+b+'</option>').join('')+'</select></label><label>'+(first?'Делитель':'Общий знаменатель')+' <input data-series-factor type="text" inputmode="numeric" maxlength="6" style="width:100%;box-sizing:border-box" value="'+U.esc(value)+'"></label><button class="secondary" type="button" data-series-check>Проверить преобразование</button>';
+    const fields=Array.from({length:7},(_,i)=>'<label style="display:block">'+(i<5?terms[i][0]+'/'+terms[i][1]+' →':'Член '+(i+1)+' →')+' <input data-series-term="'+i+'" maxlength="45" style="width:100%;box-sizing:border-box" value="'+U.esc(entries[i]||'')+'"></label>').join('');
+    return '<section data-series-host><h3>Преобразуй дроби и продолжи ряд</h3>'+(interactive?controls:'')+'<p data-series-result aria-live="polite">'+U.esc(message)+'</p>'+(interactive?fields+'<label>Моя закономерность <textarea data-series-rule maxlength="500">'+U.esc(work.seriesRule||'')+'</textarea></label><button class="secondary" type="button" data-series-use>Перенести ряд и правило</button>':'')+'</section>';
+  }
+  function mountFractionSeries(main,part,work,save){
+    let host=main.querySelector('[data-series-host]');if(!host)return;
+    function draw(){host.outerHTML=fractionSeriesView(part,work,true);host=main.querySelector('[data-series-host]');const row=host.querySelector('[data-series-row]'),factor=host.querySelector('[data-series-factor]'),result=host.querySelector('[data-series-result]'),entries=work.seriesTerms||Array(7).fill(''),use=host.querySelector('[data-series-use]');
+      row.onchange=()=>{work.seriesRow=Number(row.value);delete work.seriesChecked;save();draw();host.querySelector('[data-series-row]').focus({preventScroll:true});};
+      factor.oninput=()=>{work.seriesFactor=factor.value.slice(0,6);delete work.seriesChecked;result.textContent='';save();};
+      host.querySelector('[data-series-check]').onclick=()=>{work.seriesChecked=true;root.PetersonBook.assist(work);save();draw();host.querySelector('[data-series-check]').focus({preventScroll:true});};
+      const enabled=()=>{use.disabled=entries.some(v=>!v.trim());};enabled();
+      for(const f of host.querySelectorAll('[data-series-term]'))f.oninput=()=>{entries[Number(f.dataset.seriesTerm)]=f.value.slice(0,45);work.seriesTerms=entries;enabled();save();};
+      const rule=host.querySelector('[data-series-rule]');rule.oninput=()=>{work.seriesRule=rule.value.slice(0,500);save();};
+      use.onclick=()=>{const f=main.querySelector('#answer');f.value=entries.join('; ')+(work.seriesRule?' | '+work.seriesRule:'');f.dispatchEvent(new Event('input',{bubbles:true}));f.focus();};
+    }draw();
+  }
+  function fractionSeriesResponse(number,part,input){
+    if(number!==63)return null;const first=part.id==='063-1',target=first?['1/2','3/4','5/6','7/8','9/10','11/12','13/14']:['39/840','40/840','42/840','45/840','49/840','54/840','60/840'],M=root.PetersonBook.M,words=input.split('|')[0].trim().replace(/\.$/,'').split(/\s*;\s*/);
+    if(words.length!==7)return null;
+    for(const [i,v] of words.entries()){
+      const m=v.match(/^\s*(\d+)\s*\/\s*(\d+)\s*$/);if(!m||!Number(m[2]))return {ok:false,text:'В позиции '+(i+1)+' нужна дробь с положительным знаменателем, например 3/5.'};
+      if(!M.equal(v,target[i]))return {ok:false,text:i>=5?(first?'Сравни, на сколько растут числитель и знаменатель при переходе между соседними несократимыми дробями.':'Сравни разности соседних числителей на едином знаменателе. Какие два шага идут после +4?'):'В позиции '+(i+1)+' изменилось значение исходной дроби. Преобразуй обе части одним и тем же множителем.'};
+      const reduced=M.parse(v);if(first&&(Number(m[1])!==reduced.n||Number(m[2])!==reduced.d))return {ok:false,text:'Значение верно, но дробь '+v+' ещё сокращается. Найди общий делитель числителя и знаменателя.'};
+      if(!first&&i<5&&Number(m[2])!==840)return {ok:false,text:'Значение верно, но у первых пяти записей должен быть один наименьший общий знаменатель. Найди НОК исходных знаменателей.'};
+    }
+    return {ok:true,text:'Пять преобразований и два продолжения согласуются с закономерностью. Запиши ход изменения числителей и знаменателей. Объяснение сохранено для проверки.'};
+  }
+
   const fractionAssertions=[
     ['Любая неправильная дробь строго больше единицы.','Общее','Ложно: 4/4 = 1.','Истинно: числитель всегда строго больше знаменателя.','Ложно: 1/2 меньше единицы.','Проверь случай равных числителя и знаменателя. Правильная дробь в исходную группу не входит.'],
     ['Сумма двух неправильных дробей может оказаться правильной.','О существовании','Ложно: каждое слагаемое не меньше 1, сумма не меньше 2.','Истинно: две дроби всегда дают правильную дробь.','Ложно только для дробей с одинаковыми знаменателями.','Для любого выбора оцени оба слагаемых снизу единицей.'],
@@ -1481,6 +1522,7 @@
     if(number===50||number===51)return primeLogic(number,part).prompt;
     if(number===61)return fractionClaim(number,part).prompt;
     if(number===62)return fractionClaim(number,part);
+    if(number===63)return fractionSeriesQuestion(part);
     if(number===59||number===60)return existenceCard(number,part).prompt;
     if(number===57)return 'Алик и Боря вместе нашли столько же грибов, сколько Витя и Гена вместе. Общая корзина Алика и Гены меньше общей корзины Бори и Вити. У Гены грибов больше, чем у Вити. Расставь четверых по убыванию их личных результатов и докажи порядок.';
     if(number===58)return 'В каждом столбце таблицы одна цифра обозначает любую из трёх букв. Звёздочка означает Ю, Я или пробел. Какую пословицу можно прочитать в строке 61551491 * 2 * 6561 * 051 * 51516566? Проверь каждое слово по кодам и по смыслу.';
@@ -1562,6 +1604,7 @@
     if(item.number===41)drawing=factorBasket({},false);
     if(item.number===50||item.number===51)drawing=logicConstruction(item.number,part,false)+primeExplore(item.number,part,{},false);
     if(item.number===61)drawing=logicConstruction(item.number,part,false)+fractionDemo(part,{},false);
+    if(item.number===63)drawing=fractionSeriesView(part,{},false);
     if(item.number===62)drawing=pairProofView({},false);
     if(item.number===59||item.number===60)drawing=logicConstruction(item.number,part,false)+existenceView(item.number,{},false);
     if(item.number===57)drawing=mushroomView({},false);
@@ -1599,5 +1642,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse,mountMushrooms,mushroomResponse,mountSecret,secretResponse,mountExistence,mountClaim,mountProofPairs,proofPairsResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse,mountMushrooms,mushroomResponse,mountSecret,secretResponse,mountExistence,mountClaim,mountProofPairs,proofPairsResponse,mountFractionSeries,fractionSeriesResponse};
 })(globalThis);

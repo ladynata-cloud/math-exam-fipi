@@ -673,6 +673,18 @@
     const shift=k%3;return {...choice(prompt,list.slice(shift).concat(list.slice(0,shift)),list[0],hint),id:'analog-'+part.id+'-'+attempt,family:'fraction-claim-'+part.id,match:'skill',mistake:hint};
   }
 
+  function fractionSeriesPractice(part,attempt){
+    const k=seed(part.id)%83+attempt,M=E.M,fmt=(n,d)=>M.answer(M.operation('divide',n,d));let prompt,values,hint;
+    if(part.id==='063-1'){
+      const start=1+2*(k%13),step=2+2*(k%3),scale=2+k%7,terms=Array.from({length:4},(_,i)=>{const n=start+i*step;return (n*(scale+i))+'/'+((n+1)*(scale+i));}),n=start+4*step;
+      prompt='Сократи дроби '+terms.join('; ')+'. После сокращения числитель и знаменатель каждый раз возрастают на один и тот же чётный шаг. Какая дробь следующая?';values=[fmt(n,n+1),fmt(n-1,n),fmt(n+2,n+3)];hint='Сначала сократи каждую дробь. Вычисли разность соседних числителей и проверь знаменатели.';
+    }else{
+      const d=18+6*(k%6),start=1+k%8,terms=[0,1,3,6].map(v=>fmt(start+v,d)),n=start+10;
+      prompt='Представь '+terms.join('; ')+' со знаменателем '+d+'. Приращения числителей идут подряд: +1, +2, +3 и далее. Что получится на следующем шаге?';values=[fmt(n,d),fmt(n-1,d),fmt(n+1,d)];hint='Приведи записи к указанному знаменателю; после прибавления 3 используй приращение 4.';
+    }
+    const shift=k%3;return {...choice(prompt,values.slice(shift).concat(values.slice(0,shift)),values[0],hint),id:'analog-'+part.id+'-'+attempt,family:'fraction-series-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number===56&&part.expression)return measurePractice(number,part,attempt);
     if(number===49&&part.expression)return cuboidPractice(part,attempt);
@@ -681,11 +693,12 @@
     if(number===34||number===52)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>62)return createLegacy(number,part,attempt);
+    if(number<7||number>63)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===63)return fractionSeriesPractice(part,attempt);
     if(number>=61)return fractionClaimPractice(number,part,attempt);
     if(number>=59)return existentialPractice(number,part,attempt);
     if(number>=57)return basketCipherPractice(number,part,attempt);
@@ -740,7 +753,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=62&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=63&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -762,7 +775,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=62&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=63&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

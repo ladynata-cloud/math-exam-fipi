@@ -962,3 +962,13 @@ test('each fraction claim distinguishes existence, a universal statement and a s
  const test=xs=>{for(const i of xs)click(s,'[data-proof-pair="'+i+'"]');click(s,'[data-pair-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};assert.match(test([0,1,2,3]),/требуют одной истинности/);assert.match(test([0,1,2,3,3,0,1,2]),/Пары совпадают/);assert(bookWork(s,'062-1').submitted&&!bookWork(s,'062-1').correct);
  const re=await surface(t,BOOK+'#n/62/062-1',storage(s));assert.equal(element(re,'[data-pair-truth]').value,'true');assert.deepEqual(bookWork(re,'062-1').proofLinks,[3,0,1,2]);
 });
+test('fraction sequences require irreducible forms and lowest common denominator, preserving the learner transformation',async t=>{
+ const s=await surface(t,BOOK+'#n/63/063-1'),ps=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[62].parts;
+ const rows=[['1/2','3/4','5/6','7/8','9/10','11/12','13/14'],['39/840','40/840','42/840','45/840','49/840','9/140','1/14']];
+ const set=(i,v)=>input(s,'[data-series-term="'+i+'"]',v),send=()=>{click(s,'[data-series-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const [i,p] of ps.entries()){await route(s,'#n/63/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);input(s,'[data-series-factor]',i?'840':'27');click(s,'[data-series-check]');assert.match(element(s,'[data-series-result]').textContent,i?/39\/840/:/1\/2/);
+  rows[i].forEach((v,j)=>set(j,v));set(0,i?'13/280':'2/4');assert.match(send(),i?/наименьший общий знаменатель/:/ещё сокращается/);set(0,rows[i][0]);set(6,i?'59/840':'12/13');assert.match(send(),i?/разности соседних/:/на сколько растут/);set(6,rows[i][6]);input(s,'[data-series-rule]',i?'Приращения числителей растут каждый раз на единицу.':'К каждому члену несократимой дроби прибавляем 2.');assert.match(send(),/Пять преобразований/);assert(bookWork(s,p.id).submitted&&bookWork(s,p.id).assisted&&!bookWork(s,p.id).correct);
+  for(let j=0;j<36;j++){const m=s.w.PetersonAnalogues.create(63,p,j);assert.equal(new Set(m.choices).size,3);if(i===0){const parts=[...m.prompt.matchAll(/(\d+)\/(\d+)/g)].map(x=>s.w.PetersonBook.M.parse(x[0])),step=parts[1].n-parts[0].n;assert(s.w.PetersonBook.M.equal(m.answer,(parts[3].n+step)+'/'+(parts[3].d+step)));}else{const d=Number(m.prompt.match(/знаменателем (\d+)/)[1]),first=s.w.PetersonBook.M.parse(m.prompt.match(/Представь (\d+(?:\/\d+)?)/)[1]);assert(s.w.PetersonBook.M.equal(m.answer,(first.n*d/first.d+10)+'/'+d));}}
+ }
+ const re=await surface(t,BOOK+'#n/63/063-2',storage(s));assert.equal(element(re,'[data-series-term="6"]').value,'1/14');assert.equal(element(re,'[data-series-factor]').value,'840');
+});

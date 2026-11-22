@@ -90,6 +90,13 @@ function sanitize(part,input){
   if(length&&Array.isArray(input.claimValues)&&input.claimValues.length===length&&input.claimValues.every(n=>Number.isInteger(n)&&n>=1&&n<=(i===7?4:20)))clean.claimValues=[...input.claimValues];
   if(input.claimShown===true)clean.claimShown=true;
  }
+ if(part.id.startsWith('063-')){
+  if(Number.isInteger(input.seriesRow)&&input.seriesRow>=0&&input.seriesRow<5)clean.seriesRow=input.seriesRow;
+  if(typeof input.seriesFactor==='string'&&input.seriesFactor)clean.seriesFactor=cut(input.seriesFactor,6);
+  if(input.seriesChecked===true)clean.seriesChecked=true;
+  if(Array.isArray(input.seriesTerms)&&input.seriesTerms.length===7)clean.seriesTerms=input.seriesTerms.map(v=>typeof v==='string'?cut(v,45):'');
+  if(typeof input.seriesRule==='string'&&input.seriesRule)clean.seriesRule=cut(input.seriesRule,500);
+ }
  if(part.id==='062-1'){
   if(typeof input.pairTruth==='boolean')clean.pairTruth=input.pairTruth;
   if(Array.isArray(input.proofLinks)&&input.proofLinks.length<=4&&new Set(input.proofLinks).size===input.proofLinks.length&&input.proofLinks.every(n=>Number.isInteger(n)&&n>=0&&n<4))clean.proofLinks=[...input.proofLinks];
