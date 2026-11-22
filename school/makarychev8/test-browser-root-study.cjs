@@ -54,6 +54,9 @@ async function verify(width,url){
   await submit(page,'1;2;3');assert.match(await page.locator('#problem').innerText(),/сравни разные ветви/);
   await submit(page,'3;2');
   await openNumber(page,1127,'№ 1127, y = 0,09');
+  const ticks=page.locator('#task-graph svg').first();
+  assert(await ticks.evaluate(svg=>Array.from(svg.querySelectorAll('text')).every(t=>{const b=t.getBBox();return b.x>=0&&b.x+b.width<=svg.viewBox.baseVal.width+1;})), 'decimal scale labels fit the diagram');
+  assert.match(await ticks.textContent(),/0,05/);
   await submit(page,'0,09');assert.match(await page.locator('#problem').innerText(),/ввёл высоту/);
   await submit(page,'0,0081');
   await openNumber(page,1128,'№ 1128в');

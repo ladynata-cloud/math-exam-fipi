@@ -98,7 +98,7 @@ function rootGraph(config,value){
  const svg=node('svg',{viewBox:'0 0 '+width+' '+height,role:'img','aria-label':config.label||(['root-build','curve-build'].includes(config.type)?'Координатная плоскость для твоего построения':'Графики функций на координатной плоскости')});
  const line=(x1,y1,x2,y2,color,attrs={})=>svg.append(node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':1,...attrs}));
  const step=(a,b)=>{const size=(b-a)/(Math.max(Math.abs(a),Math.abs(b))>=10000?3:6),p=Math.pow(10,Math.floor(Math.log10(size)));return [1,2,5,10].find(n=>n*p>=size)*p;};
- const label=v=>config.compactTicks&&Math.abs(v)>=10000?v.toExponential(0):Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();
+ const label=v=>{const text=config.compactTicks&&Math.abs(v)>=10000?v.toExponential(0):Math.abs(v)>=10000?Number(v.toPrecision(3)).toString():Number(v.toFixed(4)).toString();return config.decimalComma?text.replace('.',','):text;};
  const sx=config.xTickStep||step(...xr),sy=config.yTickStep||step(...yr),gx=config.xGridStep||config.gridStep||(xr[1]-xr[0]<=24?Math.min(1,sx):sx),gy=config.yGridStep||config.gridStep||(yr[1]-yr[0]<=24?Math.min(1,sy):sy),hasXAxis=yr[0]<=0&&yr[1]>=0,hasYAxis=xr[0]<=0&&xr[1]>=0;
  if(![sx,sy,gx,gy].every(v=>Number.isFinite(v)&&v>0)||(xr[1]-xr[0])/gx>200||(yr[1]-yr[0])/gy>200)throw Error('Invalid root grid');
  for(let v=Math.ceil(xr[0]/gx)*gx;v<=xr[1]+gx/100;v+=gx)line(x(v),pad,x(v),height-pad,'#e1e7e2');
@@ -937,7 +937,7 @@ function rootStudyView(host,g,raw){
   xr=[g.inside<0?-extent-1:-1,extent+1];yr=[g.scale<0?-height-1:-1,height+1];curves=[{kind:'scaled-root-study',scale:1,inside:1}];points=r.points.map(([a,b])=>[a,b,'']);
   if(g.showSolution)curves.push({kind:'scaled-root-study',scale:g.scale,inside:g.inside});
   if(x!==null&&x>=0){const y=Math.sqrt(x);points.push([x,y,'']);boundNote(host,'Из исходной точки ('+fmt(x)+'; '+fmt(y)+') получается ('+fmt(g.inside*x)+'; '+fmt(g.scale*y)+').').dataset.rootTransform=String(x);}
-  if(x!==null&&x<0)note='Исходная функция √x при таком аргументе не определена. Для отражения выбери неотрицательное x на исходном графике и поменяй знак абсциссы.';
+  if(x!==null&&x<0)note='Исходная функция √x при таком аргументе не определена. Выбери неотрицательный x на исходном графике.';
   boundNote(host,'Твои две точки отмечаются сразу. После правильного построения появится преобразованный график.').dataset.rootConstruction=r.status;
  }else{
   const level=g.level?M.parse(g.level):null,h=level?level.n/level.d:0,t=g.high||g.low||h;
@@ -967,7 +967,7 @@ function rootStudyView(host,g,raw){
   }
   boundNote(host,'Выделенная дуга показывает предложенные тобой значения x на графике корня. Пустой кружок означает, что граничная точка исключена.');
  }
- const svg=rootGraph({curves,points,xRange:xr,yRange:yr,compactTicks:Math.max(...xr.map(Math.abs))>1000,axisLabels:['x','y'],label:g.mode==='figure'?'Две ветви графика к рисунку 72':'Исходные графики и выбранные точки'},'');host.append(svg);
+ const svg=rootGraph({curves,points,xRange:xr,yRange:yr,compactTicks:Math.max(...xr.map(Math.abs))>1000||(xr[1]<1&&yr[1]<1),decimalComma:true,axisLabels:['x','y'],label:g.mode==='figure'?'Две ветви графика к рисунку 72':'Исходные графики и выбранные точки'},'');host.append(svg);
  if(note)boundNote(host,note).dataset.rootStudyProbe=String(x);
  if(proposal)intervalNumberLine(host,{givenRows:[],proposal,points:[]},'');
 }
