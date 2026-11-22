@@ -104,7 +104,7 @@ const catalogue=process.argv.includes('--dorofeev9')?{
 } : process.argv.includes('--mordkovich7-2013') ? {
   directory:'mordkovich-2013',entries:[[97,47,23]],uniqueLessons:22,search:'mordkovich-2013',match:'выражения',lesson:'97-q14',chart:'svg[aria-label*="Направление шага"]',storage:'math:mordkovich-2013:v1:'
 } : process.argv.includes('--mordkovich7-theory-2019') ? {
-  directory:'mordkovich-2019',entries:[[89,66,338]],uniqueLessons:318,search:'mordkovich-2019',match:'порядок действий',lesson:'89-3-ex2',chart:'svg[aria-label*="Температура по часам"]',storage:'math:mordkovich-2019:v1:'
+  directory:'mordkovich-2019',entries:[[89,66,356]],uniqueLessons:334,search:'mordkovich-2019',match:'порядок действий',lesson:'89-3-ex2',chart:'svg[aria-label*="Температура по часам"]',storage:'math:mordkovich-2019:v1:'
 } : process.argv.includes('--mordkovich8-workbook-2019') ? {
   directory:'mordkovich-2019',entries:[[67,54,38]],uniqueLessons:37,search:'mordkovich-2019',match:'область определения',lesson:'67-1-10',chart:'svg[aria-label*="Подстановка на числовой прямой"]',storage:'math:mordkovich-2019:v1:'
 } : process.argv.includes('--mordkovich7-workbook-2019') ? {
@@ -197,7 +197,8 @@ async function run(browser, origin, serverOrigin) {
         ['89-15-ex6','Две прямые через точку, третья проходит мимо'],
         ['89-17-ex1','Точки на горизонтали L и вертикали M'],
         ['89-18-ex4-a','Основание, показатель и равные множители'],
-        ['89-20-ex4','Основание, показатель и равные множители']
+        ['89-20-ex4','Основание, показатель и равные множители'],
+        ['89-22-q1','Основание, показатель и равные множители']
       ];
       for(const [id,caption] of diagrams){
         await t.locator('#lesson').selectOption(id);await value(student,'lesson',id);
