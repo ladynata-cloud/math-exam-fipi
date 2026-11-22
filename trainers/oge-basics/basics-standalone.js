@@ -54,7 +54,8 @@
     const host = element('div', 'basics-help-host');
     host.setAttribute('data-basics-help-host', '');
     const anchor = percent ? $('p-q') : division ? $('phaseText') : $('practicePrompt');
-    anchor.after(host);
+    const helpAnchor = practice.querySelector('[data-basics-help-after]') || anchor;
+    helpAnchor.after(host);
     const helpRoot = element('div', 'bs-current-help');
     const hintControls = element('div', 'bs-hint-controls');
     firstHint.textContent = 'Небольшая подсказка';

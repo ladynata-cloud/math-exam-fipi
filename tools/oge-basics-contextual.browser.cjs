@@ -267,6 +267,42 @@ async function retainDraftInHelp(page, {name, route, answer, prompt, practice, p
   return {input, beforePrompt};
 }
 
+async function useQuotientRuler(page) {
+  await open(page, 'multiplication-division/long-division-quotient-digit.html');
+  await helper(page).waitFor();
+  const buttons = page.locator('#multiples button');
+  assert.equal(await buttons.count(), 10);
+  for (const tick of await buttons.all()) await hitTarget(tick, 'Ruler tick');
+  const target = page.locator('#partialValue');
+  const targetNumber = Number(await target.innerText());
+  const divisor = Number(await page.locator('#divisorDisplay').innerText());
+  const digit = Math.floor(targetNumber / divisor);
+  const bounds = await Promise.all([target, buttons.nth(0), buttons.nth(9)].map(node => node.boundingBox()));
+  const center = rect => rect.x + rect.width / 2;
+  const gap = (center(bounds[2]) - center(bounds[1])) / 9;
+  assert(Math.abs(center(bounds[0]) - center(bounds[1]) - targetNumber / divisor * gap) < 1);
+  await noOverflow(page, 'Quotient ruler');
+  await shot(page, 'quotient-ruler-' + page.viewportSize().width);
+  const wrong = digit === 9 ? 8 : digit + 1;
+  await buttons.nth(wrong).click();
+  assert(await page.locator('#feedback.bad').isVisible());
+  assert.equal(await page.locator('#quotientDisplay').innerText(), '?');
+  await helper(page).click();
+  const lastTick = await buttons.last().boundingBox(), helpPanel = await page.locator('.bh-panel:visible').boundingBox();
+  assert(helpPanel.y >= lastTick.y + lastTick.height, 'Opening hints leaves the ruler above them');
+  await helper(page).click();
+  await buttons.nth(digit).press('Enter');
+  assert.equal(await page.locator('#quotientDisplay').innerText(), String(digit));
+  const answer = page.locator('#answerArea input');
+  await answer.fill(String(digit * divisor));
+  await answer.press('Enter');
+  assert(await page.locator('#writtenProduct').isVisible());
+  await answer.fill(String(targetNumber % divisor));
+  await answer.press('Enter');
+  assert.equal(await page.locator('#writtenRemainder').innerText(), String(targetNumber % divisor));
+  assert(await page.locator('#feedback.good').isVisible());
+}
+
 async function chooseLegacyQuotientDigit(page) {
   // This family starts with a visible multiples choice, then asks for its
   // product. Read the two displayed numbers and use the normal choice button.
@@ -466,6 +502,7 @@ async function supplementalDivisionContracts(page) {
         await retainDraftInHelp(page, {name:'order', route:'order-of-operations.html',
           answer:'#practiceAnswer input', prompt:'#practicePrompt', practice:'#view-practice'});
         await deepHelp(page);
+        await useQuotientRuler(page);
         await retainDraftInHelp(page, {name:'legacy-division', route:'multiplication-division/long-division-one-digit.html',
           answer:'#answerArea input', prompt:'#taskTitle', practice:'#view-practice', prepare:chooseLegacyQuotientDigit});
         await retainDraftInHelp(page, {name:'managed-public', route:'multiplication-division/course-first-part.html',
