@@ -24,8 +24,8 @@ for(const [i,row] of paragraphs.entries()) {
   else assert(row.bookOnly&&!row.externalPath&&!row.boardPath);
 }
 const dir='trainers/mordkovich-2019/';
-const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2','4-ex1','5-ex1','6-ex1','6-ex2'];
-const printed=[6,9,9,9,12,12,12,14,15,19,22,32,33];
+const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2','4-ex1','4-ex2','5-ex1','5-ex2','5-ex3','6-ex1','6-ex2','6-ex3'];
+const printed=[6,9,9,9,12,12,12,14,15,19,20,22,22,23,32,33,36];
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
   .filter(x=>!x.startsWith('/')&&!x.includes('board-bridge')).map(x=>read(path.join(dir,x)));
@@ -40,21 +40,37 @@ function open(entry,save) {
 function expected(i,s) {
   const u=s+2,v=s+4,a=s+2,b=i===1?s+4:-(s+1);
   const h=s+2,w=s+6,k=s+1, gap=s+3, initial=gap+2*k;
-  switch(i) {
-    case 0:return [-1/3,-3*(u+v),(-3*(u+v))/(5*s+5)];
-    case 1:case 2:return [a-b,a*a-b*b,(a*a+2*a*b+b*b)/(a*a-b*b)];
-    case 3:return [-a,a,2];
-    case 4:return [2*s+8,(s+2)*(s+4),2*s+8-(s+2)*(s+4)];
-    case 5:return [h*w,h*k,h*(w+k)];
-    case 6:return [h*w,h*k,h*(w-k)];
-    case 7:return [2*k,initial,3*initial];
-    case 8:return [6,2*s+4,3*s+6];
-    case 9:{const x=(s+1)/3+(s+3)/6;return [6,12*x,4*x];}
-    case 10:{const high=3*s+6,low=2*s+4;const total=high*(s+1)/(high-low);return [high*(s+1),total,low*total];}
-    case 11:return [-s-2,-3*s-6,s+2];
-    case 12:{
+  switch(ids[i]) {
+    case '1-ex1':return [-1/3,-3*(u+v),(-3*(u+v))/(5*s+5)];
+    case '1-ex2-a':case '1-ex2-b':return [a-b,a*a-b*b,(a*a+2*a*b+b*b)/(a*a-b*b)];
+    case '1-ex2-c':return [-a,a,2];
+    case '2-q2':return [2*s+8,(s+2)*(s+4),2*s+8-(s+2)*(s+4)];
+    case '2-q3':return [h*w,h*k,h*(w+k)];
+    case '2-q4':return [h*w,h*k,h*(w-k)];
+    case '3-ex1':return [2*k,initial,3*initial];
+    case '3-ex2':return [6,2*s+4,3*s+6];
+    case '4-ex1':{const x=(s+1)/3+(s+3)/6;return [6,12*x,4*x];}
+    case '5-ex1':{const high=3*s+6,low=2*s+4;const total=high*(s+1)/(high-low);return [high*(s+1),total,low*total];}
+    case '6-ex1':return [-s-2,-3*s-6,s+2];
+    case '6-ex2':{
       const b=(s+1)/(s+6),c=(s+3+s%3)/(s+6),a=(s+8)/(s+6);
       return [Math.abs(c-b),Math.abs(a-c),2*c<a+b?b:a];
+    }
+    case '4-ex2':{
+      const l=(s+3)/5, r=(s+2)/2;
+      return [10*l,10*(l-r),((s+1)/5+(s+3)/2)/(l-r)];
+    }
+    case '5-ex2':{
+      const t=2+s%3, lead=t*(s+2)-(s+3), pedestrian=(t*(s+2)-lead)/(t+1-t);
+      return [t+1,pedestrian,pedestrian*(t+1)];
+    }
+    case '5-ex3':{
+      const t=s+2+30/60, x=s+5, flow=1+s%3;
+      return [t,t*(x+flow)+1.5*(x-flow)-x*(t+1.5),x];
+    }
+    case '6-ex3':{
+      const n=2*s+1, good=s+1+s-Math.floor((2*s-1)/3)-1;
+      return [n,good,good/n];
     }
     default:throw new Error('Unexpected lesson');
   }
@@ -111,4 +127,4 @@ for(const [i,entry] of book.exercises.entries()){
   assert.notEqual(JSON.parse(reopened.w.localStorage.getItem(key)).variant,0);
   reopened.dom.window.close();dom.window.close();
 }
-console.log('Source 89: 48 printed paragraphs, 13 student routes, 429 independently checked questions and 13 personal draft round trips.');
+console.log('Source 89: 48 printed paragraphs, 17 student routes, 561 independently checked questions and 17 personal draft round trips.');
