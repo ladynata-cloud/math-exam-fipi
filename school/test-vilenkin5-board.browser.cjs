@@ -534,6 +534,17 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.161: measure from the fish nose and retain the selected scale';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-161"]').click();await studentFrame.locator('h1').filter({hasText:'№1.161'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=row]').selectOption({value:'2'});await teacherFrame.locator('[data-v5-prediction]').fill('110');await teacherFrame.locator('[data-v5-predict] button').click();
+  const fishWrong=await same(teacherFrame,studentFrame,'perch endpoint taken as length');assert.equal(fishWrong.scene.model.first,'110');assert.equal(fishWrong.scene.model.seen,false);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-prediction]').fill('100');await studentFrame.locator('[data-v5-predict] button').click();
+  for(const answer of ['150','40']){await studentFrame.locator('#answer').fill(answer);await studentFrame.locator('#answer-form button').click();await same(studentFrame,teacherFrame,'two fish measured');await studentFrame.locator('[data-cmd=next]').click();}
+  await studentFrame.locator('#answer').fill('110');await studentFrame.locator('#answer-form button').click();const tailOnly=await same(studentFrame,teacherFrame,'perch length requires the nonzero start');assert.match(tailOnly.scene.message,/координата конца/);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const measured=await same(studentFrame,teacherFrame,'restored fish and corrected model forecast');assert.equal(measured.scene.model.first,'110');assert.equal(measured.scene.model.prediction,'100');
+  await ownership(teacher,student,false);await teacherFrame.locator('#answer').fill('100');await teacherFrame.locator('#answer-form button').click();await same(teacherFrame,studentFrame,'correct perch length');
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const finalFish=await same(teacherFrame,studentFrame,'restored corrected step and phone diagram');assert(finalFish.scene.correct);assert.deepEqual(finalFish.scene.hintLevels,{});
+
   phase = 'source 1.155: a pupils own marks inside a segment read from both seats';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-155"]').click();await studentFrame.locator('h1').filter({hasText:'№1.155'}).waitFor();
   await teacherFrame.locator('[data-v5-param=count]').selectOption({value:'3'});await teacherFrame.locator('[data-v5-prediction]').fill('3');await teacherFrame.locator('[data-v5-predict] button').click();await same(teacherFrame,studentFrame,'three marks do not span three cm');

@@ -19,7 +19,7 @@
       step('4. Сколько рублей стоит покупка из исходной таблицы?',total,'Сложи стоимости всех четырёх строк.',[{value:sum(prices),text:'Сложены цены за килограмм. Складывай полные стоимости строк.'}])];
     const prompt='5. Лука берут на 1 кг меньше, моркови на 1 кг больше, капусты на 1 кг меньше. Яблок берут '+given+' кг. Чему равна новая стоимость всей покупки?';
     return {prefix:seed?'Новые данные для самостоятельного повтора. ':'Данные проверочной работы. ',prompt,inputPrompt:'Новая стоимость покупки, руб.',answer:newTotal,steps,errors:[{value:total,text:'Это первоначальный итог. Пересчитай массы четырёх продуктов для новой покупки.'}],
-      data:{prices,mass,cost,changed,newTotal,total},table:{caption:'Найди три пропущенные величины и итог',headers:['Продукт','Цена, р./кг','Масса, кг','Стоимость, р.'],rows:products.map((p,i)=>[p,i===3?'?':prices[i],i===2?'?':mass[i],i===1?'?':cost[i]]),columnWidths:[29,24,18,29]},conditionKey:prices.join('/')+mass.join('/')+'/'+given};
+      data:{prices,mass,cost,changed,newTotal,total},table:{caption:'Цена за килограмм, масса в килограммах и стоимость в рублях. Заполни три пропуска.',headers:['Товар','₽/кг','кг','₽'],rows:products.map((p,i)=>[p,i===3?'?':prices[i],i===2?'?':mass[i],i===1?'?':cost[i]]),columnWidths:[41,23,16,20]},conditionKey:prices.join('/')+mass.join('/')+'/'+given};
   }
   function repeat(seed,r,step){
     const original=seed>=100&&seed<=999?seed:seed?r(100,999):314,n=1001*original,last=original%10;
