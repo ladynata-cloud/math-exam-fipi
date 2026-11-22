@@ -101,6 +101,8 @@ const catalogue=process.argv.includes('--dorofeev9')?{
   directory:'mordkovich-2020',entries:[[24,49,13]],uniqueLessons:12,onlySelected:process.argv.includes('--selected-room'),search:'mordkovich-2020',match:'множества и делимость',lesson:'24-example-1',chart:'svg[aria-label*="Последовательные целые"]',storage:'math:mordkovich-2020:v1:'
 } : process.argv.includes('--mordkovich-2020') ? {
   directory:'mordkovich-2020',entries:[[25,50,60]],uniqueLessons:59,search:'mordkovich-2020',match:'множества и делимость',lesson:'25-review-17d',chart:'svg[aria-label*="Разложения для сравнения"]',storage:'math:mordkovich-2020:v1:'
+} : process.argv.includes('--mordkovich7-2013') ? {
+  directory:'mordkovich-2013',entries:[[97,47,23]],uniqueLessons:22,search:'mordkovich-2013',match:'выражения',lesson:'97-q14',chart:'svg[aria-label*="Направление шага"]',storage:'math:mordkovich-2013:v1:'
 } : process.argv.includes('--mordkovich-2013-theory') ? {
   directory:'mordkovich-2013',entries:[[20,62,31]],uniqueLessons:29,search:'mordkovich-2013',match:'числовые функции первого тома',lesson:process.argv.includes('--bounds')?'20-prop-7b':'20-example1b',chart:process.argv.includes('--bounds')?'svg[aria-label*="Концы области и их отражения"]':'svg[aria-label*="Три ветви кусочной функции"]',storage:'math:mordkovich-2013:v1:'
 } : process.argv.includes('--mordkovich-2013') ? {
