@@ -1,7 +1,8 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const coordinateChapterSevenEnd = makeReviewedIncrement(require('./coordinate-chapter-seven-end.json'));
+const finalTriangularPrismReview = makeReviewedIncrement(require('./final-triangular-prism-review.json'));
+const coordinateChapterSevenEnd = makeReviewedIncrement(require('./coordinate-chapter-seven-end.json'), finalTriangularPrismReview);
 const additionalDirectedAndPlaneAngles = makeReviewedIncrement(require('./additional-directed-and-plane-angles.json'), coordinateChapterSevenEnd);
 const additionalCoordinateDistances = makeReviewedIncrement(require('./additional-coordinate-distances.json'), additionalDirectedAndPlaneAngles);
 const additionalCoordinateCombinations = makeReviewedIncrement(require('./additional-coordinate-combinations.json'), additionalCoordinateDistances);
