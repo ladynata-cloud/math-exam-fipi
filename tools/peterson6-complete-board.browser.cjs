@@ -187,6 +187,20 @@ async function run(browser, origin, backend, failures, published) {
       const corrected = await same(b,a,'pupil corrects a shared answer');
       assert.equal(corrected.work.firstErrors.final,'17');
       assert.equal(await a.locator('article .badge').innerText(),'Решено на общей доске');
+      await b.locator('#number-input').fill('8');await b.locator('#number-form button').click();
+      await b.locator('[data-set-number="0"]').click();await b.locator('[data-set-number="1"]').click();
+      await b.locator('#answer-form button').click();const numberSet=await same(b,a,'shared number-set model and error about zero');
+      assert.equal(numberSet.route,'#n/8/008-1-a');assert.match(numberSet.message.text,/Ты включил ноль/);
+      assert.equal(await a.locator('[data-set-number="0"]').getAttribute('aria-pressed'),'true');
+      await b.locator('[data-set-number="0"]').click();await b.locator('[data-set-number="25 004"]').click();
+      await b.locator('#answer-form button').click();const listed=await same(b,a,'set correction, manual work pending');assert(!listed.work.correct&&listed.work.submitted);assert.match(listed.message.text,/все нужные элементы/);
+      const panel=b.locator('.equivalent-exercise');await panel.locator('summary').first().click();await panel.getByRole('button',{name:'Другой пример'}).click();
+      await panel.locator('select').selectOption({index:1});await panel.locator('form button').click();const practiced=await same(b,a,'separate author variant and selected answer');assert.equal(practiced.analogue.attempt,1);assert(practiced.analogue.work.draft);
+      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'observer reload restores the exact exercise, picks and practice attempt');
+      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'pupil reload restores same controls');
+      await a.locator('#number-input').fill('10');await a.locator('#number-form button').click();await a.locator('#answer').fill('6 702 058');await a.locator('#answer-form button').click();const dictation=await same(a,b,'grouped millions accepted in shared dictation');assert(dictation.work.correct);assert.equal(dictation.work.draft,'6 702 058');
+
     }
     const late=await session(browser,origin,backend,id+'-late',failures);await late.page.goto(link);
     await waitConnected(late.page);const c=await frameFor(late.page,wrapper);await same(b,c,'late participant receives open work');

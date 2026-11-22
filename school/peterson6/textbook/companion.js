@@ -94,7 +94,85 @@
     ['Существует месяц длиной 30 дней.', 'Существует месяц длиной не 30 дней.', 'Сравни длительность апреля и января.'],
     ['Каждое утро бывает дождь.', 'Дождя по утрам не бывает никогда.', 'Возьми одно дождливое утро и одно сухое.']
   ];
+  const numberSet = ['5/16','0','3/1000','4,8','25 004','5 7/9','1','0,0095'];
+  const setQuestions = {
+    '008-1-a':'Какие элементы подходят для счёта предметов, начиная с единицы?',
+    '008-1-b':'Какие элементы этой записи учебник относит к дробям? Здесь выбираем нецелые числа.',
+    '008-2-a':'Какие дроби на карточках записаны только числителем и знаменателем?',
+    '008-2-b':'Какая запись сочетает целую часть и обыкновенную дробь?',
+    '008-2-v':'Какие элементы записаны с десятичной запятой?'
+  };
+  const dictation = {
+    '010-a':['Шесть миллионов, семьсот две тысячи и пятьдесят восемь единиц.','Собери число из классов. В каждом классе после миллионов оставь три позиции.'],
+    '010-b':['Семь целых и четыре пятых единицы.','Представь семь полных полосок и ещё четыре части полоски, разделённой на пять.'],
+    '010-v':['Три целых и двенадцать стотысячных.','Стотысячные стоят на пятом месте после запятой. Заполни пустые разряды нулями.']
+  };
+  function pageSevenQuestion(number,part) {
+    if(number===7)return 'Перед тобой начало ряда: '+part.prompt+' Подбери правило, которое работает на каждом переходе. Запиши через точку с запятой ещё два числа в порядке появления. Свой способ можно пояснить в записях.';
+    if(number===8&&setQuestions[part.id])return 'На карточках собраны элементы множества A. '+setQuestions[part.id]+' Перечисли нужные записи через точку с запятой, в любом порядке.';
+    if(number===9)return 'Собери семизначные натуральные числа из пяти нулей и двух пятёрок. Используй все семь цифр каждый раз. Запиши разные результаты от меньшего к большему через точку с запятой. Прочитай получившиеся числа вслух.';
+    if(number===10&&dictation[part.id])return 'Запиши число цифрами. '+dictation[part.id][0];
+    return '';
+  }
+  function numberTiles(values,caption) {
+    const tiles=values.map(v=>'<span style="display:inline-block;padding:.2em .5em;border:1px solid #718b82;border-radius:.3em;background:#f0f5ef">'+U.fmt(v)+'</span>');
+    return '<figure style="margin:.65em 0"><figcaption>'+U.esc(caption)+'</figcaption><div style="display:flex;align-items:center;gap:.35em;flex-wrap:wrap">'+tiles.join('')+'</div></figure>';
+  }
+  function pageSevenFigure(number,part) {
+    if(number===7)return numberTiles(part.prompt.split(';').map(v=>v.replace(/;?\s*…$/,'').trim()).filter(Boolean).concat(['?','?']),'Два пустых места — два следующих члена ряда.');
+    if(number===8)return '<figure><figcaption>Множество A. Выбери карточки для ответа. Повторное нажатие снимает выбор.</figcaption><div style="display:flex;flex-wrap:wrap;gap:.4em">'+numberSet.map(v=>'<button type="button" class="secondary" data-set-number="'+U.esc(v)+'" aria-pressed="false">'+U.fmt(v)+'</button>').join('')+'</div></figure>';
+    if(number===9)return numberTiles(['5','5','0','0','0','0','0'],'Цифры для одного числа. Ноль не может занять первое место.');
+    if(number===10)return numberTiles(part.id==='010-a'?['миллионы','тысячи','единицы']:part.id==='010-b'?['целые','числитель','знаменатель']:['целые','десятые','сотые','тысячные','десятитысячные','стотысячные'],dictation[part.id][1]);
+    return '';
+  }
+  function normalizeNumber(raw) {
+    const s=raw.trim().replace(/\.$/,'').replace(/\s*\/\s*/g,'/').replace(/\s+/g,' ');
+    return /^\d{1,3}(?: \d{3})+$/.test(s)?s.replace(/ /g,''):s.replace(/(?<=\d)\.(?=\d)/g,',');
+  }
+  function setTiles(main,answer){
+    const buttons=main.querySelectorAll('[data-set-number]');
+    if(!buttons.length||!answer)return;
+    const entries=()=>answer.value.split(';').map(s=>s.trim()).filter(Boolean);
+    function show(){
+      const selected=new Set(entries().map(normalizeNumber));
+      for(const b of buttons){const on=selected.has(normalizeNumber(b.dataset.setNumber));b.setAttribute('aria-pressed',String(on));b.style.outline=on?'3px solid #14705b':'';}
+    }
+    for(const b of buttons)b.onclick=()=>{
+      const label=b.dataset.setNumber,key=normalizeNumber(label),values=entries(),others=values.filter(v=>normalizeNumber(v)!==key);
+      answer.value=(others.length!==values.length?others:[...values,label]).join('; ');
+      answer.dispatchEvent(new Event('input',{bubbles:true}));
+    };
+    answer.addEventListener('input',show);show();
+  }
+  function pageSevenResponse(number,part,input,correct) {
+    if(number===10 && !correct) return {ok:false,text:dictation[part.id][1]};
+    if(number<7||number>9)return null;
+    const items=input.split(';').map(normalizeNumber);
+    if(items.some(x=>!x||!/^[\d ,/]+$/.test(x)))return {ok:false,text:'Черновик сохранён. Для быстрой самопроверки введи только числа через точку с запятой. Объяснение можно оставить в записях.'};
+    const expected=part.answer.split(';').map(normalizeNumber);
+    if(number===7){
+      const compare=(a,b)=>root.PetersonBook.M.check(a,b);
+      const index=items.findIndex((v,i)=>i<2&&!compare(v,expected[i]));
+      if(items.length!==2)return {ok:false,text:'Запиши ровно два следующих члена, разделив их точкой с запятой.'};
+      if(index<0)return {ok:true,text:'Оба числа продолжают закономерность. Проверь своё правило на предыдущем переходе и запиши, как ты его нашёл.'};
+      const clue={'007-a':'Сравни каждое число с удвоенным предыдущим.','007-b':'Посмотри отдельно на изменение числителя и на шаг знаменателя.','007-v':'Целая часть не меняется. Отследи, сколько нулей стоит перед последней ненулевой цифрой.','007-g':'Проследи отдельно целую часть, числитель и знаменатель смешанного числа.'};
+      return {ok:false,text:(index===1?'Первый новый член подходит. Проверь переход от него ко второму. ':'Первый новый член расходится с простым правилом этого ряда. ')+clue[part.id]};
+    }
+    if(number===8){
+      const wrong=items.find(x=>!expected.includes(x)),repeated=new Set(items).size!==items.length;
+      if(wrong==='0'&&part.id==='008-1-a')return {ok:false,text:'Ты включил ноль. В этом издании натуральный ряд для счёта начинается с единицы.'};
+      if(wrong)return {ok:false,text:'Проверь карточку «'+wrong+'». '+setQuestions[part.id]};
+      if(repeated)return {ok:false,text:'Один элемент встречается в ответе дважды. В множестве достаточно указать его один раз.'};
+      return items.length===expected.length?{ok:true,text:'Ты собрал все нужные элементы множества.'}:{ok:false,text:'Выбранные карточки подходят. Среди оставшихся есть ещё подходящая запись.'};
+    }
+    const arranged=items.every((v,i)=>i===0||Number(v)>Number(items[i-1]));
+    if(items.some(v=>!/^5[05]{6}$/.test(v)||(v.match(/5/g)||[]).length!==2))return {ok:false,text:'Проверь состав каждого числа: семь цифр, первая — пятёрка, а среди оставшихся шести позиций ровно одна занята второй пятёркой.'};
+    if(!arranged)return {ok:false,text:'Цифры подходят. Упорядочь числа по разряду второй пятёрки: начни с её самого малого значения.'};
+    return items.length===6?{ok:true,text:'Все шесть чисел расположены по возрастанию. Прочитай их вслух, называя миллионы, тысячи и единицы.'}:{ok:false,text:'Порядок верный. Проверь, все ли шесть позиций второй пятёрки использованы.'};
+  }
+
   function openingQuestion(number,part) {
+    if(number>=7&&number<=10)return pageSevenQuestion(number,part);
     const index=Number(part.id.split('-')[1])-1;
     if(number===1 && openingStatements[index])return 'Высказывание: «'+openingStatements[index]+'» Сначала начни отрицание со слов «Неверно, что…», затем передай ту же мысль без них. Почему ровно одно из двух высказываний истинно?';
     if(number===2 && disproofs[index]){const [claim,check]=disproofs[index];return 'Опровергни утверждение: «'+claim+'» Запиши его отрицание и обоснуй. '+check;}
@@ -137,6 +215,7 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
+    if(item.number>=7&&item.number<=10)drawing=pageSevenFigure(item.number,part);
     if(item.number===240) drawing=angleSet();
     if(item.number===241) drawing=source241(part);
     if(part.id==='282-3') drawing=coordinateTriangle();
@@ -159,5 +238,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles};
 })(globalThis);
