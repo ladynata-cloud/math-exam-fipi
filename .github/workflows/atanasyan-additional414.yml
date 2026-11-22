@@ -116,6 +116,7 @@ jobs:
           node tools/stereo-textbook/skew-lines-and-corner-reflection.test.cjs
           node tools/stereo-textbook/tetrahedron-altitudes-and-directed-angles.test.cjs
           node tools/stereo-textbook/sphere-chords-centres-and-inradii.test.cjs
+          node tools/stereo-textbook/tangent-balls-cone-and-prism-ratios.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -512,6 +513,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: sphereChordsCentresAndInradii
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-chords-centres-and-inradii
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify admissible common tangencies, upper ball supports, finite cone contact and all four prism volumes
+        env:
+          TEXTBOOK_PRACTICE_GROUP: tangentBallsConeAndPrismRatios
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/tangent-balls-cone-and-prism-ratios
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -624,5 +630,6 @@ jobs:
             artifacts/skew-lines-and-corner-reflection/
             artifacts/tetrahedron-altitudes-and-directed-angles/
             artifacts/sphere-chords-centres-and-inradii/
+            artifacts/tangent-balls-cone-and-prism-ratios/
           retention-days: 14
           if-no-files-found: error

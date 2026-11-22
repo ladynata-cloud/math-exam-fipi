@@ -1,0 +1,252 @@
+{
+  "parts": {
+    "799": [
+      null
+    ],
+    "800": [
+      null
+    ],
+    "801": [
+      null
+    ],
+    "802": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "799": {
+      "id": "source-main-0799",
+      "kind": "exercise",
+      "title": "Задача № 799",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "799",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          192
+        ],
+        "pdfPages": [
+          194
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "800": {
+      "id": "source-main-0800",
+      "kind": "exercise",
+      "title": "Задача № 800",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "800",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          192
+        ],
+        "pdfPages": [
+          194
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "801": {
+      "id": "source-main-0801",
+      "kind": "exercise",
+      "title": "Задача № 801",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "801",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          192
+        ],
+        "pdfPages": [
+          194
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "802": {
+      "id": "source-main-0802",
+      "kind": "exercise",
+      "title": "Задача № 802",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "802",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          192
+        ],
+        "pdfPages": [
+          194
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0799": {
+      "raw": "ce995f835c96412c3195e2d5452880599d4868dc739b1632bfc39bfbd4b19d1f",
+      "authored": "6deb8790819bdf3d597a154749d2a85153b7c22a4d9e56bde009ef5f17a137e7",
+      "integrated": "3371f24727d8e4706ce0b1118c1758c6d2f334c8fa2c07a8d8308766927c0127"
+    },
+    "ex-main-0800": {
+      "raw": "e5d5008113396cf602703b10ab981dca9aad0b054b230ebc5a45caa48d787967",
+      "authored": "ad3ac61d1f9b5f5618eb2eeb68a7a271a777478adfb4d2b094ed121076b3c475",
+      "integrated": "96c8d28a50452f77a8009192e455d14bf960af948b67d7a076ad5756ea0e1882"
+    },
+    "ex-main-0801": {
+      "raw": "3d75c00973ab02c9757773085513feb89efe15839c54036a1992192701cf9da0",
+      "authored": "cfed50877518fbe1ece4a7db4a5752ee0c959f07e21243911ad8d8334a80afe7",
+      "integrated": "85d53e676f305dffa16d94cac354ae09fcc02de49fd4efe03ee964a2a6588514"
+    },
+    "ex-main-0802": {
+      "raw": "89bad24b5a7adafd17bee23940428bb0ca741f241e056dc386dc1310d2504a50",
+      "authored": "23aa906b2b11484ded6f65fdeb9cb526b89e737a453bca478122e4b1121526fb",
+      "integrated": "29ede21062319bdf1f15d60548469b60e5dbe42f6057a11e321b6557a5c1e783"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0799|condition",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0799-condition"
+    ],
+    [
+      "ex-main-0799|help:h1",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0799-help-h1"
+    ],
+    [
+      "ex-main-0799|help:h2",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0799-help-h2"
+    ],
+    [
+      "ex-main-0799|help:h3",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0799-help-h3"
+    ],
+    [
+      "ex-main-0799|step-1",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0799-step-1"
+    ],
+    [
+      "ex-main-0799|step-2",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0799-step-2"
+    ],
+    [
+      "ex-main-0799|step-3",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0799-step-3"
+    ],
+    [
+      "ex-main-0800|condition",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0800-condition"
+    ],
+    [
+      "ex-main-0800|help:h1",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0800-help-h1"
+    ],
+    [
+      "ex-main-0800|help:h2",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0800-help-h2"
+    ],
+    [
+      "ex-main-0800|help:h3",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0800-help-h3"
+    ],
+    [
+      "ex-main-0800|step-1",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0800-step-1"
+    ],
+    [
+      "ex-main-0800|step-2",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0800-step-2"
+    ],
+    [
+      "ex-main-0800|step-3",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0800-step-3"
+    ],
+    [
+      "ex-main-0801|condition",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0801-condition"
+    ],
+    [
+      "ex-main-0801|help:h1",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0801-help-h1"
+    ],
+    [
+      "ex-main-0801|help:h2",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0801-help-h2"
+    ],
+    [
+      "ex-main-0801|help:h3",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0801-help-h3"
+    ],
+    [
+      "ex-main-0801|step-1",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0801-step-1"
+    ],
+    [
+      "ex-main-0801|step-2",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0801-step-2"
+    ],
+    [
+      "ex-main-0801|step-3",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0801-step-3"
+    ],
+    [
+      "ex-main-0802|condition",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0802-condition"
+    ],
+    [
+      "ex-main-0802|help:h1",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0802-help-h1"
+    ],
+    [
+      "ex-main-0802|help:h2",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0802-help-h2"
+    ],
+    [
+      "ex-main-0802|help:h3",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0802-help-h3"
+    ],
+    [
+      "ex-main-0802|step-1",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0802-step-1"
+    ],
+    [
+      "ex-main-0802|step-2",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0802-step-2"
+    ],
+    [
+      "ex-main-0802|step-3",
+      "tangent-balls-cone-and-prism-ratios-ex-main-0802-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "d86d6aab36dcbd505347497612eb9c7039852b4cf831306c6d8610c841235b55",
+      "afterSHA256": "0323151e8bf2bf71232a404ad16a9c3a1f148061701fdb9e0f29854f151d6494"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "53928fd6caff53aef783dd67b429404cc19a36abbd591e2103d6b53275cb354f",
+      "afterSHA256": "d7b28ac300b75274d94d238ead48629f168ff141e501d7d75e43fca291664d88"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T03:04:00Z",
+    "scope": "All final-review parts of 764–767 and advanced source exercises 768–798 are complete. The remaining advanced exercises begin at 799."
+  },
+  "before": {
+    "course": "0d954bfcab56bec05c1f29dd482d0c4a38fe4a7b963b8f26c83312acac6a2787",
+    "index": "0d391299d26877167f6e17ad9ecf08222aa8d2383a4c207637ec782a96838d97",
+    "registry": "5683deee5e230822affffda2f824ba60604d619aad29f3bcc96b7e9168669d97",
+    "cases": "7bda82bda41eaae37b313d0125110ee5d24786db6a7d477a0a8bfd9403839bcb"
+  }
+}
