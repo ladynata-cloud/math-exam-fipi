@@ -59,10 +59,10 @@
     const p={M:[x0,y0+hh],B:[x0+ww,y0+hh],N:[x0,y0],C:[x0+ww,y0],O:[x0+ww/2,y0+hh/2]};
     const poly=s=>s.split('').map(k=>p[k].join(',')).join(' ');
     const line=(a,b,color,dash='')=>'<line x1="'+p[a][0]+'" y1="'+p[a][1]+'" x2="'+p[b][0]+'" y2="'+p[b][1]+'" stroke="'+color+'" stroke-width="1.6" '+dash+'/>';
-    const label=(x,y,t)=>'<text x="'+x+'" y="'+y+'" fill="#253e49" font-size="13" text-anchor="middle">'+t+'</text>';
+    const label=(x,y,t)=>'<text x="'+x+'" y="'+y+'" fill="#253e49" style="font:13px system-ui,sans-serif" text-anchor="middle">'+t+'</text>';
     const highlighted=names[index];
     const shape=highlighted?'<polygon points="'+poly(highlighted)+'" fill="#a8d9cb"/>':'';
-    return '<figure style="margin:.5em 0"><svg role="img" aria-label="Прямоугольник с центром O и диагоналями" viewBox="0 0 '+(ww+62)+' '+(hh+72)+'" style="width:100%;max-height:220px;display:block"><polygon points="'+poly('MBCN')+'" fill="#f9fbf9"/>'+shape+['MB','BC','CN','NM','MC','NB'].map(s=>line(s[0],s[1],'#315c69')).join('')+'<circle cx="'+p.O[0]+'" cy="'+p.O[1]+'" r="2.6" fill="#273937"/>'+label(x0-8,y0-4,'N')+label(x0+ww+6,y0-4,'C')+label(x0-8,y0+hh+15,'M')+label(x0+ww+8,y0+hh+15,'B')+label(p.O[0]+3,p.O[1]+17,'O')+label(x0+ww/2,y0+hh+29,w+' см')+label(x0+ww+17,y0+hh/2+3,h+' см')+'</svg><figcaption>'+(highlighted?'Выделен треугольник '+highlighted+'. ':'')+'MB = '+w+' см, MN = '+h+' см. O — точка пересечения диагоналей.</figcaption></figure>';
+    return '<figure style="margin:.5em 0"><svg class="v5q-printed-geometry" role="img" aria-label="Прямоугольник с центром O и диагоналями" viewBox="0 0 '+(ww+62)+' '+(hh+72)+'" style="width:100%;max-height:220px;display:block"><polygon points="'+poly('MBCN')+'" fill="#f9fbf9"/>'+shape+['MB','BC','CN','NM','MC','NB'].map(s=>line(s[0],s[1],'#315c69')).join('')+'<circle cx="'+p.O[0]+'" cy="'+p.O[1]+'" r="2.6" fill="#273937"/>'+label(x0-8,y0-4,'N')+label(x0+ww+6,y0-4,'C')+label(x0-8,y0+hh+15,'M')+label(x0+ww+8,y0+hh+15,'B')+label(p.O[0]+3,p.O[1]+17,'O')+label(x0+ww/2,y0+hh+29,w+' см')+label(x0+ww+17,y0+hh/2+3,h+' см')+'</svg><figcaption>'+(highlighted?'Выделен треугольник '+highlighted+'. ':'')+'MB = '+w+' см, MN = '+h+' см. O — точка пересечения диагоналей.</figcaption></figure>';
   }
   function shop(p,n){
     return '<figure style="margin:.5em 0"><figcaption>Груши на прилавке</figcaption><p>Было '+p.initial+' кг. Первый покупатель взял '+p.first+' кг.</p><p>'+(n==null?'Затем n покупателей':('Затем покупателей: '+n))+' · по '+p.each+' кг каждому.</p></figure>';

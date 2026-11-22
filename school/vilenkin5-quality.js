@@ -38,6 +38,11 @@
       const l=lesson(id);if(!l||!MODES.includes(mode)||!integer(seed,0,1000000))throw new TypeError('Invalid lesson scene');
       return {id,mode,seed,step:0,attempt:0,correct:false,assisted:false,exposed:false,savedInput:'',answers:[],hintLevels:{},checkIndex:0,model:Models.defaults(l),media:mediaDefault(),firstAttempt:null,firstWrong:null,note:'',message:'',remedy:'',claim:'',panels:{notes:false,theory:false,claim:false,error:false,history:false}};
     }
+    function matchesAttempt(a,target){
+      if(!target.graphHeights)return a.chart===undefined && M.accepts(a.value,target);
+      if(!Array.isArray(a.chart)||a.chart.length!==3||!a.chart.every(n=>integer(n,0,24)))throw new TypeError('Invalid chart in submitted attempt');
+      return M.accepts(a.value,target)&&a.chart.every((n,i)=>n===target.graphHeights[i]);
+    }
     function normalizeScene(raw){
       if(!plain(raw)||!lesson(raw.id)||!MODES.includes(raw.mode)||!integer(raw.seed,0,1000000))throw new TypeError('Unknown lesson scene');
       const base=freshScene(raw.id,raw.mode,raw.seed),allowed=new Set(Object.keys(base));
@@ -49,11 +54,11 @@
       if(!Array.isArray(s.answers)||s.answers.length>parts.length||s.answers.some(v=>!text(v)))throw new TypeError('Invalid completed steps');
       if(s.mode!=='learn'&&s.answers.length||s.answers.length>s.step+Number(s.correct)||s.answers.length<s.step)throw new TypeError('Steps from another mode');
       for(let i=0;i<Math.min(s.step,s.answers.length);i++)if(!s.answers[i]||!M.accepts(s.answers[i],parts[i]))throw new TypeError('Incorrect completed step');
-      if(s.correct&&(!s.attempt||!M.accepts(s.savedInput,target)))throw new TypeError('Impossible completed answer');
+      if(s.correct&&(!s.attempt||!M.accepts(s.savedInput,target)||target.graphHeights&&root.Vilenkin5CheckFractionParts.chartIssue(target.graphHeights,s.model)))throw new TypeError('Impossible completed answer');
       if(!plain(s.hintLevels)||Object.keys(s.hintLevels).length>parts.length)throw new TypeError('Invalid hints');
       for(const [key,value]of Object.entries(s.hintLevels))if(!(s.mode==='learn'?/^(0|[1-9]\d?)$/.test(key)&&Number(key)<=s.step:key==='check')||!integer(value,1,3))throw new TypeError('Invalid hint level');
-      if(s.firstAttempt!==null){const a=s.firstAttempt;if(!plain(a)||Object.keys(a).some(k=>!['value','correct','assisted'].includes(k))||!text(a.value)||!a.value.trim()||typeof a.correct!=='boolean'||typeof a.assisted!=='boolean'||a.correct!==M.accepts(a.value,target)||!s.attempt)throw new TypeError('Invalid first attempt');s.firstAttempt={value:a.value,correct:a.correct,assisted:a.assisted};}
-      if(s.firstWrong!==null){const a=s.firstWrong;if(!plain(a)||Object.keys(a).some(k=>!['value','step'].includes(k))||!text(a.value)||!a.value.trim()||!integer(a.step,0,s.step)||M.accepts(a.value,s.mode==='learn'?parts[a.step]:task))throw new TypeError('Invalid first mistake');s.firstWrong={value:a.value,step:a.step};}
+      if(s.firstAttempt!==null){const a=s.firstAttempt;if(!plain(a)||Object.keys(a).some(k=>!(target.graphHeights?['value','correct','assisted','chart']:['value','correct','assisted']).includes(k))||!text(a.value)||!a.value.trim()||typeof a.correct!=='boolean'||typeof a.assisted!=='boolean'||a.correct!==matchesAttempt(a,target)||!s.attempt)throw new TypeError('Invalid first attempt');s.firstAttempt={value:a.value,correct:a.correct,assisted:a.assisted,...(a.chart?{chart:a.chart.slice()}:{})};}
+      if(s.firstWrong!==null){const a=s.firstWrong;const past=s.mode==='learn'?parts[a?.step]:task;if(!plain(a)||Object.keys(a).some(k=>!(past?.graphHeights?['value','step','chart']:['value','step']).includes(k))||!text(a.value)||!a.value.trim()||!integer(a.step,0,s.step)||matchesAttempt(a,past))throw new TypeError('Invalid first mistake');s.firstWrong={value:a.value,step:a.step,...(a.chart?{chart:a.chart.slice()}:{})};}
       if(!plain(s.media)||Object.keys(s.media).some(k=>!['id','frame','open','playing'].includes(k))||!text(s.media.id,100)||s.media.id!==''&&s.media.id!=='u'+String(lesson(s.id).point).padStart(2,'0')||!integer(s.media.frame,0,4)||typeof s.media.open!=='boolean'||typeof s.media.playing!=='boolean'||s.media.playing&&!s.media.open)throw new TypeError('Invalid media scene');
       s.media={id:s.media.id,frame:s.media.frame,open:s.media.open,playing:s.media.playing};
       if(!plain(s.panels)||Object.keys(s.panels).some(k=>!['notes','theory','claim','error','history'].includes(k))||Object.values(s.panels).some(v=>typeof v!=='boolean'))throw new TypeError('Invalid panels');
@@ -197,6 +202,7 @@
     if(target.answerFormat==='v5-coordinate-order')return root.Vilenkin5CoordinateOrder.inputIssue(value,target);
     if(target.answerFormat==='v5-ray-label'&&!root.Vilenkin5PrintedRay.read(value))return 'Запиши одну букву с луча. Число можно заменить буквой без потери попытки.';
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
+    if(target.answerFormat==='v5-difficulty')return /[а-яё]/i.test(value)?'':'Напиши название группы словами: лёгкие, средние или сложные.';
     if(target.answerFormat==='v5-triangle-area-pairs')return root.Vilenkin5TrianglesAndStock.pairs(value)?'':'Пока это черновик. Запиши все четыре названия по одному разу и поставь знак = в каждой паре.';
     if(target.answerFormat==='v5-stock-expression')return root.Vilenkin5TrianglesAndStock.stockExpression(value,root.Vilenkin5IslandAndMeeting)?'':'Пока это черновик. Запиши остаток с буквой n.';
     if(target.answerFormat==='v5-island-expression')return root.Vilenkin5IslandAndMeeting.coefficients(value)?'':'Пока это черновик. Запиши сумму путей с буквами x и v. Умножение можно обозначить звёздочкой или точкой.';
@@ -221,8 +227,9 @@
   function recordAttempt(session,value,target,correct){
     if(isLegacy(session)||!MODES.includes(session.mode))return;
     const d=detail(session);if(d.atStep!==session.step){d.firstAttempt=null;d.atStep=session.step;}
-    if(!d.firstAttempt)d.firstAttempt={value,correct,assisted:!!session.assisted};
-    if(!correct&&!d.firstWrong)d.firstWrong={value,step:session.step};
+    const evidence=target.graphHeights?{chart:[d.model.easyHeight,d.model.midHeight,d.model.hardHeight]}:{};
+    if(!d.firstAttempt)d.firstAttempt={value,correct,assisted:!!session.assisted,...evidence};
+    if(!correct&&!d.firstWrong)d.firstWrong={value,step:session.step,...evidence};
   }
   function markHelp(){const s=connection?.getSession?.();if(!s||!core.lesson(s.id)||readOnly)return;if(!s.correct)s.assisted=true;connection.save?.();}
   function updateMedia(value,helped=false){
@@ -249,7 +256,8 @@
     const cleanInput=event=>{if('value'in event.target&&event.target.type!=='number'&&event.target.type!=='range'){const safe=safeDraft(event.target.value);if(safe!==event.target.value)event.target.value=safe;}};
     host.addEventListener('input',cleanInput,true);
     const d=detail(session),captured=session;
-    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,
+    const target=session.mode==='learn'?(session.task.steps[session.step]||session.task):session.task;
+    const dispose=Models.mount(host,lesson,{task:session.task,state:d.model,lockParams:!!target.graphHeights&&session.correct,
       markRow:session.mode==='learn'&&session.step<session.task.steps.length&&!session.correct?session.step:null,
       setMarkedCoordinates:value=>{
         if(readOnly||captured!==connection?.getSession?.())return;
@@ -314,7 +322,7 @@
     task.querySelector('label[for=answer]').textContent=target.inputPrompt||target.prompt;
     task.querySelector('[data-cmd=hint]')?.replaceChildren('Хочешь подсказку?');
     if(['check','review'].includes(session.mode))task.insertAdjacentHTML('afterbegin','<div class="v5q-check-trail" aria-label="Проверка: вопрос '+(session.checkIndex+1)+' из 3">'+[0,1,2].map(i=>'<span class="'+(i===session.checkIndex?'is-current':i<session.checkIndex?'is-complete':'')+'">'+(i+1)+'</span>').join('')+'<b>Вопрос '+(session.checkIndex+1)+' из 3</b></div>');
-    if(d.firstWrong)task.insertAdjacentHTML('beforeend','<details class="v5q-error-note"><summary>Моя первая ошибка</summary><p>В шаге '+(d.firstWrong.step+1)+' был ответ <strong>'+esc(d.firstWrong.value)+'</strong>. Объясни, что нужно изменить в рассуждении.</p></details>');
+    if(d.firstWrong)task.insertAdjacentHTML('beforeend','<details class="v5q-error-note"><summary>Моя первая ошибка</summary><p>В шаге '+(d.firstWrong.step+1)+' был ответ <strong>'+esc(d.firstWrong.value)+'</strong>'+(d.firstWrong.chart?' при высотах столбцов '+d.firstWrong.chart.join(', ')+' клеток':'')+'. Объясни, что нужно изменить в рассуждении.</p></details>');
     if(session.correct){const status=memoryOnly?'Совместный разбор':session.assisted?'Решено с помощью':session.exposed?'Работа со знакомым условием':session.attempt>1?'Решено после исправления':session.mode==='learn'?'Шаг понятен':'Получилось самостоятельно';task.insertAdjacentHTML('beforeend','<p class="v5q-outcome">'+status+'</p>');}
     const ownSituations=lesson.number==='1.72';
     const extra=root.document.createElement('section');extra.className='v5q-notes';extra.innerHTML=ownSituations?'<h2>Твои два примера</h2><label>Что ты захочешь узнать в магазине? А на спортивной площадке? Запиши для каждого места свой вопрос и математический способ его проверить.<textarea id="v5-quality-note" maxlength="2000" rows="5"></textarea></label><p class="tiny">Сверь свою запись: указаны оба места, величины и способ проверки. Можно привести любые подходящие примеры. Текст сохраняется. Тренажёр отдельно проверяет только расчёты ниже.</p><div data-v5-media-host></div>':'<details><summary>Мои рассуждения и проверка</summary><label>Объясни способ своими словами. Как проверить результат?<textarea id="v5-quality-note" maxlength="2000" rows="3"></textarea></label><p class="tiny">Твои записи сохраняются. Свободное объяснение проверяется вместе с учителем.</p></details><div data-v5-media-host></div>';
