@@ -2256,10 +2256,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "d4b220a69e0c4d5c30c3bc2a428aeb13617066198da7b36a7a2b40e3fb891701",
-      "afterSha256": "5fe0544fd38bb390dc2907d8dcc42c276390b46093b62e12edd31db33b0a4fa4",
+      "beforeSha256": "7af1c23749ade4f0321db4ac3fb69e637092578f6e4c77320d94105cb8b6df7c",
+      "afterSha256": "3b93d901d5f65785c05eb4b56d81a0cdb657a681ed067b1a1724816846b74800",
       "placement": "before-head-close",
-      "sourceSha": "48a117d67ce780c2941b82f506c2ac3f4c144f15"
+      "sourceSha": "72aa2df8292227aecdeb06987e851a0e1fe40a7c"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -7803,6 +7803,15 @@
         "school/index.html"
       ],
       "boundary": "На печатной с. 22 в обоих заданиях ребёнок выставляет метки на отрезке, проверяет шаг по клеткам и объясняет совпадение дробей. Проверены записи, клавиатура, экран телефона, двусторонняя работа и восстановление."
+    },
+    {
+      "previousBaseSha": "48a117d67ce780c2941b82f506c2ac3f4c144f15",
+      "sourceBaseSha": "72aa2df8292227aecdeb06987e851a0e1fe40a7c",
+      "task": "docs/tasks/MAKARYCHEV8_1150_1153.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [

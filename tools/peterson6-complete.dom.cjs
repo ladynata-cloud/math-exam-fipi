@@ -627,3 +627,51 @@ test('the ten mathematical claims separate a proof for all values from one admis
  }
  const r=await surface(t,BOOK+'#n/27/027-10',storage(s));assert.match(element(r,'[data-logic-other]').value,/1\/3/);
 });
+test('all twelve everyday statements distinguish universal, existential and individual scope, including a two-level claim',async t=>{
+ const s=await surface(t,BOOK+'#n/28/028-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[27],types=[1,1,3,1,1,2,3,2,1,1,1,2];
+ const set=(key,val)=>{const f=element(s,'[data-logic-'+key+']');f.value=String(val);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/28/'+p.id);assert.match(sourcePresent(s).textContent,/Определи вид/);set('left',types[i]);set('right',2);
+  click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').className,/error/);if(i===9)assert.match(element(s,'#feedback').textContent,/два обобщения/);
+  set('right',1);input(s,'[data-logic-other]',p.answer);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование/);
+  const w=bookWork(s,p.id);assert.equal(w.logicOther,p.answer);assert(w.submitted&&!w.correct&&!w.independent);const seen=new Set();
+  for(let j=0;j<24;j++){const sample=s.w.PetersonAnalogues.create(28,p,j);assert(s.w.PetersonBook.check(sample,sample.answer));seen.add(sample.answer);
+    if(sample.prompt.includes('точным отрицанием'))assert.equal(sample.answer,'хотя бы на одной карточке нет такой отметки');else assert.equal(sample.answer,sample.prompt.startsWith('На каждой')?'О каждом объекте':sample.prompt.startsWith('В группе')?'О существовании хотя бы одного':'Об одном указанном объекте');
+  }assert(seen.size>=3);
+ }
+ assert.match(row.parts[0].explanation,/Onychoprion fuscatus/);await route(s,'#n/28/028-1');assert.match(element(s,'[data-logic-reference] a').href,/allaboutbirds/);
+ const kept=await surface(t,BOOK+'#n/28/028-10',storage(s));assert.equal(element(kept,'[data-logic-left]').value,'1');assert.match(element(kept,'[data-logic-other]').value,/часы/);
+});
+test('the divisibility lab calculates all factors, shared factors and generated numeric witnesses independently',async t=>{
+ const s=await surface(t,BOOK+'#n/29/029-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[28],types=[1,2,1,1,1,3,1,1,2,1,1,1];
+ const set=(selector,value)=>{const field=element(s,selector);field.value=String(value);field.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/29/'+p.id);const m=i===11?4:12;set('[data-divisor-m]',m);if([3,4,5].includes(i))set('[data-divisor-n]',15);
+  const lab=element(s,'[data-divisor-results]').textContent;if(i===11)assert.match(lab,/Делители результата: 1, 3, 9/);else assert.match(lab,/1, 2, 3, 4, 6, 12/);if([3,4,5].includes(i))assert.match(lab,/Общие делители: 1, 3/);
+  set('[data-logic-left]',types[i]);set('[data-logic-right]',1);input(s,'[data-logic-other]',p.explanation);click(s,'[data-logic-use]');submit(s,'#answer-form');const w=bookWork(s,p.id);assert.equal(w.divisorM,m);assert(w.submitted&&!w.correct&&!w.independent);
+  for(let n=0;n<38;n++){const task=s.w.PetersonAnalogues.create(29,p,n);assert.equal(new Set(task.choices).size,3);assert(s.w.PetersonBook.check(task,task.answer));
+    const nums=task.prompt.match(/\d+/g)?.map(Number)||[],a=Number.parseInt(task.answer,10);
+    if(i===3)assert(a>=nums[0]&&Array.from({length:a-2},(_,j)=>j+2).every(x=>a%x));
+    if(i===4||i===5){let [x,y]=nums;while(y){const r=x%y;x=y;y=r;}assert.equal(a,x);}
+    if(i===8)assert(a%9===0&&a%10!==9);if(i===11){const value=2*nums[0]+1;assert(value%a===0&&a>1&&a<value);}
+  }
+ }
+ const r=await surface(t,BOOK+'#n/29/029-6',storage(s));assert.equal(element(r,'[data-divisor-m]').value,'12');assert.equal(element(r,'[data-divisor-n]').value,'15');assert.match(element(r,'[data-divisor-results]').textContent,/Общие делители: 1, 3/);
+});
+test('both printed decision diagrams and all table rows honour equality and preserve corrected and unaided work',async t=>{
+ const s=await surface(t,BOOK+'#n/30/030-1-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[29],a=[0.08,0.6,2.9,3,7.2,20.5];
+ const setBranch=choice=>{const el=element(s,'[data-flow-branch]');el.value=choice;el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/30/'+p.id);const first=i<6,v=first?a[i%6]/10:a[i%6]*10,yes=first?v>=0.3:v<30,actual=first?(yes?v-.09:v+.05):(yes?v+5.4:v-7.2),wrong=first?(yes?v+.05:v-.09):(yes?v-7.2:v+5.4);
+  assert.equal(element(s,'[aria-label="Таблица значений алгоритма"] tbody').children.length,6);assert.match(sourcePresent(s).textContent,/Вход a/);
+  input(s,'[data-flow-value]',String(Math.round(v*1000)/1000));setBranch(yes?'no':'yes');click(s,'[data-flow-check]');assert.match(element(s,'[data-flow-feedback]').textContent,i%6===3?/равенстве порогу/:/Сравни/);
+  const once=bookWork(s,p.id).errors;click(s,'[data-flow-check]');assert.equal(bookWork(s,p.id).errors,once);assert(once>0);
+  setBranch(yes?'yes':'no');click(s,'[data-flow-check]');assert.match(element(s,'[data-flow-feedback]').textContent,/ветвь верны/);
+  input(s,'#answer',String(Math.round(wrong*1000)/1000));submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/противоположная ветвь/);input(s,'#answer',String(Math.round(actual*1000)/1000));submit(s,'#answer-form');
+  const w=bookWork(s,p.id);assert(w.correct&&!w.independent&&!w.assisted);assert.match(element(s,'[data-flow-output="'+p.id+'"]').textContent,/проверено/);
+  for(let j=0;j<35;j++){const task=s.w.PetersonAnalogues.create(30,p,j),nums=task.prompt.match(/\d+(?:[,.]\d+)?/g).map(x=>Number(x.replace(',','.')));assert.equal(nums.length,5);const interim=first?nums[0]*nums[1]:nums[0]/nums[1],comp=Math.round((interim-nums[2])*1e6),cond=first?comp>=0:comp<0;
+   const x=first?(cond?interim-nums[3]:interim+nums[4]):(cond?interim+nums[3]:interim-nums[4]);assert(Math.abs(x-Number(task.answer.replace(',','.')))<1e-8);assert(s.w.PetersonBook.check(task,task.answer));}
+ }
+ const r=await surface(t,BOOK+'#n/30/030-1-4',storage(s));assert.equal(element(r,'[data-flow-branch]').value,'yes');assert.match(element(r,'[data-flow-feedback]').textContent,/ветвь верны/);assert.equal(r.document.querySelectorAll('[data-flow-output]').length,6);for(const td of r.document.querySelectorAll('[data-flow-output]'))assert.match(td.textContent,/проверено/);
+ const independent=await surface(t,BOOK+'#n/30/030-1-4');input(independent,'#answer','0,21');submit(independent,'#answer-form');assert(bookWork(independent,'030-1-4').independent);
+});

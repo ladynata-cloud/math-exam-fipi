@@ -464,6 +464,124 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const flowInputs=['0,08','0,6','2,9','3','7,2','20,5'];
+  function flowSpec(part){
+    const [,algorithm,index]=part.id.split('-'),first=algorithm==='1';
+    return {first,a:flowInputs[Number(index)-1],op:first?'· 0,1':': 0,1',test:first?'≥ 0,3':'< 30',yes:first?'− 0,09':'+ 5,4',no:first?'+ 0,05':'− 7,2'};
+  }
+  function flowTable(part,progress){
+    const algorithm=part.id.split('-')[1];
+    const rows=flowInputs.map((value,i)=>{
+      const id='030-'+algorithm+'-'+(i+1),work=progress[id],hasDraft=Boolean(work?.draft?.trim());
+      const answer=hasDraft?U.esc(work.draft)+(work.correct?' · проверено':' · черновик'):'—';
+      return '<tr><th scope="row"><a href="#n/30/'+id+'"'+(id===part.id?' aria-current="true"':'')+'>'+value+'</a></th><td data-flow-output="'+id+'">'+answer+'</td></tr>';
+    });
+    return '<section aria-label="Таблица значений алгоритма"><h3>Таблица a и x · алгоритм '+algorithm+'</h3><table style="width:100%;table-layout:fixed"><thead><tr><th scope="col">Вход a</th><th scope="col">Мой выход x</th></tr></thead><tbody>'+rows.join('')+'</tbody></table><p>Чтобы заполнить другую строку, выбери её вход a.</p></section>';
+  }
+  function flowAnswer(part){
+    const spec=flowSpec(part),M=root.PetersonBook.M,v=M.operation(spec.first?'multiply':'divide',spec.a,'0.1'),cmp=M.operation('subtract',v,spec.first?'0.3':'30').n;
+    return {value:v,yes:spec.first?cmp>=0:cmp<0,equal:cmp===0};
+  }
+  function flowQuestion(part){
+    const s=flowSpec(part);
+    return 'Вход a = '+s.a+'. Сначала выполни '+s.op+' с числом a. Проверь, выполняется ли условие «промежуточное число '+s.test+'». При ответе «да» выполни '+s.yes+', при «нет» — '+s.no+'. Запиши итоговое значение x. Исследуй каждое из шести значений a в отдельной строке.';
+  }
+  function branchReport(part,work){
+    const s=flowSpec(part),m=root.PetersonBook.M,expected=flowAnswer(part),typed=m.parse(work.flowValue||'');
+    if(!typed)return {ok:false,text:'Введи числовое значение после первого действия.'};
+    if(!m.equal(typed,expected.value))return {ok:false,text:s.first?'При умножении на 0,1 исходное положительное число уменьшается в 10 раз. Перенеси запятую на один разряд влево.':'При делении на 0,1 исходное положительное число увеличивается в 10 раз. Перенеси запятую на один разряд вправо.'};
+    if(!work.flowBranch)return {ok:false,text:'Промежуточное число верно. Выбери один из выходов из ромба.'};
+    if((work.flowBranch==='yes')!==expected.yes)return {ok:false,text:expected.equal?(s.first?'При равенстве порогу условие «≥» выполнено. Проверь выбор ветви.':'При равенстве порогу строгое условие «<» не выполнено. Проверь выбор ветви.'):'Промежуточное число верно. Сравни его с порогом ромба и выбери «да» или «нет».'};
+    return {ok:true,text:'Первое действие и ветвь верны. Выполни последнее действие этой ветви, затем сам введи x в ответ.'};
+  }
+  function flowFigure(part,work,interactive){
+    const s=flowSpec(part),chooses=work.flowBranch||'',active='#e5eee8',ink='#294e44',neutral='#fff';
+    const rect=(x,y,w,h,label,fill=neutral)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="5" fill="'+fill+'" stroke="'+ink+'"/><text x="'+(x+w/2)+'" y="'+(y+h/2+4)+'" text-anchor="middle">'+label+'</text>';
+    const show=(label,x,y)=>'<text x="'+x+'" y="'+y+'" text-anchor="middle">'+label+'</text>';
+    const line=d=>'<path d="'+d+'" fill="none" stroke="'+ink+'" stroke-width="1.5"/>';
+    const diamond='<path d="M132 64 L182 84 L132 104 L82 84 Z" fill="#f4f6e9" stroke="'+ink+'"/>'+show(U.esc(s.test)+'?',132,88);
+    const graphic='<svg viewBox="0 0 264 182" style="display:block;width:100%;max-width:360px" role="img" aria-label="После первого действия проверь '+U.esc(s.test)+'. Да: '+U.esc(s.yes)+'. Нет: '+U.esc(s.no)+'."><g font-size="13" fill="#1c332d">'+line('M132 25 V33 M132 55 V64 M82 84 H49 V116 M182 84 H214 V116 M49 138 V161 H101 M214 138 V161 H163')+rect(98,3,68,22,'a = '+s.a)+rect(98,33,68,22,s.op)+diamond+show('нет',55,78)+show('да',207,78)+rect(16,116,66,22,s.no,chooses==='no'?active:neutral)+rect(181,116,66,22,s.yes,chooses==='yes'?active:neutral)+rect(101,150,62,22,'x')+'</g></svg>';
+    const report=work.flowChecked?branchReport(part,work):null;
+    return '<figure data-flow-host style="margin:.5em 0"><figcaption>Как пройти по схеме</figcaption>'+graphic+'<p>Входы a для этой таблицы: '+flowInputs.join('; ')+'.</p>'+(interactive?'<label>После первого действия <input data-flow-value inputmode="decimal" maxlength="80" value="'+U.esc(work.flowValue||'')+'"></label><label>Выход из ромба <select data-flow-branch><option value="">Выбери</option><option value="yes"'+(chooses==='yes'?' selected':'')+'>Да</option><option value="no"'+(chooses==='no'?' selected':'')+'>Нет</option></select></label><button type="button" class="secondary" data-flow-check>Проверить ход</button><p data-flow-feedback role="status">'+(report?U.esc(report.text):'')+'</p>':'')+'</figure>';
+  }
+  function mountFlow(main,part,work,save){
+    let host=main.querySelector('[data-flow-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=flowFigure(part,work,true);host=main.querySelector('[data-flow-host]');
+      const input=host.querySelector('[data-flow-value]'),select=host.querySelector('[data-flow-branch]'),feedback=host.querySelector('[data-flow-feedback]');
+      input.oninput=()=>{work.flowValue=input.value.slice(0,80);delete work.flowChecked;feedback.textContent='';save();};
+      select.onchange=()=>{work.flowBranch=select.value;delete work.flowChecked;save();draw();host.querySelector('[data-flow-branch]').focus({preventScroll:true});};
+      host.querySelector('[data-flow-check]').onclick=()=>{const report=branchReport(part,work),hasEntry=root.PetersonBook.M.parse(work.flowValue||'')&&work.flowBranch;if(hasEntry&&!report.ok&&!work.flowChecked)work.errors=Math.min(10000,(work.errors||0)+1);work.flowChecked=true;save();draw();host.querySelector('[data-flow-check]').focus({preventScroll:true});};
+    }draw();
+  }
+  function flowResponse(number,part,input,correct){
+    if(number!==30||correct)return null;
+    const s=flowSpec(part),m=root.PetersonBook.M,v=flowAnswer(part);
+    if(m.equal(input,v.value))return {ok:false,text:'Это промежуточное значение после первого действия, а не выход x. Дойди от ромба до конца выбранной ветви.'};
+    const other=s.first?(v.yes?m.operation('add',v.value,'0.05'):m.operation('subtract',v.value,'0.09')):(v.yes?m.operation('subtract',v.value,'7.2'):m.operation('add',v.value,'5.4'));
+    if(m.equal(input,other))return {ok:false,text:'Такой ответ даёт противоположная ветвь. '+(v.equal?'Здесь промежуточное число ровно на границе. ':'')+'Проверь условие '+s.test+'.'};
+    return {ok:false,text:'Проверь первое действие и сравнение в ромбе. После ветвления выполняется только одно из двух последних действий.'};
+  }
+
+  const divisorClaims=[
+    ['Всякое натуральное число делится без остатка на себя и на единицу.',0,['Любое n можно записать и как 1 · n, и как n · 1.','У каждого числа обязательно два различных делителя.','Достаточно проверить только 12.'],'При n=1 оба названных делителя совпадают, но делимость сохраняется.'],
+    ['Существуют числа ровно с одним натуральным делителем.',1,['У числа 1 ровно один натуральный делитель — оно само.','У каждого простого числа только один делитель.','Примером служит 2 с делителями 1 и 2.'],'Слово «существуют» требует хотя бы одного примера. Посчитай различные делители единицы.'],
+    ['Для каждого натурального числа найдутся по крайней мере два различных делителя.',0,['Существует исключение — у числа 1 нет второго делителя.','У 2 ровно два делителя.','У 12 больше двух делителей.'],'Обрати особое внимание на начало натурального ряда. Удачный пример не доказывает утверждения о каждом числе.'],
+    ['Всякое простое число меньше каждого составного.',0,['Простое число 7 больше составного числа 4.','Простое число 2 меньше составного числа 4.','Число 1 простое и меньше 4.'],'Сохрани обе роли в паре. Для опровержения нужен пример, в котором простое число не меньше составного.'],
+    ['Если два числа взаимно просты, каждое из них — простое число.',0,['Числа 8 и 9 составные, а их единственный общий делитель — 1.','Числа 3 и 5 оба простые.','Общий делитель 8 и 9 равен 2.'],'Взаимная простота относится к общим делителям двух чисел, а простота числа — к его собственным делителям.'],
+    ['Именно 12 и 15 взаимно просты.',2,['Оба делятся на 3, поэтому данная пара не взаимно проста.','Оба делятся на 1, поэтому они взаимно просты.','Любые разные числа взаимно просты.'],'Для взаимной простоты единственный общий положительный делитель должен быть равен 1.'],
+    ['Делитель натурального числа всегда строго меньше самого числа.',0,['У числа 6 есть делитель 6; он равен самому числу.','У 6 есть делитель 2.','6 больше его делителя 3.'],'Знак «строго меньше» нарушается уже при равенстве.'],
+    ['Каждое положительное кратное натурального числа строго больше этого числа.',0,['Среди положительных кратных 5 есть 5 · 1 = 5.','У числа 5 есть кратное 10.','10 больше 5.'],'Проверь первое положительное кратное. Равенство тоже опровергает строгое «больше».'],
+    ['Есть число, которое делится на 9 и не оканчивается цифрой 9.',1,['18 = 9 · 2 и последняя цифра — 8.','99 делится на 9 и оканчивается цифрой 9.','19 оканчивается цифрой 9.'],'Один пример должен одновременно выдержать две проверки: делимость и условие на последнюю цифру.'],
+    ['Произвольное положительное кратное девяти можно представить как 9n с натуральным n.',0,['По определению положительного кратного частное от деления на 9 — натуральное число.','Достаточно проверить только 18.','В записи 9n множитель n всегда равен 9.'],'Здесь «можно представить» относится к каждому положительному кратному. Выбери множитель как частное от деления на 9.'],
+    ['Любое простое число имеет вид 2n + 1 с натуральным n.',0,['Простое число 2 чётно, а каждое 2n + 1 нечётно.','Число 3 получается при n = 1.','Число 5 получается при n = 2.'],'Рассмотри простое число, которое отличается от остальных по чётности.'],
+    ['Если число имеет вид 2n + 1 при натуральном n, то число простое.',0,['При n = 4 получается 9 = 3 · 3.','При n = 1 получается простое число 3.','Все нечётные числа простые.'],'Найди нечётное составное. Укажи и n, и делитель полученного числа.']
+  ];
+  function divisorCard(part){
+    const [claim,type,reasons,hint]=divisorClaims[Number(part.id.split('-')[1])-1];
+    return {prompt:'Определи вид утверждения, затем докажи истинное. Для ложного общего высказывания приведи контрпример и запиши отрицание. Все делители и кратные в этой карточке положительные. Исходная фраза: '+claim,
+      leftTitle:'Как сформулировано утверждение?',left:scopeTypes,li:type,rightTitle:'Как обосновать вывод?',right:reasons,ri:0,hint,reference:'Делитель d числа n даёт целое положительное частное n : d. У простого числа ровно два различных положительных делителя. У взаимно простых чисел единственный общий положительный делитель равен единице.',extra:'Мой пример, доказательство или отрицание'};
+  }
+  function numberLab(part,work,interactive){
+    const i=Number(part.id.split('-')[1]),pair=[4,5,6].includes(i),m=work.divisorM||0,n=work.divisorN||0;
+    const factors=a=>Array.from({length:a},(_,j)=>j+1).filter(d=>a%d===0),asList=a=>a.join(', ');
+    const select=(letter,value)=>'<label>'+letter+' <select data-divisor-'+letter.toLowerCase()+'><option value="">Выбери число</option>'+Array.from({length:100},(_,j)=>j+1).map(v=>'<option value="'+v+'"'+(v===value?' selected':'')+'>'+v+'</option>').join('')+'</select></label>';
+    const descriptor=(key,a)=>{const list=factors(a),kind=a===1?'единица':list.length===2?'простое число':'составное число';return '<p>'+key+' = '+a+' · '+kind+'. Делители: '+asList(list)+'.</p>';};
+    let output=m?descriptor('m',m):'<p>Выбери натуральное число, чтобы исследовать его делители.</p>';
+    if(pair&&n){output+=descriptor('n',n);if(m)output+='<p>Общие делители: '+asList(factors(m).filter(d=>n%d===0))+'.</p>';}
+    if(m&&i===8)output+='<p>Первые кратные m: '+[1,2,3,4].map(j=>m*j).join(', ')+'.</p>';
+    if(m&&(i===9||i===10))output+='<p>9 · '+m+' = '+(9*m)+'. Последняя цифра: '+(9*m%10)+'.</p>';
+    if(m&&(i===11||i===12)){const x=2*m+1;output+='<p>2 · '+m+' + 1 = '+x+'. Делители результата: '+asList(factors(x))+'.</p>';}
+    return '<section data-divisor-host aria-label="Модель делимости"><h3>Исследуй числа</h3>'+(interactive?'<div style="display:flex;gap:.5em;flex-wrap:wrap">'+select('M',m)+(pair?select('N',n):'')+'</div>':'')+'<div data-divisor-results aria-live="polite">'+output+'</div></section>';
+  }
+  function mountNumberLab(main,part,work,save){
+    let host=main.querySelector('[data-divisor-host]');if(!host)return;
+    function draw(){host.outerHTML=numberLab(part,work,true);host=main.querySelector('[data-divisor-host]');
+      for(const [sel,key] of [['[data-divisor-m]','divisorM'],['[data-divisor-n]','divisorN']]){const field=host.querySelector(sel);if(!field)continue;field.onchange=()=>{if(field.value)work[key]=Number(field.value);else delete work[key];save();draw();host.querySelector(sel).focus({preventScroll:true});};}
+    }draw();
+  }
+
+  const scopeTypes=['Общее высказывание','О существовании','О конкретном случае'];
+  const scopeClaims=[
+    ['Для каждой птицы верно, что она умеет плавать.',0,['Есть хотя бы одна птица, не умеющая плавать.','Ни одна птица не умеет плавать.','Некоторые птицы умеют плавать.'],'Для опровержения «все» хватит одной неспособной плавать птицы.','Тёмная крачка (Onychoprion fuscatus) живёт над морем, но не умеет плавать.','https://www.allaboutbirds.org/guide/Sooty_Tern','Корнеллская лаборатория орнитологии'],
+    ['У телеги всегда четыре колеса. Рассматривай телегу в её словарном значении четырёхколёсной повозки.',0,['Четыре колеса входят в выбранное определение телеги.','Проверена только одна телега.','Достаточно показать любой двухколёсный транспорт.'],'Проверяй, что контрпример удовлетворяет принятому определению телеги.','Словари определяют телегу как четырёхколёсную повозку. При другом употреблении слова определение надо оговорить.','https://gramota.ru/meta/telega','Метасловарь Грамоты'],
+    ['Петя и Саша сидят за одной партой.',2,['Речь именно об этих двух учениках.','Для любой пары учеников это верно.','Сказано лишь, что какая-то пара сидит вместе.'],'Оба человека названы. Заменив имена словами «кто-нибудь», ты получишь другое сообщение.','Имена и конкретная ситуация указывают на единичный случай.'],
+    ['Брат в любой семье обязательно старше своей сестры.',0,['Есть брат, который не старше своей сестры.','Все братья старше своих сестёр.','Не существует брата старше сестры.'],'Для опровержения достаточно пары, в которой брат моложе сестры или одного с ней возраста.','Например, в семье сестре 12 лет, а брату 8.'],
+    ['У каждой медали есть лицевая и оборотная стороны.',0,['Речь о двух сторонах каждой медали.','Проверено существование только одной медали.','Наличие ребра исключает наличие лицевой и оборотной сторон.'],'Названы лицо и оборот. Проследи, к скольким медалям относится фраза.','Под двумя сторонами понимают лицевую и оборотную стороны одной медали.'],
+    ['Среди милиционеров есть женщины. Слово «милиционер» в книге относится к названию профессии своего времени.',1,['Утверждается наличие хотя бы одной женщины среди милиционеров.','Утверждается, что каждый милиционер — женщина.','Описана одна женщина, указанная по имени.'],'«Среди … есть» не требует, чтобы все представители группы обладали свойством.','Слово «некоторые» можно передать выражением «существует хотя бы один».'],
+    ['В ту пятницу шёл сильный снег.',2,['Сообщается о погоде в определённый день.','Снег шёл каждую пятницу.','В некоторые пятницы всегда идёт снег.'],'Указан отдельный день, а не правило о всех пятницах.','Имеются в виду конкретная пятница и место наблюдения.'],
+    ['Иногда собака дружит с кошкой.',1,['Есть хотя бы один случай такой дружбы.','Любая собака дружит с любой кошкой.','Речь об одной собаке, названной по имени.'],'«Иногда» допускает другие случаи, когда дружбы нет.','Смысл слова «иногда» здесь — «бывают такие случаи».'],
+    ['Нет попугаев, не умеющих подражать человеческой речи.',0,['Есть попугай, который не умеет подражать человеческой речи.','Все попугаи молчат.','Есть попугай, умеющий подражать речи.'],'Раскрой «нет таких, которые не…»: получается фраза обо всех. Для отрицания достаточно одного исключения.','Под умением говорить здесь понимают подражание человеческой речи. Это же значение должно оставаться в отрицании.'],
+    ['Каждые часы всегда спешат.',0,['Существуют часы, которые хотя бы в один момент не спешат.','Все часы опаздывают всегда.','Одни часы в один момент спешили.'],'Здесь два обобщения: «любые часы» и «всегда». Для опровержения достаточно одних часов и одного момента.','Например, часы можно выставить так, что в этот момент они показывают точное время.'],
+    ['У любого арбуза кожура полосатая.',0,['Существует арбуз с неполосатой кожурой.','Не существует ни одного полосатого арбуза.','Некоторые арбузы полосатые.'],'Хотя бы один плод с однотонной кожурой опровергает слово «любой».','У сорта Sugar Baby кожура однотонная, тёмная.','https://yardandgarden.extension.iastate.edu/how-to/growing-watermelon-home-garden','Университет штата Айова'],
+    ['Возможен велосипед с квадратными колёсами.',1,['Утверждается возможность хотя бы одной такой конструкции.','Любой велосипед имеет квадратные колёса.','Указан по имени конкретный велосипед.'],'Фраза «может иметь» говорит о возможности, а не о свойстве всех экземпляров.','Для утверждения о существовании достаточно одной допустимой конструкции.']
+  ];
+  function scopeCard(part){
+    const [statement,type,reasons,hint,reference,url,sourceName]=scopeClaims[Number(part.id.split('-')[1])-1];
+    return {prompt:'Определи вид высказывания. Для ложного общего высказывания запиши отрицание, в остальных случаях объясни свой выбор. Исходная фраза: '+statement,
+      leftTitle:'К кому относится фраза?',left:scopeTypes,li:type,rightTitle:'Что следует записать?',right:reasons,ri:0,hint,reference,url,sourceName,extra:'Моё объяснение или отрицание'};
+  }
+
   const arithmeticClaims=[
     ['Каждое решение двойного неравенства 1 < x ≤ 8 — натуральное число.',false,['1,5 находится в интервале и не является натуральным.','0 не является натуральным.','8 принадлежит интервалу и является натуральным.'],'Контрпример должен выполнить обе границы и нарушить натуральность.','Существует ненатуральное решение 1 < x ≤ 8.'],
     ['Среди решений 2 ≤ x < 3 нет натуральных чисел.',false,['2 — натуральное решение.','3 — натуральное число.','2,5 — решение, которое не является натуральным.'],'Проверь обе границы. Знак слева разрешает значение 2, знак справа исключает 3.','Существует натуральное решение 2 ≤ x < 3.'],
@@ -523,6 +641,8 @@
   function logicCard(number,part){
     if(number===26)return universalCard(part);
     if(number===27)return witnessCard(part);
+    if(number===28)return scopeCard(part);
+    if(number===29)return divisorCard(part);
     const i=Number(part.id.split('-')[1])-1;
     if(number===19){
       const [statement,fact,denial,a,b,hint,url,sourceName]=factChecks[i];
@@ -562,21 +682,22 @@
     update();
   }
   function logicResponse(number,part,input,work){
-    if((number<19||number>21)&&number!==26&&number!==27)return null;
+    if((number<19||number>21)&&(number<26||number>29))return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
-    if(number===27)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if(number>=27&&number<=29)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
 
   function openingQuestion(number,part) {
+    if(number===30)return flowQuestion(part);
     if(number===25)return 'Замени одинаковые буквы одинаковыми цифрами, а разные буквы — различными. Первая цифра числа не может быть нулём. Найди верную подстановку для '+(part.id==='025-1'?'ЛЕТО + ЛЕТО = ПОЛЁТ.':'ПЧЁЛКА × 7 = ЖЖЖЖЖЖ.')+' Объясни, как проверил результат.';
     if(number===22)return codewordQuestion(part);
     if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
     if(number===24)return 'С первого улья собрали 24,8 кг мёда. Второй дал на 6,4 кг меньше первого. С третьего получили половину совместного сбора первого и второго. Весь мёд поровну разлили в 18 банок. Сколько килограммов мёда в одной банке?';
-    if((number>=19&&number<=21)||number===26||number===27)return logicCard(number,part).prompt;
+    if((number>=19&&number<=21)||(number>=26&&number<=29))return logicCard(number,part).prompt;
     if(number===17||number===18)return campQuestion(number,part);
     if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
@@ -626,8 +747,9 @@
     if(item.number===22)drawing=part.id==='022-slovo'?cipherView({},false):decimalModel(part);
     if(item.number===23)drawing=decimalModel(part);
     if(item.number===24)drawing=honeySupport();
+    if(item.number===30)drawing=flowFigure(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
-    if((item.number>=19&&item.number<=21)||item.number===26||item.number===27)drawing=logicConstruction(item.number,part,false);
+    if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
@@ -654,5 +776,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable};
 })(globalThis);
