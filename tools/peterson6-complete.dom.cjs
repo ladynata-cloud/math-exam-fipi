@@ -720,3 +720,29 @@ test('all sixteen printed calculations round at the requested place and independ
  }
  const r=await surface(t,BOOK+'#n/34/034-a-1',storage(s));assert.match(element(r,'[data-calc-feedback]').textContent,/решающая цифра верны/);assert.equal(element(r,'[data-calc-exact]').value,'2995,25');assert.equal(element(r,'[data-calc-digit]').value,'5');
 });
+test('period detection compares exact periodic values, checks each long-division step and retains independent rule proofs',async t=>{
+ const s=await surface(t,BOOK+'#n/35/035-a'),items=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(34,36);
+ const fracById={'035-a':[1,3,'0,(3)','0,333'],'035-b':[2,11,'0,(18)','0,182'],'035-v':[23,90,'0,2(5)','0,256'],'035-g':[32,33,'0,(96)','0,970'],'036-a':[250,3],'036-b':[2,75]};
+ const set=(selector,v)=>{const el=element(s,selector);el.value=String(v);el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const item of items)for(const p of item.parts){
+  await route(s,'#n/'+item.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  if(p.id.endsWith('pravilo')){
+   set('[data-logic-left]',item.number===35?2:1);set('[data-logic-right]',1);input(s,'[data-logic-other]',p.answer);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование/);assert(!bookWork(s,p.id).correct);
+  }else{
+   const [n,d,notation,approx]=fracById[p.id];let rem=n%d;
+   for(let step=0;step<5;step++){const x=rem*10,digit=Math.floor(x/d);rem=x%d;
+    input(s,'[data-period-digit]',String(digit));input(s,'[data-period-rem]',String(d));click(s,'[data-period-check]');assert.match(element(s,'[data-period-feedback]').textContent,/меньше делителя/);
+    input(s,'[data-period-rem]',String(rem));click(s,'[data-period-check]');assert.equal(bookWork(s,p.id).periodStep,step+1);
+   }
+   if(item.number===35){
+    const attempt=(f,r)=>{input(s,'[data-period-notation]',f);input(s,'[data-period-approx]',r);click(s,'[data-period-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+    assert.match(attempt('0,(7)',approx),/какой остаток/);assert.match(attempt(notation,'1'),/четвёртый/);assert.match(attempt(notation,approx),/запись и округление верны/);if(p.id==='035-a')assert.match(attempt('0,3(33)',approx),/запись и округление верны/);assert(!bookWork(s,p.id).correct);
+   }else{input(s,'#answer',p.answer);submit(s,'#answer-form');assert(bookWork(s,p.id).correct&&!bookWork(s,p.id).independent);}
+  }
+  for(let a=0;a<30;a++){const sample=s.w.PetersonAnalogues.create(item.number,p,a);assert(s.w.PetersonBook.check(sample,sample.answer));const M=s.w.PetersonBook.M;
+   if(sample.expression){const x=M.parse(sample.expression.left),y=M.parse(sample.expression.right),exact=x.n/x.d/(y.n/y.d),r=M.parse(sample.answer);assert(Math.abs(r.n/r.d-Math.round(exact*10000)/10000)<1e-8);}
+   else if(!p.id.endsWith('pravilo')){const frac=sample.prompt.match(/(\d+)\/(\d+)/),val=Number(frac[1])/Number(frac[2]);if(a%2){const r=M.parse(sample.answer);assert(Math.abs(r.n/r.d-Math.round(val*1000)/1000)<1e-8);}else{const m=sample.answer.match(/^0,(\d*)\((\d+)\)$/),float=(Number(m[1]||0)+Number(m[2])/(10**m[2].length-1))/10**m[1].length;assert(Math.abs(float-val)<1e-9);}}
+  }
+ }
+ const r=await surface(t,BOOK+'#n/35/035-v',storage(s));assert.equal(bookWork(r,'035-v').periodStep,5);assert.equal(element(r,'[data-period-notation]').value,'0,2(5)');assert.match(element(r,'[data-period-tape]').textContent,/0,25555/);
+});

@@ -464,6 +464,71 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const periodTasks={'035-a':'1/3','035-b':'2/11','035-v':'23/90','035-g':'32/33'};
+  function periodicRule(number){
+    if(number===35)return {prompt:'Всегда ли обыкновенная дробь имеет конечную десятичную запись? Подбери доказательство или контрпример и запиши своё объяснение.',
+      leftTitle:'Верно ли «всегда»?',left:['Да','Нет'],li:1,rightTitle:'Чем обосновать?',right:['При делении единицы на 3 ненулевой остаток повторяется.','1/4 = 0,25.','Любой знаменатель уже является степенью десяти.'],ri:0,
+      hint:'Одна конечная запись ещё не доказывает, что конечны все. Посмотри на повторяющийся ненулевой остаток при делении.',reference:'После сокращения дроби конечная десятичная запись существует, когда положительный знаменатель не имеет простых делителей кроме 2 и 5. Знаменатель 1 тоже подходит.',extra:'Мой пример и вывод'};
+    return {prompt:'У двух конечных десятичных дробей выполнили сложение, вычитание, умножение и деление. Объясни, для каких действий результат всегда имеет конечную запись. Делитель должен быть ненулевым.',
+      leftTitle:'Всегда конечный результат',left:['Сумма, разность и произведение','Только сумма и произведение','Все четыре результата'],li:0,rightTitle:'Проверка оставшегося действия',right:['0,1 : 0,3 = 1/3, и десятичная запись продолжается.','0,2 : 0,1 = 2, поэтому любое частное конечно.','Для проверки можно разделить 0,1 на ноль.'],ri:0,
+      hint:'Приведи числа к знаменателям — степеням десяти. При делении в знаменателе может остаться иной простой множитель.',reference:'При сложении и вычитании можно выбрать общую степень десяти, при умножении степени десяти перемножаются. Частное требует отдельной проверки.',extra:'Мой пример и вывод'};
+  }
+  function divisionSource(part){
+    return part.expression?root.PetersonBook.exact(part.expression):root.PetersonBook.M.parse(periodTasks[part.id]);
+  }
+  function divisionLines(part){
+    const {n,d}=divisionSource(part),whole=Math.floor(n/d),rows=[],seen=new Map();let rem=n%d,repeat=null;
+    for(let i=0;i<8;i++){
+      if(seen.has(rem)&&repeat===null)repeat=[seen.get(rem),i];else if(!seen.has(rem))seen.set(rem,i);
+      const expanded=rem*10,digit=Math.floor(expanded/d),remainder=expanded%d;rows.push({before:rem,expanded,digit,remainder});rem=remainder;
+    }
+    return {whole,d,rows,repeat};
+  }
+  function divisionView(part,work,interactive){
+    const {whole,d,rows,repeat}=divisionLines(part),step=work.periodStep||0,row=rows[step],digits=rows.slice(0,step).map(x=>x.digit).join('');
+    const header='<thead><tr><th scope="col">Шаг</th><th scope="col">Делим</th><th scope="col">Цифра</th><th scope="col">Остаток</th></tr></thead>';
+    const done=rows.slice(0,step).map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+r.expanded+' : '+d+'</td><td>'+r.digit+'</td><td>'+r.remainder+'</td></tr>').join('');
+    const input=(key,label,value)=>'<label>'+label+' <input style="display:block;width:100%;max-width:100%;box-sizing:border-box" data-period-'+key+' maxlength="60" value="'+U.esc(value||'')+'"></label>';
+    const entry=interactive&&row?'<div style="display:grid;grid-template-columns:minmax(0,1fr);gap:.3em"><p>Сносим ноль. Делим '+row.expanded+' на '+d+'.</p>'+input('digit','Цифра частного',work.periodDigit)+input('rem','Новый остаток',work.periodRem)+'<button type="button" class="secondary" data-period-check>Проверить строку деления</button></div>':'';
+    const loop=repeat&&step>=repeat[1]?' Остаток уже встречался. Начало периода — позиция '+(repeat[0]+1)+' после запятой. Цифр в периоде: '+(repeat[1]-repeat[0])+'.':'';
+    const finish=interactive&&part.id.startsWith('035-')?'<p>Запиши период скобками, например 0,1(6). Затем запиши округление до тысячных.</p>'+input('notation','Моя периодическая запись',work.periodNotation)+input('approx','Моё приближение',work.periodApprox)+'<button type="button" class="secondary" data-period-use>Перенести обе записи в ответ</button>':'';
+    return '<section data-period-host><h3>Деление по остаткам</h3><p>Целая часть: '+whole+'. Начальный остаток: '+rows[0].before+'. Делитель: '+d+'.</p><table style="width:100%;table-layout:fixed">'+header+'<tbody>'+done+'</tbody></table><p data-period-tape aria-live="polite">'+whole+','+(digits||'…')+loop+'</p>'+entry+'<p data-period-feedback role="status">'+(work.periodError?U.esc(periodRowReport(part,work).text):'')+'</p>'+finish+'</section>';
+  }
+  function periodRowReport(part,work){
+    const {rows,d}=divisionLines(part),row=rows[work.periodStep||0],x=work.periodDigit??'',r=work.periodRem??'';
+    if(!row)return {ok:true,text:'Восемь цифр найдены.'};
+    if(!/^\d$/.test(x)||!/^\d+$/.test(r))return {ok:false,text:'Запиши одну цифру частного и целый неотрицательный остаток.'};
+    if(Number(r)>=d)return {ok:false,text:'Остаток должен быть меньше делителя '+d+'. Проверь, помещается ли ещё одна группа.'};
+    if(Number(x)!==row.digit)return {ok:false,text:'Найди наибольшую цифру, произведение которой на '+d+' не превосходит '+row.expanded+'.'};
+    if(Number(r)!==row.remainder)return {ok:false,text:'Цифра верна. Вычти из '+row.expanded+' произведение '+row.digit+' · '+d+' и запиши разность.'};
+    return {ok:true,text:'Цифра и остаток верны.'};
+  }
+  function mountPeriod(main,part,work,save){
+    let host=main.querySelector('[data-period-host]');if(!host)return;
+    function draw(){host.outerHTML=divisionView(part,work,true);host=main.querySelector('[data-period-host]');
+      const use=host.querySelector('[data-period-use]');const enabled=()=>{if(use)use.disabled=!work.periodNotation?.trim()||!work.periodApprox?.trim();};enabled();
+      for(const [key,name] of [['digit','periodDigit'],['rem','periodRem'],['notation','periodNotation'],['approx','periodApprox']]){const field=host.querySelector('[data-period-'+key+']');if(field)field.oninput=()=>{work[name]=field.value.slice(0,60);if(key==='digit'||key==='rem'){delete work.periodError;host.querySelector('[data-period-feedback]').textContent='';}enabled();save();};}
+      const check=host.querySelector('[data-period-check]');if(check)check.onclick=()=>{const valid=periodRowReport(part,work);if(valid.ok){work.periodStep=(work.periodStep||0)+1;delete work.periodDigit;delete work.periodRem;delete work.periodError;}else{if(!work.periodError&&work.periodDigit&&work.periodRem)work.errors=Math.min(10000,(work.errors||0)+1);work.periodError=true;}save();draw();host.querySelector('[data-period-digit]')?.focus({preventScroll:true});};
+      if(use)use.onclick=()=>{const el=main.querySelector('#answer');el.value='Периодическая запись: '+work.periodNotation+'. До тысячных: '+work.periodApprox+'.';el.dispatchEvent(new Event('input',{bubbles:true}));el.focus();};
+    }draw();
+  }
+  function samePeriod(input,target){
+    const m=input.trim().match(/^(\d{1,5})[.,](\d{0,16})\((\d{1,16})\)$/);if(!m)return null;
+    const power=10n**BigInt(m[2].length),repeat=10n**BigInt(m[3].length)-1n,den=power*repeat,num=(BigInt(m[1])*power+BigInt(m[2]||'0'))*repeat+BigInt(m[3]);
+    return num*BigInt(target.d)===BigInt(target.n)*den;
+  }
+  function periodResponse(number,part,input,correct,work){
+    if(number===35&&!part.id.endsWith('pravilo')&&work.periodNotation&&input==='Периодическая запись: '+work.periodNotation+'. До тысячных: '+work.periodApprox+'.'){
+      const E=root.PetersonBook,r=divisionSource(part),same=samePeriod(work.periodNotation,r);
+      if(same===null)return {ok:false,text:'Отдели целую часть запятой и заключи повторяющиеся цифры в скобки. Укажи все непериодические цифры перед скобками.'};
+      if(!same)return {ok:false,text:'Проверь, какой остаток повторился и с какого шага. В скобки должны попасть цифры именно повторяющегося фрагмента.'};
+      if(!E.M.equal(work.periodApprox,E.rounded(r,3)))return {ok:false,text:'Период указан верно. Для округления до тысячных оставь три знака после запятой и проверь четвёртый.'};
+      return {ok:true,text:'Периодическая запись и округление верны. Сохрани объяснение, как обнаружил повтор остатка, для проверки.'};
+    }
+    if(number===36&&part.expression&&!correct)return {ok:false,text:'Найди хотя бы пять цифр после запятой. В ответе сохраняются четыре, а пятая решает, надо ли увеличить четвёртую.'};
+    return null;
+  }
+
   const roundingNames={'-1':'десятков',0:'единиц',1:'десятых',2:'сотых'};
   function resultQuestion(part){
     return 'Выполни указанное действие точно и только затем округли полученное значение до '+roundingNames[part.rounding.places]+'. В основной ответ введи округлённое число.';
@@ -785,6 +850,7 @@
     if(number===27)return witnessCard(part);
     if(number===28)return scopeCard(part);
     if(number===29)return divisorCard(part);
+    if((number===35||number===36)&&part.id.endsWith('pravilo'))return periodicRule(number);
     const i=Number(part.id.split('-')[1])-1;
     if(number===19){
       const [statement,fact,denial,a,b,hint,url,sourceName]=factChecks[i];
@@ -805,7 +871,8 @@
   function logicConstruction(number,part,interactive){
     const card=logicCard(number,part);
     const group=(side,title,options)=>{
-      const offset=(Number(part.id.split('-')[1])+number+(side==='left'?0:1))%options.length;
+      const subpart=Number.parseInt(part.id.split('-')[1],10)||0;
+      const offset=(subpart+number+(side==='left'?0:1))%options.length;
       return '<label style="display:grid;gap:.2em">'+U.esc(title)+'<select style="max-width:100%;width:100%;min-width:0" data-logic-'+side+'><option value="">Выбери вариант</option>'+options.map((_,j)=>{const i=(j+offset)%options.length;return '<option value="'+(i+1)+'">'+U.esc(options[i])+'</option>';}).join('')+'</select></label>';
     };
     return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+((card.second||card.extra)?'<label>'+U.esc(card.extra||'Второе, равносильное отрицание своими словами')+'<textarea maxlength="600" data-logic-other></textarea></label>':'')+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+(card.second?' Например: «'+U.esc(card.alternative)+'»':'')+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
@@ -824,16 +891,20 @@
     update();
   }
   function logicResponse(number,part,input,work){
-    if((number<19||number>21)&&(number<26||number>29))return null;
+    const periodRule=(number===35||number===36)&&part.id.endsWith('pravilo');
+    if((number<19||number>21)&&(number<26||number>29)&&!periodRule)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
-    if(number>=27&&number<=29)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if((number>=27&&number<=29)||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
 
   function openingQuestion(number,part) {
+    if((number===35||number===36)&&part.id.endsWith('pravilo'))return periodicRule(number).prompt;
+    if(number===35)return 'Запиши дробь '+periodTasks[part.id]+' как бесконечную периодическую десятичную дробь, затем округли её до тысячных. Для периода используй скобки.';
+    if(number===36)return 'Найди частное данных десятичных дробей. Дойди при делении до цифры, позволяющей округлить результат до десятитысячных.';
     if(number===34)return resultQuestion(part);
     if(number===33)return roundingQuestion(part);
     if(number===31)return 'Прочитай неравенство '+part.prompt+' и перечисли все натуральные значения x, удовлетворяющие обеим границам. Если их нет, запиши пустое множество.';
@@ -898,6 +969,7 @@
     if(item.number===32)drawing=intervalSequence({},false);
     if(item.number===33)drawing=roundingFigure(part,{},false);
     if(item.number===34)drawing=calculationView(part,{},false);
+    if(item.number===35||item.number===36)drawing=part.id.endsWith('pravilo')?logicConstruction(item.number,part,false):divisionView(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
@@ -926,5 +998,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse};
 })(globalThis);

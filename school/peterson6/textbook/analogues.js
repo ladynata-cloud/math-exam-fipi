@@ -448,15 +448,40 @@
       family:'calc-round-'+part.id,mistake:'Вычисли точное значение и сохрани требуемый разряд. Определи первую цифру, отбрасываемую справа.'};
   }
 
+  function periodPractice(number,part,attempt){
+    const E=root.PetersonBook,M=E.M,k=seed(part.id)%97+attempt,shift=k%3;
+    const choose=(prompt,choices,hint)=>({...choice(prompt,choices.slice(shift).concat(choices.slice(0,shift)),choices[0],hint),mistake:hint});
+    let task;
+    if(part.id==='035-pravilo'){
+      const x=2+k%15;task=choose('Какая из трёх дробей после сокращения не имеет конечной десятичной записи?',[x+'/'+(3*x),x+'/'+(4*x),x+'/'+(5*x)],'Сначала сократи каждую дробь. Проверь, остался ли в знаменателе простой множитель, отличный от 2 и 5.');
+    }else if(part.id==='036-pravilo'){
+      const a=(1+3*(k%9))+'/10',b='3/10',x=M.decimal(a),y=M.decimal(b);task=choose('Какое действие с двумя конечными дробями '+x+' и '+y+' даст бесконечную десятичную запись?',[x+' : '+y,x+' + '+y,x+' · '+y],'Проверь знаменатели результатов. Складывая и умножая конечные дроби, можно сохранить знаменатель — степень десяти.');
+    }else if(number===36){
+      const q=1+3*(k%17),first=part.id==='036-a',left=M.decimal(M.operation('divide',q,first?10:100)),right=first?'0,003':'1,5',expression={op:'divide',left,right},answer=M.answer(E.rounded(E.exact(expression),4));
+      task={kind:'expression',expression,rounding:{places:4},answer,prompt:'Раздели '+left+' на '+right+'. Округли частное до десятитысячных.',mistake:'Оставь четыре знака после запятой. Для округления найди пятую цифру, даже если остатки повторяются.'};
+    }else{
+      const d=part.id==='035-a'?[3,9][k%2]:part.id==='035-b'?[11,27][k%2]:part.id==='035-v'?[30,90,60,150][k%4]:[33,37][k%2];
+      const candidates=Array.from({length:d-1},(_,i)=>i+1).filter(a=>{const r=M.parse(a+'/'+d);return r.d===d;});
+      const numerator=candidates[k%candidates.length],value=M.parse(numerator+'/'+d),seen=new Map(),digits=[];let rem=numerator%d;
+      while(!seen.has(rem)){seen.set(rem,digits.length);rem*=10;digits.push(String(Math.floor(rem/d)));rem%=d;}
+      const index=seen.get(rem),prefix=digits.slice(0,index).join(''),loop=digits.slice(index).join(''),text='0,'+prefix+'('+loop+')',other=(Number(loop[0])+1)%10+loop.slice(1);
+      if(attempt%2){const hint='Записывай новые цифры деления до четвёртой после запятой. Она определяет округление до тысячных.';task={...numerical('Округли '+numerator+'/'+d+' до тысячных.',M.decimal(E.rounded(value,3)),'Введи округлённое значение.',hint),mistake:hint};}
+      else task=choose('Какова периодическая десятичная запись дроби '+numerator+'/'+d+'?',[text,'0,'+prefix+'('+other+')','1,'+prefix+'('+loop+')'],'Проверь целую часть и выпиши остатки. При первом повторе остатка начинается уже пройденный цикл цифр.');
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'period-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
+    if(number===36&&part.expression)return periodPractice(number,part,attempt);
     if(number===34)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>33)return createLegacy(number,part,attempt);
+    if(number<7||number>36)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=35)return periodPractice(number,part,attempt);
     if(number===33)return roundPractice(part,attempt);
     if(number>=31)return intervalPractice(number,part,attempt);
     if(number===30)return flowPractice(part,attempt);
@@ -497,7 +522,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=33&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=36&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -519,7 +544,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=33&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=36&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
@@ -529,7 +554,7 @@
   function shared(item,part,raw) {
     const model=part&&create(item.number,part);
     if(!model)return null;
-    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34))return null;
+    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34||item.number===36))return null;
     const active=document.querySelector('.equivalent-exercise');
     const row=record(part)[1];
     if(!raw&&row.formerlyAbsent&&!active?.open)return null;
@@ -541,7 +566,7 @@
   }
   function restoreShared(part,scene) {
     if(!document.body.dataset.petersonBoard)return;
-    if(!scene){if(part.expression&&/^(01[123]|02[23]|034)-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
+    if(!scene){if(part.expression&&/^(01[123]|02[23]|03[46])-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
     const row=record(part)[1];Object.assign(row,{attempt:scene.attempt,work:scene.work,status:scene.status,open:scene.open,hint:scene.hint});
   }
   function resetShared(){if(document.body.dataset.petersonBoard)states.clear();}
