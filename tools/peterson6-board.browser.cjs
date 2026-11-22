@@ -107,8 +107,9 @@ async function assertPersonalStorage(session, frame) {
 }
 
 async function waitConnected(page) {
+  // Allow one transport handshake and its retry. Both public status indicators must be ready.
   try {
-  await page.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' && document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected', null, { polling: 50, timeout: 15000 });
+  await page.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' && document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected', null, { polling: 50, timeout: 35000 });
   } catch (error) {
     const status = await page.evaluate(() => ({
       share: document.querySelector('#shareStatus')?.textContent,
@@ -288,6 +289,27 @@ async function narrowShot(page, frame, name, selector) {
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
 
+// Pause only the teacher's isolated test browser. Its peer and the local backend stay online.
+async function assertRoomRetry(teacher, studentFrame, teacherFrame, boardOrigin) {
+  const expected = await synchronized(teacherFrame, studentFrame, 'before the transport interruption');
+  let resume;
+  const held = new Promise(resolve => { resume = resolve; });
+  const opening = url => url.origin === boardOrigin && url.pathname === '/socket.io/' &&
+    url.searchParams.get('transport') === 'polling' && !url.searchParams.has('sid');
+  await teacher.route(opening, async route => { await held; await route.continue(); }, {times:1});
+  try {
+    await teacher.evaluate(() => window.__disconnectLocalTestTransport());
+    await teacher.getByText('переподключение', {exact:true}).waitFor();
+    assert.equal(await teacher.locator('#mirrorStatus').getAttribute('data-mirror-status'), 'pending');
+    assert.equal(await studentFrame.evaluate(() => location.pathname), '/trainers/' + WRAPPER);
+  } finally {
+    resume();
+  }
+  await waitConnected(teacher);
+  await waitSnapshot(teacherFrame, expected, 'same lesson and previous steps after reconnect');
+  await synchronized(teacherFrame, studentFrame, 'observer remains in the same room');
+}
+
 async function run(browser, siteOrigin, boardOrigin, failures) {
   phase = 'canonical course and visible board entry';
   const entry = await contextFor(browser, siteOrigin, 'entry', failures);
@@ -321,6 +343,13 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const teacherSession = await contextFor(browser, siteOrigin, 'teacher', failures);
   const studentSession = await contextFor(browser, siteOrigin, 'student', failures);
   const teacher = teacherSession.page, student = studentSession.page;
+  // The instrumented Socket.IO asset is served once, exclusively by the loopback fixture.
+  await teacher.route(boardOrigin + '/socket.io/socket.io.js', async route => {
+    const response = await route.fetch();
+    const hook = ';{const original=window.io;window.io=(...args)=>{const socket=original(...args);' +
+      'window.__disconnectLocalTestTransport=()=>socket.io.engine.transport.close();return socket;};}';
+    await route.fulfill({response, body:(await response.text()) + hook});
+  }, {times:1});
   await teacher.goto(siteOrigin + '/trainers/trainer-board.html?server=' + encodeURIComponent(boardOrigin), { waitUntil: 'domcontentloaded' });
   await teacher.locator('#openShare').click();
   await teacher.locator('#createRoom').click();
@@ -376,6 +405,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await teacherFrame.locator('[data-step-input="0"]').fill('0,5');
   await teacherFrame.locator('[data-step-form="0"] button').click();
   await synchronized(teacherFrame, studentFrame, 'accepted decimal step remains visible');
+  await assertRoomRetry(teacher, studentFrame, teacherFrame, boardOrigin);
   assert.match(await studentFrame.locator('.step.completed').innerText(), /0,5/);
   await teacherFrame.locator('#final-answer').fill('0,86');
   await teacherFrame.locator('.problem > details > summary').click();
