@@ -3361,10 +3361,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "school/peterson6/textbook/index.html": {
-      "beforeSha256": "25f23a5a894ccd368e9e6e0570be669b5efecae2be280b12758bc97921f59984",
-      "afterSha256": "ec010323e354a3e28728630efe1a7a77815f6356b90893078b8320be1c05b141",
+      "beforeSha256": "43f91be72866b70c9206be66901aa21e6eaea8c0009318126df3954c710137fa",
+      "afterSha256": "5bb892293b3d2ac6feade0d47bc210b6d8c7a9ded895a58a15511ef167bcd965",
       "placement": "before-head-close",
-      "sourceSha": "fb7fc5f7c2db8a8f595a0ee8c10730722f5f2350"
+      "sourceSha": "bfe6aab1572a3f4710fd522f90d282889fe30ac0"
     },
     "trainers/peterson6-workshop/index.html": {
       "beforeSha256": "aff5a4686e3a522eb30af65b8e89b325a77ea2798f61c203c7ca06a2755d2aea",
@@ -7527,6 +7527,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены входы в оба тома Виленкина: упражнения №1–176 и №1–95 открываются в общем школьном маршруте вместе с проверенными книгами Мастерской."
+    },
+    {
+      "previousBaseSha": "fb7fc5f7c2db8a8f595a0ee8c10730722f5f2350",
+      "sourceBaseSha": "bfe6aab1572a3f4710fd522f90d282889fe30ac0",
+      "task": "docs/tasks/PETERSON6_FIRST_VOLUME_COMPANION_20261121.md",
+      "changedPaths": [
+        "school/peterson6/textbook/index.html"
+      ],
+      "boundary": "Уточнена версия движка, проверок, схем разрядов и самостоятельных упражнений на странице задачника Петерсона."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
