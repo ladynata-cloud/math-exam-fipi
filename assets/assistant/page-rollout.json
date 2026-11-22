@@ -3371,9 +3371,9 @@
     },
     "topics/metod-arzhenikova/index.html": {
       "placement": "before-head-close",
-      "beforeSha256": "19fb78adc63049a81597ac026db8208141d3a53610447514b8b8bc9391dba217",
-      "afterSha256": "7efa3168f75b22a581615cf7515bf4a20ef8156a128bc29473f90816536a47c5",
-      "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
+      "beforeSha256": "a75357093806a96c979e62fbefd4ca84e80780dfb637d29873d7c08488580c5c",
+      "afterSha256": "0196988636869ddb3e5732f4415c7714314bd6456b5ccd2762f5b758d603a732",
+      "sourceSha": "f5739c9c60da19b289f88cefc1abd47c92fb4de6"
     }
   },
   "provenance": {
@@ -6805,6 +6805,16 @@
       ],
       "reason": "Bind the cloud-browser correction that keeps the Arzhenikov entrance visible in the arithmetic section when minimal navigation is enabled. Preserve every other source binding and the global base.",
       "bindingScope": "Per-page sourceSha; HTML and navigator runtime are unchanged by this metadata update."
+    },
+    {
+      "sourceBaseSha": "f5739c9c60da19b289f88cefc1abd47c92fb4de6",
+      "previousSourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151",
+      "task": "docs/tasks/SEO_ARZHENIKOV_TRAINERS_20261123.md",
+      "changedPaths": [
+        "topics/metod-arzhenikova/index.html"
+      ],
+      "reason": "Bind the reviewed page-only navigator placement that reserves header space and prevents overlap with the guide text. Preserve every other source binding and the shared navigator runtime.",
+      "bindingScope": "Per-page sourceSha; the exact shared navigator pair and global base remain unchanged."
     }
   ],
   "coverageUpdates": [
