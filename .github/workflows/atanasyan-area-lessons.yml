@@ -117,6 +117,8 @@ on:
       - 'tools/geometry-textbook/*regular_compass_finale*'
       - 'tools/geometry-textbook/*regular_polygon_review*'
       - 'tools/geometry-textbook/*circle_measure_review*'
+      - 'tools/geometry-textbook/*plane_isometries*'
+      - 'geometry-course/textbook/data/plane-isometries.json'
       - 'geometry-course/textbook/data/circle-measure-review.json'
       - 'geometry-course/textbook/data/regular-polygon-review.json'
       - 'geometry-course/textbook/data/regular-compass-finale.json'
@@ -214,6 +216,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/plane_isometries.py --check && python3 tools/geometry-textbook/check_plane_isometries.py
       - run: python3 tools/geometry-textbook/circle_measure_review.py --check && python3 tools/geometry-textbook/check_circle_measure_review.py
       - run: python3 tools/geometry-textbook/regular_polygon_review.py --check && python3 tools/geometry-textbook/check_regular_polygon_review.py
       - run: python3 tools/geometry-textbook/regular_compass_finale.py --check && python3 tools/geometry-textbook/check_regular_compass_finale.py
