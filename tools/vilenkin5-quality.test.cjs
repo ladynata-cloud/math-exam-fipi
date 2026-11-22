@@ -152,6 +152,32 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function islandAndMeetingRegression(){
+  const f=boot(),A=f.w.Vilenkin5IslandAndMeeting;
+  for(const v of ['170+4x+v','2·85+х×4+v','S = v + 2(85+2x)','85+85+x+x+x+x+v'])
+    equal(plain(A.coefficients(v)),[170,4,1]);
+  for(const v of ['2vx','x(x+1)','2:0','alert(1)','4x+','x**v','','9007199254740993','(2+x','xv'])equal(A.coefficients(v),null);
+  for(let seed=0;seed<80;seed++){
+    const t=f.M.generate('v5f-printed-5-94',seed),p=t.data.islandRoute;
+    const formula=t.steps[0];ok(f.M.accepts(p.boatHours+'v+'+p.carSpeed+'*'+p.carHours+'+x*'+p.walk,formula));
+    ok(!f.M.accepts(p.carSpeed+'+'+p.walk+'x+'+p.boatHours+'v',formula));
+    for(let x=1;x<=6;x++)for(let v=3;v<=12;v++)equal(A.explore(t,{hours:x,speed:v}).answer,p.carSpeed*p.carHours+p.walk*x+p.boatHours*v);
+    const u=f.M.generate('v5f-printed-5-95',seed),q=u.data.closingGap;
+    for(const speed of [q.foot,q.bike])ok(u.errors.some(e=>f.M.equal(q.total+'/'+speed,e.value)));
+    for(const e of u.errors)ok(!f.M.equal(q.minutes,e.value));
+    for(let phase=0;phase<=4;phase++){
+      const m=Math.round(phase*q.minutes/4);equal(A.explore(u,{phase}).answer,q.total-(q.foot+q.bike)*m);
+    }
+    if(!seed){equal(t.steps[1].answer,183);equal(t.answer,182);equal(u.steps[0].answer,5600);equal(u.steps[1].answer,280);equal(u.answer,20);}
+  }
+  f.route('#lesson/v5f-printed-5-94');f.submit('4x+');equal(f.snapshot().scene.attempt,0);
+  f.submit('85+4x+v');ok(f.snapshot().scene.message.includes('все часы'));f.submit('v + 4х + 85*2');ok(f.snapshot().scene.correct);
+  f.click('[data-cmd=next]');f.submit('178');ok(f.snapshot().scene.message.includes('пристани'));f.submit('183');
+  f.click('[data-cmd=next]');f.submit('182');ok(f.snapshot().scene.correct);equal(plain(f.snapshot().scene.hintLevels),{});
+  f.route('#lesson/v5f-printed-5-95');f.submit('5000');ok(f.snapshot().scene.message.includes('оставшиеся метры'));f.submit('5600');f.click('[data-cmd=next]');
+  f.submit('120');ok(f.snapshot().scene.message.includes('одну сторону'));f.submit('280');f.click('[data-cmd=next]');f.submit('20');ok(f.snapshot().scene.correct);f.close();
+}
+
 function classesAndViewsRegression(){
   const f=boot(),A=f.w.Vilenkin5ClassesAndViews;
   const known=[18208304662,52182829,29298252,389146];
@@ -1040,7 +1066,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50','v5f-printed-5-51','v5f-printed-5-52','v5f-printed-5-53','v5f-printed-5-54','v5f-printed-5-55','v5f-printed-5-56','v5f-printed-5-57','v5f-printed-5-58','v5f-printed-5-59','v5f-printed-5-60','v5f-printed-5-61','v5f-printed-5-62','v5f-printed-5-63','v5f-printed-5-64','v5f-printed-5-65','v5f-printed-5-66','v5f-printed-5-67','v5f-printed-5-68','v5f-printed-5-69','v5f-printed-5-70','v5f-printed-5-71','v5f-printed-5-72','v5f-printed-5-73','v5f-printed-5-74','v5f-printed-5-75','v5f-printed-5-76','v5f-printed-5-77','v5f-printed-5-78','v5f-printed-5-79','v5f-printed-5-80','v5f-printed-5-81','v5f-printed-5-82','v5f-printed-5-83','v5f-printed-5-84','v5f-printed-5-85','v5f-printed-5-86','v5f-printed-5-87','v5f-printed-5-88','v5f-printed-5-89','v5f-printed-5-90','v5f-printed-5-91','v5f-printed-5-92','v5f-printed-5-93'));
+  equal(plain(path.numbered),Array.from({length:76},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50','v5f-printed-5-51','v5f-printed-5-52','v5f-printed-5-53','v5f-printed-5-54','v5f-printed-5-55','v5f-printed-5-56','v5f-printed-5-57','v5f-printed-5-58','v5f-printed-5-59','v5f-printed-5-60','v5f-printed-5-61','v5f-printed-5-62','v5f-printed-5-63','v5f-printed-5-64','v5f-printed-5-65','v5f-printed-5-66','v5f-printed-5-67','v5f-printed-5-68','v5f-printed-5-69','v5f-printed-5-70','v5f-printed-5-71','v5f-printed-5-72','v5f-printed-5-73','v5f-printed-5-74','v5f-printed-5-75','v5f-printed-5-76','v5f-printed-5-77','v5f-printed-5-78','v5f-printed-5-79','v5f-printed-5-80','v5f-printed-5-81','v5f-printed-5-82','v5f-printed-5-83','v5f-printed-5-84','v5f-printed-5-85','v5f-printed-5-86','v5f-printed-5-87','v5f-printed-5-88','v5f-printed-5-89','v5f-printed-5-90','v5f-printed-5-91','v5f-printed-5-92','v5f-printed-5-93','v5f-printed-5-94','v5f-printed-5-95'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -1644,7 +1670,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    classesAndViewsRegression,chordAndUnitsRegression,fourStoryStripsRegression,quantityPartsRegression,groupedAndDiskRegression,wallBenchGroupsRegression,twoCircleConstructionRegression,durationAndMirrorRegression,radiusChordSectorRegression,operationChainsRegression,knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    islandAndMeetingRegression,classesAndViewsRegression,chordAndUnitsRegression,fourStoryStripsRegression,quantityPartsRegression,groupedAndDiskRegression,wallBenchGroupsRegression,twoCircleConstructionRegression,durationAndMirrorRegression,radiusChordSectorRegression,operationChainsRegression,knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,

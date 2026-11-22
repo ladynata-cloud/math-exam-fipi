@@ -1359,6 +1359,33 @@ async function run(browser, origin, backend, failures) {
   await same(teacherFrame,studentFrame,'rejoined at the rear of the garage');await teacherFrame.locator('#answer').fill('б');await teacherFrame.locator('#answer-form button').click();
   assert((await same(teacherFrame,studentFrame,'same garage after walking round')).scene.correct);await narrow(student,studentFrame,'rear-view-garage');
 
+  phase = 'source 5.94 and 5.95: symbolic island route and a closing gap';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-94"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.94'}).waitFor();
+  await teacherFrame.locator('#answer').fill('85+4x+v');await teacherFrame.locator('#answer-form button').click();
+  const missedHour=await same(teacherFrame,studentFrame,'car speed in place of car distance');assert.match(missedHour.scene.message,/все часы/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-v5-param=hours]').fill('3');await studentFrame.locator('[data-v5-param=hours]').press('Tab');
+  await studentFrame.locator('[data-v5-param=speed]').fill('7');await studentFrame.locator('[data-v5-param=speed]').press('Tab');
+  await studentFrame.locator('[data-v5-prediction]').fill('189');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('v+2(85+2х)');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const islandDraft=await same(studentFrame,teacherFrame,'equivalent factored expression and model after teacher reload');
+  assert.equal(islandDraft.scene.savedInput,'v+2(85+2х)');assert.equal(islandDraft.scene.model.hours,3);assert(islandDraft.scene.model.seen);
+  for(const [i,v] of ['v+2(85+2х)','183','182'].entries()){
+    if(i)await studentFrame.locator('[data-cmd=next]').click();
+    await studentFrame.locator('#answer').fill(v);await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'island answer '+i)).scene.correct);
+  }
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-95"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.95'}).waitFor();
+  await studentFrame.locator('#answer').fill('5600');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('120');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'subtraction is not head-on motion')).scene.message,/одну сторону/);
+  await studentFrame.locator('[data-v5-param=phase]').selectOption('3');await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  assert.equal((await same(teacherFrame,studentFrame,'same clock and speed difference')).scene.model.phase,3);
+  await teacherFrame.locator('#answer').fill('280');await teacherFrame.locator('#answer-form button').click();await teacherFrame.locator('[data-cmd=next]').click();
+  await teacherFrame.locator('#answer').fill('20');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'meeting after 20 minutes')).scene.correct);
+  await narrow(student,studentFrame,'two-moving-travelers');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
