@@ -164,8 +164,9 @@
   self(17,'Недопустимое значение','Какие значения переменной называются недопустимыми?',
     'При них хотя бы одно действие выполнить нельзя. Например, t = −1 делает знаменатель 3/(t + 1) нулевым.',
     'Найди запрещённый вход до любых сокращений.',s=>domain(s,true));
-  const prior={figure:course.figure,grade:course.grade,next:course.nextId,source:course.source};
-  course.grade=b=>b===97?'7 класс · часть 1 · 2013':prior.grade(b);
+  const prior={figure:course.figure,grade:course.grade,authors:course.authors,next:course.nextId,source:course.source};
+  course.authors="Алгебра";
+  course.grade=b=>b===97?'А. Г. Мордкович · 7 класс · часть 1 · 17-е издание · 2013':prior.authors+' · '+prior.grade(b);
   course.nextId=l=>l.book===97?order[order.indexOf(l.id)+1]:prior.next(l);
   course.source=(b,p)=>b===97?'https://pdf.my-uchebnik.ru/pdf/algebra/00000080.pdf#page='+(p+1):prior.source(b,p);
   course.figure=d=>{
