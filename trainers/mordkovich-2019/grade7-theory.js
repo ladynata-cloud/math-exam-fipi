@@ -81,7 +81,7 @@
       s=>{
         const h=s+2,w=s+6,k=s+1,total=h*(w+sign*k);
         return model('Прямоугольные полосы',[['Выражение',h+' · ('+w+op+k+')'],['Высота',String(h)],['Ширины',w+' и '+k]],[
-          question('Чему равна площадь первой полосы шириной '+w+'?',h*w,'Умножь общую высоту на первую ширину.',h+w,'Сумма сторон не даёт площадь. Для площади стороны перемножают.'),
+          question(plus?'Чему равна площадь первой полосы шириной '+w+'?':'Какова площадь целого прямоугольника шириной '+w+' до удаления полосы?',h*w,plus?'Умножь общую высоту на ширину первой полосы.':'Умножь высоту на ширину целого прямоугольника.',h+w,'Сумма сторон не даёт площадь. Для площади стороны перемножают.'),
           question('Чему равна площадь полосы шириной '+k+'?',h*k,'Вторая полоса имеет ту же высоту '+h+'.',k,'Введена только ширина. У второй полосы тоже есть высота.'),
           question('Найди площадь после изменения ширины.',total,'Вычисли '+(h*w)+op+(h*k)+'.',h*w-sign*h*k,plus?'Полосу добавили, поэтому площади складываются.':'Полосу удалили, поэтому её площадь нужно вычесть.')
         ],{kind:'area',h,w,k,plus});
@@ -121,7 +121,7 @@
     }
     if(v.kind==='area') {
       const width=225,split=v.plus?width*v.w/(v.w+v.k):width*(v.w-v.k)/v.w;
-      return '<svg viewBox="0 0 280 103" role="img" aria-label="Прямоугольник. Последняя полоса '+(v.plus?'добавлена':'вычтена')+'"><rect x="35" y="18" width="'+split+'" height="47" fill="#a9d9be" stroke="#38715e"/><rect x="'+(35+split)+'" y="18" width="'+(width-split)+'" height="47" fill="'+(v.plus?'#bed4eb':'#f6d7bb')+'" stroke="#586556" stroke-dasharray="'+(v.plus?'0':'4 2')+'"/><g fill="#263d37" text-anchor="middle" font-family="sans-serif" font-size="12"><text x="17" y="45">'+v.h+'</text><text x="'+(35+split+(width-split)/2)+'" y="46">'+v.k+'</text><text x="145" y="88">полная ширина '+(v.plus?(v.w+v.k):v.w)+'</text></g></svg>';
+      return '<svg viewBox="0 0 280 103" role="img" aria-label="Прямоугольник. Последняя полоса '+(v.plus?'добавлена':'вычтена')+'"><rect x="35" y="18" width="'+split+'" height="47" fill="#a9d9be" stroke="#38715e"/><rect x="'+(35+split)+'" y="18" width="'+(width-split)+'" height="47" fill="'+(v.plus?'#bed4eb':'#f6d7bb')+'" stroke="#586556" stroke-dasharray="'+(v.plus?'0':'4 2')+'"/><g fill="#263d37" text-anchor="middle" font-family="sans-serif" font-size="12"><text x="17" y="45">'+v.h+'</text><text x="'+(35+split+(width-split)/2)+'" y="46">'+v.k+'</text><text x="145" y="88">'+(v.plus?'ширина вместе: '+(v.w+v.k):'до удаления: '+v.w)+'</text></g></svg>';
     }
     const x=h=>32+9*h, y=t=>97-74*t/(Math.max(...v.temp)-Math.min(...v.temp))-(-Math.min(...v.temp))*74/(Math.max(...v.temp)-Math.min(...v.temp));
     const points=v.hours.map((h,i)=>x(h)+','+y(v.temp[i])).join(' ');
