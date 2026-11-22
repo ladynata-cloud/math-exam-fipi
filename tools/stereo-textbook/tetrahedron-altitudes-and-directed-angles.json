@@ -1,0 +1,240 @@
+{
+  "parts": {
+    "791": [
+      null
+    ],
+    "792": [
+      null
+    ],
+    "793": [
+      null
+    ],
+    "794": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "791": {
+      "id": "source-main-0791",
+      "kind": "exercise",
+      "title": "Задача № 791",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "791",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "792": {
+      "id": "source-main-0792",
+      "kind": "exercise",
+      "title": "Задача № 792",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "792",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "793": {
+      "id": "source-main-0793",
+      "kind": "exercise",
+      "title": "Задача № 793",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "793",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "794": {
+      "id": "source-main-0794",
+      "kind": "exercise",
+      "title": "Задача № 794",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "794",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          191
+        ],
+        "pdfPages": [
+          193
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0791": {
+      "raw": "4f8ef00e2ac94b9076e6a64d4531d8a1e7147feaade23d58dbd17885104aa31a",
+      "authored": "51645ba4e3059768a1b76e01991bf44e4ac08f195c19b94e2a3637ef5f96a31e",
+      "integrated": "802ddbf85755dd85316965ec98797797527225e54a7190cc4b33a7fd75ec9d78"
+    },
+    "ex-main-0792": {
+      "raw": "61958e3834d291e1acaf0e2dd206eae61f7f65599311b5679d0631bd689f1888",
+      "authored": "d032ab2c1c21ae41a0a3de4be3cc9bd7bcacbfc4a96560c4596906652d29261f",
+      "integrated": "0d43cd397c3cc26b49d595d1c4faf782191552a059bc91abb8518793fb91495d"
+    },
+    "ex-main-0793": {
+      "raw": "897508e6eeed49f82decafc4ade87016b3960da946553af44c251324ef475671",
+      "authored": "5cb802c50efd25e3c456898a840a17c12089419ac5b491978fb6b2398f155b1d",
+      "integrated": "9e2eee693f956eb00b12c9dab1c267895733776d0495dfd35dc57e925cee0432"
+    },
+    "ex-main-0794": {
+      "raw": "8a142a638ac1f8965c2621093fde6977553621fc57ed1fc3fc0beab18c442126",
+      "authored": "a0b9f0caf4f0bbcfe48982c4d9030b9b0b2315f3a2a1fce839d19b7fe766f971",
+      "integrated": "f41e7fa332d84bdbc670f20340f82b107ef5d4f131430ac5ebcd74601c60a775"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0791|condition",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0791-condition"
+    ],
+    [
+      "ex-main-0791|help:h1",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0791-help-h1"
+    ],
+    [
+      "ex-main-0791|help:h2",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0791-help-h2"
+    ],
+    [
+      "ex-main-0791|step-1",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0791-step-1"
+    ],
+    [
+      "ex-main-0791|step-2",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0791-step-2"
+    ],
+    [
+      "ex-main-0791|step-3",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0791-step-3"
+    ],
+    [
+      "ex-main-0792|condition",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0792-condition"
+    ],
+    [
+      "ex-main-0792|help:h1",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0792-help-h1"
+    ],
+    [
+      "ex-main-0792|help:h2",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0792-help-h2"
+    ],
+    [
+      "ex-main-0792|step-1",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0792-step-1"
+    ],
+    [
+      "ex-main-0792|step-2",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0792-step-2"
+    ],
+    [
+      "ex-main-0792|step-3",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0792-step-3"
+    ],
+    [
+      "ex-main-0793|condition",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0793-condition"
+    ],
+    [
+      "ex-main-0793|help:h1",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0793-help-h1"
+    ],
+    [
+      "ex-main-0793|help:h2",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0793-help-h2"
+    ],
+    [
+      "ex-main-0793|help:h3",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0793-help-h3"
+    ],
+    [
+      "ex-main-0793|step-1",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0793-step-1"
+    ],
+    [
+      "ex-main-0793|step-2",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0793-step-2"
+    ],
+    [
+      "ex-main-0793|step-3",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0793-step-3"
+    ],
+    [
+      "ex-main-0794|condition",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0794-condition"
+    ],
+    [
+      "ex-main-0794|help:h1",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0794-help-h1"
+    ],
+    [
+      "ex-main-0794|help:h2",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0794-help-h2"
+    ],
+    [
+      "ex-main-0794|step-1",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0794-step-1"
+    ],
+    [
+      "ex-main-0794|step-2",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0794-step-2"
+    ],
+    [
+      "ex-main-0794|step-3",
+      "tetrahedron-altitudes-and-directed-angles-ex-main-0794-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "1250037a5fa30ba4ea47ff2f03b08aaffa8d5dd073e7e67b1b624254a4c179f8",
+      "afterSHA256": "d123c4c7943c841787fb03500f7062c58a91274ccc0e43de0b1353ace8c801e6"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "d15d621dff331166c47977a4953011976384adda9dd5e0ccebb8a88bf7c5a8bc",
+      "afterSHA256": "2625096fd76ce5082789317cdc8c14c80896e94356be25d77cc601e8347236b9"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-22T02:52:00Z",
+    "scope": "All final-review parts of 764–767 and advanced source exercises 768–790 are complete. The remaining advanced exercises begin at 791."
+  },
+  "before": {
+    "course": "c69d1a8649e5c2b4c6d7e73eb48903b0ff1d6ce66b830c17886133b23368f456",
+    "index": "50ef727ef066dbff546a641905fc470ca9acf38db03366a47c6fd2ee4f2f54d9",
+    "registry": "1519fd9f97bf56ee27e89491b821700209ddc633eae172628cd0818ea6b60b5e",
+    "cases": "cfab85e2804f6a0715b0fece70668d1a01b34d972e94c9b1cea48b352d1f7726"
+  }
+}

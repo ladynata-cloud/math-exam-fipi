@@ -1,4 +1,4 @@
-"""Rebuild both canonical Atanasyan course banks through problem 790 from its reviewed lessons."""
+"""Rebuild both canonical Atanasyan course banks through problem 794 from its reviewed lessons."""
 import base64
 from hashlib import sha1, sha256
 import json
@@ -17,7 +17,7 @@ for stage in ('expected','refined'):
     assert len(data) == expected['bytes']
     assert sha256(data).hexdigest() == expected['sha256']
     assert sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest() == expected['sha']
-    for check in ('monotone-paths-and-dual-solids','skew-lines-and-corner-reflection'):
+    for check in ('skew-lines-and-corner-reflection','tetrahedron-altitudes-and-directed-angles'):
         subprocess.run(['node','tools/stereo-textbook/' + check + '.test.cjs'], check=True)
     with open('reviewed-course-object.json', 'w') as output:
         json.dump({'content': base64.b64encode(data).decode('ascii'), 'encoding':'base64'}, output)
