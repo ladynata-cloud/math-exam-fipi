@@ -47,6 +47,7 @@ function sanitize(part,input){
   const limit=part.id.startsWith('013-')?ss.length:Math.max(...operands.map(x=>x[0].length))+Math.max(...operands.map(x=>x[1]?.length||0));
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
+ if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
  clean.draft=cut(input.draft,MAX_TEXT);clean.note=cut(input.note);clean.noteOpen=input.noteOpen===true;clean.errors=Number.isInteger(input.errors)?Math.max(0,Math.min(10000,input.errors)):0;
  clean.errors=Math.max(clean.errors,Object.keys(clean.firstErrors.steps).length+(clean.firstErrors.final?1:0));
  clean.guided=input.guided===true;clean.showSolution=input.showSolution===true;clean.stepDrafts=ss.map((_,i)=>cut(input.stepDrafts?.[i],MAX_TEXT));

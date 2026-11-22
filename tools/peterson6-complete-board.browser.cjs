@@ -187,7 +187,7 @@ async function run(browser, origin, backend, failures, published) {
       const corrected = await same(b,a,'pupil corrects a shared answer');
       assert.equal(corrected.work.firstErrors.final,'17');
       assert.equal(await a.locator('article .badge').innerText(),'Решено на общей доске');
-      await b.locator('#number-input').fill('8');await b.locator('#number-form button').click();
+      await b.locator('#number-input').fill('8');await b.locator('#number-form button').click();await b.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №8');
       await b.locator('[data-set-number="0"]').click();await b.locator('[data-set-number="1"]').click();
       await b.locator('#answer-form button').click();const numberSet=await same(b,a,'shared number-set model and error about zero');
       assert.equal(numberSet.route,'#n/8/008-1-a');assert.match(numberSet.message.text,/Ты включил ноль/);
@@ -199,8 +199,8 @@ async function run(browser, origin, backend, failures, published) {
       await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'observer reload restores the exact exercise, picks and practice attempt');
       await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
       await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'pupil reload restores same controls');
-      await a.locator('#number-input').fill('10');await a.locator('#number-form button').click();await a.locator('#answer').fill('6 702 058');await a.locator('#answer-form button').click();const dictation=await same(a,b,'grouped millions accepted in shared dictation');assert(dictation.work.correct);assert.equal(dictation.work.draft,'6 702 058');
-      await a.locator('#number-input').fill('11');await a.locator('#number-form button').click();await a.locator('[data-decimal-position]').selectOption('2');
+      await a.locator('#number-input').fill('10');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №10');await a.locator('#answer').fill('6 702 058');await a.locator('#answer-form button').click();const dictation=await same(a,b,'grouped millions accepted in shared dictation');assert(dictation.work.correct);assert.equal(dictation.work.draft,'6 702 058');
+      await a.locator('#number-input').fill('11');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №11');await a.locator('[data-decimal-position]').selectOption('2');
       const cells=await same(a,b,'decimal position selected by the teacher');assert.equal(cells.route,'#n/11/011-a-1');assert.equal(cells.work.decimalView,2);assert.equal(await b.locator('[data-decimal-position]').inputValue(),'2');
       const oldScene={...cells,analogue:null};delete oldScene.work.decimalView;
       await b.evaluate(scene=>{
@@ -217,6 +217,15 @@ async function run(browser, origin, backend, failures, published) {
       await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'decimal exercise, attempt and place survive teacher reconnect');
       await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
       await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'decimal exercise, attempt and place survive pupil reconnect');
+      await a.locator('#number-input').fill('16');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №16');await a.locator('.part-picker a[href="#n/16/016-d"]').click();await a.waitForFunction(()=>PetersonVolumeRoom.getState().route==='#n/16/016-d'&&document.querySelector('.part-picker a[aria-current="page"],.part-picker a.active')?.getAttribute('href')==='#n/16/016-d');await a.locator('[data-fraction-method]').selectOption('3');
+      const fractionView=await same(a,b,'two roles inspect missing unit fractions');assert.equal(fractionView.work.fractionView,3);assert.match(await b.locator('[data-fraction-host]').textContent(),/1\/46/);
+      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await student.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await b.locator('#answer').selectOption('>');await b.locator('#answer-form button').click();const unitMiss=await same(b,a,'incorrect comparison near one');assert.match(unitMiss.message.text,/недобирает/);
+      await b.locator('[data-fraction-method]').selectOption('2');await b.locator('#answer').selectOption('<');await b.locator('#answer-form button').click();const correctedMethod=await same(b,a,'new method and correction');assert.equal(correctedMethod.work.fractionView,2);assert(correctedMethod.work.correct);assert.equal(correctedMethod.work.firstErrors.final,'>');
+      await teacher.reload();await waitConnected(teacher);a=await frameFor(teacher,wrapper);await same(b,a,'teacher reload preserves fraction method and answer');
+      await teacher.locator('#openShare').click();await teacher.locator('#controlToggle').click();await teacher.waitForFunction(()=>document.body.classList.contains('control-owner'));await teacher.locator('#sharePanel [data-close-panel]').click();
+      await student.reload();await waitConnected(student);b=await frameFor(student,wrapper);await same(a,b,'pupil reload preserves fraction method and handoff');
+
 
 
     }

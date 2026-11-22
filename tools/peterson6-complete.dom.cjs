@@ -493,3 +493,22 @@ test('printed 11–13 retain exact source values, independent decimal models and
  const old=s.w.PetersonBook.blank(p);old.note='Черновик к исходному выражению.';s.w.PetersonBook.submit(p,old,'1,5');
  const stable=s.w.PetersonBook.sanitize(p,old);assert.equal(stable.note,old.note);assert(stable.independent);assert.equal(stable.decimalView,undefined);
 });
+test('page 8 statement endings, place-value comparisons and fraction methods agree with the issued volume',async t=>{
+ const s=await surface(t,BOOK+'#map'),bank=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(13,16),answers=[['в) 79 398','б) 0','а) 8','б) 6','в) 9','б) сложения','б) 83 004 020','б) 350 807','вбабвббб.'],['>','>','<','<','>','<'],['>','<','>','<','<']];
+ assert.equal(element(s,'[aria-label="Разряды и сравнение на странице 8"]').querySelectorAll('a').length,3);
+ for(const [j,item] of bank.entries())for(const [i,p] of item.parts.entries()){
+  assert.equal(p.answer,answers[j][i]);await route(s,'#n/'+item.number+'/'+p.id);
+  const pane=sourcePresent(s);assert.match(pane.textContent,/Всё условие/);assert(pane.querySelector('figure'));
+  assert(pane.querySelector('.problem').textContent.length>35);
+  for(let n=0;n<8;n++){const model=s.w.PetersonAnalogues.create(item.number,p,n);assert.equal(model.family,'comparison-'+p.id);assert(s.w.PetersonBook.check(model,model.answer));
+   if(item.number!==14){const match=model.prompt.match(/Сравни (.+?) и (.+?)\./);assert(match);
+    const value=v=>{const [a,b]=v.replace(/,/g,'.').split('/');return Number(a)/(b===undefined?1:Number(b));};
+    const v1=value(match[1]),v2=value(match[2]);assert.equal(model.answer,v1===v2?'=':v1<v2?'<':'>');
+   }
+  }
+  if(item.number===16){const m=element(s,'[data-fraction-method]');m.value='2';m.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.equal(bookWork(s,p.id).fractionView,2);assert(!bookWork(s,p.id).assisted);assert.match(element(s,'[data-fraction-host]').textContent,/числитель первой/);}
+  input(s,'#answer',p.id==='014-itog'?'В Б А Б В Б Б Б':p.answer);submit(s,'#answer-form');const work=bookWork(s,p.id);
+  if(p.id==='014-itog'){assert(!work.independent&&!work.correct&&work.submitted);assert.match(element(s,'#feedback').textContent,/Восемь букв/);}
+  else assert(work.correct&&work.independent,p.id);
+ }
+});

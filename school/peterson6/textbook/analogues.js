@@ -153,13 +153,53 @@
     return {kind:'expression',expression:calculation,prompt,answer:E.M.answer(E.exact(calculation)),mistake:hint,id:'analog-'+part.id+'-'+attempt,family:'decimal-'+part.id,match:'skill'};
   }
 
+  function comparisonPractice(number,part,attempt){
+    const v=seed(part.id)%47+attempt,t=2+v%7,numeric=(prompt,answer,hint)=>({...numerical(prompt,answer,'Проверь разряд или часть числа.',hint),mistake:hint});
+    const sign=(a,b)=>{const M=E.M,r=M.operation('subtract',a,b);return r.n<0?'<':r.n>0?'>':'=';};
+    let model;
+    if(number===14){
+      const i=part.id==='014-itog'?8:Number(part.id.slice(4))-1;
+      if(i===0){const n=36101+13*(v%211);model=numeric('Назови натуральное число прямо перед '+n+'.',n-1,'Требуется уменьшить данное число ровно на единицу.');}
+      if(i===1||i===2){const power=i===1?4:8,n=(i===1?12007033:2007346012)+t*10**power;model=numeric('Какая цифра стоит в разряде '+(i===1?'десятков тысяч':'сотен миллионов')+' числа '+n+'?',Math.floor(n/10**power)%10,'Разбей число на классы по три цифры справа, затем найди нужную позицию в классе.');}
+      if(i===3){const digits='34782'+t+'19';model=numeric('Найди цифру миллионных у числа 0,'+digits+'.',t,'Отсчитай шесть позиций от запятой вправо.');}
+      if(i===4){model=numeric('У смешанного числа '+(2+t)+' 1/'+(8+t)+' какой знаменатель дробной части?',8+t,'Знаменатель расположен под дробной чертой.');}
+      if(i===5){const whole=t+1,den=t+4,answer=whole+' + 2/'+den,options=[whole+' × 2/'+den,answer,whole+' − 2/'+den];model=choice('Какая запись передаёт значение смешанного числа '+whole+' 2/'+den+'?',options,answer,'Целая и дробная части складываются.');}
+      if(i===6||i===7){const base=i===6?10**6:10**5,a=1+(v+3)%8,b=2+v%6;const total=a*base+b*1000+40+2;
+        model=numeric(i===6?'Собери число по разрядной сумме '+(a*base)+' + '+(b*1000)+' + 40 + 2.':'Запиши обычным числом сумму '+a+' · 10⁵ + '+b+' · 10³ + 4 · 10 + 2.',total,'Поставь цифры на названные позиции, остальные заполни нулями.');}
+      if(i===8){const base=3000+t*10,items=['а) '+(base+1),'б) '+(base-1),'в) '+base],order=v%3,permuted=items.slice(order).concat(items.slice(0,order)).map((x,i)=>'абв'[i]+') '+x.slice(3));const right=permuted.find(x=>Number(x.slice(3))===base-1);
+        model=choice('Число перед '+base+' записано одним из вариантов. Выбери букву вместе с верной записью.',permuted,right,'Сначала вычисли предыдущее число, затем прочитай букву именно его варианта.');}
+    }else{
+      const key=part.id.slice(4),fmt=(n,p)=>E.M.decimal(E.M.operation('divide',n,10**p));let a,b,clue;
+      if(number===15){
+        if(key==='a'){a=1000000+t*100001;b=100000+t*1010;}
+        else if(key==='b'){a=2710000+t*100+5;b=2710000+t*10+8;}
+        else if(key==='v'){a=fmt(1000*t+329,3);b=fmt(t*10+6,1);}
+        else if(key==='g'){a=fmt(1000*t-17,3);b=t;}
+        else if(key==='d'){a=fmt(t*111+2,1);b=fmt(t*10017+942,4);}
+        else {a=fmt(t,4);b=fmt(t-1,3);}
+        clue='Сравни целые части, затем десятые, сотые и следующие разряды.';
+      }else{
+        if(key==='a'){a=(t+1)+'/'+(t+5);b=t+'/'+(t+5);}
+        else if(key==='b'){a=t+'/'+(t+6);b=t+'/'+(t+4);}
+        else if(key==='v'){a=(t+8)+'/'+(t+3);b=(t+4)+'/'+(t+7);}
+        else if(key==='g'){a=(t+1)+'/'+(2*t+3);b=t+'/'+(2*t+1);}
+        else {a=(t+6)+'/'+(t+7);b=(t+7)+'/'+(t+8);}
+        clue=key==='d'?'Обе дроби меньше единицы на одну долю. Сравни размеры недостающих долей.':'Общий знаменатель позволяет сравнить числители; можно также сравнить каждую дробь с единицей.';
+      }
+      if(v%2)[a,b]=[b,a];
+      model=choice('Сравни '+a+' и '+b+'. Какой знак нужно поставить между ними?', ['<','=','>'],sign(a,b),clue);model.mistake=clue;
+    }
+    return {...model,id:'analog-'+part.id+'-'+attempt,family:'comparison-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>10)return createLegacy(number,part,attempt);
+    if(number<7||number>16)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=14)return comparisonPractice(number,part,attempt);
     const model=repeatNumberWork(number,part,attempt);
     return {...model,id:'analog-'+part.id+'-'+attempt,family:'page7-'+part.id,match:'skill'};
   }
@@ -188,7 +228,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=10&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=16&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -210,7 +250,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=10&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=16&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

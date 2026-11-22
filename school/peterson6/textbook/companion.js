@@ -182,6 +182,83 @@
     return {ok:false,text:opHint[x.op]};
   }
 
+  const orderStems=[
+    'У числа 79 399 есть предыдущее натуральное число. Выбери его.',
+    'Прочитай запись 12 705 320. Какая цифра занимает разряд десятков тысяч?',
+    'В числе 9 876 543 210 найди цифру сотен миллионов.',
+    'Рассмотри дробь 0,123456789. Какая цифра записана в разряде миллионных?',
+    'У числа 3 2/9 назови знаменатель дробной части.',
+    'Какое действие подразумевается между целой и дробной частями смешанного числа?',
+    'Запиши числом разрядную сумму 80 000 000 + 3 000 000 + 4 000 + 20.',
+    'Какое число равно сумме 3 · 10⁵ + 5 · 10⁴ + 8 · 10² + 7?'
+  ];
+  const orderClues=[
+    'Предыдущее число на единицу меньше данного.','От единиц, двигаясь влево, дойди до пятой позиции.',
+    'Разбей запись на классы по три цифры справа. В классе миллионов выбери сотни.',
+    'Справа от запятой миллионные занимают шестую позицию.','Знаменатель показывает, на сколько равных частей разделена единица. В записи дроби он стоит под чертой.',
+    'Смешанное число состоит из целых единиц и добавленной к ним дробной части.',
+    'Оставь нули в тех разрядах, которые не названы.','Расставь коэффициенты по степеням десятки. Если слагаемого для разряда нет, оставь в этом разряде ноль.'
+  ];
+  const contrast=(part)=>part.prompt.split(/\s+и\s+/).map(s=>s.trim());
+  function compareSource(number,part){
+    if(number===14)return part.id==='014-itog'?'Восстанови по порядку восемь букв выбранных окончаний из предыдущих подпунктов. Объяснение можно записать отдельно.':orderStems[Number(part.id.slice(4))-1];
+    const [a,b]=contrast(part);return number===15?'Сравни числа '+a+' и '+b+'. Выбери знак между ними. Проверь целые части и первый различающийся разряд.':'Сравни дроби '+a+' и '+b+'. Выбери знак. Попробуй объяснить решение через общий знаменатель, сравнение с единицей или расстояние до единицы.';
+  }
+  function fractionHint(id){
+    return {'016-a':'При равных знаменателях сравни числители.','016-b':'При одинаковых положительных числителях большему знаменателю соответствует меньшая доля.','016-v':'Сравни каждую дробь с единицей. У какой числитель больше знаменателя?','016-g':'Приведи обе дроби к общему знаменателю или сравни перекрёстные произведения.','016-d':'Обе дроби близки к единице. Какая из них недобирает меньшую долю?'}[id];
+  }
+  function sourceSupport(number,part){
+    if(number===14){
+      if(part.id==='014-itog')return numberTiles(['1','2','3','4','5','6','7','8'],'Одна буква для каждой позиции. Порядок важен.');
+      const i=Number(part.id.slice(4))-1,tokens=[['до','79 399','после'],['12','705','320'],['9','876','543','210'],['1','2','3','4','5','6','7','8','9'],['целая часть','числитель','знаменатель'],['три целых','ещё две девятых'],['миллионы','тысячи','единицы'],['10⁵','10⁴','10³','10²','10¹','10⁰']][i];
+      return numberTiles(tokens,['Соседи числа','Классы по три цифры','Классы по три цифры','Цифры после запятой, слева направо','Части смешанного числа','Две величины в одной записи','Разрядные классы','Степени десяти'][i]);
+    }
+    const row=contrast(part);
+    if(number===15){
+      const pieces=row.map(v=>v.replace(/\s/g,'').split(',')),w=Math.max(...pieces.map(v=>v[0].length)),d=Math.max(...pieces.map(v=>v[1]?.length||0));
+      const bands=pieces.map(([a,b=''])=>{const str=a.padStart(w,' ')+b.padEnd(d,'0');return '<div style="display:grid;grid-template-columns:repeat('+str.length+',minmax(0,1fr));margin:.3em 0" aria-label="'+U.esc(a+(b?','+b:''))+'">'+[...str].map((c,i)=>'<span style="text-align:center;background:#edf4ed;border:1px solid #90aa9b;'+(i===w-1&&d?'border-right:3px solid #395b48':'')+'">'+(c===' '?' ':c)+'</span>').join('')+'</div>';}).join('');
+      return '<figure style="margin:.5em 0"><figcaption>Одинаковые разряды стоят друг под другом.</figcaption>'+bands+'<p>У десятичной дроби справа можно дописать нули, сохранив значение.</p></figure>';
+    }
+    return fractionMethods(part);
+  }
+  function fractionMethods(part,selected=0,interactive=false){
+    const [a,b]=contrast(part),[an,ad]=a.split('/').map(Number),[bn,bd]=b.split('/').map(Number);
+    let l=ad,r=bd;while(r){const next=l%r;l=r;r=next;}
+    const den=ad/l*bd,names=['Исходные дроби','Сравнение с единицей','Общий знаменатель','Дополнение до единицы'];
+    const options=interactive?'<label>Способ <select data-fraction-method>'+names.map((v,i)=>'<option value="'+i+'"'+(i===selected?' selected':'')+'>'+v+'</option>').join('')+'</select></label>':'';
+    const unit=(n,d)=>n===d?'равна единице':n<d?'меньше единицы':'больше единицы';
+    let text;
+    if(selected===1)text=a+' '+unit(an,ad)+', '+b+' '+unit(bn,bd)+'. Если обе дроби по одну сторону от 1, нужен ещё один способ.';
+    else if(selected===2)text='При знаменателе '+den+' числитель первой дроби равен '+an*(den/ad)+', второй — '+bn*(den/bd)+'. Какой числитель больше?';
+    else if(selected===3){const missing=(n,d)=>n===d?'уже равна 1':n<d?'до 1 не хватает '+(d-n)+'/'+d:'превышает 1 на '+(n-d)+'/'+d;
+      text='Первая дробь: '+missing(an,ad)+'. Вторая: '+missing(bn,bd)+'. У меньшей правильной дроби недостающая часть больше.';}
+    else text='Проверь, что уже одинаково, и выбери подходящий способ.';
+    return '<figure data-fraction-host style="margin:.5em 0"><figcaption>Выбери способ сравнения дробей</figcaption><div style="display:flex;gap:1em;align-items:center">'+U.fmt(a)+'<span>?</span>'+U.fmt(b)+'</div>'+options+'<p>'+U.fmt(text)+'</p></figure>';
+  }
+  function mountFraction(main,part,work,save){
+    let host=main.querySelector('[data-fraction-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=fractionMethods(part,work.fractionView||0,true);host=main.querySelector('[data-fraction-host]');
+      const select=host.querySelector('select');select.onchange=()=>{const n=Number(select.value);if(n)work.fractionView=n;else delete work.fractionView;save();draw();host.querySelector('select').focus({preventScroll:true});};
+    }
+    draw();
+  }
+
+  function orderResponse(number,part,input,correct){
+    if(number<14||number>16)return null;
+    if(part.id==='014-itog'){
+      const actual=input.toLowerCase().replace(/[\s,;.)]/g,''),expected='вбабвббб';
+      if(!/^[абв]{8}$/.test(actual))return {ok:false,text:'Нужно восемь букв а, б или в по порядку. Разбор останется в твоих записях.'};
+      const i=[...actual].findIndex((v,j)=>v!==expected[j]);return i<0?{ok:true,text:'Восемь букв совпали с проверкой. Запись остаётся доступной для просмотра учителем.'}:{ok:false,text:'Проверь ответ '+(i+1)+'. '+orderClues[i]};
+    }
+    if(correct)return null;
+    if(number===14)return {ok:false,text:orderClues[Number(part.id.slice(4))-1]};
+    if(number===16)return {ok:false,text:fractionHint(part.id)};
+    const [a,b]=contrast(part),parts=[a,b].map(v=>v.replace(/\s/g,'').split(','));
+    if(parts[0][0].length!==parts[1][0].length)return {ok:false,text:'Сначала посчитай цифры в целой части. Большее количество цифр у положительного целого означает большее значение.'};
+    return {ok:false,text:'Сравнивай слева направо, начиная с наибольшего разряда. Большая длина дробной части сама по себе не определяет большее число.'};
+  }
+
   function normalizeNumber(raw) {
     const s=raw.trim().replace(/\.$/,'').replace(/\s*\/\s*/g,'/').replace(/\s+/g,' ');
     return /^\d{1,3}(?: \d{3})+$/.test(s)?s.replace(/ /g,''):s.replace(/(?<=\d)\.(?=\d)/g,',');
@@ -229,6 +306,7 @@
   }
 
   function openingQuestion(number,part) {
+    if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
     if(number>=11&&number<=13)return number===11?'Вычисли устно. Выбери удобный способ: разряды, перенос запятой или проверку обратным действием.':number===12?'Выполни указанное действие с десятичными дробями. Для записи по разрядам или промежуточных вычислений открой черновик.':'Найди значение всего выражения. Выдели внутренние действия и запиши промежуточные результаты перед последним действием.';
     const index=Number(part.id.split('-')[1])-1;
@@ -273,6 +351,7 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
+    if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
     if(item.number>=7&&item.number<=10)drawing=pageSevenFigure(item.number,part);
     if(item.number===240) drawing=angleSet();
@@ -297,5 +376,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction};
 })(globalThis);
