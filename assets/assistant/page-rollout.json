@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "a5d3e8ddcfbcc9e72fcf9a9c55c9a0cad8b8592af6f85d29a72ada0fc6887eb6",
-      "afterSha256": "b0c8cc1962ae8627b7898d0af54ee05c6bd78e60a2e78743d2a4a295718f0252",
+      "beforeSha256": "4e6a72047bfc3638158ff990e7bbbbae5f7113ef85f5413fcc4669baf5dd03e6",
+      "afterSha256": "c6bc65d1de7a78618c71833e295b99635e5a074e56d2c9011b9cc025c45100a6",
       "placement": "before-head-close",
-      "sourceSha": "c072826a7ed7ed08a5d24a109aeca70276e93c2b"
+      "sourceSha": "6fec046997b200ee604bb91128484d5b0e31ed66"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7074,6 +7074,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены исходная фигура и условие №5.111, с. 23. Для всех пар граней независимо рассчитана длина пути через пять точек сгиба. Выбор граней и исправленный ответ выдержали передачу управления и перезагрузку обеих сторон."
+    },
+    {
+      "previousBaseSha": "c072826a7ed7ed08a5d24a109aeca70276e93c2b",
+      "sourceBaseSha": "6fec046997b200ee604bb91128484d5b0e31ed66",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "На с. 23 проверены все четыре деления, ошибочное равенство с чрезмерным остатком и воспроизводимая работа обоих участников."
     }
   ],
   "coverageUpdates": [
