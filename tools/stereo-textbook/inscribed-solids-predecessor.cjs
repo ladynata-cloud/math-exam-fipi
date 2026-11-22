@@ -2,7 +2,8 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const dihedralBisectorsAndMidplanes = makeReviewedIncrement(require('./dihedral-bisectors-and-midplanes.json'), closedSections);
+const cubeSectionsDistancesAndDivision = makeReviewedIncrement(require('./cube-sections-distances-and-division.json'), closedSections);
+const dihedralBisectorsAndMidplanes = makeReviewedIncrement(require('./dihedral-bisectors-and-midplanes.json'), cubeSectionsDistancesAndDivision);
 const firstAdvancedPyramidProblems = makeReviewedIncrement(require('./first-advanced-pyramid-problems.json'), dihedralBisectorsAndMidplanes);
 const endOfFinalPyramidReview = makeReviewedIncrement(require('./end-of-final-pyramid-review.json'), firstAdvancedPyramidProblems);
 const finalTriangularPyramidReview = makeReviewedIncrement(require('./final-triangular-pyramid-review.json'), endOfFinalPyramidReview);

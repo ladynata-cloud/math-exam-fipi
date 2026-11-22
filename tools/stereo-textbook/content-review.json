@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T02:18:00Z",
-  "scope": "All final-review parts of 764–767 and advanced source exercises 768–773 are complete. The remaining advanced exercises begin at 774.",
+  "registeredAt": "2026-11-22T02:23:00Z",
+  "scope": "All final-review parts of 764–767 and advanced source exercises 768–776 are complete. The remaining advanced exercises begin at 777.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2488,6 +2488,18 @@
       ],
       "evidence": "tools/stereo-textbook/dihedral-bisectors-and-midplanes.json",
       "mathematicalReport": "tools/stereo-textbook/dihedral-bisectors-and-midplanes.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued Atanasyan 2024 volume, advanced problems on printed page 190 (PDF page 192), answers and hints on printed pages 272–273.",
+      "reviewedAt": "2026-11-22T02:23:00Z",
+      "scope": "Advanced exercises 774–776 on printed page 190 and original hints on pages 272–273. Cross-sections, sums of squared orthogonal distances, congruence of six distinct pieces and exact filling of the entire cube were checked in both fixed drawings and variable coordinate models.",
+      "cardIds": [
+        "ex-main-0774",
+        "ex-main-0775",
+        "ex-main-0776"
+      ],
+      "evidence": "tools/stereo-textbook/cube-sections-distances-and-division.json",
+      "mathematicalReport": "tools/stereo-textbook/cube-sections-distances-and-division.test.cjs"
     }
   ],
   "cards": [
@@ -8358,6 +8370,18 @@
     {
       "id": "ex-main-0773",
       "sha256": "e2b7c065abec5952942d3ac82a23f7197df20873fd269eabf935a900b1dea400"
+    },
+    {
+      "id": "ex-main-0774",
+      "sha256": "4e43269571282703ae6d25d830488836271a1a4f6af888055d455a5d10834827"
+    },
+    {
+      "id": "ex-main-0775",
+      "sha256": "2dace7d142c3dd85e229c817fc14c55bf664062842c80f8b68b7b14c13df07c9"
+    },
+    {
+      "id": "ex-main-0776",
+      "sha256": "db63f8dc673b3628ab906720cc7598b62b217bd1e3f41149eb2e7aaa3c26f32c"
     }
   ]
 }

@@ -4,6 +4,16 @@ const assert = require('node:assert/strict');
 
 // Numerical mistakes linked to the actual diagram or unit choice at each step.
 const misconceptions = new Map([
+  ['ex-main-0774/step-1', '2'],
+  ['ex-main-0774/step-2', '2'],
+  ['ex-main-0774/step-3', '12'],
+  ['ex-main-0774/step-4', 'sqrt(2)'],
+  ['ex-main-0775/step-1', 'sqrt(3)'],
+  ['ex-main-0775/step-2', '8'],
+  ['ex-main-0775/step-3', '18'],
+  ['ex-main-0776/step-1', '6'],
+  ['ex-main-0776/step-2', '3'],
+  ['ex-main-0776/step-3', '9'],
   ['ex-main-0771/step-1', '4/3'],
   ['ex-main-0771/step-2', '3/4'],
   ['ex-main-0771/step-3', '1/2'],
