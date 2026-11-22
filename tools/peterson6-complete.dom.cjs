@@ -879,3 +879,24 @@ test('tiger quantifiers and six original divisibility claims separate one witnes
  }
  const re=await surface(t,BOOK+'#n/51/051-6',storage(s));assert.equal(element(re,'[data-proof-probe]').value,'1');assert.match(element(re,'[data-logic-other]').value,/не простое/);
 });
+test('printed 52–54 distinguish accuracy, interval endpoints, prime exponents and a third operand',async t=>{
+ const s=await surface(t,BOOK+'#n/52/052-a-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(51,54);
+ const divs=n=>Array.from({length:n},(_,i)=>i+1).filter(d=>n%d===0),orig=[[105,225],[84,420],[273,110],[45,120,525]],decimal=v=>Number(String(v).replace(',','.')),op=(o,a,b)=>({add:a+b,subtract:a-b,multiply:a*b,divide:a/b})[o];
+ for(const row of rows)for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  if(row.number===52){
+   const x=p.expression,places=p.rounding.places,exact=op(x.op,decimal(x.left),decimal(x.right)),digit=Math.floor((exact+1e-8)*10**(places+1))%10;input(s,'[data-calc-exact]',String(Number(exact.toFixed(7))));const d=element(s,'[data-calc-digit]');d.value=String(digit);d.dispatchEvent(new s.w.Event('change',{bubbles:true}));click(s,'[data-calc-check]');assert.match(element(s,'[data-calc-feedback]').textContent,/решающая цифра верны/);
+   input(s,'#answer',String(Math.round((exact+1e-8)*10**places)/10**places));submit(s,'#answer-form');assert(bookWork(s,p.id).correct);
+   for(let j=0;j<32;j++){const m=s.w.PetersonAnalogues.create(52,p,j),y=m.expression,z=op(y.op,decimal(y.left),decimal(y.right));assert.equal(y.op,x.op);assert.equal(s.w.PetersonBook.M.equal(m.answer,String(Math.round((z+1e-8)*10**places)/10**places)),true);}
+  }else if(row.number===53){
+   const d=Number(p.id.split('-')[1]),xs=Array.from({length:15},(_,k)=>298+k).filter(v=>v%d===0);click(s,'[data-filter-pick="297"]');click(s,'[data-filter-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/297 исключена/);click(s,'[data-filter-pick="297"]');
+   for(const x of xs)click(s,'[data-filter-pick="'+x+'"]');click(s,'[data-filter-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/все подходящие/);assert.deepEqual(bookWork(s,p.id).filterItems,xs);
+   for(let j=0;j<32;j++){const m=s.w.PetersonAnalogues.create(53,p,j),[lo,hi]=m.prompt.match(/(\d+) < x ≤ (\d+)/).slice(1).map(Number),ys=Array.from({length:hi-lo},(_,k)=>lo+k+1).filter(v=>v%d===0);assert.equal(m.answer,ys.length?'{'+ys.join('; ')+'}':'∅');}
+  }else{
+   const ns=orig[i],g=divs(ns[0]).filter(x=>ns.every(n=>n%x===0)).at(-1);let l=Math.max(...ns);while(!ns.every(n=>l%n===0))l+=Math.max(...ns);
+   assert.deepEqual([...s.w.PetersonBook.commonInputs[p.id]],ns);input(s,'[data-common-entry="0"]',String(g));input(s,'[data-common-entry="1"]',String(l));click(s,'[data-common-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/вычисления согласуются/);assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct);
+   for(let j=0;j<32;j++){const m=s.w.PetersonAnalogues.create(54,p,j),xs=m.prompt.split('чисел ')[1].match(/\d+/g).map(Number),g=divs(xs[0]).filter(d=>xs.every(n=>n%d===0)).at(-1);let l=Math.max(...xs);while(!xs.every(n=>l%n===0))l+=Math.max(...xs);assert.equal(m.answer,'НОД '+g+', НОК '+l);}
+  }
+ }
+ const re=await surface(t,BOOK+'#n/53/053-3',storage(s));assert.deepEqual(bookWork(re,'053-3').filterItems,[300,303,306,309,312]);
+});

@@ -35,7 +35,8 @@ function mergeErrors(target,earlier,later){
 }
   const commonInputs={
     '045-1':[12,15], '046-1':[6,8], '047-1':[90,70], '047-2':[250,21], '047-3':[6,420],
-    '048-a':[125,150], '048-b':[210,2730], '048-v':[35,72], '048-g':[60,75,111]
+    '048-a':[125,150], '048-b':[210,2730], '048-v':[35,72], '048-g':[60,75,111],
+    '054-a':[105,225], '054-b':[84,420], '054-v':[273,110], '054-g':[45,120,525]
   };
 function sanitize(part,input){
  const clean=blank(part);if(!input||typeof input!=='object'||Array.isArray(input)||(input.signature!==clean.signature&&(!part.previousSignature||input.signature!==part.previousSignature)))return clean;
@@ -70,8 +71,8 @@ function sanitize(part,input){
   if(Number.isInteger(input.formulaInput)&&input.formulaInput>=-3&&input.formulaInput<=14)clean.formulaInput=input.formulaInput;
   if(Number.isInteger(input.formulaRemainder)&&input.formulaRemainder>=0&&input.formulaRemainder<3)clean.formulaRemainder=input.formulaRemainder;
  }
- if(/^04[234]-/.test(part.id)){
-  const allowed=part.id.startsWith('044-')?[315,79,8181,490,102]:[0,1,2,3,4,5,6,7,8,9];
+ if(/^(04[234]|053)-/.test(part.id)){
+  const allowed=part.id.startsWith('053-')?Array.from({length:17},(_,i)=>297+i):part.id.startsWith('044-')?[315,79,8181,490,102]:[0,1,2,3,4,5,6,7,8,9];
   if(allowed.includes(input.filterProbe))clean.filterProbe=input.filterProbe;
   if(input.filterDivision===true&&clean.filterProbe!==undefined)clean.filterDivision=true;
   if(Array.isArray(input.filterItems)&&input.filterItems.length<=allowed.length)clean.filterItems=[...new Set(input.filterItems.filter(v=>allowed.includes(v)))].sort((a,b)=>a-b);
@@ -107,7 +108,7 @@ function sanitize(part,input){
   for(const key of ['perimeterChoice','areaChoice'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
   if(Array.isArray(input.geometryNumbers)&&input.geometryNumbers.length===3)clean.geometryNumbers=input.geometryNumbers.map(v=>cut(v,50));
  }
- if(part.id.startsWith('034-')){
+ if(/^(034|052)-/.test(part.id)){
   if(typeof input.calcExact==='string'&&input.calcExact)clean.calcExact=cut(input.calcExact,80);
   if(typeof input.calcDigit==='string'&&/^[0-9]$/.test(input.calcDigit))clean.calcDigit=input.calcDigit;
   if(input.calcChecked===true)clean.calcChecked=true;
