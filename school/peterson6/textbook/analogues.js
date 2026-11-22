@@ -336,14 +336,43 @@
       id:'analog-'+part.id+'-'+attempt,family:'quantifier-'+part.id,match:'skill',mistake:hint};
   }
 
+  function witnessPractice(part,attempt){
+    const i=Number(part.id.split('-')[1])-1,k=seed(part.id)%71+attempt,n=2+k%15,dec=x=>E.M.decimal(x),R=E.M.operation,model=(q,ops,h)=>{
+      const shift=k%ops.length,answer=ops[0];return {...choice(q,ops.slice(shift).concat(ops.slice(0,shift)),answer,h),mistake:h};
+    };
+    let task;
+    if(i===0||i===1){
+      if(i===0)task=model('Нужен ненатуральный свидетель в интервале '+n+' < u ≤ '+(n+3)+'. Какой подойдёт?',[n+',5',String(n),String(n+2)],'Проверь левую границу, правую границу и натуральность.');
+      else task=model('Опровергни «среди решений '+n+' ≤ u < '+(n+1)+' нет натуральных». Чем это сделать?',[String(n),String(n+1),n+',7'],'Левая граница включена, правая исключена. В свидетельстве нужно натуральное число.');
+    }else if(i===2){
+      const h=3+k%8,q=2+k%6,r=1+k%(h-1),all=h*q+r;task=model('Делят '+all+' на '+h+' с остатком. Выбери допустимую пару «частное; остаток».',[q+'; '+r,(q-1)+'; '+(h+r),(q+1)+'; '+(r-h)],'Проверь равенство и обе границы остатка: от нуля до значения строго меньше делителя.');
+    }else if(i===3){
+      const d=[3,7,9,11,13][k%5];task=model('У какой дроби нет конечной десятичной записи?',['1/'+d,'1/'+(2**(2+k%4)),'1/'+(5**(2+k%3))],'У несократимой дроби в знаменателе конечной записи могут быть только простые множители 2 и 5.');
+    }else if(i===4){
+      const num=11+k%70,scale=10**(2+k%2);task=model('Найди обыкновенную дробь для числа '+dec(R('divide',num,scale))+'.',[num+'/'+scale,num+'/'+(scale*10),num+'/'+(scale/10)],'Проверь число знаков после запятой и соответствующую степень десяти.');
+    }else if(i===5){
+      const d=5+k%5;task=model('Какое округление до целых опровергает «округление всегда уменьшает число»?',[n+','+d+' → '+(n+1),n+',2 → '+n,n+','+d+' → '+n],'В контрпримере само округление должно быть правильным, а результат не должен быть меньше исходного.');
+    }else if(i===6){
+      const x=dec(R('divide',n*10+1+k%8,10));task=model('Чему равно '+x+' · 1?',[x,dec(R('add',x,1)),'1'],'Один раз взять число означает сохранить его значение.');
+    }else if(i===7){
+      task=model('К '+n+' прибавили неизвестное натуральное число из ряда 1, 2, 3, … Какова наименьшая возможная сумма?',[String(n+1),String(n),String(n-1)],'Подставь самое маленькое допустимое слагаемое.');
+    }else if(i===8){
+      const a=2+k%7,b=2+(k+1)%7;task=model('Какое произведение ненулевых чисел окажется меньше каждого множителя?',['0,'+a+' · 0,'+b,a+' · '+b,'0 · '+n],'Нельзя брать ноль. Оба положительных множителя между 0 и 1 уменьшают друг друга.');
+    }else{
+      const gap=n%3===0?n+1:n;task=model('Какое из делений приводит к бесконечной десятичной записи?',[gap+' : 3',n+' : 4',n+' : 5'],'Сократи дробь. Если множитель 3 остаётся в знаменателе, конечную запись получить нельзя.');
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'witness-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>26)return createLegacy(number,part,attempt);
+    if(number<7||number>27)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===27)return witnessPractice(part,attempt);
     if(number===26)return universalPractice(part,attempt);
     if(number===25)return letterPractice(part,attempt);
     if(number>=22)return codewordPractice(number,part,attempt);
@@ -378,7 +407,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=26&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=27&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -400,7 +429,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=26&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=27&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

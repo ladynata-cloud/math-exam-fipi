@@ -604,3 +604,26 @@ test('all twelve universal statements keep the domain, reverse the predicate and
  }
  const ss=await surface(t,BOOK+'#n/26/026-12',storage(s));assert.match(element(ss,'[data-logic-other]').value,/угол/);assert.equal(element(ss,'[data-logic-right]').value,'1');
 });
+test('the ten mathematical claims separate a proof for all values from one admissible counterexample',async t=>{
+ const s=await surface(t,BOOK+'#n/27/027-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[26];
+ const set=(key,val)=>{const f=element(s,'[data-logic-'+key+']');f.value=String(val);f.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/27/'+p.id);const truth=[2,4,6,7].includes(i);assert.match(sourcePresent(s).textContent,/Исходная фраза/);
+  set('left',truth?1:2);set('right',2);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').className,/error/);
+  set('right',1);input(s,'[data-logic-other]',p.explanation);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование для выбранной оценки подходит/);
+  const w=bookWork(s,p.id);assert(w.submitted&&!w.correct&&!w.independent);assert.equal(w.logicOther,p.explanation);
+  for(let a=0;a<32;a++){const sample=s.w.PetersonAnalogues.create(27,p,a);assert.equal(new Set(sample.choices).size,3);assert(s.w.PetersonBook.check(sample,sample.answer));const txt=sample.prompt,ans=sample.answer,x=(txt.match(/\d+(?:,\d+)?/g)||[]).map(v=>Number(v.replace(',','.')));
+   if(i===0)assert(Number(ans.replace(',','.'))>x[0]&&Number(ans.replace(',','.'))<=x[1]&&!Number.isInteger(Number(ans.replace(',','.'))));
+   if(i===1)assert(Number.isInteger(Number(ans))&&Number(ans)>=x[0]&&Number(ans)<x[1]);
+   if(i===2){const [q,r]=ans.split('; ').map(Number);assert.equal(q*x[1]+r,x[0]);assert(r>=0&&r<x[1]);}
+   if(i===3)assert([3,7,9,11,13].includes(Number(ans.split('/')[1])));
+   if(i===4)assert(s.w.PetersonBook.M.equal(ans,txt.match(/числа ([\d,]+)\./)[1]));
+   if(i===5){const nums=ans.split(' → ').map(v=>Number(v.replace(',','.')));assert.equal(Math.round(nums[0]),nums[1]);assert(nums[1]>nums[0]);}
+   if(i===6)assert(s.w.PetersonBook.M.equal(ans,txt.match(/равно ([\d,]+)/)[1]));
+   if(i===7)assert.equal(Number(ans),x[0]+1);
+   if(i===8){const [left,right]=ans.split(' · ').map(v=>Number(v.replace(',','.')));assert(left*right<Math.min(left,right)&&left*right>0);}
+   if(i===9){const [left,right]=ans.split(' : ').map(Number);assert.equal(right,3);assert.notEqual(left%3,0);}
+  }
+ }
+ const r=await surface(t,BOOK+'#n/27/027-10',storage(s));assert.match(element(r,'[data-logic-other]').value,/1\/3/);
+});

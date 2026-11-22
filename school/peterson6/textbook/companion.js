@@ -464,6 +464,24 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const arithmeticClaims=[
+    ['Каждое решение двойного неравенства 1 < x ≤ 8 — натуральное число.',false,['1,5 находится в интервале и не является натуральным.','0 не является натуральным.','8 принадлежит интервалу и является натуральным.'],'Контрпример должен выполнить обе границы и нарушить натуральность.','Существует ненатуральное решение 1 < x ≤ 8.'],
+    ['Среди решений 2 ≤ x < 3 нет натуральных чисел.',false,['2 — натуральное решение.','3 — натуральное число.','2,5 — решение, которое не является натуральным.'],'Проверь обе границы. Знак слева разрешает значение 2, знак справа исключает 3.','Существует натуральное решение 2 ≤ x < 3.'],
+    ['При делении натуральных чисел с остатком остаток всегда меньше делителя.',true,['Если остаток не меньше делителя, из него можно выделить ещё один целый делитель.','Так получилось при делении 17 на 5.','Остаток всегда равен единице.'],'Один пример не доказывает правило для всех. Проверь, можно ли продолжить деление, если остаток ещё велик.','В записи a = bq + r для положительного b имеем 0 ≤ r < b.'],
+    ['Любая обыкновенная дробь допускает конечную десятичную запись.',false,['1/3 даёт бесконечную периодическую запись.','1/4 записывается как 0,25.','1/5 записывается как 0,2.'],'Один удачный перевод в конечную запись не опровергает общее правило. Ищи деление, в котором остаток повторится.','Существует обыкновенная дробь без конечной десятичной записи.'],
+    ['Всякую конечную десятичную дробь можно записать обыкновенной дробью.',true,['Если после запятой k цифр, знаменателем можно сделать 10 в степени k.','Достаточно проверить запись 0,5.','Знаменатель всегда равен 10, сколько бы цифр ни стояло после запятой.'],'Обоснование должно работать и для сотых, и для тысячных, и для любого числа десятичных знаков.','Например, 0,037 = 37/1000. Правило переноса запятой относится к любому числу знаков.'],
+    ['Округление числа всегда даёт меньшее число.',false,['1,8 при округлении до целых даёт 2.','1,2 при округлении до целых даёт 1.','1,8 при округлении до целых даёт 1.'],'Один случай уменьшения не опровергает фразу «всегда уменьшается». Сначала проверь само округление.','Есть число, которое при округлении не уменьшается.'],
+    ['Умножение на единицу оставляет любое число прежним.',true,['Для любого a произведение a · 1 равно a.','Только целые числа при умножении на 1 сохраняются.','1,5 · 1 = 1,5, поэтому остальных чисел можно не проверять.'],'Нужно общее свойство единицы, а не удачный пример с одним множителем.','Единица — нейтральный множитель.'],
+    ['Сумма двух натуральных чисел больше каждого слагаемого. Натуральный ряд начинается с 1.',true,['Прибавление каждого из двух положительных слагаемых увеличивает другое.','К одному из чисел можно прибавить ноль.','В качестве натурального слагаемого можно взять −1.'],'В этом задании оба слагаемых из ряда 1, 2, 3, … Проверяй условие на оба числа.','Если a и b положительны, то a+b>a и a+b>b.'],
+    ['Произведение двух ненулевых чисел больше каждого множителя.',false,['0,5 · 0,5 = 0,25, что меньше каждого множителя.','0 · 10 = 0.','2 · 3 = 6, что больше обоих множителей.'],'Нулевой множитель в условии запрещён. Для двух положительных чисел меньше единицы оцени, как меняется произведение.','Есть ненулевые множители, произведение которых не больше хотя бы одного из них.'],
+    ['Частное конечных десятичных дробей всегда имеет конечную десятичную запись. Делитель ненулевой.',false,['0,1 : 0,3 = 1/3, десятичная запись периодическая.','1,2 : 0,3 = 4.','1,2 : 0 не даёт конечной записи.'],'Делить на ноль нельзя. Нужна пара допустимых дробей, у которой получится бесконечная запись.','Существуют конечные десятичные дроби с ненулевым делителем, для которых частное не имеет конечной записи.']
+  ];
+  function witnessCard(part){
+    const [statement,truth,proof,hint,reference]=arithmeticClaims[Number(part.id.split('-')[1])-1];
+    return {prompt:'Проверь утверждение. Если оно ложно, запиши отрицание и докажи его истинность. Если истинно — обоснуй общее правило. Исходная фраза: '+statement,
+      leftTitle:'Значение исходной фразы',left:['Истинно','Ложно'],li:truth?0:1,rightTitle:'Что обосновывает ответ?',right:proof,ri:0,hint,reference,extra:'Моё объяснение или отрицание'};
+  }
+
   const universalStatements=[
     ['Каждая европейская страна входит в Европейский союз.','европейская страна','не входящая в Европейский союз','входящая в Европейский союз','находящаяся вне Европы','Не все европейские страны входят в Евросоюз.','Сохрани круг стран: рассматриваются именно европейские. Членство в союзе — свойство, которое меняется.'],
     ['Любое европейское государство является республикой.','европейское государство','которое не является республикой','которое является республикой','которое находится за пределами Европы','Не каждое европейское государство является республикой.','Меняется форма правления, а принадлежность государства к Европе сохраняется.'],
@@ -504,6 +522,7 @@
   ];
   function logicCard(number,part){
     if(number===26)return universalCard(part);
+    if(number===27)return witnessCard(part);
     const i=Number(part.id.split('-')[1])-1;
     if(number===19){
       const [statement,fact,denial,a,b,hint,url,sourceName]=factChecks[i];
@@ -527,9 +546,9 @@
       const offset=(Number(part.id.split('-')[1])+number+(side==='left'?0:1))%options.length;
       return '<label style="display:grid;gap:.2em">'+U.esc(title)+'<select style="max-width:100%;width:100%;min-width:0" data-logic-'+side+'><option value="">Выбери вариант</option>'+options.map((_,j)=>{const i=(j+offset)%options.length;return '<option value="'+(i+1)+'">'+U.esc(options[i])+'</option>';}).join('')+'</select></label>';
     };
-    return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+(card.second?'<label>Второе, равносильное отрицание своими словами<textarea maxlength="600" data-logic-other></textarea></label>':'')+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+(card.second?' Например: «'+U.esc(card.alternative)+'»':'')+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
+    return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+((card.second||card.extra)?'<label>'+U.esc(card.extra||'Второе, равносильное отрицание своими словами')+'<textarea maxlength="600" data-logic-other></textarea></label>':'')+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+(card.second?' Например: «'+U.esc(card.alternative)+'»':'')+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
   }
-  function logicText(card,work){return (card.left[work.logicLeft-1]||'…')+' / '+(card.right[work.logicRight-1]||'…')+(card.second&&work.logicOther?' / Второе отрицание: '+work.logicOther:'');}
+  function logicText(card,work){return (card.left[work.logicLeft-1]||'…')+' / '+(card.right[work.logicRight-1]||'…')+((card.second||card.extra)&&work.logicOther?' / '+(card.extra||'Второе отрицание')+': '+work.logicOther:'');}
   function mountLogic(main,number,part,work,save){
     const host=main.querySelector('[data-logic-host]');if(!host)return;
     host.outerHTML=logicConstruction(number,part,true);
@@ -543,10 +562,11 @@
     update();
   }
   function logicResponse(number,part,input,work){
-    if((number<19||number>21)&&number!==26)return null;
+    if((number<19||number>21)&&number!==26&&number!==27)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
+    if(number===27)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
@@ -556,7 +576,7 @@
     if(number===22)return codewordQuestion(part);
     if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
     if(number===24)return 'С первого улья собрали 24,8 кг мёда. Второй дал на 6,4 кг меньше первого. С третьего получили половину совместного сбора первого и второго. Весь мёд поровну разлили в 18 банок. Сколько килограммов мёда в одной банке?';
-    if((number>=19&&number<=21)||number===26)return logicCard(number,part).prompt;
+    if((number>=19&&number<=21)||number===26||number===27)return logicCard(number,part).prompt;
     if(number===17||number===18)return campQuestion(number,part);
     if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
@@ -607,7 +627,7 @@
     if(item.number===23)drawing=decimalModel(part);
     if(item.number===24)drawing=honeySupport();
     if(item.number===25)drawing=puzzleFigure(part,{},false);
-    if((item.number>=19&&item.number<=21)||item.number===26)drawing=logicConstruction(item.number,part,false);
+    if((item.number>=19&&item.number<=21)||item.number===26||item.number===27)drawing=logicConstruction(item.number,part,false);
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
