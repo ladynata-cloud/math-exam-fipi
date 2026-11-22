@@ -70,6 +70,7 @@ jobs:
           node tools/mordkovich-2019-source67.test.cjs
           node tools/mordkovich-2019-source89.test.cjs
           node tools/mordkovich-2019-source66.test.cjs
+          node tools/mordkovich-2019-source47.test.cjs
           node tools/dorofeev-algebra-7-9.test.cjs
           node tools/dorofeev-algebra-7-9-source72.test.cjs
           node tools/dorofeev-algebra-7-9-source53.test.cjs
@@ -109,6 +110,7 @@ jobs:
           node tools/tyurin-statistics.board.browser.cjs --mordkovich8-workbook-2019 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich7-theory-2019 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --mordkovich8-theory-2019 --printed-identity
+          node tools/tyurin-statistics.board.browser.cjs --mordkovich9-workbook-2019 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev7 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev8 --printed-identity
           node tools/tyurin-statistics.board.browser.cjs --dorofeev9 --printed-identity
