@@ -24,8 +24,8 @@ for(const [i,row] of paragraphs.entries()) {
   else assert(row.bookOnly&&!row.externalPath&&!row.boardPath);
 }
 const dir='trainers/mordkovich-2019/';
-const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2','4-ex1','4-ex2','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3'];
-const printed=[6,9,9,9,12,12,12,14,15,19,20,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36];
+const ids=['1-ex1','1-ex2-a','1-ex2-b','1-ex2-c','2-q2','2-q3','2-q4','3-ex1','3-ex2','4-ex1','4-ex2','5-ex1','5-ex2','5-ex3','5-ex4','5-ex5','5-ex6','5-ex7','5-ex8','5-ex9','5-ex10','5-ex11','5-ex12','5-ex13','6-ex1','6-ex2','6-ex3','6-q1','6-q2','6-q3','6-q4-a','6-q4-b','6-q4-c','6-q4-d','6-q5-rays','6-q5-bounded'];
+const printed=[6,9,9,9,12,12,12,14,15,19,20,22,22,23,24,25,26,27,27,28,28,29,30,30,32,33,36,36,36,36,36,36,36,36,36,36];
 const html=read(dir+'index.html');
 const files=[...html.matchAll(/<script defer src="([^"]+)"/g)].map(m=>m[1])
   .filter(x=>!x.startsWith('/')&&!x.includes('board-bridge')).map(x=>read(path.join(dir,x)));
@@ -106,6 +106,18 @@ function expected(i,s) {
       const n=2*s+1, good=s+1+s-Math.floor((2*s-1)/3)-1;
       return [n,good,good/n];
     }
+    case '6-q1':{const h=s+1,t=2+s%3;return [-2*h,t*h,(t+2)*h];}
+    case '6-q2':{const a=-s-3,b=2*s,h=(b-a)/3;return [h,b-h,a-h];}
+    case '6-q3':return [2*s+1,-s,s+0.5];
+    case '6-q4-a':case '6-q4-b':case '6-q4-c':case '6-q4-d':{
+      const coords={'6-q4-a':[s+1,2*s+3],'6-q4-b':[-s-2,-2*s-3],'6-q4-c':[-s-1,s+3],'6-q4-d':[s+4,-2*s]}[ids[i]];
+      const lo=Math.min(...coords),hi=Math.max(...coords);return [lo,hi-lo,hi+s+1-lo];
+    }
+    case '6-q5-rays':return [s-7,s-6,s-8];
+    case '6-q5-bounded':{
+      const values=Array.from({length:2*s+3},(_,k)=>k-s),b=s+2;
+      return [values.length,values.filter(x=>x>-s&&x<b).length,values.filter(x=>x<b).length];
+    }
     default:throw new Error('Unexpected lesson');
   }
 }
@@ -161,4 +173,4 @@ for(const [i,entry] of book.exercises.entries()){
   assert.notEqual(JSON.parse(reopened.w.localStorage.getItem(key)).variant,0);
   reopened.dom.window.close();dom.window.close();
 }
-console.log('Source 89: 48 printed paragraphs, 27 student routes, 891 independently checked questions and 27 personal draft round trips.');
+console.log('Source 89: 48 printed paragraphs, 36 student routes, 1188 independently checked questions and 36 personal draft round trips.');
