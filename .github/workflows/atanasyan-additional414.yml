@@ -111,6 +111,7 @@ jobs:
           node tools/stereo-textbook/dihedral-bisectors-and-midplanes.test.cjs
           node tools/stereo-textbook/cube-sections-distances-and-division.test.cjs
           node tools/stereo-textbook/surface-paths-and-parallel-sections.test.cjs
+          node tools/stereo-textbook/tetrahedra-and-cube-tilings.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -482,6 +483,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: surfacePathsAndParallelSections
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/surface-paths-and-parallel-sections
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify the sharp tetrahedron bound, exact octahedral intersection and finite cube tiling argument
+        env:
+          TEXTBOOK_PRACTICE_GROUP: tetrahedraAndCubeTilings
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/tetrahedra-and-cube-tilings
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -589,5 +595,6 @@ jobs:
             artifacts/dihedral-bisectors-and-midplanes/
             artifacts/cube-sections-distances-and-division/
             artifacts/surface-paths-and-parallel-sections/
+            artifacts/tetrahedra-and-cube-tilings/
           retention-days: 14
           if-no-files-found: error
