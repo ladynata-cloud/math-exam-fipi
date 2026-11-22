@@ -123,7 +123,8 @@
       ['/geometry-course/textbook/data/parallel-translation-constructions.json', '№1260а–1262'],
       ['/geometry-course/textbook/data/rotation-constructions.json', '№1263а–1266'],
       ['/geometry-course/textbook/data/rotated-circles-lines.json', '№1267а–1269'],
-      ['/geometry-course/textbook/data/rotation-centers.json', '№1270а–б']
+      ['/geometry-course/textbook/data/rotation-centers.json', '№1270а–б'],
+      ['/geometry-course/textbook/data/symmetry-applications.json', 'пункты 127–129']
   ];
 
   async function forCourse(base) {
