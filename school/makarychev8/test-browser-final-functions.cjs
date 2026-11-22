@@ -108,6 +108,19 @@ async function verify(width,url,offline=false){
  await p.locator('#step-answer-0').fill('8/3');await p.locator('[data-section-trial="4"]').waitFor();
  await submit(p,'[0;4]');assert.match(await p.locator('#problem').innerText(),/совпадает с основанием/);
  await submit(p,'[0;6]');await p.reload();await p.locator('[data-section-trial="4"]').waitFor();
+ for(const card of require('./exercises-1147-1149.json')){
+  await openNumber(p,Number(card.title.match(/\d+/)[0]),card.title);await p.locator('#task-graph svg').waitFor();
+  assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ }
+ await openNumber(p,1148,'№ 1148 · график');await p.locator('[data-action=guided]').click();await p.locator('#step-answer-0').fill('8');
+ await p.locator('[data-river-distance="96"]').waitFor();assert.match(await p.locator('[data-river-distance]').innerText(),/24 км от A/);
+ await submit(p,'(0;0), (3;60), (5;60), (10;0)');assert.match(await p.locator('#problem').innerText(),/накопил оба перехода/);
+ await submit(p,'(0;0), (3;60), (5;60), (10;120)');await p.reload();await p.locator('[data-route-knots=valid]').waitFor();
+ await openNumber(p,1149,'№ 1149 · свой график');await submit(p,'(-3;2), (0;');
+ assert.equal(await p.evaluate(()=>MakarychevApp.getState().tasks['p42-source-1149-build'].attempts),0);
+ await submit(p,'(-3;2), (0;6), (4;1)');assert.match(await p.locator('#problem').innerText(),/обеих крайних высот/);
+ await submit(p,'(-3;2),(-1;6),(2;0),(4;3)');await p.reload();await p.locator('[data-route-knots=valid]').waitFor();
+ assert.equal(await p.locator('#task-graph [data-point-x]').count(),4);
  assert.deepEqual(errors,[]);await ctx.close();
 }
 (async()=>{
@@ -117,6 +130,6 @@ async function verify(width,url,offline=false){
   for(const w of [320,390,1024])await verify(w,url);
   const offline=path.join(root,'downloads/trainers/makarychev8-algebra/makarychev8-algebra.html');
   await verify(320,require('node:url').pathToFileURL(offline).href,true);
-  console.log('PASS source 1131–1146 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
+  console.log('PASS source 1131–1149 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
  }finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

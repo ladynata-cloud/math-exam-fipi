@@ -947,6 +947,59 @@ function sumOfRoot(form,k,x) {
  if(x<0)return NaN;
  return (form==='linear'?k*x:x*x)+Math.sqrt(x);
 }
+function tripStops(g) {
+ const to=g.distance/g.downstream,leave=to+g.rest,back=leave+g.distance/g.upstream;
+ return [[0,0],[to,g.distance],[leave,g.distance],[back,2*g.distance]];
+}
+function graphKnots(g,groups) {
+ if(groups?.length!==1)return {status:'format',points:[]};
+ const pairs=groups[0],points=pairs.map(pair=>pair.map(q=>q.n/q.d));
+ const cmp=(u,v)=>{const a=BigInt(u.n)*BigInt(v.d),b=BigInt(v.n)*BigInt(u.d);return a<b?-1:a>b?1:0;};
+ const fail=status=>({status,points});
+ if(g.group==='boat'&&pairs.length!==4||pairs.length<2)return fail('count');
+ if(pairs.some(([x],i)=>i&&cmp(pairs[i-1][0],x)>=0))return fail('order');
+ if(g.group==='boat'){
+  const actual=tripStops(g);
+  for(let i=0;i<4;i++){
+   if(!M.equal(pairs[i][0],String(actual[i][0])))return fail('time-'+i);
+   if(!M.equal(pairs[i][1],String(actual[i][1])))return fail('distance-'+i);
+  }
+ }else{
+  if(!M.equal(pairs[0][0],String(g.left))||!M.equal(pairs.at(-1)[0],String(g.right)))return fail('domain');
+  const min=M.parse(String(g.low)),max=M.parse(String(g.high));
+  if(pairs.some(([,y])=>cmp(y,min)<0||cmp(y,max)>0))return fail('outside');
+  if(!pairs.some(([,y])=>cmp(y,min)===0)||!pairs.some(([,y])=>cmp(y,max)===0))return fail('range');
+ }
+ return {status:'valid',points};
+}
+function riverDomainView(host,g,raw) {
+ host.className='task-graphs quantity-model';
+ const C=window.MakarychevCheck,trial=M.parse(g.partial?.[0]),x=trial?trial.n/trial.d:null;
+ if(g.group==='rational'){
+  const curve={kind:'quotient',numerator:[g.c],denominator:[g.k,0,1]},y=x===null?null:curveValue(curve,x);
+  const span=4,points=x===null?[]:[[x,y,'']];
+  host.append(rootGraph({curves:[curve],points,xRange:[-span,span],yRange:[-g.c/g.k/4,1.24*g.c/g.k],label:'График положительной дроби при положительных и отрицательных аргументах'},''));
+  if(trial)boundNote(host,'При x = '+M.answer(trial)+' знаменатель положительный, y ≈ '+Number(y.toPrecision(7)).toString().replace('.',',')+'.').dataset.rationalTrial=String(x);
+  return;
+ }
+ const isBoat=g.group==='boat',construction=!isBoat||g.mode==='graph',ref=isBoat?tripStops(g):null;
+ const response=construction?graphKnots(g,C.pointGroups(raw)):{status:'',points:[]},points=response.points;
+ const from=isBoat?0:g.left,to=isBoat?ref[3][0]:g.right,low=isBoat?0:g.low,high=isBoat?ref[3][1]:g.high;
+ const curves=[];
+ const ordered=points.length>=2&&points.every((pair,i)=>!i||points[i-1][0]<pair[0]);
+ if(isBoat&&(!construction||g.showSolution))curves.push({kind:'behavior-linear-points',nodes:ref,xs:ref.map(p=>p[0])});
+ if(ordered)curves.push({kind:'behavior-linear-points',nodes:points,xs:points.map(p=>p[0]),emphasis:true});
+ const marker=[];
+ if(isBoat&&trial&&x>=0&&x<=to){
+  const route=curveValue({kind:'behavior-linear-points',nodes:ref},x),pos=x<=ref[2][0]?Math.min(route,g.distance):2*g.distance-route;
+  marker.push([x,route,'']);const display=a=>Number(a.toPrecision(8)).toString().replace('.',',');
+  boundNote(host,'Через '+M.answer(trial)+' ч катер находится в '+display(pos)+' км от A. Счётчик пройденного пути показывает '+display(route)+' км.').dataset.riverDistance=display(route);
+ }else if(isBoat&&trial)boundNote(host,'Это время за пределами рейса. Отсчёт начинается при отправлении и заканчивается при возвращении.').dataset.riverDistance='outside';
+ const marginX=(to-from)*.1,marginY=(high-low)*.12;
+ const svg=rootGraph({curves,points:[...marker,...points].map(p=>[p[0],p[1],'']),xRange:[from-marginX,to+marginX],yRange:[low-marginY,high+marginY],axisLabels:isBoat?['t, ч','l, км']:['x','y'],label:isBoat?'Время и накопленный путь катера':'Ломаная по вершинам, выбранным учеником'},'');svg.dataset.routeKnots=response.status;host.append(svg);
+ if(construction)boundNote(host,points.length?'Введено вершин: '+points.length+'. Охрой соединены точки с возрастающими абсциссами, попавшие в окно чертежа.':'Введи вершины в порядке возрастания первой координаты. График будет строиться по твоей записи.');
+}
+
 function sectionFraction(n, d) {
  let k=Math.abs(n),r=Math.abs(d);
  while(r){const next=k%r;k=r;r=next;}
@@ -2697,6 +2750,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-route-and-range'){riverDomainView(host,config,value);return;}
  if(config.type==='source-domain-and-sections'){movingSectionView(host,config,value);return;}
  if(config.type==='source-floor-parts'){floorPartsView(host,config,value);return;}
  if(config.type==='source-surd-cancellation'){surdCancellationView(host,config);return;}
@@ -2806,5 +2860,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,compoundDomainTrial,floorPiece,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,tripStops,graphKnots,compoundDomainTrial,floorPiece,reciprocalPoints,reciprocalPair,sumOfRoot,transformedRootPoints,positionCoefficients,oppositeReading,ownAffine,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });
