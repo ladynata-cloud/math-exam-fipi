@@ -534,7 +534,10 @@
     const k=seed(part.id)%83+attempt,key=part.id.split('-')[1],d=key==='a'?(number===42?2:3):key==='b'?(number===42?5:9):key==='v'?10:Number(key);
     let choices,prompt,correct;
     const format=set=>set.length?'{'+set.join('; ')+'}':'∅';
-    if(number===44){
+    if(number===53){
+      const lo=110+3*(k%50),hi=lo+10+k%9;choices=Array.from({length:hi-lo},(_,i)=>lo+i+1);
+      prompt='Собери из натуральных x все кратные '+d+' в промежутке '+lo+' < x ≤ '+hi+'.';correct=choices.filter(x=>x%d===0);
+    }else if(number===44){
       const first=20+k%23,values=[first*d,first*d+1,(first+2)*d-1,(first+3)*d,(first+5)*d+2];choices=values;
       prompt='В множестве B = {'+values.join('; ')+'} оставь все элементы, кратные '+d+'. Каково B('+d+')?';correct=values.filter(v=>v%d===0);
     }else{
@@ -565,17 +568,51 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'common-'+part.id,match:'skill',mistake:hint};
   }
 
+  function cuboidPractice(part,attempt){
+    const k=seed(part.id)%89+attempt,a=13+k%25,b=26+(k*3)%22,c=17+(k*7)%27,vol=part.id==='049-1-obhardyom'||part.id==='049-2',R=E.M.operation;
+    const dims=[a,b,c].map(n=>E.M.decimal(R('divide',n,10))),surface=R('divide',2*(a*b+a*c+b*c),100),volume=R('divide',a*b*c,1000);
+    let task;
+    if(part.expression){
+      const val=vol?volume:surface,ans=E.M.answer(E.rounded(val,1)),hint=vol?'Площадь основания умножь на высоту. Округляй только после третьего множителя.':'Сложи площади трёх разных граней, удвой и затем округли до десятых.';
+      task={...numerical('Размеры другого прямоугольного параллелепипеда '+dims.join(' см, ')+' см. Вычисли '+(vol?'объём в см³':'площадь всей поверхности в см²')+' с точностью до десятых.',ans,'Чему равен округлённый итог?',hint),mistake:hint};
+    }else{
+      const names=[['p','q','r'],['u','v','h'],['d','e','f'],['x','y','z']][k%4],[x,y,z]=names,F=x+y+z,A=x+y+'+'+x+z+'+'+y+z,answer=vol?F:'2('+A+')',opts=[answer,vol?x+y:A,vol?'2('+A+')':F],shift=k%3,hint=vol?'Умножь размеры основания, затем высоту.':'Каждая из трёх разных граней входит в поверхность дважды.';
+      task={...choice('Три измерения прямоугольной коробки обозначены '+names.join(', ')+'. Какая формула даёт '+(vol?'объём':'площадь всей поверхности')+'?',opts.slice(shift).concat(opts.slice(0,shift)),answer,hint),mistake:hint};
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'cuboid-'+part.id,match:'skill'};
+  }
+
+  function counterexamplePractice(number,part,attempt){
+    const k=seed(part.id)%89+attempt,odd=2*(2+k%13)+1,d=3+k%9,t=2+k%5,place=['у воды','под навесом','на поляне','у кормушки'][k%4],noun=['олени','гуси','кони','овцы'][k%4],one=['олень','гусь','конь','овца'][k%4];
+    const prime=[2,3,5,7,11,13,17,19,23][k%9];let row;
+    if(number===50)row=['Каково точное отрицание фразы «Все '+noun+' находятся '+place+'»?',['Хотя бы один '+one+' находится в другом месте.','Все животные ушли в другое место.','Хотя бы один '+one+' находится '+place+'.'],'Сохрани ту же группу. Для отрицания достаточно одного исключения.'];
+    else row=[
+      ['Число '+(prime*prime)+' предложили как опровержение слов «все простые числа меньше '+(prime*prime)+'». Подходит ли оно?',['Нет, это составное число.','Да, оно больше любого простого.','Да, любой квадрат простого числа прост.'],'Контрпример к общей фразе о простых числах сам должен быть простым.'],
+      ['Выбери контрпример к утверждению «каждое нечётное число, большее '+odd+', простое».',[String(odd*3),String(odd*2),'2'],'Нужно нечётное число больше границы с делителем помимо 1 и самого числа.'],
+      ['Почему каждое кратное '+(d*t)+' кратно '+d+'?',['Если n = '+(d*t)+'k, то n = '+d+' · ('+t+'k).','Достаточно проверить число '+(d*t)+'.','Потому что кратные меньшего делятся на большее.'],'Используй произвольный целый множитель k.'],
+      ['Какое число опровергнет утверждение «все положительные кратные '+d+' кратны '+(d*t)+'»?',[String(d),String(d*t),String(2*d*t)],'Оно должно быть кратно первому числу и не делиться на второе.'],
+      ['По какой причине простое число '+prime+' входит в множество чисел с не более чем двумя делителями?',['У него ровно два положительных делителя.','У него более двух делителей.','Только нечётные числа входят в это множество.'],'Сопоставь точное число делителей с верхней границей «не более».'],
+      ['Из списка 1, '+prime+', '+(prime*prime)+' выбери число с не более чем двумя делителями, которое не является простым.',['1',String(prime),String(prime*prime)],'У единицы один положительный делитель; у простого числа должны быть ровно два.']
+    ][Number(part.id.split('-')[1])-1];
+    const [prompt,options,hint]=row,shift=k%3;return {...choice(prompt,options.slice(shift).concat(options.slice(0,shift)),options[0],hint),id:'analog-'+part.id+'-'+attempt,family:'counterexample-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
+    if(number===49&&part.expression)return cuboidPractice(part,attempt);
     if(number===38&&part.expression)return termPractice(part,attempt);
     if(number===36&&part.expression)return periodPractice(number,part,attempt);
-    if(number===34)return calcPractice(part,attempt);
+    if(number===34||number===52)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>48)return createLegacy(number,part,attempt);
+    if(number<7||number>54)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===54)return commonPractice(number,part,attempt);
+    if(number===53)return divisorFilterPractice(number,part,attempt);
+    if(number>=50)return counterexamplePractice(number,part,attempt);
+    if(number===49)return cuboidPractice(part,attempt);
     if(number>=45)return commonPractice(number,part,attempt);
     if(number>=42)return divisorFilterPractice(number,part,attempt);
     if(number>=39)return formulaPractice(number,part,attempt);
@@ -622,7 +659,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=48&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=54&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -644,7 +681,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=48&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=54&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
@@ -654,7 +691,7 @@
   function shared(item,part,raw) {
     const model=part&&create(item.number,part);
     if(!model)return null;
-    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34||item.number===36||item.number===38))return null;
+    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23||item.number===34||item.number===36||item.number===38||item.number===49||item.number===52))return null;
     const active=document.querySelector('.equivalent-exercise');
     const row=record(part)[1];
     if(!raw&&row.formerlyAbsent&&!active?.open)return null;
@@ -666,7 +703,7 @@
   }
   function restoreShared(part,scene) {
     if(!document.body.dataset.petersonBoard)return;
-    if(!scene){if(part.expression&&/^(01[123]|02[23]|03[468])-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
+    if(!scene){if(part.expression&&/^(01[123]|02[23]|03[468]|049|052)-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
     const row=record(part)[1];Object.assign(row,{attempt:scene.attempt,work:scene.work,status:scene.status,open:scene.open,hint:scene.hint});
   }
   function resetShared(){if(document.body.dataset.petersonBoard)states.clear();}

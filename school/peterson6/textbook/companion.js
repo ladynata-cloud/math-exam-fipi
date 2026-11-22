@@ -474,6 +474,85 @@
   }
 
   const filterDivisors={42:[2,5,10,100,25,4],43:[3,9,6,15,18,90]},printedSet=[315,79,8181,490,102],digits=Array.from({length:10},(_,i)=>i);
+  const primeClaims=[
+    ['Каждое простое число нечётно.',false,'2 — простое чётное число.','3 — простое нечётное число.','4 — чётное составное число.','Контрпример обязан быть простым. Попробуй наименьшее простое число.'],
+    ['Каждое нечётное число простое.',false,'9 нечётно и делится на 3.','11 нечётно и просто.','4 составное и чётное.','Нужен нечётный пример с дополнительным делителем или единица.'],
+    ['Любое число, кратное 9, кратно 3.',true,'При n = 9k имеем n = 3 · (3k).','Это верно только для 9 и 18.','Каждое кратное 3 кратно 9.','Докажи для любого множителя k. Кратности одного примера недостаточно.'],
+    ['Любое число, кратное 3, кратно 9.',false,'6 кратно 3 и не кратно 9.','18 кратно и 3, и 9.','4 не кратно ни 3, ни 9.','Сначала выполни условие кратности 3. Потом проверь делимость на 9.'],
+    ['У каждого простого числа не больше двух положительных делителей.',true,'По определению у простого числа ровно два различных положительных делителя.','У каждого простого числа только один делитель.','Только у числа 2 есть два делителя.','Сравни «ровно два» с «не больше двух».'],
+    ['Всякое натуральное число, у которого не больше двух положительных делителей, является простым.',false,'1 имеет один положительный делитель и не является простым.','У 4 больше двух делителей.','У 3 ровно два делителя, и оно простое.','Слова «не больше двух» допускают один делитель. Проверь начало натурального ряда.']
+  ];
+  function primeLogic(number,part){
+    if(number===50)return {prompt:'Даны слова «Все тигры живут в Африке». Запиши отрицание несколькими равносильными способами. Сохрани и группу животных, и конкретное место. Сколько исключений опровергает исходную фразу?',
+      leftTitle:'Отрицание со словами «не все»',left:['Не все тигры живут в Африке.','Ни один тигр не живёт в Африке.','Не все животные Африки — тигры.'],li:0,rightTitle:'То же отрицание со словами «хотя бы один»',right:['Существует хотя бы один тигр, живущий вне Африки.','Есть хотя бы одно другое животное вне Африки.','Существует тигр, живущий в Африке.'],ri:0,hint:'Проверь воображаемый случай: два тигра живут в Африке, один — вне её. Какие фразы истинны именно как отрицание исходной?',reference:'Чтобы опровергнуть утверждение обо всех тиграх, достаточно одного тигра, живущего вне указанного места. Для других тигров место может быть любым.',extra:'Ещё один способ сказать то же самое'};
+    const [claim,truth,proof,w1,w2,hint]=primeClaims[Number(part.id.split('-')[1])-1];
+    return {prompt:'Работаем с натуральными числами от 1. Проверь эту общую фразу: «'+claim+'» Если она ложна, укажи контрпример и запиши отрицание, начав «Существует хотя бы одно…». Для истинной фразы объясни общее правило.',
+      leftTitle:'Оценка общей фразы',left:['Истинна','Ложна'],li:truth?0:1,rightTitle:'Контрпример или общее обоснование',right:[proof,w1,w2],ri:0,hint,reference:truth?'Общее обоснование должно объяснять фразу для произвольного натурального числа. Для проверки отдельного числа можно воспользоваться таблицей делителей.':'Контрпример должен одновременно удовлетворять первой части фразы и нарушать заключение. После «существует» опиши оба свойства.',extra:truth?'Моё доказательство без перебора примеров':'Моё отрицание со словами «существует хотя бы одно»'};
+  }
+  function primeExplore(number,part,work,interactive){
+    const isTiger=number===50,n=work.proofProbe;
+    const select='<label>'+(isTiger?'Сколько из трёх условных тигров за пределами Африки?':'Исследуй одно натуральное число')+' <select data-proof-probe><option value="">Выбери</option>'+Array.from({length:isTiger?4:60},(_,i)=>isTiger?i:i+1).map(x=>'<option value="'+x+'"'+(x===n?' selected':'')+'>'+x+'</option>').join('')+'</select></label>';
+    let msg=isTiger?'Модель описывает вымышленную группу из трёх животных. Проверь, как одно исключение меняет утверждение обо всей группе.':'Выбери натуральное число. Проверь сначала, входит ли оно в названную группу, затем — выполняется ли заключение.';
+    if(Number.isInteger(n)){
+      if(isTiger){msg='В Африке: '+(3-n)+'. За пределами Африки: '+n+'. '+(n?'Фраза «все трое живут в Африке» ложна.':'Фраза «все трое живут в Африке» истинна.');}
+      else{const ds=Array.from({length:n},(_,i)=>i+1).filter(d=>n%d===0);msg='Делители '+n+': '+ds.join(', ')+'. Всего '+ds.length+'. Число '+(n%2?'нечётное':'чётное')+'. Остатки при делении на 3 и 9: '+(n%3)+' и '+(n%9)+'.';}
+    }
+    return '<section data-proof-host><h3>'+(isTiger?'Проверь область действия слова «все»':'Проверь кандидата в контрпримеры')+'</h3>'+(interactive?select:'')+'<p data-proof-result aria-live="polite">'+msg+'</p></section>';
+  }
+  function mountProof(main,number,part,work,save){
+    let host=main.querySelector('[data-proof-host]');if(!host)return;
+    function draw(){host.outerHTML=primeExplore(number,part,work,true);host=main.querySelector('[data-proof-host]');const f=host.querySelector('select');f.onchange=()=>{if(f.value==='')delete work.proofProbe;else work.proofProbe=Number(f.value);save();draw();host.querySelector('select').focus({preventScroll:true});};}draw();
+  }
+
+  function boxTask(part){
+    if(part.id==='049-1-obhardyom')return 'У прямоугольного параллелепипеда три измерения: ширина 4,3 см, длина 6,1 см и высота 8,5 см. Найди объём в кубических сантиметрах. Округли окончательный результат до десятых.';
+    if(part.id==='049-1-poverhnostsoft')return 'У прямоугольного параллелепипеда ширина 4,3 см, длина 6,1 см и высота 8,5 см. Найди площадь всей поверхности в квадратных сантиметрах. Округли итог до десятых.';
+    return part.id==='049-2'?'Введи буквы для длины, ширины и высоты прямоугольного параллелепипеда. Вырази через них его объём и объясни построение формулы.':'Введи обозначения для трёх измерений прямоугольного параллелепипеда. Построй формулу площади всей его поверхности и объясни происхождение каждого слагаемого.';
+  }
+  function boxDrawing(part,work){
+    const named=!part.expression,letters=work.boxNames==='xyh'?['x','y','h']:['a','b','c'],dims=named?letters:['6,1 см','4,3 см','8,5 см'];
+    const mode=work.boxFace||'front',paint=key=>key===mode?'#a9d7bd':'#eff3ef';
+    const front='<polygon points="42,57 151.8,57 151.8,210 42,210" fill="'+paint('front')+'"/>';
+    const side='<polygon points="151.8,57 189.6,34.4 189.6,187.4 151.8,210" fill="'+paint('side')+'"/>';
+    const top='<polygon points="42,57 79.8,34.4 189.6,34.4 151.8,57" fill="'+paint('base')+'"/>';
+    const captions=['передняя и задняя грани','левая и правая грани','верхняя и нижняя грани'],active=['front','side','base'].indexOf(mode),products=[[0,2],[1,2],[0,1]],pair=products[active];
+    return '<figure style="margin:.6em 0"><svg role="img" aria-label="Прямоугольный параллелепипед; выделена одна из пары равных граней" viewBox="0 0 256 241" style="display:block;width:100%;max-width:350px"><g stroke="#324e41" stroke-width="2" stroke-linejoin="round">'+top+side+front+'</g><path d="M42 210 L79.8 187.4 H189.6 M79.8 187.4 V34.4" fill="none" stroke="#5b7164" stroke-dasharray="4 4"/><g font-size="13" fill="#1e3528" text-anchor="middle"><text x="94" y="230">'+dims[0]+'</text><text x="198" y="209">'+dims[1]+'</text><text x="220" y="112">'+dims[2]+'</text></g></svg><figcaption data-box-caption>Выделена одна грань. Равная ей противоположная грань — вторая в паре: '+captions[active]+'. Измерения каждой: '+dims[pair[0]]+' и '+dims[pair[1]]+'.</figcaption></figure>';
+  }
+  function boxView(part,work,interactive){
+    const modes=[['front','Передняя и задняя'],['side','Боковые'],['base','Основания']],face=work.boxFace||'front',fields=part.expression?['Точное значение','Мой результат до десятых']:['Моя формула','Почему она работает'];
+    const names=part.expression?'':'<label>Мои обозначения <select data-box-names><option value="abc">a, b, c</option><option value="xyh"'+(work.boxNames==='xyh'?' selected':'')+'>x, y, h</option></select></label>';
+    return '<section data-box-host><h3>Исследуй три пары граней</h3>'+boxDrawing(part,work)+(interactive?'<div style="display:flex;flex-wrap:wrap;gap:.25em">'+modes.map(([value,label])=>'<button data-box-face="'+value+'" type="button" class="secondary" aria-pressed="'+(face===value)+'">'+label+'</button>').join('')+'</div>'+names+fields.map((label,i)=>'<label style="display:block">'+label+' <input data-box-field="'+i+'" maxlength="'+(i===1&&!part.expression?360:90)+'" style="display:block;box-sizing:border-box;width:100%;max-width:100%" value="'+U.esc((work.boxEntries||[])[i]||'')+'"></label>').join('')+'<button type="button" class="secondary" data-box-use>Перенести мой результат</button>':'')+'</section>';
+  }
+  function mountBox(main,part,work,save){
+    let host=main.querySelector('[data-box-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=boxView(part,work,true);host=main.querySelector('[data-box-host]');
+      for(const b of host.querySelectorAll('[data-box-face]'))b.onclick=()=>{work.boxFace=b.dataset.boxFace;save();draw();host.querySelector('[data-box-face="'+work.boxFace+'"]').focus({preventScroll:true});};
+      const names=host.querySelector('[data-box-names]');if(names)names.onchange=()=>{work.boxNames=names.value;save();draw();host.querySelector('[data-box-names]').focus({preventScroll:true});};
+      const entries=work.boxEntries||['',''],use=host.querySelector('[data-box-use]'),enable=()=>{use.disabled=entries.some(x=>!x.trim());};enable();
+      for(const f of host.querySelectorAll('[data-box-field]'))f.oninput=()=>{entries[Number(f.dataset.boxField)]=f.value.slice(0,f.maxLength);work.boxEntries=entries;enable();save();};
+      use.onclick=()=>{const ans=main.querySelector('#answer');ans.value=part.expression?entries[1]:entries[0]+' | '+entries[1];ans.dispatchEvent(new Event('input',{bubbles:true}));ans.focus();};
+    }draw();
+  }
+  function boxResponse(number,part,input,correct,work){
+    if(number!==49)return null;const M=root.PetersonBook.M;
+    if(part.expression){
+      const volume=part.id==='049-1-obhardyom',target=volume?'222.955':'229.26',exact=work.boxEntries?.[0];
+      if(correct)return null;
+      if(M.equal(input,target))return {ok:false,text:'Это точное значение. Чтобы получить десятые, посмотри на следующую цифру — сотые.'};
+      if(M.equal(input,'114.63')||M.equal(input,'114.6'))return {ok:false,text:'Сейчас учтена одна грань из каждой пары. У каждой есть равная противоположная грань.'};
+      if(volume&&(M.equal(input,'26.23')||M.equal(input,'26.2')))return {ok:false,text:'Это площадь основания в см². Чтобы получить объём в см³, учти высоту 8,5 см.'};
+      if(M.equal(input,volume?'229.3':'223'))return {ok:false,text:volume?'Ты получил площадь поверхности. Для объёма умножь площадь основания на высоту.':'Это объём. Для поверхности сложи площади всех шести граней.'};
+      return {ok:false,text:exact&&M.equal(exact,target)?'Точное значение найдено. Посмотри на цифру сотых и округли один раз в конце.':volume?'Сначала перемножь длину и ширину, затем учти высоту. Не округляй промежуточную площадь.':'Найди площади трёх разных граней. Учти обе грани каждой пары и только затем округли.'};
+    }
+    const [raw,explain]=input.split('|').map(s=>s.trim());if(!explain)return null;
+    const volume=part.id==='049-2',q=raw.toLowerCase().replace(/[\s*·×]/g,'').replace(/^[vs]=/,'');
+    if(q==='ab'||q==='xy')return {ok:false,text:'Получилась площадь одного основания. Вспомни, где в твоей формуле участвует высота.'};
+    if(['ab+ac+bc','xy+xh+yh'].includes(q))return {ok:false,text:'Каждой выбранной грани соответствует равная противоположная. Учти обе грани во всех трёх парах.'};
+    if(volume&&['abc','xyh'].includes(q)||!volume&&['2(ab+ac+bc)','2(xy+xh+yh)','2ab+2ac+2bc','2xy+2xh+2yh'].includes(q))return {ok:true,text:'Формула согласуется с геометрической моделью. Объяснение сохранено для проверки.'};
+    return null;
+  }
+
   const commonInputs=root.PetersonBook.commonInputs;
   function commonQuestion(number,part){
     if(number===45)return 'Найди все положительные делители 12 и 15. Запиши оба множества в фигурных скобках и их пересечение. Выбери в пересечении наибольшее число. Объясни с помощью простых множителей, почему это НОД(12, 15).';
@@ -530,7 +609,7 @@
     }draw();
   }
   function commonResponse(number,part,input){
-    if(number<45||number>48)return null;
+    if((number<45||number>48)&&number!==54)return null;
     const inputs=commonInputs[part.id],names=commonFields(number),fields=input.split('|').map(x=>x.trim().split(/\s*=\s*/));
     if(fields.length!==names.length||fields.some(([name,x],i)=>names[i]!==name||!x))return null;
     const gcd=(a,b)=>b?gcd(b,a%b):a,g=inputs.reduce(gcd),l=inputs.reduce((a,b)=>a/gcd(a,b)*b);
@@ -562,6 +641,10 @@
   }
 
   function filterSpec(number,part){
+    if(number===53){
+      const d=Number(part.id.split('-')[1]),values=Array.from({length:17},(_,i)=>297+i);
+      return {d,values,from:v=>v,answer:values.filter(v=>v>297&&v<=312&&v%d===0)};
+    }
     const key=part.id.split('-')[1],d=number===44?Number(key):key==='a'?filterDivisors[number][0]:key==='b'?filterDivisors[number][1]:key==='v'?filterDivisors[number][2]:Number(key);
     const values=number===44?printedSet:digits,from=v=>number===42?2730+v:number===43?5012+100*v:v;
     return {d,values,from,pattern:number===42?'273□':'5□12',answer:values.filter(v=>from(v)%d===0)};
@@ -572,12 +655,14 @@
   }
   function filterQuestion(number,part){
     const s=filterSpec(number,part);
+    if(number===53)return 'Множество A(n) состоит из натуральных x, для которых одновременно 297 < x ≤ 312 и x кратно n. Перечисли все элементы A('+s.d+'). Обоснуй обе границы и проверку кратности.';
     return number===44?'В множестве A = {315; 79; 8181; 490; 102} подмножество A(n) содержит ровно те элементы A, которые кратны n. Запиши A('+s.d+'). Проверь все пять чисел.':'В записи '+s.pattern+' пустая клетка заменяет одну цифру. Найди все цифры от 0 до 9, с которыми полученное число делится на '+s.d+'. Если подходящих цифр нет, объясни почему.';
   }
   function filterView(number,part,work,interactive){
-    const s=filterSpec(number,part),val=work.filterProbe,selected=work.filterItems||[],isDigit=number!==44;
+    const s=filterSpec(number,part),val=work.filterProbe,selected=work.filterItems||[],isDigit=number===42||number===43;
     let result='Выбери '+(isDigit?'цифру для пустой клетки.':'один элемент исходного множества.');
     if(s.values.includes(val)){const n=s.from(val),txt=String(n);result='Число '+n+'. Последние две цифры: '+txt.slice(-2)+'. Сумма цифр: '+[...txt].map(Number).reduce((a,b)=>a+b,0)+'.';if(work.filterDivision)result+=' Деление на '+s.d+': частное '+Math.floor(n/s.d)+', остаток '+n%s.d+'.';}
+    if(number===53&&s.values.includes(val))result+=' Проверка границ: '+(val<=297?'297 исключено строгим знаком слева.':val>312?'Значение больше правой границы.':val===312?'312 разрешено знаком ≤.':'обе границы выполнены.');
     const probe='<label>Исследовать '+(isDigit?'цифру':'число')+' <select data-filter-probe><option value="">Выбери</option>'+s.values.map(x=>'<option value="'+x+'"'+(val===x?' selected':'')+'>'+x+'</option>').join('')+'</select></label>';
     const picks=s.values.map(x=>'<button class="secondary" type="button" data-filter-pick="'+x+'" aria-pressed="'+selected.includes(x)+'">'+(selected.includes(x)?'✓ ':'')+x+'</button>').join(' ');
     return '<section data-filter-host><h3>'+(isDigit?'Проверь возможные цифры':'Собери подмножество')+'</h3>'+(interactive?probe:'')+'<p data-filter-result aria-live="polite">'+result+'</p>'+(interactive?'<button class="text-button" type="button" data-filter-divide>'+('Показать проверку делением на '+s.d)+'</button><p>Отметь все подходящие '+(isDigit?'цифры':'числа')+'.</p><div style="display:flex;flex-wrap:wrap;gap:.25em">'+picks+' <button class="secondary" type="button" data-filter-empty aria-pressed="'+Boolean(work.filterEmpty)+'">Ничего не подходит</button></div><p data-filter-set aria-live="polite">'+(work.filterEmpty?'∅':selected.length?'{'+selected.join('; ')+'}':'Пока ничего не выбрано')+'</p><button class="secondary" type="button" data-filter-use>Перенести мой выбор</button>':'')+'</section>';
@@ -593,9 +678,10 @@
     }draw();
   }
   function filterResponse(number,part,input){
-    if(number<42||number>44)return null;const t=input.trim().replace(/\.$/,'');let selected;
+    if((number<42||number>44)&&number!==53)return null;const t=input.trim().replace(/\.$/,'');let selected;
     if(['∅','{}','нет','такой цифры нет'].includes(t.toLowerCase()))selected=[];
     else if(/^\{\s*\d+(?:\s*;\s*\d+)*\s*\}$/.test(t)||/^\d+(?:\s*[;,]\s*\d+)*$/.test(t))selected=t.replace(/[{}]/g,'').split(/[;,]/).map(Number);else return null;
+    if(number===53){const outside=selected.find(n=>n<=297||n>312);if(outside!==undefined)return {ok:false,text:'Число '+outside+' не удовлетворяет 297 < x ≤ 312. Левая граница 297 исключена, правая 312 входит в промежуток.'};}
     const s=filterSpec(number,part),outside=selected.find(n=>!s.values.includes(n));if(outside!==undefined)return {ok:false,text:'Проверь '+outside+': '+(number===44?'этого числа нет в данном множестве A.':'в клетку можно поставить только одну цифру.')};
     if(new Set(selected).size!==selected.length)return {ok:false,text:'Одно значение повторяется. Запиши каждый элемент множества один раз.'};
     const wrong=selected.find(n=>s.from(n)%s.d!==0);if(wrong!==undefined)return {ok:false,text:'При выборе '+wrong+' получается число '+s.from(wrong)+', которое не делится на '+s.d+'. '+divisibilityClue(s.d)};
@@ -823,7 +909,7 @@
     host.querySelector('[data-calc-check]').onclick=()=>{const checked=calcCheck(part,work);if(!checked.ok&&!work.calcChecked&&root.PetersonBook.M.parse(work.calcExact||'')&&work.calcDigit!==undefined)work.errors=Math.min(10000,(work.errors||0)+1);work.calcChecked=true;result.textContent=checked.text;save();};
   }
   function calcResponse(number,part,input,correct){
-    if(number!==34||correct)return null;
+    if((number!==34&&number!==52)||correct)return null;
     const E=root.PetersonBook,M=E.M,raw=E.exact(part.expression);
     if(M.equal(input,raw))return {ok:false,text:'Действие выполнено точно. В окончательном ответе округли это число до '+roundingNames[part.rounding.places]+'.'};
     if(M.equal(input,E.rounded(raw,part.rounding.places+1)))return {ok:false,text:'Посмотри на разряд ответа: сохранена лишняя цифра. Требуемая точность — до '+roundingNames[part.rounding.places]+'.'};
@@ -1111,6 +1197,7 @@
     ['Значение x на единицу меньше квадрата этого же числа.',['x = x² − 1','x < x²','x² = x − 1'],['x ≠ x² − 1','x ≥ x²','x = x² + 1'],'«На единицу» задаёт точную разность. Для отрицания достаточно любой другой разности, в том числе двух.']
   ];
   function logicCard(number,part){
+    if(number===50||number===51)return primeLogic(number,part);
     if(number===26)return universalCard(part);
     if(number===27)return witnessCard(part);
     if(number===28)return scopeCard(part);
@@ -1158,25 +1245,28 @@
   }
   function logicResponse(number,part,input,work){
     const periodRule=(number===35||number===36)&&part.id.endsWith('pravilo');
-    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&!periodRule)return null;
+    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&number!==50&&number!==51&&!periodRule)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
-    if((number>=27&&number<=29)||number===39||number===40||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if(number===50)return {ok:true,text:work.logicOther?.trim()?'Обе формы описывают одно исключение. Твоя дополнительная запись сохранена для проверки.':'Обе формы подходят. Напиши ещё одно равносильное отрицание своими словами.'};
+    if((number>=27&&number<=29)||number===39||number===40||number===51||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
 
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
-    if(number>=45&&number<=48)return commonQuestion(number,part);
-    if(number>=42&&number<=44)return filterQuestion(number,part);
+    if(number===50||number===51)return primeLogic(number,part).prompt;
+    if(number===49)return boxTask(part);
+    if((number>=45&&number<=48)||number===54)return commonQuestion(number,part);
+    if((number>=42&&number<=44)||number===53)return filterQuestion(number,part);
     if(number===41)return 'Число a задано произведением 2 · 3 · 7. Найди a и запиши множество D(a) всех его положительных делителей. Покажи, как убедился в полноте множества.';
     if(number===37)return cutoutQuestion(part);
     if((number===35||number===36)&&part.id.endsWith('pravilo'))return periodicRule(number).prompt;
     if(number===35)return 'Запиши дробь '+periodTasks[part.id]+' как бесконечную периодическую десятичную дробь, затем округли её до тысячных. Для периода используй скобки.';
     if(number===36)return 'Найди частное данных десятичных дробей. Дойди при делении до цифры, позволяющей округлить результат до десятитысячных.';
-    if(number===34)return resultQuestion(part);
+    if(number===34||number===52)return resultQuestion(part);
     if(number===33)return roundingQuestion(part);
     if(number===31)return 'Прочитай неравенство '+part.prompt+' и перечисли все натуральные значения x, удовлетворяющие обеим границам. Если их нет, запиши пустое множество.';
     if(number===32)return 'В промежутке 0,5 ≤ x ≤ 0,6 найди три разных решения. Придумай способ получить 1000 различных решений; проверь, можно ли получить 10 000. Объясни, почему границы не нарушаются.';
@@ -1239,12 +1329,14 @@
     if(item.number===31)drawing=integerView(part,{},false);
     if(item.number===32)drawing=intervalSequence({},false);
     if(item.number===33)drawing=roundingFigure(part,{},false);
-    if(item.number===34)drawing=calculationView(part,{},false);
+    if(item.number===34||item.number===52)drawing=calculationView(part,{},false);
     if(item.number===37)drawing=geometryFigure(part,{},false);
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
-    if(item.number>=45&&item.number<=48)drawing=commonFactorView(item.number,part,{},false);
-    if(item.number>=42&&item.number<=44)drawing=filterView(item.number,part,{},false);
+    if(item.number===50||item.number===51)drawing=logicConstruction(item.number,part,false)+primeExplore(item.number,part,{},false);
+    if(item.number===49)drawing=boxView(part,{},false);
+    if((item.number>=45&&item.number<=48)||item.number===54)drawing=commonFactorView(item.number,part,{},false);
+    if((item.number>=42&&item.number<=44)||item.number===53)drawing=filterView(item.number,part,{},false);
     if(item.number===35||item.number===36)drawing=part.id.endsWith('pravilo')?logicConstruction(item.number,part,false):divisionView(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
@@ -1257,7 +1349,7 @@
     if(part.id==='282-3') drawing=coordinateTriangle();
     if(item.number===293) drawing=part.id==='293-a'?squares():triangles();
     const mode=hasCompletePrompt(item,part)?'Всё условие для этого подпункта приведено здесь.':'Для этого подпункта используй формулировку, таблицу или рисунок из своего учебника.';
-    return ref+'<p class="small">'+mode+'</p><p class="problem">'+U.fmt(prompt)+'</p>'+(part.expression?'<div class="math-line" aria-label="Выражение">'+U.expression(part.expression)+'</div>':'')+drawing;
+    return ref+'<p class="small">'+mode+'</p><p class="problem">'+U.fmt(prompt)+'</p>'+(part.expression&&item.number!==49?'<div class="math-line" aria-label="Выражение">'+U.expression(part.expression)+'</div>':'')+drawing;
   }
   function pane(item,part) {
     const link=pdfUrl?'<p><a href="'+U.esc(pdfUrl)+'#page='+item.page+'" target="_blank" rel="noopener noreferrer">Открыть с. '+item.page+' в моём PDF ↗</a></p>':'';
@@ -1274,5 +1366,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof};
 })(globalThis);

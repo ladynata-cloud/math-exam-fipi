@@ -35,7 +35,8 @@ function mergeErrors(target,earlier,later){
 }
   const commonInputs={
     '045-1':[12,15], '046-1':[6,8], '047-1':[90,70], '047-2':[250,21], '047-3':[6,420],
-    '048-a':[125,150], '048-b':[210,2730], '048-v':[35,72], '048-g':[60,75,111]
+    '048-a':[125,150], '048-b':[210,2730], '048-v':[35,72], '048-g':[60,75,111],
+    '054-a':[105,225], '054-b':[84,420], '054-v':[273,110], '054-g':[45,120,525]
   };
 function sanitize(part,input){
  const clean=blank(part);if(!input||typeof input!=='object'||Array.isArray(input)||(input.signature!==clean.signature&&(!part.previousSignature||input.signature!==part.previousSignature)))return clean;
@@ -52,10 +53,10 @@ function sanitize(part,input){
   if(input.decimalView<=limit)clean.decimalView=input.decimalView;
  }
  if(/^016-[a-z]+$/.test(part.id)&&Number.isInteger(input.fractionView)&&input.fractionView>0&&input.fractionView<=3)clean.fractionView=input.fractionView;
- if(/^(019|020|021|026|027|028|029|039|040)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id)){
+ if(/^(019|020|021|026|027|028|029|039|040|050|051)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id)){
   for(const key of ['logicLeft','logicRight'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
   if(input.logicReference===true)clean.logicReference=true;
-  if((/^(02[6789]|039|040)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
+  if((/^(02[6789]|039|040|050|051)-/.test(part.id)||/^03[56]-pravilo$/.test(part.id))&&typeof input.logicOther==='string'&&input.logicOther)clean.logicOther=cut(input.logicOther,600);
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='038-termin'&&typeof input.cipherMeaning==='string'&&input.cipherMeaning)clean.cipherMeaning=cut(input.cipherMeaning,600);
@@ -70,12 +71,20 @@ function sanitize(part,input){
   if(Number.isInteger(input.formulaInput)&&input.formulaInput>=-3&&input.formulaInput<=14)clean.formulaInput=input.formulaInput;
   if(Number.isInteger(input.formulaRemainder)&&input.formulaRemainder>=0&&input.formulaRemainder<3)clean.formulaRemainder=input.formulaRemainder;
  }
- if(/^04[234]-/.test(part.id)){
-  const allowed=part.id.startsWith('044-')?[315,79,8181,490,102]:[0,1,2,3,4,5,6,7,8,9];
+ if(/^(04[234]|053)-/.test(part.id)){
+  const allowed=part.id.startsWith('053-')?Array.from({length:17},(_,i)=>297+i):part.id.startsWith('044-')?[315,79,8181,490,102]:[0,1,2,3,4,5,6,7,8,9];
   if(allowed.includes(input.filterProbe))clean.filterProbe=input.filterProbe;
   if(input.filterDivision===true&&clean.filterProbe!==undefined)clean.filterDivision=true;
   if(Array.isArray(input.filterItems)&&input.filterItems.length<=allowed.length)clean.filterItems=[...new Set(input.filterItems.filter(v=>allowed.includes(v)))].sort((a,b)=>a-b);
   if(input.filterEmpty===true&&!clean.filterItems?.length)clean.filterEmpty=true;
+ }
+ if(/^05[01]-/.test(part.id)&&Number.isInteger(input.proofProbe)){
+  const tiger=part.id.startsWith('050-');if(input.proofProbe>=(tiger?0:1)&&input.proofProbe<=(tiger?3:60))clean.proofProbe=input.proofProbe;
+ }
+ if(part.id.startsWith('049-')){
+  if(['front','side','base'].includes(input.boxFace))clean.boxFace=input.boxFace;
+  if(!part.expression&&['abc','xyh'].includes(input.boxNames))clean.boxNames=input.boxNames;
+  if(Array.isArray(input.boxEntries)&&input.boxEntries.length===2)clean.boxEntries=input.boxEntries.map((v,i)=>typeof v==='string'?cut(v,i===1&&!part.expression?360:90):'');
  }
  if(Object.hasOwn(commonInputs,part.id)){
   const ns=commonInputs[part.id],allowed=[2,3,5,7,11,13,17,19,23,29,31,37],nFields=part.id.startsWith('045')||part.id.startsWith('046')?4:2;
@@ -99,7 +108,7 @@ function sanitize(part,input){
   for(const key of ['perimeterChoice','areaChoice'])if(Number.isInteger(input[key])&&input[key]>=1&&input[key]<=3)clean[key]=input[key];
   if(Array.isArray(input.geometryNumbers)&&input.geometryNumbers.length===3)clean.geometryNumbers=input.geometryNumbers.map(v=>cut(v,50));
  }
- if(part.id.startsWith('034-')){
+ if(/^(034|052)-/.test(part.id)){
   if(typeof input.calcExact==='string'&&input.calcExact)clean.calcExact=cut(input.calcExact,80);
   if(typeof input.calcDigit==='string'&&/^[0-9]$/.test(input.calcDigit))clean.calcDigit=input.calcDigit;
   if(input.calcChecked===true)clean.calcChecked=true;

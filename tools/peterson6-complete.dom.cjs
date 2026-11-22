@@ -839,3 +839,64 @@ test('all nine printed common-divisor and common-multiple investigations retain 
  }
  const re=await surface(t,BOOK+'#n/48/048-g',storage(s));assert.match(element(re,'[data-factor-chain="2"]').textContent,/3 · 37/);assert.equal(element(re,'[data-common-entry="1"]').value,'11100');
 });
+test('printed cuboid dimensions support face pairs, separate units, rounding and symbolic proofs',async t=>{
+ const s=await surface(t,BOOK+'#n/49/049-1-obhardyom'),ps=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[48].parts;
+ for(const [i,p] of ps.entries()){
+  await route(s,'#n/49/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);assert.equal(element(s,'[data-box-host] svg').querySelectorAll('polygon').length,3);
+  for(const [btn,cap] of [['base',/верхняя и нижняя/],['side',/левая и правая/],['front',/передняя и задняя/]]){click(s,'[data-box-face="'+btn+'"]');assert.match(element(s,'[data-box-caption]').textContent,cap);}
+  let right;
+  if(i<2){const exact=i?'229,26':'222,955',wrong=i?'114,63':'26,23';right=i?'229,3':'223,0';
+   input(s,'[data-box-field="0"]',exact);input(s,'[data-box-field="1"]',wrong);click(s,'[data-box-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,i?/грань из каждой пары/:/площадь основания/);
+   input(s,'[data-box-field="1"]',right);click(s,'[data-box-use]');submit(s,'#answer-form');assert(bookWork(s,p.id).correct&&!bookWork(s,p.id).independent&&!bookWork(s,p.id).assisted);
+  }else{
+   const name=element(s,'[data-box-names]');name.value='xyh';name.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.match(element(s,'[data-box-caption]').textContent,/x и h/);
+   input(s,'[data-box-field="0"]',i===2?'xy':'xy+xh+yh');input(s,'[data-box-field="1"]','Учитываю три заданные длины и объясняю действия.');click(s,'[data-box-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,i===2?/Высота|высота/:/всех трёх парах/);
+   right=i===2?'V=xyh':'S=2(xy+xh+yh)';input(s,'[data-box-field="0"]',right);click(s,'[data-box-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Формула согласуется/);assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct);
+  }
+  for(let j=0;j<32;j++){const sample=s.w.PetersonAnalogues.create(49,p,j);
+   if(i<2){const [a,b,c]=[...sample.prompt.matchAll(/(\d+[,\.]\d|\d+) см(?:,|\.)/g)].map(x=>Math.round(Number(x[1].replace(',','.'))*10)),n=i===0?a*b*c:2*(a*b+a*c+b*c),den=i===0?1000:100;assert.equal(s.w.PetersonBook.M.equal(sample.answer,String(Math.floor((10*n+den/2)/den)/10)),true);}
+   else{const names=sample.prompt.match(/обозначены ([a-z]), ([a-z]), ([a-z])/).slice(1);const [x,y,z]=names;assert.equal(sample.answer,i===2?names.join(''):'2('+x+y+'+'+x+z+'+'+y+z+')');}
+  }
+ }
+ const re=await surface(t,BOOK+'#n/49/049-3',storage(s));assert.equal(element(re,'[data-box-names]').value,'xyh');assert.equal(element(re,'[data-box-field="0"]').value,'S=2(xy+xh+yh)');
+});
+test('tiger quantifiers and six original divisibility claims separate one witness from a universal proof',async t=>{
+ const s=await surface(t,BOOK+'#n/50/050-1'),ex=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(49,51),values=[0,2,9,18,6,5,1],truths=[true,false,false,true,false,true,false];
+ const select=(selector,v)=>{const e=element(s,selector);e.value=String(v);e.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ let k=0;
+ for(const row of ex)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);select('[data-proof-probe]',values[k]);
+  if(k===0){assert.match(element(s,'[data-proof-result]').textContent,/истинна/);select('[data-proof-probe]',1);assert.match(element(s,'[data-proof-result]').textContent,/ложна/);}
+  else{const n=values[k],ds=Array.from({length:n},(_,i)=>i+1).filter(d=>n%d===0);assert.match(element(s,'[data-proof-result]').textContent,new RegExp('Всего '+ds.length+'\\.'));}
+  const left=truths[k]?1:2;select('[data-logic-left]',left===1?2:1);select('[data-logic-right]',1);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.equal(element(s,'#feedback').classList.contains('error'),true);
+  select('[data-logic-left]',left);select('[data-logic-right]',1);input(s,'[data-logic-other]',p.answer);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,k===0?/обе формы|Обе формы/:/Обоснование/);
+  assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct);assert.equal(bookWork(s,p.id).proofProbe,k===0?1:values[k]);
+  for(let j=0;j<36;j++){const m=s.w.PetersonAnalogues.create(row.number,p,j);assert.equal(new Set(m.choices).size,3);assert(m.choices.includes(m.answer));
+   if(k===1)assert.match(m.answer,/составное/);if(k===2){const v=Number(m.answer),bound=Number(m.prompt.match(/большее (\d+)/)[1]);assert(v>bound&&v%2===1&&v%3===0);}
+   if(k===4){const [d,t]=m.prompt.match(/\d+/g).map(Number);assert(Number(m.answer)%d===0&&Number(m.answer)%t!==0);}
+   if(k===6)assert.equal(m.answer,'1');
+  }k++;
+ }
+ const re=await surface(t,BOOK+'#n/51/051-6',storage(s));assert.equal(element(re,'[data-proof-probe]').value,'1');assert.match(element(re,'[data-logic-other]').value,/не простое/);
+});
+test('printed 52–54 distinguish accuracy, interval endpoints, prime exponents and a third operand',async t=>{
+ const s=await surface(t,BOOK+'#n/52/052-a-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(51,54);
+ const divs=n=>Array.from({length:n},(_,i)=>i+1).filter(d=>n%d===0),orig=[[105,225],[84,420],[273,110],[45,120,525]],decimal=v=>Number(String(v).replace(',','.')),op=(o,a,b)=>({add:a+b,subtract:a-b,multiply:a*b,divide:a/b})[o];
+ for(const row of rows)for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  if(row.number===52){
+   const x=p.expression,places=p.rounding.places,exact=op(x.op,decimal(x.left),decimal(x.right)),digit=Math.floor((exact+1e-8)*10**(places+1))%10;input(s,'[data-calc-exact]',String(Number(exact.toFixed(7))));const d=element(s,'[data-calc-digit]');d.value=String(digit);d.dispatchEvent(new s.w.Event('change',{bubbles:true}));click(s,'[data-calc-check]');assert.match(element(s,'[data-calc-feedback]').textContent,/решающая цифра верны/);
+   input(s,'#answer',String(Math.round((exact+1e-8)*10**places)/10**places));submit(s,'#answer-form');assert(bookWork(s,p.id).correct);
+   for(let j=0;j<32;j++){const m=s.w.PetersonAnalogues.create(52,p,j),y=m.expression,z=op(y.op,decimal(y.left),decimal(y.right));assert.equal(y.op,x.op);assert.equal(s.w.PetersonBook.M.equal(m.answer,String(Math.round((z+1e-8)*10**places)/10**places)),true);}
+  }else if(row.number===53){
+   const d=Number(p.id.split('-')[1]),xs=Array.from({length:15},(_,k)=>298+k).filter(v=>v%d===0);click(s,'[data-filter-pick="297"]');click(s,'[data-filter-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/297 исключена/);click(s,'[data-filter-pick="297"]');
+   for(const x of xs)click(s,'[data-filter-pick="'+x+'"]');click(s,'[data-filter-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/все подходящие/);assert.deepEqual(bookWork(s,p.id).filterItems,xs);
+   for(let j=0;j<32;j++){const m=s.w.PetersonAnalogues.create(53,p,j),[lo,hi]=m.prompt.match(/(\d+) < x ≤ (\d+)/).slice(1).map(Number),ys=Array.from({length:hi-lo},(_,k)=>lo+k+1).filter(v=>v%d===0);assert.equal(m.answer,ys.length?'{'+ys.join('; ')+'}':'∅');}
+  }else{
+   const ns=orig[i],g=divs(ns[0]).filter(x=>ns.every(n=>n%x===0)).at(-1);let l=Math.max(...ns);while(!ns.every(n=>l%n===0))l+=Math.max(...ns);
+   assert.deepEqual([...s.w.PetersonBook.commonInputs[p.id]],ns);input(s,'[data-common-entry="0"]',String(g));input(s,'[data-common-entry="1"]',String(l));click(s,'[data-common-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/вычисления согласуются/);assert(bookWork(s,p.id).submitted&&!bookWork(s,p.id).correct);
+   for(let j=0;j<32;j++){const m=s.w.PetersonAnalogues.create(54,p,j),xs=m.prompt.split('чисел ')[1].match(/\d+/g).map(Number),g=divs(xs[0]).filter(d=>xs.every(n=>n%d===0)).at(-1);let l=Math.max(...xs);while(!xs.every(n=>l%n===0))l+=Math.max(...xs);assert.equal(m.answer,'НОД '+g+', НОК '+l);}
+  }
+ }
+ const re=await surface(t,BOOK+'#n/53/053-3',storage(s));assert.deepEqual(bookWork(re,'053-3').filterItems,[300,303,306,309,312]);
+});
