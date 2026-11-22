@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "6adfa9438081608421e90b6e378aeaa64f7c644c372ea8825e375a491229c9e6",
-      "afterSha256": "20b7df19f6ee4ccfc99d0a37e79e0ad34d2fef6c983f54894afafd0a2a5b659f",
+      "beforeSha256": "ec2fb436770e8fc14e90ffad4af3822b745dd05e5e1c31b0d5365c3ff5254cda",
+      "afterSha256": "7885337380869c0789ed20c894b57028a1aa6ff2c5f15f1b8afc40050d9b2808",
       "placement": "before-head-close",
-      "sourceSha": "bc4ba686d04f58301730aadbf4ac72502fbe045b"
+      "sourceSha": "5748839a223539a18321ced0bc885b102623b465"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6984,6 +6984,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, часть 2, печатная страница 19. Проверены четыре вычисления по классам и пространственные виды гаража, мобильный вход и возвращение обоих участников."
+    },
+    {
+      "previousBaseSha": "bc4ba686d04f58301730aadbf4ac72502fbe045b",
+      "sourceBaseSha": "5748839a223539a18321ced0bc885b102623b465",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "В части 2 сверены №5.94 и №5.95 на печатной с. 19: путь до острова, подстановка двух пар значений и встречное движение. Повтор на новых данных, два размера телефона и обе роли проверены."
     }
   ],
   "coverageUpdates": [
