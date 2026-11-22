@@ -55,6 +55,16 @@ function sanitize(part,input){
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='022-slovo'&&typeof input.cipherLetters==='string'&&/^[РУНОЕДГБИЖАКТЯС]{1,15}$/.test(input.cipherLetters)&&new Set(input.cipherLetters).size===input.cipherLetters.length)clean.cipherLetters=input.cipherLetters;
+ if(part.id.startsWith('031-')){
+  const bounds={'031-a':[14,19],'031-b':[2,9],'031-v':[1,3],'031-g':[4,7]}[part.id];
+  if(bounds&&Array.isArray(input.integerSet)&&input.integerSet.length<=10)clean.integerSet=[...new Set(input.integerSet.filter(n=>Number.isInteger(n)&&n>=bounds[0]&&n<=bounds[1]))].sort((a,b)=>a-b);
+  if(input.integerEmpty===true&&!clean.integerSet?.length)clean.integerEmpty=true;
+ }
+ if(part.id==='032-1'){
+  if(Array.isArray(input.intervalSamples)&&input.intervalSamples.length===3)clean.intervalSamples=input.intervalSamples.map(v=>cut(v,50));
+  if([1000,10000].includes(input.intervalCount))clean.intervalCount=input.intervalCount;
+  if([100,1000,10000,100000,1000000].includes(input.intervalDen))clean.intervalDen=input.intervalDen;
+ }
  if(part.id.startsWith('030-')){
   if(typeof input.flowValue==='string'&&input.flowValue)clean.flowValue=cut(input.flowValue,80);
   if(['yes','no'].includes(input.flowBranch))clean.flowBranch=input.flowBranch;

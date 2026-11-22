@@ -410,14 +410,33 @@
     return {...numerical(prompt,show(answer),'Запиши конечное значение x.',hint),id:'analog-'+part.id+'-'+attempt,family:'flow-'+part.id,match:'skill',mistake:hint};
   }
 
+  function intervalPractice(number,part,attempt){
+    const n=seed(part.id)%61+attempt,v=2+n%15,shift=n%3;
+    let task;
+    if(number===31){
+      const rows=[
+        [v+' ≤ y < '+(v+3),v+'; '+(v+1)+'; '+(v+2),v+'; '+(v+1)+'; '+(v+2)+'; '+(v+3),(v+1)+'; '+(v+2)],
+        [v+',2 < y ≤ '+(v+3)+',6',(v+1)+'; '+(v+2)+'; '+(v+3),v+'; '+(v+1)+'; '+(v+2)+'; '+(v+3),(v+1)+'; '+(v+2)],
+        [v+',6 ≤ y ≤ '+(v+1),String(v+1),'∅',String(v)],
+        [v+' < y < '+v+',7','∅',String(v),String(v+1)]
+      ],idx=['031-a','031-b','031-v','031-g'].indexOf(part.id),[statement,answer,a,b]=rows[idx],choices=[answer,a,b],hint='Перечисли целые точки по порядку. Строгий знак не включает граничную точку.';
+      task={...choice('Выбери все натуральные решения '+statement+'.',choices.slice(shift).concat(choices.slice(0,shift)),answer,hint),mistake:hint};
+    }else{
+      const start=E.M.operation('divide',2+n%6,10),den=10**(3+n%3),count=10+n%47,answer=E.M.decimal(E.M.operation('add',start,(count-1)+'/'+den)),hint='Между первым и последним из N чисел ровно N − 1 одинаковых шагов.';
+      task={...numerical('В ряду '+count+' различных чисел. Первое равно '+E.M.decimal(start)+', каждое следующее больше на 1/'+den+'. Найди последнее число.',answer,'Посчитай шаги от первого числа к последнему.',hint),mistake:hint};
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'interval-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>30)return createLegacy(number,part,attempt);
+    if(number<7||number>32)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=31)return intervalPractice(number,part,attempt);
     if(number===30)return flowPractice(part,attempt);
     if(number===29)return divisibilityPractice(part,attempt);
     if(number===28)return scopePractice(part,attempt);
@@ -456,7 +475,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=30&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=32&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -478,7 +497,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=30&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=32&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

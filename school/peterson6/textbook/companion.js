@@ -464,6 +464,71 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const integerIntervals={
+    '031-a':[15,18,true,false],'031-b':[3.2,7.6,false,true],'031-v':[1.7,2,true,true],'031-g':[5,5.6,false,false]
+  };
+  const decimalString=n=>String(n).replace('.',',');
+  function integerView(part,work,interactive){
+    const [a,b,includeA,includeB]=integerIntervals[part.id],lo=Math.floor(a)-1,hi=Math.ceil(b)+1,x=n=>18+232*(n-lo)/(hi-lo);
+    const ticks=Array.from({length:hi-lo+1},(_,i)=>i+lo),picked=work.integerSet||[];
+    const endpoint=(value,closed)=>'<circle cx="'+x(value)+'" cy="37" r="4.6" fill="'+(closed?'#2d6151':'white')+'" stroke="#2d6151" stroke-width="2"/>';
+    const dots=picked.map(n=>'<circle cx="'+x(n)+'" cy="22" r="3" fill="#974313"/>').join('');
+    const svg='<svg viewBox="0 0 268 65" style="display:block;width:100%;max-width:440px" role="img" aria-label="Числовой промежуток между '+decimalString(a)+' и '+decimalString(b)+', левый конец '+(includeA?'включён':'исключён')+', правый '+(includeB?'включён':'исключён')+'"><path d="M8 37 H257" stroke="#66766a"/><path d="M'+x(a)+' 37 H'+x(b)+'" stroke="#59816e" stroke-width="5"/>'+ticks.map(n=>'<path d="M'+x(n)+' 33 V42" stroke="#46594a"/><text x="'+x(n)+'" y="57" text-anchor="middle" font-size="12">'+n+'</text>').join('')+endpoint(a,includeA)+endpoint(b,includeB)+dots+'</svg>';
+    const buttons=ticks.filter(n=>n>=1).map(n=>'<button type="button" class="secondary" data-integer-value="'+n+'" aria-pressed="'+picked.includes(n)+'">'+(picked.includes(n)?'✓ ':'')+n+'</button>').join(' ');
+    return '<figure data-integer-host style="margin:.5em 0"><figcaption>Натуральные точки на прямой</figcaption>'+svg+'<p>Закрашенная граница входит в промежуток, пустая — исключена. Каждая отметка под осью соответствует целому числу.</p>'+(interactive?'<div style="display:flex;flex-wrap:wrap;gap:.3em">'+buttons+'<button type="button" class="secondary" data-integer-empty aria-pressed="'+Boolean(work.integerEmpty)+'">Нет натуральных решений</button></div><p aria-live="polite">'+(work.integerEmpty?'Выбрано пустое множество':picked.length?'Выбрано: '+picked.join('; '):'Отметь все подходящие целые точки.')+'</p><button type="button" class="secondary" data-integer-use>Перенести множество в ответ</button>':'')+'</figure>';
+  }
+  function mountInteger(main,part,work,save){
+    let host=main.querySelector('[data-integer-host]');if(!host)return;
+    function draw(){host.outerHTML=integerView(part,work,true);host=main.querySelector('[data-integer-host]');
+      for(const b of host.querySelectorAll('[data-integer-value]'))b.onclick=()=>{const n=Number(b.dataset.integerValue),set=new Set(work.integerSet||[]);if(set.has(n))set.delete(n);else set.add(n);work.integerSet=[...set].sort((a,b)=>a-b);delete work.integerEmpty;save();draw();host.querySelector('[data-integer-value="'+n+'"]').focus({preventScroll:true});};
+      host.querySelector('[data-integer-empty]').onclick=()=>{work.integerEmpty=!work.integerEmpty;delete work.integerSet;save();draw();host.querySelector('[data-integer-empty]').focus({preventScroll:true});};
+      const use=host.querySelector('[data-integer-use]');use.disabled=!work.integerEmpty&&!work.integerSet?.length;use.onclick=()=>{const answer=main.querySelector('#answer');answer.value=work.integerEmpty?'∅':'{'+work.integerSet.join('; ')+'}';answer.dispatchEvent(new Event('input',{bubbles:true}));answer.focus();};
+    }draw();
+  }
+  function sequenceEnd(count,denominator){return root.PetersonBook.M.operation('add','0.5',(count-1)+'/'+denominator);}
+  function intervalSequence(work,interactive){
+    const M=root.PetersonBook.M,count=work.intervalCount||1000,d=work.intervalDen||0;
+    const last=d?M.decimal(sequenceEnd(count,d)):'…',next=d?M.decimal(M.operation('add','0.5','1/'+d)):'…';
+    const select=(key,options,active)=>'<select style="display:block;box-sizing:border-box;max-width:100%;width:100%;min-width:0" data-sequence-'+key+'><option value="">Выбери</option>'+options.map(v=>'<option value="'+v+'"'+(active===v?' selected':'')+'>'+v+'</option>').join('')+'</select>';
+    const fields=interactive?'<div style="display:grid;grid-template-columns:minmax(0,1fr);gap:.4em">'+[0,1,2].map((_,i)=>'<label>Моё число '+(i+1)+' <input data-sequence-x="'+i+'" style="display:block;box-sizing:border-box;max-width:100%;width:100%;min-width:0" inputmode="decimal" maxlength="50" value="'+U.esc(work.intervalSamples?.[i]||'')+'"></label>').join('')+'<label>Сколько чисел в ряду '+select('count',[1000,10000],count)+'</label><label>Шаг равен 1 / '+select('den',[100,1000,10000,100000,1000000],d)+'</label></div>':'';
+    return '<section data-sequence-host><h3>Ряд с постоянным шагом</h3><p>Начни с 0,5. К каждому следующему числу прибавляй один и тот же положительный шаг. Чисел должно быть столько, сколько ты выбрал.</p>'+fields+'<p data-sequence-tape aria-live="polite">Начало: 0,5; '+next+'; … Последнее число: '+last+'.</p>'+(interactive?'<button type="button" class="secondary" data-sequence-use>Перенести числа и правило в ответ</button>':'')+'</section>';
+  }
+  function sequenceText(work){
+    return 'Три числа: '+(work.intervalSamples||[]).join('; ')+'. Ряд: начинаю с 0,5, прибавляю 1/'+work.intervalDen+', всего '+(work.intervalCount||1000)+' чисел.';
+  }
+  function mountSequence(main,work,save){
+    let host=main.querySelector('[data-sequence-host]');if(!host)return;
+    function draw(){host.outerHTML=intervalSequence(work,true);host=main.querySelector('[data-sequence-host]');
+      const use=host.querySelector('[data-sequence-use]'),enable=()=>{use.disabled=!work.intervalDen||!(work.intervalSamples||[]).length||[0,1,2].some(i=>!work.intervalSamples?.[i]?.trim());};enable();
+      for(const field of host.querySelectorAll('[data-sequence-x]'))field.oninput=()=>{const samples=Array.from({length:3},(_,i)=>work.intervalSamples?.[i]||'');samples[Number(field.dataset.sequenceX)]=field.value.slice(0,50);work.intervalSamples=samples;enable();save();};
+      for(const [selector,key] of [['[data-sequence-count]','intervalCount'],['[data-sequence-den]','intervalDen']])host.querySelector(selector).onchange=e=>{const val=Number(e.target.value);if(val)work[key]=val;else delete work[key];save();draw();host.querySelector(selector).focus({preventScroll:true});};
+      use.onclick=()=>{const el=main.querySelector('#answer');el.value=sequenceText(work);el.dispatchEvent(new Event('input',{bubbles:true}));el.focus();};
+    }draw();
+  }
+  function intervalResponse(number,part,input,work){
+    if(number===32){
+      if(input!==sequenceText(work))return null;
+      const M=root.PetersonBook.M,samples=(work.intervalSamples||[]).map(M.parse);
+      if(samples.length!==3||samples.some(v=>!v))return {ok:false,text:'Для каждого из трёх примеров нужна числовая запись.'};
+      const outside=samples.findIndex(v=>M.operation('subtract',v,'0.5').n<0||M.operation('subtract',v,'0.6').n>0);
+      if(outside>=0)return {ok:false,text:'Проверь число '+(outside+1)+': каждый пример должен лежать между 0,5 и 0,6 включительно.'};
+      if(new Set(samples.map(v=>M.answer(v))).size!==3)return {ok:false,text:'Две записи обозначают одно и то же число. Нужны три различных решения.'};
+      if(M.operation('subtract',sequenceEnd(work.intervalCount||1000,work.intervalDen),'0.6').n>0)return {ok:false,text:'Последнее число вышло за 0,6. Возьми меньший шаг — увеличь его знаменатель и снова проверь конец ряда.'};
+      return {ok:true,text:'Три числа различны и лежат внутри границ. Положительный шаг даёт разные элементы, последнее число тоже в промежутке. Переключи длину ряда и проверь другой случай. Объяснение ждёт проверки.'};
+    }
+    if(number!==31)return null;
+    const text=input.trim().replace(/\.$/,'');let list;
+    if(text.startsWith('{')!==text.endsWith('}'))return {ok:false,text:'Для записи множества нужны обе фигурные скобки. Можно также перечислить числа через точку с запятой.'};
+    if(['∅','{}','пустое множество'].includes(text.toLowerCase()))list=[];
+    else if(/^\{?\s*\d+(?:\s*;\s*\d+)*\s*\}?$/.test(text))list=text.replace(/[{}]/g,'').split(';').map(Number);
+    else return null;
+    const [a,b,left,right]=integerIntervals[part.id],valid=n=>Number.isInteger(n)&&n>=1&&(left?n>=a:n>a)&&(right?n<=b:n<b),inside=Array.from({length:Math.ceil(b)-Math.floor(a)+1},(_,k)=>Math.floor(a)+k).filter(valid);
+    const extra=list.find(n=>!valid(n));if(extra!==undefined)return {ok:false,text:'Число '+extra+' не подходит. '+((extra===a&&!left)||(extra===b&&!right)?'Его точка на открытой границе: строгий знак исключает равенство.':'Сравни это число с обеими границами.')};
+    if(new Set(list).size!==list.length)return {ok:false,text:'Одно число повторяется. В множестве каждый элемент записывают один раз.'};
+    const missing=inside.find(n=>!list.includes(n));if(missing!==undefined)return {ok:false,text:'Отмеченные числа подходят. Проверь все целые точки в промежутке, включая закрашенные границы.'};
+    return {ok:true,text:inside.length?'Все натуральные точки найдены. Прочитай неравенство вслух и объясни границы; запись ждёт проверки.':'Между указанными границами натуральных чисел нет. Объясни, почему соседние целые не подходят.'};
+  }
+
   const flowInputs=['0,08','0,6','2,9','3','7,2','20,5'];
   function flowSpec(part){
     const [,algorithm,index]=part.id.split('-'),first=algorithm==='1';
@@ -692,6 +757,8 @@
   }
 
   function openingQuestion(number,part) {
+    if(number===31)return 'Прочитай неравенство '+part.prompt+' и перечисли все натуральные значения x, удовлетворяющие обеим границам. Если их нет, запиши пустое множество.';
+    if(number===32)return 'В промежутке 0,5 ≤ x ≤ 0,6 найди три разных решения. Придумай способ получить 1000 различных решений; проверь, можно ли получить 10 000. Объясни, почему границы не нарушаются.';
     if(number===30)return flowQuestion(part);
     if(number===25)return 'Замени одинаковые буквы одинаковыми цифрами, а разные буквы — различными. Первая цифра числа не может быть нулём. Найди верную подстановку для '+(part.id==='025-1'?'ЛЕТО + ЛЕТО = ПОЛЁТ.':'ПЧЁЛКА × 7 = ЖЖЖЖЖЖ.')+' Объясни, как проверил результат.';
     if(number===22)return codewordQuestion(part);
@@ -748,6 +815,8 @@
     if(item.number===23)drawing=decimalModel(part);
     if(item.number===24)drawing=honeySupport();
     if(item.number===30)drawing=flowFigure(part,{},false);
+    if(item.number===31)drawing=integerView(part,{},false);
+    if(item.number===32)drawing=intervalSequence({},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
@@ -776,5 +845,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse};
 })(globalThis);
