@@ -112,6 +112,8 @@
   const openLink = el('a','journey-open','Открыть задание →'); openLink.dataset.journeyAction = 'open';
   const sourceLink = el('a','journey-source'); sourceLink.target = '_blank'; sourceLink.rel = 'noopener';
   const actions = el('div','journey-caption-actions'); actions.append(openLink,sourceLink);
+  const courseLink = el('a','journey-course-link','Последовательные уроки →');
+  courseLink.href = '#courses'; actions.append(courseLink);
   caption.append(captionTitle,captionText,captionProgress,actions);
   const stepper = el('div','journey-stepper');
   const previous = button('← Предыдущий шаг','previous',() => travel(-1));
@@ -283,7 +285,7 @@
       return p ? 'Завершено историй: '+p.completed.length+' из '+p.total+'. Новые проверки без подсказки: '+p.independent.length+'.' : '';
     }
     if (view.group.id === 'algebra' || view.group.id === 'geometry') {
-      return 'Здесь — вход и подготовительные занятия. Полный постраничный курс Киселёва пока не создан. Практика по ссылке требует интернета.';
+      return 'Восемь последовательных уроков доступны здесь и в автономном комплекте. Полный постраничный курс Киселёва пока не создан. Соседние тренажёры по внешним ссылкам требуют интернета.';
     }
     return 'Можно открыть любую тему и вернуться к незавершённому заданию.';
   }
@@ -303,6 +305,9 @@
     captionText.textContent = view.topic?.goal || view.group?.goal ||
       'Приблизь раздел, выбери тему и открой задание. Кнопки со стрелками проведут по пути, а «Вся карта» покажет, где ты находишься.';
     captionProgress.textContent = progressText();
+    const courseTrack = view.group && ['algebra','geometry'].includes(view.group.id) ? view.group.id : 'arithmetic';
+    courseLink.href = view.group ? '#courses-' + courseTrack : '#courses';
+    courseLink.textContent = view.group ? (courseTrack === 'arithmetic' ? '24 урока арифметики →' : '8 уроков с практикой →') : '40 последовательных уроков →';
     sourceLink.hidden = !view.group?.source;
     if (view.group?.source) { sourceLink.href=view.group.source.href; sourceLink.textContent=view.group.source.title; }
     openLink.hidden = !view.group;

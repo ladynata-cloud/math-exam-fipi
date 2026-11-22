@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="arzhenikov-art.css">
   <link rel="stylesheet" href="arzhenikov-discoveries.css">
   <link rel="stylesheet" href="arzhenikov-journeys.css">
+  <link rel="stylesheet" href="arzhenikov-courses.css">
   <script src="arzhenikov-art.js" defer></script>
   <script src="arzhenikov-map.js" defer></script>
   <script src="arzhenikov-garden-bank.js" defer></script>
@@ -27,6 +28,11 @@
   <script src="arzhenikov-discoveries.js" defer></script>
   <script src="arzhenikov-adventure.js" defer></script>
   <script src="arzhenikov-journeys.js" defer></script>
+  <script src="arzhenikov-course-arithmetic.js" defer></script>
+  <script src="arzhenikov-course-algebra.js" defer></script>
+  <script src="arzhenikov-course-geometry.js" defer></script>
+  <script src="arzhenikov-course-engine.js" defer></script>
+  <script src="arzhenikov-courses.js" defer></script>
 
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
@@ -41,16 +47,18 @@
       </div>
       <div class="meter"><strong id="total">Пройдено 0 из 8</strong><progress id="bar" value="0" max="8" aria-label="Пройденные навыки"></progress></div>
     </div>
+    <section id="arz-courses" aria-label="Курсы арифметики, алгебры и геометрии" hidden></section>
     <section id="journey-map" aria-label="Карта математических путешествий" hidden></section>
     <section id="discoveries" aria-label="Бюро открытий: предскажи, проверь, объясни" hidden><div id="discoveries-play"></div></section>
     <section id="next-course" class="bridge-course" aria-labelledby="bridge-title" hidden>
       <h2 id="bridge-title">После арифметики — два новых пути</h2>
       <p class="bridge-intro">Когда можешь показать действие, объяснить ответ и решить похожую задачу с другими числами, попробуй следующий шаг. В алгебре мы ищем неизвестное и записываем связи буквами. В геометрии исследуем фигуры и объясняем, почему они устроены именно так.</p>
-      <p>Исторические ориентиры — советские издания учебников А. П. Киселёва. Здесь собран вход в эти направления: подготовительные занятия MathExam и ссылки на книги. Полный постраничный курс Киселёва пока не создан.</p>
+      <p>Исторические ориентиры — советские издания учебников А. П. Киселёва. Теперь здесь есть два вводных курса MathExam: по восемь последовательных уроков с моделями, практикой и самостоятельной проверкой. Они работают и в автономном комплекте. Полный постраничный курс Киселёва пока не создан.</p>
       <div class="bridge-options">
         <article class="bridge-card">
           <h3>Алгебра</h3>
           <p>От неизвестного числа к уравнению.</p>
+          <p><a class="bridge-map" href="#courses-algebra">Пройти 8 уроков алгебры →</a></p>
           <ol>
             <li><a href="/trainers/simple-equations-stepwise.html">Найди неизвестное число</a> — выбери обратное действие и проверь ответ.</li>
             <li><a href="/trainers/oge-basics/negative-number-line.html">Исследуй числа со знаком</a> на числовой прямой.</li>
@@ -62,6 +70,7 @@
         <article class="bridge-card">
           <h3>Геометрия</h3>
           <p>От рисунка и измерения к объяснению.</p>
+          <p><a class="bridge-map" href="#courses-geometry">Пройти 8 уроков геометрии →</a></p>
           <ol>
             <li><a href="/geometry-course/atlas/segments.html">Начни с точек и отрезков</a> — двигай, сравнивай, замечай.</li>
             <li><a href="/geometry-course/atlas/measure-angle.html">Исследуй и измерь угол</a>.</li>
@@ -72,7 +81,7 @@
         </article>
       </div>
       <p>Если дроби, измерения или проценты ещё требуют тренировки, вернись в <a href="/soviet-math/">действующий курс арифметики по советским учебникам</a>. Можно заниматься в своём темпе.</p>
-      <p class="bridge-availability">Занятия по внешним ссылкам открываются онлайн бесплатно. В скачиваемый комплект входят город, порт, оранжерея, деление по шагам, Бюро открытий и карта путей.</p>
+      <p class="bridge-availability">В скачиваемый комплект входят все 40 новых уроков, город, порт, оранжерея, деление по шагам, Бюро открытий и карта путей. Занятия по внешним ссылкам открываются онлайн бесплатно.</p>
       <a href="#journey">← Вся карта</a>
     </section>
     <section id="workshop" class="workshop" aria-labelledby="workshop-title">
@@ -96,6 +105,10 @@
       <div><strong>А что изменится, если…</strong><p>24 истории в Бюро открытий: сначала предположи, потом проверь действием и объясни.</p></div>
       <a class="journey-open" href="#discoveries">Открыть Бюро →</a>
       <a href="#journey">Большая карта с приближением ↗</a>
+    </aside>
+    <aside class="course-entry" id="course-entry" aria-label="Последовательные курсы">
+      <div><strong>От первого числа — к алгебре и геометрии</strong><p>40 уроков: объяснение, модель, практика и проверка на новых числах. Можно начать с простого и идти в своём темпе.</p></div>
+      <a href="#courses">Выбрать курс →</a>
     </aside>
     <section class="garden" id="garden" aria-labelledby="garden-title">
       <div class="garden-cover">
@@ -129,7 +142,7 @@
       </section>
     </div>
     <nav class="life-modes" aria-label="Разделы тренажёра">
-      <a href="#journey">Вся карта</a><a href="#workshop">Город маленьких дел</a><a href="#harbor">Порт отправлений</a><a href="#discoveries">Бюро открытий</a><a href="#garden-count">Оранжерея равных групп</a><a href="#count">Деление по шагам</a><a href="#next-course">Алгебра и геометрия</a>
+      <a href="#journey">Вся карта</a><a href="#courses">40 последовательных уроков</a><a href="#workshop">Город маленьких дел</a><a href="#harbor">Порт отправлений</a><a href="#discoveries">Бюро открытий</a><a href="#garden-count">Оранжерея равных групп</a><a href="#count">Деление по шагам</a><a href="#next-course">Алгебра и геометрия</a>
     </nav>
     <details class="teachers" id="adventure-route"><summary>Куда можно отправиться дальше</summary>
       <div class="adv-route-options">
@@ -152,6 +165,7 @@
       <p>Наш город, исследования и карта — современная авторская адаптация MathExam. Здесь ребёнок действует с предметами, объясняет результат и связывает действие с записью. <a href="https://repo.nspu.ru/handle/nspu/5833" target="_blank" rel="noopener">«Методика начальной арифметики», издание 1936 года, в репозитории НГПУ ↗</a>. Книга переиздана после смерти автора; переработка А. С. Пчёлко указана в <a href="https://www.mathedu.ru/text/arzhenikov_metodika_nachalnoy_arifmetiki_1936/" target="_blank" rel="noopener">библиографической записи Mathedu ↗</a>.</p>
     </details>
     <details class="teachers"><summary>Взрослым · как устроено занятие</summary>
+      <p>Последовательные курсы добавляют 24 урока арифметики, 8 уроков алгебры и 8 уроков геометрии: всего 320 числовых условий и 40 вопросов на объяснение. В каждом уроке первые две задачи проходят с моделью, затем идут две тренировочные и две проверочные. После объяснения можно открыть ещё два новых условия. Подсказки, исправления и первый самостоятельный ответ сохраняются раздельно. Прогресс относится к этим заданиям и не заменяет наблюдение за тем, как ребёнок решает новую задачу.</p>
       <p>Это авторская игровая адаптация по мотивам задачника К. П. Арженикова. Город подходит для работы с ребёнком, который уже считает предметы в пределах двадцати. Если читать условия пока трудно, взрослый может прочитать их вслух. Формат охватывает равные группы, умножение и деление; это не полный курс начальной арифметики.</p>
       <p>В городе 48 житейских историй: по шесть в восьми местах. Сначала ребёнок действует с предметами, затем подбирает запись к своим решениям. Открытка появляется после трёх историй и их записей. Подсказки и исправления разрешены. Открытки отмечают завершённые места, а счётчик — разные решённые истории; они не заменяют самостоятельную проверку на новой задаче.</p>
       <p>Попросите показать на рисунке, что означает каждое число. При раздаче поровну известны получатели, а при упаковке — сколько предметов помещается в одну группу. Экранное действие полезно повторить с настоящими предметами: например, раздать шесть карандашей двум людям, а затем собрать из этих карандашей наборы по два.</p>
