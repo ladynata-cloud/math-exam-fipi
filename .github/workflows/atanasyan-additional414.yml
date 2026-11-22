@@ -101,6 +101,8 @@ jobs:
           node tools/stereo-textbook/coordinates-chapter-seven-self-check.test.cjs
           node tools/stereo-textbook/additional-coordinate-combinations.test.cjs
           node tools/stereo-textbook/additional-coordinate-distances.test.cjs
+          node tools/stereo-textbook/additional-directed-and-plane-angles.test.cjs
+          node tools/stereo-textbook/coordinate-chapter-seven-end.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -422,6 +424,16 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: additionalCoordinateDistances
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/additional-coordinate-distances
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check every directed edge and plane angle in exercises 749–756
+        env:
+          TEXTBOOK_PRACTICE_GROUP: additionalDirectedAndPlaneAngles
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/additional-directed-and-plane-angles
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Finish chapter VII with signed direction cosines, dihedral angles and two-sided isometry proofs
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinateChapterSevenEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-chapter-seven-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -519,5 +531,7 @@ jobs:
             artifacts/coordinates-chapter-seven-self-check/
             artifacts/additional-coordinate-combinations/
             artifacts/additional-coordinate-distances/
+            artifacts/additional-directed-and-plane-angles/
+            artifacts/coordinate-chapter-seven-end/
           retention-days: 14
           if-no-files-found: error
