@@ -464,6 +464,28 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const universalStatements=[
+    ['Каждая европейская страна входит в Европейский союз.','европейская страна','не входящая в Европейский союз','входящая в Европейский союз','находящаяся вне Европы','Не все европейские страны входят в Евросоюз.','Сохрани круг стран: рассматриваются именно европейские. Членство в союзе — свойство, которое меняется.'],
+    ['Любое европейское государство является республикой.','европейское государство','которое не является республикой','которое является республикой','которое находится за пределами Европы','Не каждое европейское государство является республикой.','Меняется форма правления, а принадлежность государства к Европе сохраняется.'],
+    ['В каждом российском городе найдётся памятник истории.','город России','в котором нет ни одного памятника истории','в котором есть памятник истории','в котором один из домов не является памятником','Не в каждом российском городе есть памятник истории.','Одного дома без статуса памятника мало. В городе-контрпримере не должно быть ни одного такого памятника.'],
+    ['Все города России расположены в Европе.','город России','расположенный вне Европы','расположенный в Европе','не относящийся к России','Не все города России расположены в Европе.','Для контрпримера нужен именно российский город: меняется только его расположение в Европе.'],
+    ['Любая планета имеет форму шара. Одинаково понимай «форму шара» в обеих фразах.','планета','форма которой не соответствует принятому здесь смыслу шара','форма которой соответствует принятому здесь смыслу шара','которая не является планетой','Не всякая планета имеет форму шара.','Выбери один смысл формы шара: точная геометрическая форма или приближённая модель. Используй его в обеих фразах.'],
+    ['У любой планеты Солнечной системы есть естественный спутник.','планета Солнечной системы','не имеющая естественных спутников','имеющая хотя бы один естественный спутник','у которой нет искусственных спутников','Не у каждой планеты Солнечной системы есть естественный спутник.','Сохрани слово «естественный». Отсутствие одного конкретного спутника не означает отсутствия всех.'],
+    ['Ни одна планета Солнечной системы не окружена кольцами.','планета Солнечной системы','имеющая кольца','не имеющая колец','имеющая естественный спутник','Неверно, что у всех планет Солнечной системы отсутствуют кольца.','Исходная фраза уже содержит отрицание. Для её опровержения нужны именно кольца хотя бы у одной планеты.'],
+    ['На всякой планете есть вода.','планета','на которой нет воды','на которой есть вода','на которой нет океана','Не на каждой планете есть вода.','Отсутствие океана ещё допускает воду в другой форме. Сохрани значение слова «вода».'],
+    ['Любое высказывание выражается повествовательным предложением.','высказывание','которое не является повествовательным предложением','которое является повествовательным предложением','которое ложно','Не всякое высказывание является повествовательным предложением.','Отрицай форму предложения. Истинность самого высказывания — другое свойство.'],
+    ['Ни одно вопросительное предложение не является высказыванием.','вопросительное предложение','которое является высказыванием','которое не является высказыванием','на которое кто-то ответил','Неверно, что ни одно вопросительное предложение не является высказыванием.','В исходном тексте говорится о самом вопросительном предложении, а не о возможном ответе на него.'],
+    ['У каждого четырёхугольника диагонали равны.','четырёхугольник','диагонали которого различны по длине','диагонали которого равны','у которого стороны имеют разную длину','Не у всех четырёхугольников равные диагонали.','Сравни длины диагоналей. Разные стороны сами по себе ничего не решают.'],
+    ['Всякий угол является либо острым, либо тупым.','угол','который не является ни острым, ни тупым','который не является острым','который не является тупым','Не всякий угол является острым или тупым.','Чтобы отрицать «острый или тупой», исключи одновременно оба вида. Например, проверь угол в 90°.']
+  ];
+  function universalCard(part){
+    const [statement,subject,opposite,unchanged,distractor,alternative,hint]=universalStatements[Number(part.id.split('-')[1])-1];
+    return {prompt:'Составь два равносильных отрицания и объясни, почему ровно одно из исходного утверждения и его отрицания верно. Исходная фраза: '+statement,
+      reference:'Представь список всех рассматриваемых объектов. Либо у каждого есть нужное свойство, либо найдётся объект без него. Для фразы «ни один» контрпримером будет объект с указанным свойством.',
+      leftTitle:'Начало отрицания',left:['Существует хотя бы один такой объект','Любой такой объект','Не существует ни одного такого объекта'],li:0,
+      rightTitle:'Какой объект нужен?',right:[subject+', '+opposite,subject+', '+unchanged,subject+', '+distractor],ri:0,hint,alternative,second:true};
+  }
+
   const factChecks=[
     ['Бруно следовал астрономическому учению Птолемея.','Бруно развивал представление Коперника о движении Земли.','Бруно не следовал этому учению Птолемея.','Бруно не занимался астрономией.','Птолемей следовал учению Бруно.','Отрицай именно указанную связь учёного с учением. Занятия астрономией сами по себе её не устанавливают.','https://plato.stanford.edu/entries/bruno/','Стэнфордская энциклопедия философии'],
     ['Рекорд высоты среди деревьев принадлежит пальмам.','Выше всех известных ныне живущих деревьев вырастают вечнозелёные секвойи.','Рекорд высоты среди деревьев не принадлежит пальмам.','Все пальмы низкие.','Ни одно другое дерево не выше пальмы.','Высокое дерево может и не быть рекордсменом. Утверждение о первенстве опровергает более высокий вид.','https://home.nps.gov/articles/000/coast-redwood.htm','Служба национальных парков США'],
@@ -481,6 +503,7 @@
     ['Значение x на единицу меньше квадрата этого же числа.',['x = x² − 1','x < x²','x² = x − 1'],['x ≠ x² − 1','x ≥ x²','x = x² + 1'],'«На единицу» задаёт точную разность. Для отрицания достаточно любой другой разности, в том числе двух.']
   ];
   function logicCard(number,part){
+    if(number===26)return universalCard(part);
     const i=Number(part.id.split('-')[1])-1;
     if(number===19){
       const [statement,fact,denial,a,b,hint,url,sourceName]=factChecks[i];
@@ -504,13 +527,14 @@
       const offset=(Number(part.id.split('-')[1])+number+(side==='left'?0:1))%options.length;
       return '<label style="display:grid;gap:.2em">'+U.esc(title)+'<select style="max-width:100%;width:100%;min-width:0" data-logic-'+side+'><option value="">Выбери вариант</option>'+options.map((_,j)=>{const i=(j+offset)%options.length;return '<option value="'+(i+1)+'">'+U.esc(options[i])+'</option>';}).join('')+'</select></label>';
     };
-    return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
+    return '<section data-logic-host aria-label="Проверка двух записей"><h3>Проверь две записи</h3>'+(interactive?'<div style="display:grid;gap:.6em">'+group('left',card.leftTitle,card.left)+group('right',card.rightTitle,card.right)+(card.second?'<label>Второе, равносильное отрицание своими словами<textarea maxlength="600" data-logic-other></textarea></label>':'')+'</div><p data-logic-summary aria-live="polite"></p><button type="button" class="secondary" data-logic-use>Перенести выбранную пару в ответ</button>':'')+'<details data-logic-reference><summary>'+(number===20?'Как проверить пару':'Справка для проверки')+'</summary><p>'+U.esc(card.reference)+(card.second?' Например: «'+U.esc(card.alternative)+'»':'')+'</p>'+(card.url?'<a href="'+U.esc(card.url)+'" target="_blank" rel="noopener noreferrer">'+U.esc(card.sourceName)+'</a>':'')+'</details></section>';
   }
-  function logicText(card,work){return (card.left[work.logicLeft-1]||'…')+' / '+(card.right[work.logicRight-1]||'…');}
+  function logicText(card,work){return (card.left[work.logicLeft-1]||'…')+' / '+(card.right[work.logicRight-1]||'…')+(card.second&&work.logicOther?' / Второе отрицание: '+work.logicOther:'');}
   function mountLogic(main,number,part,work,save){
     const host=main.querySelector('[data-logic-host]');if(!host)return;
     host.outerHTML=logicConstruction(number,part,true);
     const card=logicCard(number,part),left=main.querySelector('[data-logic-left]'),right=main.querySelector('[data-logic-right]'),use=main.querySelector('[data-logic-use]');
+    const other=main.querySelector('[data-logic-other]');if(other){other.value=work.logicOther||'';other.oninput=()=>{work.logicOther=other.value.slice(0,600);update();save();};}
     function update(){left.value=work.logicLeft||'';right.value=work.logicRight||'';main.querySelector('[data-logic-summary]').textContent=logicText(card,work);use.disabled=!work.logicLeft||!work.logicRight;}
     for(const [select,key] of [[left,'logicLeft'],[right,'logicRight']])select.onchange=()=>{if(select.value)work[key]=Number(select.value);else delete work[key];update();save();};
     use.onclick=()=>{const field=main.querySelector('#answer');field.value=logicText(card,work);field.dispatchEvent(new Event('input',{bubbles:true}));field.focus();};
@@ -519,10 +543,11 @@
     update();
   }
   function logicResponse(number,part,input,work){
-    if(number<19||number>21)return null;
+    if((number<19||number>21)&&number!==26)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
-    if(work.logicLeft!==card.li+1)return {ok:false,text:number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
+    if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
+    if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
 
@@ -531,7 +556,7 @@
     if(number===22)return codewordQuestion(part);
     if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
     if(number===24)return 'С первого улья собрали 24,8 кг мёда. Второй дал на 6,4 кг меньше первого. С третьего получили половину совместного сбора первого и второго. Весь мёд поровну разлили в 18 банок. Сколько килограммов мёда в одной банке?';
-    if(number>=19&&number<=21)return logicCard(number,part).prompt;
+    if((number>=19&&number<=21)||number===26)return logicCard(number,part).prompt;
     if(number===17||number===18)return campQuestion(number,part);
     if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
@@ -582,7 +607,7 @@
     if(item.number===23)drawing=decimalModel(part);
     if(item.number===24)drawing=honeySupport();
     if(item.number===25)drawing=puzzleFigure(part,{},false);
-    if(item.number>=19&&item.number<=21)drawing=logicConstruction(item.number,part,false);
+    if((item.number>=19&&item.number<=21)||item.number===26)drawing=logicConstruction(item.number,part,false);
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);

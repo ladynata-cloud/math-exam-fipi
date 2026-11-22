@@ -312,14 +312,39 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'letters-'+part.id,match:'skill',mistake:hint};
   }
 
+  function universalPractice(part,attempt){
+    const i=Number(part.id.split('-')[1])-1,v=seed(part.id)%97+attempt;
+    const contexts=[
+      ['страны вымышленного региона','страна участвует в союзе','участвует','не участвует'],
+      ['страны на игровой карте','у страны республиканская форма правления','республика','монархия'],
+      ['города на условной карте','в городе есть исторический памятник','есть памятник','памятников нет'],
+      ['города вымышленной страны','город лежит на северном острове','на северном острове','на южном острове'],
+      ['пластилиновые модели планет','модель имеет форму шара','шар','куб'],
+      ['планеты в вымышленной системе','у планеты есть хотя бы одна луна','две луны','лун нет'],
+      ['планеты в игре','планета не имеет колец','без колец','есть кольца'],
+      ['образцы грунта','образец содержит воду','вода обнаружена','воды нет'],
+      ['русские предложения в учебной коллекции','предложение повествовательное','повествовательное','вопросительное'],
+      ['надписи на карточках','надпись не является вопросом','сообщение','вопрос'],
+      ['четырёхугольники на чертеже','длины двух диагоналей равны','длины 5 и 5','длины 4 и 6'],
+      ['отмеченные углы','угол острый или тупой',v%2?'35°':'140°','90°']
+    ];
+    const [domain,property,yes,no]=contexts[i],names=['А','Б','В','Г','Д','Е'],start=v%names.length,selected=[0,1,2].map(j=>names[(start+j)%names.length]),witness=v%4;
+    const rows=selected.map((name,j)=>name+' — '+(j===witness?no:yes)).join('; ');
+    const options=selected.map(name=>'Карточка '+name).concat('Среди трёх карточек контрпримера нет'),answer=options[witness],shift=v%4;
+    const hint='Сравни с правилом каждую карточку. Для опровержения утверждения о всех объектах достаточно одного, у которого указанное свойство отсутствует.';
+    return {...choice('Модель: '+domain+'. Данные по трём карточкам: '+rows+'. Правило для всех карточек: «'+property+'». Укажи контрпример, если он есть.',options.slice(shift).concat(options.slice(0,shift)),answer,hint),
+      id:'analog-'+part.id+'-'+attempt,family:'quantifier-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>25)return createLegacy(number,part,attempt);
+    if(number<7||number>26)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===26)return universalPractice(part,attempt);
     if(number===25)return letterPractice(part,attempt);
     if(number>=22)return codewordPractice(number,part,attempt);
     if(number>=19)return logicPractice(number,part,attempt);
@@ -353,7 +378,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=25&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=26&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -375,7 +400,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=25&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=26&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

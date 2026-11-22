@@ -591,3 +591,16 @@ test('both page-nine alphametics show carries, keep manual reasoning and admit a
   }
  }
 });
+test('all twelve universal statements keep the domain, reverse the predicate and retain a second formulation',async t=>{
+ const s=await surface(t,BOOK+'#n/26/026-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[25];
+ const change=(field,value)=>{const el=element(s,'[data-logic-'+field+']');el.value=String(value);el.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ const turnIn=()=>{click(s,'[data-logic-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const p of row.parts){
+  await route(s,'#n/26/'+p.id);assert.match(sourcePresent(s).textContent,/Составь два/);change('left',2);change('right',1);assert.match(turnIn(),/Сколько объектов/);
+  change('left',1);change('right',2);assert.match(element(s,'[data-logic-summary]').textContent,/Существует/);assert(!turnIn().includes('Такой объект'));
+  change('right',1);assert.match(turnIn(),/Добавь вторую/);const words='Неверно, что '+sourcePresent(s).querySelector('.problem').textContent.split('Исходная фраза: ')[1];input(s,'[data-logic-other]',words);assert.match(turnIn(),/Второе отрицание сохранено/);
+  const w=bookWork(s,p.id);assert.equal(w.logicOther,words);assert(w.draft.includes(words));assert(w.submitted&&!w.correct&&!w.independent);
+  const answers=new Set();for(let j=0;j<36;j++){const sample=s.w.PetersonAnalogues.create(26,p,j);assert(s.w.PetersonBook.check(sample,sample.answer));answers.add(sample.answer);}assert(answers.has('Среди трёх карточек контрпримера нет')&&answers.size>=4);
+ }
+ const ss=await surface(t,BOOK+'#n/26/026-12',storage(s));assert.match(element(ss,'[data-logic-other]').value,/угол/);assert.equal(element(ss,'[data-logic-right]').value,'1');
+});
