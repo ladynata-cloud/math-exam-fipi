@@ -2256,10 +2256,10 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "e8f67ff3c53fb1eed467d4a9091d68c9c066f47bb7994ad86b2a73337867c467",
-      "afterSha256": "96c36de5647fcdf86e88c72fc4940dac0860c360c287e302c4eb485d03325067",
+      "beforeSha256": "cb1c83acd4cdc5f79fff841c4a76559e7e1957fb6f4ab1aa9d1404f70f649d0a",
+      "afterSha256": "24cc93b0b81e9b19738c88a8bff8ceab3ef6700fce6d32ec4a87c1e7df888465",
       "placement": "before-head-close",
-      "sourceSha": "27d457bdccd30f4f834c0e65dcc38da5431f167d"
+      "sourceSha": "a3692ce412121210f0a9def263bbe3c812c13d71"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
       "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
@@ -7613,6 +7613,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин, часть 2, печатная страница 19. Проверены четыре вычисления по классам и пространственные виды гаража, мобильный вход и возвращение обоих участников."
+    },
+    {
+      "previousBaseSha": "27d457bdccd30f4f834c0e65dcc38da5431f167d",
+      "sourceBaseSha": "a3692ce412121210f0a9def263bbe3c812c13d71",
+      "task": "docs/tasks/MAKARYCHEV8_1131_1135.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [

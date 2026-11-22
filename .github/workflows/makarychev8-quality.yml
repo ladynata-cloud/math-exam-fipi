@@ -163,6 +163,7 @@ jobs:
           node school/makarychev8/test-affine-study.cjs
           node school/makarychev8/test-line-position.cjs
           node school/makarychev8/test-root-study.cjs
+          node school/makarychev8/test-final-functions.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -287,7 +288,9 @@ jobs:
       - name: Chromium line position, graph statements and full factorization
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-line-position.cjs
       - name: Chromium square-root intersections and custom constructions
-        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-root-study.cjs
+        run: |
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-root-study.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-final-functions.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction

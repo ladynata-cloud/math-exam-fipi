@@ -120,6 +120,14 @@ on:
       - 'tools/geometry-textbook/*plane_isometries*'
       - 'tools/geometry-textbook/*isometry_invariants*'
       - 'tools/geometry-textbook/*isometric_quadrilaterals*'
+      - 'tools/geometry-textbook/*rotation_centers*'
+      - 'geometry-course/textbook/data/rotation-centers.json'
+      - 'tools/geometry-textbook/*rotated_circles_lines*'
+      - 'geometry-course/textbook/data/rotated-circles-lines.json'
+      - 'tools/geometry-textbook/*rotation_constructions*'
+      - 'geometry-course/textbook/data/rotation-constructions.json'
+      - 'tools/geometry-textbook/*parallel_translation_constructions*'
+      - 'geometry-course/textbook/data/parallel-translation-constructions.json'
       - 'tools/geometry-textbook/*translations_and_rotations*'
       - 'geometry-course/textbook/data/translations-and-rotations.json'
       - 'tools/geometry-textbook/*motion_composition*'
@@ -228,6 +236,10 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/rotation_centers.py --check && python3 tools/geometry-textbook/check_rotation_centers.py
+      - run: python3 tools/geometry-textbook/rotated_circles_lines.py --check && python3 tools/geometry-textbook/check_rotated_circles_lines.py
+      - run: python3 tools/geometry-textbook/rotation_constructions.py --check && python3 tools/geometry-textbook/check_rotation_constructions.py
+      - run: python3 tools/geometry-textbook/parallel_translation_constructions.py --check && python3 tools/geometry-textbook/check_parallel_translation_constructions.py
       - run: python3 tools/geometry-textbook/translations_and_rotations.py --check && python3 tools/geometry-textbook/check_translations_and_rotations.py
       - run: python3 tools/geometry-textbook/motion_composition.py --check && python3 tools/geometry-textbook/check_motion_composition.py
       - run: python3 tools/geometry-textbook/isometry_constructions.py --check && python3 tools/geometry-textbook/check_isometry_constructions.py
