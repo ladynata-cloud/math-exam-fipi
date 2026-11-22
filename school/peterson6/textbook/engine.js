@@ -81,6 +81,16 @@ function sanitize(part,input){
  if(/^05[01]-/.test(part.id)&&Number.isInteger(input.proofProbe)){
   const tiger=part.id.startsWith('050-');if(input.proofProbe>=(tiger?0:1)&&input.proofProbe<=(tiger?3:60))clean.proofProbe=input.proofProbe;
  }
+ if(part.id==='057-1'){
+  if(Array.isArray(input.mushroomValues)&&input.mushroomValues.length===4)clean.mushroomValues=input.mushroomValues.map(v=>typeof v==='string'?cut(v,6):'');
+  if(Array.isArray(input.mushroomOrder)&&input.mushroomOrder.length<=4&&new Set(input.mushroomOrder).size===input.mushroomOrder.length&&input.mushroomOrder.every(v=>Number.isInteger(v)&&v>=0&&v<4))clean.mushroomOrder=[...input.mushroomOrder];
+  if(typeof input.mushroomProof==='string'&&input.mushroomProof)clean.mushroomProof=cut(input.mushroomProof,600);
+ }
+ if(part.id==='058-1'){
+  if(Number.isInteger(input.secretWord)&&input.secretWord>=0&&input.secretWord<5)clean.secretWord=input.secretWord;
+  if(Number.isInteger(input.secretPosition)&&input.secretPosition>=0&&input.secretPosition<[8,1,4,3,8][clean.secretWord||0])clean.secretPosition=input.secretPosition;
+  if(Array.isArray(input.secretParts)&&input.secretParts.length===5)clean.secretParts=input.secretParts.map(v=>typeof v==='string'?cut(v,16):'');
+ }
  if(/^05[56]-/.test(part.id)){
   const wall=part.id==='056-2',num=part.id==='056-1'?3:6;
   if(['outline',wall?'openings':'area'].includes(input.roomLayer))clean.roomLayer=input.roomLayer;

@@ -613,6 +613,19 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'measurement-'+part.id,match:'skill'};
   }
 
+  function basketCipherPractice(number,part,attempt){
+    const k=seed(part.id)%83+attempt,shift=k%3;let prompt,options,hint;
+    if(number===57){
+      const teams=[['Нина','Маша','Оля','Лена'],['Игорь','Коля','Лёва','Саша'],['Ира','Рая','Соня','Яна'],['Тим','Даня','Миша','Сева']][k%4],n=teams.slice(k%3).concat(teams.slice(0,k%3)),[a,b,c,d]=n;
+      prompt='Количество орехов обозначено именами. '+a+' + '+b+' = '+c+' + '+d+'; '+a+' + '+d+' < '+b+' + '+c+'; '+d+' > '+c+'. Выбери порядок по убыванию.';
+      options=[[b,d,c,a],[d,b,c,a],[b,d,a,c]].map(arr=>arr.join(' → '));hint='Из равенства вырази первое количество. Подстановка в неравенство позволит сравнить второе и четвёртое.';
+    }else{
+      const keys=['АБВ','ГДЕ','ЖЗИ','ЙКЛ','МНО','ПРС','ТУФ','ХЦЧ','ШЩЪ','ЫЬЭ','ЮЯ '],words=['ВОЛНА','ТОПОР','СОКОЛ','ДОСКА','ТРОПА','ЛУНКА','РОБОТ','БЕЛКА','МИСКА','ТОЧКА','ГРУША','СОСНА','ПАРТА','НОЖИК','РЫБКА','КОМАР','ВЕТКА','СУМКА','ЛАМПА','КОШКА'],code=s=>[...s].map(l=>keys.findIndex(v=>v.includes(l))).join(''),word=words[k%words.length],variants=words.filter(w=>code(w)!==code(word));
+      options=[word,variants[k%variants.length],variants[(k+1)%variants.length]];prompt='В нашем шифре коды 0–9 означают по порядку АБВ, ГДЕ, ЖЗИ, ЙКЛ, МНО, ПРС, ТУФ, ХЦЧ, ШЩЪ и ЫЬЭ. Какое из слов подходит к записи '+code(word)+'?';hint='Проверь каждую позицию слова по группе букв. Одного совпадения в начале недостаточно.';
+    }
+    return {...choice(prompt,options.slice(shift).concat(options.slice(0,shift)),options[0],hint),id:'analog-'+part.id+'-'+attempt,family:'mushroom-cipher-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number===56&&part.expression)return measurePractice(number,part,attempt);
     if(number===49&&part.expression)return cuboidPractice(part,attempt);
@@ -621,11 +634,12 @@
     if(number===34||number===52)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>56)return createLegacy(number,part,attempt);
+    if(number<7||number>58)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=57)return basketCipherPractice(number,part,attempt);
     if(number>=55)return measurePractice(number,part,attempt);
     if(number===54)return commonPractice(number,part,attempt);
     if(number===53)return divisorFilterPractice(number,part,attempt);
@@ -677,7 +691,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=56&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=58&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -699,7 +713,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=56&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=58&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

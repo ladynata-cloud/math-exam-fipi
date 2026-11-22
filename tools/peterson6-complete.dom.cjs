@@ -919,3 +919,17 @@ test('personal floor dimensions and the printed room distinguish area, volume an
  }
  const re=await surface(t,BOOK+'#n/55/055-1',storage(s));assert.equal(element(re,'[data-room-field="0"]').value,'4,1');assert.match(element(re,'#answer').value,/13,12 м²/);
 });
+test('source 57 ranks all valid mushroom assignments, source 58 admits only compatible codes',async t=>{
+ const s=await surface(t,BOOK+'#n/57/057-1'),bank=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises,keys=['АБВ','ГДЕ','ЖЗИ','ЙКЛ','МНО','ПРС','ТУФ','ХЦЧ','ШЩЪ','ЫЬЭ','ЮЯ '],code=x=>[...x].map(c=>keys.findIndex(g=>g.includes(c))).join('');
+ let witness=0;for(let a=0;a<8;a++)for(let b=0;b<8;b++)for(let v=0;v<8;v++)for(let g=0;g<8;g++)if(a+b===v+g&&a+g<b+v&&g>v){assert(b>g&&g>v&&v>a);witness++;}assert(witness>0);
+ for(const [i,v] of [1,4,2,3].entries())input(s,'[data-mushroom-count="'+i+'"]',String(v));assert.equal([...element(s,'[data-mushroom-results]').querySelectorAll('li')].filter(e=>!e.textContent.includes('не выполнено')).length,3);
+ for(const i of [1,2,3,0])click(s,'[data-mushroom-rank="'+i+'"]');click(s,'[data-mushroom-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Гена нашёл больше/);for(const i of [2,3,0,3,2,0])click(s,'[data-mushroom-rank="'+i+'"]');
+ input(s,'[data-mushroom-proof]','Подстановка даёт Б > Г, а разности Б − Г и В − А равны.');click(s,'[data-mushroom-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/всем трём/);assert(bookWork(s,'057-1').submitted&&!bookWork(s,'057-1').correct);
+ const model=s.w.PetersonAnalogues;for(let i=0;i<48;i++){const m=model.create(57,bank[56].parts[0],i),[a,b,c,d]=m.prompt.match(/\. ([А-Яа-яЁё]+) \+ ([А-Яа-яЁё]+) = ([А-Яа-яЁё]+) \+ ([А-Яа-яЁё]+)/).slice(1);assert.equal(m.answer,[b,d,c,a].join(' → '));}
+ await route(s,'#n/58/058-1');assert.match(sourcePresent(s).textContent,/61551491/);const words=['ТЕРПЕНЬЕ','И','ТРУД','ВСЕ','ПЕРЕТРУТ'];assert.deepEqual(words.map(code),['61551491','2','6561','051','51516566']);
+ click(s,'[data-secret-letter="Т"]');assert.match(element(s,'[data-secret-input]').value,/^Т_/);input(s,'[data-secret-input]','ТЕРПЕНЬЕ');for(const [i,w] of words.entries()){const sel=element(s,'[data-secret-word]');sel.value=String(i);sel.dispatchEvent(new s.w.Event('change',{bubbles:true}));input(s,'[data-secret-input]',w);}
+ click(s,'[data-secret-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/сложилась пословица/);assert(bookWork(s,'058-1').submitted&&!bookWork(s,'058-1').correct);
+ input(s,'#answer','ТЕРПЕНЬЕ И ТРУД ВСЁ ПЕРЕТРУГ');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/позиция 8/);input(s,'#answer','ТЕРПЕНЬЕ И ТРУД ВСЁ ПЕРЕТРУУ');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Все коды совпали/);
+ for(let i=0;i<48;i++){const m=model.create(58,bank[57].parts[0],i),wordCode=m.prompt.match(/записи (\d+)\?/)[1];assert.deepEqual([...m.choices].filter(w=>code(w)===wordCode),[m.answer]);}
+ const re=await surface(t,BOOK+'#n/58/058-1',storage(s));assert.equal(element(re,'[data-secret-word]').value,'4');assert.equal(element(re,'[data-secret-input]').value,'ПЕРЕТРУТ');
+});

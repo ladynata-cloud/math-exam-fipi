@@ -504,6 +504,59 @@
     function draw(){host.outerHTML=primeExplore(number,part,work,true);host=main.querySelector('[data-proof-host]');const f=host.querySelector('select');f.onchange=()=>{if(f.value==='')delete work.proofProbe;else work.proofProbe=Number(f.value);save();draw();host.querySelector('select').focus({preventScroll:true});};}draw();
   }
 
+  const mushroomNames=['Алик','Боря','Витя','Гена'],cipherAlphabet=['АБВ','ГДЕ','ЖЗИ','ЙКЛ','МНО','ПРС','ТУФ','ХЦЧ','ШЩЪ','ЫЬЭ','ЮЯ '],printedCipher=['61551491','2','6561','051','51516566'];
+  function mushroomView(work,interactive){
+    const values=work.mushroomValues||['','','',''],order=work.mushroomOrder||[],valid=values.every(x=>/^\d{1,6}$/.test(x)),[a,b,v,g]=values.map(Number);
+    const comparisons=valid?[[a+b,'=',v+g,a+b===v+g],[a+g,'<',b+v,a+g<b+v],[g,'>',v,g>v]].map(([x,sign,y,yes])=>'<li>'+x+' '+sign+' '+y+' — '+(yes?'выполнено':'не выполнено')+'</li>').join(''):'';
+    const fields=mushroomNames.map((name,i)=>'<label>'+name+' <input inputmode="numeric" data-mushroom-count="'+i+'" maxlength="6" style="display:block;width:100%;box-sizing:border-box" value="'+U.esc(values[i]||'')+'"></label>').join('');
+    return '<section data-mushroom-host><h3>Проверь свои количества</h3><p>Обозначим числа грибов буквами А, Б, В, Г. Условия: А + Б = В + Г, А + Г &lt; Б + В, Г &gt; В. Конкретная четвёрка проверяет пример; порядок нужно объяснить для всех возможных четвёрок.</p>'+(interactive?fields:'')+'<div data-mushroom-results aria-live="polite">'+(comparisons?'<ol>'+comparisons+'</ol>':'Введи четыре неотрицательных целых числа для проверки.')+'</div>'+(interactive?'<p>Собери порядок от наибольшего количества к наименьшему. Повторный выбор снимает имя.</p>'+mushroomNames.map((s,i)=>'<button class="secondary" data-mushroom-rank="'+i+'" type="button" aria-pressed="'+order.includes(i)+'">'+s+'</button>').join(' ')+'<p data-mushroom-line>'+order.map(i=>mushroomNames[i]).join(' → ')+'</p><label>Как из условий следует этот порядок? <textarea data-mushroom-proof maxlength="600">'+U.esc(work.mushroomProof||'')+'</textarea></label><button class="secondary" type="button" data-mushroom-use>Перенести порядок и объяснение</button>':'')+'</section>';
+  }
+  function mountMushrooms(main,work,save){
+    let host=main.querySelector('[data-mushroom-host]');if(!host)return;
+    function draw(){host.outerHTML=mushroomView(work,true);host=main.querySelector('[data-mushroom-host]');const counts=work.mushroomValues||['','','',''],order=work.mushroomOrder||[];
+      for(const f of host.querySelectorAll('[data-mushroom-count]'))f.oninput=()=>{counts[Number(f.dataset.mushroomCount)]=f.value.slice(0,6);work.mushroomValues=counts;save();const proxy=document.createElement('div');proxy.innerHTML=mushroomView(work,false);host.querySelector('[data-mushroom-results]').innerHTML=proxy.querySelector('[data-mushroom-results]').innerHTML;};
+      for(const b of host.querySelectorAll('[data-mushroom-rank]'))b.onclick=()=>{const i=Number(b.dataset.mushroomRank);work.mushroomOrder=order.includes(i)?order.filter(k=>i!==k):[...order,i];save();draw();host.querySelector('[data-mushroom-rank="'+i+'"]').focus({preventScroll:true});};
+      const proof=host.querySelector('[data-mushroom-proof]');proof.oninput=()=>{work.mushroomProof=proof.value.slice(0,600);save();};
+      const use=host.querySelector('[data-mushroom-use]');use.disabled=order.length!==4;use.onclick=()=>{const f=main.querySelector('#answer');f.value=order.map(i=>mushroomNames[i]).join(' > ')+(work.mushroomProof?' | '+work.mushroomProof:'');f.dispatchEvent(new Event('input',{bubbles:true}));f.focus();};
+    }draw();
+  }
+  function mushroomResponse(number,input){
+    if(number!==57)return null;const raw=input.split('|')[0].trim().replace(/[.]$/,'').split(/\s*[,>→;]\s*/).map(x=>mushroomNames.findIndex(s=>s.toLowerCase()===x.toLowerCase()));
+    if(raw.length!==4||raw.includes(-1))return null;if(new Set(raw).size!==4)return {ok:false,text:'Каждое имя нужно указать ровно один раз.'};
+    const at=i=>raw.indexOf(i);if(at(3)>at(2))return {ok:false,text:'В условии Гена нашёл больше Вити. При убывании Гена располагается раньше.'};
+    if(at(1)>at(3))return {ok:false,text:'Сопоставь равные суммы с неравными: А = В + Г − Б. Подставь в А + Г < Б + В и сравни Борю с Геной.'};
+    if(at(2)>at(0))return {ok:false,text:'В равенстве А + Б = В + Г перенеси Г и А: Б − Г = В − А. Какой знак у этой разности?'};
+    return {ok:true,text:'Порядок соответствует всем трём условиям. Запиши, почему из них следуют оба новых сравнения. Доказательство сохранено для проверки.'};
+  }
+  function cipherLetter(x){const index=cipherAlphabet.findIndex(group=>group.includes(x));return index<0?'?':index===10?'*':String(index);}
+  function clearCipher(s){return s.trim().toUpperCase().replace(/Ё/g,'Е').replace(/[.!?]+$/,'').replace(/\s+/g,' ');}
+  function cipherDesk(work,interactive){
+    const word=work.secretWord||0,raw=work.secretParts||printedCipher.map(()=>''),letters=[...raw[word]],digits=printedCipher[word],pos=work.secretPosition||0,coded=letters.map(cipherLetter).join('');
+    const table=cipherAlphabet.map((group,i)=>'<div style="border:1px solid #b7c8bd;padding:.2em;text-align:center"><strong>'+ (i===10?'*':i)+'</strong><br>'+group.replace(' ','␣')+'</div>').join('');
+    const selected='<label>Фрагмент <select data-secret-word>'+printedCipher.map((v,i)=>'<option value="'+i+'"'+(word===i?' selected':'')+'>'+ (i+1)+' · '+v+'</option>').join('')+'</select></label><label>Моё слово <input data-secret-input maxlength="16" style="width:100%;box-sizing:border-box" value="'+U.esc(raw[word]||'')+'"></label>';
+    const build='<label>Позиция для подстановки <select data-secret-position>'+[...digits].map((d,i)=>'<option value="'+i+'"'+(pos===i?' selected':'')+'>'+ (i+1)+' · цифра '+d+'</option>').join('')+'</select></label>';
+    const group=cipherAlphabet[Number(digits[pos])];return '<section data-secret-host><h3>Клавиатура шифра</h3><div aria-label="Соответствия кодов и знаков" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(3.2em,1fr));gap:.2em">'+table+'</div><p>␣ обозначает пробел. Одна цифра допускает три буквы. Выбирай слово, подходящее и по коду, и по смыслу всей фразы.</p>'+(interactive?selected+build+'<div>'+[...group].map(l=>'<button data-secret-letter="'+l+'" class="secondary" type="button">'+l+'</button>').join(' ')+'</div><p data-secret-check aria-live="polite">Код моей записи: '+U.esc(coded||'—')+'. Цель: '+digits+'.</p><p data-secret-sentence>'+raw.map(x=>U.esc(x||'…')).join(' ')+'</p><button type="button" class="secondary" data-secret-use>Перенести расшифровку</button>':'')+'</section>';
+  }
+  function mountSecret(main,work,save){
+    let host=main.querySelector('[data-secret-host]');if(!host)return;
+    function draw(){host.outerHTML=cipherDesk(work,true);host=main.querySelector('[data-secret-host]');const word=work.secretWord||0,parts=work.secretParts||printedCipher.map(()=>''),pos=work.secretPosition||0,field=host.querySelector('[data-secret-input]'),use=host.querySelector('[data-secret-use]');
+      function refresh(){host.querySelector('[data-secret-check]').textContent='Код моей записи: '+([...(parts[word]||'')].map(cipherLetter).join('')||'—')+'. Цель: '+printedCipher[word]+'.';host.querySelector('[data-secret-sentence]').textContent=parts.map(x=>x||'…').join(' ');use.disabled=parts.some(x=>!x||x.includes('_'));}
+      host.querySelector('[data-secret-word]').onchange=e=>{work.secretWord=Number(e.target.value);work.secretPosition=0;save();draw();host.querySelector('[data-secret-word]').focus({preventScroll:true});};
+      host.querySelector('[data-secret-position]').onchange=e=>{work.secretPosition=Number(e.target.value);save();draw();host.querySelector('[data-secret-position]').focus({preventScroll:true});};
+      field.oninput=()=>{parts[word]=clearCipher(field.value).slice(0,16);work.secretParts=parts;refresh();save();};
+      for(const b of host.querySelectorAll('[data-secret-letter]'))b.onclick=()=>{const v=(parts[word]||'').padEnd(printedCipher[word].length,'_').split('');v[pos]=b.dataset.secretLetter;parts[word]=v.join('');work.secretParts=parts;work.secretPosition=Math.min(pos+1,printedCipher[word].length-1);save();draw();host.querySelector('[data-secret-position]').focus({preventScroll:true});};
+      refresh();use.onclick=()=>{const f=main.querySelector('#answer');f.value=parts.join(' ');f.dispatchEvent(new Event('input',{bubbles:true}));f.focus();};
+    }draw();
+  }
+  function secretResponse(number,input){
+    if(number!==58)return null;const phrase=clearCipher(input),words=phrase.split(' ');
+    if(words.length!==5)return {ok:false,text:'Проверь звёздочки. Для этой пословицы они делят запись на пять слов.'};
+    for(const [i,w] of words.entries()){if(w.length!==printedCipher[i].length)return {ok:false,text:'В слове '+(i+1)+' должно быть '+printedCipher[i].length+' букв по числу цифр.'};
+      const d=[...w].map(cipherLetter),j=d.findIndex((x,k)=>x!==printedCipher[i][k]);if(j!==-1)return {ok:false,text:'В слове '+(i+1)+' позиция '+(j+1)+' должна соответствовать цифре '+printedCipher[i][j]+'. Проверь её столбец в таблице.'};}
+    if(phrase==='ТЕРПЕНЬЕ И ТРУД ВСЕ ПЕРЕТРУТ')return {ok:true,text:'Каждая буква совпала с кодом, и сложилась пословица. Объясни, почему выбор букв проверяется по смыслу. Запись сохранена для проверки.'};
+    return {ok:true,text:'Все коды совпали. На одну цифру приходится несколько букв. Проверь смысл получившегося текста; учитель посмотрит эту расшифровку.'};
+  }
+
   function roomQuestion(number,part){
     if(number===55)return 'Измерь в метрах длину и ширину своей прямоугольной комнаты с точностью до десятых. По своим измерениям найди периметр пола в метрах и его площадь в квадратных метрах. Округли оба ответа до целых. Для тренировки без измерительной ленты открой задачу с другими данными.';
     if(part.id==='056-1')return 'В комнате длина 4,2 м, ширина 3,6 м, высота 3,5 м. Найди объём в кубических метрах и округли ответ до целого.';
@@ -1323,6 +1376,8 @@
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
     if(number===50||number===51)return primeLogic(number,part).prompt;
+    if(number===57)return 'Алик и Боря вместе нашли столько же грибов, сколько Витя и Гена вместе. Общая корзина Алика и Гены меньше общей корзины Бори и Вити. У Гены грибов больше, чем у Вити. Расставь четверых по убыванию их личных результатов и докажи порядок.';
+    if(number===58)return 'В каждом столбце таблицы одна цифра обозначает любую из трёх букв. Звёздочка означает Ю, Я или пробел. Какую пословицу можно прочитать в строке 61551491 * 2 * 6561 * 051 * 51516566? Проверь каждое слово по кодам и по смыслу.';
     if(number===55||number===56)return roomQuestion(number,part);
     if(number===49)return boxTask(part);
     if((number>=45&&number<=48)||number===54)return commonQuestion(number,part);
@@ -1400,6 +1455,8 @@
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
     if(item.number===50||item.number===51)drawing=logicConstruction(item.number,part,false)+primeExplore(item.number,part,{},false);
+    if(item.number===57)drawing=mushroomView({},false);
+    if(item.number===58)drawing=cipherDesk({},false);
     if(item.number===55||item.number===56)drawing=roomView(part,{},false);
     if(item.number===49)drawing=boxView(part,{},false);
     if((item.number>=45&&item.number<=48)||item.number===54)drawing=commonFactorView(item.number,part,{},false);
@@ -1433,5 +1490,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse,mountMushrooms,mushroomResponse,mountSecret,secretResponse};
 })(globalThis);
