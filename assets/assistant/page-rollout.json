@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "e2c1554ce7dd3c8e3f7ec57aa93498af45b68363af76387e7494173c585c0eb3",
-      "afterSha256": "7b31a1db5da8e057f102fad0d67475c55c6ac0f7e55c5c6447a656a442ad512d",
+      "beforeSha256": "53883419ee9e3b64b6a4db78817f17a0f2986b1de544c629c560a5b1bad85ee1",
+      "afterSha256": "c10e48e6eb88b2b88abff6ffb6013408ba3cd48e08b4e6fd0dd43daf37434abc",
       "placement": "before-head-close",
-      "sourceSha": "6cd37404679e20e0241ec30a1288cda688ba24b9"
+      "sourceSha": "9f67f1da172c31d5b341d1dbbe45a2693dda870b"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7647,6 +7647,24 @@
       "boundary": "Проверен вход в печатные №49–54 с пространственными моделями параллелепипеда, отрицаниями, утверждениями и числовыми границами. Уточнённый банк первой части загружается по его точной версии."
     },
     {
+      "previousBaseSha": "f82d5e98c7f4ef10ff1510fea6a47c5a89198b4c",
+      "sourceBaseSha": "58417df1ff037afeff5733775cec1a1195967eb7",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "В первой части Виленкина разобраны все исходные строки печатных №1.177–1.180 на с.35, включая разные допустимые заполнения открытых столбцов. Проверены самостоятельные ответы, новые условия, модель, обе роли, восстановление после перезагрузки и ширины 320 и 375 пикселей."
+    },
+    {
+      "previousBaseSha": "6cd37404679e20e0241ec30a1288cda688ba24b9",
+      "sourceBaseSha": "9f67f1da172c31d5b341d1dbbe45a2693dda870b",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Два тома Виленкина содержат упражнения №1–180 и №1–116, включая двадцать числовых выражений, луч и разрядные границы первой части, работу с контрольными заданиями и отмеченными точками второй части."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
@@ -7929,6 +7947,24 @@
         "school/index.html"
       ],
       "boundary": "Сверены исходная фигура и условие №5.111, с. 23. Для всех пар граней независимо рассчитана длина пути через пять точек сгиба. Выбор граней и исправленный ответ выдержали передачу управления и перезагрузку обеих сторон."
+    },
+    {
+      "previousBaseSha": "c072826a7ed7ed08a5d24a109aeca70276e93c2b",
+      "sourceBaseSha": "6fec046997b200ee604bb91128484d5b0e31ed66",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "На с. 23 проверены все четыре деления, ошибочное равенство с чрезмерным остатком и воспроизводимая работа обоих участников."
+    },
+    {
+      "previousBaseSha": "6fec046997b200ee604bb91128484d5b0e31ed66",
+      "sourceBaseSha": "a4f53e596e7b4e41bcbeeebd02888fa7a7a1cc58",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверены шесть преобразований единиц и связь кубического сантиметра с миллилитром, четыре объёма воды, три части периметра и доля урока. Состояния моделей восстанавливаются у учителя и ученика."
     }
   ],
   "coverageUpdates": [
