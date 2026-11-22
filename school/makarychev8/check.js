@@ -881,6 +881,7 @@ function check(user,target){
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
  if(['trip-knots','full-range-knots'].includes(target.kind))return G.graphKnots(target.graph,pointGroups(user)).status==='valid';
+ if(target.kind==='absolute-reciprocal-points')return G.reciprocalPoints({...target.graph,absolute:true},pointGroups(user)).status==='valid';
  if(target.kind==='floor-graph-piece')return G.floorPiece(target.graph,{pointGroups},user).status==='valid';
  if(target.kind==='reciprocal-pair-points')return G.reciprocalPair(target.graph,pointGroups(user)).status==='valid';
  if(target.kind==='reciprocal-points')return G.reciprocalPoints(target.graph,pointGroups(user)).status==='valid';
