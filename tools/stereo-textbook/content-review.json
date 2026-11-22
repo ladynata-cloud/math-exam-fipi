@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-21T23:52:06Z",
-  "scope": "Chapters I–VI, chapter VII points 71–84, numbered exercises through 730, and all 17 questions on printed page 186 (39 cards); additional questions from 731 are inventoried separately.",
+  "registeredAt": "2026-11-22T00:06:15Z",
+  "scope": "Chapters I–VI, chapter VII points 71–84, every self-check on page 186 and consecutive source exercises through 748. The later inventory is still draft.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2309,6 +2309,51 @@
       ],
       "evidence": "tools/stereo-textbook/coordinates-chapter-seven-self-check.json",
       "mathematicalReport": "tools/stereo-textbook/coordinates-chapter-seven-self-check.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, chapter VII printed page 187, PDF page 189, coordinate data and subparts checked against the page image.",
+      "reviewedAt": "2026-11-22T00:00:16Z",
+      "scope": "All 17 source-specific cases in exercises 731–738 on printed page 187. Exact fractional components, projection minima, coplanarity normals, a parallelogram and its translated spatial vertices were independently computed.",
+      "cardIds": [
+        "ex-main-0731-a",
+        "ex-main-0731-b",
+        "ex-main-0732-a",
+        "ex-main-0732-b",
+        "ex-main-0732-c",
+        "ex-main-0732-d",
+        "ex-main-0733-a",
+        "ex-main-0733-b",
+        "ex-main-0734-a",
+        "ex-main-0734-b",
+        "ex-main-0734-c",
+        "ex-main-0735",
+        "ex-main-0736",
+        "ex-main-0737",
+        "ex-main-0738-a",
+        "ex-main-0738-b",
+        "ex-main-0738-c"
+      ],
+      "evidence": "tools/stereo-textbook/additional-coordinate-combinations.json",
+      "mathematicalReport": "tools/stereo-textbook/additional-coordinate-combinations.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued 2024 volume, chapter VII printed pages 187 and 188, PDF pages 189 and 190, coordinate data and subparts checked against the page image.",
+      "reviewedAt": "2026-11-22T00:06:15Z",
+      "scope": "Exercises 739–748 on printed pages 187–188, including both signs of the ordinate, the radical in problem 742, all axis intersections and the general proof using four interchangeable tetrahedron vertices.",
+      "cardIds": [
+        "ex-main-0739",
+        "ex-main-0740",
+        "ex-main-0741",
+        "ex-main-0742",
+        "ex-main-0743",
+        "ex-main-0744",
+        "ex-main-0745",
+        "ex-main-0746",
+        "ex-main-0747",
+        "ex-main-0748"
+      ],
+      "evidence": "tools/stereo-textbook/additional-coordinate-distances.json",
+      "mathematicalReport": "tools/stereo-textbook/additional-coordinate-distances.test.cjs"
     }
   ],
   "cards": [
@@ -7823,6 +7868,114 @@
     {
       "id": "ex-selfcheck-vii-17",
       "sha256": "38ff7c8db4f9263593e4b2d5ffcd3f707d1078904e6693971c1981f741698b73"
+    },
+    {
+      "id": "ex-main-0731-a",
+      "sha256": "3d58fe193e4db28ecd97ee042649750abc57f119181c74ac7fc8e2ab67c08c09"
+    },
+    {
+      "id": "ex-main-0731-b",
+      "sha256": "729557ca9635520175850158737b21cf50539aea154201169de8c31b600e382f"
+    },
+    {
+      "id": "ex-main-0732-a",
+      "sha256": "d1d3b31691be9612fd211b4199c44ffbc844ce0be0ad53d4e22d46aad2fae787"
+    },
+    {
+      "id": "ex-main-0732-b",
+      "sha256": "2aec492ab328d0debaa0a1e6e27fb0cb229d6c1752264dbdd6aadd80aa1773e5"
+    },
+    {
+      "id": "ex-main-0732-c",
+      "sha256": "0843897307edd02f764d05b1e52f8a6f48628000094ff8642d773fbcccfbb947"
+    },
+    {
+      "id": "ex-main-0732-d",
+      "sha256": "f6468726ff96990dd4056d4ffa8ccd661369478e53a497e0c81ce90fcffd4582"
+    },
+    {
+      "id": "ex-main-0733-a",
+      "sha256": "af42a927c66d8adae88ff3e53e1cf35c6018a70fcf19bf21ee441a9c393134b7"
+    },
+    {
+      "id": "ex-main-0733-b",
+      "sha256": "87ca92218645c1ba0b31924ac23d29fae9eff4883048ddf3491b669807e365ae"
+    },
+    {
+      "id": "ex-main-0734-a",
+      "sha256": "4d51f897b2402547c8cb0f1d2c0b420570369a27c2c25d98bf176edc10e08559"
+    },
+    {
+      "id": "ex-main-0734-b",
+      "sha256": "927ed67dfdce1f00f9761d0514a6ee9c4a4e3508a64b7bbfaa13767ca82d48b8"
+    },
+    {
+      "id": "ex-main-0734-c",
+      "sha256": "76a2357c9ba324089b37abc503235ab6523a2cd3e2a696536ee40596f2577e27"
+    },
+    {
+      "id": "ex-main-0735",
+      "sha256": "8f34e627f5758e6ce8223872459da649f75dfc9b309154d4daa8b3b2515679ef"
+    },
+    {
+      "id": "ex-main-0736",
+      "sha256": "139e2db8abca27c5026d3bff0a72e4fbe34aebdfb17845784622e46650080fcb"
+    },
+    {
+      "id": "ex-main-0737",
+      "sha256": "6b1826a3537b8cc781e6051717e675493e9530d71cd38acab3e136037e68da37"
+    },
+    {
+      "id": "ex-main-0738-a",
+      "sha256": "0623be0147e4c377668f2b29c2f0f445c3bd75acad63d6e4ea80dcd5ded7e2be"
+    },
+    {
+      "id": "ex-main-0738-b",
+      "sha256": "a51a646ae840b334654f36ab627660a87e37354d178b2822e7d305f308e10c69"
+    },
+    {
+      "id": "ex-main-0738-c",
+      "sha256": "443376ce6d73ce0c50a9562fe095eb235c4ea4acf9f24fbdd916c18a1aa70f7b"
+    },
+    {
+      "id": "ex-main-0739",
+      "sha256": "a2781f01968ce165b560a928afb80537c8211e2718c590045b791053fc514a0b"
+    },
+    {
+      "id": "ex-main-0740",
+      "sha256": "b5f13538aafd77471fc9fbb8ae40485aa9c11b4cf49a9d9d4cad3fdf410e4f24"
+    },
+    {
+      "id": "ex-main-0741",
+      "sha256": "90a24cdf8e9dcfc453fd44214032fd647b853d7d64bf19c42765117410a50279"
+    },
+    {
+      "id": "ex-main-0742",
+      "sha256": "5e4468e2de28f29ba57b7190c507ca7287bd24e9afab43153785d4f1053b9db4"
+    },
+    {
+      "id": "ex-main-0743",
+      "sha256": "1f62cfe13a36b0d4a2692902b00f7a269c51611c33a5fdf80b661a9bec81ac0b"
+    },
+    {
+      "id": "ex-main-0744",
+      "sha256": "bc1abf21788b73fa35b818c24c1e6292b2c69f9b6a02cc53215cb124f996822d"
+    },
+    {
+      "id": "ex-main-0745",
+      "sha256": "634eddaa25c8d41d1f4be5bd65a3d41a76776894db984c815f22cda3f605c9b2"
+    },
+    {
+      "id": "ex-main-0746",
+      "sha256": "ec68c7f30a772dd139d7cd8eebb026ba7c3cd06f230a4512f755b1fb30d34070"
+    },
+    {
+      "id": "ex-main-0747",
+      "sha256": "8c9d0d547473cd2644a72319cb8692bf45c47ac5e97660b73c48a32649cc5bfd"
+    },
+    {
+      "id": "ex-main-0748",
+      "sha256": "0859159275d89c162a0967e0313a18394007a8d2040842a45df887fe90c6787a"
     }
   ]
 }

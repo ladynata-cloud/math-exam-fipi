@@ -1,7 +1,9 @@
 'use strict';
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
-const coordinatesChapterSevenSelfCheck = makeReviewedIncrement(require('./coordinates-chapter-seven-self-check.json'));
+const additionalCoordinateDistances = makeReviewedIncrement(require('./additional-coordinate-distances.json'));
+const additionalCoordinateCombinations = makeReviewedIncrement(require('./additional-coordinate-combinations.json'), additionalCoordinateDistances);
+const coordinatesChapterSevenSelfCheck = makeReviewedIncrement(require('./coordinates-chapter-seven-self-check.json'), additionalCoordinateCombinations);
 const isometriesOfSpaceSectionEnd = makeReviewedIncrement(require('./isometries-of-space-section-end.json'), coordinatesChapterSevenSelfCheck);
 const spatialSymmetriesAndFixedSets = makeReviewedIncrement(require('./spatial-symmetries-and-fixed-sets.json'), isometriesOfSpaceSectionEnd);
 const cubeProofsAndScalarProductSectionEnd = makeReviewedIncrement(require('./cube-proofs-and-scalar-product-section-end.json'), spatialSymmetriesAndFixedSets);

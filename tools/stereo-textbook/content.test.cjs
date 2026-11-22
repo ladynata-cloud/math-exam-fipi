@@ -118,4 +118,6 @@ require('./cube-proofs-and-scalar-product-section-end.test.cjs');
 require('./spatial-symmetries-and-fixed-sets.test.cjs');
 require('./isometries-of-space-section-end.test.cjs');
 require('./coordinates-chapter-seven-self-check.test.cjs');
+require('./additional-coordinate-combinations.test.cjs');
+require('./additional-coordinate-distances.test.cjs');
 dom.window.close();console.log(`ATANASYAN_TEXTBOOK_CONTENT_OK ${ls.length} cards, ${steps} justified steps, ${views} views; source identities/theory links/fig8+9 incidences/DOM finite`);
