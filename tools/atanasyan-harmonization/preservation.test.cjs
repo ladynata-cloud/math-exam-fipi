@@ -73,6 +73,7 @@ function filesAt(relative) {
 }
 // Exact digests of the independently verified lesson units and their loader.
 const approvedAreaFiles = {
+  "geometry-course/textbook/data/polygon-similarity-choices.json": "58a445ca271b00786c93bb4cc749095b41a1b8285d0d0df7f7b9617650bb31f5",
   "geometry-course/textbook/data/similarity-figure-reading.json": "4d3607e99e2fb6a1d0bf07538b009fbf8f478ecad0acb7f3f34bef7d54c42d7f",
   "geometry-course/textbook/data/polygon-similarity-intro.json": "20001633b42ab6cd02c6dfa5928fbd6ea6ba4eba16c9fff577a0bb4f147ac16f",
   "geometry-course/textbook/data/symmetry-motion-review.json": "bc7010068c64b52256f048157bdaf11007889fec6f7bb20a8cacf8106e9f0873",
@@ -175,7 +176,7 @@ const approvedAreaFiles = {
   "geometry-course/textbook/data/vector-sum-problems.json": "10d24ab8f0cae8bf9c86a34219adebd1bb8c9aa69b2ea5482602a8d8bae7ce95",
   "geometry-course/textbook/data/vector-sums.json": "519ad0491eae1214d3ae3384cd00a656e5bb238a314c6168b7df5dda71c67317",
   "geometry-course/textbook/data/vector-conclusions.json": "f14e54f5228e0d8ea4a5cc1ab30dfcab3bd1bda98bb5a89c2afdba1acdbe47fc",
-  "geometry-course/textbook/assets/additional-lessons.js": "05812999b9e75f1aaddf3aab759c160c9d4dc3d375b39a49669fe614504ab5af",
+  "geometry-course/textbook/assets/additional-lessons.js": "474e1e2b0c4bc7ceedfa393797090ae5263b909cc5b06adc73c73466d1266b6c",
   "geometry-course/textbook/data/grade9-vectors.json": "3ad74b998edfe9959260e66aabbd0d739f2f117334b4939955f74a8b521a813c",
   "geometry-course/textbook/data/circle-lessons.json": "1f219393e7e647d888dbdd419943618c2349168a91a44c3c4e300c6103a008fb",
   "geometry-course/textbook/data/area-lessons.json": "fa3a34d97b7bb419085b4c3cebdf0a43d6b85f2084dc6775fe745eafedb059b4",

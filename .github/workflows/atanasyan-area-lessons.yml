@@ -120,6 +120,8 @@ on:
       - 'tools/geometry-textbook/*plane_isometries*'
       - 'tools/geometry-textbook/*isometry_invariants*'
       - 'tools/geometry-textbook/*isometric_quadrilaterals*'
+      - 'tools/geometry-textbook/*polygon_similarity_choices*'
+      - 'geometry-course/textbook/data/polygon-similarity-choices.json'
       - 'tools/geometry-textbook/*similarity_figure_reading*'
       - 'geometry-course/textbook/data/similarity-figure-reading.json'
       - 'tools/geometry-textbook/*polygon_similarity_intro*'
@@ -264,6 +266,7 @@ jobs:
       - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
       - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
       - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/polygon_similarity_choices.py --check && python3 tools/geometry-textbook/check_polygon_similarity_choices.py
       - run: python3 tools/geometry-textbook/similarity_figure_reading.py --check && python3 tools/geometry-textbook/check_similarity_figure_reading.py
       - run: python3 tools/geometry-textbook/polygon_similarity_intro.py --check && python3 tools/geometry-textbook/check_polygon_similarity_intro.py
       - run: python3 tools/geometry-textbook/symmetry_motion_review.py --check && python3 tools/geometry-textbook/check_symmetry_motion_review.py
