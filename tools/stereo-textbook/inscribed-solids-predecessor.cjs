@@ -2,7 +2,8 @@
 
 const {makeReviewedIncrement} = require('./reviewed-increment.cjs');
 const closedSections = require('./closed-section-boundaries.cjs');
-const finalTriangularPrismReview = makeReviewedIncrement(require('./final-triangular-prism-review.json'), closedSections);
+const finalSquarePyramidReview = makeReviewedIncrement(require('./final-square-pyramid-review.json'), closedSections);
+const finalTriangularPrismReview = makeReviewedIncrement(require('./final-triangular-prism-review.json'), finalSquarePyramidReview);
 const coordinateChapterSevenEnd = makeReviewedIncrement(require('./coordinate-chapter-seven-end.json'), finalTriangularPrismReview);
 const additionalDirectedAndPlaneAngles = makeReviewedIncrement(require('./additional-directed-and-plane-angles.json'), coordinateChapterSevenEnd);
 const additionalCoordinateDistances = makeReviewedIncrement(require('./additional-coordinate-distances.json'), additionalDirectedAndPlaneAngles);

@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T01:16:00Z",
-  "scope": "Chapters I–VII and the six parts of the first final-review exercise, 764, are complete. The remaining final-review and advanced exercises from 765 are inventoried separately.",
+  "registeredAt": "2026-11-22T01:35:00Z",
+  "scope": "Chapters I–VII and the first two final-review exercises, 764–765, are complete in all twelve printed parts. The remaining final-review and advanced exercises from 766 are inventoried separately.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2419,6 +2419,21 @@
       ],
       "evidence": "tools/stereo-textbook/final-triangular-prism-review.json",
       "mathematicalReport": "tools/stereo-textbook/final-triangular-prism-review.test.cjs"
+    },
+    {
+      "reviewer": "Codex: original 2024 exercise 765 on printed page 189 and answer key on page 272, with independent axial and coordinate derivations.",
+      "reviewedAt": "2026-11-22T01:35:00Z",
+      "scope": "All six parts of exercise 765, printed page 189. The area of four side faces, pyramid volume, its two distinct inclinations, a projected dot product and circumsphere area were checked by coordinates and by the axial section through opposite base vertices, including the key on page 272.",
+      "cardIds": [
+        "ex-main-0765-a",
+        "ex-main-0765-b",
+        "ex-main-0765-c",
+        "ex-main-0765-d",
+        "ex-main-0765-e",
+        "ex-main-0765-f"
+      ],
+      "evidence": "tools/stereo-textbook/final-square-pyramid-review.json",
+      "mathematicalReport": "tools/stereo-textbook/final-square-pyramid-review.test.cjs"
     }
   ],
   "cards": [
@@ -8193,6 +8208,30 @@
     {
       "id": "ex-main-0764-f",
       "sha256": "ef048efb7f4d161506d6bd45e43e6cf3c68ab9d9bdaac8eace8055054c735270"
+    },
+    {
+      "id": "ex-main-0765-a",
+      "sha256": "7f4e18fc22bc10a56708e0b66bce76adbd29e9108557495d52f093c670816112"
+    },
+    {
+      "id": "ex-main-0765-b",
+      "sha256": "fd51a7a336c60ea936ea1dd35e67cbbf8042cab311df21f04f9717456fe5b43c"
+    },
+    {
+      "id": "ex-main-0765-c",
+      "sha256": "75fc35ba3f6999d29e15cb4d5491aa93a14933451c124bbe45c0a2bb7db2bd2b"
+    },
+    {
+      "id": "ex-main-0765-d",
+      "sha256": "4fa3e766a35d4b1781ef6de961568e5b13fe7c54a5cb89d8fa165f9a5efa848e"
+    },
+    {
+      "id": "ex-main-0765-e",
+      "sha256": "e2361887be3f93f6fda19e5982f14cadd90ad4fb914a82ac4f9dba6e1eed978d"
+    },
+    {
+      "id": "ex-main-0765-f",
+      "sha256": "8bc50ee8f5aeacc8f7e419de75df1c88e318e511ccc316170686091f5d56d81d"
     }
   ]
 }
