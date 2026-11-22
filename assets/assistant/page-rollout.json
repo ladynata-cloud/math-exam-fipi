@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "1626779c97f50a1e64cc3031a7315823f5ed5c61fb3268e0b5c0984657202a7a",
-      "afterSha256": "f5ecb5aa7a0eb26001d11314f499dccf7157b46f388f0bc009c7885014fbb6d3",
+      "beforeSha256": "9413c7367498a4b70470653620cb7a7002001f490464d25a9e8877bb9d266e1a",
+      "afterSha256": "7ddd97a8b2d2f9feb4b244402ca3cede44a1d616836c7a7c239d18c9040f6178",
       "placement": "before-head-close",
-      "sourceSha": "873abb2c11d8c4092970e93b90c7d715ae4ab908"
+      "sourceSha": "e982acee8256c74228d42a4122a1fe5eb080e796"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7020,6 +7020,15 @@
         "school/index.html"
       ],
       "boundary": "Для начала §27 добавлены все четыре примера №5.98 на с. 22, с построенными заново кругами и прямоугольниками, индивидуальной проверкой записей, объяснения и общей доской."
+    },
+    {
+      "previousBaseSha": "873abb2c11d8c4092970e93b90c7d715ae4ab908",
+      "sourceBaseSha": "e982acee8256c74228d42a4122a1fe5eb080e796",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "На печатной с. 22 в обоих заданиях ребёнок выставляет метки на отрезке, проверяет шаг по клеткам и объясняет совпадение дробей. Проверены записи, клавиатура, экран телефона, двусторонняя работа и восстановление."
     }
   ],
   "coverageUpdates": [
