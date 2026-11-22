@@ -1614,3 +1614,204 @@ test('enumerate the complete two-digit source lists and all allowed leading-plac
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('distinguish each of the twelve printed law forms and both speed, productivity, price and concentration bases',()=>{
+ const f=fixture(null,null,true);try{
+  const go=i=>{f.nav('#lesson/p20/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [i,topic]of [[6,'Прямая связь'],[7,'Обратная связь']]){const c=go(i);for(let j=0;j<6;j++){set(c,0,j);set(c,2,2);assert(out().includes(i===7&&j===3?'Свободное слагаемое':topic),out());set(c,1,1);assert.equal(f.q(c[2]).value,'0');set(c,2,2);assert.equal(f.q('#model tbody tr td').textContent,'3');set(c,1,0);}}
+  for(const [i,original,fresh]of [[0,'10','5'],[1,'15','30'],[8,'42','84'],[9,'20','10'],[10,'360','720'],[11,'8','4'],[12,'12','6'],[13,'30','60'],[2,'90','180'],[3,'2/5','4/5'],[14,'30','60'],[15,'6/5','12/5'],[16,'9','18'],[17,'24','48'],[18,'800','1600'],[19,'100','200']]){
+   const c=go(i),prefix=[0,1,8,9,10,11,12,13].includes(i)?'Искомая величина ':'Новый результат ';set(c,1,2);assert(out().includes(prefix+original+'.'),[i,out()]);set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(prefix+fresh+'.'),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('identify all ten laws and fill the correct x or y cell of each of the four printed proportionality tables',()=>{
+ const f=fixture(null,null,true);try{
+  const go=i=>{f.nav('#lesson/p20/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [i,expected]of [[20,'Прямая'],[21,'Оба признака'],[22,'Прямая'],[23,'Обратная'],[24,'Обратная'],[25,'Обратная'],[26,'Прямая'],[27,'Обратная'],[28,'Обратная'],[4,'Оба признака']]){const c=go(i);set(c,1,2);assert(out().includes(expected));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert.equal(f.q('#model tbody tr td').textContent,'3');}
+  for(const [i,k,changed,filled]of [[29,'14/5','21/5',['42/5','56/5','14','84/5']],[5,'30','180',['20','15','12','10']],[30,'5','15/2',['24','4','12','8/5']],[31,'8','48',['16','8','5/2','10']]]){
+   const c=go(i),original=[...f.d.querySelectorAll('#task-figure tbody tr')].map(row=>[...row.querySelectorAll('td')].map(cell=>cell.textContent));
+   assert.equal(original.flat().filter(x=>x==='□').length,4);set(c,1,2);const rows=[...f.d.querySelectorAll('#model tbody tr')].map(row=>[...row.querySelectorAll('td')].map(cell=>cell.textContent));assert.deepEqual(original.flatMap((row,j)=>row.flatMap((x,ix)=>x==='□'?[rows[j][ix]]:[])),filled);assert(out().includes('Коэффициент '+k+'.'));set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes('Коэффициент '+changed+'.'));
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('resolve each part of the second-volume proportion chapter including true curves and the first valid 2008 multiple',()=>{
+ const f=fixture(null,null,true);try{
+  const open=i=>{f.nav('#lesson/p20/'+i);f.click('[data-lesson-help="model"] > summary');return [...f.d.querySelectorAll('#model select')].map(x=>'#'+x.id);},set=(c,j,v)=>f.event(c[j],String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
+  for(const [i,before,after]of [[32,'= 10%.','= 15%.'],[33,'= 15%.','= 120/7%.'],[34,'27/2.','20.'],[35,'21/2.','16.'],[36,'Корень 60.','Корень 90.'],[37,'Корень 8/5.','Корень 16/5.'],[38,'Корень 5.','Корень 10.'],[39,'результат 4/5.','результат 8/5.'],[40,'результат 8.','результат 16.'],[41,'результат 10.','результат 20.'],[42,'результат 24.','результат 48.'],[43,'y/x равно 3.','y/x равно 6.'],[44,'xy равно 18.','xy равно 36.'],[45,'= 10%.','= 100/7%.'],[46,'число 2008440','число 2010960']]){
+   const c=open(i);set(c,1,2);assert(out().includes(before),[i,out()]);if(i===43||i===44){assert.equal(f.d.querySelectorAll('#model [data-law-point]').length,i===43?6:7);const curve=f.q('[data-law-curve]');if(i===44)assert.equal(curve.getAttribute('points').split(' ').length,150);}
+   if(i===46)assert.equal(f.d.querySelectorAll('#model tbody tr').length,4);set(c,0,1);assert.equal(f.q(c[1]).value,'0');set(c,1,2);assert(out().includes(after),[i,out()]);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('follow the two printed unit grids with distinct origins, source positions and a new route',()=>{
+ const f=fixture(null,null,true);try{
+  const source=[[-4,3],[5,4],[4,-1],[-3,-2],[4,1],[-5,3],[-3,-2],[5,-3]];
+  for(let i=0;i<source.length;i++){
+   const [x,y]=source[i],label='ABCD'[i%4];f.nav('#lesson/p39/'+(4+i));const circles=[...f.d.querySelectorAll('#task-figure [data-grid-point]')];
+   assert.equal(circles.length,4);assert.equal(circles[i%4].getAttribute('cx'),String(151+19*x));assert.equal(circles[i%4].getAttribute('cy'),String(124-19*y));
+   f.click('[data-lesson-help="model"] > summary');const [field,stage]=[...f.d.querySelectorAll('#model select')].map(e=>'#'+e.id);
+   f.event(stage,'1','change');assert.equal(f.d.querySelectorAll('#model [data-grid-leg]').length,1);
+   f.event(stage,'2','change');assert.equal(f.d.querySelectorAll('#model [data-grid-leg]').length,2);assert(f.q('#model').textContent.includes(label+'('+x+'; '+y+')'));
+   f.event(field,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model').textContent.includes(label+'('+(-y)+'; '+x+')'));
+  }
+  assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('distinguish all quadrant rules, zero coordinates and growing axis increments',()=>{
+ const f=fixture(null,null,true);try{
+  const cases=[['M(-3; 2).','M(4; -1).'],['M(3; 2).','M(4; 1).'],['M(-3; 2).','M(-4; 1).'],['M(3; -2).','M(4; -1).'],['(0; 10)','(0; 12)'],['(-4; 0)','(-5; 0)'],['совпадает с началом','в трёх клетках'],['y = 3.','y = -2.']];
+  cases.forEach(([printed,fresh],i)=>{
+   f.nav('#lesson/p39/'+(i+12));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(printed),i);
+   f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(fresh),i);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('construct four axis crossings, secant, tangent, segment ratios and all four source quadrilaterals',()=>{
+ const f=fixture(null,null,true);try{
+  const checks=[['(-4; 0), (5; 0)','(-8; 0), (10; 0)',4],['(0; -3), (0; 4)','(0; -6), (0; 8)',4],['AD/DB = 3','AD/DB = 3',2],['(-3; 5) и (1; 1)','(-6; 10) и (2; 2)',2],['(1; -1)','(2; -2)',1],['Прямоугольник.','AB² = 208',0],['Квадрат.','AB² = 100',0],['Параллелограмм.','AB² = 160',0],['Трапеция.','AB² = 52',0]];
+  checks.forEach(([first,second,count],i)=>{
+   f.nav('#lesson/p39/'+(20+i));assert(f.q('#task-figure svg'));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   assert.equal(f.d.querySelectorAll('#model [data-constructed-point]').length,0);
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(first),i);
+   assert.equal(f.d.querySelectorAll('#model [data-constructed-point]').length,count);f.event(data,'1','change');assert.equal(f.q(stage).value,'0');
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(second),i);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('trace 27 actual consecutive corners, check two circle estimates and zoom all millimetre points',()=>{
+ const f=fixture(null,null,true);try{
+  const expect=[['лыжник','лыжник'],['(-2,3; 2,7) и (1,8; 1,1)','(-1,3; 1,7) и (2,8; 0,1)'],['A(-1,3; 2)','A(-1,1; 1,7)'],['B(1,8; 0,8)','B(2; 0,5)'],['C(-2,6; 0,4)','C(-2,4; 0,1)'],['D(1,8; -1,5)','D(2; -1,8)'],['E(0; -1,6)','E(0,2; -1,9)'],['F(-1,2; -0,7)','F(-1; -1)']];
+  expect.forEach(([first,second],i)=>{
+   f.nav('#lesson/p39/'+(29+i));const normalize=s=>s.replaceAll('−','-');
+   if(i===0)assert.equal(f.d.querySelectorAll('#task-figure tbody td').length,27);if(i>1)assert.equal(f.d.querySelectorAll('#task-figure [data-decimal-point]').length,6);
+   f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'1','change');if(i===0)assert.equal(f.q('[data-skier-path]').getAttribute('data-skier-path'),'11');
+   f.event(step,'2','change');assert(normalize(f.q('#model .pm-result').textContent).includes(first),[i,first,f.q('#model .pm-result').textContent]);if(i===0)assert.equal(f.q('[data-skier-path]').getAttribute('data-skier-path'),'28');if(i===1)assert.equal(f.d.querySelectorAll('#model [data-paper-crossing]').length,2);
+   f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert(normalize(f.q('#model .pm-result').textContent).includes(second),[i,second,f.q('#model .pm-result').textContent]);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('read every requested level from the printed curve and both sides of the circle without exact-graph credit',()=>{
+ const f=fixture(null,null,true);try{
+  const reading=[[-3.4,-2.3],[-2.5,-1.5],[-1.8,-1.3],[-.6,-1],[0,-.8],[.7,-.1],[1.5,.9],[2.9,1.7],[3.6,2.5],[3.5,2.3],[2.7,1.6],[1.4,.8],[.8,0],[.5,-.4],[.1,-.7],[-3.1,-1.9],[-3.5,-2.4],[-3.6,-2.8]];
+  const fmt=v=>String(v).replace('.',','),coord=p=>'('+p.map(fmt).join('; ')+')';
+  const cases=[...reading.map(p=>[coord(p)]),...[0,1].flatMap(j=>[-2.8,-.5,1.9].map(v=>{const ry=Math.round(Math.sqrt(12.25-v*v)*10)/10;return[-ry,ry].map(u=>coord(j?[u,v]:[v,u]));}))];
+  cases.forEach((matches,i)=>{
+   f.nav('#lesson/p39/'+(37+i));f.click('[data-lesson-help="model"] > summary');const [dataset,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   assert.equal(f.d.querySelectorAll('#model [data-paper-reading]').length,0);f.event(step,'1','change');assert.equal(f.d.querySelectorAll('#model [data-first-projection]').length,1);
+   f.event(step,'2','change');const msg=f.q('#model .pm-result').textContent.replaceAll('−','-');for(const match of matches)assert(msg.includes(match),[i,msg,match]);
+   assert.equal(f.d.querySelectorAll('#model [data-paper-reading]').length,matches.length);f.event(dataset,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.notEqual(f.q('#model .pm-result').textContent.replaceAll('−','-'),msg);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('measure both decimal-line crossings, all three water stages and eight printed mental expressions',()=>{
+ const f=fixture(null,null,true);try{
+  const cases=[['(4,15; 1,09)','(5,15; 0,09)'],['(-0,46; 2,28)','(0,54; 1,28)'],['1,875','3,75'],['3,4375','6,875'],['5 мин','10 мин'],['2 мин','4 мин'],['4,375 и 10','8,75 и 20'],['-7/9','-5/9'],['12/5','17/5'],['-7/5','-12/5'],['Значение 0.','Значение 1/10.'],['-3/5','-6/5'],['7/10','6/5'],['-9/10','-27/10'],['Значение 1.','Значение 2.']];
+  cases.forEach(([first,second],i)=>{
+   f.nav('#lesson/p39/'+(61+i));if(i>=2&&i<=6)assert.equal(f.d.querySelectorAll('#task-figure tbody td').length,24);
+   f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'2','change');const read=()=>f.q('#model .pm-result').textContent.replaceAll('−','-');assert(read().includes(first),[i,read(),first]);
+   if(i<2){assert.equal(f.d.querySelectorAll('#model [data-measured-line]').length,2);assert.equal(f.d.querySelectorAll('#model [data-line-crossing]').length,1);}
+   if(i===5||i===6)assert.equal(f.d.querySelectorAll('#model [data-temperature-crossing]').length,2);f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert(read().includes(second),[i,read(),second]);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('check quantifiers and boundary inclusions, both progressions, eight Euclidean remainders and reversed tasks',()=>{
+ const f=fixture(null,null,true);try{
+  const texts=['неотрицателен','Подходящий пример','Контрпример','подходящая пара','-4 < x < 4','x ≤ -3 или 3 ≤ x','-3 ≤ x ≤ -1','x < -1 или 3 < x','-4, -3, -2','-1, 0, 1, 2, 3','Остаток 1','Остаток 2','Остаток 6','Остаток 3','Остаток 2','Остаток 3','Остаток 6','Остаток 7','разность 66','сумма 99'];
+  texts.forEach((expected,i)=>{
+   f.nav('#lesson/p39/'+(76+i));f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(expected),[i,f.q('#model .pm-result').textContent]);
+   if(i>=4&&i<=7){const state=i===5||i===6?'included':'excluded';assert.equal(f.d.querySelectorAll('#model [data-boundary="'+state+'"]').length,2);assert.equal(f.d.querySelectorAll('#model [data-solution-piece]').length,i===5||i===7?2:1);}
+   const original=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.notEqual(f.q('#model').textContent,original);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('evaluate all signed word expressions, powers, mixed proportions and nine dependency classifications',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=['= -7/4.','= 2.','= 1.','= -18.','= 2/5.','= -4.','Значение 20.','Значение -8.','Значение 5.','Значение 3.','Значение -17.','Значение 2.','x = 3/5.','x = -5/7.','x = -3/20.','x = 5.','отношение равно 3.','произведение равно 12.','произведение равно 40.','отношение равно 7.','отношение равно 1/3.','отношение равно 2/5.','отношение равно 4.','произведение равно 6/5.','Ни прямая','Ни прямая','произведение равно 5.'];
+  expected.forEach((printed,i)=>{
+   f.nav('#lesson/p39/'+(96+i));f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(printed),[i,f.q('#model .pm-result').textContent]);
+   if(i>=12&&i<16){const values=[...f.d.querySelectorAll('#model tbody tr')].map(row=>row.cells[1].textContent);assert.equal(values[0],values[1]);}
+   const original=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.notEqual(f.q('#model').textContent,original);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('field rates, pedestrian speed and three coordinate ciphers independently change data and reveal workings',()=>{
+ const f=fixture(null,null,true);try{
+  const source=['40 га','5,4 км/ч','НЬЮТОН','ПАСКАЛЬ','ТОРРИЧЕЛЛИ'],other=['90 га','9 км/ч','СОН','ЛЕС','ТОН'];
+  for(let i=0;i<source.length;i++){
+   f.nav('#lesson/p39/'+(123+i));f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   if(i>=2){assert.equal(f.d.querySelectorAll('#model [data-cipher-letter]').length,14);assert.equal([...f.d.querySelectorAll('#model tbody tr')].map(r=>r.cells[2].textContent).join(''),'…'.repeat(source[i].length));}
+   f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(source[i]));
+   if(i>=2)assert.equal([...f.d.querySelectorAll('#model tbody tr')].map(r=>r.cells[2].textContent).join(''),source[i]);
+   f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(other[i]));
+  }
+  f.nav('#lesson/p39/123');f.event('#final-answer','8');f.submit('#answer-form');assert.match(f.q('.answer-form .feedback').textContent,/одного планового дня/);
+  f.event('#final-answer','40');f.submit('#answer-form');assert.equal(f.state().tasks['p39-t124'].correct,true);
+ }finally{f.close();}
+});
+
+test('source cards expose full cipher and outline before help and separate approximate pine readings from mastery',()=>{
+ const f=fixture(null,null,true);try{
+  f.nav('#lesson/p39/125');assert.equal(f.d.querySelectorAll('#task-figure [data-cipher-letter]').length,14);assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,6);
+  f.nav('#lesson/p39/128');assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,17);f.click('[data-lesson-help="model"] > summary');let selects=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(selects[1],'2','change');assert.equal(f.q('#model [data-outline-points]').getAttribute('data-outline-points'),'34');
+  f.nav('#lesson/p39/129');f.click('[data-lesson-help="model"] > summary');selects=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(selects[1],'2','change');assert.equal(f.d.querySelectorAll('#model [data-outline-points]').length,2);
+  const expected=['6,9 м','11,1 м','16,2 м','16,7 м','17,9','37,5','61,7','87,5','4,2 м','2,1 м'];
+  expected.forEach((v,i)=>{f.nav('#lesson/p39/'+(130+i));assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,11);f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   assert.equal(f.d.querySelectorAll('#model [data-pine-age]').length,11);f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(v));assert.equal(f.d.querySelectorAll('#model [data-pine-reading]').length,i<8?1:2);
+   f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert.equal(f.d.querySelectorAll('#model tbody tr').length,11);
+  });assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('finish all source numbers in the coordinate section with new values, divisibility evidence and remainder bounds',()=>{
+ const f=fixture(null,null,true);try{
+  const source=['Произведение -6.','Частное 3, остаток 8','Частное 3, остаток 8','Значение 0','Значение 1/3','18 км/ч','14 руб.','11%','−3/2','6 мин.','11 · (91n)','665 = 9 · 73 + 8','665 = 9 · 73 + 8','665 = 9 · 73 + 8'];
+  const fresh=['Произведение 60.','128 = 40 · 3 + 8','128 = 40 · 3 + 8','Значение 18','Значение −8/3','21 км/ч','21 руб.','20%','−1','10 мин.','11 · (91n)','557 = 9 · 61 + 8','557 = 9 · 61 + 8','557 = 9 · 61 + 8'];
+  for(let i=0;i<source.length;i++){
+   f.nav('#lesson/p39/'+(140+i));f.click('[data-lesson-help="model"] > summary');const [data,step]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(source[i]),[i,source[i],f.q('#model').textContent]);const previous=f.q('#model').textContent;
+   f.event(data,'1','change');assert.equal(f.q(step).value,'0');f.event(step,'2','change');assert(f.q('#model .pm-result').textContent.includes(fresh[i]),[i,fresh[i],f.q('#model').textContent]);assert.notEqual(f.q('#model').textContent,previous);if(i===9)assert.deepEqual([...f.d.querySelectorAll('#model [data-sibling-position]')].map(el=>el.getAttribute('data-sibling-position')),['15','15']);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('all missing printed graph contexts include correct endpoints, inverse slopes and physical units',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=['(4,5; 27)','(4,5; 27)','(4,5; 27)','2 ≤ y ≤ 8','(4; 6)','(4; 6)','(4; 6)','(12; 1)','(12; 2)','(12; 3)','2 ≤ x ≤ 5','1,6 ≤ x ≤ 4'];
+  for(let i=0;i<expected.length;i++){
+   f.nav('#lesson/p21/'+(6+i));if(i===3||i>=10)assert.equal(f.d.querySelectorAll('#task-figure [data-proportion-curve]').length,1);
+   f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);assert.equal(f.d.querySelectorAll('#model [data-proportion-reading]').length,0);f.event(stage,'1','change');assert.equal(f.d.querySelectorAll('#model [data-proportion-reading]').length,1);
+   f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(expected[i]));if(i>=7&&i<=9)assert.equal(f.d.querySelectorAll('#model [data-proportion-curve]').length,4);
+   const original=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,original);
+  }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});
+
+test('complete four decimal speed columns, twelve cipher values and the issued third-cell misprint separately',()=>{
+ const f=fixture(null,null,true);try{
+  const expected=[['4.3','1.7','.64','.92','22.4','3.1','.92','1.8','.27','3.56'],['6','240','.64','.015','.49','0','.072','1','.1','.008'],['.58','36','.025','960','.08','12','40','80','.2','.01'],['.05','.9','6.22','.3','.7','420','16','1.8','10.1','1.988']];
+  for(let col=0;col<4;col++){
+   f.nav('#lesson/p21/'+(18+col));assert.equal(f.d.querySelectorAll('#task-figure tbody tr').length,10);f.click('[data-lesson-help="model"] > summary');const [data,index,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);
+   expected[col].forEach((v,i)=>{f.event(index,String(i),'change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes('Ответ '+String(Number(v)).replace('.',',')+'.'),[col,i,f.q('#model').textContent]);});
+   f.event(data,'1','change');assert.equal(f.q(stage).value,'0');
+  }
+  const table=['23/12','43/25','6/5','95/12','6','9799/100','7/2','22','7/6','61/20','5/2','27/4'];
+  table.forEach((v,i)=>{f.nav('#lesson/p21/'+(22+i));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes('Точное значение '+v+'.'));const old=f.q('#model').textContent;f.event(data,'1','change');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,old);});
+  f.nav('#lesson/p21/34');assert.equal(f.d.querySelectorAll('#task-figure tbody tr')[2].cells[1].textContent,'11/12');f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'1','change');assert.match(f.q('#model .pm-result').textContent,/КО□ФФИЦИЕНТ/);f.event(stage,'2','change');assert.match(f.q('#model .pm-result').textContent,/КОЭФФИЦИЕНТ/);f.event(data,'1','change');f.event(stage,'2','change');assert.match(f.q('#model .pm-result').textContent,/ЦЕНА/);assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
+ }finally{f.close();}
+});

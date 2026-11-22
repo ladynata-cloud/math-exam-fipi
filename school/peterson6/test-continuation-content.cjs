@@ -59,7 +59,7 @@ const oracles=JSON.parse(fs.readFileSync(path.join(__dirname,'continuation-numer
 const newNumeric=D.lessons.filter(l=>l.order>14).flatMap(l=>l.tasks).filter(t=>t.kind==='number');
 assert.equal(Object.keys(oracles).length,newNumeric.length);
 for(const t of newNumeric)assert(M.equal(t.answer,oracles[t.id]),t.id+' independently recomputed expected value');
-assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1166);assert(manual>0);
+assert.equal(legacyTasks,224);assert.equal(newTextbookTasks,1386);assert(manual>0);
 const segments=D.lessons.find(l=>l.id==='p15').tasks.filter(t=>t.source.exercise===12);
 assert.deepEqual(Array.from(segments,t=>[t.source.subpart,t.source.page,t.kind,t.segmentRatio]),[
  ['1',7,'manual','equal'],['2',7,'manual','greater'],['3',7,'manual','less'],['4',7,'manual','double'],
@@ -1052,6 +1052,87 @@ for(const [letter,left,right]of [['а',1,3],['в',7.2,36],['г',9/20,0.75]]) {
  const repeated=[11,13,15,17,31,33,35,37,51,53,55,57,71,73,75,77],unique=repeated.filter(n=>Math.floor(n/10)!==n%10);
  assert.deepEqual(g(164).map(x=>Array.from(x.steps,q=>Number(q.answer))),[repeated,unique]);assert.deepEqual(g(165).map(t=>t.answer),['60','125']);assert.deepEqual(g(166).map(t=>t.answer),['48','100']);assert.equal(g(167)[0].answer,'40');
  for(const [n,digits]of [[165,'12345'],[166,'02468']]){const all=Array.from({length:900},(_,i)=>String(i+100)).filter(v=>v.split('').every(d=>digits.includes(d)));assert.equal(all.length,Number(g(n)[1].answer));assert.equal(all.filter(v=>new Set(v).size===3).length,Number(g(n)[0].answer));}
+}
+{
+ const l=D.lessons.find(t=>t.id==='p20'),g=n=>Array.from(l.tasks.filter(t=>t.source.exercise===n));
+ assert(l.orderBySource);assert.equal(g(160).length,1);assert.equal(g(161).length,1);assert.equal(g(162).length,8);assert.equal(g(163).length,8);
+ assert.deepEqual(g(162).map(t=>t.physicalLaw.k),['50','3','7','300','120','24','60','2']);
+ assert.deepEqual(g(163).map(t=>t.answer).sort(),['90','2/5','30','6/5','9','24','800','100'].sort());
+}
+{
+ const l=D.lessons.find(t=>t.id==='p20'),group=n=>Array.from(l.tasks.filter(t=>t.source.exercise===n)).sort((a,b)=>Number(a.source.subpart)-Number(b.source.subpart));
+ assert.equal(group(164).length,10);assert.deepEqual(group(164).map(t=>t.classifyLaw.kind),['direct','affine','direct','inverse','inverse','inverse','direct','inverse','inverse','square']);
+ assert.deepEqual(group(165).map(t=>t.fillProportionTable.k),['14/5','30','5','8']);for(const t of group(165)){assert.equal(t.fillProportionTable.blank.filter(Boolean).length,4);assert.equal(t.figure.type,'p20-paper-table');}
+}
+{
+ const sec=D.lessons.find(t=>t.id==='p20'),g=n=>Array.from(sec.tasks.filter(t=>t.source.exercise===n));
+ assert.equal(sec.completeSourceSection.first,160);assert.equal(sec.completeSourceSection.last,172);for(let n=160;n<=172;n++)assert(g(n).length);
+ assert.deepEqual(g(166).map(t=>t.answer),['10','15']);assert.deepEqual(g(168).map(t=>t.answer),['60','8/5','5']);assert.deepEqual(g(169).map(t=>t.answer),['4/5','8','10','24']);assert.deepEqual(g(170).map(t=>t.paperLawGraph.kind),['direct','inverse']);assert.equal(g(171)[0].answer,'10');assert.equal(g(172)[0].answer,'2008440');
+ assert.equal(Array.from({length:798},(_,i)=>i*2520).find(n=>String(n).startsWith('2008')),2008440);for(let d=1;d<=9;d++)assert.equal(2008440%d,0);
+}
+{
+ const points=Array.from(D.lessons.find(l=>l.id==='p39').tasks).filter(t=>t.gridRead);
+ assert.deepEqual(points.map(t=>Array.from(t.steps,s=>Number(s.answer))),[[-4,3],[5,4],[4,-1],[-3,-2],[4,1],[-5,3],[-3,-2],[5,-3]]);
+ assert.deepEqual(points.map(t=>t.source.subpart),['A','B','C','D','A','B','C','D']);assert.deepEqual(points.slice(4).map(t=>t.answer),['I','II','III','IV']);
+ for(const t of points){assert.equal(new Set(t.choices).size,4);assert.equal(t.errorCues.length,3);assert.equal(t.source.page,39);}
+}
+{
+ const lesson=D.lessons.find(l=>l.id==='p39');
+ const g=n=>Array.from(lesson.tasks).filter(t=>t.source.exercise===n);
+ assert.deepEqual(g(170).map(t=>t.source.subpart),['III четверть','порядок координат','I четверть','II четверть','IV четверть']);assert.deepEqual(g(172).map(t=>t.source.subpart),['а','б','в']);assert.deepEqual(g(173).map(t=>t.source.subpart),['а','б']);assert.equal(g(171).length,1);
+ assert.equal(g(172)[0].answer,'10');assert.equal(g(173)[1].answer,'Горизонтальная прямая y = 3');
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
+ assert.deepEqual(g(174).map(t=>Array.from(t.steps,s=>Number(s.answer))),[[-4,5,-2,3],[-2,5,-3,4]]);assert.equal(g(175)[0].answer,'3');
+ assert.deepEqual(g(176).map(t=>t.source.subpart),['а','б','в']);assert.deepEqual(g(177).map(t=>t.answer),['Прямоугольник','Квадрат','Параллелограмм','Трапеция']);
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
+ assert.equal(g(178)[0].figure.points.length,27);assert.equal(g(178)[0].answer,'Лыжник');assert.equal(g(179)[0].answer,'(−2,3; 2,7) и (1,8; 1,1)');
+ assert.deepEqual(g(180).map(t=>Array.from(t.steps,s=>Number(s.answer))),[[-1.3,2],[1.8,.8],[-2.6,.4],[1.8,-1.5],[0,-1.6],[-1.2,-.7]]);
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
+ assert.equal(g(181).length,18);assert.equal(g(182).length,6);
+ assert.deepEqual(g(181).map(t=>t.paperIntersection.axis),[...Array(9).fill('x'),...Array(9).fill('y')]);
+ for(const task of [...g(181),...g(182)]){assert.equal(new Set(task.choices).size,4);assert(task.choices.includes(task.answer));assert.equal(task.source.page,41);}
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
+ assert.equal(g(183).length,2);assert.equal(g(184).length,5);assert.deepEqual(g(185).map(t=>t.answer),['-7/9','12/5','-7/5','0','-3/5','7/10','-9/10','1']);
+ assert.equal(g(184)[3].answer,'2');assert.equal(g(184)[4].source.subpart,'3');
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
+ assert.deepEqual(g(187).map(t=>t.answer),['−4 < x < 4','x ≤ −3 или x ≥ 3','−3 ≤ x ≤ −1','x < −1 или x > 3']);assert.deepEqual(g(188).map(t=>t.answer),['-4','-1']);
+ assert.deepEqual(g(189).map(t=>Number(t.answer)),[1,2,6,3,2,3,6,7]);assert.deepEqual(g(190).map(t=>Number(t.answer)),[66,99]);
+ for(const t of g(186))assert.equal(new Set(t.choices).size,3);
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);
+ assert.deepEqual(g(191).map(t=>t.answer),['-7/4','2','1','-18','2/5','-4']);assert.deepEqual(g(192).map(t=>Number(t.answer)),[20,-8,5,3,-17,2]);assert.deepEqual(g(193).map(t=>t.answer),['3/5','-5/7','-3/20','5']);assert.equal(g(194).length,11);
+}
+{
+ const route=D.lessons.find(l=>l.id==='p39'),rows=Array.from(route.tasks).filter(t=>[195,196].includes(t.source.exercise));
+ assert.equal(rows.length,5);assert(rows.every(t=>t.source.page===43&&t.source.isbn==='978-5-9963-4599-1'));
+ assert.equal(5*8,4*(8+2));assert.equal(Number(rows[0].answer),5*8);
+ assert.equal((3/.25)*.45,27/5);assert.equal(rows[1].answer,'27/5');assert.deepEqual(rows.slice(2).map(t=>t.answer),['Ньютон','Паскаль','Торричелли']);
+}
+{
+ const l=D.lessons.find(t=>t.id==='p39'),newRows=Array.from(l.tasks).filter(t=>[197,198].includes(t.source.exercise));
+ assert.equal(newRows.length,12);assert(newRows.every(t=>t.kind==='manual'&&t.answer===''));assert.equal(newRows.filter(t=>t.source.page===44).length,10);assert.equal(new Set(newRows.map(t=>t.source.reference)).size,12);
+}
+{
+ const l=D.lessons.find(l=>l.id==='p39'),newRows=Array.from(l.tasks).slice(140);
+ assert.deepEqual(newRows.map(t=>t.answer),['-6','3','8','0','1/3','18','14','11','-3/2','6','','665','9','73']);assert.equal(newRows[10].kind,'manual');assert.equal(newRows[13].source.page,45);
+ const examples=[];for(let a=1;a<=9;a++){for(let d=1;d<=9;d++){const n=110*a+5;if(n%d===8)examples.push([n,d,Math.floor(n/d)]);}}assert.deepEqual(examples,[[665,9,73]]);
+}
+{
+ const l=D.lessons.find(l=>l.id==='p21'),rows=Array.from(l.tasks).filter(t=>t.graphStudy);assert.deepEqual(rows.map(t=>t.source.exercise),[173,173,173,175,176,176,176,177,177,177,178,178]);assert.equal(rows.length,12);assert.deepEqual(rows.slice(7,10).map(t=>t.answer),['1','2','3']);assert.deepEqual(rows.slice(-2).map(t=>Array.from(t.steps,s=>s.answer)),[['10','2','5'],['8','8/5','4']]);
+}
+{
+ const l=D.lessons.find(l=>l.id==='p21'),g=n=>Array.from(l.tasks).filter(t=>t.source.exercise===n);assert.deepEqual(g(179).map(t=>t.steps.length),[10,10,10,10]);assert.deepEqual(g(180).slice(0,12).map(t=>t.answer),['23/12','43/25','6/5','95/12','6','9799/100','7/2','22','7/6','61/20','5/2','27/4']);assert.equal(g(180)[12].decimalPrint.key[2],'11/12');assert.equal(g(180)[12].kind,'manual');
 }
 const all=JSON.stringify(D);assert(!/[\uE000-\uF8FF]/.test(all),'unresolved PDF glyph');assert(!all.includes('undefined'));assert(!all.includes('/workspace/'));
 console.log(JSON.stringify({ok:true,topics:D.lessons.length,tasks:ids.size,legacyTasks,newTextbookTasks,numeric,choice,manual,checkedSteps,instructionSteps,printedNumbers:1863}));
