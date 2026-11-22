@@ -80,7 +80,9 @@ async function scrollGuideTo(page, id) {
   await page.evaluate(target => {
     if (target) document.getElementById(target).scrollIntoView({block: 'start', behavior: 'instant'});
     else window.scrollTo({top: 0, behavior: 'instant'});
-    return new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    // Instant scrolling is synchronous. A no-JS context permits evaluation but
+    // does not run animation-frame callbacks, so do not await one here.
+    document.documentElement.getBoundingClientRect();
   }, id);
 }
 
