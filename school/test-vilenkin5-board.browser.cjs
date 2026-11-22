@@ -534,6 +534,18 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.152: one printer, whole shift and transfer to the pupil';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-152"]').click();await studentFrame.locator('h1').filter({hasText:'№1.152'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=group]').selectOption({value:'1'});await teacherFrame.locator('[data-v5-param=hours]').selectOption({value:'2'});
+  await teacherFrame.locator('[data-v5-prediction]').fill('18');await teacherFrame.locator('[data-v5-predict] button').click();
+  const printerFirst=await same(teacherFrame,studentFrame,'second group over three hours, wrong one-hour answer');assert.equal(printerFirst.scene.model.first,'18');assert.equal(printerFirst.scene.model.seen,false);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-prediction]').fill('54');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('7');await studentFrame.locator('#answer-form button').click();const onePrinter=await same(studentFrame,teacherFrame,'confusing one printer with the group');assert.match(onePrinter.scene.message,/одного устройства/);
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const firstReload=await same(studentFrame,teacherFrame,'teacher restores two parameters and model correction');assert.equal(firstReload.scene.model.prediction,'54');assert.equal(firstReload.scene.model.first,'18');
+  await studentFrame.locator('#answer').fill('21');await studentFrame.locator('#answer-form button').click();await same(studentFrame,teacherFrame,'first group hourly output corrected');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  const pupilReload=await same(teacherFrame,studentFrame,'pupil restores independent corrected group calculation');assert(pupilReload.scene.correct);assert.deepEqual(pupilReload.scene.hintLevels,{});
+
   phase = 'source 1.148, ray names depend on the starting point and either name for the same outer ray';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-148"]').click();await studentFrame.locator('h1').filter({hasText:'№1.148'}).waitFor();
   await teacherFrame.locator('[data-v5-param=lines]').selectOption({value:'3'});await teacherFrame.locator('[data-v5-prediction]').fill('3');await teacherFrame.locator('[data-v5-predict] button').click();const pencilFirst=await same(teacherFrame,studentFrame,'three lines create six separate sectors');assert.equal(pencilFirst.scene.model.first,'3');assert.equal(pencilFirst.scene.model.seen,false);
