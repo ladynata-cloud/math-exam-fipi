@@ -572,3 +572,22 @@ test('the printed cipher checks all fifteen assertions separately and retains or
  const restored=await surface(t,BOOK+'#n/22/022-slovo',storage(s));assert.equal(element(restored,'[data-cipher-draft]').textContent,'АСТЕРОИД');
  await route(s,'#n/24/024-1');input(s,'#answer','64,8');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/всего мёда/);input(s,'#answer','3,6');submit(s,'#answer-form');w=bookWork(s,'024-1');assert(w.correct&&!w.independent&&!w.assisted);
 });
+test('both page-nine alphametics show carries, keep manual reasoning and admit all verified substitutions',async t=>{
+ const s=await surface(t,BOOK+'#n/25/025-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[24].parts;
+ const setDigit=(letter,digit)=>{const field=element(s,'[data-puzzle-letter="'+letter+'"]');field.value=digit;field.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ const send=()=>{click(s,'[data-puzzle-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const [i,p] of rows.entries()){
+  await route(s,'#n/25/'+p.id);const letters=i?'ПЧЁЛКАЖ':'ЛЕТОПЁ',cases=i?['1428579']:['634218','738416','842615','946813'];
+  assert.match(sourcePresent(s).textContent,i?/ПЧЁЛКА/:/ПОЛЁТ/);assert(element(s,'[data-puzzle-use]').disabled);
+  for(const digits of cases){
+   [...letters].forEach((l,j)=>setDigit(l,digits[j]));assert.match(send(),/верное равенство/);const w=bookWork(s,p.id);assert.equal(w.puzzleDigits,digits);assert(w.submitted&&!w.correct&&!w.independent);
+  }
+  const correct=cases[0];[...letters].forEach((l,j)=>setDigit(l,correct[j]));setDigit(letters[0],correct[1]);assert.match(send(),/одну цифру/);setDigit(letters[0],'0');assert.match(send(),/старший разряд/);setDigit(letters[0],correct[0]);setDigit(letters.at(-1),i?'3':'7');assert.match(send(),/разряде/);
+  const saved=await surface(t,BOOK+'#n/25/'+p.id,storage(s));assert.equal(element(saved,'[data-puzzle-letter="'+letters.at(-1)+'"]').value,i?'3':'7');
+  let oldPrompt='';for(let attempt=0;attempt<50;attempt++){
+   const task=s.w.PetersonAnalogues.create(25,p,attempt);assert.notEqual(task.prompt,oldPrompt);oldPrompt=task.prompt;assert(s.w.PetersonBook.check(task,task.answer));const m=task.prompt;
+   if(i){const x=m.match(/ребусе ([АБВГ]+) × (\d+) = (Д+) буква Д означает (\d)\. Какая цифра соответствует букве ([АБВГ])/),value=Number(x[4].repeat(x[3].length))/Number(x[2]);assert.equal(String(value)[x[1].indexOf(x[5])],task.answer);}
+   else{const x=m.match(/= ([АБВГД]+)\. Дано: А = (\d), Б = (\d)\. Какую цифру нужно поставить вместо ([АБВГД])/),sum=String(2*Number(x[2]+x[3]));assert.equal(sum[x[1].indexOf(x[4])],task.answer);}
+  }
+ }
+});

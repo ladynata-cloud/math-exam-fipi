@@ -361,6 +361,52 @@
     return items.length===6?{ok:true,text:'Все шесть чисел расположены по возрастанию. Прочитай их вслух, называя миллионы, тысячи и единицы.'}:{ok:false,text:'Порядок верный. Проверь, все ли шесть позиций второй пятёрки использованы.'};
   }
 
+  function letterPuzzle(part){
+    return part.id==='025-1'?{letters:'ЛЕТОПЁ',word:'ЛЕТО',output:'ПОЛЁТ',factor:2}:{letters:'ПЧЁЛКАЖ',word:'ПЧЁЛКА',output:'ЖЖЖЖЖЖ',factor:7};
+  }
+  function puzzleRows(puzzle,work){
+    const digits=work.puzzleDigits||'-'.repeat(puzzle.letters.length),replace=word=>Array.from(word,c=>digits[puzzle.letters.indexOf(c)]).join('');
+    return {digits,operand:replace(puzzle.word),target:replace(puzzle.output)};
+  }
+  function letterEquation(puzzle,work){
+    const {operand,target}=puzzleRows(puzzle,work);
+    return puzzle.factor===2?operand+' + '+operand+' = '+target:operand+' × 7 = '+target;
+  }
+  function puzzleFigure(part,work,interactive){
+    const puzzle=letterPuzzle(part),{digits,operand,target}=puzzleRows(puzzle,work),chars=Array.from(puzzle.letters);
+    const field=chars.map((c,i)=>'<label style="display:grid;gap:.2em">'+c+'<select data-puzzle-letter="'+c+'" aria-label="Цифра для буквы '+c+'"><option value="-">?</option>'+Array.from({length:10},(_,d)=>'<option value="'+d+'"'+(digits[i]===String(d)?' selected':'')+'>'+d+'</option>').join('')+'</select></label>').join('');
+    const rows=puzzle.factor===2?[['',puzzle.word,operand],['+',puzzle.word,operand],['=',puzzle.output,target]]:[['',puzzle.word,operand],['×','7','7'],['=',puzzle.output,target]];
+    const line=([op,word,val])=>'<div style="display:grid;grid-template-columns:1.1em 1fr 1fr;align-items:baseline;text-align:right;font-size:clamp(.86rem,3.8vw,1.1rem)"><span>'+op+'</span><span aria-label="'+word+'">'+word+'</span><strong aria-label="'+val.replaceAll('-','?')+'" style="font-variant-numeric:tabular-nums;letter-spacing:.08em">'+val.replaceAll('-','·')+'</strong></div>';
+    return '<section data-puzzle-host aria-label="Подстановка цифр по разрядам"><h3>Буквы и цифры</h3><p>У одной буквы в каждой позиции одна и та же цифра. Е и Ё обозначают разные буквы.</p><div style="max-width:22em;border:1px solid #91a79b;padding:.5em">'+rows.map(line).join('')+'</div>'+(interactive?'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(3.6em,1fr));gap:.45em;margin:.65em 0">'+field+'</div><button type="button" class="secondary" data-puzzle-use>Перенести равенство в ответ</button>':'')+'</section>';
+  }
+  function mountPuzzle(main,part,work,save){
+    const puzzle=letterPuzzle(part);let host=main.querySelector('[data-puzzle-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=puzzleFigure(part,work,true);host=main.querySelector('[data-puzzle-host]');
+      for(const field of host.querySelectorAll('[data-puzzle-letter]'))field.onchange=()=>{
+        const digits=[...puzzleRows(puzzle,work).digits],letter=field.dataset.puzzleLetter;digits[puzzle.letters.indexOf(letter)]=field.value;
+        work.puzzleDigits=digits.join('');save();draw();host.querySelector('[data-puzzle-letter="'+letter+'"]').focus({preventScroll:true});
+      };
+      const use=host.querySelector('[data-puzzle-use]');use.disabled=puzzleRows(puzzle,work).digits.includes('-');
+      use.onclick=()=>{const input=main.querySelector('#answer');input.value=letterEquation(puzzle,work);input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();};
+    }
+    draw();
+  }
+  function puzzleResponse(number,part,input,work){
+    if(number!==25)return null;
+    const puzzle=letterPuzzle(part);if(input!==letterEquation(puzzle,work))return null;
+    const {digits,operand,target}=puzzleRows(puzzle,work);
+    for(let i=0;i<digits.length;i++){
+      const previous=digits.indexOf(digits[i]);if(previous<i)return {ok:false,text:'Буквы '+puzzle.letters[previous]+' и '+puzzle.letters[i]+' получили одну цифру '+digits[i]+'. Разным буквам нужны разные цифры.'};
+    }
+    if(operand[0]==='0'||target[0]==='0')return {ok:false,text:'Проверь старший разряд. Запись многозначного числа не может начинаться с нуля.'};
+    const product=String(Number(operand)*puzzle.factor).padStart(target.length,'0'),places=['единиц','десятков','сотен','тысяч','десятков тысяч','сотен тысяч','миллионов'];
+    for(let col=0;col<Math.max(product.length,target.length);col++){
+      if((product.at(-col-1)||'0')!==(target.at(-col-1)||'0'))return {ok:false,text:'Начни справа. Первая несовпавшая цифра результата — в разряде '+places[col]+'. Проверь произведение и перенос из предыдущего разряда.'};
+    }
+    return {ok:true,text:'Подстановка даёт верное равенство, разным буквам соответствуют разные цифры. Объясни, как выбирал цифры и учитывал перенос. Запись остаётся для проверки.'};
+  }
+
   const codedRows=[
     ['Р','0,4 + 3','3,4'],['У','6 + 0,12','0,18'],['Н','0,25 + 0,5','0,3'],['О','3,28 + 1,3','4,58'],['Е','2,6 − 0,01','2,59'],
     ['Д','9,1 − 1,05','8,05'],['Г','0,854 − 0,85','0,04'],['Б','0,5 · 3','0,15'],['И','4 · 1,7','6,8'],['Ж','17,2 · 10','1,72'],
@@ -481,6 +527,7 @@
   }
 
   function openingQuestion(number,part) {
+    if(number===25)return 'Замени одинаковые буквы одинаковыми цифрами, а разные буквы — различными. Первая цифра числа не может быть нулём. Найди верную подстановку для '+(part.id==='025-1'?'ЛЕТО + ЛЕТО = ПОЛЁТ.':'ПЧЁЛКА × 7 = ЖЖЖЖЖЖ.')+' Объясни, как проверил результат.';
     if(number===22)return codewordQuestion(part);
     if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
     if(number===24)return 'С первого улья собрали 24,8 кг мёда. Второй дал на 6,4 кг меньше первого. С третьего получили половину совместного сбора первого и второго. Весь мёд поровну разлили в 18 банок. Сколько килограммов мёда в одной банке?';
@@ -534,6 +581,7 @@
     if(item.number===22)drawing=part.id==='022-slovo'?cipherView({},false):decimalModel(part);
     if(item.number===23)drawing=decimalModel(part);
     if(item.number===24)drawing=honeySupport();
+    if(item.number===25)drawing=puzzleFigure(part,{},false);
     if(item.number>=19&&item.number<=21)drawing=logicConstruction(item.number,part,false);
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
@@ -561,5 +609,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse};
 })(globalThis);
