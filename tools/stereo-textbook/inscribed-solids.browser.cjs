@@ -71,7 +71,8 @@ const groups = {
   additionalCoordinateDistances: {manifests:[require('./additional-coordinate-distances.json')],count:10},
   additionalDirectedAndPlaneAngles: {manifests:[require('./additional-directed-and-plane-angles.json')],count:23},
   coordinateChapterSevenEnd: {manifests:[require('./coordinate-chapter-seven-end.json')],count:9},
-  finalTriangularPrismReview: {manifests:[require('./final-triangular-prism-review.json')],count:6}
+  finalTriangularPrismReview: {manifests:[require('./final-triangular-prism-review.json')],count:6},
+  finalSquarePyramidReview: {manifests:[require('./final-square-pyramid-review.json')],count:6}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');

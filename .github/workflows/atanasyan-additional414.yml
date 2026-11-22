@@ -104,6 +104,7 @@ jobs:
           node tools/stereo-textbook/additional-directed-and-plane-angles.test.cjs
           node tools/stereo-textbook/coordinate-chapter-seven-end.test.cjs
           node tools/stereo-textbook/final-triangular-prism-review.test.cjs
+          node tools/stereo-textbook/final-square-pyramid-review.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -440,6 +441,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: finalTriangularPrismReview
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/final-triangular-prism-review
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all six parts of exercise 765 in the square pyramid
+        env:
+          TEXTBOOK_PRACTICE_GROUP: finalSquarePyramidReview
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/final-square-pyramid-review
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -540,5 +546,6 @@ jobs:
             artifacts/additional-directed-and-plane-angles/
             artifacts/coordinate-chapter-seven-end/
             artifacts/final-triangular-prism-review/
+            artifacts/final-square-pyramid-review/
           retention-days: 14
           if-no-files-found: error
