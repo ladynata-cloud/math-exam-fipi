@@ -3362,10 +3362,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "school/peterson6/textbook/index.html": {
-      "beforeSha256": "9795245e0265ddd240303f16fcf1ceba5ba987798aaa16b4554fd215fceeb1a9",
-      "afterSha256": "9097eb7e3495a71953340694c535794e4ef52044469604b22b3a75eaa4d41a6e",
+      "beforeSha256": "84da54c89da777ebc50c9d96c43a0c9e6ec59a253f6ef9040bd523705a46d91e",
+      "afterSha256": "a37e6126f16cd51ec1015ea55863edd62ab931179b664f0314097d68269ef857",
       "placement": "before-head-close",
-      "sourceSha": "0787ca49e6d7b946ecd71731fff1dbb8c30d70a5"
+      "sourceSha": "fea4eae16aead80cbab0293673e781142753e583"
     },
     "trainers/peterson6-workshop/index.html": {
       "beforeSha256": "aff5a4686e3a522eb30af65b8e89b325a77ea2798f61c203c7ca06a2755d2aea",
@@ -7582,6 +7582,15 @@
         "school/index.html"
       ],
       "boundary": "Во второй части Виленкина проверены №98–100. Доска сохраняет построение ученика, объяснение и право управления. На общем входе доступны оба тома и две проверочные работы §26."
+    },
+    {
+      "previousBaseSha": "0787ca49e6d7b946ecd71731fff1dbb8c30d70a5",
+      "sourceBaseSha": "fea4eae16aead80cbab0293673e781142753e583",
+      "task": "docs/tasks/PETERSON6_FIRST_VOLUME_COMPANION_20261121.md",
+      "changedPaths": [
+        "school/peterson6/textbook/index.html"
+      ],
+      "boundary": "Проверен вход в №28–30 с исправленным условием о птицах, моделями делимости и заполнением таблиц алгоритмов. Версия загружаемого банка закреплена в адресе файла."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
