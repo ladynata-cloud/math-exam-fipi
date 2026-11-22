@@ -534,6 +534,14 @@ async function run(browser, origin, backend, failures) {
   await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);await same(teacherFrame,studentFrame,'teacher restores directed rays');
   await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);const returned=await same(studentFrame,teacherFrame,'pupil restores directed rays and corrected step');assert.deepEqual(returned.scene.hintLevels,{});
 
+  phase = 'source 1.138 and 1.140, moving in either direction on the same coordinate line';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-138"]').click();await studentFrame.locator('h1').filter({hasText:'№1.138'}).waitFor();
+  await teacherFrame.locator('[data-v5-param=side]').selectOption('0');await teacherFrame.locator('[data-v5-prediction]').fill('1');await teacherFrame.locator('[data-v5-predict] button').click();
+  const signError=await same(teacherFrame,studentFrame,'distance one left of zero differs from positive coordinate one');assert.equal(signError.scene.model.first,'1');assert.equal(signError.scene.model.seen,false);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-prediction]').fill('-1');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('#answer').fill('9');await studentFrame.locator('#answer-form button').click();await studentFrame.locator('[data-cmd=next]').click();
+  await studentFrame.locator('#answer').fill('1');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);const minusRestored=await same(studentFrame,teacherFrame,'restore negative point and second-step distance');assert.equal(minusRestored.scene.model.prediction,'-1');assert.equal(minusRestored.scene.model.first,'1');assert.equal(minusRestored.scene.step,1);assert.equal(minusRestored.scene.savedInput,'1');
+  await ownership(teacher,student,false);await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'unsigned distance on the left side accepted')).scene.correct);
+
   phase = 'source 1.135 to 1.137, plotting a coordinate in grid squares and millimetres';
   await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-1-137"]').click();await studentFrame.locator('h1').filter({hasText:'№1.137'}).waitFor();
   await teacherFrame.locator('[data-v5-param=group]').selectOption('1');await teacherFrame.locator('[data-v5-param=target]').selectOption('2');await teacherFrame.locator('[data-v5-prediction]').fill('7');await teacherFrame.locator('[data-v5-predict] button').click();
