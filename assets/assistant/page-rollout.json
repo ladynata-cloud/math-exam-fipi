@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "4f836850fde92f8e52b9beb91f6cd9cdc9ba28eac0327c1b56b6ffbc1307703a",
-      "afterSha256": "6f26c919f8d172873e8c7f022db7aa157c3ed3cff7947bea548eb8701bcb2e25",
+      "beforeSha256": "069dc2401f9cd53dcda316e0e125a9aae1c93c75f5e10d36417727c8c429f30c",
+      "afterSha256": "3eec9d99538605575f926f092797fdc65e204d5200c6dc98e2e18a7ac96310f9",
       "placement": "before-head-close",
-      "sourceSha": "4ad29a05fa8b6e8693ebbd527c7c91ba65aaeccf"
+      "sourceSha": "6aa5da06a0e688901ba46d7ecfd3852b14d6aff2"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7593,6 +7593,15 @@
       "boundary": "Проверен вход в №28–30 с исправленным условием о птицах, моделями делимости и заполнением таблиц алгоритмов. Версия загружаемого банка закреплена в адресе файла."
     },
     {
+      "previousBaseSha": "4ad29a05fa8b6e8693ebbd527c7c91ba65aaeccf",
+      "sourceBaseSha": "6aa5da06a0e688901ba46d7ecfd3852b14d6aff2",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Два тома Виленкина содержат упражнения №1–176 и №1–109, включая проверку крайних точек, переноса дробных отметок и сохранения ученического чертежа."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
@@ -7821,6 +7830,33 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e982acee8256c74228d42a4122a1fe5eb080e796",
+      "sourceBaseSha": "e1afecea1437bf1a28c7595cc4eb7eb17a093059",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверены обе серии точек №5.101 и все шесть отметок с выбором крайних в №5.102. Телефон, черновик пяти ещё не поставленных точек, подсказка на конкретном числителе и возвращение обеих ролей."
+    },
+    {
+      "previousBaseSha": "e1afecea1437bf1a28c7595cc4eb7eb17a093059",
+      "sourceBaseSha": "454df0753f130761c85f9e4bc056503939f617bf",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены двенадцать подпунктов №5.103–5.106 с двумя упорядоченными рядами дробей, моделью сравнения, подсказками и восстановлением на доске."
+    },
+    {
+      "previousBaseSha": "454df0753f130761c85f9e4bc056503939f617bf",
+      "sourceBaseSha": "78401295678997601028193368841bdef712ef94",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены все пять цепочек, одиннадцать дробей и шесть имён точек на печатной странице 23. В упражнении сохраняются выбранная строка, взаимное положение точек и частичный ответ ученика."
     }
   ],
   "coverageUpdates": [
