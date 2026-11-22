@@ -26923,7 +26923,11 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-7-02",
@@ -26940,7 +26944,10 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-7-03",
@@ -26957,7 +26964,12 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
+      ]
     },
     {
       "id": "source-selfcheck-7-04",
@@ -26974,7 +26986,10 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-7-05",
@@ -26991,7 +27006,12 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
+      ]
     },
     {
       "id": "source-selfcheck-7-06",
@@ -27008,7 +27028,11 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-7-07",
@@ -27025,7 +27049,11 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-7-08",
@@ -27042,7 +27070,11 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-7-09",
@@ -27059,7 +27091,11 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-7-10",
@@ -27076,7 +27112,11 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-7-11",
@@ -27093,7 +27133,14 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ]
     },
     {
       "id": "source-selfcheck-7-12",
@@ -27110,7 +27157,12 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
+      ]
     },
     {
       "id": "source-selfcheck-7-13",
@@ -27127,7 +27179,14 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ]
     },
     {
       "id": "source-selfcheck-7-14",
@@ -27144,7 +27203,12 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
+      ]
     },
     {
       "id": "source-selfcheck-7-15",
@@ -27161,7 +27225,10 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-7-16",
@@ -27178,7 +27245,10 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-7-17",
@@ -27195,7 +27265,10 @@
         "pdfPages": [
           188
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-appendix-1",

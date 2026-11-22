@@ -1,0 +1,1559 @@
+{
+  "parts": {
+    "selfcheck-VII-1": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VII-2": [
+      null
+    ],
+    "selfcheck-VII-3": [
+      "а",
+      "б",
+      "в"
+    ],
+    "selfcheck-VII-4": [
+      null
+    ],
+    "selfcheck-VII-5": [
+      "а",
+      "б",
+      "в"
+    ],
+    "selfcheck-VII-6": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VII-7": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VII-8": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VII-9": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VII-10": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VII-11": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ],
+    "selfcheck-VII-12": [
+      "а",
+      "б",
+      "в"
+    ],
+    "selfcheck-VII-13": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ],
+    "selfcheck-VII-14": [
+      "а",
+      "б",
+      "в"
+    ],
+    "selfcheck-VII-15": [
+      null
+    ],
+    "selfcheck-VII-16": [
+      null
+    ],
+    "selfcheck-VII-17": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "selfcheck-VII-1": {
+      "id": "source-selfcheck-7-01",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 1",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "1",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-2": {
+      "id": "source-selfcheck-7-02",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 2",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "2",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-3": {
+      "id": "source-selfcheck-7-03",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 3",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "3",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-4": {
+      "id": "source-selfcheck-7-04",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 4",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "4",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-5": {
+      "id": "source-selfcheck-7-05",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 5",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "5",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-6": {
+      "id": "source-selfcheck-7-06",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 6",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "6",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-7": {
+      "id": "source-selfcheck-7-07",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 7",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "7",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-8": {
+      "id": "source-selfcheck-7-08",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 8",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "8",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-9": {
+      "id": "source-selfcheck-7-09",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 9",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "9",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-10": {
+      "id": "source-selfcheck-7-10",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 10",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "10",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-11": {
+      "id": "source-selfcheck-7-11",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 11",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "11",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-12": {
+      "id": "source-selfcheck-7-12",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 12",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "12",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-13": {
+      "id": "source-selfcheck-7-13",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 13",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "13",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-14": {
+      "id": "source-selfcheck-7-14",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 14",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "14",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-15": {
+      "id": "source-selfcheck-7-15",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 15",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "15",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-16": {
+      "id": "source-selfcheck-7-16",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 16",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "16",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VII-17": {
+      "id": "source-selfcheck-7-17",
+      "kind": "exercise",
+      "title": "Вопросы к главе VII · вопрос 17",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "17",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          186
+        ],
+        "pdfPages": [
+          188
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-selfcheck-vii-01-a": {
+      "raw": "0b87fdb4d916655984117b2a98072309b136fb481b928a14a21eb96404a19185",
+      "authored": "47a67047e0607fb8428af201f2c3251dd6f771b1070ffc57792cae2f3481b4d2",
+      "integrated": "f1876c656d01c6a54157b2701beeac36f0d5a81309111aa74c3e54a34c956d64"
+    },
+    "ex-selfcheck-vii-01-b": {
+      "raw": "dcd98738fce6d946815dd897bc7190916151960c47fb2fc6cacae03af69eeb79",
+      "authored": "12c1e90388e550a8ded7fe96b1a041d02d7ecfc838915260dcdcae8cc14aeb59",
+      "integrated": "b58ca29195ce50297d2eb281bfae6a99c2ef35312404afd5307e7c912869208b"
+    },
+    "ex-selfcheck-vii-02": {
+      "raw": "f120015c196ff0893891f101dc80513ad386ea05dc1bdbc1d7b743af930584f8",
+      "authored": "2a4bc8c5053dc1e42a2ae0e354320b14198f0dbe753e9069176345df765673bb",
+      "integrated": "920a987eefc424da58fae469e677458399d464e088b5d2db80836bf0278348ae"
+    },
+    "ex-selfcheck-vii-03-a": {
+      "raw": "80f8a88de2a5aae911cdb44dbc3768e0669a0f47c63b7c5888849348d9e7b27f",
+      "authored": "2dc657aca7cdc4ad36cd8fc43c19deffd99ef50bbcdd11853654fb9ca0465338",
+      "integrated": "8e701b967c95847dcba872a4cd84ebb3eea53dd1f93b016ebd43944cb8b79d79"
+    },
+    "ex-selfcheck-vii-03-b": {
+      "raw": "b687ea57d2c15006bfb079616d599cc0433faf89537d1cbe1efcd1d5455efe31",
+      "authored": "88ddf59d573f477807f580feea9d1e8d835e550aeed99f090ebda1ba1875bb78",
+      "integrated": "b9a9887820f84ace7f2d506645ae30ce444eb55eb13bc13b8df59769a33e19d3"
+    },
+    "ex-selfcheck-vii-03-c": {
+      "raw": "8b73b8b30e9c23b2dd89f7ede949bde0ce2d1b4828e0fa84bd10e849006462aa",
+      "authored": "3c8ad40ad821624a2820beb5959f922e1150cf2bc88b11bfa4bde406409e0a78",
+      "integrated": "6992c5f08f84617c8ef4777d9291fe24c56a0ee96e78b00ce9cb8022b6b3f7ce"
+    },
+    "ex-selfcheck-vii-04": {
+      "raw": "a75f3fe37ba3707b53c0d125b9086a84643b10b19416dbc53bc995c5b607c80b",
+      "authored": "f7d314613aabab23e3ff1f45264f23ea38c8e4cf77c87b0d06725a8da2b6f9d4",
+      "integrated": "ffc737554dfbd43132f440e45ec063126ce514e186d828b62a187b3a1d77a5d2"
+    },
+    "ex-selfcheck-vii-05-a": {
+      "raw": "883d7242437662bf736fc1eff655fa936eb5d686f3ecb9a9c0b608d71ddd31c9",
+      "authored": "1d8ffac7cff20e90884b5c64e4267e2e37648f8b689075f5848f5d78d6828ece",
+      "integrated": "63678be954e33e827a0f37d92b3c50f6954364962fcc16f0d71d9f824e8a03a5"
+    },
+    "ex-selfcheck-vii-05-b": {
+      "raw": "14b7127677384037c50c1845a53b75ac458ee27a641b1642a772b8a9a1235a3c",
+      "authored": "8b3d96e98aa0767b6db4a01a9356426977508cbb6c24dd6acfef9b7e6861cc32",
+      "integrated": "27565fa8b200455d09a370bbe5ede5acfedc2e0d07f47d9cd68a486b7cf91306"
+    },
+    "ex-selfcheck-vii-05-c": {
+      "raw": "c03fd213da8a6406b6f82006211c4bf754aacfa264d52e0786884eb6294d35f8",
+      "authored": "8d74557648683b6de5892d89bc5f8b101bec889104e6c016e6f80fe4664e4230",
+      "integrated": "b395802e233c4072347ab92e708aa3a320cd0821d09d56705a7c1b874668c35b"
+    },
+    "ex-selfcheck-vii-06-a": {
+      "raw": "c28d08bb36372befa1e416054195acc9b4ecddf6e81bda7a63be899cd46d3ce1",
+      "authored": "f5aa8a46df4cf12978a59115aa311e61793f967f8f3bbec9c6e4c42966ae3502",
+      "integrated": "b65e481c6ebcbf417c934d724b6bb1d211ad1db950e36f6de7f4431e311d3285"
+    },
+    "ex-selfcheck-vii-06-b": {
+      "raw": "a9cdbde92231fd022140d9459398ea3e417bd2d1e9477fd86d46a3799b80bc5a",
+      "authored": "85f116c7dadfd2cffc68244ab4ae558b768182665b0054f374d0408bcc045d54",
+      "integrated": "00eb0852e0fd998ce4fcecfec9af035a9b072e867de8aa1937717c052645b94f"
+    },
+    "ex-selfcheck-vii-07-a": {
+      "raw": "8540562fa1b3808b0f732d3a838172e3482a7dbdace101e0d8348ddfa5734fa8",
+      "authored": "382e16bfe2b1b8321373b5838cbca5fc6af50d22fa8f65984568d1eaaab9917e",
+      "integrated": "2ccec07611ab77aa783ed429e52399fc0857ce60a1bb1e56e2e757102f39aadd"
+    },
+    "ex-selfcheck-vii-07-b": {
+      "raw": "48bd99b8e2e7cd4df4240dfc56f46c9475e826ecaa2fa050e534d42e7fa8ac3d",
+      "authored": "f7d5d41c041a9403e3cf955878265b5a4650f8be9da436e6003beb6d946a9a75",
+      "integrated": "8153dd7a527de965741b2ef760a684e42cf6a909a9d64b484b9d6dc15187d933"
+    },
+    "ex-selfcheck-vii-08-a": {
+      "raw": "5ec6e9d295dc6b1de44fe99978282aba5b71c58058e195dd73e0343a99914271",
+      "authored": "5745f83c433cd20ae2bf999f6788e76fbd94ae002ad51900516f7722fa73ae83",
+      "integrated": "46907dba48cabbbf954fac51bad58230b44e56eb66cef7626b86badab2f2a7bd"
+    },
+    "ex-selfcheck-vii-08-b": {
+      "raw": "6cf66d11b49730d218bba91edae33ea374c3f63c35785cf31ab4313cf05c7894",
+      "authored": "c1922c86f570aaa2ee879e764b52ba49c13a22735e0b4d191fea7669dacf5ba0",
+      "integrated": "ed8577806239a5f376a30c4f6a5a0e7c0bbcdee0f83bfed20d5182f20cc5eacf"
+    },
+    "ex-selfcheck-vii-09-a": {
+      "raw": "6749c675e2165ad30474ee35594d39c92c14204764bc20f912c9ec857fdd1963",
+      "authored": "ebacffc584b1dca61007f479b8a888b98a7789cf610029a8f616d6c85684d772",
+      "integrated": "ed5be025058e75c13a07efa7ef7841c85bf18640d8cb738be25156ba321805a1"
+    },
+    "ex-selfcheck-vii-09-b": {
+      "raw": "5a72e39307b8833ba64312bad47cd09b21a1e31a614c6f370e78eb463d15dea1",
+      "authored": "a37f1c308d94840177462849145039570391393fed14e80cc11f2a0cccd792a2",
+      "integrated": "2115e675a91114d85fd7e7a0d0f18df516bfeeec7a353e7cab0b8f137d9e44b3"
+    },
+    "ex-selfcheck-vii-10-a": {
+      "raw": "74798120218b434b78ba82a2be5769c0619b3c65d059915dcee71d7f0b60c61e",
+      "authored": "75e9ab753ae85adbc3eaa37c3c959256c2cd3e3d74200b1d364f91705e379105",
+      "integrated": "bb814559509c85045591193cdbbb2c6924778dff19ae16a431a4dc08bd9d77cc"
+    },
+    "ex-selfcheck-vii-10-b": {
+      "raw": "f28ef766e361972f2b77bf08ef74ea3f05d52282303bafed8dd809684a70bf5f",
+      "authored": "f96053ce01ee8f32c93195aa7dc3bbd09422e89b271550653c45c624b9547e10",
+      "integrated": "531adbfb7d5597fa85c0b7bc6dbc86ab5120f11484dee7caf8bad6f28f2a0bdc"
+    },
+    "ex-selfcheck-vii-11-a": {
+      "raw": "2ce1c6b61d9eb3c41e603b7ac281d791eab89b1427d7e2983eba05627a27bb57",
+      "authored": "cafca66b947e9311fb3c5bb498ec9caebb6a66fb6e046cd0470390dcfeca4167",
+      "integrated": "08556f967b3dcd2fb39a7e681eb510c9ba476ee41ebb5989833889e949311cd0"
+    },
+    "ex-selfcheck-vii-11-b": {
+      "raw": "e718bd48402d55f6ddcf062741a578b7fbb9b2dc4554634b11e3775cd0ec3462",
+      "authored": "4680540f2069f7a4b5e7ae374fe8789fa98cc3cfb47059528818892d2391cf49",
+      "integrated": "56e099f9b97f6f65c47c5a9b04c3274cb40325a6cb66df36060f7ff87ae52179"
+    },
+    "ex-selfcheck-vii-11-c": {
+      "raw": "318ebb5a3c3f0e2795f63a7d64560f067ebb89fffa6172dbf06834585918dd35",
+      "authored": "af8e2d42bc437d61f174c375521ca3c6f414856d67193977f7284e47edeca44f",
+      "integrated": "cd82108f843c782bcdd66a6ec346d749121d387d5308dd92dd308bf0881b0685"
+    },
+    "ex-selfcheck-vii-11-d": {
+      "raw": "1e8050edcf0e50950c8b9e12d3a4a20c440d681cd2e9a0fa2fd7d2ec0742d7a5",
+      "authored": "6b13cbdcd78816b744370ce09c7876415b5e122063c92a9b92ba42b2ebbba7d3",
+      "integrated": "5f0d831fb2864d04fecbb64c0e5e0bb4e4141c9f23942a3befa62cad3e302a64"
+    },
+    "ex-selfcheck-vii-11-e": {
+      "raw": "144c73c1efd6df256edcc7fd5a2abe81499ce66364d8da76ac033f006dcccce3",
+      "authored": "4bb23abb9d616628808ed635478b97d4fbf47eaf691d727a7dd38881290aa11f",
+      "integrated": "a3e3f47d708e2359eae819f420384eee15a4e7a755d096155ab596b4efa5ef62"
+    },
+    "ex-selfcheck-vii-12-a": {
+      "raw": "06b2dd5a89204bd03a74078161c133b5aefd9c2889d50b4d461c1b03ae46fa4a",
+      "authored": "657dafbadf78af18b052480448cf356f4dd0b4bb6ebb640e505b4786810240b1",
+      "integrated": "259ea33889cb6e080f377ecd45cbcfcbd1a8e20fc097bc4222438e69e4a8b639"
+    },
+    "ex-selfcheck-vii-12-b": {
+      "raw": "ba2ea6bdc7894d594a08155ce86e12d900854d70138bc869c7e21b665be5faf8",
+      "authored": "6182d999f19f3ee9bcd9388ef77e8da521f9ae37809d32eddcf83e1a6189409e",
+      "integrated": "bfb98a344b507b859ac57d078bdb2a1fb59047751ff20f53fd6cc49e8dfa6116"
+    },
+    "ex-selfcheck-vii-12-c": {
+      "raw": "e6df5669c025e07a34c2038b8c30950a0b4d41394cfb6bff9d257fd65d4e9168",
+      "authored": "e6b446eea4d225d14b9c5da4b483147aa5bcf83184ca776b2040e68a46091fa1",
+      "integrated": "6863d1b7142868409ade7bd3b23bd4b2e21b3f82236e3ae387fe3ab530ee1ac6"
+    },
+    "ex-selfcheck-vii-13-a": {
+      "raw": "ab6690143aad3175ab15ca699d26acf446dc9e0dffbed205d8751e4a680124f2",
+      "authored": "033d9ddf84d55054c68f76c8816835b4d8ae9fc8f863b5950da970756269da7b",
+      "integrated": "0585791bb06f84627c21d86c3751f7f7cb3f3e722e4055b554b1efb57a7d3662"
+    },
+    "ex-selfcheck-vii-13-b": {
+      "raw": "6a23297e93a0b7ff30e2541b0783ba973b448331b735cd90815d55b5260d235a",
+      "authored": "85137371807996b28b161e0ef6ea2b12927099452e4d9d5f4e17c1e946f365e0",
+      "integrated": "925c17ba9667f0278ec0f18a085f163caf3c6722c8dcd55bd0cdd72b2720cd51"
+    },
+    "ex-selfcheck-vii-13-c": {
+      "raw": "0834f0c62f0438871b60b2628e4f11b47b5d5e8d8f8de8badb16f662dd2eb3f8",
+      "authored": "ec28e1df95e0418b91b3c75ca8f36de4799c053ca5d06ab016e47b2a59e0dd92",
+      "integrated": "a466d9ab6e6e8b1a0bf0cb7ba2ccd31602afb2045520ddf5f30acd4598a4a17f"
+    },
+    "ex-selfcheck-vii-13-d": {
+      "raw": "7e2450785100f40e572657e5a3e0879f956175e85f5f800575147bdbc0aee838",
+      "authored": "9252c69ce522f13bd4c8fb946718321077950565dc98078f8fb21e89e63d4034",
+      "integrated": "456fdc9f03e17f7462a58d62bc8d62fb04c2d45e63bf22ff37ecf59d40fda37f"
+    },
+    "ex-selfcheck-vii-13-e": {
+      "raw": "084c33c73c3e51478a49958d2daacfe83f6ec13a5901fc1832406e78c01683a4",
+      "authored": "f590444a397e7dcf53ea811cf0b7dd4c58f25ed8fb549d1f0f0c9a1e2f9870c2",
+      "integrated": "55cb96d6455d5a416586ed9b8959733fa7e91a310404cae9cfff32d1257f47fb"
+    },
+    "ex-selfcheck-vii-14-a": {
+      "raw": "21382c5af6287601b973f421ac2c9d4595eab44da236feaaa5404a280b2a2a6f",
+      "authored": "a635f0509c51e64347e59dcfe93b249f0415331eeb17539e97add51657dda672",
+      "integrated": "f9a9f347c715c8a829d65e7584022a96dc3a3af51846eb89027c70501f369127"
+    },
+    "ex-selfcheck-vii-14-b": {
+      "raw": "186a81862823ebabd7700b2f3afc09eda94bf96bda1ae00ef9cc7ee193dd22c8",
+      "authored": "7959d91aea0d5b9c9f27e8b8acf89010ae7d75fcb821e0399dbc771714d64455",
+      "integrated": "8712289f42611b40b03ae5b50679771f364eebcb90a03319450b401f93eacf8c"
+    },
+    "ex-selfcheck-vii-14-c": {
+      "raw": "3931454f7fc444514e0fb35935a912cef1bee638dac71215c40aca8e86f5c619",
+      "authored": "ba8d79c93b3fba7f1421c33224203487199955cf03fda2a341ee7f40ad42b271",
+      "integrated": "799f9e2b1497f1a9c158251567832c792aca3722a58d07f5c84c3f3e5cd0e1c0"
+    },
+    "ex-selfcheck-vii-15": {
+      "raw": "6068208e214e204fb286f5c7178c59fa1035fbbb1c0316971c685d3bd0af794d",
+      "authored": "87cc91b37ddab412bfc6de01357f26fb262bdb7cb074dddd6108fa7585b4856e",
+      "integrated": "5f3ce4e2020c5996711a9a6d94587f2f1d7dd7206afc7e98d0265c74d70a366e"
+    },
+    "ex-selfcheck-vii-16": {
+      "raw": "9e99a05878f9a9f18d7b2cef38a9eaed72796f8e0440ed30ac1cd1628c264aa9",
+      "authored": "2b02128fba7c2734c17beef5b8249d644ca524eb5eacb47a91b78f0b45c43d58",
+      "integrated": "8c1d19d6636c4213dcd6f83b4cb5f0c70cd76739824e72aaf8bc75bcacd289d8"
+    },
+    "ex-selfcheck-vii-17": {
+      "raw": "788fbbf72716717c76d043537108d3594d7b7d849d644ebd5d55d20a2bb1b8f8",
+      "authored": "38ff7c8db4f9263593e4b2d5ffcd3f707d1078904e6693971c1981f741698b73",
+      "integrated": "a63d9a7b5b0ce3f9b9402d1d1abff7bf4a46963a937371edadaa7ac6b601e00e"
+    }
+  },
+  "cases": [
+    [
+      "ex-selfcheck-vii-01-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-01-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-01-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-01-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-01-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-01-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-01-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-01-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-01-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-01-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-01-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-01-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-01-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-02|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-02-condition"
+    ],
+    [
+      "ex-selfcheck-vii-02|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-02-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-02|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-02-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-02|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-02-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-02|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-02-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-02|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-02-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-03-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-03-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-03-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-03-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-03-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-03-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-03-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-03-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-03-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-03-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-03-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-03-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-03-c|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-c-condition"
+    ],
+    [
+      "ex-selfcheck-vii-03-c|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-c-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-03-c|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-c-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-03-c|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-c-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-03-c|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-c-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-03-c|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-03-c-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-04|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-04-condition"
+    ],
+    [
+      "ex-selfcheck-vii-04|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-04-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-04|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-04-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-04|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-04-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-04|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-04-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-04|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-04-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-05-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-05-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-05-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-05-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-05-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-05-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-05-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-05-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-05-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-05-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-05-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-05-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-05-c|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-c-condition"
+    ],
+    [
+      "ex-selfcheck-vii-05-c|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-c-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-05-c|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-c-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-05-c|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-c-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-05-c|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-c-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-05-c|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-05-c-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-06-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-06-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-06-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-06-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-06-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-06-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-06-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-06-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-06-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-06-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-06-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-06-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-06-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-07-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-07-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-07-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-07-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-07-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-07-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-07-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-07-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-07-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-07-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-07-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-07-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-07-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-08-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-08-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-08-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-08-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-08-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-08-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-08-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-08-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-08-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-08-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-08-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-08-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-08-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-09-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-09-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-09-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-09-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-09-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-09-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-09-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-09-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-09-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-09-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-09-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-09-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-09-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-10-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-10-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-10-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-10-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-10-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-10-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-10-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-10-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-10-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-10-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-10-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-10-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-10-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-11-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-11-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-11-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-11-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-11-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-11-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-11-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-11-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-11-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-11-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-11-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-11-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-11-c|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-c-condition"
+    ],
+    [
+      "ex-selfcheck-vii-11-c|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-c-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-11-c|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-c-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-11-c|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-c-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-11-c|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-c-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-11-c|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-c-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-11-d|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-d-condition"
+    ],
+    [
+      "ex-selfcheck-vii-11-d|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-d-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-11-d|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-d-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-11-d|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-d-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-11-d|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-d-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-11-d|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-d-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-11-e|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-e-condition"
+    ],
+    [
+      "ex-selfcheck-vii-11-e|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-e-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-11-e|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-e-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-11-e|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-e-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-11-e|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-e-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-11-e|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-11-e-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-12-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-12-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-12-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-12-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-12-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-12-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-12-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-12-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-12-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-12-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-12-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-12-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-12-c|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-c-condition"
+    ],
+    [
+      "ex-selfcheck-vii-12-c|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-c-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-12-c|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-c-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-12-c|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-c-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-12-c|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-c-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-12-c|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-12-c-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-13-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-13-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-13-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-13-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-13-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-13-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-13-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-13-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-13-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-13-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-13-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-13-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-13-c|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-c-condition"
+    ],
+    [
+      "ex-selfcheck-vii-13-c|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-c-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-13-c|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-c-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-13-c|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-c-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-13-c|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-c-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-13-c|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-c-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-13-d|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-d-condition"
+    ],
+    [
+      "ex-selfcheck-vii-13-d|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-d-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-13-d|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-d-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-13-d|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-d-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-13-d|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-d-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-13-d|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-d-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-13-e|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-e-condition"
+    ],
+    [
+      "ex-selfcheck-vii-13-e|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-e-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-13-e|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-e-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-13-e|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-e-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-13-e|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-e-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-13-e|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-13-e-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-14-a|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-a-condition"
+    ],
+    [
+      "ex-selfcheck-vii-14-a|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-14-a|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-14-a|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-14-a|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-14-a|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-14-b|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-b-condition"
+    ],
+    [
+      "ex-selfcheck-vii-14-b|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-14-b|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-14-b|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-14-b|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-14-b|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-14-c|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-c-condition"
+    ],
+    [
+      "ex-selfcheck-vii-14-c|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-c-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-14-c|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-c-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-14-c|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-c-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-14-c|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-c-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-14-c|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-14-c-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-15|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-15-condition"
+    ],
+    [
+      "ex-selfcheck-vii-15|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-15-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-15|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-15-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-15|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-15-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-15|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-15-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-15|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-15-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-16|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-16-condition"
+    ],
+    [
+      "ex-selfcheck-vii-16|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-16-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-16|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-16-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-16|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-16-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-16|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-16-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-16|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-16-step-3"
+    ],
+    [
+      "ex-selfcheck-vii-17|condition",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-17-condition"
+    ],
+    [
+      "ex-selfcheck-vii-17|help:h1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-17-help-h1"
+    ],
+    [
+      "ex-selfcheck-vii-17|help:h2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-17-help-h2"
+    ],
+    [
+      "ex-selfcheck-vii-17|step-1",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-17-step-1"
+    ],
+    [
+      "ex-selfcheck-vii-17|step-2",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-17-step-2"
+    ],
+    [
+      "ex-selfcheck-vii-17|step-3",
+      "coordinates-chapter-seven-self-check-ex-selfcheck-vii-17-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "c396676916796996f56cc7a7b2fb0bf594af9b00a69528046fcd09e4d2e9c448",
+      "afterSHA256": "3fe75d3c83781c5662961289b893f1737b95920977e86fba0ce47852c8e1bcba"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "7e055aec58bacdcdaec6a754376f9c66e5de0d3a2eb8e196c2e9606bce85612a",
+      "afterSHA256": "a5f13a6ca92eb702e20d82c5f5c312f94c316a153e8943ffbf79dbd02069a9ac"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T23:34:04Z",
+    "scope": "Chapters I–VI and all three teaching paragraphs of chapter VII: points 71–84, exercises 637–730, 1,339 reviewed cards. Chapter VII self-check and additional tasks from 731 are inventoried separately. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "41a0155c3e7c44dd8332303dc565195ff8bf7594f9c36ff106ea036639da0ba9",
+    "index": "7b5cf8dab750603345741b25fb5048d8de7b12fd47c13546fa5279ce51fbdac8",
+    "registry": "0e31fae5dfe310ab07ffff0a398d49e9f79e97551b305a931ca2169ecc80dd34",
+    "cases": "0edca09a4442f814092dacfa5278d979106d0627cef75481c66bb96878e97c3e"
+  }
+}
