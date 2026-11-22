@@ -381,14 +381,34 @@
     return {...practice,id:'analog-'+part.id+'-'+attempt,family:'scope-'+part.id,match:'skill',mistake:practice.steps[0].hint};
   }
 
+  function divisibilityPractice(part,attempt){
+    const i=Number(part.id.split('-')[1])-1,k=seed(part.id)%109+attempt,n=2+k%15,prime=[3,5,7,11,13,17][k%6],even=2*n;
+    const answers=[
+      ['Делится ли '+n+' на себя и на 1?',['На оба числа','Только на 1','Только на себя'],'В обоих случаях проверь частное.'],
+      ['Какое из чисел 1, '+prime+' и '+even+' имеет один положительный делитель?',['1',String(prime),String(even)],'Считай различные делители: у единицы 1 и само число совпадают.'],
+      ['В список вписаны 1, '+prime+' и '+even+'. Какое из них опровергает «в списке у каждого не меньше двух делителей»?',['1',String(prime),String(even)],'Для опровержения нужна запись без второго различного делителя.'],
+      ['Проверь утверждение «каждое простое число меньше '+even+'». Какой пример его опровергает?',[[37,41,43,47][k%4]+' — простое','2 — простое',even+' — составное'],'Нужно простое число, которое не меньше порога.'],
+      ['Сравни соседние числа '+(n*(n+1))+' и '+(n*(n+1)+1)+'. Каков их наибольший общий делитель?',['1',String(n),String(n+1)],'Любой общий делитель делит разность этих чисел, равную единице.'],
+      ['Каков наибольший общий делитель '+(4*n)+' и '+(7*n)+'?',[String(n),String(2*n),'1'],'Вынеси общий множитель. У 4 и 7 нет общего делителя больше единицы.'],
+      ['Назови делитель числа '+n+', который не меньше этого числа.',[String(n),'1',String(n+1)],'Число делится на себя, и при равенстве строгое «меньше» неверно.'],
+      ['Назови положительное кратное '+n+', которое не больше '+n+'.',[String(n),String(2*n),String(3*n)],'Попробуй множитель 1.'],
+      ['Какое число делится на 9 и оканчивается не цифрой 9?',[String(9*(10*n+2)),String(90*n+9),String(90*n+19)],'Проверь и последнюю цифру, и делимость на 9.'],
+      ['Найди натуральное m, для которого 9m = '+(9*n)+'.',[String(n),String(9*n),String(n+9)],'Раздели правую часть на 9.'],
+      ['Среди простых 2, '+prime+' и '+[19,23,29][k%3]+' какое нельзя записать в виде 2m + 1 с натуральным m?',['2',String(prime),String([19,23,29][k%3])],'Проверь чётность правой части.'],
+      ['Если m = '+(3*n+1)+', у числа 2m + 1 есть делитель больше 1 и меньше самого числа. Укажи его.',['3','2',String(2*(3*n+1)+1)],'Раскрой скобки: 2(3n + 1) + 1 = 6n + 3.']
+    ][i];const [prompt,choices,hint]=answers,shift=k%3;
+    return {...choice(prompt,choices.slice(shift).concat(choices.slice(0,shift)),choices[0],hint),id:'analog-'+part.id+'-'+attempt,family:'divisor-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>28)return createLegacy(number,part,attempt);
+    if(number<7||number>29)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===29)return divisibilityPractice(part,attempt);
     if(number===28)return scopePractice(part,attempt);
     if(number===27)return witnessPractice(part,attempt);
     if(number===26)return universalPractice(part,attempt);
@@ -425,7 +445,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=28&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=29&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -447,7 +467,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=28&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=29&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

@@ -642,3 +642,19 @@ test('all twelve everyday statements distinguish universal, existential and indi
  assert.match(row.parts[0].explanation,/Onychoprion fuscatus/);await route(s,'#n/28/028-1');assert.match(element(s,'[data-logic-reference] a').href,/allaboutbirds/);
  const kept=await surface(t,BOOK+'#n/28/028-10',storage(s));assert.equal(element(kept,'[data-logic-left]').value,'1');assert.match(element(kept,'[data-logic-other]').value,/часы/);
 });
+test('the divisibility lab calculates all factors, shared factors and generated numeric witnesses independently',async t=>{
+ const s=await surface(t,BOOK+'#n/29/029-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[28],types=[1,2,1,1,1,3,1,1,2,1,1,1];
+ const set=(selector,value)=>{const field=element(s,selector);field.value=String(value);field.dispatchEvent(new s.w.Event('change',{bubbles:true}));};
+ for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/29/'+p.id);const m=i===11?4:12;set('[data-divisor-m]',m);if([3,4,5].includes(i))set('[data-divisor-n]',15);
+  const lab=element(s,'[data-divisor-results]').textContent;if(i===11)assert.match(lab,/Делители результата: 1, 3, 9/);else assert.match(lab,/1, 2, 3, 4, 6, 12/);if([3,4,5].includes(i))assert.match(lab,/Общие делители: 1, 3/);
+  set('[data-logic-left]',types[i]);set('[data-logic-right]',1);input(s,'[data-logic-other]',p.explanation);click(s,'[data-logic-use]');submit(s,'#answer-form');const w=bookWork(s,p.id);assert.equal(w.divisorM,m);assert(w.submitted&&!w.correct&&!w.independent);
+  for(let n=0;n<38;n++){const task=s.w.PetersonAnalogues.create(29,p,n);assert.equal(new Set(task.choices).size,3);assert(s.w.PetersonBook.check(task,task.answer));
+    const nums=task.prompt.match(/\d+/g)?.map(Number)||[],a=Number.parseInt(task.answer,10);
+    if(i===3)assert(a>=nums[0]&&Array.from({length:a-2},(_,j)=>j+2).every(x=>a%x));
+    if(i===4||i===5){let [x,y]=nums;while(y){const r=x%y;x=y;y=r;}assert.equal(a,x);}
+    if(i===8)assert(a%9===0&&a%10!==9);if(i===11){const value=2*nums[0]+1;assert(value%a===0&&a>1&&a<value);}
+  }
+ }
+ const r=await surface(t,BOOK+'#n/29/029-6',storage(s));assert.equal(element(r,'[data-divisor-m]').value,'12');assert.equal(element(r,'[data-divisor-n]').value,'15');assert.match(element(r,'[data-divisor-results]').textContent,/Общие делители: 1, 3/);
+});

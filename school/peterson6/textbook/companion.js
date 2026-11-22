@@ -464,6 +464,44 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const divisorClaims=[
+    ['Всякое натуральное число делится без остатка на себя и на единицу.',0,['Любое n можно записать и как 1 · n, и как n · 1.','У каждого числа обязательно два различных делителя.','Достаточно проверить только 12.'],'При n=1 оба названных делителя совпадают, но делимость сохраняется.'],
+    ['Существуют числа ровно с одним натуральным делителем.',1,['У числа 1 ровно один натуральный делитель — оно само.','У каждого простого числа только один делитель.','Примером служит 2 с делителями 1 и 2.'],'Слово «существуют» требует хотя бы одного примера. Посчитай различные делители единицы.'],
+    ['Для каждого натурального числа найдутся по крайней мере два различных делителя.',0,['Существует исключение — у числа 1 нет второго делителя.','У 2 ровно два делителя.','У 12 больше двух делителей.'],'Обрати особое внимание на начало натурального ряда. Удачный пример не доказывает утверждения о каждом числе.'],
+    ['Всякое простое число меньше каждого составного.',0,['Простое число 7 больше составного числа 4.','Простое число 2 меньше составного числа 4.','Число 1 простое и меньше 4.'],'Сохрани обе роли в паре. Для опровержения нужен пример, в котором простое число не меньше составного.'],
+    ['Если два числа взаимно просты, каждое из них — простое число.',0,['Числа 8 и 9 составные, а их единственный общий делитель — 1.','Числа 3 и 5 оба простые.','Общий делитель 8 и 9 равен 2.'],'Взаимная простота относится к общим делителям двух чисел, а простота числа — к его собственным делителям.'],
+    ['Именно 12 и 15 взаимно просты.',2,['Оба делятся на 3, поэтому данная пара не взаимно проста.','Оба делятся на 1, поэтому они взаимно просты.','Любые разные числа взаимно просты.'],'Для взаимной простоты единственный общий положительный делитель должен быть равен 1.'],
+    ['Делитель натурального числа всегда строго меньше самого числа.',0,['У числа 6 есть делитель 6; он равен самому числу.','У 6 есть делитель 2.','6 больше его делителя 3.'],'Знак «строго меньше» нарушается уже при равенстве.'],
+    ['Каждое положительное кратное натурального числа строго больше этого числа.',0,['Среди положительных кратных 5 есть 5 · 1 = 5.','У числа 5 есть кратное 10.','10 больше 5.'],'Проверь первое положительное кратное. Равенство тоже опровергает строгое «больше».'],
+    ['Есть число, которое делится на 9 и не оканчивается цифрой 9.',1,['18 = 9 · 2 и последняя цифра — 8.','99 делится на 9 и оканчивается цифрой 9.','19 оканчивается цифрой 9.'],'Один пример должен одновременно выдержать две проверки: делимость и условие на последнюю цифру.'],
+    ['Произвольное положительное кратное девяти можно представить как 9n с натуральным n.',0,['По определению положительного кратного частное от деления на 9 — натуральное число.','Достаточно проверить только 18.','В записи 9n множитель n всегда равен 9.'],'Здесь «можно представить» относится к каждому положительному кратному. Выбери множитель как частное от деления на 9.'],
+    ['Любое простое число имеет вид 2n + 1 с натуральным n.',0,['Простое число 2 чётно, а каждое 2n + 1 нечётно.','Число 3 получается при n = 1.','Число 5 получается при n = 2.'],'Рассмотри простое число, которое отличается от остальных по чётности.'],
+    ['Если число имеет вид 2n + 1 при натуральном n, то число простое.',0,['При n = 4 получается 9 = 3 · 3.','При n = 1 получается простое число 3.','Все нечётные числа простые.'],'Найди нечётное составное. Укажи и n, и делитель полученного числа.']
+  ];
+  function divisorCard(part){
+    const [claim,type,reasons,hint]=divisorClaims[Number(part.id.split('-')[1])-1];
+    return {prompt:'Определи вид утверждения, затем докажи истинное. Для ложного общего высказывания приведи контрпример и запиши отрицание. Все делители и кратные в этой карточке положительные. Исходная фраза: '+claim,
+      leftTitle:'Как сформулировано утверждение?',left:scopeTypes,li:type,rightTitle:'Как обосновать вывод?',right:reasons,ri:0,hint,reference:'Делитель d числа n даёт целое положительное частное n : d. У простого числа ровно два различных положительных делителя. У взаимно простых чисел единственный общий положительный делитель равен единице.',extra:'Мой пример, доказательство или отрицание'};
+  }
+  function numberLab(part,work,interactive){
+    const i=Number(part.id.split('-')[1]),pair=[4,5,6].includes(i),m=work.divisorM||0,n=work.divisorN||0;
+    const factors=a=>Array.from({length:a},(_,j)=>j+1).filter(d=>a%d===0),asList=a=>a.join(', ');
+    const select=(letter,value)=>'<label>'+letter+' <select data-divisor-'+letter.toLowerCase()+'><option value="">Выбери число</option>'+Array.from({length:100},(_,j)=>j+1).map(v=>'<option value="'+v+'"'+(v===value?' selected':'')+'>'+v+'</option>').join('')+'</select></label>';
+    const descriptor=(key,a)=>{const list=factors(a),kind=a===1?'единица':list.length===2?'простое число':'составное число';return '<p>'+key+' = '+a+' · '+kind+'. Делители: '+asList(list)+'.</p>';};
+    let output=m?descriptor('m',m):'<p>Выбери натуральное число, чтобы исследовать его делители.</p>';
+    if(pair&&n){output+=descriptor('n',n);if(m)output+='<p>Общие делители: '+asList(factors(m).filter(d=>n%d===0))+'.</p>';}
+    if(m&&i===8)output+='<p>Первые кратные m: '+[1,2,3,4].map(j=>m*j).join(', ')+'.</p>';
+    if(m&&(i===9||i===10))output+='<p>9 · '+m+' = '+(9*m)+'. Последняя цифра: '+(9*m%10)+'.</p>';
+    if(m&&(i===11||i===12)){const x=2*m+1;output+='<p>2 · '+m+' + 1 = '+x+'. Делители результата: '+asList(factors(x))+'.</p>';}
+    return '<section data-divisor-host aria-label="Модель делимости"><h3>Исследуй числа</h3>'+(interactive?'<div style="display:flex;gap:.5em;flex-wrap:wrap">'+select('M',m)+(pair?select('N',n):'')+'</div>':'')+'<div data-divisor-results aria-live="polite">'+output+'</div></section>';
+  }
+  function mountNumberLab(main,part,work,save){
+    let host=main.querySelector('[data-divisor-host]');if(!host)return;
+    function draw(){host.outerHTML=numberLab(part,work,true);host=main.querySelector('[data-divisor-host]');
+      for(const [sel,key] of [['[data-divisor-m]','divisorM'],['[data-divisor-n]','divisorN']]){const field=host.querySelector(sel);if(!field)continue;field.onchange=()=>{if(field.value)work[key]=Number(field.value);else delete work[key];save();draw();host.querySelector(sel).focus({preventScroll:true});};}
+    }draw();
+  }
+
   const scopeTypes=['Общее высказывание','О существовании','О конкретном случае'];
   const scopeClaims=[
     ['Для каждой птицы верно, что она умеет плавать.',0,['Есть хотя бы одна птица, не умеющая плавать.','Ни одна птица не умеет плавать.','Некоторые птицы умеют плавать.'],'Для опровержения «все» хватит одной неспособной плавать птицы.','Тёмная крачка (Onychoprion fuscatus) живёт над морем, но не умеет плавать.','https://www.allaboutbirds.org/guide/Sooty_Tern','Корнеллская лаборатория орнитологии'],
@@ -545,6 +583,7 @@
     if(number===26)return universalCard(part);
     if(number===27)return witnessCard(part);
     if(number===28)return scopeCard(part);
+    if(number===29)return divisorCard(part);
     const i=Number(part.id.split('-')[1])-1;
     if(number===19){
       const [statement,fact,denial,a,b,hint,url,sourceName]=factChecks[i];
@@ -584,11 +623,11 @@
     update();
   }
   function logicResponse(number,part,input,work){
-    if((number<19||number>21)&&(number<26||number>28))return null;
+    if((number<19||number>21)&&(number<26||number>29))return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
-    if(number===27||number===28)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if(number>=27&&number<=29)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
@@ -598,7 +637,7 @@
     if(number===22)return codewordQuestion(part);
     if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
     if(number===24)return 'С первого улья собрали 24,8 кг мёда. Второй дал на 6,4 кг меньше первого. С третьего получили половину совместного сбора первого и второго. Весь мёд поровну разлили в 18 банок. Сколько килограммов мёда в одной банке?';
-    if((number>=19&&number<=21)||(number>=26&&number<=28))return logicCard(number,part).prompt;
+    if((number>=19&&number<=21)||(number>=26&&number<=29))return logicCard(number,part).prompt;
     if(number===17||number===18)return campQuestion(number,part);
     if(number>=14&&number<=16)return compareSource(number,part);
     if(number>=7&&number<=10)return pageSevenQuestion(number,part);
@@ -649,7 +688,7 @@
     if(item.number===23)drawing=decimalModel(part);
     if(item.number===24)drawing=honeySupport();
     if(item.number===25)drawing=puzzleFigure(part,{},false);
-    if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=28))drawing=logicConstruction(item.number,part,false);
+    if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
     if(item.number>=11&&item.number<=13)drawing=decimalModel(part);
@@ -676,5 +715,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab};
 })(globalThis);
