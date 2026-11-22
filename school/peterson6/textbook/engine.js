@@ -66,6 +66,13 @@ function sanitize(part,input){
   if(Number.isInteger(input.formulaInput)&&input.formulaInput>=-3&&input.formulaInput<=14)clean.formulaInput=input.formulaInput;
   if(Number.isInteger(input.formulaRemainder)&&input.formulaRemainder>=0&&input.formulaRemainder<3)clean.formulaRemainder=input.formulaRemainder;
  }
+ if(/^04[234]-/.test(part.id)){
+  const allowed=part.id.startsWith('044-')?[315,79,8181,490,102]:[0,1,2,3,4,5,6,7,8,9];
+  if(allowed.includes(input.filterProbe))clean.filterProbe=input.filterProbe;
+  if(input.filterDivision===true&&clean.filterProbe!==undefined)clean.filterDivision=true;
+  if(Array.isArray(input.filterItems)&&input.filterItems.length<=allowed.length)clean.filterItems=[...new Set(input.filterItems.filter(v=>allowed.includes(v)))].sort((a,b)=>a-b);
+  if(input.filterEmpty===true&&!clean.filterItems?.length)clean.filterEmpty=true;
+ }
  if(part.id==='041-1'){
   if(typeof input.factorValue==='string'&&input.factorValue)clean.factorValue=cut(input.factorValue,50);
   if(Number.isInteger(input.factorMask)&&input.factorMask>=0&&input.factorMask<8)clean.factorMask=input.factorMask;

@@ -796,3 +796,17 @@ test('parameter models describe all permitted values, and the eight prime-factor
   }
  }
 });
+test('all nineteen printed divisibility filters match exhaustive substitution, including empty solutions and zero',async t=>{
+ const s=await surface(t,BOOK+'#n/42/042-a'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(41,44),factors={42:[2,5,10,100,25,4],43:[3,9,6,15,18,90],44:[2,5,10,3,9,6,15]};
+ for(const row of rows)for(const [i,p] of row.parts.entries()){
+  await route(s,'#n/'+row.number+'/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);const d=factors[row.number][i],all=row.number===44?[315,79,8181,490,102]:[0,1,2,3,4,5,6,7,8,9],from=v=>row.number===42?2730+v:row.number===43?5012+100*v:v,correct=all.filter(v=>from(v)%d===0),wrong=all.find(v=>!correct.includes(v)),probe=element(s,'[data-filter-probe]');probe.value=String(wrong);probe.dispatchEvent(new s.w.Event('change',{bubbles:true}));click(s,'[data-filter-divide]');assert.match(element(s,'[data-filter-result]').textContent,new RegExp('остаток '+from(wrong)%d));
+  const pick=x=>click(s,'[data-filter-pick="'+x+'"]'),use=()=>{click(s,'[data-filter-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};pick(wrong);assert.match(use(),new RegExp('не делится на '+d));pick(wrong);if(correct.length)correct.forEach(pick);else click(s,'[data-filter-empty]');assert.match(use(),correct.length?/все подходящие/:/действительно нет/);
+  const w=bookWork(s,p.id);assert(w.assisted&&w.submitted&&!w.correct&&!w.independent);const originalNumbers=Array.from(p.answer.matchAll(/\d+/g),m=>Number(m[0]));assert.deepEqual(originalNumbers.sort((a,b)=>a-b),[...correct].sort((a,b)=>a-b));
+  for(let j=0;j<32;j++){const sample=s.w.PetersonAnalogues.create(row.number,p,j);assert.equal(new Set(sample.choices).size,3);let answers;
+   if(row.number===44)answers=sample.prompt.match(/B = \{([^}]+)\}/)[1].split('; ').map(Number).filter(v=>v%d===0);
+   else{const pattern=sample.prompt.match(/числе ([\d□]+)/)[1];answers=Array.from({length:10},(_,x)=>x).filter(x=>Number(pattern.replace('□',x))%d===0);}
+   assert.equal(sample.answer,answers.length?'{'+answers.join('; ')+'}':'∅');
+  }
+ }
+ const x=await surface(t,BOOK+'#n/42/042-a',storage(s));assert.deepEqual([...bookWork(x,'042-a').filterItems],[0,2,4,6,8]);assert(element(x,'[data-filter-pick="0"]').getAttribute('aria-pressed')==='true');assert.match(element(x,'[data-filter-result]').textContent,/остаток/);
+});

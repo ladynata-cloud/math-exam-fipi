@@ -530,17 +530,33 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'factor-form-'+part.id,match:'skill'};
   }
 
+  function divisorFilterPractice(number,part,attempt){
+    const k=seed(part.id)%83+attempt,key=part.id.split('-')[1],d=key==='a'?(number===42?2:3):key==='b'?(number===42?5:9):key==='v'?10:Number(key);
+    let choices,prompt,correct;
+    const format=set=>set.length?'{'+set.join('; ')+'}':'∅';
+    if(number===44){
+      const first=20+k%23,values=[first*d,first*d+1,(first+2)*d-1,(first+3)*d,(first+5)*d+2];choices=values;
+      prompt='В множестве B = {'+values.join('; ')+'} оставь все элементы, кратные '+d+'. Каково B('+d+')?';correct=values.filter(v=>v%d===0);
+    }else{
+      const all=Array.from({length:10},(_,i)=>i),prefix=100+k%93,lead=1+k%8,suffix=(11*k+7)%100,tail=String(suffix).padStart(2,'0'),value=x=>number===42?10*prefix+x:lead*1000+x*100+suffix;choices=all;
+      prompt='В числе '+(number===42?prefix+'□':lead+'□'+tail)+' выбери все цифры для клетки, которые дадут делимость на '+d+'.';correct=all.filter(x=>value(x)%d===0);
+    }
+    const toggle=n=>choices.filter(x=>x===n?!correct.includes(x):correct.includes(x)),solutions=[format(correct),format(toggle(choices[k%choices.length])),format(toggle(choices[(k+1)%choices.length]))],shift=k%3,hint='Проверь все допустимые варианты. Для каждого число должно давать нулевой остаток при делении на '+d+'.';
+    return {...choice(prompt,solutions.slice(shift).concat(solutions.slice(0,shift)),solutions[0],hint),id:'analog-'+part.id+'-'+attempt,family:'filter-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number===38&&part.expression)return termPractice(part,attempt);
     if(number===36&&part.expression)return periodPractice(number,part,attempt);
     if(number===34)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>41)return createLegacy(number,part,attempt);
+    if(number<7||number>44)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=42)return divisorFilterPractice(number,part,attempt);
     if(number>=39)return formulaPractice(number,part,attempt);
     if(number===38)return termPractice(part,attempt);
     if(number===37)return geometryPractice(part,attempt);
@@ -585,7 +601,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=41&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=44&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -607,7 +623,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=41&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=44&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

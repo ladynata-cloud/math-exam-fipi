@@ -473,6 +473,49 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const filterDivisors={42:[2,5,10,100,25,4],43:[3,9,6,15,18,90]},printedSet=[315,79,8181,490,102],digits=Array.from({length:10},(_,i)=>i);
+  function filterSpec(number,part){
+    const key=part.id.split('-')[1],d=number===44?Number(key):key==='a'?filterDivisors[number][0]:key==='b'?filterDivisors[number][1]:key==='v'?filterDivisors[number][2]:Number(key);
+    const values=number===44?printedSet:digits,from=v=>number===42?2730+v:number===43?5012+100*v:v;
+    return {d,values,from,pattern:number===42?'273□':'5□12',answer:values.filter(v=>from(v)%d===0)};
+  }
+  function divisibilityClue(d){
+    return ({2:'Последняя цифра должна быть чётной.',5:'Последняя цифра — 0 или 5.',10:'Число заканчивается нулём.',100:'Две последние цифры должны быть нулями.',25:'Возможные окончания: 00, 25, 50 или 75.',4:'Проверь делимость числа, образованного двумя последними цифрами, на 4.',
+      3:'Проверь сумму цифр на делимость на 3.',9:'Сумма цифр должна делиться на 9.',6:'Нужны два свойства одновременно: чётность и делимость суммы цифр на 3.',15:'Нужны делимость на 3 и на 5 одновременно.',18:'Число должно делиться и на 2, и на 9.',90:'Число должно делиться и на 10, и на 9.'})[d];
+  }
+  function filterQuestion(number,part){
+    const s=filterSpec(number,part);
+    return number===44?'В множестве A = {315; 79; 8181; 490; 102} подмножество A(n) содержит ровно те элементы A, которые кратны n. Запиши A('+s.d+'). Проверь все пять чисел.':'В записи '+s.pattern+' пустая клетка заменяет одну цифру. Найди все цифры от 0 до 9, с которыми полученное число делится на '+s.d+'. Если подходящих цифр нет, объясни почему.';
+  }
+  function filterView(number,part,work,interactive){
+    const s=filterSpec(number,part),val=work.filterProbe,selected=work.filterItems||[],isDigit=number!==44;
+    let result='Выбери '+(isDigit?'цифру для пустой клетки.':'один элемент исходного множества.');
+    if(s.values.includes(val)){const n=s.from(val),txt=String(n);result='Число '+n+'. Последние две цифры: '+txt.slice(-2)+'. Сумма цифр: '+[...txt].map(Number).reduce((a,b)=>a+b,0)+'.';if(work.filterDivision)result+=' Деление на '+s.d+': частное '+Math.floor(n/s.d)+', остаток '+n%s.d+'.';}
+    const probe='<label>Исследовать '+(isDigit?'цифру':'число')+' <select data-filter-probe><option value="">Выбери</option>'+s.values.map(x=>'<option value="'+x+'"'+(val===x?' selected':'')+'>'+x+'</option>').join('')+'</select></label>';
+    const picks=s.values.map(x=>'<button class="secondary" type="button" data-filter-pick="'+x+'" aria-pressed="'+selected.includes(x)+'">'+(selected.includes(x)?'✓ ':'')+x+'</button>').join(' ');
+    return '<section data-filter-host><h3>'+(isDigit?'Проверь возможные цифры':'Собери подмножество')+'</h3>'+(interactive?probe:'')+'<p data-filter-result aria-live="polite">'+result+'</p>'+(interactive?'<button class="text-button" type="button" data-filter-divide>'+('Показать проверку делением на '+s.d)+'</button><p>Отметь все подходящие '+(isDigit?'цифры':'числа')+'.</p><div style="display:flex;flex-wrap:wrap;gap:.25em">'+picks+' <button class="secondary" type="button" data-filter-empty aria-pressed="'+Boolean(work.filterEmpty)+'">Ничего не подходит</button></div><p data-filter-set aria-live="polite">'+(work.filterEmpty?'∅':selected.length?'{'+selected.join('; ')+'}':'Пока ничего не выбрано')+'</p><button class="secondary" type="button" data-filter-use>Перенести мой выбор</button>':'')+'</section>';
+  }
+  function mountFilter(main,number,part,work,save){
+    let host=main.querySelector('[data-filter-host]');if(!host)return;
+    function draw(){host.outerHTML=filterView(number,part,work,true);host=main.querySelector('[data-filter-host]');const probe=host.querySelector('[data-filter-probe]');
+      probe.onchange=()=>{if(probe.value!=='')work.filterProbe=Number(probe.value);else delete work.filterProbe;delete work.filterDivision;save();draw();host.querySelector('[data-filter-probe]').focus({preventScroll:true});};
+      const check=host.querySelector('[data-filter-divide]');check.disabled=work.filterProbe===undefined;check.onclick=()=>{work.filterDivision=true;root.PetersonBook.assist(work);save();draw();host.querySelector('[data-filter-divide]').focus({preventScroll:true});};
+      for(const b of host.querySelectorAll('[data-filter-pick]'))b.onclick=()=>{const x=Number(b.dataset.filterPick),set=new Set(work.filterItems||[]);if(set.has(x))set.delete(x);else set.add(x);work.filterItems=[...set].sort((a,b)=>a-b);delete work.filterEmpty;save();draw();host.querySelector('[data-filter-pick="'+x+'"]').focus({preventScroll:true});};
+      host.querySelector('[data-filter-empty]').onclick=()=>{work.filterEmpty=!work.filterEmpty;delete work.filterItems;save();draw();host.querySelector('[data-filter-empty]').focus({preventScroll:true});};
+      const use=host.querySelector('[data-filter-use]');use.disabled=!work.filterEmpty&&!work.filterItems?.length;use.onclick=()=>{const el=main.querySelector('#answer');el.value=work.filterEmpty?'∅':'{'+work.filterItems.join('; ')+'}';el.dispatchEvent(new Event('input',{bubbles:true}));el.focus();};
+    }draw();
+  }
+  function filterResponse(number,part,input){
+    if(number<42||number>44)return null;const t=input.trim().replace(/\.$/,'');let selected;
+    if(['∅','{}','нет','такой цифры нет'].includes(t.toLowerCase()))selected=[];
+    else if(/^\{\s*\d+(?:\s*;\s*\d+)*\s*\}$/.test(t)||/^\d+(?:\s*[;,]\s*\d+)*$/.test(t))selected=t.replace(/[{}]/g,'').split(/[;,]/).map(Number);else return null;
+    const s=filterSpec(number,part),outside=selected.find(n=>!s.values.includes(n));if(outside!==undefined)return {ok:false,text:'Проверь '+outside+': '+(number===44?'этого числа нет в данном множестве A.':'в клетку можно поставить только одну цифру.')};
+    if(new Set(selected).size!==selected.length)return {ok:false,text:'Одно значение повторяется. Запиши каждый элемент множества один раз.'};
+    const wrong=selected.find(n=>s.from(n)%s.d!==0);if(wrong!==undefined)return {ok:false,text:'При выборе '+wrong+' получается число '+s.from(wrong)+', которое не делится на '+s.d+'. '+divisibilityClue(s.d)};
+    if(selected.length<s.answer.length)return {ok:false,text:'Есть ещё подходящее значение. Проверь все варианты по порядку. '+divisibilityClue(s.d)};
+    return {ok:true,text:selected.length?'Найдены все подходящие значения. Обоснуй проверку с помощью признака делимости; запись сохранена для проверки.':'Подходящих значений действительно нет. Объясни, какой признак делимости невозможно выполнить.'};
+  }
+
   const propertyClaims=[
     ['a = 6n, где n — натуральное число, начиная с 1.','Все такие a чётные, составные и делятся на 2, 3 и 6.','Все такие a делятся на 12.','Любое такое a простое.','a = 2 · 3 · n и a ≥ 6.','Достаточно проверить только n = 2.','При n = 1 получается простое число.','Проверь n = 1 на лишний делитель, затем вынеси общие множители в общем виде.'],
     ['b = 4k + 2, где k — натуральное число, начиная с 1.','Все такие b чётные, составные и дают остаток 2 при делении на 4.','Все такие b кратны 4.','Все такие b — простые.','b = 2(2k + 1), а 2k + 1 ≥ 3.','b = 4(k + 2).','Достаточно проверить значение k = 2.','Раздели 4k + 2 на 4 с остатком. Для составности найди разложение на два множителя больше 1.']
@@ -1039,6 +1082,7 @@
 
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
+    if(number>=42&&number<=44)return filterQuestion(number,part);
     if(number===41)return 'Число a задано произведением 2 · 3 · 7. Найди a и запиши множество D(a) всех его положительных делителей. Покажи, как убедился в полноте множества.';
     if(number===37)return cutoutQuestion(part);
     if((number===35||number===36)&&part.id.endsWith('pravilo'))return periodicRule(number).prompt;
@@ -1111,6 +1155,7 @@
     if(item.number===37)drawing=geometryFigure(part,{},false);
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
+    if(item.number>=42&&item.number<=44)drawing=filterView(item.number,part,{},false);
     if(item.number===35||item.number===36)drawing=part.id.endsWith('pravilo')?logicConstruction(item.number,part,false):divisionView(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
@@ -1140,5 +1185,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse};
 })(globalThis);
