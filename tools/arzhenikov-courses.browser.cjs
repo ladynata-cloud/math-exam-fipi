@@ -60,6 +60,44 @@ async function phase(page, wanted) {
 async function state(page) { return page.evaluate(key => JSON.parse(localStorage.getItem(key)), key); }
 async function progress(page) { return page.evaluate(() => window.ArzhenikovCoursesProgress()); }
 async function previous(page) { return page.evaluate(keys => Object.fromEntries(keys.map(name => [name, localStorage.getItem(name)])), oldKeys); }
+async function captureFailure(page, error, stage) {
+  // Evidence contains only this test's active course draft. Earlier trainer
+  // saves, credentials and machine-specific file URLs are deliberately omitted.
+  const evidence = {stage, message: String(error?.message || error).slice(0, 3000)};
+  if (page && !page.isClosed()) {
+    try {
+      evidence.page = await page.evaluate(key => {
+        const host = document.querySelector('#arz-courses'), task = host?.querySelector('[data-course-task]');
+        let record = null, storage = 'readable';
+        try { record = JSON.parse(localStorage.getItem(key))?.lessons?.[host?.dataset.courseLesson] || null; }
+        catch { storage = 'unavailable-or-malformed'; }
+        const active = document.activeElement;
+        return {
+          route: (location.protocol === 'file:' ? 'offline/index.html' : location.pathname) + location.hash,
+          viewport: {width: innerWidth, height: innerHeight},
+          view: host?.dataset.courseView, lesson: host?.dataset.courseLesson, phase: host?.dataset.coursePhase,
+          task: task?.dataset.courseTask, taskIndex: task?.dataset.courseTaskIndex,
+          input: host?.querySelector('#course-answer')?.value,
+          feedback: host?.querySelector('#course-feedback')?.textContent,
+          focus: active ? {tag: active.tagName, id: active.id} : null,
+          controls: [...host?.querySelectorAll('[data-course-control]') || []].map(node => ({id: node.dataset.courseControl, value: node.value, disabled: node.disabled})),
+          actions: [...host?.querySelectorAll('[data-course-action]') || []].slice(0, 20).map(node => ({action: node.dataset.courseAction, disabled: node.disabled})),
+          storage,
+          record: record ? {phase: record.phase, cursor: record.cursor, cycle: record.cycle,
+            completedAt: record.completedAt, reviewedAt: record.reviewedAt, reason: record.reason,
+            currentTask: record.tasks?.[task?.dataset.courseTask] || null} : null
+        };
+      }, key);
+    } catch (failure) { evidence.stateCaptureError = String(failure.message).slice(0, 300); }
+    try { await page.screenshot({path: path.join(artifacts, 'failure-' + stage + '.png'), fullPage: true, timeout: 5000}); }
+    catch (failure) { evidence.screenshotError = String(failure.message).slice(0, 300); }
+  }
+  try {
+    fs.mkdirSync(artifacts, {recursive: true});
+    fs.writeFileSync(path.join(artifacts, 'failure-' + stage + '.json'), JSON.stringify(evidence, null, 2) + '\n');
+    error.courseEvidenceCaptured = true;
+  } catch { /* Never replace the original assertion with an evidence-write error. */ }
+}
 async function navigate(page, hash) {
   await page.evaluate(hash => { location.hash = hash; }, hash);
   if (hash.startsWith('#course-')) {
@@ -307,7 +345,7 @@ async function layoutAndRoutes(browser, width) {
       await page.goBack(); await page.locator('#arz-courses[data-course-view="overview"]').waitFor({state: 'visible'});
     }
     assert.equal((await progress(page)).completed.length, before.completed.length, 'Navigation gives no completion');
-    const sampleKinds = ['groups', 'balance', 'rectangle', 'triangle'];
+    const sampleKinds = ['groups', 'line', 'balance', 'rectangle', 'triangle'];
     for (const kind of sampleKinds) {
       const lesson = lessons.find(item => item.tasks[0].model.kind === kind);
       assert(lesson, 'A representative ' + kind + ' lesson exists');
@@ -343,6 +381,8 @@ async function layoutAndRoutes(browser, width) {
       assert(href === '#courses-algebra' || href.startsWith('https://'), 'Existing destinations are explicit');
     }
     assert.deepEqual(errors, []);
+  } catch (error) {
+    await captureFailure(page, error, 'layout-' + width); throw error;
   } finally { await context.close(); }
 }
 
@@ -376,6 +416,8 @@ async function storageFailures(browser) {
       await assertTask(page, lesson.tasks[1], 1);
       if (mode === 'corrupt') assert.equal(await page.evaluate(key => localStorage.getItem(key), key), damaged, 'Damaged saved work is not silently overwritten');
       assert.deepEqual(errors, []);
+    } catch (error) {
+      await captureFailure(page, error, 'storage-' + mode); throw error;
     } finally { await context.close(); }
   }
 }
@@ -386,10 +428,11 @@ async function offlineBrowser(browser) {
   execFileSync('python3', ['-c', 'import pathlib,sys,zipfile\nwith zipfile.ZipFile(sys.argv[1]) as z:\n for n in z.namelist():\n  p=pathlib.PurePosixPath(n)\n  assert not p.is_absolute() and ".." not in p.parts\n z.extractall(sys.argv[2])\n', archive, directory], {stdio: 'pipe'});
   const context = await browser.newContext({viewport: {width: 390, height: 900}, reducedMotion: 'reduce'});
   const network = [], failures = [], errors = [];
+  let page;
   await context.route(/^https?:\/\//, route => { network.push(route.request().url()); return route.abort('internetdisconnected'); });
   await context.setOffline(true);
   try {
-    const page = await context.newPage(); page.setDefaultTimeout(15000);
+    page = await context.newPage(); page.setDefaultTimeout(15000);
     page.on('requestfailed', request => failures.push(request.url()));
     page.on('pageerror', error => errors.push(error.message));
     const url = pathToFileURL(path.join(directory, 'index.html')).href;
@@ -408,6 +451,8 @@ async function offlineBrowser(browser) {
     assert.deepEqual(network, [], 'All course resources work without HTTP requests');
     assert.deepEqual(failures, [], 'The ZIP contains every requested local file');
     assert.deepEqual(errors, []);
+  } catch (error) {
+    await captureFailure(page, error, 'offline'); throw error;
   } finally { await context.close(); fs.rmSync(directory, {recursive: true, force: true}); }
 }
 
@@ -466,6 +511,7 @@ class DomCourse {
     this.phase('task');
     const task = lesson.tasks[index];
     assert.equal(this.node('[data-course-task]').dataset.courseTask, task.id);
+    assert(this.getState().lessons[lesson.id].tasks[task.id], task.id + ': initial draft is persisted before the first action');
     if (index < 2) await this.model(task);
     await this.fill('#course-answer', answerFor(task)); await this.action('check-answer');
     assert.equal(this.getState().lessons[lesson.id].tasks[task.id].solved, true);
@@ -490,6 +536,8 @@ async function domCourses() {
       await flow.action('start');
       if (n === 0) {
         const first = lesson.tasks[0], control = first.model.controls.find(c => c.initial !== c.target);
+        assert.equal(flow.getState().lessons[lesson.id].tasks[first.id].modelReady, false, 'Starting a lesson saves the complete untouched draft');
+        assert.equal(flow.getProgress().attempted, 0, 'Saving the initial screen is not a mathematical attempt');
         const delta = control.target > control.initial ? 1 : -1;
         flow.node('[data-course-control-id="' + control.id + '"][data-course-delta="' + delta + '"]').click(); await flow.tick();
         const changed = flow.node('[data-course-control="' + control.id + '"]').value;
@@ -569,11 +617,15 @@ async function main() {
     const page = await context.newPage(); page.setDefaultTimeout(15000);
     const errors = []; page.on('pageerror', error => errors.push(error.message));
     try { await allCourses(page); assert.deepEqual(errors, []); }
+    catch (error) { await captureFailure(page, error, 'course-flow'); throw error; }
     finally { await context.close(); }
     for (const width of [320, 390, 1280]) await layoutAndRoutes(browser, width);
     await storageFailures(browser);
     await offlineBrowser(browser);
     console.log('ARZHENIKOV_COURSES_BROWSER_OK: 40 complete lessons, 320 numerical conditions, 40 explanations, fresh repeats, sticky help/errors, partial work/reload, preserved old saves, keyboard/Back, 320/390/1280 geometry and offline ZIP with HTTP blocked.');
+  } catch (error) {
+    if (!error.courseEvidenceCaptured) await captureFailure(null, error, 'browser-start');
+    throw error;
   } finally {
     if (browser) await browser.close();
     if (hosted) await new Promise(resolve => hosted.server.close(resolve));

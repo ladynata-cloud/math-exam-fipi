@@ -32,6 +32,8 @@
     b.type = 'button'; b.dataset.courseAction = action; b.addEventListener('click', handler); return b;
   }
   function save() {
+    const active = host.dataset.courseLesson;
+    if (byId.has(active) && state.lessons[active]) state.active = active;
     if (!storageOK) return;
     try { localStorage.setItem(E.key, JSON.stringify(state)); }
     catch { storageOK = false; storageNote = 'Браузер не разрешил сохранить работу. Можно продолжать в этой вкладке, но после её закрытия новые ответы могут потеряться.'; }
@@ -143,7 +145,8 @@
     host.append(example, el('p', 'course-rule', lesson.rule));
     const actions = el('div', 'course-actions');
     actions.append(button('Попробовать самому →', 'start', () => {
-      const rec = obtain(lesson); rec.phase = 'task'; rec.visits += 1; save(); render(true);
+      const rec = obtain(lesson); rec.phase = 'task'; rec.visits += 1;
+      draftFor(lesson, rec, E.order(rec)[rec.cursor]); save(); render(true);
     }, true)); host.append(actions);
     if (lesson.prerequisites.length) {
       const earlier = el('p', 'course-prerequisites', 'Если пока трудно, начни с темы: ');
@@ -373,7 +376,7 @@
       if (draft.hint) panel.append(el('p', 'course-hint', task.hint));
     } else {
       panel.append(button(rec.cursor + 1 === E.order(rec).length ? (rec.cycle ? 'Посмотреть результат →' : 'Объяснить свой выбор →') : 'Следующая задача →', 'next-task', () => {
-        if (rec.cursor + 1 < E.order(rec).length) rec.cursor += 1;
+        if (rec.cursor + 1 < E.order(rec).length) { rec.cursor += 1; draftFor(lesson, rec, E.order(rec)[rec.cursor]); }
         else if (rec.cycle) { rec.reviewedAt = Date.now(); rec.phase = 'summary'; }
         else rec.phase = 'reason';
         save(); render(true);
@@ -423,7 +426,7 @@
     const track = trackOf(lesson), next = track.lessons[track.lessons.indexOf(lesson) + 1];
     if (next) actions.append(link('Следующий урок: ' + next.title + ' →', hrefLesson(next), 'course-primary'));
     else actions.append(link('Выбрать следующий курс →', '#courses', 'course-primary'));
-    if (!rec.reviewedAt) actions.append(button('Проверить себя на новых числах', 'new-check', () => { rec.cycle = 1; rec.cursor = 0; rec.phase = 'task'; save(); render(true); }));
+    if (!rec.reviewedAt) actions.append(button('Проверить себя на новых числах', 'new-check', () => { rec.cycle = 1; rec.cursor = 0; rec.phase = 'task'; draftFor(lesson, rec, 6); save(); render(true); }));
     actions.append(button('Повторить знакомые задачи', 'repeat', () => {
       for (const task of lesson.tasks.slice(0, 6)) rec.tasks[task.id] = E.resetDraft(task, draftFor(lesson, rec, lesson.tasks.indexOf(task)));
       rec.cycle = 0; rec.cursor = 0; rec.phase = 'intro'; save(); render(true);
