@@ -135,7 +135,8 @@
       ['/geometry-course/textbook/data/final-motion-constructions.json', '№1292–1295'],
       ['/geometry-course/textbook/data/plane-map-review.json', 'вопросы 1–7 главы XIV'],
       ['/geometry-course/textbook/data/congruence-motion-review.json', 'вопросы 8–15 главы XIV'],
-      ['/geometry-course/textbook/data/symmetry-motion-review.json', 'вопросы 16–24 главы XIV']
+      ['/geometry-course/textbook/data/symmetry-motion-review.json', 'вопросы 16–24 главы XIV'],
+      ['/geometry-course/textbook/data/polygon-similarity-intro.json', 'пп. 130–132 и №1296–1298б']
   ];
 
   async function forCourse(base) {
