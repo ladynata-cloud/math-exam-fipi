@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 642,
-    "covered": 640,
+    "total": 643,
+    "covered": 641,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -51,7 +51,8 @@
     "trainers/peterson9-2017/index.html",
     "trainers/vilenkin-analysis-2014/index.html",
     "trainers/alimov-algebra-7-9/index.html",
-    "trainers/nikolsky-algebra-7-9/index.html"
+    "trainers/nikolsky-algebra-7-9/index.html",
+    "trainers/dorofeev-algebra-7-9/index.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4049,7 +4050,8 @@
     "trainers/peterson9-2017/index.html": "school/index.html",
     "trainers/vilenkin-analysis-2014/index.html": "school/index.html",
     "trainers/alimov-algebra-7-9/index.html": "school/index.html",
-    "trainers/nikolsky-algebra-7-9/index.html": "school/index.html"
+    "trainers/nikolsky-algebra-7-9/index.html": "school/index.html",
+    "trainers/dorofeev-algebra-7-9/index.html": "school/index.html"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -7506,6 +7508,14 @@
         "trainers/nikolsky-algebra-7-9/index.html"
       ],
       "reason": "Никольский, Потапов, Решетников и Шевкин, 7 класс, 2013. Все упражнения пункта 1.1, от натурального ряда до нулей факториала."
+    },
+    {
+      "sourceBaseSha": "5721af5f42b8bb65cf040e7de39f7b0437818dc0",
+      "task": "docs/tasks/WORKSHOP_DOROFEEV_7_2014.md",
+      "addedPages": [
+        "trainers/dorofeev-algebra-7-9/index.html"
+      ],
+      "reason": "Дорофеев и соавторы, 7 класс, второе издание 2014 года. Сравнение дробей, практический контроль качества и переход к конечной десятичной записи."
     }
   ]
 }

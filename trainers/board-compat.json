@@ -1278,7 +1278,7 @@
     {
       "trainerId": "merzlyak9-2014",
       "file": "trainers/merzlyak9-2014/index.html",
-      "title": "Мерзляк · алгебра 9 · 2014 · все параграфы",
+      "title": "Мерзляк · алгебра 9 · 2014 · все параграфы · алгебра 7 · 2015 · введение",
       "group": "Школьная мастерская",
       "boardCompatibility": "board-mirror",
       "supportsSeed": false,
@@ -1348,7 +1348,7 @@
     {
       "trainerId": "mordkovich-2013",
       "file": "trainers/mordkovich-2013/index.html",
-      "title": "Мордкович · 10–11 классы · 2013 · тождества и знаки №7.1–7.20 · числовые функции первого тома",
+      "title": "Мордкович · 7, 8 и 10–11 классы · 2013 · выражения, дроби, тождества и знаки, числовые функции первого тома",
       "group": "Школьная мастерская",
       "boardCompatibility": "board-mirror",
       "supportsSeed": false,
@@ -1489,6 +1489,20 @@
       "trainerId": "nikolsky-algebra-7-9",
       "file": "trainers/nikolsky-algebra-7-9/index.html",
       "title": "Никольский · 7–9 классы · 2013–2014 · числа, делимость и неравенства",
+      "group": "Школьная мастерская",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "dorofeev-algebra-7-9",
+      "file": "trainers/dorofeev-algebra-7-9/index.html",
+      "title": "Дорофеев · 7–9 классы · сравнение дробей, алгебраические дроби и действительные числа",
       "group": "Школьная мастерская",
       "boardCompatibility": "board-mirror",
       "supportsSeed": false,

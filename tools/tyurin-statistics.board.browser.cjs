@@ -51,7 +51,15 @@ async function healthy(url, child, logs) {
 const printedProperties=process.argv.includes('--printed-identity');
 const volume2=process.argv.includes('--peterson7-part2'),volume3=process.argv.includes('--peterson7-part3');
 const advanced8=process.argv.includes('--makarychev8-2018');
-const catalogue=process.argv.includes('--makarychev9-2018')?{
+const catalogue=process.argv.includes('--dorofeev9')?{
+  directory:'dorofeev-algebra-7-9',entries:[[53,51,18]],uniqueLessons:17,search:'dorofeev-algebra-7-9',match:'действительные числа',lesson:'53-2e',chart:'svg[aria-label*="Карта вложенных числовых множеств"]',storage:'math:dorofeev-algebra-7-9:v1:'
+}:process.argv.includes('--dorofeev8')?{
+  directory:'dorofeev-algebra-7-9',entries:[[72,60,28]],uniqueLessons:27,search:'dorofeev-algebra-7-9',match:'алгебраические дроби',lesson:'72-6c',chart:'svg[aria-label*="Числитель и знаменатель"]',storage:'math:dorofeev-algebra-7-9:v1:'
+}:process.argv.includes('--dorofeev7')?{
+  directory:'dorofeev-algebra-7-9',entries:[[96,73,58]],uniqueLessons:57,search:'dorofeev-algebra-7-9',match:'сравнение дробей',lesson:'96-12',chart:'svg[aria-label*="Сравнение долей годной продукции"]',storage:'math:dorofeev-algebra-7-9:v1:'
+}:process.argv.includes('--merzlyak7-2015')?{
+  directory:'merzlyak9-2014',entries:[[93,51,125]],uniqueLessons:124,search:'merzlyak9-2014',match:'введение',lesson:process.argv.includes('--boundary')?'93-20-2':'93-6-3',chart:process.argv.includes('--boundary')?'svg[aria-label*="Контур фигуры с размерами"]':'svg[aria-label*="Дерево выражения"]',storage:'math:merzlyak9-2014:v1:'
+}:process.argv.includes('--makarychev9-2018')?{
   directory:'makarychev8-2018',entries:[[49,80,35]],uniqueLessons:34,search:'makarychev8-2018',match:'углублённый уровень',lesson:'49-4b',chart:'svg[aria-label*="График функции с отдельными ветвями"]',storage:'math:makarychev8-2018:v1:'
 }:process.argv.includes('--makarychev7-2018')?{
   directory:'makarychev8-2018',entries:[[91,61,57]],uniqueLessons:56,search:'makarychev8-2018',match:'углублённый уровень',lesson:'91-18',chart:'svg[aria-label*="Изменение величины по этапам"]',storage:'math:makarychev8-2018:v1:'
@@ -93,6 +101,10 @@ const catalogue=process.argv.includes('--makarychev9-2018')?{
   directory:'mordkovich-2020',entries:[[24,49,13]],uniqueLessons:12,onlySelected:process.argv.includes('--selected-room'),search:'mordkovich-2020',match:'множества и делимость',lesson:'24-example-1',chart:'svg[aria-label*="Последовательные целые"]',storage:'math:mordkovich-2020:v1:'
 } : process.argv.includes('--mordkovich-2020') ? {
   directory:'mordkovich-2020',entries:[[25,50,60]],uniqueLessons:59,search:'mordkovich-2020',match:'множества и делимость',lesson:'25-review-17d',chart:'svg[aria-label*="Разложения для сравнения"]',storage:'math:mordkovich-2020:v1:'
+} : process.argv.includes('--mordkovich7-2013') ? {
+  directory:'mordkovich-2013',entries:[[97,47,23]],uniqueLessons:22,search:'mordkovich-2013',match:'выражения',lesson:'97-q14',chart:'svg[aria-label*="Направление шага"]',storage:'math:mordkovich-2013:v1:'
+} : process.argv.includes('--mordkovich8-2013') ? {
+  directory:'mordkovich-2013',entries:[[76,45,21]],uniqueLessons:20,search:'mordkovich-2013',match:'дроби',lesson:'76-ex3',chart:'svg[aria-label*="Сокращаемый множитель"]',storage:'math:mordkovich-2013:v1:'
 } : process.argv.includes('--mordkovich-2013-theory') ? {
   directory:'mordkovich-2013',entries:[[20,62,31]],uniqueLessons:29,search:'mordkovich-2013',match:'числовые функции первого тома',lesson:process.argv.includes('--bounds')?'20-prop-7b':'20-example1b',chart:process.argv.includes('--bounds')?'svg[aria-label*="Концы области и их отражения"]':'svg[aria-label*="Три ветви кусочной функции"]',storage:'math:mordkovich-2013:v1:'
 } : process.argv.includes('--mordkovich-2013') ? {
