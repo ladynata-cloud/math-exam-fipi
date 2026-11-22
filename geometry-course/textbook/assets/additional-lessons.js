@@ -110,7 +110,8 @@
       ['/geometry-course/textbook/data/regular-polygon-diagonals.json', '№1225–1228'],
       ['/geometry-course/textbook/data/arc-routes-and-incircles.json', '№1229–1232'],
       ['/geometry-course/textbook/data/major-arcs-and-similar-circles.json', '№1233–1235'],
-      ['/geometry-course/textbook/data/regular-compass-finale.json', '№1236–1239']
+      ['/geometry-course/textbook/data/regular-compass-finale.json', '№1236–1239'],
+      ['/geometry-course/textbook/data/regular-polygon-review.json', 'вопросы 1–7 главы XIII']
   ];
 
   async function forCourse(base) {
