@@ -23,7 +23,8 @@ function collect(section,seen,ready){
   const list=doc.querySelector(section);assert.ok(list);
   for(const article of list.querySelectorAll('article')){
    const ref=article.querySelector('[data-companion-source]');assert.ok(ref);assert.doesNotMatch(ref.textContent,/undefined|null|NaN/);
-   assert.match(ref.querySelector('.companion-book').textContent,/2024.*стр\./);seen.add(ref.dataset.companionSource);
+   assert.match(ref.querySelector('.companion-book').textContent,/2024.*стр\./);
+   const id=ref.dataset.companionSource;assert.ok(!seen.has(id),'duplicate source caption across catalog pages: '+id);seen.add(id);
    if(ready){assert.equal(ref.closest('details'),null);assert.ok(article.querySelector('[data-lesson]'));}
    else assert.equal(article.querySelector('[data-lesson]'),null);
   }
@@ -31,9 +32,22 @@ function collect(section,seen,ready){
  }
 }
 collect('[data-catalog-ready]',readySeen,true);
-assert.equal(readySeen.size,bundle.lessons.length);
-collect('[data-catalog-pending]',pendingSeen,false);
-assert.ok(pendingSeen.size>500,'pending source inventory is covered across all pages');
+const authoredIds=new Set(bundle.lessons.map(lesson=>lesson.id));
+assert.deepEqual([...readySeen].sort(),[...authoredIds].sort(),'every authored lesson is listed exactly once');
+const pendingGroups=new Map();
+for(const entry of bundle.catalog.entries){
+ if(authoredIds.has(entry.id))continue;
+ const source=entry.source;
+ // Main exercises and theory points are numbered across the book. Other collections
+ // restart numbering in each chapter, and worked examples can restart within a point.
+ const chapter=['main','theory'].includes(source.collection)?null:source.chapter;
+ const number=entry.kind==='theory'?source.point:source.exercise;
+ const key=JSON.stringify([source.bookId,entry.kind,source.collection,chapter,source.examTask,number,source.collection==='example'?source.point:null]);
+ if(!pendingGroups.has(key))pendingGroups.set(key,entry.id);
+}
+if(pendingGroups.size)collect('[data-catalog-pending]',pendingSeen,false);
+else assert.equal(doc.querySelector('[data-catalog-pending]'),null);
+assert.deepEqual([...pendingSeen].sort(),[...pendingGroups.values()].sort(),'every pending printed source group is listed exactly once');
 
 // Chapter-specific paragraph numbers cannot cross-contaminate another chapter.
 choose('catalog-chapter','III. Многогранники');choose('catalog-paragraph','III:2');
@@ -64,8 +78,8 @@ assert.equal(doc.querySelector('[data-catalog-pending]'),null,'the entire box vo
 const boxSeen=new Set();collect('[data-catalog-ready]',boxSeen,true);
 assert.deepEqual([...boxSeen].sort(),Object.keys(require('./box-volumes.json').cards).sort(),'all 19 task parts and two theory points are available');
 choose('catalog-chapter','VI. Векторы в пространстве');choose('catalog-paragraph','VI:1');
-assert.match(doc.querySelector('[data-catalog-pending] .companion-location').textContent,/К главе VI.*К параграфу 1 «Понятие вектора в пространстве»/);
-assert.equal(doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,0,'a pending paragraph never becomes available because it has a caption');
+assert.match(doc.querySelector('[data-catalog-ready] .companion-location').textContent,/К главе VI.*К параграфу 1 «Понятие вектора в пространстве»/);
+assert.equal(doc.querySelector('[data-catalog-pending]'),null,'the complete introductory vector paragraph has no pending entries');
 app.home();search('Пирамида');assert.ok(doc.querySelector('[data-catalog-ready] [data-lesson]'));
 
 // Every available card has a visible, correct source identity. Reveal all
@@ -95,7 +109,10 @@ for(const [number,paragraph]of [[451,1],[502,3],[517,4],[591,2],[612,3],[681,1],
  assert.ok(references.length,'exact source number '+number);
  for(const ref of references)assert.match(ref.querySelector('.companion-location').textContent,new RegExp('К параграфу '+paragraph+' «'));
 }
-search('518');assert.doesNotMatch(doc.querySelector('[data-catalog-pending] [data-companion-source]').textContent,/К параграфу/,'additional task 518 shares page138 with chapter questions, not paragraph4');
+search('518');
+const additional518=doc.querySelector('[data-catalog-ready] [data-companion-source="ex-main-0518"]');
+assert.ok(additional518,'the authored card for printed task 518 is listed');
+assert.doesNotMatch(additional518.textContent,/К параграфу/,'additional task 518 shares page138 with chapter questions, not paragraph4');
 
 // Source chapter questions and additional exercises must not acquire the last
 // paragraph number simply because it precedes them in the book.

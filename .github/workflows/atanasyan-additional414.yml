@@ -103,6 +103,7 @@ jobs:
           node tools/stereo-textbook/additional-coordinate-distances.test.cjs
           node tools/stereo-textbook/additional-directed-and-plane-angles.test.cjs
           node tools/stereo-textbook/coordinate-chapter-seven-end.test.cjs
+          node tools/stereo-textbook/final-triangular-prism-review.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
@@ -434,6 +435,11 @@ jobs:
           TEXTBOOK_PRACTICE_GROUP: coordinateChapterSevenEnd
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-chapter-seven-end
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all six parts of exercise 764 in the triangular prism
+        env:
+          TEXTBOOK_PRACTICE_GROUP: finalTriangularPrismReview
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/final-triangular-prism-review
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
         run: |
@@ -533,5 +539,6 @@ jobs:
             artifacts/additional-coordinate-distances/
             artifacts/additional-directed-and-plane-angles/
             artifacts/coordinate-chapter-seven-end/
+            artifacts/final-triangular-prism-review/
           retention-days: 14
           if-no-files-found: error
