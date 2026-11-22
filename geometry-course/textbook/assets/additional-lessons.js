@@ -108,7 +108,8 @@
       ['/geometry-course/textbook/data/sector-areas.json', 'п. 121, №1217–1220'],
       ['/geometry-course/textbook/data/additional-regular-perimeters.json', '№1221–1224'],
       ['/geometry-course/textbook/data/regular-polygon-diagonals.json', '№1225–1228'],
-      ['/geometry-course/textbook/data/arc-routes-and-incircles.json', '№1229–1232']
+      ['/geometry-course/textbook/data/arc-routes-and-incircles.json', '№1229–1232'],
+      ['/geometry-course/textbook/data/major-arcs-and-similar-circles.json', '№1233–1235']
   ];
 
   async function forCourse(base) {
