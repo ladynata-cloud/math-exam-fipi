@@ -1386,6 +1386,30 @@ async function run(browser, origin, backend, failures) {
   await teacherFrame.locator('#answer').fill('20');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'meeting after 20 minutes')).scene.correct);
   await narrow(student,studentFrame,'two-moving-travelers');
 
+  phase = 'source 5.96 and 5.97: diagonal areas and stock constraints';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();
+  await teacherFrame.locator('a[href="#lesson/v5f-printed-5-96"]').click();await studentFrame.locator('h1').filter({hasText:'№5.96'}).waitFor();
+  await teacherFrame.locator('#answer').fill('60');await teacherFrame.locator('#answer-form button').click();
+  assert.match((await same(teacherFrame,studentFrame,'area of the whole rectangle')).scene.message,/целиком/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=figure]').selectOption('2');
+  await studentFrame.locator('[data-v5-prediction]').fill('15');await studentFrame.locator('[data-v5-predict] button').click();
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const areaState=await same(studentFrame,teacherFrame,'both see triangle MNO');assert.equal(areaState.scene.model.figure,2);assert(areaState.scene.model.seen);
+  for(const [i,v] of ['30','30','15','15','MNO=NCO;NMB=CNM'].entries()){
+    if(i)await studentFrame.locator('[data-cmd=next]').click();
+    await studentFrame.locator('#answer').fill(v);await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'area row '+i)).scene.correct);
+  }
+  await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-5-97"]').click();await teacherFrame.locator('h1').filter({hasText:'№5.97'}).waitFor();
+  await studentFrame.locator('#answer').fill('70-5n');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'forgot first shopper')).scene.message,/первого покупателя/);
+  await studentFrame.locator('[data-v5-param=buyers]').fill('4');await studentFrame.locator('[data-v5-param=buyers]').press('Tab');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  assert.equal((await same(teacherFrame,studentFrame,'number of shoppers after reload')).scene.model.buyers,4);
+  for(const [i,v] of ['70-(7+5n)','48','0;12'].entries()){
+    if(i)await teacherFrame.locator('[data-cmd=next]').click();
+    await teacherFrame.locator('#answer').fill(v);await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'stock row '+i)).scene.correct);
+  }
+  await narrow(student,studentFrame,'stock-endpoints');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
