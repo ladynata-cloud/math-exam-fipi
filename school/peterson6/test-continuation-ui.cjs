@@ -1854,3 +1854,11 @@ test('prove five pan weighings sort each of twenty-four hidden orders and includ
   assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+test('read every issued Fahrenheit and Celsius value on paired scales before rounding',()=>{
+ const f=fixture(null,null,true);try{
+  const cases=[[0,'−18 °C'],[4,'232,8 °C'],[5,'−15 °C'],[6,'0 °C'],[7,'43 °C'],[8,'−20 °C'],[9,'−23 °C'],[10,'−184 °C'],[11,'32 °F'],[12,'50 °F'],[13,'77 °F'],[14,'212 °F'],[15,'−40 °F'],[16,'22 °F'],[17,'−460 °F']];
+  for(const [i,v] of cases){f.nav('#lesson/p40/'+i);f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);assert.equal(f.d.querySelectorAll('#model [data-scale-output]').length,0);f.event(stage,'2','change');const got=f.q('#model .pm-result').textContent.replaceAll('-','−');assert(got.includes(v),[i,got]);assert.equal(f.d.querySelectorAll('#model [data-scale-output]').length,1);
+   const old=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert.notEqual(f.q('#model').textContent,old);}
+ }finally{f.close();}
+});
