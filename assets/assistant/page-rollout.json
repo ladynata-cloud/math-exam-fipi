@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "cb06348ac11c4a2c93db8859534ff91dd2a6e80c6ddf7a90e6c1d2639a73b07a",
-      "afterSha256": "b3e56d4d81020ae0a6a6b472c24a7ce743248b4667ef582c828c8c994f605d73",
+      "beforeSha256": "42fb2943a10e266e96d9fb009780100b0883b2c2492673da2079847f4bc4bc50",
+      "afterSha256": "6f1af99503cfe37bd2c031227996b97451ef7659ca046503a52e56bc53cf09cf",
       "placement": "before-head-close",
-      "sourceSha": "b92da32a243a6cfb1c0a271f58b44e976c020760"
+      "sourceSha": "de45544087db8418f0c6a94a952c76fc09c02023"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7406,6 +7406,15 @@
         "school/index.html"
       ],
       "boundary": "Первые двенадцать подпунктов §6 на странице 34: две сравниваемые координаты, обе стороны прямой, буквы и их произношение. Проверены самостоятельное исправление и возврат состояния учителя и ученика."
+    },
+    {
+      "previousBaseSha": "b92da32a243a6cfb1c0a271f58b44e976c020760",
+      "sourceBaseSha": "de45544087db8418f0c6a94a952c76fc09c02023",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин §6 с. 34: запись и чтение двенадцати сравнений, полные русские числительные, различение верной записи с другим знаком и математической ошибки, учёт помощи, сохранение общей задачи и модели."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
