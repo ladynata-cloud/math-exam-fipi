@@ -202,6 +202,11 @@
     if(target.answerFormat==='v5-coordinate-order')return root.Vilenkin5CoordinateOrder.inputIssue(value,target);
     if(target.answerFormat==='v5-ray-label'&&!root.Vilenkin5PrintedRay.read(value))return 'Запиши одну букву с луча. Число можно заменить буквой без потери попытки.';
     if(target.answerFormat==='v5-clock-time')return root.Vilenkin5ClockSteps.readTime(value)===null?'Укажи часы и минуты, например 3:05 или 3 ч 5 мин. Минуты должны быть от 00 до 59. Пока это черновик.':'';
+    if(target.answerFormat==='v5-refined-area'){
+      const area=root.Vilenkin5EquivalentArea;
+      if(!area.parse(value))return 'Укажи два ответа: дробь по новым частям; число частей в одной старой. Пока это черновик.';
+      if(!area.accepts(value,target)&&M.equal(value,target.answer))return area.feedback(value,target);
+    }
     if(target.answerFormat==='v5-difficulty')return /[а-яё]/i.test(value)?'':'Напиши название группы словами: лёгкие, средние или сложные.';
     if(target.answerFormat==='v5-triangle-area-pairs')return root.Vilenkin5TrianglesAndStock.pairs(value)?'':'Пока это черновик. Запиши все четыре названия по одному разу и поставь знак = в каждой паре.';
     if(target.answerFormat==='v5-stock-expression')return root.Vilenkin5TrianglesAndStock.stockExpression(value,root.Vilenkin5IslandAndMeeting)?'':'Пока это черновик. Запиши остаток с буквой n.';
@@ -281,6 +286,7 @@
     active=session;host.dataset.v5Quality='lesson';root.document.body.classList.add('v5-quality-active');
     const head=host.querySelector('.lesson-head'),task=host.querySelector('#task-panel'),model=host.querySelector('#model'),theory=host.querySelector('.v6-theory'),claim=host.querySelector('#claim-feedback')?.closest('section'),d=detail(session);
     if(lesson.number)task.querySelector('.question').insertAdjacentHTML('afterend',root.Vilenkin5Numbered.taskTable(session.task,session));
+    if(session.task.data?.fractionLine)root.Vilenkin5FractionCellLine.bind(task,session.task,session,()=>readOnly);
     if(lesson.fullKey==='printed-check-2-2'&&['learn','practice'].includes(session.mode)){
       const choose=root.document.createElement('form');
       choose.setAttribute('data-v5-print-number','');

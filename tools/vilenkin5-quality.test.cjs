@@ -152,6 +152,41 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function cellLineRegression(){
+  const f=boot(),A=f.w.Vilenkin5FractionCellLine;
+  for(const kind of [99,100])for(let seed=0;seed<70;seed++){
+    const t=f.M.generate('v5f-printed-5-'+kind,seed),p=t.data.fractionLine;
+    const [a,b]=p.positions;for(const [i,[n,d]] of p.fractions.entries())equal(p.positions[i]*d,p.length*n);
+    equal(a===b,kind===100);ok(p.options[t.answer[2]-1].startsWith(kind===100?'Каждую':'В клеточной'));
+    for(const left of [0,1,p.length-1,p.length])for(const right of [0,1,p.length-1,p.length])equal(A.explore(t,{leftTick:left,rightTick:right}).answer,Math.abs(left-right));
+    if(!seed)equal(plain(t.answer),kind===99?[16,20,3]:[6,6,1]);
+  }
+  const move=(role,v)=>f.input('[data-line-mark="'+role+'"]',String(v));
+  f.route('#lesson/v5f-printed-5-99');f.submit('8');f.click('[data-cmd=next]');move(0,2);equal(f.$('#answer').value,'2');f.submit('2');ok(f.snapshot().scene.message.includes('Числитель'));
+  move(0,16);f.submit('16');f.click('[data-cmd=next]');f.submit('4');f.click('[data-cmd=next]');move(1,20);f.submit('20');f.click('[data-cmd=next]');f.click('[data-line-why="3"]');equal(f.$('#answer').value,'16;20;3');f.submit('16;20;3');ok(f.snapshot().scene.correct);
+  f.route('#lesson/v5f-printed-5-100');f.submit('2');f.click('[data-cmd=next]');move(0,6);f.submit('6');f.click('[data-cmd=next]');move(1,6);ok(f.$('[data-line-image] svg').getAttribute('aria-label').includes('Первая отметка 6, вторая 6'));
+  f.submit('6');f.click('[data-cmd=next]');f.click('[data-line-why="1"]');f.submit(f.$('#answer').value);ok(f.snapshot().scene.correct);
+  f.click('[data-cmd=mode][data-value=practice]');const t=f.M.generate('v5f-printed-5-100',f.snapshot().scene.seed);move(0,t.answer[0]);ok(!f.snapshot().scene.correct);move(1,t.answer[1]);f.click('[data-line-why="'+t.answer[2]+'"]');f.submit(f.$('#answer').value);ok(f.snapshot().scene.correct);equal(f.errors.length,0);f.close();
+}
+
+function equalAreaRegression(){
+  const f=boot(),A=f.w.Vilenkin5EquivalentArea;
+  for(let seed=0;seed<90;seed++){
+    const t=f.M.generate('v5f-printed-5-98',seed),p=t.data.equivalentArea;
+    for(let i=0;i<4;i++){
+      const [n,d,k]=p.rows[i],ans=t.steps[i].answer;ok(n>0&&n<d);equal(k,ans[1]);ok(f.M.equal(n+'/'+d,ans[0]));
+      ok(f.M.accepts((n*k)+'/'+(d*k)+';'+k,t.steps[i]));ok(!f.M.accepts(n+'/'+d+';'+k,t.steps[i]));
+      for(let pieces=1;pieces<=4;pieces++)equal(A.explore(t,{example:i,pieces}).answer,n*pieces);
+    }
+    ok(p.options[t.answer-1].includes('один множитель'));
+    if(!seed)equal(plain(t.steps.map(s=>s.answer)),[['3/9',3],['10/12',2],['3/12',3],['8/20',4]]);
+  }
+  f.route('#lesson/v5f-printed-5-98');f.submit('3/');equal(f.snapshot().scene.attempt,0);f.submit('1/3;3');equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('Площадь совпадает'));
+  f.submit('1/9;3');ok(!f.snapshot().scene.correct);ok(f.snapshot().scene.message.includes('Закрашенные'));f.submit('3/9;3');ok(f.snapshot().scene.correct);
+  for(const a of ['10/12;2','3/12;3','8/20;4']){f.click('[data-cmd=next]');f.submit(a);ok(f.snapshot().scene.correct);}
+  f.click('[data-cmd=next]');f.submit('3');ok(f.snapshot().scene.message.includes('1/2'));f.submit('2');ok(f.snapshot().scene.correct);equal(f.errors.length,0);f.close();
+}
+
 function checks26Regression(){
   const f=boot(),A=f.w.Vilenkin5CheckFractionParts,id='v5f-printed-check-26-';
   const set=(key,value)=>{const input=f.$('[data-v5-param='+key+']');input.value=String(value);input.dispatchEvent(new f.w.Event('change',{bubbles:true}));};
@@ -1118,7 +1153,7 @@ function circlePointsRegression(){
 function numberedTablesRegression(){
   const f=boot(),path=f.C.pathById.vilenkin5;
   equal(path.ids.length,134);
-  equal(plain(path.numbered),Array.from({length:176},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50','v5f-printed-5-51','v5f-printed-5-52','v5f-printed-5-53','v5f-printed-5-54','v5f-printed-5-55','v5f-printed-5-56','v5f-printed-5-57','v5f-printed-5-58','v5f-printed-5-59','v5f-printed-5-60','v5f-printed-5-61','v5f-printed-5-62','v5f-printed-5-63','v5f-printed-5-64','v5f-printed-5-65','v5f-printed-5-66','v5f-printed-5-67','v5f-printed-5-68','v5f-printed-5-69','v5f-printed-5-70','v5f-printed-5-71','v5f-printed-5-72','v5f-printed-5-73','v5f-printed-5-74','v5f-printed-5-75','v5f-printed-5-76','v5f-printed-5-77','v5f-printed-5-78','v5f-printed-5-79','v5f-printed-5-80','v5f-printed-5-81','v5f-printed-5-82','v5f-printed-5-83','v5f-printed-5-84','v5f-printed-5-85','v5f-printed-5-86','v5f-printed-5-87','v5f-printed-5-88','v5f-printed-5-89','v5f-printed-5-90','v5f-printed-5-91','v5f-printed-5-92','v5f-printed-5-93','v5f-printed-5-94','v5f-printed-5-95','v5f-printed-5-96','v5f-printed-5-97'));
+  equal(plain(path.numbered),Array.from({length:176},(_,i)=>i+1).map(n=>'v5f-printed-1-'+n).concat('v5f-printed-5-1','v5f-printed-5-2','v5f-printed-5-3','v5f-printed-5-4','v5f-printed-5-5','v5f-printed-5-6','v5f-printed-5-7','v5f-printed-5-8','v5f-printed-5-9','v5f-printed-5-10','v5f-printed-5-11','v5f-printed-5-12','v5f-printed-5-13','v5f-printed-5-14','v5f-printed-5-15','v5f-printed-5-16','v5f-printed-5-17','v5f-printed-5-18','v5f-printed-5-19','v5f-printed-5-20','v5f-printed-5-21','v5f-printed-5-22','v5f-printed-5-23','v5f-printed-5-24','v5f-printed-5-25','v5f-printed-5-26','v5f-printed-5-27','v5f-printed-5-28','v5f-printed-5-29','v5f-printed-5-30','v5f-printed-5-31','v5f-printed-5-32','v5f-printed-5-33','v5f-printed-5-34','v5f-printed-5-35','v5f-printed-5-36','v5f-printed-5-37','v5f-printed-5-38','v5f-printed-5-39','v5f-printed-5-40','v5f-printed-5-41','v5f-printed-5-42','v5f-printed-5-43','v5f-printed-5-44','v5f-printed-5-45','v5f-printed-5-46','v5f-printed-5-47','v5f-printed-5-48','v5f-printed-5-49','v5f-printed-5-50','v5f-printed-5-51','v5f-printed-5-52','v5f-printed-5-53','v5f-printed-5-54','v5f-printed-5-55','v5f-printed-5-56','v5f-printed-5-57','v5f-printed-5-58','v5f-printed-5-59','v5f-printed-5-60','v5f-printed-5-61','v5f-printed-5-62','v5f-printed-5-63','v5f-printed-5-64','v5f-printed-5-65','v5f-printed-5-66','v5f-printed-5-67','v5f-printed-5-68','v5f-printed-5-69','v5f-printed-5-70','v5f-printed-5-71','v5f-printed-5-72','v5f-printed-5-73','v5f-printed-5-74','v5f-printed-5-75','v5f-printed-5-76','v5f-printed-5-77','v5f-printed-5-78','v5f-printed-5-79','v5f-printed-5-80','v5f-printed-5-81','v5f-printed-5-82','v5f-printed-5-83','v5f-printed-5-84','v5f-printed-5-85','v5f-printed-5-86','v5f-printed-5-87','v5f-printed-5-88','v5f-printed-5-89','v5f-printed-5-90','v5f-printed-5-91','v5f-printed-5-92','v5f-printed-5-93','v5f-printed-5-94','v5f-printed-5-95','v5f-printed-5-96','v5f-printed-5-97','v5f-printed-5-98','v5f-printed-5-99','v5f-printed-5-100'));
   for(const id of path.numbered)ok(f.$('a[href="#lesson/'+id+'"]'),'course links to '+id);
   f.input('#v5-search','№1.2');equal(f.$('#v5-search-results a').getAttribute('href'),'#lesson/'+path.numbered[1]);
   const animals=f.M.generate(path.numbered[0],0),reading=f.M.generate(path.numbered[1],0);
@@ -2514,7 +2549,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    checks26Regression,triangleAndStockRegression,islandAndMeetingRegression,classesAndViewsRegression,chordAndUnitsRegression,fourStoryStripsRegression,quantityPartsRegression,groupedAndDiskRegression,wallBenchGroupsRegression,twoCircleConstructionRegression,durationAndMirrorRegression,radiusChordSectorRegression,operationChainsRegression,knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    cellLineRegression,equalAreaRegression,checks26Regression,triangleAndStockRegression,islandAndMeetingRegression,classesAndViewsRegression,chordAndUnitsRegression,fourStoryStripsRegression,quantityPartsRegression,groupedAndDiskRegression,wallBenchGroupsRegression,twoCircleConstructionRegression,durationAndMirrorRegression,radiusChordSectorRegression,operationChainsRegression,knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
