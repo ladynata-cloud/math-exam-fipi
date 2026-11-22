@@ -1,0 +1,42 @@
+name: Проверить и собрать пять задач о логическом следовании Петерсона, часть 3
+on:
+  push:
+    branches: ['work/peterson6-logic235-from-84fa-20261122']
+    paths: ['.github/workflows/peterson6-logic235-reviewed.yml']
+permissions:
+  contents: write
+jobs:
+  verified-course:
+    if: github.repository == 'ladynata-cloud/math-exam-fipi' && github.ref == 'refs/heads/work/peterson6-logic235-from-84fa-20261122'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      VERIFIED_BASE: 84fa2fe0cd8b6709fb7ce01ae343e6f84e3a5bf5
+      VERIFIED_TREE: fe7df2630cd5d2e594de1f661591f3680c41b48e
+      OUTPUT_BRANCH: content/peterson6-volume3-logic-234-235-20261122
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Verify the reviewed changes, mathematical answers, bank and offline package
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "$VERIFIED_BASE"
+          cp .github/peterson6-proof/logic235.patch "$RUNNER_TEMP/logic235.patch"
+          echo 'ad518ab2126d845f73d41d94d2faf0f447b810a5b7be15aece4d671033b5fa84  FILE' | sed "s@FILE@$RUNNER_TEMP/logic235.patch@" | sha256sum -c -
+          git checkout --quiet --detach "$VERIFIED_BASE"
+          git apply --index "$RUNNER_TEMP/logic235.patch"
+          node school/peterson6/build.cjs
+          node school/peterson6/build.cjs --check
+          node school/peterson6/test-continuation-content.cjs
+          node school/peterson6/test-continuation-math.cjs
+          node scripts/build-trainer-downloads.mjs --only=peterson6-math --downloads-only
+          git add -- school/peterson6/data.js trainers/board-picker.js downloads/trainers/peterson6-math/peterson6-math.html downloads/trainers/peterson6-math/peterson6-math-package.zip
+          test "$(git write-tree)" = "$VERIFIED_TREE"
+          git -c user.name='MathExam' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Петерсон, часть 3. Четыре формы записи №234 и собственное правило №235'
+          test "$(git rev-parse HEAD^)" = "$VERIFIED_BASE"
+          test -z "$(git ls-remote --heads origin "refs/heads/$OUTPUT_BRANCH")"
+          git push origin "HEAD:refs/heads/$OUTPUT_BRANCH"
