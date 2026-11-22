@@ -55,6 +55,40 @@
     if (output) { output.textContent = message; output.dataset.kind = kind; }
   }
   const hrefLesson = lesson => '#course-' + lesson.id;
+  const courseRoute = () => /^#courses(?:-(?:arithmetic|algebra|geometry))?$/.test(location.hash) || location.hash.startsWith('#course-');
+  let navigatorOrigin = null;
+  function placeNavigator() {
+    // Reuse the public navigator and its focus/dialog handlers. Only this
+    // course view changes its presentation; older games keep their launcher.
+    if (!document.body.classList.contains('arz-adventure')) return;
+    const navigator = document.getElementById('maxexam-public-assistant');
+    const menu = document.querySelector('body.arz-adventure > header nav');
+    if (!navigator?.shadowRoot || !menu) return;
+    if (!navigatorOrigin) navigatorOrigin = {parent: navigator.parentNode, next: navigator.nextSibling};
+    const focused = document.activeElement === navigator ? navigator.shadowRoot.activeElement : null;
+    if (courseRoute()) {
+      if (!navigator.shadowRoot.querySelector('[data-arzhenikov-course-navigation]')) {
+        const style = document.createElement('style'); style.dataset.arzhenikovCourseNavigation = '';
+        style.textContent =
+          ':host([data-course-navigation]){display:inline-flex!important;position:static!important;contain:none!important;min-height:0!important;min-width:0;max-width:100%;align-self:center}' +
+          ':host([data-course-navigation]) .launcher{position:static;inset:auto;z-index:auto;display:flex;width:auto;height:auto;min-height:44px;max-width:100%;padding:8px 12px;gap:8px;border-radius:12px;box-shadow:none}' +
+          ':host([data-course-navigation]) .launcher-mark{width:24px;height:24px;flex:0 0 24px;font-size:20px}' +
+          ':host([data-course-navigation]) .launcher-label{position:static;display:block;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal;line-height:1.3}' +
+          ':host([data-course-navigation]) .launcher-label strong{font-size:16px}' +
+          ':host([data-course-navigation]) .launcher-label>span{display:none}';
+        navigator.shadowRoot.append(style);
+      }
+      navigator.dataset.courseNavigation = 'true';
+      if (navigator.parentNode !== menu) menu.append(navigator);
+    } else {
+      navigator.removeAttribute('data-course-navigation');
+      if (navigator.parentNode !== navigatorOrigin.parent && navigatorOrigin.parent?.isConnected) {
+        const next = navigatorOrigin.next?.parentNode === navigatorOrigin.parent ? navigatorOrigin.next : null;
+        navigatorOrigin.parent.insertBefore(navigator, next);
+      }
+    }
+    if (focused && focused.isConnected) focused.focus({preventScroll: true});
+  }
   const status = lesson => {
     const rec = state.lessons[lesson.id];
     return rec?.reviewedAt ? 'Урок и новая проверка завершены' : rec?.completedAt ? 'Урок пройден · есть новая проверка' : rec && rec.phase !== 'intro' ? 'Можно продолжить' : 'Начать';
@@ -180,7 +214,8 @@
         for (let i = 0; i < v.size; i++) { const dot = el('span', 'course-token'); dot.setAttribute('aria-hidden', 'true'); group.append(dot); }
         grid.append(group);
       }
-      description.textContent = v.groups + ' групп, в каждой по ' + v.size + '. Всего в группах: ' + v.groups * v.size + '.';
+      const groupWord = v.groups === 1 ? 'группа' : v.groups >= 2 && v.groups <= 4 ? 'группы' : 'групп';
+      description.textContent = v.groups + ' ' + groupWord + ', в каждой по ' + v.size + '. Всего в группах: ' + v.groups * v.size + '.';
       if (Number.isFinite(m.stock)) {
         const rest = m.stock - v.groups * v.size;
         description.textContent += rest >= 0 ? ' Было ' + m.stock + '; вне полных групп: ' + rest + '.' : ' Предметов нужно больше, чем есть. Уменьши число полных групп.';
@@ -203,7 +238,7 @@
     if (model.kind === 'fraction') {
       const strip = el('div', 'course-fraction'); strip.style.setProperty('--parts', v.parts);
       for (let n = 0; n < v.parts; n++) { const cell = el('span', n < v.shaded ? 'is-shaded' : ''); cell.setAttribute('aria-hidden', 'true'); strip.append(cell); }
-      description.textContent = 'Целое разделено на ' + v.parts + ' равных частей. Выделено: ' + v.shaded + ' из ' + v.parts + '.';
+      description.textContent = 'Равных частей в целом: ' + v.parts + '. Выделено: ' + v.shaded + ' из ' + v.parts + '.';
       container.append(strip, description); return;
     }
     const svg = svgNode('svg', {viewBox: '0 0 360 230', role: 'img', 'aria-label': model.caption});
@@ -214,11 +249,13 @@
       const end = v.start + v.move;
       let low = Math.min(0, v.start, end), high = Math.max(10, v.start, end);
       if (high === low) high += 10;
-      const step = high - low > 30 ? Math.ceil((high - low) / 10 / 10) * 10 : high - low > 16 ? 2 : 1;
+      const maxTicks = Math.max(Math.abs(low), Math.abs(high)) >= 100 ? 7 : 10;
+      const desired = (high - low) / maxTicks;
+      const step = [1, 2, 5, 10, 20, 50, 100, 200, 500].find(n => n >= desired) || Math.ceil(desired / 100) * 100;
       low = Math.floor(low / step) * step; high = Math.ceil(high / step) * step;
       const x = n => 25 + (n - low) / (high - low) * 310;
       line(20, 150, 340, 150);
-      for (let n = low; n <= high; n += step) { line(x(n), 145, x(n), 155); text(x(n), 178, n, {'font-size': 12}); }
+      for (let n = low; n <= high; n += step) { line(x(n), 145, x(n), 155); text(x(n), 178, n, {'font-size': 20}); }
       svg.append(svgNode('path', {d: `M ${x(v.start)} 145 Q ${(x(v.start) + x(end)) / 2} 35 ${x(end)} 145`, class: 'course-svg-jump'}));
       svg.append(svgNode('circle', {cx: x(v.start), cy: 150, r: 5, class: 'course-svg-start'}));
       svg.append(svgNode('circle', {cx: x(end), cy: 150, r: 7, class: 'course-svg-end'}));
@@ -439,8 +476,7 @@
   }
   function render(focus = false) {
     const hash = location.hash;
-    const isCourse = /^#courses(?:-(?:arithmetic|algebra|geometry))?$/.test(hash) || hash.startsWith('#course-');
-    if (!isCourse) return;
+    if (!courseRoute()) return;
     const track = tracks.find(t => hash === '#courses-' + t.id);
     const lesson = hash.startsWith('#course-') && byId.get(hash.slice(8));
     if (lesson) {
@@ -458,6 +494,9 @@
     lastRoute = hash;
   }
   window.ArzhenikovCoursesProgress = () => E.progress(state, lessons);
-  window.addEventListener('hashchange', () => render(location.hash !== lastRoute));
+  window.addEventListener('hashchange', () => { placeNavigator(); render(location.hash !== lastRoute); });
+  document.addEventListener('DOMContentLoaded', placeNavigator, {once: true});
+  window.addEventListener('load', placeNavigator, {once: true});
+  placeNavigator();
   render();
 })();

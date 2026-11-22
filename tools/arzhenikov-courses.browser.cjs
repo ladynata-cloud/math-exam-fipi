@@ -300,13 +300,56 @@ async function geometry(page, width, name) {
   await page.screenshot({path: path.join(artifacts, name + '-' + width + '.png'), fullPage: true});
 }
 
+async function navigatorPlacement(page, original, inCourse) {
+  const expectedPosition = inCourse ? 'static' : 'fixed';
+  await page.waitForFunction(position => {
+    const launcher = document.querySelector('#maxexam-public-assistant')?.shadowRoot?.querySelector('.launcher');
+    return launcher && getComputedStyle(launcher).position === position;
+  }, expectedPosition);
+  const placement = await page.evaluate(original => {
+    const current = document.querySelector('#maxexam-public-assistant');
+    return {
+      count: document.querySelectorAll('#maxexam-public-assistant').length,
+      sameHost: current === original.host,
+      sameLauncher: current?.shadowRoot?.querySelector('.launcher') === original.launcher,
+      inHeader: Boolean(document.querySelector('body > header nav')?.contains(current)),
+      sameParent: current?.parentNode === original.parent,
+      sameNextSibling: current?.nextSibling === original.nextSibling
+    };
+  }, original);
+  assert.equal(placement.count, 1, 'The course keeps one real navigator');
+  assert(placement.sameHost && placement.sameLauncher, 'Course navigation preserves the original navigator and its launcher');
+  assert.equal(placement.inHeader, inCourse, 'The navigator belongs to the course header only while a course is open');
+  if (!inCourse) assert(placement.sameParent && placement.sameNextSibling, 'Leaving the course restores the original navigator DOM position');
+}
+
 async function launcherAccess(page) {
   const launcher = page.locator('#maxexam-public-assistant .launcher');
   await launcher.waitFor({state: 'visible'});
+  const target = await launcher.evaluate(node => {
+    const rect = node.getBoundingClientRect(), label = node.querySelector('.launcher-label');
+    const labelRect = label.getBoundingClientRect(), style = getComputedStyle(label);
+    return {width: rect.width, height: rect.height, label: label.textContent,
+      labelWidth: labelRect.width, labelHeight: labelRect.height, clipPath: style.clipPath,
+      labelVisibility: style.visibility, labelDisplay: style.display};
+  });
+  assert(target.width >= 43.5 && target.height >= 43.5, 'The header navigator has a target of at least 44 px');
+  assert.match(target.label, /Навигатор/, 'The course navigator has a readable text label');
+  assert(target.labelWidth >= 35 && target.labelHeight >= 12 && target.clipPath === 'none' &&
+    target.labelVisibility !== 'hidden' && target.labelDisplay !== 'none', 'The navigator label remains visible on mobile');
   await launcher.press('Enter');
-  await page.locator('#maxexam-public-assistant [role="dialog"]').waitFor({state: 'visible'});
+  const dialog = page.locator('#maxexam-public-assistant [role="dialog"]');
+  await dialog.waitFor({state: 'visible'});
+  const panel = await dialog.evaluate(node => {
+    const rect = node.getBoundingClientRect();
+    return {position: getComputedStyle(node).position, left: rect.left, right: rect.right,
+      top: rect.top, bottom: rect.bottom, width: innerWidth, height: innerHeight};
+  });
+  assert.equal(panel.position, 'fixed', 'The moved navigator dialog remains fixed to the viewport');
+  assert(panel.left >= -1 && panel.right <= panel.width + 1 && panel.top >= -1 && panel.bottom <= panel.height + 1,
+    'The moved navigator dialog fits in the viewport: ' + JSON.stringify(panel));
   await page.keyboard.press('Escape');
-  assert.equal(await page.locator('#maxexam-public-assistant [role="dialog"]').isVisible(), false, 'The real navigator closes with Escape');
+  assert.equal(await dialog.isVisible(), false, 'The real navigator closes with Escape');
   assert(await launcher.evaluate(node => node.getRootNode().activeElement === node), 'Navigator Escape restores launcher focus');
   const original = await page.evaluate(() => scrollY);
   // A user can naturally scroll an action to the lower edge. Its centre must
@@ -329,9 +372,17 @@ async function layoutAndRoutes(browser, width) {
   const page = await context.newPage(); page.setDefaultTimeout(15000);
   const errors = []; page.on('pageerror', error => errors.push(error.message));
   try {
-    await page.goto(trainer + '#courses');
-    await page.locator('#arz-courses[data-course-view="overview"]').waitFor({state: 'visible'});
+    await page.goto(trainer + '#workshop');
+    await page.locator('#workshop').waitFor({state: 'visible'});
     await page.locator('#maxexam-public-assistant .launcher').waitFor({state: 'visible'});
+    const originalNavigator = await page.evaluateHandle(() => {
+      const host = document.querySelector('#maxexam-public-assistant');
+      return {host, launcher: host.shadowRoot.querySelector('.launcher'), parent: host.parentNode, nextSibling: host.nextSibling};
+    });
+    await navigatorPlacement(page, originalNavigator, false);
+    await navigate(page, '#courses');
+    await page.locator('#arz-courses[data-course-view="overview"]').waitFor({state: 'visible'});
+    await navigatorPlacement(page, originalNavigator, true);
     await geometry(page, width, 'courses-overview');
     const before = await progress(page);
     for (const track of tracks) {
@@ -354,7 +405,7 @@ async function layoutAndRoutes(browser, width) {
       const task = lesson.tasks[0];
       await configureModel(page, task, {lessonId: lesson.id});
       if (kind === 'rectangle') assert(await page.locator('#arz-courses [data-course-right-angle]').count() >= 1, 'A rectangle has justified right-angle marks');
-      if (kind === 'groups') await launcherAccess(page);
+      if (kind === 'groups') { await navigatorPlacement(page, originalNavigator, true); await launcherAccess(page); }
       await geometry(page, width, 'courses-' + kind);
     }
     const angleLesson = lessons.find(item => item.id === 'g-straight-angle');
@@ -371,6 +422,7 @@ async function layoutAndRoutes(browser, width) {
     await navigate(page, '#workshop');
     await page.locator('#workshop').waitFor({state: 'visible'});
     assert.equal(await page.locator('#arz-courses').isVisible(), false, 'Returning to an older game hides the course');
+    await navigatorPlacement(page, originalNavigator, false);
     await navigate(page, '#journey-algebra');
     await page.locator('#journey-map').waitFor({state: 'visible'});
     const localCourse = page.locator('#journey-map a[href="#courses-algebra"]');
