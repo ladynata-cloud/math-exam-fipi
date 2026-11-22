@@ -2237,10 +2237,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "42fb2943a10e266e96d9fb009780100b0883b2c2492673da2079847f4bc4bc50",
-      "afterSha256": "6f1af99503cfe37bd2c031227996b97451ef7659ca046503a52e56bc53cf09cf",
+      "beforeSha256": "1b31b2728af0c1ebe7b5061a252beacc47599b6fe8db637451dc381a464825da",
+      "afterSha256": "7b2c7bdbc7c9054cb37d5329579689cd62d81b0ab8af3382df905af0b6893ec8",
       "placement": "before-head-close",
-      "sourceSha": "de45544087db8418f0c6a94a952c76fc09c02023"
+      "sourceSha": "9ae49a0defe8d4d2dcd6a9b40694db394af3e027"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7415,6 +7415,15 @@
         "school/index.html"
       ],
       "boundary": "Виленкин §6 с. 34: запись и чтение двенадцати сравнений, полные русские числительные, различение верной записи с другим знаком и математической ошибки, учёт помощи, сохранение общей задачи и модели."
+    },
+    {
+      "previousBaseSha": "de45544087db8418f0c6a94a952c76fc09c02023",
+      "sourceBaseSha": "9ae49a0defe8d4d2dcd6a9b40694db394af3e027",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, том 1, §6, с. 34: непрерывный ряд до №1.170. №1.167–170: чтение и запись двойных неравенств, сравнения со скрытыми цифрами и строгие промежутки. Исходный PDF оставлен вне изменений. На этой ветке локально 486840 проверок, все 28 ответов при 320/375 px и синтетическая общая комната: обе роли, изменения модели, восстановление после перезагрузки. Публикация отдельно."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
