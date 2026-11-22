@@ -1529,6 +1529,15 @@ async function run(browser, origin, backend, failures) {
   await studentFrame.locator('#answer').fill('2/4');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'equivalent fraction after an error')).scene.correct);
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);assert((await same(teacherFrame,studentFrame,'child reconnects with exact correction')).scene.correct);await narrow(student,studentFrame,'octagon whole and part');
 
+  phase = 'ant source 5.111: unfold two neighbouring faces';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-111"]').click();await studentFrame.locator('h1').filter({hasText:'№5.111'}).waitFor();
+  await teacherFrame.locator('#answer').fill('6');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'all faces mistaken for start faces')).scene.message,/стартовой вершины/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=endFace]').selectOption({value:'2'});await same(studentFrame,teacherFrame,'opposite faces share no edge');
+  await studentFrame.locator('[data-v5-param=startFace]').selectOption({value:'1'});await studentFrame.locator('[data-v5-param=quarter]').selectOption({value:'3'});await studentFrame.locator('[data-v5-prediction]').fill('1');await studentFrame.locator('[data-v5-predict] button').click();
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);assert.equal((await same(studentFrame,teacherFrame,'bend restored')).scene.model.quarter,3);
+  await studentFrame.locator('#answer').fill('3');await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'corrected vertex count')).scene.correct);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);assert((await same(teacherFrame,studentFrame,'child reconnects to corrected cube')).scene.correct);await narrow(student,studentFrame,'two cube faces and bend');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
