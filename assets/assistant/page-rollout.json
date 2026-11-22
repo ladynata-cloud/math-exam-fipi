@@ -3362,10 +3362,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "school/peterson6/textbook/index.html": {
-      "beforeSha256": "3f31b20204df33fa3759ad8cc4b4cfd4b590d83988702a877d73b61d79d5d277",
-      "afterSha256": "e492cfea8246526b538fed3dac235b9bf41b775bf3d5779de1e3d7a901172946",
+      "beforeSha256": "9795245e0265ddd240303f16fcf1ceba5ba987798aaa16b4554fd215fceeb1a9",
+      "afterSha256": "9097eb7e3495a71953340694c535794e4ef52044469604b22b3a75eaa4d41a6e",
       "placement": "before-head-close",
-      "sourceSha": "3535151a071f1a1c22c99e33db1d15dd4316005b"
+      "sourceSha": "0787ca49e6d7b946ecd71731fff1dbb8c30d70a5"
     },
     "trainers/peterson6-workshop/index.html": {
       "beforeSha256": "aff5a4686e3a522eb30af65b8e89b325a77ea2798f61c203c7ca06a2755d2aea",
@@ -7564,6 +7564,15 @@
         "school/index.html"
       ],
       "boundary": "За упражнениями №1–97 второй части Виленкина добавлены обе проверочные работы §26 на печатной с.20. Проверены самостоятельное исправление диаграммы и ход занятия на доске."
+    },
+    {
+      "previousBaseSha": "3535151a071f1a1c22c99e33db1d15dd4316005b",
+      "sourceBaseSha": "0787ca49e6d7b946ecd71731fff1dbb8c30d70a5",
+      "task": "docs/tasks/PETERSON6_FIRST_VOLUME_COMPANION_20261121.md",
+      "changedPaths": [
+        "school/peterson6/textbook/index.html"
+      ],
+      "boundary": "Упражнения №22–27 о высказываниях получили проверку рассуждений, независимые кодовые задачи и двусторонние модели в классе."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
