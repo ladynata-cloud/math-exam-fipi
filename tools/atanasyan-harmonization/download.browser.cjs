@@ -68,6 +68,8 @@ let browser;
     assert.equal((await work()).checked, true);
     assert.equal((await work()).assisted, false);
     assert.equal(await field.inputValue(), 'πa²/4');
+    await page.locator('[data-main-help] > summary').click();
+    await page.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();
     await page.locator('[data-case="case-2"]').click();
     assert.equal(await graphic.locator('.planar-polygon').count(), 4);
     await page.locator('[data-case="case-3"]').click();
