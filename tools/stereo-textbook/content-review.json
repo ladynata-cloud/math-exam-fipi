@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-22T01:35:00Z",
-  "scope": "Chapters I–VII and the complete final-review set, 764–767, include all 24 printed parts. The separately inventoried advanced problems begin at 768.",
+  "registeredAt": "2026-11-22T02:08:00Z",
+  "scope": "All final-review parts of 764–767 and the first three advanced source exercises 768–770 are complete. The remaining advanced exercises begin at 771.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -2464,6 +2464,18 @@
       ],
       "evidence": "tools/stereo-textbook/end-of-final-pyramid-review.json",
       "mathematicalReport": "tools/stereo-textbook/end-of-final-pyramid-review.test.cjs"
+    },
+    {
+      "reviewer": "Codex: issued Atanasyan 2024 volume, advanced problems on printed page 190 (PDF page 192), answers and hints on printed page 272.",
+      "reviewedAt": "2026-11-22T02:08:00Z",
+      "scope": "Advanced exercises 768–770 on printed page 190. Interior and exterior locations of the perpendicular foot were checked against the definition of plane angles on page 52. Both orthocenter and double-projection proofs, including specific diagrams and variable numerical controls, were checked against the original problems and the hints on page 272.",
+      "cardIds": [
+        "ex-main-0768",
+        "ex-main-0769",
+        "ex-main-0770"
+      ],
+      "evidence": "tools/stereo-textbook/first-advanced-pyramid-problems.json",
+      "mathematicalReport": "tools/stereo-textbook/first-advanced-pyramid-problems.test.cjs"
     }
   ],
   "cards": [
@@ -8310,6 +8322,18 @@
     {
       "id": "ex-main-0767-f",
       "sha256": "83ceae8520b9e2845ec0fac60d55494c446464d8334cd466a3b0973eea93e8e9"
+    },
+    {
+      "id": "ex-main-0768",
+      "sha256": "00c2bf09ff69e3b3c438dedef44d5633e4e1c95aac53ba21813d26dace4450c6"
+    },
+    {
+      "id": "ex-main-0769",
+      "sha256": "56383d06811abfc0c40946bc3979622e627829ce5eb97a71b4f8f87a267aa41b"
+    },
+    {
+      "id": "ex-main-0770",
+      "sha256": "4575dc6ad94a6cc23017545ffb13bb08459c5958760a1007e187b0ca2983bae3"
     }
   ]
 }
