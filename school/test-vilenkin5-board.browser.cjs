@@ -1410,6 +1410,33 @@ async function run(browser, origin, backend, failures) {
   }
   await narrow(student,studentFrame,'stock-endpoints');
 
+  phase = 'printed page 20: both fraction assessments and a pupil-built chart';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-check-26-1"]').click();
+  await studentFrame.locator('h1').filter({hasText:'Проверочная №1'}).waitFor();
+  for(const [i,v] of ['9/11','32/61','100/200','3/4','7/60','360','3/5;60','2/6','1/4','3/6','1/4','2/5'].entries()){
+    if(i)await teacherFrame.locator('[data-cmd=next]').click();
+    if(i===2){await teacherFrame.locator('#answer').fill('1/2');await teacherFrame.locator('#answer-form button').click();
+      const format=await same(teacherFrame,studentFrame,'dictation keeps the named denominator');assert.equal(format.scene.attempt,0);}
+    await teacherFrame.locator('#answer').fill(v);await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'fractions check '+i)).scene.correct);
+  }
+  await ownership(teacher,student,true);await studentFrame.locator('a[href="#course/vilenkin5"]').first().click();await studentFrame.locator('a[href="#lesson/v5f-printed-check-26-2"]').click();
+  await teacherFrame.locator('h1').filter({hasText:'Проверочная №2'}).waitFor();
+  for(const [i,v] of ['1/10','1/100','12','16','сложные','8','2/9','4/9'].entries()){
+    if(i)await studentFrame.locator('[data-cmd=next]').click();
+    await studentFrame.locator('#answer').fill(v);await studentFrame.locator('#answer-form button').click();assert((await same(studentFrame,teacherFrame,'tasks check '+i)).scene.correct);
+  }
+  await studentFrame.locator('[data-cmd=next]').click();await studentFrame.locator('#answer').fill('8');await studentFrame.locator('#answer-form button').click();assert.match((await same(studentFrame,teacherFrame,'a number does not build a chart')).scene.message,/Лёгкие/);
+  for(const [param,height] of [['easyHeight','6'],['midHeight','4'],['hardHeight','8']]){
+    await studentFrame.locator('[data-v5-param='+param+']').fill(height);await studentFrame.locator('[data-v5-param='+param+']').press('Tab');
+  }
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);assert.equal((await same(studentFrame,teacherFrame,'pupil chart shared with reconnected teacher')).scene.model.midHeight,4);
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await teacherFrame.locator('#answer').fill('8');await teacherFrame.locator('#answer-form button').click();const checkedChart=await same(teacherFrame,studentFrame,'both confirm constructed chart');assert(checkedChart.scene.correct);assert.equal(checkedChart.scene.model.hardHeight,8);
+  await narrow(student,studentFrame,'checks26-final-chart');
+  const chartLabels=await studentFrame.locator('#model .v5q-visual svg text').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return [r.left,r.right,n.textContent];}));
+  assert.deepEqual(chartLabels.map(n=>n[2]),['Лёгкие','Средние','Сложные']);
+  assert(chartLabels[0][1]<chartLabels[1][0]&&chartLabels[1][1]<chartLabels[2][0],'mobile chart labels must not overlap');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');

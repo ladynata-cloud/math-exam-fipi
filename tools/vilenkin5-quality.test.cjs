@@ -152,6 +152,38 @@ function sameDataFractionalForecastRegression(){
   choose('portion',2);m=f.snapshot().scene.model;ok(!m.seen);equal(m.first,'');f.input('[data-v5-prediction]','2');f.click('[data-v5-reveal]');m=f.snapshot().scene.model;ok(m.seen);ok(m.notice.includes('по твоему запросу'));equal(m.first,'');equal(m.prediction,'2');
   f.close();
 }
+function checks26Regression(){
+  const f=boot(),A=f.w.Vilenkin5CheckFractionParts,id='v5f-printed-check-26-';
+  const set=(key,value)=>{const input=f.$('[data-v5-param='+key+']');input.value=String(value);input.dispatchEvent(new f.w.Event('change',{bubbles:true}));};
+  const source=f.M.generate(id+1,0),chart=f.M.generate(id+2,0);
+  equal(plain([...source.steps,source].map(x=>x.answer)),['9/11','32/61','100/200','3/4','7/60',360,['3/5','300/5'],'2/6','1/4','3/6','3/12','12/30']);
+  equal(plain([...chart.steps,chart].map(x=>x.answer)),['1/10','1/100',12,16,'сложные',8,'8/36','16/36',8]);equal(plain(chart.graphHeights),[6,4,8]);
+  for(let seed=0;seed<75;seed++){
+    const a=f.M.generate(id+1,seed),b=f.M.generate(id+2,seed),d=b.data.taskChart;
+    equal(d.easy+d.mid+d.hard,d.total);equal(d.mid*3,d.total-d.easy);equal(d.easy*3,d.total);
+    equal(plain(b.graphHeights.map(n=>n*d.scale)),[d.easy,d.mid,d.hard]);
+    a.data.fractionSelf.grids.forEach((g,i)=>{const total=g.join('').length,color=g.join('').replace(/0/g,'').length;
+      for(const white of [0,1])ok(f.M.equal(A.explore(a,{gridIndex:i,white}).answer,(white?total-color:color)+'/'+total));
+    });
+    const targets=b.graphHeights;ok(!A.chartIssue(targets,{easyHeight:targets[0],midHeight:targets[1],hardHeight:targets[2]}));
+    ok(A.chartIssue(targets,{easyHeight:targets[0],midHeight:targets[1]+1,hardHeight:targets[2]}).includes('Средние'));
+  }
+  f.route('#lesson/'+id+1);f.submit('9/11');f.click('[data-cmd=next]');f.submit('32/61');f.click('[data-cmd=next]');f.submit('1/2');
+  equal(f.snapshot().scene.attempt,0);ok(f.snapshot().scene.message.includes('Величина верна'));f.submit('100/200');ok(f.snapshot().scene.correct);
+  f.route('#lesson/'+id+2);
+  for(const [i,a] of ['1/10','1/100','12','16','сложных','8','2/9','4/9'].entries()){
+    if(i)f.click('[data-cmd=next]');f.submit(a);ok(f.snapshot().scene.correct,'check 2 step '+i);
+  }
+  f.click('[data-cmd=next]');f.submit('8');ok(!f.snapshot().scene.correct);ok(f.snapshot().scene.message.includes('Лёгкие'));
+  set('easyHeight',6);set('midHeight',4);set('hardHeight',8);f.submit('8');ok(f.snapshot().scene.correct);
+  const mastered=f.snapshot().scene;equal(plain(mastered.firstWrong.chart),[0,0,0]);ok(!mastered.firstAttempt.correct);
+  ok(f.$('[data-v5-param=hardHeight]').disabled);const personal=f.saved(),restored=boot('#lesson/'+id+2,personal);
+  equal(restored.snapshot().scene.model.hardHeight,8);ok(restored.snapshot().scene.correct);equal(plain(restored.snapshot().scene.firstWrong.chart),[0,0,0]);restored.close();
+  f.click('[data-cmd=mode][data-value=practice]');const newTask=f.M.generate(id+2,f.snapshot().scene.seed);
+  ok(f.$('[data-v5-param=hardHeight]'));f.submit(String(newTask.answer));ok(!f.snapshot().scene.correct);newTask.graphHeights.forEach((n,i)=>set(['easyHeight','midHeight','hardHeight'][i],n));
+  f.submit(String(newTask.answer));ok(f.snapshot().scene.correct);equal(f.errors.length,0);f.close();
+}
+
 function triangleAndStockRegression(){
   const f=boot(),A=f.w.Vilenkin5TrianglesAndStock;
   for(let seed=0;seed<75;seed++){
@@ -1520,7 +1552,7 @@ function compassAndCompoundRegression(){
 
 function printedChecksRegression(){
   const f=boot(),ids=['v5f-printed-check-2-1','v5f-printed-check-2-2'],fl=f.C.pathById.vilenkin5;
-  equal(plain(fl.printedChecks),ids.concat(['v5f-printed-check-25-1','v5f-printed-check-25-2','v5f-printed-check-25-3']));ok(!fl.numbered.some(id=>ids.includes(id)));equal(fl.ids.length,134);ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
+  equal(plain(fl.printedChecks),ids.concat(['v5f-printed-check-25-1','v5f-printed-check-25-2','v5f-printed-check-25-3','v5f-printed-check-26-1','v5f-printed-check-26-2']));ok(!fl.numbered.some(id=>ids.includes(id)));equal(fl.ids.length,134);ids.forEach(id=>ok(f.$('a[href="#lesson/'+id+'"]')));
   const buy=f.M.generate(ids[0],0);equal(plain(buy.steps.map(s=>s.answer)),[56,3,130,655]);equal(buy.answer,700);
   for(let seed=0;seed<220;seed++){
     const t=f.M.generate(ids[0],seed),d=t.data;
@@ -1690,7 +1722,7 @@ function pageNineteenBoundariesRegression(){
 
 async function run(){
   for(const check of [
-    triangleAndStockRegression,islandAndMeetingRegression,classesAndViewsRegression,chordAndUnitsRegression,fourStoryStripsRegression,quantityPartsRegression,groupedAndDiskRegression,wallBenchGroupsRegression,twoCircleConstructionRegression,durationAndMirrorRegression,radiusChordSectorRegression,operationChainsRegression,knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
+    checks26Regression,triangleAndStockRegression,islandAndMeetingRegression,classesAndViewsRegression,chordAndUnitsRegression,fourStoryStripsRegression,quantityPartsRegression,groupedAndDiskRegression,wallBenchGroupsRegression,twoCircleConstructionRegression,durationAndMirrorRegression,radiusChordSectorRegression,operationChainsRegression,knownShareRegression,portionStoriesRegression,partWholeStoriesRegression,fractionLanguageRegression,shareStoryRegression,shadedFiguresRegression,readingFractionsRegression,namedMeasuresQuarterRegression,equalPartsRegression,circleChapterCheckRegression,massDividendPowerRegression,boxDivisorsAndLayersRegression,radiusEquationsRegression,circlePairHomeworkRegression,threeCompassRegression,diskMembershipRegression,sundialRegression,reverseOrderRegression,boardHoneyRegression,sandAndCubesRegression,squareSumsRegression,exactErroneousFractionsRegression,sameDataFractionalForecastRegression,cubeRowsRegression,partsOfUnitsRegression,printedRayRegression,smallChainsRegression,schoolDialsRegression,circumferenceEstimatesRegression,threadMeasurementRegression,objectExamplesRegression,cutsRegression,crossingsRegression,chordRegression,compassRegression,
     circlePointsRegression,numberedTablesRegression,scheduleAndEqualityRegression,orderAndJourneyRegression,
     weatherDiaryRegression,pointEndRegression,printedDigitsRegression,printedClassesRegression,
     printedTextNumbersRegression,printedTreeRegression,printedCalculationsRegression,printedPageFifteenRegression,
