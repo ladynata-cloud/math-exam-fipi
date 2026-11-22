@@ -880,6 +880,7 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='root-transform-points')return G.transformedRootPoints(target.graph,pointGroups(user)).status==='valid';
  if(target.kind==='line-placement'){const proposed=G.positionCoefficients(target.graph,user);return Boolean(proposed?.validK&&proposed.validB);}
  if(target.kind==='line-signed-coefficient'){const q=M.parse(user);return Boolean(q&&Math.sign(q.n)===target.sign);}
  if(target.kind==='own-affine-points')return G.ownAffine(target.graph,pointGroups(user)).status==='valid';
