@@ -1234,6 +1234,18 @@ async function run(browser, origin, backend, failures) {
   await same(teacherFrame,studentFrame,'restored both chord calculations');await teacherFrame.locator('#answer-form button').click();assert.equal((await same(teacherFrame,studentFrame,'recognise the short chord')).scene.attempt,2);
   await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('да');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'one millimetre fits')).scene.correct);await narrow(student,studentFrame,'one-millimetre-chord');
 
+  phase = 'source 5.74: real time from the mirrored hands';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-74"]').click();
+  await studentFrame.locator('h1').filter({hasText:'№5.74'}).waitFor();
+  await teacherFrame.locator('#answer').fill('7:70');await teacherFrame.locator('#answer-form button').click();assert.equal((await same(teacherFrame,studentFrame,'unfinished clock reading')).scene.attempt,0);
+  await teacherFrame.locator('#answer').fill('7:00');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'read reflection as real')).scene.message,/другую сторону/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=index]').selectOption({value:'4'});await studentFrame.locator('[data-v5-param=show]').selectOption({value:'1'});
+  await studentFrame.locator('[data-v5-prediction]').fill('40');await studentFrame.locator('[data-v5-predict] button').click();await studentFrame.locator('#answer').fill('5:00');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const mirrorWork=await same(studentFrame,teacherFrame,'restored two dials and first attempt');assert(mirrorWork.scene.model.seen);assert.equal(mirrorWork.scene.model.index,4);assert.equal(mirrorWork.scene.model.show,1);assert.equal(mirrorWork.scene.savedInput,'5:00');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'restored reflected time');await teacherFrame.locator('#answer-form button').click();const reflected=await same(teacherFrame,studentFrame,'seven and five reflected in vertical axis');assert(reflected.scene.correct);assert.equal(reflected.scene.attempt,2);await narrow(student,studentFrame,'reflected-clocks');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
