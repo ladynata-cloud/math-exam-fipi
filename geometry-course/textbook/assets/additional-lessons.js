@@ -134,7 +134,8 @@
       ['/geometry-course/textbook/data/medians-translated-altitudes.json', '№1289–1291'],
       ['/geometry-course/textbook/data/final-motion-constructions.json', '№1292–1295'],
       ['/geometry-course/textbook/data/plane-map-review.json', 'вопросы 1–7 главы XIV'],
-      ['/geometry-course/textbook/data/congruence-motion-review.json', 'вопросы 8–15 главы XIV']
+      ['/geometry-course/textbook/data/congruence-motion-review.json', 'вопросы 8–15 главы XIV'],
+      ['/geometry-course/textbook/data/symmetry-motion-review.json', 'вопросы 16–24 главы XIV']
   ];
 
   async function forCourse(base) {
