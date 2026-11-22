@@ -1282,6 +1282,17 @@ async function run(browser, origin, backend, failures) {
   await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
   await same(teacherFrame,studentFrame,'two shaded drawings after both reloads');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'check completed eighths drawing')).scene.correct);await narrow(student,studentFrame,'five-of-eight-sectors');
 
+  phase = 'source 5.84: three eighths and one third of the same square';
+  await teacherFrame.locator('a[href="#course/vilenkin5"]').first().click();await teacherFrame.locator('a[href="#lesson/v5f-printed-5-84"]').click();await studentFrame.locator('h1').filter({hasText:'№5.84'}).waitFor();
+  await teacherFrame.locator('#answer').fill('4,5');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'one eighth of the square')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('#answer').fill('4,5');await teacherFrame.locator('#answer-form button').click();assert.match((await same(teacherFrame,studentFrame,'one eighth used for three eighths')).scene.message,/три таких части/);
+  await ownership(teacher,student,true);await studentFrame.locator('[data-v5-param=eighths]').selectOption({value:'3'});await studentFrame.locator('[data-v5-prediction]').fill('13,5');await studentFrame.locator('[data-v5-predict] button').click();
+  await studentFrame.locator('#answer').fill('27/2');await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await frameFor(teacher);
+  const areaDraft=await same(studentFrame,teacherFrame,'restore exact half square and three strips');assert(areaDraft.scene.model.seen);assert.equal(areaDraft.scene.model.eighths,3);assert.equal(areaDraft.scene.savedInput,'27/2');
+  await ownership(teacher,student,false);await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await frameFor(student);
+  await same(teacherFrame,studentFrame,'keep three eighths on handoff');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'accept exact fractional area')).scene.correct);
+  await teacherFrame.locator('[data-cmd=next]').click();await teacherFrame.locator('[data-v5-param=division]').selectOption({value:'1'});await teacherFrame.locator('#answer').fill('12');await teacherFrame.locator('#answer-form button').click();assert((await same(teacherFrame,studentFrame,'third of the original 36')).scene.correct);await narrow(student,studentFrame,'fractional-square-area');
+
   phase = 'tank dimensions and a fractional litre';
   await lesson(teacherFrame, 'v5f-volume-litres');
   await same(teacherFrame, studentFrame, 'tank diagram before predicting');
