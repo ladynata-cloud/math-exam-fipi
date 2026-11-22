@@ -1,5 +1,5 @@
 'use strict';
-// Printed pp. 253–257. Exercise the public course entry, model and saved learning on a clean browser profile.
+// Printed pp. 253–259. Exercise the public course entry, model and saved learning on a clean browser profile.
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -143,6 +143,26 @@ async function verify(width,url,offline=false){
  await openNumber(p,1157,'№ 1157 · график');await submit(p,'(-1;-6), (3;2)');assert.match(await p.locator('#problem').innerText(),/ордината должна быть положительна/);
  await submit(p,'(-4;3/2), (3;2)');await p.reload();await p.locator('[data-absolute-points=valid]').waitFor();
  assert.equal(await p.locator('#task-graph [data-root-curve=absolute-reciprocal]').count(),1);
+ for (const card of require('./exercises-1158-1160.json')) {
+  await openNumber(p,Number(card.title.match(/\d+/)[0]),card.title);
+  await p.locator('#task-graph svg').first().waitFor();
+  assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ }
+ await openNumber(p,1158,'№ 1158а');await submit(p,'y=');
+ assert.equal(await p.evaluate(()=>MakarychevApp.getState().tasks['p44-source-1158-a'].attempts),0);
+ await submit(p,'y=3,5x-7');assert.match(await p.locator('#problem').innerText(),/ту же прямую/);
+ await submit(p,'y=3,5x+1');assert.match(await p.locator('#problem').innerText(),/нет точки пересечения/);
+ await p.locator('[data-action=guided]').click();await p.locator('#step-answer-0').fill('-2');await p.locator('[data-source-line-trial="-2"]').waitFor();
+ assert.match(await p.locator('[data-source-line-trial]').innerText(),/y = -14/);
+ await submit(p,'y=2x-10');await p.reload();await p.locator('[data-line-intersection=valid]').waitFor();
+ assert.equal(await p.locator('#task-graph [data-root-curve=line]').count(),2);
+ assert(await p.locator('#task-graph [data-point-x="-2"][data-point-y="-14"]').count()>=1);
+ await openNumber(p,1159,'№ 1159б');await submit(p,'y=-2x+8');assert.match(await p.locator('#problem').innerText(),/координаты заданной точки/);
+ await submit(p,'y=-2x-8');await openNumber(p,1160,'№ 1160а');
+ await p.locator('[data-action=guided]').click();await p.locator('#step-answer-0').fill('2');await p.locator('[data-slope-mode="горизонтальна"]').waitFor();
+ await submit(p,'[2;+∞)');assert.match(await p.locator('#problem').innerText(),/нулевой.*горизонтальна/);
+ await submit(p,'a>2');await p.reload();await p.locator('[data-slope-mode="горизонтальна"]').waitFor();
+ assert(await p.evaluate(()=>MakarychevApp.getState().tasks['p44-source-1160-a'].correct));
  assert.deepEqual(errors,[]);await ctx.close();
 }
 (async()=>{
@@ -152,6 +172,6 @@ async function verify(width,url,offline=false){
   for(const w of [320,390,1024])await verify(w,url);
   const offline=path.join(root,'downloads/trainers/makarychev8-algebra/makarychev8-algebra.html');
   await verify(320,require('node:url').pathToFileURL(offline).href,true);
-  console.log('PASS source 1131–1157 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
+  console.log('PASS source 1131–1160 on 320/390/1024px and 320px offline; distinct error feedback, both branches restored inequality intersection and two signed radical remainders.');
  }finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

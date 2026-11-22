@@ -949,6 +949,42 @@ function sumOfRoot(form,k,x) {
  if(x<0)return NaN;
  return (form==='linear'?k*x:x*x)+Math.sqrt(x);
 }
+function affineConditionView(host,g,raw) {
+ host.className='task-graphs quantity-model';
+ const C=window.MakarychevCheck,trial=M.parse(g.partial?.[0]),fmt=x=>Number(x.toPrecision(8)).toString().replace('.',',');
+ if(g.mode==='parameter'){
+  const a=trial?trial.n/trial.d:null,curves=trial?[{kind:'line',k:a-g.offset,b:g.intercept}]:[];
+  host.append(rootGraph({curves,points:[[0,g.intercept,'']],xRange:[-4,4],yRange:[-5,9],label:'Прямая с выбранным параметром наклона'},''));
+  if(trial){
+   const exact=sectionFraction(trial.n-g.offset*trial.d,trial.d),direction=trial.n===g.offset*trial.d?'горизонтальна':trial.n>g.offset*trial.d?'возрастает':'убывает';
+   boundNote(host,'При a = '+M.answer(trial)+' наклон равен '+exact+', прямая '+direction+'.').dataset.slopeMode=direction;
+  }else boundNote(host,'В первом шаге можно менять a и наблюдать линию через одну закреплённую точку.');
+  const proposal=C.axisRanges(C.systemInput(raw,'a'));if(proposal)intervalNumberLine(host,{givenRows:[],proposal,points:trial?[trial]:[]},'');
+  return;
+ }
+ const [A,B,V]=g.line,k=-A/B,b=V/B,curves=[{kind:'line',k,b}],points=[];
+ if(g.point)points.push([...g.point,'']);
+ if(trial){
+  const x=trial.n/trial.d,y=k*x+b;points.push([x,y,'']);
+  const exact=sectionFraction(V*trial.d-A*trial.n,B*trial.d);
+  boundNote(host,'Для исходной прямой при x = '+M.answer(trial)+' получаем y = '+exact+'.').dataset.sourceLineTrial=M.answer(trial);
+ }
+ const result=C.lineCondition(raw,g);
+ boundNote(host,result.proposal?'Бирюзовая линия задана в условии, терракотовая задана твоей формулой.':'Бирюзовая линия задана в условии. Введи свою формулу, чтобы увидеть второй график.');
+ if(result.proposal){
+  const own=result.proposal;
+  if(Number.isFinite(own.k)&&Number.isFinite(own.b))curves.push({kind:'line',k:own.k,b:own.b,emphasis:true});
+  if(Number.isFinite(result.x)&&Number.isFinite(result.y)){
+   points.push([result.x,result.y,'']);
+   boundNote(host,'Точка пересечения: x ≈ '+fmt(result.x)+', y ≈ '+fmt(result.y)+'.').dataset.lineIntersection=result.status;
+  }else if(result.status==='same')boundNote(host,'Обе формулы задают одну и ту же прямую.').dataset.lineIntersection='same';
+  else if(result.status==='parallel'||g.mode==='parallel')boundNote(host,'Наклоны совпадают, прямые различны. '+(g.mode==='parallel'?'Проверь заданную точку.':'Единственной точки пересечения нет.')).dataset.lineIntersection=result.status;
+ }
+ const visible=points.filter(([x,y])=>Number.isFinite(x)&&Number.isFinite(y)&&Math.abs(x)<=2000&&Math.abs(y)<=2000);
+ const xr=[Math.min(-5,...visible.map(p=>Math.floor(p[0])-1)),Math.max(5,...visible.map(p=>Math.ceil(p[0])+1))],yr=[Math.min(-9,b-1,...visible.map(p=>Math.floor(p[1])-1)),Math.max(8,b+1,...visible.map(p=>Math.ceil(p[1])+1))];
+ host.append(rootGraph({curves,points,xRange:xr,yRange:yr,compactTicks:yr[0]<-10||yr[1]>10,label:'Исходная прямая и график введённой функции'},''));
+}
+
 function signCurve(code, parameter=0) {
  const shift=parameter;
  switch(code){
@@ -2833,6 +2869,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-affine-conditions'){affineConditionView(host,config,value);return;}
  if(config.type==='source-sign-and-symmetry'){signSymmetryView(host,config,value);return;}
  if(config.type==='source-monotone-reason'){monotoneReasonView(host,config);return;}
  if(config.type==='source-route-and-range'){riverDomainView(host,config,value);return;}

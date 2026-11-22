@@ -940,6 +940,9 @@
   }
 
   const finalFunctionSkills=[
+   {id:'line-intersection-location',title:'Пересечение в выбранном месте',description:'Придумай собственную прямую через ось или нужную четверть.'},
+   {id:'parallel-at-point',title:'Параллельная через точку',description:'Сохрани наклон и вычисли свободный член на новых данных.'},
+   {id:'line-parameter-direction',title:'Параметр и направление',description:'Исследуй параметр, при котором наклон меняет знак.'},
    {id:'strict-sign-study',title:'Строгий знак функции',description:'Проверь нуль и возможные знаки для новой формулы.'},
    {id:'identify-transformed-graph',title:'Вершина и граница графика',description:'Используй конечную точку корня или вершину модуля для распознавания.'},
    {id:'absolute-reciprocal-study',title:'Две положительные ветви',description:'Поставь свои точки по разным сторонам вертикальной оси.'},
@@ -965,6 +968,19 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='line-intersection-location'||id==='parallel-at-point'){
+    const k=1+(seed+level)%6,b=-(1+Math.floor(seed/2)%9)*k,x=-(1+seed%5),y=k*x+b;
+    const mode=id==='parallel-at-point'?'parallel':['third','ox','oy'][(seed+level)%3],offset=b+1+seed%4,point=[x,k*x+offset];
+    const answer=mode==='parallel'?'y='+k+'x+('+offset+')':mode==='third'?'y='+y:mode==='ox'?'y=0':'y='+b;
+    const hint=mode==='parallel'?'Равенство наклонов проверяет параллельность, подстановка обеих координат проверяет точку.':'Выбери подходящую точку исходной прямой и проведи через неё прямую с другим наклоном.';
+    const goal=mode==='parallel'?'параллельна ей и проходит через ('+point.join(';')+')':mode==='third'?'пересекает её в третьей четверти':mode==='ox'?'пересекает её на оси x':'пересекает её на оси y';
+    return {...common,prompt:'Дана y = '+k+'x + ('+b+'). Введи формулу другой прямой, которая '+goal+'.',kind:'affine-condition',answer,inputNote:'Запиши уравнение с y, например y = 2x + 3.',graph:{type:'source-affine-conditions',mode,line:[-k,1,b],point:mode==='parallel'?point:null},steps:[probe,step('Чему равна ордината исходной прямой при x = 0?',b,hint)],hint,correction:hint,explanation:hint+' Один пример: '+answer+'.'};
+   }
+   if(id==='line-parameter-direction'){
+    const offset=1+(seed+level)%13,intercept=(seed%9)-4,feat=['inc','dec','const'][(seed+level)%3],word={inc:'возрастает',dec:'убывает',const:'постоянна'}[feat],answer=feat==='inc'?'('+offset+';+∞)':feat==='dec'?'(-∞;'+offset+')':'['+offset+';'+offset+']';
+    const hint='Сравни коэффициент при x с нулём.';
+    return {...common,prompt:'Какие a дают функцию y = (a − '+offset+')x + ('+intercept+'), которая '+word+'?',kind:'system-single',variable:'a',answer,graph:{type:'source-affine-conditions',mode:'parameter',feature:feat,offset,intercept},steps:[step('Испытай свой параметр a.',0,hint,'rational-probe'),step('Чему равен a при горизонтальной прямой?',offset,hint)],hint,correction:hint,explanation:'Коэффициент при x обращается в нуль при a = '+offset+'.'};
+   }
    if(id==='strict-sign-study'){
     const code=[2,3,6,8,9][(seed+level)%5],param=1+Math.floor(seed/3)%13,positive=code!==3&&code!==6;
     const formula=({2:'x² + '+(5+param),3:'2x + '+(5+param),6:'−x² − '+(4+param),8:'√x + '+(1+param),9:'x⁴ + x² + '+(6+param)})[code];

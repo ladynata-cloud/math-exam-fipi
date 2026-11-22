@@ -609,8 +609,24 @@ function affinePlot(raw){
   if(d.size!==1||!d.has('')||[...n.keys()].some(k=>!['','x','y'].includes(k)))return null;
   const a=n.get('x')||0n,b=n.get('y')||0n,c=-(n.get('')||0n);
   if(!b)return null;
-  return {k:-Number(a)/Number(b),b:Number(c)/Number(b),atPoint:(x,y)=>a*BigInt(x)+b*BigInt(y)===c};
+  return {k:-Number(a)/Number(b),b:Number(c)/Number(b),coefficients:[a,b,c],atPoint:(x,y)=>a*BigInt(x)+b*BigInt(y)===c};
  }catch(_){return null;}
+}
+
+function lineCondition(raw, g) {
+ const proposal=affinePlot(raw);if(!proposal)return {status:'format'};
+ const [a,b,c]=g.line.map(BigInt),[u,v,w]=proposal.coefficients;
+ const det=a*v-u*b,nx=c*v-w*b,ny=a*w-u*c;
+ const mode=g.mode;
+ if(det===0n){
+  if(nx===0n&&ny===0n)return {status:'same',proposal};
+  if(mode!=='parallel')return {status:'parallel',proposal};
+  return {status:proposal.atPoint(...g.point)?'valid':'point',proposal};
+ }
+ const x=Number(nx)/Number(det),y=Number(ny)/Number(det);
+ const sign=n=>n===0n?0:(n<0n)===(det<0n)?1:-1;
+ const valid=mode==='third'?sign(nx)<0&&sign(ny)<0:mode==='ox'?ny===0n:mode==='oy'?nx===0n:false;
+ return {status:valid?'valid':mode==='parallel'?'slope':'location',proposal,x,y};
 }
 
 function systemEvidence(input,graph){
@@ -886,6 +902,7 @@ function check(user,target){
  if(target.kind==='reciprocal-pair-points')return G.reciprocalPair(target.graph,pointGroups(user)).status==='valid';
  if(target.kind==='reciprocal-points')return G.reciprocalPoints(target.graph,pointGroups(user)).status==='valid';
  if(target.kind==='root-transform-points')return G.transformedRootPoints(target.graph,pointGroups(user)).status==='valid';
+ if(target.kind==='affine-condition')return lineCondition(user,target.graph).status==='valid';
  if(target.kind==='line-placement'){const proposed=G.positionCoefficients(target.graph,user);return Boolean(proposed?.validK&&proposed.validB);}
  if(target.kind==='line-signed-coefficient'){const q=M.parse(user);return Boolean(q&&Math.sign(q.n)===target.sign);}
  if(target.kind==='own-affine-points')return G.ownAffine(target.graph,pointGroups(user)).status==='valid';
@@ -1024,5 +1041,5 @@ function check(user,target){
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
  return answers.some(a=>M.check(user,a,target.answerFormat));
 }
-return {landmarkInput,systemInput,linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
+return {lineCondition,landmarkInput,systemInput,linearRay,asThreshold,axisRanges,equalAxisSets,axisName,rationalList,estimateInput,estimateStatus,orderInput,systemTriple,excludedParameter,affinePlot,radicalApprox,graphRootEntries,rationalRootTrial,vietaAudit,quadraticTrial,squaredBinomial,algebraPairs,systemEvidence,openIntervals,absLineIntersections,pointGroups,planeResponse,equationPlaneStatus,equationRatioStatus,exampleEquationsStatus,reciprocalIntersections,classifyRationalCandidates,factoredPair,progressionFactors,radicalSum,quadraticEntries,sameRadicalSum,signedSquare,proofOrder,inspectDomainFraction,setEntries,check,normalize,setEqual,rootLineCount,squareInteger};
 });
