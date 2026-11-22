@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "e68ad6d86c958581d159d3abacdf7816391e9543438b3e01f1ceb8dff009d3e4",
-      "afterSha256": "c2b78fde6a53e7b4f14508946dc15e26381eba93222b786932a0c577eedccb55",
+      "beforeSha256": "adc237e9d78fb024bc03c565f9c1fbd31ca4cd3e0829ae7623003346b8ea0d37",
+      "afterSha256": "76b2e6ec98925278a34f4b4bd8332410bf08d62befbdc6bfe56e4cc83016a184",
       "placement": "before-head-close",
-      "sourceSha": "1c44a671fb0e9f3445199ef001a07855c17d3ae5"
+      "sourceSha": "2e59fa17a6ca05a187d2d18640ab4648092f46c1"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -6921,6 +6921,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены №5.72–5.74 второй части, печатная страница 17. Проверены 12 подпунктов с единицами времени, пять отражений и два совпадения циферблатов, условия повтора, мобильные ширины и две роли."
+    },
+    {
+      "previousBaseSha": "1c44a671fb0e9f3445199ef001a07855c17d3ae5",
+      "sourceBaseSha": "2e59fa17a6ca05a187d2d18640ab4648092f46c1",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены №5.75–5.77 второй части, печатная страница 17. Ученик управляет растворами, отмечает общие точки и может выбрать любой верный дробный радиус. Проверены 320/375 и обе роли после перезагрузки."
     }
   ],
   "coverageUpdates": [
