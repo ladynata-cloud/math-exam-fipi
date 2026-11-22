@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "5df4ad50c458e7aaee14628f56ccaa01fef2b5d05b61c30213b1ee7cd6f34d37",
-      "afterSha256": "bcb255c446bebe4217c54d5dce2805dd62bae14fbf2ab9167e6bc7545e8d2d53",
+      "beforeSha256": "771912058c6a960f78e3f575e728053a07b321bd1f1f9d545f4135ff542a76cb",
+      "afterSha256": "f06c83e1aa9a8a48db0b547b6f12e3f3748eef6a18d8fe6f68e3b485d219870a",
       "placement": "before-head-close",
-      "sourceSha": "66ad85d3a2ce81a8b7c37d05c11464c4a0ef1022"
+      "sourceSha": "d742157a53165477d4dc4a70a8cb072df704ff4a"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7502,6 +7502,33 @@
       "boundary": "Обновлена проверенная версия общего обработчика чисел для записи с пробелами между классами."
     },
     {
+      "previousBaseSha": "3ed6b2ad43518aa69b758133e5c8e575ad669826",
+      "sourceBaseSha": "c01cc9345bb8bad227dc7368e2a9e14125f49d12",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, том 1, §6, с. 35: непрерывный ряд по №1.174. Полная таблица шести расстояний в двух направлениях и шесть исходных равенств и неравенств. Самостоятельное исправление, повторы на новых данных, 491908 математических проверок, 20 мобильных ответов, восстановленные шаги и модель у двух синтетических участников. Публикация отдельно."
+    },
+    {
+      "previousBaseSha": "c01cc9345bb8bad227dc7368e2a9e14125f49d12",
+      "sourceBaseSha": "f82d5e98c7f4ef10ff1510fea6a47c5a89198b4c",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, том 1, §6, с. 35: непрерывно по №1.176. Пять отрезков рисунка 1.37 и виртуальный циркуль, включение отрезков и независимое варьирование соседних частей. На проверенном источнике 496346 математических и прикладных проверок, 16 мобильных ответов и отдельная комната учителя/ученика с обоими направлениями, сменой управления и восстановлением после перезагрузок. Публикация отдельно."
+    },
+    {
+      "previousBaseSha": "66ad85d3a2ce81a8b7c37d05c11464c4a0ef1022",
+      "sourceBaseSha": "d742157a53165477d4dc4a70a8cb072df704ff4a",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены входы в оба тома Виленкина: упражнения №1–176 и №1–95 открываются в общем школьном маршруте вместе с проверенными книгами Мастерской."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
@@ -7640,6 +7667,15 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "bc4ba686d04f58301730aadbf4ac72502fbe045b",
+      "sourceBaseSha": "5748839a223539a18321ced0bc885b102623b465",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "В части 2 сверены №5.94 и №5.95 на печатной с. 19: путь до острова, подстановка двух пар значений и встречное движение. Повтор на новых данных, два размера телефона и обе роли проверены."
     }
   ],
   "coverageUpdates": [
