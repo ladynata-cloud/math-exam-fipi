@@ -42,7 +42,7 @@ async function waitForHealth(origin, child, diagnostics) {
 }
 async function session(browser, origin, backend, tag, failures) {
  const context=await browser.newContext({viewport:{width:1280,height:900}}), values=PERSONAL_KEYS.map(k=>'private:'+tag+':'+k);
- await context.route('**/*',r=>[origin,backend].includes(new URL(r.request().url()).origin)?r.continue():r.abort());
+ await context.route(url=>![origin,backend].includes(url.origin),request=>request.abort());
  await context.addInitScript(({origin,keys,values})=>{
   if(location.origin!==origin)return;
   if(window===top){if(!localStorage.getItem('privacy-test')){for(const [i,key] of keys.entries())localStorage.setItem(key,values[i]);localStorage.setItem('privacy-test','1');}return;}
@@ -53,7 +53,7 @@ async function session(browser, origin, backend, tag, failures) {
    Storage.prototype[method]=function(key,...args){if(key.startsWith('mathexam.peterson6.')){window.__privateAccess++;throw Error('Private storage accessed');}return original.call(this,key,...args);};
   }
  },{origin,keys:PERSONAL_KEYS,values});
- const page=await context.newPage();page.setDefaultTimeout(12000);
+ const page=await context.newPage();page.setDefaultTimeout(12000);page.setDefaultNavigationTimeout(30000);
  page.on('pageerror',e=>failures.push(tag+': '+e.message));return {page,context,values};
 }
 async function frameFor(page,wrapper){
@@ -302,6 +302,8 @@ async function run(browser, origin, backend, failures, published) {
       a=await reloadFrame(teacher,wrapper);await same(b,a,'algorithm survives teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'algorithm survives pupil reload');
       await a.locator('#number-input').fill('32');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №32');for(const [i,v] of ['0,5','0,55','0,6'].entries())await a.locator('[data-sequence-x="'+i+'"]').fill(v);await a.locator('[data-sequence-den]').selectOption('100');await a.locator('[data-sequence-use]').click();await a.locator('#answer-form button').click();const tooWide=await same(a,b,'last example outside range');assert.match(tooWide.message.text,/вышло за 0,6/);
       await transferTo(teacher,student,'student');await b.locator('[data-sequence-count]').selectOption('10000');await b.locator('[data-sequence-den]').selectOption('100000');await b.locator('[data-sequence-use]').click();await b.locator('#answer-form button').click();const dense=await same(b,a,'ten thousand distinct points fit after a smaller step');assert.equal(dense.work.intervalCount,10000);assert.equal(dense.work.intervalDen,100000);assert.match(await a.locator('[data-sequence-tape]').textContent(),/0,59999/);assert(dense.work.submitted&&!dense.work.correct);a=await reloadFrame(teacher,wrapper);await same(b,a,'sequence after teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'sequence after pupil reload');
+      await a.locator('#number-input').fill('33');await a.locator('#number-form button').click();await a.waitForFunction(()=>document.querySelector('h1')?.textContent==='Задание №33');await a.locator('.part-picker a[href$="033-1-6"]').click();await a.waitForFunction(()=>document.querySelector('.part-picker a[aria-current="page"]')?.getAttribute('href')?.endsWith('033-1-6'));await a.locator('[data-round-low]').fill('149,502');await a.locator('[data-round-high]').fill('149,504');await a.locator('[data-round-use]').click();await a.locator('#answer-form button').click();const wide=await same(a,b,'nonadjacent bounds around source value');assert.match(wide.message.text,/расстояние между ними/);
+      await transferTo(teacher,student,'student');await b.locator('[data-round-high]').fill('149,503');await b.locator('[data-round-use]').click();await b.locator('#answer-form button').click();const tight=await same(b,a,'pupil constructs both neighbouring thousandths');assert.equal(tight.work.precisionHigh,'149,503');assert(tight.work.submitted&&!tight.work.correct);a=await reloadFrame(teacher,wrapper);await same(b,a,'rounding interval after teacher reload');await transferTo(teacher,student,'teacher');b=await reloadFrame(student,wrapper);await same(a,b,'rounding interval after pupil reload');
 
 
 

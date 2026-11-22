@@ -428,14 +428,29 @@
     return {...task,id:'analog-'+part.id+'-'+attempt,family:'interval-'+part.id,match:'skill'};
   }
 
+  function roundPractice(part,attempt){
+    const index=Number(part.id.split('-')[2])-1,unit=['100','10','1','0.1','0.01','0.001'][index],names=['сотен','десятков','единиц','десятых','сотых','тысячных'],k=seed(part.id)%43+attempt,M=E.M;
+    const lower=M.operation('multiply',12+k%27,unit),upper=M.operation('add',lower,unit),digit=1+k%9,target=M.operation('add',lower,M.operation('multiply',unit,digit+'/10')),show=M.decimal;
+    let task;
+    if(part.id.startsWith('033-1-')){
+      const pair=(a,b)=>show(a)+' < t < '+show(b),correct=pair(lower,upper),choices=[correct,pair(M.operation('subtract',lower,unit),upper),pair(lower,M.operation('add',upper,unit))],shift=k%3,hint='Границы должны быть и по разные стороны числа, и соседями на шкале заданного шага.';
+      task={...choice('Для t = '+show(target)+' выбери ближайшие приближения с недостатком и с избытком до '+names[index]+'.',choices.slice(shift).concat(choices.slice(0,shift)),correct,hint),mistake:hint};
+    }else{
+      const hint='Сравни отброшенную часть с половиной шага. При равенстве половине округляй положительное число вверх.';
+      task={...numerical('Округли '+show(target)+' до '+names[index]+'.',show(digit>=5?upper:lower),'Найди ближайшую круглую отметку нужного разряда.',hint),mistake:hint};
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'bounds-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>32)return createLegacy(number,part,attempt);
+    if(number<7||number>33)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number===33)return roundPractice(part,attempt);
     if(number>=31)return intervalPractice(number,part,attempt);
     if(number===30)return flowPractice(part,attempt);
     if(number===29)return divisibilityPractice(part,attempt);
@@ -475,7 +490,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=32&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=33&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -497,7 +512,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=32&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=33&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

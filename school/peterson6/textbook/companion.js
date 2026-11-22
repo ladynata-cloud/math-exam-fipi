@@ -464,6 +464,47 @@
     return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
   }
 
+  const precisionUnits=[
+    ['сотен','100'],['десятков','10'],['единиц','1'],['десятых','0.1'],['сотых','0.01'],['тысячных','0.001']
+  ];
+  function roundingBounds(part){
+    const i=Number(part.id.split('-')[2])-1,[name,unit]=precisionUnits[i],M=root.PetersonBook.M,target='149.5027',r=M.operation('divide',target,unit),q=Math.floor(r.n/r.d);
+    return {name,unit,lower:M.operation('multiply',q,unit),upper:M.operation('multiply',q+1,unit),target};
+  }
+  function roundingQuestion(part){
+    const info=roundingBounds(part);
+    return part.id.startsWith('033-1-')?'Число a = 149,5027. Укажи приближённые значения с недостатком и с избытком с точностью до '+info.name+'. Запиши двойное неравенство, поставив a между ближайшими соседними значениями.':'В строке с точностью до '+info.name+' выбери ту из границ, до которой округляется a = 149,5027. Запиши число.';
+  }
+  function roundingFigure(part,work,interactive){
+    const s=roundingBounds(part),M=root.PetersonBook.M,position=M.operation('divide',M.operation('subtract',s.target,s.lower),s.unit);
+    const x=27+214*position.n/position.d,mark=work.precisionMark||'',labels=['Левая граница','Правая граница'];
+    const input=part.id.startsWith('033-1-')?'<div style="display:grid;gap:.3em"><label>Левая граница <input data-round-low style="display:block;box-sizing:border-box;max-width:100%;width:100%" inputmode="decimal" maxlength="50" value="'+U.esc(work.precisionLow||'')+'"></label><label>Правая граница <input data-round-high style="display:block;box-sizing:border-box;max-width:100%;width:100%" inputmode="decimal" maxlength="50" value="'+U.esc(work.precisionHigh||'')+'"></label></div>':'<label>К какой границе ближе a? <select data-round-mark><option value="">Выбери</option>'+labels.map((v,i)=>'<option value="'+(i?'right':'left')+'"'+(mark===(i?'right':'left')?' selected':'')+'>'+v+'</option>').join('')+'</select></label><label>Моё значение выбранной границы <input data-round-single inputmode="decimal" maxlength="50" style="display:block;box-sizing:border-box;max-width:100%;width:100%" value="'+U.esc(work.precisionRounded||'')+'"></label>';
+    return '<figure data-round-host style="margin:.5em 0"><figcaption>Шкала с шагом '+M.decimal(s.unit)+'</figcaption><svg viewBox="0 0 268 85" role="img" aria-label="Один шаг нужного разряда. Центральная штриховая отметка обозначает половину шага, точка a показывает положение внутри." style="width:100%;max-width:440px;display:block"><path d="M27 44 H241 M27 34 V54 M241 34 V54" fill="none" stroke="#285b47" stroke-width="2"/><path d="M134 32 V56" fill="none" stroke="#65766b" stroke-dasharray="3 2"/><circle cx="'+x+'" cy="44" r="4" fill="#943e16"/><text x="'+x+'" y="27" text-anchor="middle">a</text><text x="27" y="74" text-anchor="middle" font-size="12">левая</text><text x="241" y="74" text-anchor="middle" font-size="12">правая</text></svg><p>Расстояние между соседними отметками — '+M.decimal(s.unit)+'. Сначала установи, какие значения соответствуют отметкам; затем сравни расстояния от a.</p>'+(interactive?input+'<button type="button" class="secondary" data-round-use>Перенести в ответ</button>':'')+'</figure>';
+  }
+  function mountRounding(main,part,work,save){
+    const old=main.querySelector('[data-round-host]');if(!old)return;old.outerHTML=roundingFigure(part,work,true);
+    const host=main.querySelector('[data-round-host]'),use=host.querySelector('[data-round-use]'),mark=host.querySelector('[data-round-mark]');
+    const enabled=()=>{use.disabled=mark?(!work.precisionMark||!work.precisionRounded?.trim()):!work.precisionLow?.trim()||!work.precisionHigh?.trim();};
+    if(mark){mark.onchange=()=>{work.precisionMark=mark.value;enabled();save();};const value=host.querySelector('[data-round-single]');value.oninput=()=>{work.precisionRounded=value.value.slice(0,50);enabled();save();};}
+    else for(const [selector,key] of [['[data-round-low]','precisionLow'],['[data-round-high]','precisionHigh']]){const f=host.querySelector(selector);f.oninput=()=>{work[key]=f.value.slice(0,50);enabled();save();};}
+    enabled();use.onclick=()=>{const field=main.querySelector('#answer');field.value=mark?work.precisionRounded:work.precisionLow+' < a < '+work.precisionHigh;field.dispatchEvent(new Event('input',{bubbles:true}));field.focus();};
+  }
+  function roundingResponse(number,part,input,correct){
+    if(number!==33)return null;
+    const s=roundingBounds(part),M=root.PetersonBook.M;
+    if(part.id.startsWith('033-2-')){
+      if(correct)return null;
+      if(M.equal(input,s.lower)||M.equal(input,s.upper))return {ok:false,text:'Это соседняя отметка. Посмотри, по какую сторону середины лежит a, или проверь цифру следующего разряда.'};
+      return {ok:false,text:'При округлении до '+s.name+' результат должен совпадать с одной из двух соседних отметок шага '+M.decimal(s.unit)+'.'};
+    }
+    const pair=input.match(/^\s*([+-]?[\d.,]+)\s*<\s*[aа]\s*<\s*([+-]?[\d.,]+)\s*\.?\s*$/i);if(!pair)return null;
+    const lo=M.parse(pair[1]),hi=M.parse(pair[2]);if(!lo||!hi)return null;
+    if(M.operation('subtract',s.target,lo).n<=0||M.operation('subtract',hi,s.target).n<=0)return {ok:false,text:'Число a должно быть строго между левой и правой границами. Проверь направление обоих сравнений.'};
+    if(!M.equal(M.operation('subtract',hi,lo),s.unit))return {ok:false,text:'Число a между отметками, но расстояние между ними должно равняться '+M.decimal(s.unit)+'. Найди соседние отметки нужного разряда.'};
+    if(!M.equal(lo,s.lower)||!M.equal(hi,s.upper))return {ok:false,text:'Длина шага выбрана правильно. Начни шкалу с нуля: обе границы должны быть кратны шагу '+M.decimal(s.unit)+'.'};
+    return {ok:true,text:'Обе ближайшие границы найдены: первая даёт приближение с недостатком, вторая — с избытком. Запись сохранена для проверки.'};
+  }
+
   const integerIntervals={
     '031-a':[15,18,true,false],'031-b':[3.2,7.6,false,true],'031-v':[1.7,2,true,true],'031-g':[5,5.6,false,false]
   };
@@ -757,6 +798,7 @@
   }
 
   function openingQuestion(number,part) {
+    if(number===33)return roundingQuestion(part);
     if(number===31)return 'Прочитай неравенство '+part.prompt+' и перечисли все натуральные значения x, удовлетворяющие обеим границам. Если их нет, запиши пустое множество.';
     if(number===32)return 'В промежутке 0,5 ≤ x ≤ 0,6 найди три разных решения. Придумай способ получить 1000 различных решений; проверь, можно ли получить 10 000. Объясни, почему границы не нарушаются.';
     if(number===30)return flowQuestion(part);
@@ -817,6 +859,7 @@
     if(item.number===30)drawing=flowFigure(part,{},false);
     if(item.number===31)drawing=integerView(part,{},false);
     if(item.number===32)drawing=intervalSequence({},false);
+    if(item.number===33)drawing=roundingFigure(part,{},false);
     if(item.number===25)drawing=puzzleFigure(part,{},false);
     if((item.number>=19&&item.number<=21)||(item.number>=26&&item.number<=29))drawing=logicConstruction(item.number,part,false)+(item.number===29?numberLab(part,{},false):'');
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
@@ -845,5 +888,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse};
 })(globalThis);

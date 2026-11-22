@@ -689,3 +689,23 @@ test('integer endpoints, the empty set and dense decimal intervals use the selec
  assert.match(element(s,'[data-sequence-tape]').textContent,/0,59999/);assert(!bookWork(s,p.id).correct);const restored=await surface(t,BOOK+'#n/32/'+p.id,storage(s));assert.equal(element(restored,'[data-sequence-den]').value,'100000');assert.equal(element(restored,'[data-sequence-x="1"]').value,'0,55');
  for(let j=0;j<37;j++){const task=s.w.PetersonAnalogues.create(32,p,j),nums=task.prompt.match(/\d+(?:,\d+)?/g).map(v=>Number(v.replace(',','.')));assert(Math.abs(nums[1]+(nums[0]-1)*nums[2]/nums[3]-Number(task.answer.replace(',','.')))<1e-9);}
 });
+test('six decimal scales separate enclosing bounds from rounding and keep the typed numeric result independent of the chosen side',async t=>{
+ const s=await surface(t,BOOK+'#n/33/033-1-1'),row=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises[32];
+ const scales=[100,10,1,.1,.01,.001],lo=[100,140,149,149.5,149.50,149.502],hi=[200,150,150,149.6,149.51,149.503],rounded=[100,150,150,149.5,149.5,149.503];
+ const use=()=>{click(s,'[data-round-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};
+ for(const [i,p] of row.parts.entries()){
+  const j=i%6;await route(s,'#n/33/'+p.id);assert.match(sourcePresent(s).textContent,/149,5027/);
+  if(i<6){
+   input(s,'[data-round-low]',String(lo[j]));input(s,'[data-round-high]',String(Math.round((hi[j]+scales[j])*1e6)/1e6));assert.match(use(),/расстояние между ними/);
+   input(s,'[data-round-high]',String(hi[j]));assert.match(use(),/Обе ближайшие границы/);assert(!bookWork(s,p.id).correct);
+  }else{
+   const mark=element(s,'[data-round-mark]');mark.value=lo[j]===rounded[j]?'left':'right';mark.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert(element(s,'[data-round-use]').disabled);
+   input(s,'[data-round-single]',String(rounded[j]===lo[j]?hi[j]:lo[j]));assert.match(use(),/соседняя отметка/);input(s,'[data-round-single]',String(rounded[j]));use();const w=bookWork(s,p.id);assert(w.correct&&!w.independent&&!w.assisted);
+  }
+  for(let n=0;n<38;n++){const task=s.w.PetersonAnalogues.create(33,p,n),target=Number(task.prompt.match(/(?:t = |Округли )([\d,]+)/)[1].replace(',','.')),u=scales[j],ref=Math.floor(target/u+1e-7)*u;
+   if(i<6){const limits=task.answer.split(' < t < ').map(x=>Number(x.replace(',','.')));assert(Math.abs(limits[0]-ref)<1e-8&&Math.abs(limits[1]-ref-u)<1e-8);}
+   else assert(Math.abs(Number(task.answer.replace(',','.'))-Math.floor(target/u+.5+1e-7)*u)<1e-8);
+  }
+ }
+ const restored=await surface(t,BOOK+'#n/33/033-2-6',storage(s));assert.equal(element(restored,'[data-round-mark]').value,'right');assert.equal(element(restored,'[data-round-single]').value,'149.503');
+});

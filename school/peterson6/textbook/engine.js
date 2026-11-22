@@ -55,6 +55,10 @@ function sanitize(part,input){
  }
  if((part.id==='025-1'||part.id==='025-2')&&typeof input.puzzleDigits==='string'&&input.puzzleDigits.length===(part.id==='025-1'?6:7)&&/^[0-9-]+$/.test(input.puzzleDigits))clean.puzzleDigits=input.puzzleDigits;
  if(part.id==='022-slovo'&&typeof input.cipherLetters==='string'&&/^[РУНОЕДГБИЖАКТЯС]{1,15}$/.test(input.cipherLetters)&&new Set(input.cipherLetters).size===input.cipherLetters.length)clean.cipherLetters=input.cipherLetters;
+ if(part.id.startsWith('033-')){
+  for(const key of ['precisionLow','precisionHigh','precisionRounded'])if(typeof input[key]==='string'&&input[key])clean[key]=cut(input[key],50);
+  if(['left','right'].includes(input.precisionMark))clean.precisionMark=input.precisionMark;
+ }
  if(part.id.startsWith('031-')){
   const bounds={'031-a':[14,19],'031-b':[2,9],'031-v':[1,3],'031-g':[4,7]}[part.id];
   if(bounds&&Array.isArray(input.integerSet)&&input.integerSet.length<=10)clean.integerSet=[...new Set(input.integerSet.filter(n=>Number.isInteger(n)&&n>=bounds[0]&&n<=bounds[1]))].sort((a,b)=>a-b);
