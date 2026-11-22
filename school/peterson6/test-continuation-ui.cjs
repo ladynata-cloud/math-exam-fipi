@@ -1834,3 +1834,12 @@ test('all four source equations, ruler estimates and both percentage baselines k
    f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(other[i]),[i,f.q('#model').textContent]);}
  }finally{f.close();}
 });
+
+test('repeat both readings for five quantities, compare solution methods, check forbidden denominators and both equivalences',()=>{
+ const f=fixture(null,null,true);try{
+  const first=['(3; 15)','(3; 15)','(3; 2)','(3; 2)','(3; 2)','1296 руб.','15 дней.','0,4.','10/3.','вычитанием 2','ad = bc'];
+  const next=['(6; 30)','(6; 30)','(4; 1,5)','(4; 1,5)','(4; 1,5)','972 руб.','20 дней.','1.','4.','вычитанием 2','ad = bc'];
+  first.forEach((v,i)=>{f.nav('#lesson/p21/'+(61+i));f.click('[data-lesson-help="model"] > summary');const [data,stage]=[...f.d.querySelectorAll('#model select')].map(el=>'#'+el.id);f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(v));if(i<5)assert.equal(f.d.querySelectorAll('#model [data-proportion-reading]').length,2);
+   const old=f.q('#model').textContent;f.event(data,'1','change');assert.equal(f.q(stage).value,'0');f.event(stage,'2','change');assert(f.q('#model .pm-result').textContent.includes(next[i]));assert.notEqual(f.q('#model').textContent,old);});
+ }finally{f.close();}
+});
