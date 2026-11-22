@@ -195,6 +195,7 @@
       if(parts.length!==target.answer.length||parts.some(part=>root.Vilenkin5PrintedDigits.natural(part)===null&&M.parse(part)?.d!==1))return 'Введи '+target.answer.length+' целых чисел через точку с запятой в порядке вопроса. Пока это черновик.';
     }
     if(target.answerFormat==='v5-unit-fraction'&&!M.parse(root.Vilenkin5PartsOfUnits.normalized(value)))return 'Запиши число. Для доли подходят десятичная, обыкновенная и смешанная дроби. Пока это черновик.';
+    if(root.Vilenkin5ArithmeticReview35?.custom(target))return root.Vilenkin5ArithmeticReview35.inputIssue(value,target);
     if(root.Vilenkin5SegmentComparison?.custom(target))return root.Vilenkin5SegmentComparison.inputIssue(value,target);
     if(root.Vilenkin5RankingTruth?.custom(target))return root.Vilenkin5RankingTruth.inputIssue(value,target);
     if(root.Vilenkin5InequalityChains?.custom(target))return root.Vilenkin5InequalityChains.inputIssue(value,target);
