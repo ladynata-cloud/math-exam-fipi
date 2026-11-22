@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "9413c7367498a4b70470653620cb7a7002001f490464d25a9e8877bb9d266e1a",
-      "afterSha256": "7ddd97a8b2d2f9feb4b244402ca3cede44a1d616836c7a7c239d18c9040f6178",
+      "beforeSha256": "cc25b9742d60ff5d9f3445cc419692328047c583a5141a1fb4b91417a1fb3f13",
+      "afterSha256": "ab508c043f60609ea7af182f500c72e83667b5b09a228275934db18f554fc252",
       "placement": "before-head-close",
-      "sourceSha": "e982acee8256c74228d42a4122a1fe5eb080e796"
+      "sourceSha": "e1afecea1437bf1a28c7595cc4eb7eb17a093059"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7029,6 +7029,15 @@
         "school/index.html"
       ],
       "boundary": "На печатной с. 22 в обоих заданиях ребёнок выставляет метки на отрезке, проверяет шаг по клеткам и объясняет совпадение дробей. Проверены записи, клавиатура, экран телефона, двусторонняя работа и восстановление."
+    },
+    {
+      "previousBaseSha": "e982acee8256c74228d42a4122a1fe5eb080e796",
+      "sourceBaseSha": "e1afecea1437bf1a28c7595cc4eb7eb17a093059",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Проверены обе серии точек №5.101 и все шесть отметок с выбором крайних в №5.102. Телефон, черновик пяти ещё не поставленных точек, подсказка на конкретном числителе и возвращение обеих ролей."
     }
   ],
   "coverageUpdates": [
