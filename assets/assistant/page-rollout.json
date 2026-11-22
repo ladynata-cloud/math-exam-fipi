@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "069dc2401f9cd53dcda316e0e125a9aae1c93c75f5e10d36417727c8c429f30c",
-      "afterSha256": "3eec9d99538605575f926f092797fdc65e204d5200c6dc98e2e18a7ac96310f9",
+      "beforeSha256": "593befda50b43f5be6c7fe246ae904adae31e3525ba8f84ba6b593efc694cf51",
+      "afterSha256": "192294d5e2bd2f47833c8d8a168ef455b59ba943ac547c009045f4160a46e5eb",
       "placement": "before-head-close",
-      "sourceSha": "6aa5da06a0e688901ba46d7ecfd3852b14d6aff2"
+      "sourceSha": "28ca3b741f84f1d05cfc2d6a0e4abaf97478df8b"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7611,6 +7611,15 @@
       "boundary": "Проверен вход в печатные №31–48 с интервальными моделями, округлением и разложениями чисел. Уточнённый банк первой части загружается по его точной версии."
     },
     {
+      "previousBaseSha": "6aa5da06a0e688901ba46d7ecfd3852b14d6aff2",
+      "sourceBaseSha": "28ca3b741f84f1d05cfc2d6a0e4abaf97478df8b",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Два тома Виленкина содержат упражнения №1–176 и №1–111, включая проверку крайних точек, переноса дробных отметок и сохранения ученического чертежа."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
@@ -7875,6 +7884,24 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "78401295678997601028193368841bdef712ef94",
+      "sourceBaseSha": "6f6028338feea0907c1aee63a008a661c774040f",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены пять подпунктов №5.110 на с. 23 и доли их площадей по координатам. Выбор целого и части, ошибка и собственное исправление восстановлены у двух участников."
+    },
+    {
+      "previousBaseSha": "6f6028338feea0907c1aee63a008a661c774040f",
+      "sourceBaseSha": "c072826a7ed7ed08a5d24a109aeca70276e93c2b",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены исходная фигура и условие №5.111, с. 23. Для всех пар граней независимо рассчитана длина пути через пять точек сгиба. Выбор граней и исправленный ответ выдержали передачу управления и перезагрузку обеих сторон."
     }
   ],
   "coverageUpdates": [
