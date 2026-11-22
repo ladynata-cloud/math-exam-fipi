@@ -504,6 +504,69 @@
     function draw(){host.outerHTML=primeExplore(number,part,work,true);host=main.querySelector('[data-proof-host]');const f=host.querySelector('select');f.onchange=()=>{if(f.value==='')delete work.proofProbe;else work.proofProbe=Number(f.value);save();draw();host.querySelector('select').focus({preventScroll:true});};}draw();
   }
 
+  const fractionAssertions=[
+    ['Любая неправильная дробь строго больше единицы.','Общее','Ложно: 4/4 = 1.','Истинно: числитель всегда строго больше знаменателя.','Ложно: 1/2 меньше единицы.','Проверь случай равных числителя и знаменателя. Правильная дробь в исходную группу не входит.'],
+    ['Сумма двух неправильных дробей может оказаться правильной.','О существовании','Ложно: каждое слагаемое не меньше 1, сумма не меньше 2.','Истинно: две дроби всегда дают правильную дробь.','Ложно только для дробей с одинаковыми знаменателями.','Для любого выбора оцени оба слагаемых снизу единицей.'],
+    ['Найдётся дробь с числителем 2, которая больше 2/7.','О существовании','Истинно: 2/3 больше 2/7.','Ложно: у обеих один числитель.','Истинно: 3/7 больше 2/7.','Числитель свидетеля должен остаться равным 2. При одном числителе меньший положительный знаменатель даёт большую дробь.'],
+    ['Существуют две обыкновенные дроби, которые нельзя привести к общему знаменателю.','О существовании','Ложно: произведение двух положительных знаменателей — уже общий знаменатель.','Истинно, если знаменатели взаимно просты.','Ложно только для равных знаменателей.','Даже без общих множителей у знаменателей есть общее кратное — их произведение.'],
+    ['Не у всякой неправильной дроби можно выделить целую часть.','О существовании','Ложно: деление числителя на знаменатель с остатком даёт целую часть, остаток бывает нулём.','Истинно: при нулевом остатке целой части нет.','Истинно: у 1/2 нет положительной целой части.','Для неправильной дроби частное от целочисленного деления не меньше 1. Если делится нацело, число целиком и есть результат.'],
+    ['Частное двух обыкновенных дробей бывает натуральным числом.','О существовании','Истинно: (1/2) : (1/4) = 2.','Ложно: частное дробей всегда меньше единицы.','Истинно: (1/2) : (1/4) = 1/8.','Проверь частное обратным умножением: делитель, умноженный на частное, должен дать делимое.'],
+    ['У конкретной дроби 7/16 есть конечная десятичная запись.','О конкретном объекте','Истинно: 7/16 = 0,4375.','Ложно: знаменатель не равен 10.','Истинно только для дробей со знаменателем ровно 10.','Умножь 16 на 625 и доведи знаменатель до 10 000.'],
+    ['Дробь со знаменателем 2ⁿ · 5ᵐ, где n и m — натуральные, имеет конечную десятичную запись.','Общее','Истинно: дополняем меньший показатель до большего, получая степень десяти.','Истинно лишь при n = m.','Ложно, когда показатель двойки больше показателя пятёрки.','Возьми k = max(n, m). Домножь знаменатель и числитель на 2 в степени k − n и 5 в степени k − m.']
+  ];
+  const proofPairs=['Доказать A','Доказать ¬A','Опровергнуть A','Опровергнуть ¬A'];
+  function fractionClaim(number,part){
+    if(number===62)return 'Есть высказывание A. Сравни четыре поручения: 1 — доказать A, 2 — доказать ¬A, 3 — опровергнуть A, 4 — опровергнуть ¬A. Объедини поручения в пары с одинаковой математической целью и объясни свой выбор.';
+    const [claim,scope,proof,w1,w2,hint]=fractionAssertions[Number(part.id.split('-')[1])-1],scopes=['Общее','О существовании','О конкретном объекте'];
+    return {prompt:'Определи вид и истинность утверждения: «'+claim+'» Для ложной фразы сформулируй её точное отрицание. Обыкновенные дроби здесь положительны, «десятичная запись» в пунктах 7 и 8 означает конечную запись.',
+      leftTitle:'Что утверждается?',left:scopes,li:scopes.indexOf(scope),rightTitle:'Истинность и основание',right:[proof,w1,w2],ri:0,hint,reference:hint,extra:'Моё отрицание или обоснование истинности'};
+  }
+  function fractionDemo(part,work,interactive){
+    const j=Number(part.id.split('-')[1])-1,defaults=[[4,4,1,1],[4,3,5,4],[2,3,2,7],[1,4,2,5],[7,3,1,1],[1,2,1,4],[7,16,1,1],[1,1,2,3]][j],range=j===7?[[1,2,3,4],[1,2,3,4]]:null,fields=j===7?['Показатель n у двойки','Показатель m у пятёрки']:j===6?[]:j===0||j===4?['Первый числитель','Первый знаменатель']:j===2?['Знаменатель дроби с числителем 2']:['Первый числитель','Первый знаменатель','Второй числитель','Второй знаменатель'];
+    const initial=j===7?[defaults[2],defaults[3]]:j===2?[defaults[1]]:defaults.slice(0,fields.length);
+    const vals=work.claimValues||initial,choices=Array.from({length:20},(_,i)=>i+1),controls=fields.map((label,i)=>'<label style="display:block">'+label+' <select data-claim-field="'+i+'">'+(range?range[i]:choices).map(v=>'<option value="'+v+'"'+(vals[i]===v?' selected':'')+'>'+v+'</option>').join('')+'</select></label>').join('');
+    let output;
+    if(j===7){const [n,m]=vals,k=Math.max(n,m),d=2**n*5**m,factor=2**(k-n)*5**(k-m);output='Знаменатель '+d+' = 2^'+n+' · 5^'+m+'. Домножение на '+factor+' даёт '+(d*factor)+' = 10^'+k+'.';}
+    else if(j===6)output='7/16 = (7 · 625)/(16 · 625) = 4375/10000 = 0,4375.';
+    else if(j===2){const d=vals[0];output='2/'+d+' '+(d<7?'>':d>7?'<':'=')+' 2/7.';}
+    else{const [a,b,c,d]=vals,one=a+'/'+b,other=c+'/'+d,q=Math.floor(a/b),r=a%b;
+      if(j===0)output=one+' '+(a<b?'<':a>b?'>':'=')+' 1. Дробь '+(a>=b?'неправильная.':'правильная, вне исходного условия.');
+      if(j===1)output=one+' + '+other+' = '+(a*d+b*c)+'/'+(b*d)+'. '+(a>=b&&c>=d?'Оба слагаемых неправильные.':'Хотя бы одно слагаемое правильное: исходное условие не выполнено.');
+      if(j===3)output='На общем знаменателе '+b*d+': '+one+' = '+a*d+'/'+b*d+' и '+other+' = '+b*c+'/'+b*d+'.';
+      if(j===4)output=one+': целая часть '+q+', остаток '+r+(r?', дробная часть '+r+'/'+b:'. Получилось целое число')+'. '+(a>=b?'Дробь неправильная.':'Эта дробь правильная.');
+      if(j===5)output=one+' : '+other+' = '+a*d+'/'+(b*c)+'. '+(a*d%(b*c)===0?'Получилось натуральное число '+a*d/(b*c)+'.':'Получилась нецелая дробь.');
+    }
+    const show=work.claimShown===true,button='<button class="secondary" type="button" data-claim-check>Проверить выбранный случай</button>';
+    return '<section data-claim-host><h3>Проверка одной дроби или пары</h3>'+(interactive?controls+button:'')+'<p data-claim-result aria-live="polite">'+(show?output:'Проверь отдельный случай. Для общего утверждения отдельно объясни, почему правило действует для всех допустимых чисел.')+'</p></section>';
+  }
+  function mountClaim(main,part,work,save){
+    let host=main.querySelector('[data-claim-host]');if(!host)return;
+    function draw(){host.outerHTML=fractionDemo(part,work,true);host=main.querySelector('[data-claim-host]');const els=[...host.querySelectorAll('[data-claim-field]')];
+      for(const f of els)f.onchange=()=>{work.claimValues=els.map(e=>Number(e.value));delete work.claimShown;save();draw();host.querySelector('[data-claim-field="'+f.dataset.claimField+'"]').focus({preventScroll:true});};
+      host.querySelector('[data-claim-check]').onclick=()=>{work.claimShown=true;root.PetersonBook.assist(work);save();draw();host.querySelector('[data-claim-check]').focus({preventScroll:true});};
+    }draw();
+  }
+  function pairProofView(work,interactive){
+    const value=work.pairTruth,links=work.proofLinks||[],decided=typeof value==='boolean';
+    const rows=proofPairs.map((name,i)=>'<li>'+name+(decided?' — цель '+((i===0||i===3)===value?'подтверждена':'не подтверждена'):'')+'</li>').join('');
+    const choices=proofPairs.map((_,i)=>'<button data-proof-pair="'+i+'" class="secondary" type="button" aria-pressed="'+links.includes(i)+'">'+(i+1)+'</button>').join(' ');
+    return '<section data-pairproof-host><h3>Переключи истинность A и сравни цели</h3>'+(interactive?'<label>A <select data-pair-truth><option value="">Выбери</option><option value="true"'+(value===true?' selected':'')+'>истинно</option><option value="false"'+(value===false?' selected':'')+'>ложно</option></select></label>':'')+'<ol data-pair-status>'+rows+'</ol>'+(interactive?'<p>Выбери последовательно два номера для одной пары и затем два для второй. Повторный выбор убирает номер.</p>'+choices+'<p data-proof-links>'+links.map((v,i)=>(i===2?' | ':'')+(v+1)).join(' ')+'</p><button class="secondary" type="button" data-pair-use>Перенести пары</button>':'')+'</section>';
+  }
+  function mountProofPairs(main,work,save){
+    let host=main.querySelector('[data-pairproof-host]');if(!host)return;
+    function draw(){host.outerHTML=pairProofView(work,true);host=main.querySelector('[data-pairproof-host]');const sel=host.querySelector('[data-pair-truth]'),links=work.proofLinks||[];
+      sel.onchange=()=>{if(sel.value==='')delete work.pairTruth;else work.pairTruth=sel.value==='true';save();draw();host.querySelector('[data-pair-truth]').focus({preventScroll:true});};
+      for(const b of host.querySelectorAll('[data-proof-pair]'))b.onclick=()=>{const i=Number(b.dataset.proofPair);work.proofLinks=links.includes(i)?links.filter(x=>x!==i):[...links,i];save();draw();host.querySelector('[data-proof-pair="'+i+'"]').focus({preventScroll:true});};
+      const use=host.querySelector('[data-pair-use]');use.disabled=links.length!==4;use.onclick=()=>{const f=main.querySelector('#answer');f.value=(links[0]+1)+' и '+(links[1]+1)+'; '+(links[2]+1)+' и '+(links[3]+1);f.dispatchEvent(new Event('input',{bubbles:true}));f.focus();};
+    }draw();
+  }
+  function proofPairsResponse(number,input){
+    if(number!==62)return null;const matched=input.trim().match(/^([1-4])\s*(?:и|,)\s*([1-4])\s*;\s*([1-4])\s*(?:и|,)\s*([1-4])\.?$/i);if(!matched)return null;
+    const [a,b,c,d]=matched.slice(1).map(Number);if(new Set([a,b,c,d]).size!==4)return {ok:false,text:'Используй каждое из четырёх поручений ровно один раз.'};
+    if(a+b!==5||c+d!==5)return {ok:false,text:'Проверь, что обе цели пары требуют одной истинности A. Опровергнуть исходную фразу — доказать её отрицание.'};
+    return {ok:true,text:'Пары совпадают и для истинного, и для ложного A. Объяснение равносильности запиши в черновике; работа сохранена для проверки.'};
+  }
+
   const bookExistence=[
     ['Черепахи могут доживать до 300 лет.','существует черепаха, способная дожить до этого возраста','все черепахи обязательно доживают до этого возраста','ни одна черепаха не может дожить до этого возраста','есть черепаха, которая не доживёт до 300 лет','Одна короткая жизнь не опровергает возможность для другой черепахи. Рассматривай именно способность дожить до возраста из фразы.'],
     ['Часть млекопитающих обитает в воде.','существует млекопитающее, обитающее в воде','каждое водное животное является млекопитающим','ни одно млекопитающее не обитает в воде','существует млекопитающее, живущее на суше','Сохрани исходную группу — млекопитающих. Сухопутный пример ничего не говорит обо всех водных.'],
@@ -1353,6 +1416,7 @@
     ['Значение x на единицу меньше квадрата этого же числа.',['x = x² − 1','x < x²','x² = x − 1'],['x ≠ x² − 1','x ≥ x²','x = x² + 1'],'«На единицу» задаёт точную разность. Для отрицания достаточно любой другой разности, в том числе двух.']
   ];
   function logicCard(number,part){
+    if(number===61)return fractionClaim(number,part);
     if(number===59||number===60)return existenceCard(number,part);
     if(number===50||number===51)return primeLogic(number,part);
     if(number===26)return universalCard(part);
@@ -1402,12 +1466,12 @@
   }
   function logicResponse(number,part,input,work){
     const periodRule=(number===35||number===36)&&part.id.endsWith('pravilo');
-    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&number!==50&&number!==51&&number!==59&&number!==60&&!periodRule)return null;
+    if((number<19||number>21)&&(number<26||number>29)&&number!==39&&number!==40&&number!==50&&number!==51&&number!==59&&number!==60&&number!==61&&!periodRule)return null;
     const card=logicCard(number,part);if(input!==logicText(card,work))return null;
     if(work.logicLeft!==card.li+1)return {ok:false,text:number===26?'Сколько объектов достаточно предъявить, чтобы опровергнуть утверждение обо всех? Сохрани условие о предмете разговора.':number===19?'Проверь именно исходное утверждение. В справке есть факт, с которым его можно сопоставить.':card.hint};
     if(work.logicRight!==card.ri+1)return {ok:false,text:card.hint};
     if(number===50)return {ok:true,text:work.logicOther?.trim()?'Обе формы описывают одно исключение. Твоя дополнительная запись сохранена для проверки.':'Обе формы подходят. Напиши ещё одно равносильное отрицание своими словами.'};
-    if((number>=27&&number<=29)||number===39||number===40||number===51||number===59||number===60||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
+    if((number>=27&&number<=29)||number===39||number===40||number===51||number===59||number===60||number===61||periodRule)return {ok:true,text:work.logicOther?.trim()?'Обоснование для выбранной оценки подходит. Свою формулировку ты сохранил для проверки.':'Обоснование для выбранной оценки подходит. Добавь своё объяснение или отрицание ложной фразы и сохрани ответ.'};
     if(number===26)return {ok:true,text:work.logicOther?.trim()?'Такой объект был бы контрпримером. Второе отрицание сохранено вместе с первой формой для проверки. Обоснуй, почему обе формы равносильны.':'Такой объект был бы контрпримером. Добавь вторую формулировку своими словами, затем ещё раз перенеси обе в ответ.'};
     return {ok:true,text:'Пара записей подходит. Добавь своё обоснование. Учитель проверит полное рассуждение.'};
   }
@@ -1415,6 +1479,8 @@
   function openingQuestion(number,part) {
     if(number===39||number===40)return factorCard(number,part).prompt;
     if(number===50||number===51)return primeLogic(number,part).prompt;
+    if(number===61)return fractionClaim(number,part).prompt;
+    if(number===62)return fractionClaim(number,part);
     if(number===59||number===60)return existenceCard(number,part).prompt;
     if(number===57)return 'Алик и Боря вместе нашли столько же грибов, сколько Витя и Гена вместе. Общая корзина Алика и Гены меньше общей корзины Бори и Вити. У Гены грибов больше, чем у Вити. Расставь четверых по убыванию их личных результатов и докажи порядок.';
     if(number===58)return 'В каждом столбце таблицы одна цифра обозначает любую из трёх букв. Звёздочка означает Ю, Я или пробел. Какую пословицу можно прочитать в строке 61551491 * 2 * 6561 * 051 * 51516566? Проверь каждое слово по кодам и по смыслу.';
@@ -1495,6 +1561,8 @@
     if(item.number===39||item.number===40)drawing=logicConstruction(item.number,part,false)+formulaLab(item.number,part,{},false);
     if(item.number===41)drawing=factorBasket({},false);
     if(item.number===50||item.number===51)drawing=logicConstruction(item.number,part,false)+primeExplore(item.number,part,{},false);
+    if(item.number===61)drawing=logicConstruction(item.number,part,false)+fractionDemo(part,{},false);
+    if(item.number===62)drawing=pairProofView({},false);
     if(item.number===59||item.number===60)drawing=logicConstruction(item.number,part,false)+existenceView(item.number,{},false);
     if(item.number===57)drawing=mushroomView({},false);
     if(item.number===58)drawing=cipherDesk({},false);
@@ -1531,5 +1599,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse,mountMushrooms,mushroomResponse,mountSecret,secretResponse,mountExistence};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse,mountPuzzle,puzzleResponse,mountNumberLab,mountFlow,flowResponse,flowTable,mountInteger,mountSequence,intervalResponse,mountRounding,roundingResponse,mountCalc,calcResponse,mountPeriod,periodResponse,mountGeometry,geometryResponse,mountFormulaLab,mountBasket,basketResponse,mountFilter,filterResponse,mountCommon,commonResponse,mountBox,boxResponse,mountProof,mountRoomMeasure,roomResponse,mountMushrooms,mushroomResponse,mountSecret,secretResponse,mountExistence,mountClaim,mountProofPairs,proofPairsResponse};
 })(globalThis);

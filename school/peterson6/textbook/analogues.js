@@ -652,6 +652,27 @@
     return {...choice(prompt,options.slice(shift).concat(options.slice(0,shift)),options[0],hint),id:'analog-'+part.id+'-'+attempt,family:'exists-'+part.id,match:'skill',mistake:hint};
   }
 
+  function fractionClaimPractice(number,part,attempt){
+    const k=seed(part.id)%79+attempt,d=3+k%13,a=1+k%8,b=a+1+k%6,f=2+k%7;let prompt,list,hint;
+    if(number===62){const letter=['B','C','P','Q'][k%4],positive=k%2===0;
+      prompt='Какое поручение равносильно словам «'+(positive?'опровергнуть ¬':'опровергнуть ')+letter+'»?';
+      list=positive?['Доказать '+letter,'Доказать ¬'+letter,'Опровергнуть '+letter]:['Доказать ¬'+letter,'Доказать '+letter,'Опровергнуть ¬'+letter];hint='Сначала выясни, какое значение исходного высказывания требуется показать.';
+    }else{
+      const rows=[
+        ['Какое равенство опровергает фразу «все неправильные дроби строго больше единицы»?',[d+'/'+d+' = 1',(d+1)+'/'+d+' > 1','1/'+d+' < 1'],'В качестве примера возьми неправильную дробь, значение которой ровно 1.'],
+        ['Могут ли две неправильные дроби со знаменателями '+d+' и '+(d+1)+' в сумме дать правильную?',['Нет, каждое слагаемое не меньше 1.','Да, если знаменатели различны.','Да, если числители равны.'],'Оцени каждое слагаемое снизу.'],
+        ['Какая дробь с числителем '+a+' больше '+a+'/'+b+'?',[a+'/'+(b-1),a+'/'+(b+1),a+'/'+b],'При неизменном положительном числителе меньший знаменатель даёт большую дробь.'],
+        ['Какой знаменатель всегда подходит для дробей со знаменателями '+d+' и '+(d+1)+'?',[String(d*(d+1)),String(d),String(d+1)],'Общий знаменатель должен делиться на оба исходных.'],
+        ['Из дроби '+(d*f+1)+'/'+d+' выделяют целую часть. Чему она равна?',[String(f),String(f+1),'0'],'Сколько полных групп по знаменателю содержится в числителе?'],
+        ['Каково частное дробей (1/'+b+') : (1/'+(b*f)+')?',[String(f),'1/'+f,String(b*f)],'Домножь делимое на дробь, обратную делителю.'],
+        ['Для конкретной дроби 1/'+(2**(1+k%6))+' спрашивают, конечна ли её десятичная запись. Какой это вид утверждения?',['О конкретном объекте','О каждом знаменателе','О существовании каких-то двух дробей'],'Здесь указана одна дробь. Не заменяй её семейством чисел.'],
+        ['Чтобы знаменатель 2^'+(1+k%3)+' · 5^'+(4+k%3)+' стал степенью 10, на что домножить?',['На 2³','На 5³','На 10³'],'Показатель двойки нужно довести до показателя пятёрки.']
+      ];
+      [prompt,list,hint]=rows[Number(part.id.split('-')[1])-1];
+    }
+    const shift=k%3;return {...choice(prompt,list.slice(shift).concat(list.slice(0,shift)),list[0],hint),id:'analog-'+part.id+'-'+attempt,family:'fraction-claim-'+part.id,match:'skill',mistake:hint};
+  }
+
   function create(number,part,attempt=0,savedWork){
     if(number===56&&part.expression)return measurePractice(number,part,attempt);
     if(number===49&&part.expression)return cuboidPractice(part,attempt);
@@ -660,11 +681,12 @@
     if(number===34||number===52)return calcPractice(part,attempt);
     if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>60)return createLegacy(number,part,attempt);
+    if(number<7||number>62)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=61)return fractionClaimPractice(number,part,attempt);
     if(number>=59)return existentialPractice(number,part,attempt);
     if(number>=57)return basketCipherPractice(number,part,attempt);
     if(number>=55)return measurePractice(number,part,attempt);
@@ -718,7 +740,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=60&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=62&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -740,7 +762,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=60&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=62&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };

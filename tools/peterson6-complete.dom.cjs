@@ -946,3 +946,19 @@ test('all twelve statements of existence keep their domain and the two truth val
  }
  const re=await surface(t,BOOK+'#n/59/059-6',storage(s));assert.equal(bookWork(re,'059-6').witnessMask,5);assert.match(element(re,'[data-witness-result]').textContent,/свойством: 2/);
 });
+test('each fraction claim distinguishes existence, a universal statement and a specified number; equivalent proofs invert truth twice',async t=>{
+ const s=await surface(t,BOOK+'#n/61/061-1'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(60,62);
+ const select=(sel,v)=>{const e=element(s,sel);e.value=String(v);e.dispatchEvent(new s.w.Event('change',{bubbles:true}));},scopes=[1,2,2,2,2,2,3,1];
+ const cases=[[[4,4],/4\/4 = 1/],[[3,2,4,3],/17\/6/],[[3],/2\/3 > 2\/7/],[[1,4,2,5],/5\/20.*8\/20/],[[6,3],/целая часть 2, остаток 0/],[[1,2,1,4],/натуральное число 2/],[[],/7\/16.*0,4375/],[[1,4],/1250.*10000/]];
+ for(const [i,p] of rows[0].parts.entries()){await route(s,'#n/61/'+p.id);assert.match(sourcePresent(s).textContent,/Всё условие/);
+  cases[i][0].forEach((v,j)=>select('[data-claim-field="'+j+'"]',v));click(s,'[data-claim-check]');assert.match(element(s,'[data-claim-result]').textContent,cases[i][1]);
+  select('[data-logic-left]',scopes[i]);select('[data-logic-right]',2);click(s,'[data-logic-use]');submit(s,'#answer-form');assert(element(s,'#feedback').classList.contains('error'));select('[data-logic-right]',1);input(s,'[data-logic-other]',p.answer);click(s,'[data-logic-use]');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/Обоснование/);assert(bookWork(s,p.id).submitted&&bookWork(s,p.id).assisted&&!bookWork(s,p.id).correct);
+  for(let j=0;j<32;j++){const m=s.w.PetersonAnalogues.create(61,p,j);assert.equal(new Set(m.choices).size,3);if(i===2){const [a,b]=m.prompt.match(/больше (\d+)\/(\d+)/).slice(1).map(Number);assert.equal(m.answer,a+'/'+(b-1));}
+   if(i===3){const [a,b]=m.prompt.match(/знаменателями (\d+) и (\d+)/).slice(1).map(Number);assert.equal(Number(m.answer),a*b);}
+   if(i===4){const [a,b]=m.prompt.match(/дроби (\d+)\/(\d+)/).slice(1).map(Number);assert.equal(Number(m.answer),Math.floor(a/b));}
+   if(i===5){const [a,b]=[...m.prompt.matchAll(/1\/(\d+)/g)].map(x=>Number(x[1]));assert.equal(Number(m.answer),b/a);}}
+ }
+ await route(s,'#n/62/062-1');select('[data-pair-truth]','false');assert.deepEqual([...element(s,'[data-pair-status]').children].map(e=>!e.textContent.includes('не подтверждена')),[false,true,true,false]);select('[data-pair-truth]','true');assert.deepEqual([...element(s,'[data-pair-status]').children].map(e=>!e.textContent.includes('не подтверждена')),[true,false,false,true]);
+ const test=xs=>{for(const i of xs)click(s,'[data-proof-pair="'+i+'"]');click(s,'[data-pair-use]');submit(s,'#answer-form');return element(s,'#feedback').textContent;};assert.match(test([0,1,2,3]),/требуют одной истинности/);assert.match(test([0,1,2,3,3,0,1,2]),/Пары совпадают/);assert(bookWork(s,'062-1').submitted&&!bookWork(s,'062-1').correct);
+ const re=await surface(t,BOOK+'#n/62/062-1',storage(s));assert.equal(element(re,'[data-pair-truth]').value,'true');assert.deepEqual(bookWork(re,'062-1').proofLinks,[3,0,1,2]);
+});
