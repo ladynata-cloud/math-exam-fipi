@@ -910,6 +910,58 @@ function signGraph(host,g,q){
  else boundNote(host,'Твоя точка лежит '+(x<x0?'левее':'правее')+' видимой части графика. Её точная ордината указана в проверке подстановки.');}
  host.append(svg);boundNote(host,'Серым показана вся видимая прямая, цветом — часть, соответствующая твоему промежутку. Квадрат отмечает твою подстановку.');
 }
+function review43Trial(g,raw){
+ const q=M.parse(raw);if(!q)return null;const x=q.n/q.d;
+ if(['cross','disjoint','strip'].includes(g.mode)){
+  const line=g.k*x+g.b;
+  if(g.mode==='strip')return {x,line,inside:line>g.min&&line<=g.max};
+  return {x,line,other:x===0?null:g.h/x};
+ }
+ const k=g.mode;
+ if(k==='numeric')return {x,allowed:2*q.n!==3*q.d,value:-((2*x+3)**2)};
+ if(k==='identity-generated')return {x,allowed:x!==g.parameter,intermediate:x*x-g.parameter*g.parameter,value:x+g.parameter};
+ if(k==='identity-a')return {x,allowed:x!==0&&x!==1,intermediate:2*x/(x-1)**2,value:0};
+ if(k==='identity-b')return {x,allowed:x!==0&&x!==1&&x!==-1,intermediate:(x+1)/(x*(x-1)),value:1};
+ if(k==='identity-c')return {x,allowed:x!==1&&x!==-1,intermediate:x/(x*x-1),value:3};
+ return null;
+}
+function review43Digits(pair,places){
+ const [n,d]=pair.map(BigInt);let rem=n%d,digits='';
+ for(let i=0;i<places;i++){rem*=10n;digits+=String(rem/d);rem%=d;}
+ return String(n/d)+','+digits;
+}
+function review43Graph(host,g,raw){
+ host.className='task-graphs quantity-model';
+ if(g.mode.startsWith('compare-')){
+  const value=g.partial?.[0],q=M.parse(value),places=q&&q.d===1&&q.n>=1&&q.n<=6?q.n:1;
+  const left=review43Digits(g.left,places),right=review43Digits(g.right,places);
+  boundNote(host,'Показаны первые '+places+' десятичных разрядов. '+g.labels[0]+' начинается с '+left+', а '+g.labels[1]+' — с '+right+'.').dataset.reviewDigits=String(places);
+  boundNote(host,left===right?'Эти разряды совпали. Увеличь число видимых разрядов или сравни дроби точно.':'Найди первый разряд, в котором цифры различны.');return;
+ }
+ const entered=g.partial?.[0],r=review43Trial(g,entered),fmt=x=>String(Number(x.toPrecision(6))).replace('.',',');
+ if(['cross','disjoint','strip'].includes(g.mode)){
+  const strip=g.mode==='strip',points=[],curves=[{kind:'line',k:g.k,b:g.b}];
+  if(strip)curves.push({kind:'line',k:0,b:g.min,dashed:true},{kind:'line',k:0,b:g.max});
+  else curves.push({kind:'hyperbola',k:g.h});
+  if(r){points.push([r.x,r.line,'']);if(!strip&&r.other!==null)points.push([r.x,r.other,'']);}
+  if(!strip&&raw){const groups=window.MakarychevCheck.pointGroups(raw);if(groups?.length===1)for(const [a,b] of groups[0])points.push([a.n/a.d,b.n/b.d,'']);}
+  const xRange=strip?[Math.min(-1,Math.floor((g.min-g.b)/g.k)-2),Math.max(1,Math.ceil((g.max-g.b)/g.k)+2)]:[-6,6];
+  const yRange=strip?[Math.min(-1,g.min-2),Math.max(1,g.max+2)]:[-8,8];
+  const svg=rootGraph({curves,points,xRange,yRange,xGridStep:1,yGridStep:1,axisLabels:['x','y'],label:strip?'Прямая и две граничные высоты':'Прямая и гипербола на общих осях'},'');host.append(svg);
+  if(!r){boundNote(host,'В первом шаге выбери своё x для проверки.');return;}
+  const note=strip?'При x = '+fmt(r.x)+' ордината '+fmt(r.line)+(r.inside?' входит в заданную полосу.':' находится вне заданной полосы.'):
+   'При x = '+fmt(r.x)+' для прямой y = '+fmt(r.line)+(r.other===null?', а гипербола не определена.':', для гиперболы y ≈ '+fmt(r.other)+'.');
+  boundNote(host,note).dataset.reviewX=String(r.x);return;
+ }
+ boundNote(host,g.mode==='identity-b'?'В числовой проверке y = 1, выбери своё x.':g.mode==='identity-c'?'В числовой проверке c = 1, выбери своё a.':'В первом шаге выбери своё a.');
+ if(!r)return;
+ const note=!r.allowed?'При этой подстановке хотя бы один исходный знаменатель равен 0.':
+  g.mode==='identity-generated'?'Числитель после подстановки равен '+fmt(r.intermediate)+', значение дроби ≈ '+fmt(r.value)+'.':
+  g.mode==='numeric'?'При a = '+fmt(r.x)+' после преобразования получается −(2a + 3)² ≈ '+fmt(r.value)+'.':
+  'При выбранном аргументе промежуточное выражение из скобок ≈ '+fmt(r.intermediate)+', а итог равен '+r.value+'. Затем обоснуй равенство для всех допустимых значений.';
+ boundNote(host,note).dataset.reviewSample=r.allowed?'valid':'excluded';
+}
+
 function functionZeroTrial(g,raw){
  const value=M.parse(raw);if(!value)return null;
  const x=value.n/value.d,n=BigInt(value.n),d=BigInt(value.d);
@@ -2301,6 +2353,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-review-43'){review43Graph(host,config,value);return;}
  if(config.type==='source-formula-zeros'){functionZeroGraph(host,config,value);return;}
  if(config.type==='source-graph-witness'){graphWitness(host,config,value);return;}
  if(config.type==='source-curve-properties'){propertiesView(host,config,value);return;}
@@ -2402,5 +2455,5 @@ function render(host,config,value){
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
  }
 }
-return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
+return {cubeRead,linearTrial,setTokens,integerProbe,setMembership,cornerValues,coordinateEvidence,admissibleSample,withinBounds,review43Trial,review43Digits,functionZeroTrial,witnessMarks,propertyCurve,propertyHeight,phaseConfig,phaseReading,tripValue,tripCurve,rootEstimate,tankTrial,behaviorHeight,featureY,featureAllowed,readingHeight,absDomainTrial,domainAt,domainCoefficients,familyDomain,functionValueAt,betweenSurd,isInAxis,setProbe,inequalityTrial,quantityTrial,journeyTrial,fractionSample,sourceFractionTrial,sequenceRows,sequenceEvidence,parameterSample,parameterExample,parse,parsePair,parseLine,parseRootPoints,parseIntegerPairs,pairEquation,curveValue,alternatives,render,rootGraph,numberLine};
 });

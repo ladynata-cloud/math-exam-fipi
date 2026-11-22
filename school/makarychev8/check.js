@@ -878,6 +878,13 @@ function check(user,target){
  if(target.kind==='parameter-sample')return G.parameterSample(user)!==null;
  if(target.kind==='squared-binomial')return squaredBinomial(user,target.answer)==='square';
  if(['three-solutions','equation-point-example','construct-lines'].includes(target.kind))return planeResponse(user,target)==='correct';
+ if(target.kind==='review-precision'){const v=M.parse(user);return Boolean(v&&v.d===1&&v.n>=1&&v.n<=6);}
+ if(target.kind==='intersection-points'){
+  const list=pointGroups(user),expected=pointGroups(target.answer);
+  if(list?.length!==1||list[0].length!==expected[0].length)return false;
+  const key=pair=>pair.map(v=>v.n+'/'+v.d).join(';');
+  return list[0].map(key).sort().join('|')===expected[0].map(key).sort().join('|');
+ }
  if(target.kind==='rational-probe')return Boolean(M.parse(user));
  if(target.kind==='linear-ray'){const u=linearRay(user,target.graph.variable);return Boolean(u&&equalAxisSets(u,asThreshold(target.graph.relation,target.graph.threshold)));}
  if(target.kind==='trip-table'){
