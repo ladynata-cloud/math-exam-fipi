@@ -1,0 +1,710 @@
+{
+  "parts": {
+    "731": [
+      "а",
+      "б"
+    ],
+    "732": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "733": [
+      "а",
+      "б"
+    ],
+    "734": [
+      "а",
+      "б",
+      "в"
+    ],
+    "735": [
+      null
+    ],
+    "736": [
+      null
+    ],
+    "737": [
+      null
+    ],
+    "738": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "previousCatalog": {
+    "731": {
+      "id": "source-main-0731",
+      "kind": "exercise",
+      "title": "Задача № 731",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "731",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "732": {
+      "id": "source-main-0732",
+      "kind": "exercise",
+      "title": "Задача № 732",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "732",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "733": {
+      "id": "source-main-0733",
+      "kind": "exercise",
+      "title": "Задача № 733",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "733",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "734": {
+      "id": "source-main-0734",
+      "kind": "exercise",
+      "title": "Задача № 734",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "734",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "735": {
+      "id": "source-main-0735",
+      "kind": "exercise",
+      "title": "Задача № 735",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "735",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "736": {
+      "id": "source-main-0736",
+      "kind": "exercise",
+      "title": "Задача № 736",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "736",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "737": {
+      "id": "source-main-0737",
+      "kind": "exercise",
+      "title": "Задача № 737",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "737",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "738": {
+      "id": "source-main-0738",
+      "kind": "exercise",
+      "title": "Задача № 738",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "738",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          187
+        ],
+        "pdfPages": [
+          189
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0731-a": {
+      "raw": "e3e59fb15dd9a82e5278b3b7e996df72d78c5db1993b50806d642bb07a0e0951",
+      "authored": "3d58fe193e4db28ecd97ee042649750abc57f119181c74ac7fc8e2ab67c08c09",
+      "integrated": "90dbe825f9a4419b97a9a1ebb30a53b9f4c2d0715c93e86195894a95f15a7271"
+    },
+    "ex-main-0731-b": {
+      "raw": "12416ecfbc47c0047669f66fe1a4317b58a8c14063d314ae1206a72a1a6e094b",
+      "authored": "729557ca9635520175850158737b21cf50539aea154201169de8c31b600e382f",
+      "integrated": "cc6ee8bc2069e598149386287e7b9f486009ab54edf06bf65dfb7604bdc38bb4"
+    },
+    "ex-main-0732-a": {
+      "raw": "3aea433de57e04817d692e38463df4eebaa685438fd6bf5781bb77bc46bde485",
+      "authored": "d1d3b31691be9612fd211b4199c44ffbc844ce0be0ad53d4e22d46aad2fae787",
+      "integrated": "631d40e09a15ae29536aa47f819d164372c62b69a185c39dc6ab2a2b98b329da"
+    },
+    "ex-main-0732-b": {
+      "raw": "7f16b0f6d041b000430500a61982a0712b7bddc6af20822c236f181832c956a6",
+      "authored": "2aec492ab328d0debaa0a1e6e27fb0cb229d6c1752264dbdd6aadd80aa1773e5",
+      "integrated": "a948a0b8bfe8175014c5570619187aaa21047bbeb21b98aeb121dc1acdf7d0ad"
+    },
+    "ex-main-0732-c": {
+      "raw": "01594d0d9458c7af610017f13b2b9e51111a7b65d9e2154146ca275cb09c5cbb",
+      "authored": "0843897307edd02f764d05b1e52f8a6f48628000094ff8642d773fbcccfbb947",
+      "integrated": "e5193d4f1fcac2ea295334d4f702a0128c4acf572a463054584b66d4710ff4cd"
+    },
+    "ex-main-0732-d": {
+      "raw": "12b0f32229bc797c29cb26cad26db1ca1eab5eefa3113c28cdcd9e09317036f7",
+      "authored": "f6468726ff96990dd4056d4ffa8ccd661369478e53a497e0c81ce90fcffd4582",
+      "integrated": "3fb7f61386c07b6dc758cbd9fd7d3c2e9a8f17f2da9dcdd905c001ad7d5f9eab"
+    },
+    "ex-main-0733-a": {
+      "raw": "847bdf3b7265554bec563043c3e3d4285eb2636a0367cc900b81fd0b3d1eb1bc",
+      "authored": "af42a927c66d8adae88ff3e53e1cf35c6018a70fcf19bf21ee441a9c393134b7",
+      "integrated": "94fc7499e088397b1993bacb79e51dc16842154abdcf5ed56d17e42eee44f948"
+    },
+    "ex-main-0733-b": {
+      "raw": "940b7e30a86b3075782f3fff7d28282b8e272c1cb5518c31c60d6ddc37da5b95",
+      "authored": "87ca92218645c1ba0b31924ac23d29fae9eff4883048ddf3491b669807e365ae",
+      "integrated": "6d087f35b6b6d1210f88185a84e44f7ee7adc9883b008fecef02c9e250a5380c"
+    },
+    "ex-main-0734-a": {
+      "raw": "b00b8c11149b58ec4265d8213d01b5345254bd5d9665ea9d96fdf778c87d4f7d",
+      "authored": "4d51f897b2402547c8cb0f1d2c0b420570369a27c2c25d98bf176edc10e08559",
+      "integrated": "2db48f0805feddf53f044793496a21d632899c40e095340fa7efa75ecd8d2782"
+    },
+    "ex-main-0734-b": {
+      "raw": "a3569b8ab6b13f4838ee4fd9eeca27ece294623960c63dd2aaaf6df87a0e7b0e",
+      "authored": "927ed67dfdce1f00f9761d0514a6ee9c4a4e3508a64b7bbfaa13767ca82d48b8",
+      "integrated": "2db84e06d798779ea0cd0f3d79a2f9747c0c6eefdde963e30912b808a6c43891"
+    },
+    "ex-main-0734-c": {
+      "raw": "691066048e512045c417a41ff61e06c757c0c5b899e5ac138c273cd4f2314ced",
+      "authored": "76a2357c9ba324089b37abc503235ab6523a2cd3e2a696536ee40596f2577e27",
+      "integrated": "eb8a272a272913ae6f3f2a58ab7effff1a1ebaf96e9df8a58870b7de1c74f041"
+    },
+    "ex-main-0735": {
+      "raw": "8363c908e38dc18622bd025e69a1ea089509b5da89073ea074bab19a61573897",
+      "authored": "8f34e627f5758e6ce8223872459da649f75dfc9b309154d4daa8b3b2515679ef",
+      "integrated": "d39a4b52511a0369caa85c4d0acbbf7e2e622f8e399918a3fe8d141ed8c15525"
+    },
+    "ex-main-0736": {
+      "raw": "7ae57c4a57ae5bbb6b8abc8c8d75c34c54c3241e384f4ff488e89b7b06a69641",
+      "authored": "139e2db8abca27c5026d3bff0a72e4fbe34aebdfb17845784622e46650080fcb",
+      "integrated": "dd82c1b48d4f7f839ed6b8060f5ebef7111d735aaede8129bb18d70ff4f3abd2"
+    },
+    "ex-main-0737": {
+      "raw": "a5e837cf59613611aac602f9657b4d11e40873e9a642afde4b8be96770385d97",
+      "authored": "6b1826a3537b8cc781e6051717e675493e9530d71cd38acab3e136037e68da37",
+      "integrated": "fd069373c8e548539315c0c799e9acb997abdb58a535d2a0d7a3066f48284c9c"
+    },
+    "ex-main-0738-a": {
+      "raw": "65a93ad8bf25cf9e841e7305e7d22ef9dfe449039fc4ac2715fa310ce6f75522",
+      "authored": "0623be0147e4c377668f2b29c2f0f445c3bd75acad63d6e4ea80dcd5ded7e2be",
+      "integrated": "c690b18a9600025322a631d29f7aa3bb7b918649be70abd779457bdaefaf12a1"
+    },
+    "ex-main-0738-b": {
+      "raw": "a97cfb72a6ea35dcbc0fb366ba638dff69f3c1143664577e3e97afb80f41bff9",
+      "authored": "a51a646ae840b334654f36ab627660a87e37354d178b2822e7d305f308e10c69",
+      "integrated": "b4a3b18bf7ad28c1d083e486098a616ebc030734b570c49d74edc7382e805cb6"
+    },
+    "ex-main-0738-c": {
+      "raw": "da3e451827d85b91cfeaafe4e98537fea7f6b0f8246b710e9f233abf85920211",
+      "authored": "443376ce6d73ce0c50a9562fe095eb235c4ea4acf9f24fbdd916c18a1aa70f7b",
+      "integrated": "7da03ef0bf6b7368b7b26f34ff26fe0e8749de31aacb193b1628e0b4bdc2ecb7"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0731-a|condition",
+      "additional-coordinate-combinations-ex-main-0731-a-condition"
+    ],
+    [
+      "ex-main-0731-a|help:h1",
+      "additional-coordinate-combinations-ex-main-0731-a-help-h1"
+    ],
+    [
+      "ex-main-0731-a|help:h2",
+      "additional-coordinate-combinations-ex-main-0731-a-help-h2"
+    ],
+    [
+      "ex-main-0731-a|step-1",
+      "additional-coordinate-combinations-ex-main-0731-a-step-1"
+    ],
+    [
+      "ex-main-0731-a|step-2",
+      "additional-coordinate-combinations-ex-main-0731-a-step-2"
+    ],
+    [
+      "ex-main-0731-a|step-3",
+      "additional-coordinate-combinations-ex-main-0731-a-step-3"
+    ],
+    [
+      "ex-main-0731-b|condition",
+      "additional-coordinate-combinations-ex-main-0731-b-condition"
+    ],
+    [
+      "ex-main-0731-b|help:h1",
+      "additional-coordinate-combinations-ex-main-0731-b-help-h1"
+    ],
+    [
+      "ex-main-0731-b|help:h2",
+      "additional-coordinate-combinations-ex-main-0731-b-help-h2"
+    ],
+    [
+      "ex-main-0731-b|step-1",
+      "additional-coordinate-combinations-ex-main-0731-b-step-1"
+    ],
+    [
+      "ex-main-0731-b|step-2",
+      "additional-coordinate-combinations-ex-main-0731-b-step-2"
+    ],
+    [
+      "ex-main-0731-b|step-3",
+      "additional-coordinate-combinations-ex-main-0731-b-step-3"
+    ],
+    [
+      "ex-main-0732-a|condition",
+      "additional-coordinate-combinations-ex-main-0732-a-condition"
+    ],
+    [
+      "ex-main-0732-a|help:h1",
+      "additional-coordinate-combinations-ex-main-0732-a-help-h1"
+    ],
+    [
+      "ex-main-0732-a|help:h2",
+      "additional-coordinate-combinations-ex-main-0732-a-help-h2"
+    ],
+    [
+      "ex-main-0732-a|step-1",
+      "additional-coordinate-combinations-ex-main-0732-a-step-1"
+    ],
+    [
+      "ex-main-0732-a|step-2",
+      "additional-coordinate-combinations-ex-main-0732-a-step-2"
+    ],
+    [
+      "ex-main-0732-a|step-3",
+      "additional-coordinate-combinations-ex-main-0732-a-step-3"
+    ],
+    [
+      "ex-main-0732-b|condition",
+      "additional-coordinate-combinations-ex-main-0732-b-condition"
+    ],
+    [
+      "ex-main-0732-b|help:h1",
+      "additional-coordinate-combinations-ex-main-0732-b-help-h1"
+    ],
+    [
+      "ex-main-0732-b|help:h2",
+      "additional-coordinate-combinations-ex-main-0732-b-help-h2"
+    ],
+    [
+      "ex-main-0732-b|step-1",
+      "additional-coordinate-combinations-ex-main-0732-b-step-1"
+    ],
+    [
+      "ex-main-0732-b|step-2",
+      "additional-coordinate-combinations-ex-main-0732-b-step-2"
+    ],
+    [
+      "ex-main-0732-b|step-3",
+      "additional-coordinate-combinations-ex-main-0732-b-step-3"
+    ],
+    [
+      "ex-main-0732-c|condition",
+      "additional-coordinate-combinations-ex-main-0732-c-condition"
+    ],
+    [
+      "ex-main-0732-c|help:h1",
+      "additional-coordinate-combinations-ex-main-0732-c-help-h1"
+    ],
+    [
+      "ex-main-0732-c|help:h2",
+      "additional-coordinate-combinations-ex-main-0732-c-help-h2"
+    ],
+    [
+      "ex-main-0732-c|step-1",
+      "additional-coordinate-combinations-ex-main-0732-c-step-1"
+    ],
+    [
+      "ex-main-0732-c|step-2",
+      "additional-coordinate-combinations-ex-main-0732-c-step-2"
+    ],
+    [
+      "ex-main-0732-c|step-3",
+      "additional-coordinate-combinations-ex-main-0732-c-step-3"
+    ],
+    [
+      "ex-main-0732-d|condition",
+      "additional-coordinate-combinations-ex-main-0732-d-condition"
+    ],
+    [
+      "ex-main-0732-d|help:h1",
+      "additional-coordinate-combinations-ex-main-0732-d-help-h1"
+    ],
+    [
+      "ex-main-0732-d|help:h2",
+      "additional-coordinate-combinations-ex-main-0732-d-help-h2"
+    ],
+    [
+      "ex-main-0732-d|step-1",
+      "additional-coordinate-combinations-ex-main-0732-d-step-1"
+    ],
+    [
+      "ex-main-0732-d|step-2",
+      "additional-coordinate-combinations-ex-main-0732-d-step-2"
+    ],
+    [
+      "ex-main-0732-d|step-3",
+      "additional-coordinate-combinations-ex-main-0732-d-step-3"
+    ],
+    [
+      "ex-main-0733-a|condition",
+      "additional-coordinate-combinations-ex-main-0733-a-condition"
+    ],
+    [
+      "ex-main-0733-a|help:h1",
+      "additional-coordinate-combinations-ex-main-0733-a-help-h1"
+    ],
+    [
+      "ex-main-0733-a|help:h2",
+      "additional-coordinate-combinations-ex-main-0733-a-help-h2"
+    ],
+    [
+      "ex-main-0733-a|step-1",
+      "additional-coordinate-combinations-ex-main-0733-a-step-1"
+    ],
+    [
+      "ex-main-0733-a|step-2",
+      "additional-coordinate-combinations-ex-main-0733-a-step-2"
+    ],
+    [
+      "ex-main-0733-a|step-3",
+      "additional-coordinate-combinations-ex-main-0733-a-step-3"
+    ],
+    [
+      "ex-main-0733-b|condition",
+      "additional-coordinate-combinations-ex-main-0733-b-condition"
+    ],
+    [
+      "ex-main-0733-b|help:h1",
+      "additional-coordinate-combinations-ex-main-0733-b-help-h1"
+    ],
+    [
+      "ex-main-0733-b|help:h2",
+      "additional-coordinate-combinations-ex-main-0733-b-help-h2"
+    ],
+    [
+      "ex-main-0733-b|step-1",
+      "additional-coordinate-combinations-ex-main-0733-b-step-1"
+    ],
+    [
+      "ex-main-0733-b|step-2",
+      "additional-coordinate-combinations-ex-main-0733-b-step-2"
+    ],
+    [
+      "ex-main-0733-b|step-3",
+      "additional-coordinate-combinations-ex-main-0733-b-step-3"
+    ],
+    [
+      "ex-main-0734-a|condition",
+      "additional-coordinate-combinations-ex-main-0734-a-condition"
+    ],
+    [
+      "ex-main-0734-a|help:h1",
+      "additional-coordinate-combinations-ex-main-0734-a-help-h1"
+    ],
+    [
+      "ex-main-0734-a|help:h2",
+      "additional-coordinate-combinations-ex-main-0734-a-help-h2"
+    ],
+    [
+      "ex-main-0734-a|step-1",
+      "additional-coordinate-combinations-ex-main-0734-a-step-1"
+    ],
+    [
+      "ex-main-0734-a|step-2",
+      "additional-coordinate-combinations-ex-main-0734-a-step-2"
+    ],
+    [
+      "ex-main-0734-a|step-3",
+      "additional-coordinate-combinations-ex-main-0734-a-step-3"
+    ],
+    [
+      "ex-main-0734-b|condition",
+      "additional-coordinate-combinations-ex-main-0734-b-condition"
+    ],
+    [
+      "ex-main-0734-b|help:h1",
+      "additional-coordinate-combinations-ex-main-0734-b-help-h1"
+    ],
+    [
+      "ex-main-0734-b|help:h2",
+      "additional-coordinate-combinations-ex-main-0734-b-help-h2"
+    ],
+    [
+      "ex-main-0734-b|step-1",
+      "additional-coordinate-combinations-ex-main-0734-b-step-1"
+    ],
+    [
+      "ex-main-0734-b|step-2",
+      "additional-coordinate-combinations-ex-main-0734-b-step-2"
+    ],
+    [
+      "ex-main-0734-b|step-3",
+      "additional-coordinate-combinations-ex-main-0734-b-step-3"
+    ],
+    [
+      "ex-main-0734-c|condition",
+      "additional-coordinate-combinations-ex-main-0734-c-condition"
+    ],
+    [
+      "ex-main-0734-c|help:h1",
+      "additional-coordinate-combinations-ex-main-0734-c-help-h1"
+    ],
+    [
+      "ex-main-0734-c|help:h2",
+      "additional-coordinate-combinations-ex-main-0734-c-help-h2"
+    ],
+    [
+      "ex-main-0734-c|step-1",
+      "additional-coordinate-combinations-ex-main-0734-c-step-1"
+    ],
+    [
+      "ex-main-0734-c|step-2",
+      "additional-coordinate-combinations-ex-main-0734-c-step-2"
+    ],
+    [
+      "ex-main-0734-c|step-3",
+      "additional-coordinate-combinations-ex-main-0734-c-step-3"
+    ],
+    [
+      "ex-main-0735|condition",
+      "additional-coordinate-combinations-ex-main-0735-condition"
+    ],
+    [
+      "ex-main-0735|help:h1",
+      "additional-coordinate-combinations-ex-main-0735-help-h1"
+    ],
+    [
+      "ex-main-0735|help:h2",
+      "additional-coordinate-combinations-ex-main-0735-help-h2"
+    ],
+    [
+      "ex-main-0735|step-1",
+      "additional-coordinate-combinations-ex-main-0735-step-1"
+    ],
+    [
+      "ex-main-0735|step-2",
+      "additional-coordinate-combinations-ex-main-0735-step-2"
+    ],
+    [
+      "ex-main-0735|step-3",
+      "additional-coordinate-combinations-ex-main-0735-step-3"
+    ],
+    [
+      "ex-main-0736|condition",
+      "additional-coordinate-combinations-ex-main-0736-condition"
+    ],
+    [
+      "ex-main-0736|help:h1",
+      "additional-coordinate-combinations-ex-main-0736-help-h1"
+    ],
+    [
+      "ex-main-0736|help:h2",
+      "additional-coordinate-combinations-ex-main-0736-help-h2"
+    ],
+    [
+      "ex-main-0736|step-1",
+      "additional-coordinate-combinations-ex-main-0736-step-1"
+    ],
+    [
+      "ex-main-0736|step-2",
+      "additional-coordinate-combinations-ex-main-0736-step-2"
+    ],
+    [
+      "ex-main-0736|step-3",
+      "additional-coordinate-combinations-ex-main-0736-step-3"
+    ],
+    [
+      "ex-main-0737|condition",
+      "additional-coordinate-combinations-ex-main-0737-condition"
+    ],
+    [
+      "ex-main-0737|help:h1",
+      "additional-coordinate-combinations-ex-main-0737-help-h1"
+    ],
+    [
+      "ex-main-0737|help:h2",
+      "additional-coordinate-combinations-ex-main-0737-help-h2"
+    ],
+    [
+      "ex-main-0737|step-1",
+      "additional-coordinate-combinations-ex-main-0737-step-1"
+    ],
+    [
+      "ex-main-0737|step-2",
+      "additional-coordinate-combinations-ex-main-0737-step-2"
+    ],
+    [
+      "ex-main-0737|step-3",
+      "additional-coordinate-combinations-ex-main-0737-step-3"
+    ],
+    [
+      "ex-main-0738-a|condition",
+      "additional-coordinate-combinations-ex-main-0738-a-condition"
+    ],
+    [
+      "ex-main-0738-a|help:h1",
+      "additional-coordinate-combinations-ex-main-0738-a-help-h1"
+    ],
+    [
+      "ex-main-0738-a|help:h2",
+      "additional-coordinate-combinations-ex-main-0738-a-help-h2"
+    ],
+    [
+      "ex-main-0738-a|step-1",
+      "additional-coordinate-combinations-ex-main-0738-a-step-1"
+    ],
+    [
+      "ex-main-0738-a|step-2",
+      "additional-coordinate-combinations-ex-main-0738-a-step-2"
+    ],
+    [
+      "ex-main-0738-a|step-3",
+      "additional-coordinate-combinations-ex-main-0738-a-step-3"
+    ],
+    [
+      "ex-main-0738-b|condition",
+      "additional-coordinate-combinations-ex-main-0738-b-condition"
+    ],
+    [
+      "ex-main-0738-b|help:h1",
+      "additional-coordinate-combinations-ex-main-0738-b-help-h1"
+    ],
+    [
+      "ex-main-0738-b|help:h2",
+      "additional-coordinate-combinations-ex-main-0738-b-help-h2"
+    ],
+    [
+      "ex-main-0738-b|step-1",
+      "additional-coordinate-combinations-ex-main-0738-b-step-1"
+    ],
+    [
+      "ex-main-0738-b|step-2",
+      "additional-coordinate-combinations-ex-main-0738-b-step-2"
+    ],
+    [
+      "ex-main-0738-b|step-3",
+      "additional-coordinate-combinations-ex-main-0738-b-step-3"
+    ],
+    [
+      "ex-main-0738-c|condition",
+      "additional-coordinate-combinations-ex-main-0738-c-condition"
+    ],
+    [
+      "ex-main-0738-c|help:h1",
+      "additional-coordinate-combinations-ex-main-0738-c-help-h1"
+    ],
+    [
+      "ex-main-0738-c|help:h2",
+      "additional-coordinate-combinations-ex-main-0738-c-help-h2"
+    ],
+    [
+      "ex-main-0738-c|step-1",
+      "additional-coordinate-combinations-ex-main-0738-c-step-1"
+    ],
+    [
+      "ex-main-0738-c|step-2",
+      "additional-coordinate-combinations-ex-main-0738-c-step-2"
+    ],
+    [
+      "ex-main-0738-c|step-3",
+      "additional-coordinate-combinations-ex-main-0738-c-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "3fe75d3c83781c5662961289b893f1737b95920977e86fba0ce47852c8e1bcba",
+      "afterSHA256": "f40811e195a60e61278356dd1a8bf2b2141ad7ac8ec7bb6f8c0ec9039f46e188"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "a5f13a6ca92eb702e20d82c5f5c312f94c316a153e8943ffbf79dbd02069a9ac",
+      "afterSHA256": "08050b61247d67e07287da02278d1bb4056a5d6549cce5530e176806c32f4326"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T23:52:06Z",
+    "scope": "Chapters I–VI, chapter VII points 71–84, numbered exercises through 730, and all 17 questions on printed page 186 (39 cards); additional questions from 731 are inventoried separately."
+  },
+  "before": {
+    "course": "7488e3f61140c8893437a7c6a9f191b45ea7e253955dd04ea7dbc20143942da3",
+    "index": "13de6162e23de911d599def9f2197cc80fb5aa96c9d76afb1f1059f5797fb85b",
+    "registry": "2bc6b3b7f271d489ace739d141bc86b06411e87004815871ce48538b2cde045c",
+    "cases": "443d6858a7653bd83940cc6d4157ccb4f1491bc5fe797bc0108ad7c412fbd5c8"
+  }
+}
