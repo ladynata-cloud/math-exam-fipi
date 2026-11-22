@@ -940,6 +940,7 @@
   }
 
   const finalFunctionSkills=[
+   {id:'cancel-common-surd',title:'Убери общее слагаемое',description:'Сравни оставшиеся корни точно и учти знак перед каждым.'},
    {id:'reciprocal-samples',title:'Две ветви гиперболы',description:'Отметь свои точки новой гиперболы по обе стороны от оси.'},
    {id:'reciprocal-boundaries',title:'Дробь и уровень',description:'Проверь знаки на двух ветвях при новой высоте.'},
    {id:'monotonic-root-sums',title:'Направление изменения суммы',description:'Сравни аргументы и оба слагаемых на выбранной полупрямой.'},
@@ -951,6 +952,14 @@
    const common={title:finalFunctionSkills.find(s=>s.id===id).title,skills:[id],finalLabel:'Твой ответ'};
    const k=2+seed%11+level, levelY=1+level+seed%4;
    const options=(mode,settings={})=>({type:'source-final-functions',mode,...settings});
+   if(id==='cancel-common-surd'){
+    const coeff=2+seed%5,rad=[2,3,5,7][seed%4],k1=2+(seed+level)%5,k2=1+(Math.floor(seed/3)+level)%6;
+    const negative=Boolean(seed%2),sign=negative?' − ':' + ',a=k1*k1*2,b=k2*k2*3,hidden=coeff*coeff*rad;
+    const answer=a===b?'=':(a>b)!==negative?'>':'<',hint='Запиши первый корень в обеих частях с одинаковым внешним коэффициентом. Затем сравни модули оставшихся слагаемых.';
+    return {...common,prompt:'Сравни √'+hidden+sign+k1+'√2 и '+coeff+'√'+rad+sign+k2+'√3.',kind:'choice',choices:['<','=','>'],answer,
+     graph:{type:'source-surd-cancellation',hidden,commonRad:rad,leftTerm:[k1,2],rightTerm:[k2,3],negative,revealAfterSubmit:true},
+     steps:[step('Каков положительный множитель при √'+rad+' в разложении √'+hidden+'?',coeff,'Найди квадратный множитель.'),step('Квадрат модуля левого остатка?',a,'Возведи в квадрат коэффициент и умножь на подкоренное число.'),step('Квадрат модуля правого остатка?',b,'Учитывай весь коэффициент.')],hint,correction:hint,explanation:negative?'После удаления общего слагаемого остаются отрицательные числа. Большему модулю соответствует меньшее число.':'Остаются положительные числа. Их порядок совпадает с порядком квадратов.'};
+   }
    if(id==='reciprocal-samples'){
     const c=seed%2?k:-k,hint='Выбери по ненулевому x каждого знака. В каждой паре должно выполняться xy = '+c+'.';
     return {...common,prompt:'Построй y = '+c+'/x. Введи по точке левой и правой ветви в формате (x;y), (x;y).',kind:'reciprocal-points',answer:'(-1;'+(-c)+'), (1;'+c+')',graph:options('plot',{k:c,revealAfterSubmit:true}),steps:[probe],hint,correction:hint,explanation:'График содержит все пары с произведением '+c+'.'};

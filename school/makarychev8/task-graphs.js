@@ -947,6 +947,28 @@ function sumOfRoot(form,k,x) {
  if(x<0)return NaN;
  return (form==='linear'?k*x:x*x)+Math.sqrt(x);
 }
+function surdCancellationView(host,g) {
+ host.className='task-graphs quantity-model';
+ const input=g.partial||[],factor=M.parse(input[0]),sides=[g.leftTerm,g.rightTerm];
+ if(factor)boundNote(host,'Твоя запись: √'+g.hidden+' = '+M.answer(factor)+'√'+g.commonRad+'. Проверь коэффициент возведением в квадрат.');
+ const areas=sides.map(([c,n],i)=>g.showSolution?c*c*n:M.parse(input[i+1]));
+ const values=areas.map(a=>typeof a==='number'?a:a&&a.n/a.d);
+ const scale=Math.max(1,...values.filter(v=>v>0));
+ const svg=node('svg',{viewBox:'0 0 310 146',role:'img','aria-label':'Сравнение квадратов модулей двух оставшихся слагаемых'});
+ for(const [i,v] of values.entries()){
+  const panel=i?168:16,mid=panel+58,color=i?'#9b4d14':'#087386';
+  svg.append(node('text',{x:mid,y:17,'text-anchor':'middle','font-size':16},i?'Справа':'Слева'));
+  if(v!==null&&v>=0){
+   const side=76*Math.sqrt(v/scale);
+   svg.append(node('rect',{x:mid-side/2,y:104-side,width:side,height:side,fill:i?'#fae9d6':'#d6edef',stroke:color,'stroke-width':2,'data-surd-area':String(v)}));
+  }else{
+   svg.append(node('rect',{x:mid-31,y:42,width:62,height:62,fill:'none',stroke:'#6b7472','stroke-dasharray':'4 4'}));
+  }
+  svg.append(node('text',{x:mid,y:130,'text-anchor':'middle','font-size':15},v===null?'S = ?':v<0?'Проверь знак':'S = '+String(Number(v.toPrecision(7))).replace('.',',')));
+ }
+ host.append(svg);
+ boundNote(host,'Стороны квадратов — модули остатков после удаления общего слагаемого. Заполни их площади в шагах, затем сравни исходные числа с учётом знаков.');
+}
 function finalFunctionsView(host,g,value) {
  host.className='task-graphs quantity-model';
  const C=window.MakarychevCheck, asSet=answer=>C.axisRanges(C.systemInput(answer,'x'));
@@ -2555,6 +2577,7 @@ function render(host,config,value){
  if(config.type==='story-balance'){balanceScene(host,config,value);return;}
  if(config.type==='two-equations'){equationExamples(host,value);return;}
  if(config.type==='source-inequality-case'){sourceInequalityCase(host,config,value);return;}
+ if(config.type==='source-surd-cancellation'){surdCancellationView(host,config);return;}
  if(config.type==='source-final-functions'){finalFunctionsView(host,config,value);return;}
  if(config.type==='source-root-study'){rootStudyView(host,config,value);return;}
  if(config.type==='source-line-position'){positionGraph(host,config,value);return;}
