@@ -545,3 +545,30 @@ test('source page 9 contrasts truth with exact negation, keeps reasons reviewabl
  const p=rows[1].parts[0];await route(s,'#n/20/'+p.id);const reference=element(s,'[data-logic-reference]');reference.open=true;reference.dispatchEvent(new s.w.Event('toggle'));assert(bookWork(s,p.id).assisted);
  const restored=await surface(t,BOOK+'#n/20/'+p.id,storage(s));assert.equal(element(restored,'[data-logic-reference]').open,true);assert.equal(element(restored,'[data-logic-right]').value,'1');assert.match(element(restored,'#answer').value,/≥/);
 });
+test('the printed cipher checks all fifteen assertions separately and retains ordering, exact totals and earlier scenes',async t=>{
+ const s=await surface(t,BOOK+'#n/22/022-r'),rows=JSON.parse(fs.readFileSync(path.join(ROOT,'school/peterson6/textbook/content/001-175.json'))).exercises.slice(21,24),truth=[];
+ for(const row of rows)for(const p of row.parts){
+  await route(s,'#n/'+row.number+'/'+p.id);const material=sourcePresent(s);assert.match(material.textContent,/Всё условие/);
+  if(p.expression){
+   const model=s.w.PetersonBook.exact(p.expression),M=s.w.PetersonBook.M;
+   if(row.number===22){
+    const statement=material.querySelector('.problem').textContent,claim=statement.match(/ = ([\d,]+)\./)[1];
+    if(M.equal(claim,model))truth.push([p.label,M.parse(model)]);
+    else{input(s,'#answer',claim);submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/проверяемой строки/);}
+   }
+   if(row.number===23){input(s,'#answer',p.id==='023-a'?'52,52':'117,53');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/последнего минуса|справа от знака минус/);}
+   input(s,'#answer',p.answer);submit(s,'#answer-form');assert(bookWork(s,p.id).correct);
+   const picker=element(s,'[data-decimal-position]');picker.value='1';picker.dispatchEvent(new s.w.Event('change',{bubbles:true}));assert.equal(bookWork(s,p.id).decimalView,1);
+  }
+  for(let attempt=0;attempt<26;attempt++){const task=s.w.PetersonAnalogues.create(row.number,p,attempt);assert(s.w.PetersonBook.check(task,task.answer));if(task.expression)assert(s.w.PetersonBook.M.equal(task.answer,s.w.PetersonBook.exact(task.expression)));
+   if(row.number===23&&p.id==='023-a')assert(s.w.PetersonBook.M.parse(task.answer).n>0&&s.w.PetersonBook.M.parse(task.answer).n/s.w.PetersonBook.M.parse(task.answer).d<0.1);
+   if(row.number===24){const [first,gap,jars]=task.prompt.match(/\d+(?:,\d+)?/g).map(v=>Number(v.replace(',','.')));assert(Math.abs((first*2-gap)*1.5/jars-Number(task.answer.replace(',','.')))<1e-9);}
+  }
+ }
+ truth.sort((a,b)=>a[1].n/a[1].d-b[1].n/b[1].d);assert.equal(truth.map(([l])=>l).join(''),'АСТЕРОИД');
+ await route(s,'#n/22/022-slovo');const tile=letter=>click(s,'[data-cipher-letter="'+letter+'"]'),use=()=>{click(s,'[data-cipher-use]');submit(s,'#answer-form');};
+ tile('Б');use();assert.match(element(s,'#feedback').textContent,/Для буквы Б/);tile('Б');tile('С');tile('А');use();assert.match(element(s,'#feedback').textContent,/возрастать/);tile('С');use();assert.match(element(s,'#feedback').textContent,/ещё верная/);
+ for(const c of 'СТЕРОИД')tile(c);use();assert.match(element(s,'#feedback').textContent,/астрономический термин/);let w=bookWork(s,'022-slovo');assert.equal(w.cipherLetters,'АСТЕРОИД');assert(w.submitted&&!w.correct&&!w.independent);
+ const restored=await surface(t,BOOK+'#n/22/022-slovo',storage(s));assert.equal(element(restored,'[data-cipher-draft]').textContent,'АСТЕРОИД');
+ await route(s,'#n/24/024-1');input(s,'#answer','64,8');submit(s,'#answer-form');assert.match(element(s,'#feedback').textContent,/всего мёда/);input(s,'#answer','3,6');submit(s,'#answer-form');w=bookWork(s,'024-1');assert(w.correct&&!w.independent&&!w.assisted);
+});

@@ -252,13 +252,50 @@
     const exercise=choice(prompt,shift(options),answer,hint);return {...exercise,id:'analog-'+part.id+'-'+attempt,family:'logic-page9-'+part.id,match:'skill',mistake:hint};
   }
 
+  function codewordPractice(number,part,attempt){
+    const k=seed(part.id)%17+attempt,R=E.M.operation,display=E.M.decimal;
+    if(number===22&&part.id!=='022-slovo'){
+      const calculation=decimalPractice(12,part,attempt),value=E.exact(calculation.expression),printed=k%2?value:R('multiply',value,10);
+      const model={...calculation,prompt:'Вычисли левую часть. В карточке напечатан результат '+display(printed)+'. Запиши действительное значение и сравни его с напечатанным.'};
+      model.steps=[{kind:'numeric',prompt:'Вычисли левую часть.',answer:E.M.answer(value),hint:calculation.mistake}];return model;
+    }
+    if(number===23){
+      const x=JSON.parse(JSON.stringify(part.expression)),increment=1+k%9;
+      if(part.id==='023-a'){
+        x.left.left.left.right=display(R('add','7.32',R('multiply','0.18',increment)));
+        const first=E.exact(x.left),intended=R('divide',1+k%7,100);
+        x.right.left=display(R('multiply',R('subtract',first,intended),E.exact(x.right.right)));
+      }else{
+        x.left=String(164+increment);
+        x.right.left.left.left=display(R('add','22.62',R('multiply','0.3',increment)));
+        x.right.left.right.left=display(R('add','208.27',R('multiply','2.95',increment)));
+      }
+      const answer=E.M.answer(E.exact(x));return {kind:'expression',expression:x,prompt:'Вычисли по действиям. Отдельно выпиши промежуточные результаты каждой скобки.',answer,
+        mistake:'Проверь вычисления внутри скобок и верни оба результата в исходное выражение. Не округляй перед последним вычитанием.',id:'analog-'+part.id+'-'+attempt,family:'page9-'+part.id,match:'skill'};
+    }
+    let task;
+    if(number===24){
+      const jars=6+k%8,each=R('divide',3*(20+k%9),10),total=R('multiply',each,jars);
+      const pair=R('divide',R('multiply',total,2),3),gap=R('divide',2+2*(k%4),10),first=R('divide',R('add',pair,gap),2);
+      task=numerical('Из первого улья получили '+display(first)+' кг, из второго на '+display(gap)+' кг меньше. Из третьего — половину суммы первых двух. Весь мёд поровну разлили в '+jars+' банок. Сколько килограммов пришлось на банку?',display(R('divide',total,jars)),'Сложи три сбора и раздели на число банок.','Массу третьего сбора вычисляй от суммы двух остальных.');task.mistake='Сначала проверь сумму двух первых сборов. Третий даёт половину этой суммы.';
+    }else{
+      const words=['ЛУЧ','ДОМ','КОТ','МИР','СОН'],word=words[k%words.length],invalid='Я',a=2+k%9;
+      const rows=[word[2]+' · '+(a+4)+' − 1 = '+(a+3),invalid+' · '+a+' + 2 = '+(a+1),word[0]+' · '+a+' − 1 = '+(a-1),word[1]+' · '+a+' + 1 = '+(a+1)];
+      const variants=[word,word[2]+word[1]+word[0],word[0]+invalid+word[2]],shift=k%3,options=variants.slice(shift).concat(variants.slice(0,shift));
+      task=choice('Карточки: '+rows.join('; ')+'. Отбрось ложные равенства и прочитай буквы по возрастанию результатов.',options,word,'Проверь каждое равенство независимо, затем упорядочь только верные числовые результаты.');task.mistake='Даже если номер получился при исправлении ложного равенства, его буква не участвует в шифре.';
+    }
+    return {...task,id:'analog-'+part.id+'-'+attempt,family:'page9-'+part.id,match:'skill'};
+  }
+
   function create(number,part,attempt=0,savedWork){
+    if((number===22||number===23)&&part.expression)return codewordPractice(number,part,attempt);
     if(number>=11&&number<=13)return decimalPractice(number,part,attempt);
-    if(number<7||number>21)return createLegacy(number,part,attempt);
+    if(number<7||number>24)return createLegacy(number,part,attempt);
     if(savedWork?.signature){
       const legacy=createLegacy(number,part,attempt);
       if(savedWork.signature===E.signature(legacy))return legacy;
     }
+    if(number>=22)return codewordPractice(number,part,attempt);
     if(number>=19)return logicPractice(number,part,attempt);
     if(number>=17)return campPractice(number,part,attempt);
     if(number>=14)return comparisonPractice(number,part,attempt);
@@ -290,7 +327,7 @@
     const field=model.kind==='choice'?'<select aria-label="Ответ к авторскому примеру"><option value="">Выбери ответ</option>'+model.choices.map(option).join('')+'</select>':'<input aria-label="Ответ к авторскому примеру" value="'+U.esc(work.draft)+'" maxlength="120">';
     const steps=E.steps(model);
     box.innerHTML='<summary>'+ (model.match==='chapter'?'Разминка по теме без учебника':'Авторский пример без учебника')+'</summary><p>Новое условие для тренировки. Решение этого примера учитывается отдельно от номера учебника.</p><p class="problem">'+U.fmt(model.prompt)+'</p>'+(model.expression?'<div class="math-line">'+U.expression(model.expression)+'</div>':'')+U.diagram(model.diagram)+'<form class="analogue-form">'+field+' <button>Проверить пример</button></form><p role="status"></p><details><summary>Подсказка к примеру</summary><p>'+U.fmt(steps[0]?.hint||steps[0]?.prompt||'Сопоставь данные с величиной, которую нужно найти.')+'</p></details><button type="button" class="text-button">Другой пример</button>';
-    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=21&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
+    if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=24&&Number.isInteger(row.earlier?.attempt)&&row.earlier.attempt>=0&&row.earlier.attempt<=99999){
       const previous=createLegacy(item.number,part,row.earlier.attempt);
       if(row.earlier.work?.signature===E.signature(previous)){
         const old=E.sanitize(previous,row.earlier.work),saved=document.createElement('details');
@@ -312,7 +349,7 @@
     box.querySelector('details').addEventListener('toggle',event=>{if(event.target.open){E.assist(work);save();}});
     box.querySelector('button[type=button]').onclick=()=>{
       if(row.attempt>=99999)return;
-      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=21&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
+      if(!document.body.dataset.petersonBoard&&item.number>=7&&item.number<=24&&model.match==='chapter')row.earlier={attempt:row.attempt,work:E.sanitize(model,work)};
       row.status='';row.hint=false;row.open=true;row.attempt++;row.work=E.blank(create(item.number,part,row.attempt));save();
       const next=panel(item,part);next.open=true;box.replaceWith(next);
     };
@@ -322,7 +359,7 @@
   function shared(item,part,raw) {
     const model=part&&create(item.number,part);
     if(!model)return null;
-    if(raw===null&&item.number>=11&&item.number<=13)return null;
+    if(raw===null&&part.expression&&((item.number>=11&&item.number<=13)||item.number===22||item.number===23))return null;
     const active=document.querySelector('.equivalent-exercise');
     const row=record(part)[1];
     if(!raw&&row.formerlyAbsent&&!active?.open)return null;
@@ -334,7 +371,7 @@
   }
   function restoreShared(part,scene) {
     if(!document.body.dataset.petersonBoard)return;
-    if(!scene){if(/^01[123]-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
+    if(!scene){if(part.expression&&/^(01[123]|02[23])-/.test(part.id))record(part)[1].formerlyAbsent=true;return;}
     const row=record(part)[1];Object.assign(row,{attempt:scene.attempt,work:scene.work,status:scene.status,open:scene.open,hint:scene.hint});
   }
   function resetShared(){if(document.body.dataset.petersonBoard)states.clear();}

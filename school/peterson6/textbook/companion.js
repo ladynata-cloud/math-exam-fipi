@@ -142,7 +142,7 @@
     return result;
   }
   function decimalModel(part,view=0,interactive=false){
-    const many=part.id.startsWith('013-'),columns=many?[]:decimalColumns(part),nodes=many?operations(part.expression):[],keys=many?nodes.map((_,i)=>'Действие '+(i+1)):columns.map(placeName);
+    const many=/^(013|023)-/.test(part.id),columns=many?[]:decimalColumns(part),nodes=many?operations(part.expression):[],keys=many?nodes.map((_,i)=>'Действие '+(i+1)):columns.map(placeName);
     const title=many?'Порядок действий':'Разрядная сетка обоих чисел';
     const picker=interactive?'<label>Рассмотреть <select data-decimal-position><option value="0">Всё выражение</option>'+keys.map((label,i)=>'<option value="'+(i+1)+'"'+(view===i+1?' selected':'')+'>'+U.esc(label)+'</option>').join('')+'</select></label>':'';
     let body;
@@ -361,6 +361,63 @@
     return items.length===6?{ok:true,text:'Все шесть чисел расположены по возрастанию. Прочитай их вслух, называя миллионы, тысячи и единицы.'}:{ok:false,text:'Порядок верный. Проверь, все ли шесть позиций второй пятёрки использованы.'};
   }
 
+  const codedRows=[
+    ['Р','0,4 + 3','3,4'],['У','6 + 0,12','0,18'],['Н','0,25 + 0,5','0,3'],['О','3,28 + 1,3','4,58'],['Е','2,6 − 0,01','2,59'],
+    ['Д','9,1 − 1,05','8,05'],['Г','0,854 − 0,85','0,04'],['Б','0,5 · 3','0,15'],['И','4 · 1,7','6,8'],['Ж','17,2 · 10','1,72'],
+    ['А','0,8 · 0,04','0,032'],['К','5 : 1000','0,05'],['Т','3,6 : 9','0,4'],['Я','12,3 : 5','24,6'],['С','0,056 : 0,7','0,08']
+  ];
+  function codewordQuestion(part){
+    if(part.id==='022-slovo')return 'Оставь буквы равенств, которые верны именно в записанном виде. Расположи их по возрастанию результатов и прочитай астрономический термин. Для остальных строк запиши исправленные вычисления.';
+    const row=codedRows.find(([letter])=>letter===part.label);
+    return 'Для буквы '+row[0]+' предложено равенство '+row[1]+' = '+row[2]+'. Проверь его вычислением и введи правильное значение левой части. Для шифра оставь букву только при совпадении.';
+  }
+  function cipherView(work,interactive){
+    const buttons=codedRows.map(([letter,expression,claim])=>{
+      const selected=(work.cipherLetters||'').includes(letter);
+      return '<li style="margin:.2rem 0">'+(interactive?'<button style="width:100%;text-align:left;white-space:normal" type="button" class="secondary" data-cipher-letter="'+letter+'" aria-pressed="'+selected+'">'+(selected?'✓ ':'')+letter+' · '+expression+' = '+claim+'</button>':letter+' · '+expression+' = '+claim)+'</li>';
+    }).join('');
+    return '<section data-cipher-host aria-label="Буквы шифра"><h3>Лента букв</h3><p>Касайся строк в нужном порядке. Повторное нажатие убирает букву, следующее ставит её в конец.</p><p data-cipher-draft aria-live="polite">'+(work.cipherLetters||'Лента пока пуста')+'</p><ul style="list-style:none;padding-left:0">'+buttons+'</ul>'+(interactive?'<button class="secondary" type="button" data-cipher-use>Перенести ленту в ответ</button>':'')+'</section>';
+  }
+  function mountCipher(main,work,save){
+    let host=main.querySelector('[data-cipher-host]');if(!host)return;
+    function draw(){
+      host.outerHTML=cipherView(work,true);host=main.querySelector('[data-cipher-host]');
+      for(const button of host.querySelectorAll('[data-cipher-letter]'))button.onclick=()=>{
+        const letter=button.dataset.cipherLetter,current=work.cipherLetters||'';work.cipherLetters=current.includes(letter)?current.replace(letter,''):current+letter;
+        save();draw();host.querySelector('[data-cipher-letter="'+letter+'"]').focus({preventScroll:true});
+      };
+      const use=host.querySelector('[data-cipher-use]');use.disabled=!work.cipherLetters;use.onclick=()=>{const input=main.querySelector('#answer');input.value=work.cipherLetters;input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();};
+    }
+    draw();
+  }
+  function honeySupport(){
+    return '<figure style="margin:.5em 0"><figcaption>От ульев к одной банке</figcaption><ol><li>Первый улей — 24,8 кг.</li><li>Второй — первый сбор без 6,4 кг.</li><li>Третий — половина суммы первых двух сборов.</li><li>Общий сбор заполняет 18 одинаковых банок поровну.</li></ol></figure>';
+  }
+  function codewordResponse(number,part,input,correct){
+    if(number===23&&!correct){
+      const eq=n=>root.PetersonBook.M.equal(input,n);
+      if(part.id==='023-a')return {ok:false,text:eq('52.52')?'Это значение слева от последнего минуса. Вычисли вторую часть выражения и вычти её.':eq('52.5')?'Это частное справа от последнего минуса. Вычти его из первой части.':'Проверь разность в знаменателе последнего частного. Сохрани сотые до последнего вычитания.'};
+      return {ok:false,text:eq('117.53')?'Найдено произведение справа от знака минус. Какое число стоит перед ним?':eq('14.6')?'Это сумма внутри скобок. Остались умножение и вычитание.':'Сначала найди два частных внутри скобок, затем их сумму умножь на 8,05.'};
+    }
+    if(number===24&&!correct){
+      const eq=n=>root.PetersonBook.M.equal(input,n);
+      return {ok:false,text:eq('64.8')?'Получена масса всего мёда. Сколько одинаковых банок заполнили этой массой?':eq('21.6')?'Это мёд из третьего улья. Для наполнения банок использовали все три сбора.':eq('43.2')?'Учтены первые два улья. Вычисли половину этой суммы для третьего улья.':'Вычти 6,4 кг из первого сбора. Половину для третьего улья бери от суммы первого и второго.'};
+    }
+    if(number!==22)return null;
+    if(part.id!=='022-slovo'){
+      const claim=codedRows.find(([letter])=>letter===part.label)[2],eq=root.PetersonBook.M.equal;
+      if(correct)return {ok:true,text:eq(input,claim)?'Вычислено верно. Напечатанное равенство верно, его буква участвует в шифре.':'Вычислено верно. Напечатанный результат был ошибочным, эту букву пропусти при расшифровке.'};
+      return {ok:false,text:eq(input,claim)?'Это результат из проверяемой строки. Вычисли левую часть самостоятельно. '+opHint[part.expression.op]:opHint[part.expression.op]};
+    }
+    const entered=input.toUpperCase().replace(/[\s.]+/g,'');if(!/^[А-ЯЁ]+$/.test(entered))return null;
+    const key='АСТЕРОИД',wrong=[...entered].find(c=>!key.includes(c));
+    if(wrong)return {ok:false,text:'Для буквы '+wrong+' не записано верное равенство. Проверь её исходную строку до исправления.'};
+    if(new Set(entered).size<entered.length)return {ok:false,text:'Одна из букв встречается дважды. Каждая верная исходная строка даёт ровно одну букву.'};
+    if([...entered].some((c,i)=>i&&key.indexOf(entered[i-1])>key.indexOf(c)))return {ok:false,text:'Подходящие буквы есть, но результаты должны возрастать. Сопоставь соседним буквам числа и сравни их по разрядам.'};
+    if(entered!==key)return {ok:false,text:'Выбранные буквы стоят по возрастанию. Проверь оставшиеся строки: среди них есть ещё верная.'};
+    return {ok:true,text:'Получился астрономический термин. Сохрани в черновике исправления ложных равенств для проверки учителем.'};
+  }
+
   const factChecks=[
     ['Бруно следовал астрономическому учению Птолемея.','Бруно развивал представление Коперника о движении Земли.','Бруно не следовал этому учению Птолемея.','Бруно не занимался астрономией.','Птолемей следовал учению Бруно.','Отрицай именно указанную связь учёного с учением. Занятия астрономией сами по себе её не устанавливают.','https://plato.stanford.edu/entries/bruno/','Стэнфордская энциклопедия философии'],
     ['Рекорд высоты среди деревьев принадлежит пальмам.','Выше всех известных ныне живущих деревьев вырастают вечнозелёные секвойи.','Рекорд высоты среди деревьев не принадлежит пальмам.','Все пальмы низкие.','Ни одно другое дерево не выше пальмы.','Высокое дерево может и не быть рекордсменом. Утверждение о первенстве опровергает более высокий вид.','https://home.nps.gov/articles/000/coast-redwood.htm','Служба национальных парков США'],
@@ -424,6 +481,9 @@
   }
 
   function openingQuestion(number,part) {
+    if(number===22)return codewordQuestion(part);
+    if(number===23)return 'Вычисли всё выражение. Рассмотри действия внутри каждой скобки. Промежуточные значения сохраняй без округления.';
+    if(number===24)return 'С первого улья собрали 24,8 кг мёда. Второй дал на 6,4 кг меньше первого. С третьего получили половину совместного сбора первого и второго. Весь мёд поровну разлили в 18 банок. Сколько килограммов мёда в одной банке?';
     if(number>=19&&number<=21)return logicCard(number,part).prompt;
     if(number===17||number===18)return campQuestion(number,part);
     if(number>=14&&number<=16)return compareSource(number,part);
@@ -471,6 +531,9 @@
     const prompt=question(item,part);
     let drawing=U.diagram(part.diagram);
     if(item.number===6)drawing=openingVenn();
+    if(item.number===22)drawing=part.id==='022-slovo'?cipherView({},false):decimalModel(part);
+    if(item.number===23)drawing=decimalModel(part);
+    if(item.number===24)drawing=honeySupport();
     if(item.number>=19&&item.number<=21)drawing=logicConstruction(item.number,part,false);
     if(item.number===17||item.number===18)drawing=campSupport(item.number,part);
     if(item.number>=14&&item.number<=16)drawing=sourceSupport(item.number,part);
@@ -498,5 +561,5 @@
       pdfUrl=next;fileError='';
     }catch(error){if(request===fileSelection)fileError=error.message;}
   }
-  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse};
+  root.PetersonCompanion={pane,material,attach,hasCompletePrompt,pageSevenResponse,setTiles,mountDecimal,decimalError,orderResponse,mountFraction,mountPlanets,campResponse,mountLogic,logicResponse,mountCipher,codewordResponse};
 })(globalThis);
