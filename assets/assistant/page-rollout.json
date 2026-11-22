@@ -2225,10 +2225,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "5d1fd12c762d5629e50acdfb8ad0a7f58f651c50388ce746b41481b81716daad",
-      "afterSha256": "208846ae9b866ceb8bb8c6a24aa47c5e157cae43687deb0b5485d5661700e77c",
+      "beforeSha256": "a5774cf8ae48d6f36d2ec3b1b4025168684772e0aac493b2f5f951d9b61e01ea",
+      "afterSha256": "2301b68d9ada3d5a7369a9b6927060c19f7b65ba2796c627ad4e744afeaa4d40",
       "placement": "before-head-close",
-      "sourceSha": "78401295678997601028193368841bdef712ef94"
+      "sourceSha": "6f6028338feea0907c1aee63a008a661c774040f"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7056,6 +7056,15 @@
         "school/index.html"
       ],
       "boundary": "Сверены все пять цепочек, одиннадцать дробей и шесть имён точек на печатной странице 23. В упражнении сохраняются выбранная строка, взаимное положение точек и частичный ответ ученика."
+    },
+    {
+      "previousBaseSha": "78401295678997601028193368841bdef712ef94",
+      "sourceBaseSha": "6f6028338feea0907c1aee63a008a661c774040f",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены пять подпунктов №5.110 на с. 23 и доли их площадей по координатам. Выбор целого и части, ошибка и собственное исправление восстановлены у двух участников."
     }
   ],
   "coverageUpdates": [
