@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "593befda50b43f5be6c7fe246ae904adae31e3525ba8f84ba6b593efc694cf51",
-      "afterSha256": "192294d5e2bd2f47833c8d8a168ef455b59ba943ac547c009045f4160a46e5eb",
+      "beforeSha256": "6e49846d98b9ff10f827ddbd8898a897370366363fab260183eb6c6d6625554c",
+      "afterSha256": "07c841a2bdc78041ca932bf18a90c3fd22b23ae769585341ca8b99f6251df82e",
       "placement": "before-head-close",
-      "sourceSha": "28ca3b741f84f1d05cfc2d6a0e4abaf97478df8b"
+      "sourceSha": "43a23f5ea414ee2133f092602b9f2bd5cc7dc48c"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7618,6 +7618,15 @@
         "school/index.html"
       ],
       "boundary": "Два тома Виленкина содержат упражнения №1–176 и №1–111, включая проверку крайних точек, переноса дробных отметок и сохранения ученического чертежа."
+    },
+    {
+      "previousBaseSha": "28ca3b741f84f1d05cfc2d6a0e4abaf97478df8b",
+      "sourceBaseSha": "43a23f5ea414ee2133f092602b9f2bd5cc7dc48c",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "task": "docs/tasks/VERIFIED_BOOK_ROUTES_20261121.md",
+      "boundary": "На общей школьной странице сохранены два тома Виленкина и добавлена карта издания source-66 с проверенными упражнениями Мордковича и Николаева для 8 класса."
     },
     {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
