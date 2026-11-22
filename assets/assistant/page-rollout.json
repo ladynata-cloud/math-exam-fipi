@@ -2239,10 +2239,10 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "6fd36a3363dec72bcaf5c6a87f0d625f89ab6377e2cfef726d23e4693ac9349d",
-      "afterSha256": "7246c4e96551bc994b47a3081d0441a4e46ffe2887d030e7be434c03728515f7",
+      "beforeSha256": "5df4ad50c458e7aaee14628f56ccaa01fef2b5d05b61c30213b1ee7cd6f34d37",
+      "afterSha256": "bcb255c446bebe4217c54d5dce2805dd62bae14fbf2ab9167e6bc7545e8d2d53",
       "placement": "before-head-close",
-      "sourceSha": "1c4841b7d917e358bdaf166583a191ce060d0779"
+      "sourceSha": "66ad85d3a2ce81a8b7c37d05c11464c4a0ef1022"
     },
     "school/m9-exercises/index.html": {
       "beforeSha256": "fe3f5a721f7d6070f3bf548288b1f9a8ca44c017ef9f1effe1e7a3a4c4a86ea0",
@@ -7430,6 +7430,60 @@
       "boundary": "Сверены входы в оба тома Виленкина: упражнения №1–158 и №1–91 открываются в общем школьном маршруте вместе с проверенными книгами Мастерской."
     },
     {
+      "previousBaseSha": "d04a8a933255251c6176323d257a2649b3156343",
+      "sourceBaseSha": "ebf776ae20f8069b57da8a3eaef9de3d65b3eb1e",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, первая часть, §5: №1.159–1.162, измерения пяти рыб и все подпункты сравнения в метрах, разные единицы для пакетов, повтор на новых числах, сохранение рисунков и шагов двух участников. Таблицы двух томов помещаются на 320 и 375 пикселях."
+    },
+    {
+      "previousBaseSha": "ebf776ae20f8069b57da8a3eaef9de3d65b3eb1e",
+      "sourceBaseSha": "b92da32a243a6cfb1c0a271f58b44e976c020760",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Первые двенадцать подпунктов §6 на странице 34: две сравниваемые координаты, обе стороны прямой, буквы и их произношение. Проверены самостоятельное исправление и возврат состояния учителя и ученика."
+    },
+    {
+      "previousBaseSha": "b92da32a243a6cfb1c0a271f58b44e976c020760",
+      "sourceBaseSha": "de45544087db8418f0c6a94a952c76fc09c02023",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин §6 с. 34: запись и чтение двенадцати сравнений, полные русские числительные, различение верной записи с другим знаком и математической ошибки, учёт помощи, сохранение общей задачи и модели."
+    },
+    {
+      "previousBaseSha": "de45544087db8418f0c6a94a952c76fc09c02023",
+      "sourceBaseSha": "9ae49a0defe8d4d2dcd6a9b40694db394af3e027",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, том 1, §6, с. 34: непрерывный ряд до №1.170. №1.167–170: чтение и запись двойных неравенств, сравнения со скрытыми цифрами и строгие промежутки. Исходный PDF оставлен вне изменений. На этой ветке локально 486840 проверок, все 28 ответов при 320/375 px и синтетическая общая комната: обе роли, изменения модели, восстановление после перезагрузки. Публикация отдельно."
+    },
+    {
+      "previousBaseSha": "9ae49a0defe8d4d2dcd6a9b40694db394af3e027",
+      "sourceBaseSha": "3ed6b2ad43518aa69b758133e5c8e575ad669826",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, том 1, §6, с. 35: непрерывно по №1.172. Две самостоятельные разметки луча и число по трём условиям. Проверены ответы и помощь, произвольные новые данные, 487810 локальных математических проверок, 14 мобильных прохождений подпунктов и реальные сообщения двух синтетических участников, передача управления и восстановление меток. Публикация отдельно."
+    },
+    {
+      "previousBaseSha": "1c4841b7d917e358bdaf166583a191ce060d0779",
+      "sourceBaseSha": "66ad85d3a2ce81a8b7c37d05c11464c4a0ef1022",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Сверены входы в оба тома Виленкина: упражнения №1–172 и №1–93 открываются в общем школьном маршруте вместе с проверенными книгами Мастерской."
+    },
+    {
       "sourceBaseSha": "3da0582b2a4986d3e48079106acb4ac33a3165eb",
       "task": "docs/tasks/ARZHENIKOV_GARDEN.md",
       "changedPaths": [
@@ -7550,6 +7604,15 @@
         "school/index.html"
       ],
       "boundary": "Полностью проверена печатная страница 18 второй части Виленкина: три измерения в №5.90, выбор положения точки на окружности, четыре исходных подпункта №5.91, обе роли и обе перезагрузки."
+    },
+    {
+      "previousBaseSha": "1ca107d91090c214c69aa3dd2ca936ffe6af0a66",
+      "sourceBaseSha": "bc4ba686d04f58301730aadbf4ac72502fbe045b",
+      "task": "docs/tasks/VILENKIN5_COURSE_QUALITY_20261120.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Виленкин, часть 2, печатная страница 19. Проверены четыре вычисления по классам и пространственные виды гаража, мобильный вход и возвращение обоих участников."
     }
   ],
   "coverageUpdates": [
