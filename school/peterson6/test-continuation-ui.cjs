@@ -1,7 +1,27 @@
 'use strict';
 // Actual event handlers in an in-memory DOM. Browser visual review is separate.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const {test}=require('node:test'),{JSDOM}=require('jsdom');
+const {test:registerTest}=require('node:test'),{JSDOM}=require('jsdom');
+const {promisify}=require('node:util');
+const runCase=promisify(require('node:child_process').execFile);
+const selectedCase=process.argv[2]==='--peterson-case'?process.argv[3]:undefined;
+let selectedCount=0;
+
+// Each scenario may create several private windows with the entire course.
+// End its process before loading the next bank, while keeping individual TAP
+// results and name filters on the normal node --test entry point.
+function test(name,check){
+  if(selectedCase!==undefined){
+    if(name===selectedCase){
+      selectedCount++;
+      Promise.resolve().then(check).catch(error=>{console.error(error);process.exitCode=1;});
+    }
+    return;
+  }
+  registerTest(name,async()=>{
+    await runCase(process.execPath,[__filename,'--peterson-case',name]);
+  });
+}
 const KEY='mathexam.peterson6.part1.v1',copy=v=>JSON.parse(JSON.stringify(v));
 function fixture(saved,help,realCourse=false){
  const errors=[],dom=new JSDOM(fs.readFileSync(path.join(__dirname,'index.html'),'utf8'),{url:'https://peterson.test/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,d=w.document;
@@ -1614,3 +1634,5 @@ test('enumerate the complete two-digit source lists and all allowed leading-plac
   }assert.equal(Object.values(f.state().tasks).some(t=>t.correct),false);
  }finally{f.close();}
 });
+
+if(selectedCase!==undefined)assert.equal(selectedCount,1,'Exactly one named model scenario must run');
