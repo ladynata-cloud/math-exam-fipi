@@ -1,0 +1,107 @@
+name: Build the reviewed offline chapter XIII exercises through 1239
+on:
+  push:
+    branches: ['work/atanasyan-1239-offline-886-20261122']
+    paths: ['.github/workflows/atanasyan-1239-package-verified.yml']
+permissions:
+  contents: write
+jobs:
+  verify-and-create-feature-branch:
+    if: github.repository == 'ladynata-cloud/math-exam-fipi' && github.ref == 'refs/heads/work/atanasyan-1239-offline-886-20261122'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SOURCE_SHA: c1739094be153ba281a4b7c4e3bb94b235cd6702
+      SOURCE_TREE: 93a56c143e99cd3668f87ad9c19da7257f2f0740
+      SOURCE_BRANCH: integration/atanasyan-1239-school-886-source-20261122
+      TARGET_BRANCH: integration/atanasyan-1239-school-886-offline-20261122
+      ZIP_PATH: downloads/trainers/geometry-course/geometry-course-package.zip
+      PREVIOUS_BLOB: 56846cc710c8d5f1ee95870528a6ecebb0815bf8
+      EXPECTED_BLOB: d51554ae45e7680741eef61b3db0b4ead93d6c29
+      EXPECTED_TREE: 5ff9df054df3c348eacbd0736ab52f06f8355696
+      PATCH_FOLDER: .github/atanasyan-offline-build/geometry-1239
+      PATCH_BLOB: 924241b4aa2a568ec909c5ac2fdfca90b1b4ae50
+    steps:
+      - name: Check out the dedicated builder and its direct source parent
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/workflows/atanasyan-1239-package-verified.yml
+            /.github/atanasyan-offline-build/geometry-1239/
+            /geometry-course/
+            /scripts/
+            /assets/assistant/page-rollout.json
+            /assets/assistant/home-link.js
+            /assets/download-panel.css
+            /assets/geometry-step-views.js
+            /assets/site.css
+            /ege-baza/return-to-course.js
+            /learning/atanasyan-first-steps/
+            /learning/ichenskaya-grade7-works/app.js
+            /tools/public-navigator-preservation.cjs
+            /tools/geometry-textbook/
+            /content-drafts/atanasyan-grade8-area-842-844/
+            /downloads/trainers-manifest.json
+            /downloads/trainers/geometry-course/
+      - name: Verify the source, every unpacked member, the binary and the clean result tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "${GITHUB_SHA}^")" = "$SOURCE_SHA"
+          test "$(git rev-parse "${SOURCE_SHA}^{tree}")" = "$SOURCE_TREE"
+          cat "$PATCH_FOLDER"/part-* > "$RUNNER_TEMP/reviewed-geometry.patch"
+          test "$(git hash-object "$RUNNER_TEMP/reviewed-geometry.patch")" = "$PATCH_BLOB"
+          git switch --detach "$SOURCE_SHA"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/$SOURCE_BRANCH" | cut -f1)" = "$SOURCE_SHA"
+          test -z "$(git ls-remote --heads origin "refs/heads/$TARGET_BRANCH")"
+          test "$(git hash-object "$ZIP_PATH")" = "$PREVIOUS_BLOB"
+          for book_unit in additional_regular_perimeters arc_routes_and_incircles areas_of_inscribed_disks circle_length_applications circumference_lengths cut_disks_and_semicircles disk_area_table disks_and_annuli inscribed_circle_lengths major_arcs_and_similar_circles measured_arc_devices radian_constructions radian_table regular_compass_finale regular_polygon_diagonals sector_areas; do
+            python3 "tools/geometry-textbook/${book_unit}.py" --check
+          done
+          for check in additional_regular_perimeters arc_routes_and_incircles areas_of_inscribed_disks circle_length_applications circumference_lengths cut_disks_and_semicircles disk_area_table disks_and_annuli inscribed_circle_lengths major_arcs_and_similar_circles measured_arc_devices radian_constructions radian_table regular_compass_finale regular_polygon_diagonals sector_areas; do
+            python3 "tools/geometry-textbook/check_${check}.py"
+          done
+          node scripts/build-trainer-downloads.mjs --only=geometry-course --downloads-only
+          # The repository-wide export date does not belong to the single-book change.
+          python3 - <<'PYCODE'
+          import json, subprocess
+          path = 'downloads/trainers-manifest.json'
+          before = json.loads(subprocess.check_output(['git','show','HEAD:'+path]))
+          with open(path, encoding='utf-8') as stream:
+              after = json.load(stream)
+          before.pop('updated'); after.pop('updated')
+          assert before == after
+          PYCODE
+          git restore -- downloads/trainers-manifest.json
+          mv "$ZIP_PATH" "$RUNNER_TEMP/rebuilt.zip"
+          git restore -- "$ZIP_PATH"
+          git apply --binary "$RUNNER_TEMP/reviewed-geometry.patch"
+          test "$(git hash-object "$ZIP_PATH")" = "$EXPECTED_BLOB"
+          test "$(wc -c < "$ZIP_PATH")" = "17867130"
+          test "$(sha256sum "$ZIP_PATH" | cut -d' ' -f1)" = "d7fd198853ef3a6b3574f7f6b7837e73b21fc330fc53ce101cae589bbe9c797f"
+          python3 - "$RUNNER_TEMP/rebuilt.zip" "$ZIP_PATH" <<'PY'
+          from pathlib import PurePosixPath
+          import sys, zipfile
+          with zipfile.ZipFile(sys.argv[1]) as built, zipfile.ZipFile(sys.argv[2]) as reviewed:
+              assert built.testzip() is None and reviewed.testzip() is None
+              names = built.namelist()
+              assert names == reviewed.namelist() and len(names) == len(set(names)) == 374
+              assert 'Доступно карточек в задачнике: 2230.' in reviewed.read('README.txt').decode()
+              for name in names:
+                  assert not PurePosixPath(name).is_absolute() and '..' not in PurePosixPath(name).parts
+                  assert built.read(name) == reviewed.read(name), name
+                  before, after = built.getinfo(name), reviewed.getinfo(name)
+                  assert (before.date_time, before.compress_type, before.external_attr) == (after.date_time, after.compress_type, after.external_attr), name
+          PY
+          test "$(git diff --name-only)" = "$ZIP_PATH"
+          git add -- "$ZIP_PATH"
+          test "$(git diff --cached --name-only)" = "$ZIP_PATH"
+          test "$(git write-tree)" = "$EXPECTED_TREE"
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Собрать 2230 карточек автономной планиметрии с задачами №1–1239 и проверкой ключа №1219'
+          test "$(git rev-parse HEAD^)" = "$SOURCE_SHA"
+          test "$(git rev-parse 'HEAD^{tree}')" = "$EXPECTED_TREE"
+          git push --force-with-lease="refs/heads/${TARGET_BRANCH}:" origin "HEAD:refs/heads/${TARGET_BRANCH}"
+          test "$(git ls-remote --exit-code --heads origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$(git rev-parse HEAD)"
+          echo "Verified $SOURCE_SHA -> $(git rev-parse HEAD), $EXPECTED_TREE, $EXPECTED_BLOB" >> "$GITHUB_STEP_SUMMARY"
