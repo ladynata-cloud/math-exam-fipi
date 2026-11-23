@@ -222,10 +222,10 @@
       "sourceSha": "ac152cc3e5458a29ccf480c0a9cc6e2b5b107c8a"
     },
     "courses/vilenkin-5-part-1/index.html": {
-      "beforeSha256": "c24a34c8deb89261c203c4a3a25ac5baf88f7fc23f086797cadf8fdcc1d6d758",
-      "afterSha256": "7c29c295f0ccfaf195228fa3849f5ebc06c969690097632c69807a14c878d823",
+      "beforeSha256": "6715d1e96de75c73f115ea6c5cedc0002b36087c7ccf24128c1efa695d2d6e13",
+      "afterSha256": "838a169381b8ff68a2a5d1345daf3ba07077cdf95372c54a4924a9220f89fa80",
       "placement": "before-head-close",
-      "sourceSha": "229f3617a44c093618626efc74fa01db4a4472af"
+      "sourceSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
       "beforeSha256": "1e5749f8ed7c3a4f90b6d3aa37881ba8bc8620c4d6be4ca175addab0c81d1f28",
@@ -2268,10 +2268,10 @@
       "placement": "before-head-close"
     },
     "school/peterson5/index.html": {
-      "beforeSha256": "fa5cd207c598edc132cf1679d33d5d16a5646d8041cf4fe4a23d16e7b059d650",
-      "afterSha256": "199307acce2ea3c81ddb5167c061f5430a7cf928b9a903fcb79a1eee3d07d78c",
+      "beforeSha256": "61d8df0b916d9a29bfd019c7ac25feded46f19a8739b274a947b1e6d0206c0e5",
+      "afterSha256": "281374e1aa874a1be4e4d91973d9084a1b5a62bef2015e23f7a688c0d11cb17e",
       "placement": "before-head-close",
-      "sourceSha": "229f3617a44c093618626efc74fa01db4a4472af"
+      "sourceSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11"
     },
     "school/peterson6/topics/droby-i-desyatichnye/index.html": {
       "beforeSha256": "922041dbe60ea1a11cc16b1b25fd587356563378d2f3c3c122145fb98f2be143",
@@ -2335,9 +2335,10 @@
       "placement": "before-head-close"
     },
     "topics/obyknovennye-drobi/index.html": {
-      "beforeSha256": "c71a68175a768d822d6c59ff32321ead98b5c015942af36860f438f90116cdd7",
-      "afterSha256": "7f9bea08deb44da7abcbaee9fa482e733bca2d4763de03c7f6d0aec1b0a460c3",
-      "placement": "before-head-close"
+      "beforeSha256": "f5b297836f05c71e7534afe84550957256559801a4a0a285163046c90635e879",
+      "afterSha256": "b4772c0531e9dd314e07af778db8f97e58215fb962b6f63b1671b20a0ce3a31c",
+      "placement": "before-head-close",
+      "sourceSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11"
     },
     "topics/oge-geometriya/index.html": {
       "beforeSha256": "8c24b421f25f994be3e7863a49d71d2a73ed33f8bba51beda99ab7388a931277",
@@ -2345,9 +2346,10 @@
       "placement": "before-head-close"
     },
     "topics/procenty/index.html": {
-      "beforeSha256": "397d23fed03799e43737c17e875e4a4bc6ccbc30598674571167866c6d5f4794",
-      "afterSha256": "595208f4cd8970460330050e5f2df07b10af877d2e83aa5e8693768a94c67601",
-      "placement": "before-head-close"
+      "beforeSha256": "75a84cd5294aa324606a75da7f574b60ab1d0c73a680e95152c3c7ee99771d5d",
+      "afterSha256": "d0593519c47442de358ece5c8ae09fbb5bc84463c41ab9e2b98360b981dfced4",
+      "placement": "before-head-close",
+      "sourceSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11"
     },
     "trainers/algebra-7/control-work.html": {
       "beforeSha256": "12462aed566a3b12881d6ae49e4cf8bec6690de4f71c92e04e49dcbee6d9b5c8",
@@ -6792,6 +6794,19 @@
       "changedPaths": [
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "sourceBaseSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11",
+      "task": "docs/tasks/SEO_SKILL_ENTRANCES_20261124.md",
+      "changedPaths": [
+        "courses/vilenkin-5-part-1/index.html",
+        "school/peterson5/index.html",
+        "topics/obyknovennye-drobi/index.html",
+        "topics/procenty/index.html"
+      ],
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
