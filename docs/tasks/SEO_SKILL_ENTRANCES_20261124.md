@@ -30,3 +30,9 @@ Source robots.txt and sitemap.xml exist; live fetch of those endpoints and inter
 ## Execution record
 
 Source checks and arithmetic assertions performed in connector scripting; full repository local checkout and browser/CI not yet performed. Exact source and binding commits, PR status and release blockers are recorded in PR.
+
+## Follow-up after PR #740 (2026-11-24)
+
+New validated base for this candidate: `eb1203bad1736cd74a0be125ed2860fcb088b7c0`. Owner requested implementation of the Fable recommendations, subject to evidence. Keep this existing PR and retain the three original HTML changes to fractions, percentages and Peterson. Restore Vilenkin part 1 index and its binding to current main: its generated offline artifact failed the byte reproducibility gate when title/footer changed. Move contextual learning entry to the already public full Vilenkin 5 course overview instead; preserve both generated main mounts and offline bundle. Scope is amended accordingly (four public pages). Keep the static link regression, adapting the expected origin and adding the divisibility and fractions destinations. Preserve all published #740 files and bindings; no change to sitemap, robots, course runtimes, learner data or analytics. Source metadata shows Google sitemap was last processed before #740; fresh live HTTP verification is still unavailable. Search-data-based selection and external distribution remain separate measurement and editorial work, not grounds to invent more pages. No paid calls, no scheduled tasks.
+
+Release gate: rerun applicable exact-candidate CI. Do not weaken the offline check or claim live verification.

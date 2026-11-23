@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 631,
-    "covered": 629,
+    "total": 632,
+    "covered": 630,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher.",
       "/oge/skills/": "Existing dedicated task-aware helper; no competing launcher."
@@ -222,10 +222,10 @@
       "sourceSha": "ac152cc3e5458a29ccf480c0a9cc6e2b5b107c8a"
     },
     "courses/vilenkin-5-part-1/index.html": {
-      "beforeSha256": "6715d1e96de75c73f115ea6c5cedc0002b36087c7ccf24128c1efa695d2d6e13",
-      "afterSha256": "838a169381b8ff68a2a5d1345daf3ba07077cdf95372c54a4924a9220f89fa80",
+      "beforeSha256": "c24a34c8deb89261c203c4a3a25ac5baf88f7fc23f086797cadf8fdcc1d6d758",
+      "afterSha256": "7c29c295f0ccfaf195228fa3849f5ebc06c969690097632c69807a14c878d823",
       "placement": "before-head-close",
-      "sourceSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11"
+      "sourceSha": "229f3617a44c093618626efc74fa01db4a4472af"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
       "beforeSha256": "1e5749f8ed7c3a4f90b6d3aa37881ba8bc8620c4d6be4ca175addab0c81d1f28",
@@ -2294,9 +2294,10 @@
       "placement": "before-head-close"
     },
     "soviet-math/index.html": {
-      "beforeSha256": "d575f260108d8987aaa78dab251e62907c30b1fec1472fe2c440a217081a5bad",
-      "afterSha256": "7748c7cae0b6df01613e6c561525a5a448901f3bb7f25f04df7a8d315e167dea",
-      "placement": "before-head-close"
+      "beforeSha256": "d5f1fbd38369f67adc1f4fb52f746e0ce185960f2169c2766308bfbc9e841a4c",
+      "afterSha256": "0e402702244c6b2e1fc0157d0809f2b74ecad1606d9730680363a37b93b47cc4",
+      "placement": "before-head-close",
+      "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
     },
     "stereo-course/index.html": {
       "beforeSha256": "0487d4709a4df979876b962a436befae891424b3a961f5695cf93415f121f3a0",
@@ -2320,14 +2321,16 @@
       "placement": "before-head-close"
     },
     "topics/delenie-ugolkom/index.html": {
-      "beforeSha256": "e234c3e561347bfde4ffdc1cfb3d9bcfdf42b898ab301c5ce255aaa6fd992cb8",
-      "afterSha256": "bc8db59fb659a692fa217deb2f26c8747d8a2565748cd4811f7518b186e9b236",
-      "placement": "before-head-close"
+      "beforeSha256": "0a178260dd91ed5759e44c769528fa848a057187b0ee38f13187c8094c228779",
+      "afterSha256": "d77ced9ab24437b8d1e6824854a6cf50ddd02beb8554123f2c21c89bdc4ec86c",
+      "placement": "before-head-close",
+      "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
     },
     "topics/index.html": {
-      "beforeSha256": "7fe36cdf7a9af53079fa763a3c82afeff0a71a4196c5f6aef84cc445ea52dc0f",
-      "afterSha256": "0f697c38ae60f665c955fbb12b213408b6b1b48a12068ff1c16c243942f87567",
-      "placement": "before-head-close"
+      "beforeSha256": "890c01aef8be1912978b5d7d44f049e55c55f31ea36652ee2d8fb00e69c616ba",
+      "afterSha256": "89b4678acb27832d5a57e880c2ee66b59d54a72c780e00e5d325ced9b75361c4",
+      "placement": "before-head-close",
+      "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
     },
     "topics/lineynye-uravneniya/index.html": {
       "beforeSha256": "76b27dd9d6b8a2df1029cdbda0b519f4cd9285f596b7a2239791bf2cf75d00b6",
@@ -2715,9 +2718,10 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/index.html": {
-      "beforeSha256": "39fd55e265834cb0e7d113391408836e881c7e2c25fef718d7b4644dc3fae257",
-      "afterSha256": "38958c07bf86ff5f391f62b8cc5c9578e6f4247196352f16062822adf725d5f4",
-      "placement": "before-head-close"
+      "beforeSha256": "ea88fae8bb68fb1cb7c5f7465b9e3d13933fac7372cc198e39f41db4aa46ecb6",
+      "afterSha256": "7862fc4c856949a79b7ef3e772484ef5fb672e6e989d542dcc972632916748a9",
+      "placement": "before-head-close",
+      "sourceSha": "edcd9019bd0ab9e7b14d43843e578ff04178c3be"
     },
     "trainers/oge-basics/multiplication-division.html": {
       "beforeSha256": "d07e510baad0f61e76f0f8af9efb3f5141028982554cae7e78d0de0dca7e4f58",
@@ -2922,10 +2926,10 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division/index.html": {
-      "beforeSha256": "692d6193cc0eae3d27d73555f6b0b6ef720d2d50b49903dcc8e2fffa792b2c42",
-      "afterSha256": "a7d04d58d44f3e6f74fa3eebf8742a944958cc61ca033059bfda04753bd26606",
+      "beforeSha256": "3e328a20b9aef3fb4c848d7a76cf5232a502df126a050a6f4f568759203f1247",
+      "afterSha256": "15c97f6489721182ee9ad41998efe20dfb5529299670295d58cdf08837d6bfe7",
       "placement": "before-head-close",
-      "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
+      "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
     },
     "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html": {
       "beforeSha256": "01685c0be741a9e8002822cd04ed2261456a17e19b856797ab0686d09031511e",
@@ -3366,6 +3370,12 @@
       "afterSha256": "1d12911ed5e4e2aa43bb81a9932a7b268ccd7de15c01bbf450376f88c858ab6b",
       "placement": "before-head-close",
       "sourceSha": "2fc93633c9818d9a07c0aa9550fb945e0d7cbdb3"
+    },
+    "topics/metod-arzhenikova/index.html": {
+      "placement": "before-head-close",
+      "beforeSha256": "af5ee30887c654f7c310672d671c1aa35a204292aec7e2f522b1acec06a2e23e",
+      "afterSha256": "d930cd7c99548e1fef75f664f5d3262aa995a1256068492828cd748c7b6cbeca",
+      "sourceSha": "2a0a4813b45e9eb394cf5d82d4624ba4b3753440"
     }
   },
   "provenance": {
@@ -4035,7 +4045,8 @@
     "trainers/peterson6-workshop/index.html": "sitemap",
     "trainers/merzlyak9-2014/index.html": "school/index.html",
     "trainers/makarychev9-2017/index.html": "school/index.html",
-    "trainers/college-stereometry/polyhedra-sections/index.html": "trainers/college-stereometry/index.html"
+    "trainers/college-stereometry/polyhedra-sections/index.html": "trainers/college-stereometry/index.html",
+    "topics/metod-arzhenikova/index.html": "sitemap"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6797,16 +6808,65 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
+      "sourceBaseSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151",
+      "previousSourceShas": {
+        "topics/index.html": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+        "topics/delenie-ugolkom/index.html": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+        "soviet-math/index.html": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+        "trainers/oge-basics/index.html": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+        "trainers/oge-basics/multiplication-division/index.html": "6faf3cf3c16347b299327563a46356d5d8390f15"
+      },
+      "task": "docs/tasks/SEO_ARZHENIKOV_TRAINERS_20261123.md",
+      "changedPaths": [
+        "soviet-math/index.html",
+        "topics/delenie-ugolkom/index.html",
+        "topics/index.html",
+        "trainers/oge-basics/index.html",
+        "trainers/oge-basics/multiplication-division/index.html"
+      ],
+      "reason": "Bind reviewed contextual Arzhenikov search entrances to their exact published source commit. Preserve every other source binding and the global base.",
+      "bindingScope": "Per-page sourceSha; HTML and navigator runtime are unchanged by this metadata update."
+    },
+    {
+      "sourceBaseSha": "edcd9019bd0ab9e7b14d43843e578ff04178c3be",
+      "previousSourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151",
+      "task": "docs/tasks/SEO_ARZHENIKOV_TRAINERS_20261123.md",
+      "changedPaths": [
+        "trainers/oge-basics/index.html"
+      ],
+      "reason": "Bind the cloud-browser correction that keeps the Arzhenikov entrance visible in the arithmetic section when minimal navigation is enabled. Preserve every other source binding and the global base.",
+      "bindingScope": "Per-page sourceSha; HTML and navigator runtime are unchanged by this metadata update."
+    },
+    {
+      "sourceBaseSha": "f5739c9c60da19b289f88cefc1abd47c92fb4de6",
+      "previousSourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151",
+      "task": "docs/tasks/SEO_ARZHENIKOV_TRAINERS_20261123.md",
+      "changedPaths": [
+        "topics/metod-arzhenikova/index.html"
+      ],
+      "reason": "Bind the reviewed page-only navigator placement that reserves header space and prevents overlap with the guide text. Preserve every other source binding and the shared navigator runtime.",
+      "bindingScope": "Per-page sourceSha; the exact shared navigator pair and global base remain unchanged."
+    },
+    {
+      "sourceBaseSha": "2a0a4813b45e9eb394cf5d82d4624ba4b3753440",
+      "previousSourceSha": "f5739c9c60da19b289f88cefc1abd47c92fb4de6",
+      "task": "docs/tasks/SEO_ARZHENIKOV_TRAINERS_20261123.md",
+      "changedPaths": [
+        "topics/metod-arzhenikova/index.html"
+      ],
+      "reason": "Bind the updated 82-lesson SEO guide to the composed source commit. Preserve all course-release and prior SEO receipts; no approval granted.",
+      "bindingScope": "Per-page sourceSha; shared navigator runtime and current global base unchanged."
+    },
+    {
       "previousBaseSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
       "sourceBaseSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11",
       "task": "docs/tasks/SEO_SKILL_ENTRANCES_20261124.md",
       "changedPaths": [
-        "courses/vilenkin-5-part-1/index.html",
         "school/peterson5/index.html",
         "topics/obyknovennye-drobi/index.html",
         "topics/procenty/index.html"
       ],
-      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged.",
+      "bindingScope": "Three retained per-page sourceSha bindings from reviewed candidate; Vilenkin first-part file and original binding restored from current main. All #740 bindings retained.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
@@ -6948,6 +7008,14 @@
         "trainers/college-stereometry/polyhedra-sections/index.html"
       ],
       "reason": "Publish the seventh college stereometry lesson with the existing public navigator; retain its standalone student download."
+    },
+    {
+      "sourceBaseSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151",
+      "task": "docs/tasks/SEO_ARZHENIKOV_TRAINERS_20261123.md",
+      "addedPages": [
+        "topics/metod-arzhenikova/index.html"
+      ],
+      "reason": "Add the sourced Arzhenikov method guide with the existing public navigator; one new canonical sitemap entrance."
     }
   ]
 }

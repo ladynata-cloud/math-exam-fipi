@@ -52,7 +52,7 @@ class Entrances(unittest.TestCase):
   routes={
    'topics/obyknovennye-drobi/index.html':('/school/peterson5/#topic/p28/discover','/school/peterson5/#topic/p37/discover','/trainers/oge-basics/multiplication-division/arzhenikov-map.html'),
    'topics/procenty/index.html':('/school/peterson6/topics/zadachi-na-procenty/','/ege-baza/topics/izmenenie-tseny-procenty/'),
-   'courses/vilenkin-5-part-1/index.html':('/topics/delenie-ugolkom/','/trainers/oge-basics/multiplication-division/arzhenikov-map.html'),
+   'courses/vilenkin-5/index.html':('/courses/vilenkin-5-part-1/#lesson/19/theory','/topics/delenie-ugolkom/','/topics/obyknovennye-drobi/','/trainers/oge-basics/multiplication-division/arzhenikov-map.html'),
    'school/peterson5/index.html':('/topics/obyknovennye-drobi/','/topics/delenie-ugolkom/','/trainers/oge-basics/multiplication-division/arzhenikov-map.html'),
   }
   for name, destinations in routes.items():
