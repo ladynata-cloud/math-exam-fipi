@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+  "baseSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3330,10 +3330,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "e15615bea0e72a5ae9751bf28605ac9a50a23ea51f7425fd79c19be8d47810ce",
-      "afterSha256": "aecbdc9c365ccf7145b8cc6782dc7695ceaba283f07277dde212d48ce3136589",
+      "beforeSha256": "2b58a7a8e4560aa5f094514f917e23384fa332bc41767f07f8ce613a2a7b1ab0",
+      "afterSha256": "e4e43301afef71e08c7bedca1e94207abd77cd6991c52aea88886afa806fac78",
       "placement": "before-head-close",
-      "sourceSha": "4a497e77e28d6cc55bacaa1bc1b1c5747dfdac44"
+      "sourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6784,6 +6784,15 @@
       ],
       "reason": "Bind the reviewed written division, common fractions and decimal arithmetic extension to the existing skill map. The page matches the committed source and retains the exact navigator includes.",
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "previousBaseSha": "762204a9fa22791ae825af0c423f5c6c7ca6b9b0",
+      "sourceBaseSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/ARZHENIKOV_COURSE_COMPLETION_20261123.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [

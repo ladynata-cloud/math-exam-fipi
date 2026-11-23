@@ -42,7 +42,7 @@ const cases = [
   ['sequence-3', 'reserve', 'part', 20, [], [5, 5, 5, 5], {left: 15, each: 5}],
   ['sequence-4', 'whole', 'whole', 12, [4, 4, 4], [4, 4, 1, 3], {before: 12, left: 9}]
 ].map(([id, prediction, reason, total, initial, wanted, values]) => ({id, prediction, reason, total, initial, wanted, values}));
-const groups = ['city', 'harbor', 'garden', 'discoveries', 'division', 'written', 'fractions', 'decimals', 'algebra', 'geometry'];
+const groups = ['city', 'harbor', 'garden', 'discoveries', 'division', 'written', 'fractions', 'decimals', 'connections', 'algebra', 'geometry'];
 const pad = (values, length) => Array.from({length}, (_, index) => values[index] || 0);
 const numericCount = value => Array.isArray(value) ? value.length : value;
 
@@ -513,7 +513,7 @@ async function main() {
         await offline.goto('#discoveries-adjust-3'); await solve(offline, cases.find(task => task.id === 'adjust-3'));
         await domMap(offline);
       } finally { offline.close(); fs.rmSync(directory, {recursive: true, force: true}); }
-      console.log('ARZHENIKOV_JOURNEYS_DOM_OK: 24 investigations, errors, partial work, reload/undo, sticky assistance, replay, four actual old saves, ten map routes and unpacked ZIP runtime. Browser layout and keyboard checks not run in DOM mode.');
+      console.log('ARZHENIKOV_JOURNEYS_DOM_OK: 24 investigations, errors, partial work, reload/undo, sticky assistance, replay, four actual old saves, eleven map routes and unpacked ZIP runtime. Browser layout and keyboard checks not run in DOM mode.');
     } finally { flow.close(); }
     return;
   }
