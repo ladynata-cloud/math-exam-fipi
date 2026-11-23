@@ -31,6 +31,7 @@
     node.append(document.createTextNode(text.slice(at))); return node;
   }
   const bank = () => B.withLessons(context.lessons, context.courseState);
+  const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
   function initialize() {
     if (state) return;
     state = E.fresh();
@@ -41,6 +42,13 @@
         if (!raw || raw.version !== 1 || !raw.sessions || typeof raw.sessions !== 'object' ||
             !raw.history || typeof raw.history !== 'object' || Array.isArray(raw.sessions) || Array.isArray(raw.history)) throw new Error('unreadable record');
         state = E.normalize(raw, bank(), checkAnswer);
+        // Normalization can recover other modes, but must not silently replace
+        // the original text when a saved session or its queued entries was lost.
+        // Optional v1 evidence fields may still be absent in an older valid save.
+        if (Object.entries(raw.sessions).some(([mode, session]) => session !== null &&
+          (!Object.prototype.hasOwnProperty.call(state.sessions,mode) || !state.sessions[mode] ||
+            !object(session.entries) || session.itemIds.some(id =>
+              !object(session.entries[id]) || session.entries[id].id !== id)))) throw new Error('damaged session');
       }
     } catch {
       storageOK = false;
@@ -236,5 +244,9 @@
     return Object.entries(state.sessions).filter(([,session]) => session && session.completedAt === null)
       .map(([mode,session]) => ({href:'#course-check-' + mode, text:'Продолжить: ' + titles[mode] + ' · задача ' + (session.cursor + 1) + ' из ' + session.itemIds.length}));
   }
-  window.ArzhenikovCompletion = {render,resumeLinks};
+  function lessonOpened(ctx) {
+    context = {...context,...ctx}; initialize();
+    if (E.useLessonHelp(state,ctx.lessonId,bank())) save();
+  }
+  window.ArzhenikovCompletion = {render,resumeLinks,lessonOpened};
 })();

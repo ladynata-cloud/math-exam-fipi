@@ -209,6 +209,7 @@
     host.append(link('← Пространственная карта навыков', ['written','fractions','decimals'].includes(track.id) ? '#journey-' + track.id : '#journey', 'course-return'));
   }
   function lessonHeader(lesson, phase) {
+    window.ArzhenikovCompletion?.lessonOpened({host,lessons,courseState:state,lessonId:lesson.id});
     const track = trackOf(lesson);
     host.dataset.courseView = 'lesson'; host.dataset.courseLesson = lesson.id; host.dataset.coursePhase = phase;
     shell([[track.title, '#courses-' + track.id], [lesson.title]]);

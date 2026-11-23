@@ -116,6 +116,59 @@ test('help can be opened before any attempt and is sticky across input changes a
   assert.equal(state.history[entry.id].first.firstHelpUsed, true);
 });
 
+test('a related lesson helps paused exposed checks, while unrelated and future topics stay neutral', () => {
+  const state = begin(['final-item-0', 'final-item-1']);
+  E.start(state, {mode:'placement', itemIds:['placement-item-0'], now:110}, bank);
+  const untouched = clone(state);
+  assert.equal(E.useLessonHelp(state, 'lesson-7', bank), false);
+  assert.equal(E.useLessonHelp(state, 'lesson-1', bank), false, 'a future unpresented task has no help event');
+  assert.deepEqual(state, untouched);
+  assert.equal(E.useLessonHelp(state, 'lesson-0', bank), true);
+  assert.equal(state.active, 'placement', 'recording a lesson visit does not switch the active check');
+  assert.equal(state.sessions.final.entries['final-item-0'].helpUsed, true);
+  assert.equal(E.current(state).helpUsed, true);
+  const helped = clone(state);
+  assert.equal(E.useLessonHelp(state, 'lesson-0', bank), false, 'repeated rendering is idempotent');
+  assert.deepEqual(state, helped);
+  solve(state); E.next(state, bank);
+  assert.equal(E.summary(state, bank).independent, 0);
+  E.start(state, {mode:'final', itemIds:['final-item-0', 'final-item-1'], now:120}, bank);
+  solve(state);
+  assert.equal(E.current(state).firstHelpUsed, true);
+  assert.equal(E.current(state).reason.firstHelpUsed, true);
+});
+
+test('opening a related lesson after a correct answer affects the remaining explanation, not the past answer', () => {
+  let state = begin(['final-item-0']);
+  E.setInput(state, '2'); assert.equal(E.submit(state, bank, checkAnswer).kind, 'correct');
+  assert.equal(E.current(state).firstHelpUsed, false);
+  assert.equal(E.useLessonHelp(state, 'lesson-0', bank), true);
+  state = E.normalize(clone(state), bank, checkAnswer);
+  assert.equal(E.current(state).firstCorrect, true);
+  assert.equal(E.current(state).firstHelpUsed, false);
+  assert.equal(E.current(state).helpAt.hint, 1);
+  assert.equal(E.current(state).helpAtReason.hint, 0);
+  E.setReason(state, 'right'); E.submit(state, bank, checkAnswer, {field:'reason'}); E.next(state, bank);
+  const report = E.summary(state, bank);
+  assert.equal(report.independent, 1);
+  assert.equal(report.reasonIndependent, 0);
+  assert.equal(state.history['final-item-0'].first.firstHelpUsed, false);
+  assert.equal(state.history['final-item-0'].first.reason.firstHelpUsed, true);
+});
+
+test('visiting a lesson cannot retroactively mark a finished answer as assisted', () => {
+  const state = begin(['final-item-1']);
+  solve(state);
+  const answered = clone(state);
+  assert.equal(E.useLessonHelp(state, 'lesson-1', bank), false);
+  assert.deepEqual(state, answered);
+  E.next(state, bank);
+  const finished = clone(state);
+  assert.equal(E.useLessonHelp(state, 'lesson-1', bank), false);
+  assert.deepEqual(state, finished);
+  assert.equal(E.summary(state, bank).independent, 1);
+});
+
 test('reason choice is saved separately and reasoning errors or later help do not rewrite the first numerical answer', () => {
   let state = begin(['final-item-0']);
   E.setReason(state, 'wrong');

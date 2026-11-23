@@ -121,13 +121,30 @@
     if (!entry || entry.skipped || entry.reason.solved || !entry.reason.required) return false;
     entry.reason.choice = short(choice, 100); syncHistory(state, entry); return true;
   }
-  function useHelp(state, kind) {
-    const entry = current(state);
+  function recordHelp(state, entry, kind) {
     if (!entry || done(entry) || !['hint', 'solution'].includes(kind)) return false;
     if (!entry.help[kind]) {
       entry.help[kind] = true; entry.helpAt[kind] = entry.attempts; entry.helpAtReason[kind] = entry.reason.attempts;
     }
     entry.helpUsed = true; syncHistory(state, entry); return true;
+  }
+  function useHelp(state, kind) { return recordHelp(state, current(state), kind); }
+  function useLessonHelp(state, lessonId, bank) {
+    if (!validId(lessonId)) return false;
+    const byId = itemMap(bank);
+    let changed = false;
+    for (const mode of modes) {
+      const session = state.sessions[mode];
+      if (!session || session.completedAt !== null) continue;
+      const entry = session.entries[session.itemIds[session.cursor]], item = entry && byId.get(entry.id);
+      // Only an exposed, unfinished question on this topic receives assistance.
+      // A paused check is still affected, without changing the active route or
+      // rewriting a numerical first answer given before the lesson was opened.
+      if (entry?.presentation && item && lessonIds(item).includes(lessonId) && !entry.help.hint) {
+        changed = recordHelp(state, entry, 'hint') || changed;
+      }
+    }
+    return changed;
   }
   function answerCheck(item, input, checker) {
     if (typeof checker !== 'function') return {kind: 'format', message: 'Проверка ответа сейчас недоступна.'};
@@ -309,7 +326,7 @@
       reasonIndependent: results.filter(result => result.presentation === 1 && !result.skipped && result.reason.required && result.reason.solved && result.reason.firstCorrect === true && result.reason.firstHelpUsed === false).length,
       results, recommendedLessonIds};
   }
-  const api = {key, fresh, normalize, eligibleLessonIds, selectItems, start, current, setInput, setReason, useHelp, submit, skip, next, summary};
+  const api = {key, fresh, normalize, eligibleLessonIds, selectItems, start, current, setInput, setReason, useHelp, useLessonHelp, submit, skip, next, summary};
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.ArzhenikovCompletionEngine = api;
 })(typeof window === 'object' ? window : globalThis);

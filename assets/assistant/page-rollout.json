@@ -3333,7 +3333,7 @@
       "beforeSha256": "2b58a7a8e4560aa5f094514f917e23384fa332bc41767f07f8ce613a2a7b1ab0",
       "afterSha256": "e4e43301afef71e08c7bedca1e94207abd77cd6991c52aea88886afa806fac78",
       "placement": "before-head-close",
-      "sourceSha": "4a497e77e28d6cc55bacaa1bc1b1c5747dfdac44"
+      "sourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",

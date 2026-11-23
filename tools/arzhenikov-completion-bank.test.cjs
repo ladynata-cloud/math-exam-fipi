@@ -142,13 +142,43 @@ test('every new answer agrees with its actual story and a separate exact metadat
   }
 });
 
+test('fraction transfer conditions change the calculation, not only the story or operand order',()=>{
+  // A renamed story, a reversed sum or an equivalent fraction spelling must
+  // not turn a practised calculation into a fresh transfer condition.
+  const aliases={sum:'r-add',difference:'r-sub',product:'r-mul',quotient:'r-div'};
+  function signature(calculation) {
+    if(!calculation || calculation.op==='r-expression') return null;
+    const op=aliases[calculation.op] || calculation.op;
+    const args=calculation.args.map(value=>{const q=exact(value);return q.n+'/'+q.d;});
+    if(['r-add','r-mul'].includes(op)) args.sort();
+    return JSON.stringify([op,args]);
+  }
+  const lessonTasks=lessons.flatMap(lesson=>lesson.tasks);
+  const taught=new Map(lessonTasks.map(item=>[signature(item.calculation),item.id]));
+  const transferSkills=new Set(['fraction-add','mixed','whole']);
+  for(const item of bank.items.filter(item=>transferSkills.has(item.skill))) {
+    const key=signature(item.calculation);
+    assert(key,item.id+': explicit operation and original quantities');
+    assert(!taught.has(key),item.id+': repeats the calculation in '+taught.get(key));
+  }
+  const lessonById=new Map(lessonTasks.map(item=>[item.id,item]));
+  for(const [lessonId,calculation] of [
+    ['c-common-2',{op:'r-add',args:['1/6','2/8']}],
+    ['c-mixed-1',{op:'r-div',args:['7/3','1/3']}],
+    ['d-divide-decimal-7',{op:'r-div',args:['3 3/4','1/4']}],
+    ['f-whole-from-part-4',{op:'r-div',args:[15,'10/16']}]
+  ]) assert.equal(signature(calculation),signature(lessonById.get(lessonId).calculation),
+    lessonId+': changed notation and wording cannot hide the previously taught calculation');
+});
+
 test('hand-worked boundary fixtures catch reversed whole/part, remainder, time and mixed-operation mistakes',()=>{
   const expected={
     'transfer-capacity-placement':'5','transfer-capacity-review':'5','transfer-capacity-final':'5',
     'transfer-written-placement':'402','transfer-written-review':'406','transfer-written-final':'504',
     'transfer-common-placement':'3/5','transfer-common-review':'3/5','transfer-common-final':'2/3',
-    'transfer-mixed-placement':'7','transfer-mixed-review':'15','transfer-mixed-final':'3',
-    'transfer-whole-placement':'20','transfer-whole-review':'42','transfer-whole-final':'24',
+    'transfer-fraction-add-placement':'9/20',
+    'transfer-mixed-placement':'11','transfer-mixed-review':'13','transfer-mixed-final':'3',
+    'transfer-whole-placement':'20','transfer-whole-review':'42','transfer-whole-final':'18',
     'transfer-units-placement':'135','transfer-units-review':'3.25','transfer-units-final':'2.5',
     'transfer-percent-placement':'20','transfer-percent-review':'25','transfer-percent-final':'60',
     'transfer-mixed-actions-placement':'0.5','transfer-mixed-actions-review':'0.25','transfer-mixed-actions-final':'0.3'
@@ -156,7 +186,7 @@ test('hand-worked boundary fixtures catch reversed whole/part, remainder, time a
   for(const [id,value] of Object.entries(expected)) assert.deepEqual(exact(bank.items.find(item=>item.id===id).answer),exact(value),id);
   const byId=new Map(bank.items.map(item=>[item.id,item]));
   assert.equal(course.checkAnswer(byId.get('transfer-common-placement'),'18/30').kind,'format','equal value still has to be reduced');
-  assert.equal(course.checkAnswer(byId.get('transfer-fraction-add-placement'),'10/24').kind,'correct','a valid non-minimal common denominator is accepted');
+  assert.equal(course.checkAnswer(byId.get('transfer-fraction-add-placement'),'18/40').kind,'correct','a valid non-minimal common denominator is accepted');
   assert.equal(course.checkAnswer(byId.get('transfer-units-final'),'2,30').kind,'wrong','2 h 30 min is 2.5 h, not 2.30 h');
   assert.equal(byId.get('transfer-share-final').lessonId,'a-pack','packing returns to the packing lesson, not distribution among a given number of people');
   for(const pool of ['placement','review','final']) {

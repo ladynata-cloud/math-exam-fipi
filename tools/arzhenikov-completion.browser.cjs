@@ -20,8 +20,8 @@ const courseKey = 'mathexam.arzhenikov.courses.v1';
 const artifacts = path.resolve(process.env.ARZHENIKOV_COMPLETION_ARTIFACT_DIR || 'artifacts/arzhenikov-completion');
 const selector = action => '[data-completion-action="' + action + '"]';
 
-// Both adapters exercise the actual forms. Only the persistence-failure fixture
-// seeds storage; no fixture awards a completed lesson or assessment.
+// Both adapters exercise the actual forms. Only persistence-failure and
+// older-save fixtures seed storage; no fixture awards a completed result.
 class DomAdapter {
   constructor(file) { this.flow = new DomCourse(file); }
   async load(hash = '#courses') { await this.flow.load(hash); }
@@ -226,8 +226,12 @@ async function knownCourseReview(flow) {
 }
 async function corruptStorageFlow(flow) {
   await flow.load();
+  const finalItem = B.items.find(item => item.pool === 'final');
+  const saved = E.fresh(); E.start(saved,{mode:'final',itemIds:[finalItem.id],now:123},B);
+  const damaged = [null, {}, {[finalItem.id]:{id:'lost'}}].map(entries =>
+    JSON.stringify({...saved,sessions:{...saved.sessions,final:{...saved.sessions.final,entries}}}));
   for (const raw of ['{unreadable assessment save', JSON.stringify({version:1,sessions:'lost',history:{}}),
-    JSON.stringify({version:1,sessions:{},history:42})]) {
+    JSON.stringify({version:1,sessions:{},history:42}), ...damaged]) {
     await flow.eval(({key,raw}) => localStorage.setItem(key,raw), {key:E.key,raw});
     await flow.reload(); await flow.goto('#course-check-placement');
     assert.match(await text(flow), /прежняя запись остаётся без изменений/);
@@ -237,6 +241,30 @@ async function corruptStorageFlow(flow) {
     assert.equal(await flow.eval(key => localStorage.getItem(key), E.key), raw);
     assert.match(await text(flow), /Задача 2 из 8/);
   }
+}
+async function olderSaveFlow(flow) {
+  await flow.load('#course-check-placement'); await flow.action('start');
+  const item = await itemFor(flow);
+  await flow.fill('#completion-answer','2/');
+  const saved = await read(flow);
+  // Older v1 records need not contain the separately tracked help/reason timing.
+  for (const session of Object.values(saved.sessions)) if (session) {
+    for (const entry of Object.values(session.entries)) delete entry.helpAtReason;
+  }
+  for (const history of Object.values(saved.history)) {
+    if (history.first) delete history.first.helpAtReason;
+    if (history.latest) delete history.latest.helpAtReason;
+  }
+  const raw = JSON.stringify(saved);
+  await flow.eval(({key,raw}) => localStorage.setItem(key,raw),{key:E.key,raw});
+  await flow.reload();
+  assert.doesNotMatch(await text(flow), /прежняя запись остаётся без изменений/);
+  assert.equal(await flow.eval(() => document.getElementById('completion-answer').value),'2/');
+  await flow.fill('#completion-answer',item.answer); await flow.action('answer');
+  const restored = await read(flow);
+  assert.equal(restored.sessions.placement.entries[item.id].solved,true);
+  assert.equal(restored.sessions.placement.entries[item.id].firstHelpUsed,false);
+  assert.notEqual(await flow.eval(key => localStorage.getItem(key),E.key),raw,'a valid older save remains writable');
 }
 async function lessonLinkHelpFlow(flow) {
   await flow.load('#course-check-placement'); await flow.action('start');
@@ -252,6 +280,38 @@ async function lessonLinkHelpFlow(flow) {
   const entry = (await read(flow)).sessions.placement.entries[item.id];
   assert.equal(entry.firstCorrect, true); assert.equal(entry.firstHelpUsed, true);
   assert.equal((await report(flow, 'placement')).independent, 0);
+}
+async function indirectLessonHelpFlow(flow) {
+  await flow.load('#course-check-placement'); await flow.action('start');
+  const first = await itemFor(flow);
+  async function viaOverview(lessonId) {
+    await flow.follow('.course-actions a[href="#courses"]');
+    const track = tracks.find(value => value.lessons.some(lesson => lesson.id === lessonId));
+    await flow.follow('.course-track-card[href="#courses-' + track.id + '"]');
+    await flow.follow('.course-lesson-card[href="#course-' + lessonId + '"]');
+    assert(await exists(flow,'.course-example'),'the lesson worked example is actually displayed');
+  }
+  const unrelated = tracks.find(track => track.id === 'geometry').lessons[0].id;
+  await viaOverview(unrelated);
+  assert.equal((await read(flow)).sessions.placement.entries[first.id].helpUsed,false,'unrelated browsing is neutral');
+  await flow.follow('a.course-return[href="#course-check-placement"]');
+  await viaOverview(first.lessonId); await flow.reload();
+  assert.equal((await read(flow)).sessions.placement.entries[first.id].helpUsed,true,'same-topic help survives the indirect route and reload');
+  await flow.follow('a.course-return[href="#course-check-placement"]'); await solveAssessment(flow,first);
+  let entry = (await read(flow)).sessions.placement.entries[first.id];
+  assert.equal(entry.firstCorrect,true); assert.equal(entry.firstHelpUsed,true);
+  assert.equal((await report(flow,'placement')).independent,0);
+
+  const second = await itemFor(flow); assert(second.reason,'the next entry separates numerical and explanation evidence');
+  await flow.fill('#completion-answer',second.answer); await flow.action('answer');
+  entry = (await read(flow)).sessions.placement.entries[second.id];
+  assert.equal(entry.firstHelpUsed,false);
+  await viaOverview(second.lessonId); await flow.follow('a.course-return[href="#course-check-placement"]');
+  await flow.reload(); await solveAssessment(flow,second);
+  entry = (await read(flow)).sessions.placement.entries[second.id];
+  assert.equal(entry.firstCorrect,true); assert.equal(entry.firstHelpUsed,false,'later study cannot rewrite the first numerical answer');
+  assert.equal(entry.reason.firstCorrect,true); assert.equal(entry.reason.firstHelpUsed,true);
+  assert.equal((await report(flow,'placement')).reasonIndependent,0);
 }
 function unpack() {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'arz-completion-offline-'));
@@ -274,7 +334,7 @@ async function offlineFlow(flow) {
 }
 
 async function domGate() {
-  for (const work of [assessmentFlow, lessonAndKnownReviewFlow, knownCourseReview, corruptStorageFlow, lessonLinkHelpFlow]) {
+  for (const work of [assessmentFlow, lessonAndKnownReviewFlow, knownCourseReview, corruptStorageFlow, olderSaveFlow, lessonLinkHelpFlow, indirectLessonHelpFlow]) {
     const flow = new DomAdapter();
     try { await work(flow); assert.deepEqual(flow.flow.errors, []); } finally { await flow.close(); }
   }
@@ -323,7 +383,7 @@ async function realBrowserGate() {
   let browser;
   try {
     browser = await chromium.launch();
-    for (const work of [assessmentFlow, lessonAndKnownReviewFlow, knownCourseReview, corruptStorageFlow, lessonLinkHelpFlow]) {
+    for (const work of [assessmentFlow, lessonAndKnownReviewFlow, knownCourseReview, corruptStorageFlow, olderSaveFlow, lessonLinkHelpFlow, indirectLessonHelpFlow]) {
       const context = await browser.newContext({viewport: {width: 1280, height: 950}, reducedMotion: 'reduce'});
       const page = await context.newPage(), errors = []; page.on('pageerror', error => errors.push(error.message));
       const flow = new BrowserAdapter(page, hosted.url);
@@ -349,4 +409,4 @@ async function realBrowserGate() {
   }
 }
 if (require.main === module) (process.argv.includes('--dom') ? domGate() : realBrowserGate()).catch(error => { console.error(error); process.exitCode = 1; });
-module.exports = {assessmentFlow, lessonAndKnownReviewFlow, knownCourseReview, corruptStorageFlow};
+module.exports = {DomAdapter, assessmentFlow, lessonAndKnownReviewFlow, knownCourseReview, corruptStorageFlow, olderSaveFlow, lessonLinkHelpFlow, indirectLessonHelpFlow};
