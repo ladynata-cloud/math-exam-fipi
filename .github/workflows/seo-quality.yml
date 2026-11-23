@@ -71,11 +71,13 @@ jobs:
         run: |
           npm install --prefix "$RUNNER_TEMP/seo-catalog-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
           NODE_PATH="$RUNNER_TEMP/seo-catalog-qa/node_modules" node tools/seo-catalog.test.cjs
+          NODE_PATH="$RUNNER_TEMP/seo-catalog-qa/node_modules" node tools/seo-arzhenikov.test.cjs
       - name: Public compatibility routes and actual catalog clicks
         run: |
           npm install --prefix "$RUNNER_TEMP/seo-browser-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
           "$RUNNER_TEMP/seo-browser-qa/node_modules/.bin/playwright" install --with-deps chromium
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/seo-entrypoints.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/seo-arzhenikov.browser.cjs
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-map.browser.cjs
           node --test tools/arzhenikov-garden.test.cjs
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-garden.browser.cjs
@@ -96,6 +98,14 @@ jobs:
         with:
           name: arzhenikov-child-adventure
           path: artifacts/arzhenikov-adventure/
+          if-no-files-found: ignore
+
+      - name: Preserve Arzhenikov search entrance screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: seo-arzhenikov-entrance
+          path: artifacts/seo-arzhenikov/
           if-no-files-found: ignore
 
       - name: Preserve sequential course screenshots
