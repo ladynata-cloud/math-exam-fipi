@@ -3330,10 +3330,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "e15615bea0e72a5ae9751bf28605ac9a50a23ea51f7425fd79c19be8d47810ce",
-      "afterSha256": "aecbdc9c365ccf7145b8cc6782dc7695ceaba283f07277dde212d48ce3136589",
+      "beforeSha256": "d6bd276b061fcbc2ccf0b4a01f9c5539914c2de368f15e89ed44e809ccff6ba1",
+      "afterSha256": "e96c3aa8198358cb43af1a0ad88d0436a5a37b5229f4f2750394b533971a00cb",
       "placement": "before-head-close",
-      "sourceSha": "4a497e77e28d6cc55bacaa1bc1b1c5747dfdac44"
+      "sourceSha": "b93b3ad3a2a1aa8ee7ccae9efbe6b5b4ca11a737"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6783,6 +6783,16 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Bind the reviewed written division, common fractions and decimal arithmetic extension to the existing skill map. The page matches the committed source and retains the exact navigator includes.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "sourceBaseSha": "b93b3ad3a2a1aa8ee7ccae9efbe6b5b4ca11a737",
+      "previousSourceSha": "4a497e77e28d6cc55bacaa1bc1b1c5747dfdac44",
+      "task": "docs/tasks/ARZHENIKOV_ASSISTANT_20261124.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Reviewed contextual Arzhenikov helper resource includes; exact public source commit and complete page bytes. No navigator code or mathematical bank change.",
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
