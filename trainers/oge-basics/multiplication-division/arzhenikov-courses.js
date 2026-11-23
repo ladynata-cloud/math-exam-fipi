@@ -5,6 +5,7 @@
   const E = window.ArzhenikovCourseEngine;
   const tracks = [window.ArzhenikovCourseArithmetic, window.ArzhenikovCourseWritten,
     window.ArzhenikovCourseFractions, window.ArzhenikovCourseDecimals,
+    window.ArzhenikovCourseConnections,
     window.ArzhenikovCourseAlgebra, window.ArzhenikovCourseGeometry].filter(Boolean);
   if (!host || !E || tracks.length < 3) return;
   const lessons = tracks.flatMap(track => track.lessons);
@@ -98,6 +99,7 @@
   };
   function shell(trail) {
     host.replaceChildren();
+    delete host.dataset.completionMode; delete host.dataset.completionItem;
     const nav = el('nav', 'course-breadcrumb'); nav.setAttribute('aria-label', 'Путь в курсе');
     nav.append(link('Все курсы', '#courses'));
     for (const [name, href] of trail) { nav.append(el('span', '', '›'), href ? link(name, href) : el('strong', '', name)); }
@@ -120,20 +122,35 @@
     host.append(el('p', 'course-lead', 'Начни с понятного действия. Перейди к записи, потренируйся и проверь себя на новых числах. Основы, деление уголком и оба вида дробей ведут к алгебре и геометрии.'));
     const map = link('Открыть карту навыков с приближением →', '#journey', 'course-continue');
     host.append(map);
-    if (byId.has(state.active)) {
-      const lesson = byId.get(state.active);
-      host.append(link('Продолжить: ' + lesson.title + ' →', hrefLesson(lesson), 'course-continue'));
+    const active = byId.get(state.active);
+    const unfinished = active && state.lessons[active.id]?.phase !== 'summary' ? active :
+      lessons.find(lesson => state.lessons[lesson.id]?.visits && state.lessons[lesson.id]?.phase !== 'summary');
+    if (unfinished) {
+      host.append(link('Продолжить: ' + unfinished.title + ' →', hrefLesson(unfinished), 'course-continue'));
+    } else if (active) {
+      const next = lessons.slice(lessons.indexOf(active) + 1).find(lesson => !state.lessons[lesson.id]?.completedAt);
+      if (next) host.append(link('Следующий шаг: ' + next.title + ' →', hrefLesson(next), 'course-continue'));
     }
+    for (const pending of window.ArzhenikovCompletion?.resumeLinks(lessons,state) || []) host.append(link(pending.text,pending.href,'course-continue'));
+    const checkpoints = el('nav','completion-path'); checkpoints.setAttribute('aria-label','Вход, повторение и итог курса');
+    for (const [mode,title,description] of [
+      ['placement','С чего мне начать?','8 задач помогут выбрать подходящие уроки.'],
+      ['review','Повторить изученное','До 6 задач только из начатых тем.'],
+      ['final','Применить всё вместе','16 новых ситуаций: выбери способ сам.']
+    ]) {
+      const card = link('','#course-check-' + mode); card.append(el('strong','',title),el('span','',description)); checkpoints.append(card);
+    }
+    host.append(checkpoints);
     const route = el('nav', 'course-method-route'); route.setAttribute('aria-label', 'Последовательность арифметики');
     for (const [id, title] of [['arithmetic', '1. Числа и действия'], ['written', '2. Деление уголком'],
-      ['fractions', '3. Обыкновенные дроби'], ['decimals', '4. Десятичные дроби']]) {
+      ['fractions', '3. Обыкновенные дроби'], ['decimals', '4. Десятичные дроби'], ['connections','5. Связываем навыки']]) {
       if (tracks.some(track => track.id === id)) route.append(link(title, '#courses-' + id));
     }
     host.append(route, el('p', 'course-start-note', 'Можно начать с нужного места. Если действия с целыми уже знакомы, сразу выбери деление или дроби. Внутри урока есть возврат к необходимому навыку.'));
     const cards = el('div', 'course-track-grid');
     for (const [index, track] of tracks.entries()) {
       const card = link('', '#courses-' + track.id, 'course-track-card'); card.dataset.track = track.id;
-      card.append(el('span', 'course-track-symbol', {arithmetic:'1 · 2 · 3', written:'824 : 4', fractions:'½ · ¾', decimals:'0,1 · 0,01', algebra:'x + 3', geometry:'△ □'}[track.id]),
+      card.append(el('span', 'course-track-symbol', {arithmetic:'1 · 2 · 3', written:'824 : 4', fractions:'½ · ¾', decimals:'0,1 · 0,01', connections:'½ = 50%', algebra:'x + 3', geometry:'△ □'}[track.id]),
         el('span', 'course-eyebrow', track.lessons.length + ' уроков'), el('h3', '', track.title),
         el('p', '', track.description), el('strong', 'course-track-progress', summaryText(track)), el('span', 'course-card-link', 'Выбрать урок →'));
       cards.append(card);
@@ -141,9 +158,10 @@
     host.append(cards);
     const note = el('section', 'course-method-note');
     note.append(el('h3', '', 'Сначала предметы. Затем запись.'),
-      el('p', '', 'Урок начинается с примера и наглядной модели. После тренировки попробуй новые числа без помощи, затем объясни свой выбор. Ошибку можно исправить, а подсказку — открыть в любой момент.'),
-      el('p', '', 'Одна и та же величина связывает предмет, рисунок, дробь и запись вычисления. После двух задач с моделью идут тренировка, две задачи на самостоятельную проверку и объяснение. Затем можно решить ещё две новые задачи. Помощь и первый ответ учитываются отдельно.'),
+      el('p', '', 'Урок начинается с примера и наглядной модели. После тренировки попробуй новые числа, затем выбери объяснение. Пошаговые проверки показывают выполнение способа. В отдельной итоговой работе нужно выбрать способ самому. Ошибку можно исправить, а подсказку — открыть в любой момент.'),
+      el('p', '', 'Одна и та же величина связывает предмет, рисунок, дробь и запись вычисления. После двух задач с моделью идут тренировка, две проверочные задачи и выбор объяснения. Затем можно решить ещё две новые задачи. Помощь и первый ответ учитываются отдельно.'),
       el('p', '', 'Эти занятия созданы MathExam по мотивам практического подхода К. П. Арженикова. Исторические задачники задают ориентир; истории и интерактивные модели разработаны для современных учеников. Алгебра и геометрия здесь остаются вводными курсами.'),
+      link('Как пройти цельный курс', '#course-methodology'), el('span', '', ' · '),
       link('Об Арженикове и источниках', '#arzhenikov-about'), el('span', '', ' · '),
       link('Скачать все занятия для работы без интернета', 'arzhenikov-offline.zip'));
     host.append(note);
@@ -161,6 +179,16 @@
           : 'Метрические меры помогают увидеть десятые, сотые и тысячные, затем объяснить четыре действия и переход между видами дробей. Исторический ориентир — часть IV задачника Арженикова (1924), с. 52–71.'));
       const a = link('Открыть первоисточник ↗', track.id === 'written' ? 'https://djvu.online/file/Zmmk0C6Gqh83D' : 'https://djvu.online/file/AIsMeWPu7uz8w');
       a.target = '_blank'; a.rel = 'noopener'; source.append(a); host.append(source);
+    }
+    if (track.id === 'connections') {
+      const source = el('details','course-physical'); source.append(el('summary','','Методика и первоисточники'));
+      source.append(el('p','','Дробь как частное, равные доли, измерения и житейская задача связывают способы вычисления. Новые условия и проверки — адаптация MathExam; страницы ниже показывают историческую опору каждого урока.'));
+      const list = el('ul');
+      for (const item of track.sources) {
+        const row = el('li'), a = link(item.title + ' · ' + item.pages + ' ↗',item.href);
+        a.target = '_blank'; a.rel = 'noopener'; row.append(a); list.append(row);
+      }
+      source.append(list); host.append(source);
     }
     const meter = el('div', 'course-track-meter');
     meter.append(el('strong', '', summaryText(track)));
@@ -214,6 +242,15 @@
       host.append(earlier);
     }
     physical(lesson);
+    const support = {
+      'a-add-hundred':['Письменное сложение и перенос разряда','arithmetic-foundations.html'],
+      'a-sub-hundred':['Письменное вычитание и размен разряда','arithmetic-foundations.html'],
+      'w-subtract':['Вычитание через нули','arithmetic-foundations.html'],
+      'w-multiply':['Письменное умножение','course-column-one-digit.html'],
+      'd-multiply':['Умножение столбиком на целых числах','course-column-two-digit.html']
+    }[lesson.id];
+    if (support) host.append(link('Дополнительная практика: ' + support[0] + ' →',support[1],'course-return'));
+    for (const pending of window.ArzhenikovCompletion?.resumeLinks(lessons,state) || []) host.append(link(pending.text,pending.href,'course-return'));
   }
   function physical(lesson) {
     const details = el('details', 'course-physical');
@@ -408,7 +445,9 @@
     const required = rec.cycle === 0 && index < 2;
     lessonHeader(lesson, 'task');
     const panel = el('section', 'course-task'); panel.dataset.courseTask = task.id; panel.dataset.courseTaskIndex = index;
-    const subtitle = index < 2 ? 'Действуем с моделью' : index < 4 ? 'Тренировка' : rec.cycle ? 'Новая самостоятельная проверка' : 'Самостоятельная проверка';
+    const subtitle = index < 2 ? 'Действуем с моделью' : index < 4 ? 'Тренировка' :
+      task.steps?.length ? (rec.cycle ? 'Новая проверка по шагам' : 'Проверка по шагам') :
+        (rec.cycle ? 'Новая проверка без готового плана' : 'Проверка без готового плана');
     panel.append(el('p', 'course-task-position', subtitle + ' · задание ' + (rec.cursor + 1) + ' из ' + E.order(rec).length));
     panel.append(el('h3', 'course-problem', task.prompt));
     if (index >= 4) panel.append(el('p', 'course-check-note', draft.attempts ? 'Первый ответ на эту задачу уже сохранён. Исправления помогают разобраться.' : 'Попробуй сначала без помощи. Если понадобится подсказка, её можно открыть.'));
@@ -488,10 +527,11 @@
   function resultPage(lesson, rec) {
     lessonHeader(lesson, 'summary');
     const box = el('section', 'course-result');
-    box.append(el('p', 'course-eyebrow', rec.cycle ? 'Новая проверка завершена' : 'Урок пройден'), el('h3', '', 'Теперь ты можешь объяснить действие'), el('p', '', lesson.reason.explanation));
+    box.append(el('p', 'course-eyebrow', rec.cycle ? 'Новая проверка завершена' : 'Урок пройден'), el('h3', '', 'Ты выбрал верное объяснение'), el('p', '', lesson.reason.explanation),
+      el('p','','Попробуй объяснить решение своими словами. Выбор готового ответа и собственное объяснение — разные действия.'));
     const checks = lesson.tasks.slice(4, rec.reviewedAt ? 8 : 6);
     const independent = checks.filter(t => rec.tasks[t.id]?.everSolved && rec.tasks[t.id]?.firstCorrect === true && rec.tasks[t.id].firstHelpUsed === false).length;
-    box.append(el('p', 'course-result-score', 'Проверочные задачи с первого раза без помощи: ' + independent + ' из ' + checks.length + '.'),
+    box.append(el('p', 'course-result-score', 'Проверочные задачи урока с первого раза без открытой помощи: ' + independent + ' из ' + checks.length + '.'),
       el('p', '', 'Исправленные решения тоже сохранены. Этот результат показывает работу с заданиями урока, а не оценку способностей.'));
     const ul = el('ul', 'course-result-items');
     for (const [i, task] of lesson.tasks.entries()) {
@@ -503,8 +543,9 @@
     const actions = el('div', 'course-actions');
     const track = trackOf(lesson), next = track.lessons[track.lessons.indexOf(lesson) + 1];
     if (next) actions.append(link('Следующий урок: ' + next.title + ' →', hrefLesson(next), 'course-primary'));
+    else if (track.id === 'connections') actions.append(link('Применить всё вместе: итоговая работа →','#course-check-final','course-primary'));
     else {
-      const nextId = {arithmetic:'written', written:'fractions', fractions:'decimals', decimals:'algebra'}[track.id];
+      const nextId = {arithmetic:'written', written:'fractions', fractions:'decimals', decimals:'connections', connections:'algebra'}[track.id];
       const nextTrack = tracks.find(item => item.id === nextId);
       actions.append(link(nextTrack ? 'Дальше: ' + nextTrack.title + ' →' : 'Выбрать следующий курс →',
         nextTrack ? '#courses-' + nextTrack.id : '#courses', 'course-primary'));
@@ -514,6 +555,8 @@
       for (const task of lesson.tasks.slice(0, 6)) rec.tasks[task.id] = E.resetDraft(task, draftFor(lesson, rec, lesson.tasks.indexOf(task)));
       rec.cycle = 0; rec.cursor = 0; rec.phase = 'intro'; save(); render(true);
     })); host.append(actions); physical(lesson);
+    if (track.id === 'connections' && !next) host.append(link('После арифметики: вводные уроки алгебры →','#courses-algebra','course-return'));
+    host.append(link('Коротко повторить изученные темы →','#course-check-review','course-return'));
     if (lesson.connections?.length) {
       const links = el('div', 'course-connections'); links.append(el('h3', '', 'Ещё одно применение'));
       for (const destination of lesson.connections) links.append(link(destination.label + ' →', destination.href));
@@ -525,7 +568,10 @@
     if (!courseRoute()) return;
     const track = tracks.find(t => hash === '#courses-' + t.id);
     const lesson = hash.startsWith('#course-') && byId.get(hash.slice(8));
-    if (lesson) {
+    const completion = hash.match(/^#course-check-(placement|review|final)$/);
+    if (completion && window.ArzhenikovCompletion) {
+      window.ArzhenikovCompletion.render({host,mode:completion[1],lessons,courseState:state});
+    } else if (lesson) {
       const rec = state.lessons[lesson.id];
       if (!rec || rec.phase === 'intro') intro(lesson);
       else if (rec.phase === 'task') taskPage(lesson, rec);

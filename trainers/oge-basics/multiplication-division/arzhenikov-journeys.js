@@ -64,7 +64,8 @@
   const numberTracks = [
     {track:window.ArzhenikovCourseWritten, short:'Запиши каждый шаг', icon:'⌟', color:'#68558e'},
     {track:window.ArzhenikovCourseFractions, short:'Считай равные доли', icon:'¾', color:'#94622e'},
-    {track:window.ArzhenikovCourseDecimals, short:'Измеряй и вычисляй', icon:'0,1', color:'#347e80'}
+    {track:window.ArzhenikovCourseDecimals, short:'Измеряй и вычисляй', icon:'0,1', color:'#347e80'},
+    {track:window.ArzhenikovCourseConnections, short:'Выбирай способ сам', icon:'½ = 50%', color:'#4f6598'}
   ].filter(item => item.track);
   // Add new destinations without renaming or redirecting any earlier stop.
   groups.splice(5, 0, ...numberTracks.map(({track, short, icon, color}) => ({
@@ -335,10 +336,12 @@
     captionText.textContent = view.topic?.goal || view.group?.goal ||
       'Приблизь раздел, выбери тему и открой задание. Кнопки со стрелками проведут по пути, а «Вся карта» покажет, где ты находишься.';
     captionProgress.textContent = progressText();
-    const courseTrack = view.group && ['written','fractions','decimals','algebra','geometry'].includes(view.group.id) ? view.group.id : 'arithmetic';
+    const courseTracks = [window.ArzhenikovCourseArithmetic, ...numberTracks.map(item => item.track),
+      window.ArzhenikovCourseAlgebra,window.ArzhenikovCourseGeometry].filter(Boolean);
+    const courseTrack = view.group && courseTracks.some(track => track.id === view.group.id) ? view.group.id : 'arithmetic';
     courseLink.href = view.group ? '#courses-' + courseTrack : '#courses';
-    const courseCount = courseTrack === 'arithmetic' ? 24 : ['written','fractions','decimals'].includes(courseTrack) ? 12 : 8;
-    courseLink.textContent = view.group ? courseCount + ' последовательных уроков →' : '76 последовательных уроков →';
+    const courseCount = courseTracks.find(track => track.id === courseTrack)?.lessons.length || 0;
+    courseLink.textContent = (view.group ? courseCount : courseTracks.reduce((sum, track) => sum + track.lessons.length,0)) + ' последовательных уроков →';
     sourceLink.hidden = !view.group?.source;
     if (view.group?.source) { sourceLink.href=view.group.source.href; sourceLink.textContent=view.group.source.title; }
     openLink.hidden = !view.group;

@@ -59,8 +59,11 @@
   }
   const equivalentStep = (id, n, d, common, label) => step(id, label,
     fraction(n * (common / d), common), 'fraction',
-    'Во сколько раз знаменатель увеличивается, во столько же раз увеличь числитель.',
-    fraction(n, d) + ' = ' + fraction(n * (common / d), common) + ': размер части изменился, величина доли сохранилась.',
+    common === d ? 'Знаменатель уже подходит. Сохрани числитель и знаменатель.' :
+      'Во сколько раз знаменатель увеличивается, во столько же раз увеличь числитель.',
+    fraction(n, d) + ' = ' + fraction(n * (common / d), common) + (common === d
+      ? ': знаменатель уже равен ' + common + '. Размер части и величина дроби сохранились.'
+      : ': размер части изменился, величина доли сохранилась.'),
     'r-value', [fraction(n, d)], {requiredDenominator: common});
 
   add({

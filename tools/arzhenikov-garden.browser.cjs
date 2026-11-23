@@ -44,11 +44,13 @@ async function play(browser, width) {
   await page.goto(file+'#garden-review');
   await panel.getByText('Повтор после паузы',{exact:true}).waitFor();
   assert.match(await panel.locator('.garden-strip').innerText(),/после паузы/);
-  const mixed=(await state()).review;assert.equal(new Set(mixed.queue.map(c=>c.id)).size,3);
-  for(let i=0;i<3;i++){
+  const mixed=(await state()).review;
+  assert.equal(mixed.queue.length,2,'two visited plots produce a two-task review');
+  assert.deepEqual(new Set(mixed.queue.map(c=>c.id)),new Set(['pack','count']),'review contains only the two visited plots, including the one completed with help');
+  for(let i=0;i<mixed.queue.length;i++){
     const {id,round}=mixed.queue[i];
     const values=await page.evaluate(({id,round})=>window.ArzhenikovGarden.card(id,round,2,true).fields.map(f=>f.answer),{id,round});
-    await answer(values);await click(i===2?'Завершить повторение':'Следующая задача');
+    await answer(values);await click(i===mixed.queue.length-1?'Завершить повторение':'Следующая задача');
   }
   saved=await state();assert(saved.review.done);
   assert(saved.review.queue.every(c=>saved.reviewCount[c.id]===1));
