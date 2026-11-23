@@ -61,6 +61,19 @@
         topic('course','Продолжить геометрию','Действующий курс по Атанасяну: начальные сведения, построения и доказательства.',online('geometry-course/first-steps/'),'⌁')
       ]}
   ];
+  const numberTracks = [
+    {track:window.ArzhenikovCourseWritten, short:'Запиши каждый шаг', icon:'⌟', color:'#68558e'},
+    {track:window.ArzhenikovCourseFractions, short:'Считай равные доли', icon:'¾', color:'#94622e'},
+    {track:window.ArzhenikovCourseDecimals, short:'Измеряй и вычисляй', icon:'0,1', color:'#347e80'},
+    {track:window.ArzhenikovCourseConnections, short:'Выбирай способ сам', icon:'½ = 50%', color:'#4f6598'}
+  ].filter(item => item.track);
+  // Add new destinations without renaming or redirecting any earlier stop.
+  groups.splice(5, 0, ...numberTracks.map(({track, short, icon, color}) => ({
+    id:track.id, title:track.title, short, icon, color, goal:track.description,
+    source:{title:track.id === 'written' ? 'Аржеников. Часть III, 1924 · с. 24' : 'Аржеников. Часть IV, 1924 · дроби',
+      href:track.id === 'written' ? 'https://djvu.online/file/Zmmk0C6Gqh83D' : 'https://djvu.online/file/AIsMeWPu7uz8w'},
+    topics:track.lessons.map(lesson => topic(lesson.id, lesson.title, lesson.goal, '#course-' + lesson.id, icon))
+  })));
   window.ArzhenikovJourneys = {groups};
 
   function el(tag, cls, text) {
@@ -112,6 +125,8 @@
   const openLink = el('a','journey-open','Открыть задание →'); openLink.dataset.journeyAction = 'open';
   const sourceLink = el('a','journey-source'); sourceLink.target = '_blank'; sourceLink.rel = 'noopener';
   const actions = el('div','journey-caption-actions'); actions.append(openLink,sourceLink);
+  const courseLink = el('a','journey-course-link','Последовательные уроки →');
+  courseLink.href = '#courses'; actions.append(courseLink);
   caption.append(captionTitle,captionText,captionProgress,actions);
   const stepper = el('div','journey-stepper');
   const previous = button('← Предыдущий шаг','previous',() => travel(-1));
@@ -212,22 +227,34 @@
   }
   function drawCamera() {
     if (host.hidden) return;
-    const width = viewport.clientWidth || 800, height = viewport.clientHeight || 500;
+    const width = viewport.clientWidth || 800;
     // Region cards keep a readable screen size while the world zooms out.
     // Below 760 px the wide trail would bring two full-height cards together.
     const mobile = width < 760;
     host.dataset.compact = String(mobile);
-    const worldWidth = mobile?1400:2400, worldHeight = mobile?2300:1500;
-    const locations = mobile
-      ? [[350,260],[1050,260],[1050,730],[350,730],[700,1240],[350,1700],[1050,1700]]
-      : [[380,260],[1200,260],[2020,260],[2020,820],[1200,820],[380,820],[1200,1290]];
-    positions = locations.map(([x,y])=>({x,y}));
+    const columns = mobile ? 2 : 3, rows = Math.ceil(groups.length / columns);
+    const wantedHeight = view.group
+      ? Math.max(mobile ? 480 : 500, Math.ceil(view.group.topics.length / columns) * (mobile ? 88 : 110) + 172)
+      : Math.max(mobile ? 480 : 500, rows * (mobile ? 112 : 145) + 120);
+    viewport.style.height = wantedHeight + 'px';
+    const height = viewport.clientHeight || wantedHeight;
+    const worldWidth = mobile ? 1400 : 2400, gap = mobile ? 520 : 550;
+    const worldHeight = (rows - 1) * gap + 800;
+    positions = groups.map((_, i) => {
+      const row = Math.floor(i / columns), offset = i % columns;
+      const col = row % 2 ? columns - 1 - offset : offset;
+      return {x: (col + .5) * worldWidth / columns, y: 260 + row * gap};
+    });
     svg.setAttribute('viewBox','0 0 '+worldWidth+' '+worldHeight);
     svg.setAttribute('width',String(worldWidth)); svg.setAttribute('height',String(worldHeight));
     svg.replaceChildren();
-    // Both next subjects branch from the same arithmetic foundation.
-    drawPath(positions.slice(0,6),'journey-trail');
-    drawPath([positions[4],positions[6]],'journey-trail');
+    // Both later subjects branch from the completed arithmetic route.
+    const foundation = groups.filter(group => !['algebra','geometry'].includes(group.id));
+    const stem = foundation.map(group => positions[groups.indexOf(group)]);
+    drawPath(stem,'journey-trail');
+    for (const id of ['algebra','geometry']) {
+      drawPath([stem.at(-1), positions[groups.findIndex(group => group.id === id)]], 'journey-trail');
+    }
     world.style.width = worldWidth+'px'; world.style.height = worldHeight+'px';
     let scale = Math.min(width/worldWidth,height/worldHeight);
     let cx = worldWidth/2, cy = worldHeight/2;
@@ -270,6 +297,12 @@
   }
   function progressText() {
     if (!view.group) return 'Любой путь можно открыть сразу. Карта не ставит замков.';
+    const numberTrack = numberTracks.find(item => item.track.id === view.group.id)?.track;
+    if (numberTrack) {
+      const done = new Set(window.ArzhenikovCoursesProgress?.().completed || []);
+      return 'Уроков пройдено: ' + numberTrack.lessons.filter(lesson => done.has(lesson.id)).length +
+        ' из ' + numberTrack.lessons.length + '. В каждом уроке есть самостоятельная проверка на новых числах.';
+    }
     if (view.group.id === 'city') {
       const p = window.ArzhenikovWorkshopProgress?.();
       return p ? 'Решено историй: '+p.storyCount+' из '+p.storyTotal+'. Открытки отмечают завершение, а не самостоятельную проверку.' : '';
@@ -283,7 +316,7 @@
       return p ? 'Завершено историй: '+p.completed.length+' из '+p.total+'. Новые проверки без подсказки: '+p.independent.length+'.' : '';
     }
     if (view.group.id === 'algebra' || view.group.id === 'geometry') {
-      return 'Здесь — вход и подготовительные занятия. Полный постраничный курс Киселёва пока не создан. Практика по ссылке требует интернета.';
+      return 'Восемь последовательных уроков доступны здесь и в автономном комплекте. Полный постраничный курс Киселёва пока не создан. Соседние тренажёры по внешним ссылкам требуют интернета.';
     }
     return 'Можно открыть любую тему и вернуться к незавершённому заданию.';
   }
@@ -303,6 +336,12 @@
     captionText.textContent = view.topic?.goal || view.group?.goal ||
       'Приблизь раздел, выбери тему и открой задание. Кнопки со стрелками проведут по пути, а «Вся карта» покажет, где ты находишься.';
     captionProgress.textContent = progressText();
+    const courseTracks = [window.ArzhenikovCourseArithmetic, ...numberTracks.map(item => item.track),
+      window.ArzhenikovCourseAlgebra,window.ArzhenikovCourseGeometry].filter(Boolean);
+    const courseTrack = view.group && courseTracks.some(track => track.id === view.group.id) ? view.group.id : 'arithmetic';
+    courseLink.href = view.group ? '#courses-' + courseTrack : '#courses';
+    const courseCount = courseTracks.find(track => track.id === courseTrack)?.lessons.length || 0;
+    courseLink.textContent = (view.group ? courseCount : courseTracks.reduce((sum, track) => sum + track.lessons.length,0)) + ' последовательных уроков →';
     sourceLink.hidden = !view.group?.source;
     if (view.group?.source) { sourceLink.href=view.group.source.href; sourceLink.textContent=view.group.source.title; }
     openLink.hidden = !view.group;
@@ -341,7 +380,7 @@
     }
   });
   window.addEventListener('hashchange',() => render(true));
-  for (const name of ['workshop-progress','harbor-progress','discoveries-progress']) {
+  for (const name of ['workshop-progress','harbor-progress','discoveries-progress','courses-progress']) {
     window.addEventListener(name,() => { if (route()) captionProgress.textContent=progressText(); });
   }
   if (typeof ResizeObserver === 'function') new ResizeObserver(drawCamera).observe(viewport);

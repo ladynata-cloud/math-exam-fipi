@@ -27,6 +27,7 @@ on:
       - 'tools/arzhenikov-harbor*'
       - 'tools/arzhenikov-discoveries*'
       - 'tools/arzhenikov-journeys*'
+      - 'tools/arzhenikov-courses*'
       - 'tools/arzhenikov-offline*'
       - 'tools/build-arzhenikov-offline.py'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-life*'
@@ -36,6 +37,7 @@ on:
       - 'trainers/oge-basics/multiplication-division/arzhenikov-harbor*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-discoveries*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-journeys*'
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-course*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-offline.zip'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-art*'
       - 'trainers/oge-basics/multiplication-division/arzhenikov-*-atlas.png'
@@ -87,6 +89,8 @@ jobs:
           python3 tools/arzhenikov-offline.test.py
           python3 tools/build-arzhenikov-offline.py --check
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-journeys.browser.cjs
+          node --test tools/arzhenikov-courses.test.cjs
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/arzhenikov-courses.browser.cjs
 
       - name: Preserve child adventure screenshots
         if: always()
@@ -102,6 +106,14 @@ jobs:
         with:
           name: seo-arzhenikov-entrance
           path: artifacts/seo-arzhenikov/
+          if-no-files-found: ignore
+
+      - name: Preserve sequential course screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arzhenikov-sequential-courses
+          path: artifacts/arzhenikov-courses/
           if-no-files-found: ignore
 
       - name: Course entrances, mathematical GIFs and retained work

@@ -17,6 +17,7 @@ const bank = require('../trainers/oge-basics/multiplication-division/arzhenikov-
 const storyIds = ['meanings', 'change', 'adjust', 'boundary', 'reverse', 'sequence'].map(id => id + '-1');
 const entrances = ['/', '/trainers/', '/topics/', '/topics/delenie-ugolkom/', '/soviet-math/',
   '/trainers/oge-basics/', '/trainers/oge-basics/multiplication-division/'];
+const courseRoutes = ["courses","courses-arithmetic","courses-written","courses-fractions","courses-decimals","courses-connections","courses-algebra","courses-geometry","course-check-placement","course-check-review","course-check-final"];
 const directions = [
   {hash: 'workshop', mode: 'city', host: '#workshop-play'},
   {hash: 'harbor', mode: 'harbor', host: '#harbor-play'},
@@ -152,7 +153,7 @@ async function checkGuide(page, width, enabled) {
   await page.evaluate(() => document.fonts.ready);
   await scrollGuideTo(page, null);
   if (enabled) await checkGuideNavigator(page, width);
-  for (const id of ['method', 'practice', 'discoveries', 'offline', 'sources']) {
+  for (const id of ['method', 'practice', 'courses', 'discoveries', 'offline', 'sources']) {
     const section = page.locator('#' + id);
     assert.equal(await section.isVisible(), true, id + ': visible with JavaScript ' + enabled);
     assert(clean(await section.innerText()), id + ': rendered explanatory text');
@@ -168,6 +169,10 @@ async function checkGuide(page, width, enabled) {
   for (const direction of directions) {
     const link = await visibleLink(page, trainer + '#' + direction.hash, '#practice .topic-card');
     await linkFits(link, width, direction.hash);
+  }
+  for (const id of courseRoutes) {
+    const link = await visibleLink(page, trainer + '#' + id, '#courses');
+    await linkFits(link, width, id);
   }
   for (const id of storyIds) {
     const link = await visibleLink(page, trainer + '#discoveries-' + id, '#discoveries');
@@ -231,6 +236,18 @@ async function checkActivities(page, origin, width) {
         assert.equal(await host.getAttribute('data-view'), 'group');
         assert.equal(await host.getAttribute('data-group'), direction.group);
       }
+    });
+    await guideIdentity(page);
+    activityClicks++;
+  }
+  for (const id of courseRoutes) {
+    const target = trainer + '#' + id;
+    const link = await visibleLink(page, target, '#courses');
+    await linkFits(link, width, id);
+    await clickAndReturn(page, link, target, async () => {
+      const host = page.locator('#arz-courses');
+      await host.waitFor({state: 'visible'});
+      assert(clean(await host.innerText()), id + ': course or assessment content rendered');
     });
     await guideIdentity(page);
     activityClicks++;

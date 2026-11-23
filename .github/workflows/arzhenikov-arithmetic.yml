@@ -1,0 +1,95 @@
+name: Arzhenikov connected arithmetic
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-*'
+      - 'tools/arzhenikov-arithmetic*'
+      - 'tools/arzhenikov-courses*'
+      - 'tools/arzhenikov-journeys*'
+      - 'tools/arzhenikov-connections*'
+      - 'tools/arzhenikov-completion*'
+      - 'tools/arzhenikov-garden*'
+      - 'tools/arzhenikov-ready-review*'
+      - 'tools/build-arzhenikov-offline.py'
+      - '.github/workflows/arzhenikov-arithmetic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  arithmetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Exact arithmetic, saved work and preserved lessons
+        run: |
+          python3 tools/arzhenikov-ready-review.test.py
+          node --test tools/arzhenikov-courses.test.cjs tools/arzhenikov-arithmetic.test.cjs tools/arzhenikov-connections.test.cjs tools/arzhenikov-completion-engine.test.cjs tools/arzhenikov-completion-bank.test.cjs tools/arzhenikov-garden.test.cjs
+          python3 tools/arzhenikov-offline.test.py
+          python3 tools/build-arzhenikov-offline.py --check
+          git diff --check
+      - name: Install browser dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/arz-arithmetic-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/arz-arithmetic-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Every lesson and real browser interaction
+        run: |
+          NODE_PATH="$RUNNER_TEMP/arz-arithmetic-qa/node_modules" node --test tools/arzhenikov-garden-review.test.cjs
+          NODE_PATH="$RUNNER_TEMP/arz-arithmetic-qa/node_modules" node tools/arzhenikov-courses.browser.cjs --dom
+          NODE_PATH="$RUNNER_TEMP/arz-arithmetic-qa/node_modules" node tools/arzhenikov-arithmetic.browser.cjs --dom
+          NODE_PATH="$RUNNER_TEMP/arz-arithmetic-qa/node_modules" node tools/arzhenikov-completion.browser.cjs --dom
+          NODE_PATH="$RUNNER_TEMP/arz-arithmetic-qa/node_modules" node tools/arzhenikov-arithmetic.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/arz-arithmetic-qa/node_modules" node tools/arzhenikov-completion.browser.cjs
+      - name: Keep course and mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arzhenikov-connected-arithmetic
+          path: |
+            artifacts/arzhenikov-arithmetic/
+            artifacts/arzhenikov-completion/
+          if-no-files-found: ignore
+
+  ready-result-consultation:
+    needs: arithmetic
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'ready_for_review' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'codex/arzhenikov-course-completion-20261123' &&
+      github.run_attempt == 1 &&
+      needs.arithmetic.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+      - name: One pedagogical consultation for the ready course
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_PR_NUMBER: ${{ github.event.pull_request.number }}
+          REVIEW_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          REVIEW_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          REVIEW_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          REVIEW_EVENT_ACTION: ${{ github.event.action }}
+          REVIEW_ARITHMETIC_RESULT: ${{ needs.arithmetic.result }}
+        run: python3 tools/arzhenikov-ready-review.py
+      - name: Keep the sanitized consultation request and receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arzhenikov-ready-review-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+          path: artifacts/arzhenikov-ready-review/
+          if-no-files-found: error

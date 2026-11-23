@@ -16,6 +16,7 @@ const trainer = '/trainers/oge-basics/multiplication-division/arzhenikov-map.htm
 const download = '/trainers/oge-basics/multiplication-division/arzhenikov-offline.zip';
 const bank = require('../trainers/oge-basics/multiplication-division/arzhenikov-discoveries-bank.js');
 const directions = ['workshop', 'harbor', 'discoveries', 'garden-count', 'count', 'journey-algebra', 'journey-geometry'];
+const courseRoutes = ["courses","courses-arithmetic","courses-written","courses-fractions","courses-decimals","courses-connections","courses-algebra","courses-geometry","course-check-placement","course-check-review","course-check-final"];
 const lines = ['meanings', 'change', 'adjust', 'boundary', 'reverse', 'sequence'];
 const stories = lines.map(line => line + '-1');
 const sources = [
@@ -60,7 +61,7 @@ test('the method, examples, seven activities and six investigations are ordinary
   assert.match(document.querySelector('h1').textContent, /Аржеников/);
   const ids = [...document.querySelectorAll('[id]')].map(node => node.id);
   assert.equal(new Set(ids).size, ids.length, 'No duplicate HTML IDs');
-  for (const id of ['method', 'practice', 'discoveries', 'offline', 'sources']) {
+  for (const id of ['method', 'practice', 'courses', 'discoveries', 'offline', 'sources']) {
     const node = section(id);
     assertSourceContent(node, '#' + id);
     assert(node.querySelector('h2,h3'), '#' + id + ': a readable section heading');
@@ -164,7 +165,7 @@ test('six story URLs resolve to the first practice mission of their real bank li
 
 test('local links exist and the guide and original trainer are single sitemap documents', () => {
   const allowedRuntimeHashes = new Set(['', '#journey', ...directions.map(id => '#' + id),
-    ...stories.map(id => '#discoveries-' + id)]);
+    ...stories.map(id => '#discoveries-' + id), ...courseRoutes.map(id => '#' + id)]);
   for (const link of document.querySelectorAll('a[href]')) {
     const url = new URL(link.getAttribute('href'), canonical);
     assert(['https:', 'http:'].includes(url.protocol), 'No script or placeholder link: ' + link.getAttribute('href'));
@@ -310,3 +311,15 @@ test('the catalog retains all 63 existing entries and one new guide card with JS
 });
 
 test.after(() => landing.window.close());
+
+
+test('82 lessons and all eleven course/assessment entrances are readable source links', () => {
+  const courses = section('courses');
+  assert.match(courses.textContent, /82 последовательных урока/);
+  assert.match(courses.textContent, /656 учебных условий/);
+  assert.match(courses.textContent, /48 условий/);
+  const links = [...courses.querySelectorAll('a[href]')].map(href);
+  for (const route of courseRoutes) assert(links.includes(origin + trainer + '#' + route), route + ': ordinary course link');
+  assert.equal(courses.querySelectorAll('.topic-card').length, 7);
+  assert.match(document.title, /82 урока/);
+});
