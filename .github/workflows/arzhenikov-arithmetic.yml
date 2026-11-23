@@ -1,0 +1,46 @@
+name: Arzhenikov connected arithmetic
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-*'
+      - 'tools/arzhenikov-arithmetic*'
+      - 'tools/arzhenikov-courses*'
+      - 'tools/arzhenikov-journeys*'
+      - 'tools/build-arzhenikov-offline.py'
+      - '.github/workflows/arzhenikov-arithmetic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  arithmetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Exact arithmetic, saved work and preserved lessons
+        run: |
+          node --test tools/arzhenikov-courses.test.cjs tools/arzhenikov-arithmetic.test.cjs
+          python3 tools/arzhenikov-offline.test.py
+          python3 tools/build-arzhenikov-offline.py --check
+          git diff --check
+      - name: Install browser dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/arz-arithmetic-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/arz-arithmetic-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Every lesson and real browser interaction
+        run: |
+          NODE_PATH="$RUNNER_TEMP/arz-arithmetic-qa/node_modules" node tools/arzhenikov-arithmetic.browser.cjs --dom
+          NODE_PATH="$RUNNER_TEMP/arz-arithmetic-qa/node_modules" node tools/arzhenikov-arithmetic.browser.cjs
+      - name: Keep course and mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arzhenikov-connected-arithmetic
+          path: artifacts/arzhenikov-arithmetic/
+          if-no-files-found: ignore

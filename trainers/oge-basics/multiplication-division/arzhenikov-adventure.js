@@ -55,7 +55,7 @@
 
   function reflectMode() {
     const hash = location.hash.slice(1);
-    const mode = /^(?:courses(?:-(?:arithmetic|algebra|geometry))?|course-.+)$/.test(hash) ? 'courses'
+    const mode = /^(?:courses(?:-(?:arithmetic|written|fractions|decimals|algebra|geometry))?|course-.+)$/.test(hash) ? 'courses'
       : /^journey(?:-.*)?$/.test(hash) ? 'journey'
       : /^discoveries(?:-.*)?$/.test(hash) ? 'discoveries'
         : hash === 'next-course' ? 'bridge'

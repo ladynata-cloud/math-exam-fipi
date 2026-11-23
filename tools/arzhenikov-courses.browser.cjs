@@ -242,7 +242,7 @@ async function allCourses(page) {
     assert(completed.reviewedAt, lesson.id + ': fresh repeat evidence recorded');
   }
   const result = await progress(page);
-  assert.equal(result.total, 40);
+  assert.equal(result.total, 76, 'The preserved 40 lessons coexist with all 36 arithmetic extensions');
   assert.equal(new Set(result.completed).size, 40);
   assert.equal(result.independent.length, 158, '160 fresh check conditions minus the helped and corrected first attempts');
   assert(!result.independent.includes(lessons[0].tasks[4].id), 'Helped answer is not independent');
@@ -490,7 +490,7 @@ async function offlineBrowser(browser) {
     const url = pathToFileURL(path.join(directory, 'index.html')).href;
     await page.goto(url + '#courses');
     await page.locator('#arz-courses[data-course-view="overview"]').waitFor({state: 'visible'});
-    assert.equal((await progress(page)).total, 40, 'The offline package includes every course');
+    assert.equal((await progress(page)).total, 76, 'The offline package includes the preserved and extended courses');
     assert(await page.locator('#offline-help').isVisible());
     for (const track of tracks) {
       const lesson = track.lessons[0];
@@ -685,4 +685,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => {console.error(error); process.exitCode = 1;});
-module.exports = {answerFor};
+module.exports = {answerFor, DomCourse, serveRepository};

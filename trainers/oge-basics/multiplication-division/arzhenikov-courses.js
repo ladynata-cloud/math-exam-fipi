@@ -3,8 +3,10 @@
   'use strict';
   const host = document.getElementById('arz-courses');
   const E = window.ArzhenikovCourseEngine;
-  const tracks = [window.ArzhenikovCourseArithmetic, window.ArzhenikovCourseAlgebra, window.ArzhenikovCourseGeometry].filter(Boolean);
-  if (!host || !E || tracks.length !== 3) return;
+  const tracks = [window.ArzhenikovCourseArithmetic, window.ArzhenikovCourseWritten,
+    window.ArzhenikovCourseFractions, window.ArzhenikovCourseDecimals,
+    window.ArzhenikovCourseAlgebra, window.ArzhenikovCourseGeometry].filter(Boolean);
+  if (!host || !E || tracks.length < 3) return;
   const lessons = tracks.flatMap(track => track.lessons);
   const byId = new Map(lessons.map(lesson => [lesson.id, lesson]));
   const trackOf = lesson => tracks.find(track => track.lessons.includes(lesson));
@@ -55,7 +57,8 @@
     if (output) { output.textContent = message; output.dataset.kind = kind; }
   }
   const hrefLesson = lesson => '#course-' + lesson.id;
-  const courseRoute = () => /^#courses(?:-(?:arithmetic|algebra|geometry))?$/.test(location.hash) || location.hash.startsWith('#course-');
+  const courseRoute = () => location.hash === '#courses' ||
+    tracks.some(track => location.hash === '#courses-' + track.id) || location.hash.startsWith('#course-');
   let navigatorOrigin = null;
   function placeNavigator() {
     // Reuse the public navigator and its focus/dialog handlers. Only this
@@ -113,16 +116,24 @@
   }
   function overview() {
     host.dataset.courseView = 'overview'; delete host.dataset.courseLesson; delete host.dataset.coursePhase;
-    shell([]); heading('От первого числа — к открытиям', 'Три учебных пути');
-    host.append(el('p', 'course-lead', 'Покажи действие, найди ответ и объясни его. Короткие уроки можно проходить по порядку или выбрать нужную тему.'));
+    shell([]); heading('От действия — к уверенным вычислениям', 'Связный маршрут · ' + lessons.length + ' уроков');
+    host.append(el('p', 'course-lead', 'Начни с понятного действия. Перейди к записи, потренируйся и проверь себя на новых числах. Основы, деление уголком и оба вида дробей ведут к алгебре и геометрии.'));
+    const map = link('Открыть карту навыков с приближением →', '#journey', 'course-continue');
+    host.append(map);
     if (byId.has(state.active)) {
       const lesson = byId.get(state.active);
       host.append(link('Продолжить: ' + lesson.title + ' →', hrefLesson(lesson), 'course-continue'));
     }
+    const route = el('nav', 'course-method-route'); route.setAttribute('aria-label', 'Последовательность арифметики');
+    for (const [id, title] of [['arithmetic', '1. Числа и действия'], ['written', '2. Деление уголком'],
+      ['fractions', '3. Обыкновенные дроби'], ['decimals', '4. Десятичные дроби']]) {
+      if (tracks.some(track => track.id === id)) route.append(link(title, '#courses-' + id));
+    }
+    host.append(route, el('p', 'course-start-note', 'Можно начать с нужного места. Если действия с целыми уже знакомы, сразу выбери деление или дроби. Внутри урока есть возврат к необходимому навыку.'));
     const cards = el('div', 'course-track-grid');
     for (const [index, track] of tracks.entries()) {
       const card = link('', '#courses-' + track.id, 'course-track-card'); card.dataset.track = track.id;
-      card.append(el('span', 'course-track-symbol', ['1 · 2 · 3', 'x + 3', '△ □'][index]),
+      card.append(el('span', 'course-track-symbol', {arithmetic:'1 · 2 · 3', written:'824 : 4', fractions:'½ · ¾', decimals:'0,1 · 0,01', algebra:'x + 3', geometry:'△ □'}[track.id]),
         el('span', 'course-eyebrow', track.lessons.length + ' уроков'), el('h3', '', track.title),
         el('p', '', track.description), el('strong', 'course-track-progress', summaryText(track)), el('span', 'course-card-link', 'Выбрать урок →'));
       cards.append(card);
@@ -131,7 +142,8 @@
     const note = el('section', 'course-method-note');
     note.append(el('h3', '', 'Сначала предметы. Затем запись.'),
       el('p', '', 'Урок начинается с примера и наглядной модели. После тренировки попробуй новые числа без помощи, затем объясни свой выбор. Ошибку можно исправить, а подсказку — открыть в любой момент.'),
-      el('p', '', 'Эти занятия созданы MathExam по мотивам практического подхода К. П. Арженикова. Алгебра и геометрия здесь — вводные курсы; советские издания Киселёва остаются историческими ориентирами.'),
+      el('p', '', 'Одна и та же величина связывает предмет, рисунок, дробь и запись вычисления. После двух задач с моделью идут тренировка, две задачи на самостоятельную проверку и объяснение. Затем можно решить ещё две новые задачи. Помощь и первый ответ учитываются отдельно.'),
+      el('p', '', 'Эти занятия созданы MathExam по мотивам практического подхода К. П. Арженикова. Исторические задачники задают ориентир; истории и интерактивные модели разработаны для современных учеников. Алгебра и геометрия здесь остаются вводными курсами.'),
       link('Об Арженикове и источниках', '#arzhenikov-about'), el('span', '', ' · '),
       link('Скачать все занятия для работы без интернета', 'arzhenikov-offline.zip'));
     host.append(note);
@@ -139,6 +151,17 @@
   function trackPage(track) {
     host.dataset.courseView = 'track'; delete host.dataset.courseLesson; delete host.dataset.coursePhase;
     shell([[track.title]]); heading(track.title, track.subtitle); host.append(el('p', 'course-lead', track.description));
+    if (['written','fractions','decimals'].includes(track.id)) {
+      const source = el('details', 'course-physical');
+      source.append(el('summary', '', 'Методика и первоисточник'));
+      source.append(el('p', '', track.id === 'written'
+        ? 'Предметное деление связываем с разрядами и записью уголком. В задачнике Арженикова, часть III (1924), на с. 24 показано письменное деление с нулём в частном. Здесь каждый промежуточный шаг записывает ученик.'
+        : track.id === 'fractions'
+          ? 'От равных частей переходим к равным дробям, общему знаменателю и четырём действиям. Исторический ориентир — часть IV задачника Арженикова (1924), с. 5–33.'
+          : 'Метрические меры помогают увидеть десятые, сотые и тысячные, затем объяснить четыре действия и переход между видами дробей. Исторический ориентир — часть IV задачника Арженикова (1924), с. 52–71.'));
+      const a = link('Открыть первоисточник ↗', track.id === 'written' ? 'https://djvu.online/file/Zmmk0C6Gqh83D' : 'https://djvu.online/file/AIsMeWPu7uz8w');
+      a.target = '_blank'; a.rel = 'noopener'; source.append(a); host.append(source);
+    }
     const meter = el('div', 'course-track-meter');
     meter.append(el('strong', '', summaryText(track)));
     const bar = el('progress'); bar.max = track.lessons.length; bar.value = track.lessons.filter(l => state.lessons[l.id]?.completedAt).length;
@@ -155,7 +178,7 @@
       }
       section.append(list); host.append(section);
     }
-    host.append(link('← Пространственная карта навыков', '#journey', 'course-return'));
+    host.append(link('← Пространственная карта навыков', ['written','fractions','decimals'].includes(track.id) ? '#journey-' + track.id : '#journey', 'course-return'));
   }
   function lessonHeader(lesson, phase) {
     const track = trackOf(lesson);
@@ -203,6 +226,7 @@
     return node;
   }
   function draw(model, values, container, solved = false) {
+    if (window.ArzhenikovCourseNumbers?.draw(model, values, container)) return;
     container.replaceChildren();
     const description = el('p', 'course-model-description');
     const m = model.meta || {}, v = values;
@@ -350,7 +374,11 @@
         draft.model = next; draft.modelReady = false; input.value = value;
         less.disabled = value <= control.min; more.disabled = value >= control.max;
         save(); redraw();
-        if (required) { const answer = host.querySelector('#course-answer'); if (answer) answer.disabled = true; const check = host.querySelector('[data-course-action="check-answer"]'); if (check) check.disabled = true; }
+        if (required) {
+          for (const selector of ['#course-answer', '#course-step-answer', '[data-course-action="check-answer"]', '[data-course-action="check-step"]']) {
+            const field = host.querySelector(selector); if (field) field.disabled = true;
+          }
+        }
         feedback('');
       }
       input.addEventListener('change', () => change(Number(input.value)));
@@ -370,7 +398,7 @@
         if (!E.modelMatches(task, draft)) { feedback('Сверь модель с условием: ' + task.model.caption, 'wrong'); return; }
         draft.modelReady = true; save(); render(false);
         feedback('Модель соответствует условию. Теперь запиши ответ.', 'correct');
-        host.querySelector('#course-answer')?.focus({preventScroll: true});
+        (host.querySelector('#course-step-answer') || host.querySelector('#course-answer'))?.focus({preventScroll: true});
       }); panel.append(check);
     }
     redraw(); return panel;
@@ -385,18 +413,31 @@
     panel.append(el('h3', 'course-problem', task.prompt));
     if (index >= 4) panel.append(el('p', 'course-check-note', draft.attempts ? 'Первый ответ на эту задачу уже сохранён. Исправления помогают разобраться.' : 'Попробуй сначала без помощи. Если понадобится подсказка, её можно открыть.'));
     if (required || draft.modelShown) panel.append(modelPanel(task, draft, required, draft.solved));
+    const steps = window.ArzhenikovCourseNumbers?.stepsPanel(task, draft, {save, render, disabled: required && !draft.modelReady});
+    if (steps) panel.append(steps);
     const form = el('form', 'course-answer-form');
     const label = el('label', '', task.label + (task.unit ? ' (' + task.unit + ')' : ''));
     label.htmlFor = 'course-answer';
-    const input = el('input'); input.id = 'course-answer'; input.type = 'text'; input.inputMode = 'decimal'; input.autocomplete = 'off'; input.maxLength = 40;
-    input.value = draft.input; input.disabled = required && !draft.modelReady; input.readOnly = draft.solved;
-    input.setAttribute('aria-describedby', 'course-feedback');
+    const input = el('input'); input.id = 'course-answer'; input.type = 'text';
+    input.inputMode = ['fraction','mixed','comparison'].includes(task.answerFormat) ? 'text' : 'decimal'; input.autocomplete = 'off'; input.maxLength = 40;
+    const blocked = (required && !draft.modelReady) || !E.stepsComplete(task, draft);
+    input.value = draft.input; input.disabled = blocked; input.readOnly = draft.solved;
+    input.setAttribute('aria-describedby', 'course-answer-format course-feedback');
     input.addEventListener('input', () => { draft.input = input.value; save(); input.removeAttribute('aria-invalid'); });
     const submit = el('button', 'course-primary', draft.solved ? 'Ответ принят ✓' : 'Проверить ответ');
-    submit.type = 'submit'; submit.dataset.courseAction = 'check-answer'; submit.disabled = draft.solved || (required && !draft.modelReady);
-    form.append(label, input, submit);
+    submit.type = 'submit'; submit.dataset.courseAction = 'check-answer'; submit.disabled = draft.solved || blocked;
+    const format = el('p', 'course-input-format', E.formatHelp(task)); format.id = 'course-answer-format';
+    form.append(label, input, submit, format);
+    if (task.answerFormat === 'comparison') {
+      const choices = el('div', 'course-comparison-choices');
+      for (const sign of ['<', '=', '>']) {
+        const choice = button(sign, 'comparison', () => { draft.input = sign; input.value = sign; save(); input.focus(); });
+        choice.disabled = blocked || draft.solved; choice.setAttribute('aria-label', {'<':'Меньше', '=':'Равно', '>':'Больше'}[sign]); choices.append(choice);
+      }
+      form.append(choices);
+    }
     form.addEventListener('submit', event => {
-      event.preventDefault(); if (draft.solved || (required && !draft.modelReady)) return;
+      event.preventDefault(); if (draft.solved || blocked) return;
       draft.input = input.value; const result = E.assess(task, draft); save();
       if (result.kind === 'correct') { render(false); feedback(result.message, result.kind); host.querySelector('[data-course-action="next-task"]')?.focus({preventScroll: true}); }
       else { input.setAttribute('aria-invalid', 'true'); feedback(result.message, result.kind); input.focus({preventScroll: true}); }
@@ -462,7 +503,12 @@
     const actions = el('div', 'course-actions');
     const track = trackOf(lesson), next = track.lessons[track.lessons.indexOf(lesson) + 1];
     if (next) actions.append(link('Следующий урок: ' + next.title + ' →', hrefLesson(next), 'course-primary'));
-    else actions.append(link('Выбрать следующий курс →', '#courses', 'course-primary'));
+    else {
+      const nextId = {arithmetic:'written', written:'fractions', fractions:'decimals', decimals:'algebra'}[track.id];
+      const nextTrack = tracks.find(item => item.id === nextId);
+      actions.append(link(nextTrack ? 'Дальше: ' + nextTrack.title + ' →' : 'Выбрать следующий курс →',
+        nextTrack ? '#courses-' + nextTrack.id : '#courses', 'course-primary'));
+    }
     if (!rec.reviewedAt) actions.append(button('Проверить себя на новых числах', 'new-check', () => { rec.cycle = 1; rec.cursor = 0; rec.phase = 'task'; draftFor(lesson, rec, 6); save(); render(true); }));
     actions.append(button('Повторить знакомые задачи', 'repeat', () => {
       for (const task of lesson.tasks.slice(0, 6)) rec.tasks[task.id] = E.resetDraft(task, draftFor(lesson, rec, lesson.tasks.indexOf(task)));
@@ -494,6 +540,9 @@
     lastRoute = hash;
   }
   window.ArzhenikovCoursesProgress = () => E.progress(state, lessons);
+  // The spatial map can be the initial route and loads before this API.
+  // Refresh its caption from the restored record without changing that record.
+  window.dispatchEvent(new CustomEvent('courses-progress'));
   window.addEventListener('hashchange', () => { placeNavigator(); render(location.hash !== lastRoute); });
   document.addEventListener('DOMContentLoaded', placeNavigator, {once: true});
   window.addEventListener('load', placeNavigator, {once: true});
