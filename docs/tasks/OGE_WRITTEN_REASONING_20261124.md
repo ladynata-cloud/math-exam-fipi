@@ -33,3 +33,8 @@
 4. Профиль №14: рисунок с данными, затем построение ученика, только после обоснования — знак прямого угла; доказывать принадлежность F плоскости и EF ⟂ плоскости. 
 5. Адресные вопросы по шести типам ошибок; не приписывать ошибку по одному результату. Повторение через действующие журналы: отдельно правильность, новизна, помощь, самокоррекция, дата следующего возвращения. 
 6. Наблюдения на обычном уроке с одним учеником, без заявлений об эффективности, без персональных данных в отчётах.
+
+## Integration follow-up
+- Exact candidate HTML was executed in an isolated JS DOM harness: 14 checks passed (first text remains immutable; help gated; switching restores draft; square shown only after model in converse problem; JSON export preserves attempts and assistance). This is not Chromium.
+- Initial CI detected missing public sitemap entry. Added exactly one reviewed seed and one sorted canonical URL, preserved all previous 632 URLs, added page description. Re-run all applicable checks on the resulting head.
+- Added `tools/oge-written-practice.browser.cjs`, invoked from existing OGE skill-course CI, for real Chromium 320/390/1280 px, write/help flow, export, old localStorage keys, no external requests. Its result must be obtained from CI; no unrun test claimed as passed.
