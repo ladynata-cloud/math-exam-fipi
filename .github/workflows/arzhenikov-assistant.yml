@@ -1,0 +1,49 @@
+name: Arzhenikov contextual assistant
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-basics/multiplication-division/arzhenikov-*'
+      - 'site-assistant/arzhenikov/**'
+      - 'site-assistant/test/arzhenikov-*'
+      - 'tools/arzhenikov-assistant*'
+      - 'tools/build-arzhenikov-offline.py'
+      - '.github/workflows/arzhenikov-assistant.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contextual-help:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Context, first attempts and synthetic evaluation material
+        run: |
+          node --test tools/arzhenikov-assistant-dialogue.test.cjs tools/arzhenikov-courses.test.cjs tools/arzhenikov-arithmetic.test.cjs
+          npm test --prefix site-assistant
+          python3 tools/arzhenikov-offline.test.py
+          python3 tools/build-arzhenikov-offline.py --check
+          git diff --check
+      - name: Install browser test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/arz-assistant-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/arz-assistant-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Current task, persisted assistance, mobile and offline interaction
+        run: |
+          NODE_PATH="$RUNNER_TEMP/arz-assistant-qa/node_modules" node tools/arzhenikov-assistant.browser.cjs --dom
+          NODE_PATH="$RUNNER_TEMP/arz-assistant-qa/node_modules" node tools/arzhenikov-assistant.browser.cjs
+      - name: Preserve assistant screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: arzhenikov-contextual-assistant
+          path: artifacts/arzhenikov-assistant/
+          if-no-files-found: ignore

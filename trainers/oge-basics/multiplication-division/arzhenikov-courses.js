@@ -460,6 +460,8 @@
         save(); render(true);
       }, true));
     }
+    const assistant = window.ArzhenikovCourseAssistant?.mount({lesson, task, draft, modelRequired: required, save, taskPanel: panel});
+    if (assistant) panel.append(assistant);
     host.append(panel);
     if (draft.helpUsed) host.append(el('p', 'course-help-record', 'В этой задаче использована помощь. Это сохранено отдельно от самостоятельных ответов.'));
   }
