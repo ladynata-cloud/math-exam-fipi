@@ -354,12 +354,12 @@
       let scale=10**places(a);
       while(units(a,scale)%count) scale*=10;
       const all=units(a,scale), each=all/count, answer=decimal(each,scale);
-      return task('Ленту длиной ' + ru(a) + ' м разделили на ' + count + ' равных частей. Какова длина одной части?',answer,'r-div',[a,count],
+      return task('Ленту длиной ' + ru(a) + ' м разделили на равные части. Количество частей: ' + count + '. Какова длина одной части?',answer,'r-div',[a,count],
         'Выбери достаточно мелкие доли, чтобы разделить количество поровну. Проверь найденную часть умножением.',
         all + ' ' + unitName(scale) + ' : ' + count + ' = ' + each + ' ' + unitName(scale) + '; одна часть равна ' + ru(answer) + ' м.',
         index<2
           ? operationModel('share',scale,'м',{total:all,groups:count},
-            'Раздели запас из ' + all + ' ' + namedParts(scale,'м') + ' поровну на ' + count + ' частей. Изменяй длину одной части так, чтобы весь запас распределился без остатка.')
+            'Раздели запас из ' + all + ' ' + namedParts(scale,'м') + ' на равные части. Количество частей: ' + count + '. Изменяй длину одной части так, чтобы весь запас распределился без остатка.')
           : model(a,'Покажи всю ленту длиной ' + ru(a) + ' м до деления.','м'),{unit:'м',steps:[
           step('all-units','Вырази всю длину в долях по 1/' + scale + ' м',all,'r-mul',[a,scale],
             'В одном метре ' + scale + ' таких долей.',ru(a) + ' × ' + scale + ' = ' + all + '.'),

@@ -206,7 +206,12 @@ async function visualAndPersistence(browser, base, width) {
   try {
     await page.goto(base + '#journey');
     await page.locator('#journey-map[data-view="overview"]').waitFor({state:'visible'});
+    assert.equal(await page.evaluate(() => document.querySelector('body.arz-adventure > header nav')?.contains(document.getElementById('maxexam-public-assistant'))), true,
+      'Map navigator belongs to the header and does not cover map text');
     await page.locator('#journey-map').screenshot({path:path.join(artifacts, 'map-overview-' + width + '.png')});
+    await page.goto(base + '#workshop-picnic');
+    assert.equal(await page.evaluate(() => document.querySelector('body.arz-adventure > header nav')?.contains(document.getElementById('maxexam-public-assistant'))), false,
+      'Leaving the map restores the original game navigator placement');
     for (const track of tracks) {
       await page.goto(base + '#courses-' + track.id);
       await page.locator('#arz-courses[data-course-view="track"]').waitFor({state:'visible'});

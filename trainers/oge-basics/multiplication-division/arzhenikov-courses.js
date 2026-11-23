@@ -62,14 +62,14 @@
   let navigatorOrigin = null;
   function placeNavigator() {
     // Reuse the public navigator and its focus/dialog handlers. Only this
-    // course view changes its presentation; older games keep their launcher.
+    // courses and spatial map use the header; older games keep their launcher.
     if (!document.body.classList.contains('arz-adventure')) return;
     const navigator = document.getElementById('maxexam-public-assistant');
     const menu = document.querySelector('body.arz-adventure > header nav');
     if (!navigator?.shadowRoot || !menu) return;
     if (!navigatorOrigin) navigatorOrigin = {parent: navigator.parentNode, next: navigator.nextSibling};
     const focused = document.activeElement === navigator ? navigator.shadowRoot.activeElement : null;
-    if (courseRoute()) {
+    if (courseRoute() || location.hash === '#journey' || location.hash.startsWith('#journey-')) {
       if (!navigator.shadowRoot.querySelector('[data-arzhenikov-course-navigation]')) {
         const style = document.createElement('style'); style.dataset.arzhenikovCourseNavigation = '';
         style.textContent =

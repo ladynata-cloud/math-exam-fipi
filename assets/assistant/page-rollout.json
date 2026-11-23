@@ -3330,10 +3330,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "trainers/oge-basics/multiplication-division/arzhenikov-map.html": {
-      "beforeSha256": "d819bfdd18564579ea76f6494a758e8a2ab59b6ded84eb6b72faf26a5cda64db",
-      "afterSha256": "dc2f1e588b2b846f0dc4d45a616f27b638fb7edeae986cd206e35de7730c2075",
+      "beforeSha256": "e15615bea0e72a5ae9751bf28605ac9a50a23ea51f7425fd79c19be8d47810ce",
+      "afterSha256": "aecbdc9c365ccf7145b8cc6782dc7695ceaba283f07277dde212d48ce3136589",
       "placement": "before-head-close",
-      "sourceSha": "bdd25451241c3a7ce8c9fb691377862142f4d5bc"
+      "sourceSha": "4a497e77e28d6cc55bacaa1bc1b1c5747dfdac44"
     },
     "trainers/practice-topics/index.html": {
       "beforeSha256": "383ab0b95ae181aff973866c181d555e4f27bac17a4c038ca1be4b464556d72c",
@@ -6773,6 +6773,16 @@
         "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
       ],
       "reason": "Bind the reviewed forty guided courses, local progress and offline entrance. The remote source tree matches the locally validated source tree.",
+      "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
+    },
+    {
+      "sourceBaseSha": "4a497e77e28d6cc55bacaa1bc1b1c5747dfdac44",
+      "previousSourceSha": "bdd25451241c3a7ce8c9fb691377862142f4d5bc",
+      "task": "docs/tasks/ARZHENIKOV_COMPLETE_ARITHMETIC_20261123.md",
+      "changedPaths": [
+        "trainers/oge-basics/multiplication-division/arzhenikov-map.html"
+      ],
+      "reason": "Bind the reviewed written division, common fractions and decimal arithmetic extension to the existing skill map. The page matches the committed source and retains the exact navigator includes.",
       "bindingScope": "Per-page sourceSha; all other source bindings and the global base remain unchanged."
     }
   ],
