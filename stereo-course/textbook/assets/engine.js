@@ -354,10 +354,10 @@ function createApp(root,options){
   if(lesson.answer?.mode==='exact'&&lesson.answer.feedback){const explanation=el('button','Сверить с объяснением ответа',{type:'button','data-answer-explanation':''});explanation.addEventListener('click',()=>{if(assisted())setDisplayText(main.querySelector('[data-final-feedback]'),lesson.answer.feedback);});helpBody.append(explanation);}
   side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{
    lessonId:lesson.id,
-   // Volume lessons and exercise 559 keep their full diagram above the fold on phones.
+   // Keep 559 compact on the narrowest phones; retain its full-size drawing at 390 px.
    get compactPreview(){
-    const compactLesson = lesson.source.chapter === 'V. Объёмы тел' || ['ex-main-0559-a','ex-main-0559-b','ex-main-0559-c'].includes(lesson.id);
-    return compactLesson && model.clientWidth > 0 && model.clientWidth < 400;
+    const compact559 = ['ex-main-0559-a','ex-main-0559-b','ex-main-0559-c'].includes(lesson.id) && model.clientWidth < 360;
+    return (lesson.source.chapter === 'V. Объёмы тел' || compact559) && model.clientWidth > 0 && model.clientWidth < 400;
    },
    savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}
   });

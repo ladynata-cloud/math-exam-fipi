@@ -17,6 +17,20 @@ function replaceOnce(source, from, to) {
 }
 function beforeHarmonization(file, bytes, record = manifest) {
   if (file !== FILE) return bytes;
+  if (hash(bytes) === '6bcaf9a51621d47b3b2743d8b2e5b2582f8a33e379dcd33203e9d6ec6dbfa6c4') {
+    const narrow559 = `   // Keep 559 compact on the narrowest phones; retain its full-size drawing at 390 px.
+   get compactPreview(){
+    const compact559 = ['ex-main-0559-a','ex-main-0559-b','ex-main-0559-c'].includes(lesson.id) && model.clientWidth < 360;
+    return (lesson.source.chapter === 'V. Объёмы тел' || compact559) && model.clientWidth > 0 && model.clientWidth < 400;
+   },`;
+    const allPhones559 = `   // Volume lessons and exercise 559 keep their full diagram above the fold on phones.
+   get compactPreview(){
+    const compactLesson = lesson.source.chapter === 'V. Объёмы тел' || ['ex-main-0559-a','ex-main-0559-b','ex-main-0559-c'].includes(lesson.id);
+    return compactLesson && model.clientWidth > 0 && model.clientWidth < 400;
+   },`;
+    bytes = Buffer.from(replaceOnce(bytes.toString('utf8'), narrow559, allPhones559));
+    assert.equal(hash(bytes), '0f0ee0becd54240dfae5e7cf841ef0e475b78df6f96644bd5472005fb3acf88a', 'only narrow the 559 compact breakpoint to preserve the 390 px layout');
+  }
   if (hash(bytes) === '0f0ee0becd54240dfae5e7cf841ef0e475b78df6f96644bd5472005fb3acf88a') {
     const with559 = `   // Volume lessons and exercise 559 keep their full diagram above the fold on phones.
    get compactPreview(){
