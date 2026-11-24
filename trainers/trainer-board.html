@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="sections-course-navigation.css?v=20261108-mobile">
   <style>
     #roomNotice, #roomRecovery { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:0 12px; padding:8px 12px; border:1px solid #e6b76c; border-radius:8px; background:#fff5df; color:#78350f; font-size:13px; font-weight:700; line-height:1.35; }
+    #roomNotice { position:sticky; top:0; z-index:8; }
     #roomNotice[hidden], #roomRecovery[hidden], #roomNotice button[hidden] { display:none !important; }
     #roomNotice .btn, #roomRecovery .btn { min-height:32px; font-size:12px; white-space:normal; }
     #roomRecovery select { min-width:0; max-width:100%; min-height:32px; font-size:12px; }
@@ -185,7 +186,7 @@
     function canWrite(){return shared.roomId?roomReady()&&!!(shared.me&&shared.control===shared.me.participantId):shared.role==='teacher'}
     let roomConnectGeneration=0;
     function readRecovery(){
-      if(initialRole!=='teacher')return {pending:null,copies:[]};
+      if(initialRole!=='teacher'||params.get('demo')==='1')return {pending:null,copies:[]};
       try{const record=JSON.parse(sessionStorage.getItem(RECOVERY_KEY)||'null');
         const valid=item=>item&&typeof item.roomId==='string'&&typeof item.at==='string'&&Array.isArray(item.snapshot?.pages)&&item.snapshot.pages.length&&item.snapshot.pages.every(p=>p&&Array.isArray(p.strokes));
         const copies=Array.isArray(record?.copies)?record.copies.filter(valid):[];
@@ -196,7 +197,7 @@
     }
     let recovery=readRecovery(), recoveryStorageFailed=false;
     function persistRecovery(){
-      if(shared.role!=='teacher')return;
+      if(shared.role!=='teacher'||params.get('demo')==='1')return;
       try{if(recovery.pending||recovery.copies.length)sessionStorage.setItem(RECOVERY_KEY,JSON.stringify(recovery));else sessionStorage.removeItem(RECOVERY_KEY);recoveryStorageFailed=false}
       catch(_){recoveryStorageFailed=true}
     }
@@ -206,6 +207,9 @@
       if(shared.roomId&&!roomReady()){
         message=shared.role==='teacher'?'Нет подтверждённой связи с комнатой. Ученик не получает новые записи. Письмо приостановлено до восстановления.':'Нет связи с комнатой. Вы видите последние полученные записи. Ждём восстановления.';
         actionText='Повторить подключение';
+      }else if(roomReady()&&shared.role==='teacher'&&shared.participants.some(p=>p?.role==='student')&&!shared.participants.some(p=>p?.role==='student'&&(p.connected===true||Number(p.onlineCount)>0))){
+        message='Ученик не в сети. Записи сохраняются в комнате, но появятся у ученика только после подключения.';
+        actionText='Участники';
       }else if(!shared.roomId&&(shared.roomError||missingTeacherRoomSession)){
         message=shared.role==='teacher'?'Общая комната недоступна. Записи остались на этой доске, но ученик их не видит. Создайте новую комнату и отправьте новую ссылку.':'Комната недоступна. Вы видите прежние записи. Попросите учителя прислать новую ссылку.';
         if(shared.role==='teacher')actionText='Создать новую комнату';
@@ -268,6 +272,12 @@
     function restoreRecovery(){
       const item=selectedRecovery();if(shared.role!=='teacher'||!item||!confirm('Открыть резервную копию вместо текущего локального вида? Подключение к текущей комнате будет закрыто только в этой вкладке. Для совместной работы потребуется новая комната.'))return;
       if(shared.roomId)handleRoomError({message:'Открыта локальная копия'},true);
+      // Do not discard a newer local view when opening an older backup.
+      const previous=publicSnapshot();
+      if(snapshotHasUnconfirmed(previous,item.snapshot)){
+        recovery.copies.push({roomId:'local',at:new Date().toISOString(),snapshot:JSON.parse(JSON.stringify(previous))});
+        persistRecovery();
+      }
       applySnapshot(item.snapshot);clearTimeout(timer);persistLocalBoard();
       setStatus('Открыта локальная копия. Создайте новую комнату.','wait');refreshRoomNotice();
     }
@@ -610,10 +620,10 @@
       if(!writable&&document.activeElement===frame)frame.blur();
       document.body.classList.toggle('viewer',!writable);
       document.body.classList.toggle('control-owner',writable);
-      controlBadge.textContent=shared.roomError?'Нет подключения к комнате':`У доски: ${controlLabel()}`;
+      controlBadge.textContent=shared.roomError||(shared.roomId&&!roomReady())?'Нет подключения к комнате':`У доски: ${controlLabel()}`;
       controlToggle.textContent=studentHasControl?'Забрать ход':'Передать ход';
       controlToggle.disabled=!roomReady()||shared.role!=='teacher'||!!vprControlTransfer;
-      $('boardControlStatus').textContent=shared.roomError?(shared.role==='teacher'?'Локальная доска':'Нет подключения к комнате'):`Пишет ${studentHasControl?'ученик':'учитель'}`;
+      $('boardControlStatus').textContent=shared.roomId&&!roomReady()?'Нет связи — письмо приостановлено':shared.roomError?(shared.role==='teacher'?'Локальная доска':'Нет подключения к комнате'):`Пишет ${studentHasControl?'ученик':'учитель'}`;
       $('boardControlToggle').textContent=controlToggle.textContent;
       $('boardControlToggle').disabled=controlToggle.disabled;
       releaseControl.disabled=!roomReady()||!writable||shared.role!=='student';
@@ -749,6 +759,8 @@
         await loadSocketClient(server);
         if(attempt!==roomConnectGeneration||room!==shared.roomId||token!==shared.token||server!==shared.server)return;
         shared.socket=io(server,{transports:['polling','websocket'],tryAllTransports:true,reconnection:true});
+        const liveSocket=shared.socket;
+        const onRoomEvent=(event,handler)=>liveSocket.on(event,payload=>{if(shared.socket===liveSocket&&roomReady())handler(payload)});
         let socketConnectedOnce=false;
         shared.socket.on('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключение','wait');updateControlUi();shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
         shared.socket.on('connect_error',()=>{
@@ -780,8 +792,8 @@
           recoverExpiredBridgeOnce();maybeHydrateTrainer();if(latestTrainerState&&!canWrite())applyTrainerStateToFrame(latestTrainerState);scheduleLegacyTrainerRequest();
           fallbackSharedMe();setStatus('подключено','ok');updateControlUi()
         });
-        shared.socket.on('participants:state',payload=>{setParticipants(payload?.participants);updateControlUi()});
-        shared.socket.on('control:changed',payload=>{
+        onRoomEvent('participants:state',payload=>{setParticipants(payload?.participants);updateControlUi()});
+        onRoomEvent('control:changed',payload=>{
           const wasMine=canWrite();
           setControlState(payload||{});
           const isMine=canWrite();
@@ -790,19 +802,19 @@
           if(!wasMine&&isMine)requestTrainerState();
           updateControlUi();setTool(tool)
         });
-        shared.socket.on('board:snapshot',payload=>applySnapshot(payload?.state));
-        shared.socket.on('board:trainer-url-change',payload=>{if(payload?.trainerUrl){state.trainerUrl=payload.trainerUrl;trainerUrl.value=payload.trainerUrl;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(payload.trainerUrl,{selection:true})}});
-        shared.socket.on('board:trainer-state-change',payload=>applyTrainerStateToFrame(payload));
-        shared.socket.on('board:stroke-start',payload=>{const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||!state.pages[index])return;state.current=index;current=payload?.stroke||null;scheduleRender()});
-        shared.socket.on('board:stroke-points',payload=>{if(!current)return;if(current.kind==='path'&&payload.kind==='path'&&Array.isArray(payload.points))current.points.push(...payload.points);if(payload.end)current.end=payload.end;scheduleRender()});
-        shared.socket.on('board:stroke-end',payload=>{current=null;if(payload?.stroke)addStroke(payload.stroke,true,payload.pageIndex)});
-        shared.socket.on('board:text-add',payload=>{const object=payload?.stroke||payload?.text||payload?.object;if(object)addStroke(object,true,payload.pageIndex)});
-        shared.socket.on('board:page-add',payload=>applyRemotePageAdd(payload));
-        shared.socket.on('board:page-delete',payload=>applyRemotePageDelete(payload));
-        shared.socket.on('board:page-state',payload=>applyRemotePageState(payload));
-        shared.socket.on('board:clear-page',payload=>{imageImportEpoch++;const target=state.pages[payload?.pageIndex];if(!target)return;forgetPageRedo(target.id);target.strokes=[];target.redo=[];acknowledgeHistory();render();save()});
-        shared.socket.on('board:page-switch',payload=>{if(payload?.pageIndex!==undefined){cancelGesture(false);closeTextEditor();state.current=Math.min(Math.max(payload.pageIndex,0),state.pages.length-1);sync(false)}});
-        shared.socket.on('board:bg-change',payload=>{if(payload?.bg){page().bg=payload.bg;sync(false)}})
+        onRoomEvent('board:snapshot',payload=>applySnapshot(payload?.state));
+        onRoomEvent('board:trainer-url-change',payload=>{if(payload?.trainerUrl){state.trainerUrl=payload.trainerUrl;trainerUrl.value=payload.trainerUrl;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(payload.trainerUrl,{selection:true})}});
+        onRoomEvent('board:trainer-state-change',payload=>applyTrainerStateToFrame(payload));
+        onRoomEvent('board:stroke-start',payload=>{const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||!state.pages[index])return;state.current=index;current=payload?.stroke||null;scheduleRender()});
+        onRoomEvent('board:stroke-points',payload=>{if(!current)return;if(current.kind==='path'&&payload.kind==='path'&&Array.isArray(payload.points))current.points.push(...payload.points);if(payload.end)current.end=payload.end;scheduleRender()});
+        onRoomEvent('board:stroke-end',payload=>{current=null;if(payload?.stroke)addStroke(payload.stroke,true,payload.pageIndex)});
+        onRoomEvent('board:text-add',payload=>{const object=payload?.stroke||payload?.text||payload?.object;if(object)addStroke(object,true,payload.pageIndex)});
+        onRoomEvent('board:page-add',payload=>applyRemotePageAdd(payload));
+        onRoomEvent('board:page-delete',payload=>applyRemotePageDelete(payload));
+        onRoomEvent('board:page-state',payload=>applyRemotePageState(payload));
+        onRoomEvent('board:clear-page',payload=>{imageImportEpoch++;const target=state.pages[payload?.pageIndex];if(!target)return;forgetPageRedo(target.id);target.strokes=[];target.redo=[];acknowledgeHistory();render();save()});
+        onRoomEvent('board:page-switch',payload=>{if(payload?.pageIndex!==undefined){cancelGesture(false);closeTextEditor();state.current=Math.min(Math.max(payload.pageIndex,0),state.pages.length-1);sync(false)}});
+        onRoomEvent('board:bg-change',payload=>{if(payload?.bg){page().bg=payload.bg;sync(false)}})
       }catch(_e){
         if(attempt!==roomConnectGeneration)return;
         shared.connected=false;roomStateReceived=false;updateControlUi();
@@ -841,7 +853,7 @@
     try{state.trainerUrl=normalizeTrainer(state.trainerUrl)}catch(_){state.trainerUrl='negative-numbers-line.html'}
     if(initialRole==='student'&&shared.roomId)document.body.classList.add('awaiting-room');
     $('guestRoomRetry').onclick=connectRoom;
-    $('roomNoticeAction').onclick=()=>{if(shared.roomId&&!roomReady())connectRoom();else if(shared.role==='teacher'&&!shared.roomId)$('openShare').click()};
+    $('roomNoticeAction').onclick=()=>{if(shared.roomId&&!roomReady())connectRoom();else if(shared.role==='teacher')$('openShare').click()};
     $('roomRecoveryDownload').onclick=downloadRecovery;$('roomRecoveryRestore').onclick=restoreRecovery;$('roomRecoveryDiscard').onclick=discardRecovery;
     trainerUrl.value=state.trainerUrl;loadTrainerRegistry();setTrainerFrameSrc(state.trainerUrl);applyRole();setTrainerHidden(state.trainerHidden);setTool(tool);loadTrainerQuickSelect();sync(false);requestAnimationFrame(resize);if(shared.roomId&&shared.token&&shared.server)connectRoom();else if(missingTeacherRoomSession)setStatus('Сессия учителя не восстановлена. Создайте новую комнату.','bad');else setStatus('локальный режим','');
     BoardPicker.mount({open:url=>{if(!openTrainer(url))return false;setTrainerHidden(false);return true},retry:()=>setTrainerFrameSrc(state.trainerUrl,{force:true}),role:()=>shared.role,mirrorCapability:pickerMirrorCapability,fallback:lessonTrainers});

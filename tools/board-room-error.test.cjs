@@ -699,4 +699,37 @@ test('terminal teacher recovery retains local writing for a fresh room', async (
   } finally { f.close(); }
 });
 
+test('teacher sees student offline without confusing it with teacher transport failure', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect();
+    socket.deliver('participants:state',{participants:[{id:'fixture-teacher',role:'teacher',connected:true},{id:'fixture-student',role:'student',connected:false}]});
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/Ученик не в сети/);
+    assert.equal(f.evaluate('canWrite()'),true,'teacher is still connected to the room');
+    socket.deliver('participants:state',{participants:[{id:'fixture-teacher',role:'teacher',connected:true},{id:'fixture-student',role:'student',connected:true}]});
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+  } finally { f.close(); }
+});
+
+test('opening a recovery copy is explicit and does not overwrite the shared room', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect(), accepted=f.snapshot();
+    f.evaluate("state.pages[0].strokes.push({objectId:'local-only',kind:'text',x:12,y:20,text:'saved',size:5,color:'#111'})");
+    socket.deliver('disconnect');socket.deliver('connect');
+    socket.deliver('room:state',{state:{...accepted,control:'fixture-teacher',controlVersion:4,participants:[{id:'fixture-teacher',role:'teacher',connected:true}]},you:{participantId:'fixture-teacher',role:'teacher'}});
+    await tick();
+    const sent=socket.sent.length;
+    f.w.confirm=()=>false;f.w.document.getElementById('roomRecoveryRestore').click();
+    assert.equal(f.evaluate('shared.connected'),true);
+    assert.deepEqual(f.snapshot(),accepted);
+    f.w.confirm=()=>true;f.w.document.getElementById('roomRecoveryRestore').click();
+    assert.equal(f.evaluate('shared.connected'),false);
+    assert.equal(f.evaluate('shared.roomId'),'');
+    assert.equal(f.evaluate('canWrite()'),true);
+    assert.equal(f.snapshot().pages[0].strokes[0].objectId,'local-only');
+    assert.equal(socket.sent.length,sent,'no snapshot or mutation is sent to the previous room');
+  } finally { f.close(); }
+});
+
 module.exports = { createBoardFixture };

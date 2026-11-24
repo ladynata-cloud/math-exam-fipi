@@ -593,6 +593,16 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   await drawStroke(teacher,'pen',{x:110,y:110},{x:170,y:135});
   await sameBoard(teacher,student,'new handwriting reaches pupil after reconnect');
 
+  phase = 'real pupil disconnect leaves teacher room authoritative and reports pupil offline';
+  await student.evaluate(()=>shared.socket.disconnect());
+  await teacher.waitForFunction(()=>document.getElementById('roomNoticeText').textContent.includes('Ученик не в сети'));
+  assert.equal(await teacher.evaluate(()=>canWrite()),true);
+  await drawStroke(teacher,'pen',{x:180,y:110},{x:240,y:135});
+  await student.evaluate(()=>shared.socket.connect());
+  await connected(student);
+  await sameBoard(teacher,student,'pupil gets the current board after reconnect');
+  await teacher.waitForFunction(()=>document.getElementById('roomNotice').hidden);
+
   phase = 'authoritative stroke bytes survive teacher/student reload and late join';
   // Observer objects already contain the server timestamp; compare all bytes.
   const canonicalBytes = await rawPages(student);

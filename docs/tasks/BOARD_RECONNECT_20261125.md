@@ -13,10 +13,10 @@ Teacher reported pupil saw old records. Open teacher tab showed invalid session,
 
 ## Acceptance
 
-- During known-room loss, both roles are read-only until authenticated room state; the transport handshake alone is not enough.
+- During known-room loss, both roles are read-only until authenticated room state; the transport handshake alone is not enough. If only the pupil disconnects, the connected teacher sees a distinct offline-pupil notice and may keep writing to the server. Late drawing/control/participant events cannot mutate a disconnected board.
 - Permanent rejection keeps teacher local records usable and visibly identifies the need for a new invitation.
 - The authoritative room snapshot wins; unconfirmed teacher objects/pages are retained as separate browser-tab recovery copies, never silently replayed.
-- Teacher can download or explicitly open a recovery copy locally. Storage failures are visible. Credentials are excluded from recovery snapshots. No server-side persistence or guarantee for unsent student changes.
+- Teacher can download or explicitly open a recovery copy locally; the previous local view is separately protected when opening an older copy. Storage failures are visible. Credentials are excluded from recovery snapshots. No server-side persistence or guarantee for unsent student changes.
 - Two-client regression covers disconnection, blocked writes, restoration and subsequent delivery; existing terminal/bridge tests remain required.
 
 ## Checks / rollback
