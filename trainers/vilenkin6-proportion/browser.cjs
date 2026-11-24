@@ -76,7 +76,10 @@ const strokes=p=>p.evaluate(()=>publicSnapshot().pages[0].strokes.map(({createdA
     assert.equal(await b.locator('#history li').count(),answers.length,id);
   }
   assert.match((await state(b)).works[first].notes,/одинаковых единицах/);
-  await teacher.locator('#boardControlToggle').click();await student.waitForFunction(()=>canWrite());
+  await teacher.locator('#boardControlToggle').click();
+  // The two clients receive the authoritative control event independently.
+  // Wait for both, rather than sampling the teacher at the pupil's arrival.
+  await Promise.all([student.waitForFunction(()=>canWrite()),teacher.waitForFunction(()=>!canWrite())]);
   assert.equal(await teacher.evaluate(()=>canWrite()),false);
   const next=units[1].tasks[1].id;
   await action(b,a,()=>b.locator('#task').selectOption(next));
