@@ -1,0 +1,34 @@
+name: Rebuild offline archive for pack clarification
+on:
+  push:
+    branches:
+      - codex/arzhenikov-pack-clear-instructions-20261124
+    paths:
+      - '.github/workflows/arzhenikov-pack-offline-rebuild.yml'
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    if: github.repository == 'ladynata-cloud/math-exam-fipi' && github.ref == 'refs/heads/codex/arzhenikov-pack-clear-instructions-20261124'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+      - name: Rebuild and verify deterministic offline package
+        run: |
+          python3 tools/build-arzhenikov-offline.py
+          python3 tools/build-arzhenikov-offline.py --check
+          python3 tools/arzhenikov-offline.test.py
+          git diff --check
+      - name: Save only the generated archive to the fix branch
+        run: |
+          set -eu
+          archive=trainers/oge-basics/multiplication-division/arzhenikov-offline.zip
+          test "$(git diff --name-only)" = "$archive"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$archive"
+          git commit -m 'Regenerate Arzhenikov offline archive for grouping clarity'
+          git push origin HEAD:refs/heads/codex/arzhenikov-pack-clear-instructions-20261124
