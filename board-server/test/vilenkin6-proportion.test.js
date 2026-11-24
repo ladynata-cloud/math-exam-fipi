@@ -4,6 +4,19 @@ const assert = require('node:assert/strict');
 const math = require('../../courses/vilenkin-6-part-1/textbook-math.js');
 const units = require('../../courses/vilenkin-6-part-1/textbook-data/units-D.json').filter(u => [18,19,20,21].includes(u.id));
 const C = require('../../trainers/vilenkin6-proportion/core.js')(units, math);
+const {loadTrainerRegistry} = require('../trainer-registry');
+const catalog = require('../../trainers/board-picker-data.json');
+const trainerFile = 'trainers/vilenkin6-proportion/index.html';
+test('Vilenkin ratio trainer is explicitly authorized and all four board entrances are present', () => {
+  const registry = loadTrainerRegistry({env:{}});
+  assert.deepEqual(registry.getById('vilenkin6-proportion'), {trainerId:'vilenkin6-proportion', file:trainerFile, version:'1.0.0', stateSchemaVersion:1, bridgeProtocolVersion:1, allowLegacyHtml:false});
+  const hrefs = new Set(catalog.entries.map(row => row.href));
+  for (const suffix of ['', '?unit=18', '?unit=19', '?unit=20', '?unit=21']) {
+    const href = '/' + trainerFile + suffix;
+    assert.ok(hrefs.has(href), href);
+    assert.equal(registry.getByTrainerUrl(href)?.trainerId, 'vilenkin6-proportion');
+  }
+});
 const answer = v => Array.isArray(v) ? v[0] : v;
 test('all 32 Vilenkin 6 ratio/proportion/variation/scale tasks accept their guided and final answers', () => {
   assert.equal(C.tasks.length,32);
