@@ -80,7 +80,7 @@ function factory(){
   function originalOutcome(s){
     const a=s.round.attempts;
     if(a.length&&a[0].correct)return a[0].assisted?'correct-with-help':'first-correct';
-    if(a.some(x=>x.correct))return 'correct-after-retry';
+    if(a.some(x=>x.correct))return a.some(x=>x.assisted)?'correct-after-retry-with-help':'correct-after-retry';
     if(s.round.revealed)return 'worked-example';
     return 'not-checked';
   }
@@ -102,7 +102,7 @@ function factory(){
         case 'original-answer':
           need(keys(ev,['type','pair','value','external'])&&answer(ev.value)&&typeof ev.external==='boolean','Invalid answer');
           need(s.phase==='original'&&!solved(s)&&!r.revealed&&r.attempts.length<MAX_ATTEMPTS,'Original attempt not available');
-          r.attempts.push({value:ev.value,correct:ev.value===p.original.answer,assisted:ev.external||r.helps.length>0});
+          r.attempts.push({value:ev.value,correct:ev.value===p.original.answer,assisted:ev.external||r.helps.length>0||r.attempts.some(a=>a.assisted)});
           break;
         case 'open-probe':
           need(keys(ev,['type','pair','probe'])&&PROBES.includes(ev.probe),'Invalid probe');

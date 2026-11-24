@@ -27,9 +27,18 @@ test('no hints or transfer before attempt; wrong answer, probe, resource and exa
  assert.deepEqual(s.round.helps,['probe:whole','resource:oge-basics:fraction-meaning']);
  assert.throws(()=>m.replay([...sequence,ev('open-probe',{probe:'whole'}),ev('probe-answer',{probe:'whole',value:22})]));
  assert.throws(()=>m.replay([...wrong,ev('open-probe',{probe:'whole'}),ev('resource',{probe:'whole',id:'https://outside.invalid/'})]));
- const corrected=m.replay([...sequence,ans('original-answer',20)]);assert.equal(m.originalOutcome(corrected),'correct-after-retry');assert.equal(corrected.round.attempts[1].assisted,true);
+ const corrected=m.replay([...sequence,ans('original-answer',20)]);assert.equal(m.originalOutcome(corrected),'correct-after-retry-with-help');assert.equal(corrected.round.attempts[1].assisted,true);
  assert.equal(m.originalOutcome(m.replay([ans('original-answer',20,true)])),'correct-with-help');
  assert.equal(m.originalOutcome(m.replay([ans('original-answer',20)])),'first-correct');
+ assert.equal(m.originalOutcome(m.replay([...wrong,ans('original-answer',20)])),'correct-after-retry');
+ const earlierHelp=m.replay([ans('original-answer',7,true),ans('original-answer',20,false)]);
+ assert.equal(earlierHelp.round.attempts[1].assisted,true);
+ assert.equal(m.originalOutcome(earlierHelp),'correct-after-retry-with-help');
+ const laterHelp=m.replay([...wrong,ans('original-answer',20,true)]);
+ assert.equal(m.originalOutcome(laterHelp),'correct-after-retry-with-help');
+ const completed=m.replay([ans('original-answer',7,true),ans('original-answer',20,false),ev('transfer'),ans('transfer-answer',21),ev('next')]);
+ assert.equal(completed.completed[0].original,'correct-after-retry-with-help');
+ assert.equal(completed.completed[0].transfer,'first-correct');
 });
 test('transfer has no inherited help flag, declared help remains distinct, one submission only',()=>{
  const base=[...wrong,ev('reveal'),ev('transfer')];assert.equal(m.originalOutcome(m.replay(base)),'worked-example');

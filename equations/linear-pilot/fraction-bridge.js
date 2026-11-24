@@ -11,8 +11,8 @@
     const node=document.createElement(tag);if(text!==undefined)node.textContent=text;
     for(const [k,v] of Object.entries(attrs))node.setAttribute(k,String(v));return node;
   };
-  function save(){
-    if(storageOK)try{sessionStorage.setItem(m.KEY,JSON.stringify(snapshot));}catch(_){storageOK=false;}
+  function save(persist=true){
+    if(storageOK&&persist)try{sessionStorage.setItem(m.KEY,JSON.stringify(snapshot));}catch(_){storageOK=false;}
     storageNote.textContent=storageOK?'Черновик и попытки сохраняются только в этой вкладке до её закрытия. Это не общий журнал освоения.':'Сохранение в этой вкладке недоступно или запись повреждена. Не закрывайте вкладку, пока решаете; старые записи не перезаписываются.';
   }
   function dispatch(type,extra={},focus=true){
@@ -96,7 +96,8 @@
     return ({
       'first-correct':transfer?'Числовой ответ верен с первой попытки, помощь не отмечена.':'Числовой ответ верен с первой попытки, помощь не отмечена.',
       'correct-with-help':'Числовой ответ верен; помощь или знакомый разбор отмечены.',
-      'correct-after-retry':'Числовой ответ верен после исправления. Первая попытка сохранена.',
+      'correct-after-retry':'Числовой ответ верен после исправления, помощь не отмечена. Первая попытка сохранена.',
+      'correct-after-retry-with-help':'Числовой ответ верен после исправления с отмеченной помощью. Первая попытка сохранена.',
       'worked-example':'Просмотрен разбор исходной задачи. Это не самостоятельное решение.',
       'not-answered':'Ответ не дан — результат не установлен.',
       'not-correct':'Числовой ответ не совпал. Это не диагноз пробела.',
@@ -113,7 +114,7 @@
       for(const [i,item] of state.completed.entries()){
         const li=el('li',undefined);li.append(el('strong','Пара '+(i+1)),para('Уравнение: '+outcomeText(item.original)),para('Перенос: '+outcomeText(item.transfer,true)));list.append(li);
       }
-      host.append(list,para('Продолжи действующий курс уравнений ниже или открой упражнения на дроби.'));return;
+      host.append(list,para('Продолжи действующий курс уравнений выше или открой упражнения на дроби.'));return;
     }
     if(state.phase==='original'){
       host.append(title('Исходная задача'),para('Реши на бумаге. Запиши хотя бы одно преобразование и проверь подстановкой. Программа проверяет число, а не доказательство.'),el('p',p.original.equation,{class:'fb-equation','data-fb-original':''}));
@@ -152,7 +153,7 @@
       host.append(title('Результат новой задачи'),para(p.transfer.story,'task'),para('Твой ответ: '+r.transfer.value+'.','muted'),para(outcomeText(m.transferOutcome(r.transfer),true),'fb-feedback'),solution(p.transfer),para('Программа проверила число, но не ход рассуждения. Один новый ответ не доказывает освоение или сохранение навыка.','muted'),button(state.index+1===m.pairs.length?'Завершить набор':'Перейти к другой паре',()=>dispatch('next')));
     }
     if(!host.querySelector('[data-fb-message]'))host.append(status());
-    if(focus)host.querySelector('[data-fb-heading]')?.focus({preventScroll:true});
+    if(focus){const heading=host.querySelector('[data-fb-heading]');if(heading){heading.focus({preventScroll:true});heading.scrollIntoView({block:'nearest'});}}
   }
   function openFromHash(){
     if(location.hash==='#fraction-bridge'){
@@ -164,5 +165,5 @@
   }
   window.addEventListener('hashchange',openFromHash);
   if(snapshot.events.length||Object.keys(snapshot.drafts).length)panel.open=true;
-  save();render();host.hidden=false;document.getElementById('fraction-bridge-fallback').hidden=true;openFromHash();
+  save(false);render();host.hidden=false;document.getElementById('fraction-bridge-fallback').hidden=true;openFromHash();
 })();

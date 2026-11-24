@@ -19,7 +19,8 @@ async function exercise(browser,base,width){
  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto(base+anchor);const app=page.locator('#fraction-bridge-app');await app.waitFor({state:'visible'});
-  assert.equal(await app.getAttribute('data-phase'),'original');const original=await app.locator('[data-fb-original]').innerText();
+  assert.equal(await app.getAttribute('data-phase'),'original');
+  assert.equal(await page.evaluate(()=>sessionStorage.getItem('mathExam.linearFractionBridge.session.v1')),null,'do not write an empty snapshot for a visit');const original=await app.locator('[data-fb-original]').innerText();
   assert.equal(original,'x/4 + 3 = 8');
   assert.equal(await app.getByText('Что хочется проверить?').count(),0);
   assert.equal(await app.getByRole('button',{name:'Новая текстовая задача на перенос'}).count(),0);
@@ -37,7 +38,7 @@ async function exercise(browser,base,width){
   await popup.waitForLoadState('domcontentloaded');assert.equal(new URL(popup.url()).pathname,'/trainers/oge-basics/fraction-meaning.html');await popup.close();
   await click(page,'Вернуться к исходной задаче');assert.equal(await app.locator('[data-fb-original]').innerText(),original);assert.equal(await page.locator('#fb-answer').inputValue(),'19');
   await page.reload();await app.waitFor({state:'visible'});assert.equal(await page.locator('#fb-answer').inputValue(),'19');
-  await page.locator('#fb-answer').fill('20');await click(page,'Проверить ответ');assert.match(await app.innerText(),/верен после исправления/);
+  await page.locator('#fb-answer').fill('20');await click(page,'Проверить ответ');assert.match(await app.innerText(),/верен после исправления с отмеченной помощью/);
   await click(page,'Новая текстовая задача на перенос');assert.equal(await app.getAttribute('data-phase'),'transfer');assert.match(await app.innerText(),/9 м — это 2 м и треть длины ленты/);
   assert.equal(await app.locator('[data-fb-resource]').count(),0);assert(!((await app.innerText()).includes('x/3 + 2 = 9')));
   await page.screenshot({path:path.join(out,'fraction-bridge-transfer-'+width+'.png')});
