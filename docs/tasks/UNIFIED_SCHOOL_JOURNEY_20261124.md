@@ -37,3 +37,8 @@
 
 ## Permissions
 START — явное поручение владельца в текущем разговоре. Draft PR yes; merge/deploy **NO** в этой стадии. 
+
+## CI finding and correction (24 November)
+- Initial exact-head `8c69f9fd292ee8ddd3cdbd4c33785770b1e3a209`: 16/17 workflows success, including [route prototype](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/45306168541), [SEO](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/45306168512) and [public navigator](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/45306168547). [Public lesson showcase](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/45306168450) failed in homepageEntry: first `/geometry-course/` link was the hidden static fallback after JS initialization. The old card itself was not removed.
+- Keep static course shortcuts visible with and without JS, explicitly label them. Do not change old showcase or SEO tests. Extend the prototype browser test with visibility of all seven shortcuts, first-link compatibility and a no-JS context. Bump controller cache version only.
+- Same task and Draft PR. No new external audit, no paid calls, no release authorization. New head requires new CI; no prior PASS transferred. Owner requested one sequential development chat until limit reset, no competing workstreams. The received v3 backup is the already-reviewed 24-question series, not the new strategy v4 response. The strategic migration and assistant design remain pending consultation and explicit architecture acceptance.

@@ -18,6 +18,11 @@ const root=path.resolve(__dirname,'..');
       const context=await browser.newContext({viewport:{width,height:900}});
       await context.route('**/*',route=>route.request().url().startsWith(origin+'/')?route.continue():route.abort());
       const page=await context.newPage();await page.goto(origin+'/');await page.locator('#sj-details').waitFor({state:'visible'});
+      // Protect the legacy showcase contract as well as progressive enhancement.
+      const direct=['/foundations/','/equations/linear-pilot/','/geometry-course/','/courses/','/oge/','/ege-baza/','/ege-profil/'];
+      assert(await page.locator('#sj-fallback').isVisible(),'static course links remain visible after enhancement');
+      for(const href of direct)assert(await page.locator('#sj-fallback a[href="'+href+'"]').isVisible(),href);
+      for(const href of ['/trainers/',...direct])assert(await page.locator('a[href="'+href+'"]').first().isVisible(),'first course link '+href);
       await page.evaluate(()=>localStorage.setItem('unrelated-existing-trainer','keep'));
       await page.locator('#sj-goal').selectOption('algebra');
       assert.equal(await page.locator('#sj-topic').inputValue(),'linear');
@@ -45,6 +50,14 @@ const root=path.resolve(__dirname,'..');
       assert(!overflow,'route overflow at '+width);
       await context.close();
     }
+    const staticContext=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});
+    await staticContext.route('**/*',route=>route.request().url().startsWith(origin+'/')?route.continue():route.abort());
+    const staticPage=await staticContext.newPage();await staticPage.goto(origin+'/');
+    assert(await staticPage.locator('#sj-details').isHidden());
+    for(const href of ['/foundations/','/equations/linear-pilot/','/geometry-course/','/courses/','/oge/','/ege-baza/','/ege-profil/']){
+      assert(await staticPage.locator('#sj-fallback a[href="'+href+'"]').isVisible(),'no-JS shortcut '+href);
+    }
+    await staticContext.close();
     const context=await browser.newContext();
     await context.addInitScript(()=>Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}}));
     const page=await context.newPage();await page.goto(origin+'/');await page.locator('#sj-details').waitFor({state:'visible'});

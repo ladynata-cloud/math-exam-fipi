@@ -64,5 +64,7 @@
   });
   goal.addEventListener('change',()=>{const g=m.goal(goal.value);if(!g)return;choice={goal:g.id,node:g.start};topic.value=choice.node;persist();render();});
   topic.addEventListener('change',()=>{if(!m.find(topic.value))return;choice={goal:choice.goal,node:topic.value};persist();render();});
-  render();persist();details.hidden=false;by('sj-fallback').hidden=true;
+  // The same static shortcuts must stay visible with and without JavaScript.
+  // They are real public entrances, not a hidden duplicate ahead of the old cards.
+  render();persist();details.hidden=false;
 })();
