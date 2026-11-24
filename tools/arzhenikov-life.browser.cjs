@@ -37,7 +37,7 @@ function checkBank(places) {
         const groups = scene.total / scene.size;
         if (scene.kind === 'pack') {
           assert(scene.targets.length > groups, scene.title);
-          assert(scene.prompt.includes('свободные карточки можно оставить пустыми'), scene.title);
+          assert(scene.prompt.includes('свободные можно оставить пустыми'), scene.title);
         }
         else assert.equal(scene.targets.length, groups, scene.title);
         assert(!plots.has(scene.prompt), 'Repeated situation: ' + scene.title);
@@ -152,8 +152,8 @@ async function exercise(browser, width, fullBank) {
     }
     assert.equal(await stock.count(),0);
     if (scene.kind === 'pack') {
-      assert.equal(await bins.locator('xpath=self::*[@data-pack-state="full"]').count(),groups);
-      assert.equal(await bins.locator('xpath=self::*[@data-pack-state="empty"]').count(),scene.targets.length-groups);
+      assert.equal(await board.locator('.ws-target[data-pack-state="full"]').count(),groups);
+      assert.equal(await board.locator('.ws-target[data-pack-state="empty"]').count(),scene.targets.length-groups);
     }
     if (probe) {
       await targetAction('return',0).click();

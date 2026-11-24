@@ -497,6 +497,7 @@
       else instruction.textContent = 'Нажимай «+», чтобы класть по одному.';
       placesUI[0].add.classList.toggle('ws-first-move', firstMove && scene.kind !== 'pack');
       check.classList.toggle('primary', !issue);
+      if (scene.kind === 'pack') hint.textContent = firstMove ? scene.hint : packGuidance(scene, run.piles);
       const caption = scene.kind === 'count' ? (left ? 'Предметы на столе' : 'Все предметы разложены') : 'На столе осталось ' + left;
       stock.replaceChildren(element('span', 'ws-caption', caption), icons(scene.item, left));
       placesUI.forEach(({group, add, take}, i) => {
