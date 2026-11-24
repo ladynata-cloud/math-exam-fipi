@@ -114,6 +114,7 @@ const expectedCatalogFiles = [
   'trainers/geometry-7/control-work.html',
   'trainers/geometry7-rebuild.html',
   'trainers/vilenkin6-percent/index.html',
+  'trainers/vilenkin6-proportion/index.html',
   'trainers/ege-profile-log-trig.html',
   'trainers/ege-profile-circle.html',
   'trainers/peterson5.html',
@@ -255,15 +256,15 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with 98 catalog entries and 74 mirrors', () => {
+test('current manifest validates with 99 catalog entries and 75 mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 98);
-  assert.equal(result.trainers.length, 74);
+  assert.equal(manifest.trainers.length, 99);
+  assert.equal(result.trainers.length, 75);
   assert.deepEqual(result.progressTrainers, [{
     trainerId: 'yashchenko-t12',
     file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
@@ -279,7 +280,7 @@ test('current manifest validates with 98 catalog entries and 74 mirrors', () => 
   }]);
 });
 
-test('runtime registry has exact parity with all 74 mirror authorizations', () => {
+test('runtime registry has exact parity with all 75 mirror authorizations', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.deepEqual(registry.entries, [
     ...['atanasyan-grade7','geometry7-practice','geometry7-rebuild','ege-profile-log-trig','ege-profile-circle','peterson5'].map(trainerId=>({trainerId,file:'trainers/'+trainerId+'.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false})),
@@ -336,6 +337,7 @@ test('runtime registry has exact parity with all 74 mirror authorizations', () =
     },
     {trainerId:'school-workshop-check',file:'trainers/school-workshop-check/index.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
     {trainerId:'vilenkin6-percent',file:'trainers/vilenkin6-percent/index.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
+    {trainerId:'vilenkin6-proportion',file:'trainers/vilenkin6-proportion/index.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
     {trainerId:'college-logarithms',file:'trainers/college-logarithms/index.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
     {trainerId:'vpr-math',file:'trainers/vpr-math/index.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
     {trainerId:'atanasyan-stereo-textbook',file:'trainers/atanasyan-stereo-textbook.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
@@ -572,7 +574,7 @@ test('bundled default loads relative to the server module', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.equal(registry.loaded, true);
   assert.equal(registry.source, 'bundled-default');
-  assert.equal(registry.entries.length, 74);
+  assert.equal(registry.entries.length, 75);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
 });
 
@@ -764,7 +766,7 @@ test('an additional synthetic mirror entry needs no registry core change', () =>
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 75);
+    assert.equal(registry.entries.length, 76);
     assert.equal(registry.getById(synthetic.trainerId).file, synthetic.file);
   });
 });
@@ -775,7 +777,7 @@ test('removing a mirror entry removes its runtime authorization', () => {
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 73);
+    assert.equal(registry.entries.length, 74);
     assert.equal(registry.getById('linear-inequalities-stepwise'), null);
   });
 });
