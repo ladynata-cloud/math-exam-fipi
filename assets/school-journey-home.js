@@ -5,7 +5,7 @@
   if(!root||!m||!registry)return; // the original static choices remain visible
   const by=id=>document.getElementById(id);
   const key='mathExam.schoolJourney.selection.v1';
-  let choice=m.selection(null),saved=true;
+  let choice=m.selection(null),saved=true,probeChecked=false;
   try{choice=m.selection(JSON.parse(localStorage.getItem(key)||'null'));}catch(_){saved=false;}
   const goal=by('sj-goal'),topic=by('sj-topic'),map=by('sj-map'),details=by('sj-details'),form=by('sj-probe'),result=by('sj-result'),note=by('sj-storage');
   const element=(tag,txt)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;return e;};
@@ -26,7 +26,7 @@
     for(const id of g.path){const li=element('li'),b=button(m.find(id).title,()=>setNode(id));if(id===n.id)b.setAttribute('aria-current','step');li.append(b);map.append(li);}
     by('sj-target').replaceChildren(link('Открыть выбранный курс →',g.href));
     by('sj-title').textContent=n.title;
-    const main=m.resource(n.id,registry),hrefs=[...new Set([main,...n.extra].filter(Boolean))];
+    const main=m.resource(n.id,registry),hrefs=[...new Set([main,...n.extra].map(m.publicHref).filter(Boolean))];
     by('sj-resources').replaceChildren();
     hrefs.forEach((href,i)=>{
       const label=href.includes('arzhenikov-map')?'Предметные модели и уроки по мотивам Арженикова':i===0?'Начать занятие →':i===1?'Другой способ изучения →':'Дополнительная практика →';
@@ -36,8 +36,8 @@
     by('sj-before').replaceChildren();
     n.before.forEach(id=>{const li=element('li');li.append(button(m.find(id).title,()=>setNode(id)));by('sj-before').append(li);});
     by('sj-before-wrap').hidden=!n.before.length;
-    form.replaceChildren();result.replaceChildren();result.hidden=true;
-    by('sj-probe-note').textContent=n.questions.length?'Две короткие пробы без подсказок. Это ориентир для следующего занятия, а не оценка освоения.':'Для этой темы общая входная проверка ещё не разработана. Можно сразу открыть курс; уровень знаний не определён.';
+    probeChecked=false;form.replaceChildren();result.replaceChildren();result.hidden=true;
+    by('sj-probe-note').textContent=n.questions.length?'Две короткие пробы для выбора занятия, а не оценка освоения. Если вы уже видели разбор, считайте эти задачи повторением.':'Для этой темы общая входная проверка ещё не разработана. Можно сразу открыть курс; уровень знаний не определён.';
     form.hidden=!n.questions.length;
     n.questions.forEach((q,i)=>{
       const field=element('fieldset'),legend=element('legend',(i+1)+'. '+q.prompt);
@@ -51,14 +51,19 @@
   }
   form.addEventListener('submit',event=>{
     event.preventDefault();
+    if(probeChecked)return;
     const n=m.find(choice.node),answers=n.questions.map((_,i)=>form.querySelector('input[name="sj-q'+i+'"]:checked')?.value);
     const r=m.result(n.id,answers);
     result.hidden=false;result.replaceChildren();
     if(r.kind==='incomplete'){result.append(element('p','Выберите ответ или «Пока не знаю» в каждой задаче.'));return;}
+    if(r.kind==='not-tested')return;
+    probeChecked=true;
+    for(const control of form.querySelectorAll('input,button[type="submit"]'))control.disabled=true;
     const title=r.kind==='two-correct'?'Обе пробы верны':r.kind==='check-again'?'Одна проба верна — нужна ещё проверка':'Стоит повторить эту тему';
     result.append(element('strong',title));
     result.append(element('p',r.kind==='two-correct'?'Это ещё не подтверждение освоения. Решите новые задачи самостоятельно.':'По двум задачам нельзя определить точную причину ошибки. Начните с разбора текущей темы; при необходимости проверьте её основы.'));
     const ul=element('ul');n.questions.forEach((q,i)=>ul.append(element('li',(answers[i]===q.answer?'Верно. ':'Разбор. ')+q.explain)));result.append(ul);
+    result.append(element('p','Разбор уже показан. Повтор этих же задач не является новой самостоятельной проверкой.'));
     if(r.kind==='two-correct'){const next=m.next(choice.goal,n.id);if(next)result.append(button('Посмотреть следующий шаг: '+next.title,()=>setNode(next.id)));}
     else for(const id of n.before)result.append(button('Проверить основу: '+m.find(id).title,()=>setNode(id)));
   });

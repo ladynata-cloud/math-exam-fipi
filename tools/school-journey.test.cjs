@@ -55,3 +55,15 @@ test('existing home remains accessible, public navigator is not duplicated',()=>
   assert(html.includes('id="sj-details" hidden'));
   assert(!fs.readFileSync(path.join(root,'assets/school-journey-home.js'),'utf8').includes('fetch('));
 });
+
+test('invalid or missing resources and incomplete probe arrays fail closed',()=>{
+  const invalid=["//external.test/","/\\external.test/","/learning","/learning?private=1","/learning#secret","/Learning/","/foo/../learning/","/foo/%2e%2e/learning/","/%2flearning/","/foo\n/bar","https://mathexam.space/foundations/","javascript:alert(1)"," /foundations/","/foo//bar","/./","/../"];
+  for(const href of invalid){assert.equal(m.publicHref(href),null,href);assert.equal(m.resource('place',{get:()=>({publicUrl:href})}),null,href);}
+  for(const href of ["/","/foundations/","/equations/linear-pilot/","/ege-baza/path/index.html#lesson=pre7-place-value","/ege-profil/trainers/probability-t45.html?topic=basic","/trainers/oge-basics/multiplication-division/arzhenikov-map.html#course-c-quotient"])assert.equal(m.publicHref(href),href);
+  assert.equal(m.resource('missing',registry),null);
+  assert.equal(m.resource('place',{}),null);
+  assert.equal(m.resource('place',{get:()=>undefined}),null);
+  assert.equal(m.resource('place',{get:()=>({kind:'managed',url:'/learning/'})}),null);
+  assert.equal(m.result('missing',[]).kind,'not-tested');
+  for(const answers of [Array(2),['0',,],['0',undefined],[0,1]])assert.equal(m.result('linear',answers).kind,'incomplete');
+});

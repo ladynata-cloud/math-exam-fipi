@@ -76,19 +76,28 @@ function factory(){
     const g=goal(goalId);if(!g)return null;
     const i=g.path.indexOf(nodeId);return i<0||i===g.path.length-1?null:find(g.path[i+1]);
   }
+  function publicHref(href){
+    if(typeof href!=='string'||/[\s\\\u0000-\u001f\u007f]/u.test(href))return null;
+    const path=href.split(/[?#]/,1)[0];
+    // The pilot accepts only literal root-relative public document paths.
+    // No encoded path separators, authority, dot segments or cabinet routes.
+    if(!/^\/(?:[A-Za-z0-9_-][A-Za-z0-9_.-]*(?:\/[A-Za-z0-9_-][A-Za-z0-9_.-]*)*\/?)?$/.test(path)||/^\/learning(?:\/|$)/i.test(path))return null;
+    return href;
+  }
+  function completeAnswers(questions,answers){
+    return Array.isArray(answers)&&answers.length===questions.length&&questions.every((q,i)=>Object.prototype.hasOwnProperty.call(answers,i)&&(answers[i]==='?'||q.choices.some((_,j)=>String(j)===answers[i])));
+  }
   function result(nodeId,answers){
     const n=find(nodeId);
     if(!n||!n.questions.length)return {kind:'not-tested',correct:0};
-    if(!Array.isArray(answers)||answers.length!==n.questions.length||answers.some((v,i)=>v!=='?'&&!n.questions[i].choices.some((_,j)=>String(j)===v)))return {kind:'incomplete',correct:0};
+    if(!completeAnswers(n.questions,answers))return {kind:'incomplete',correct:0};
     const correct=n.questions.filter((item,i)=>item.answer===answers[i]).length;
     return {kind:correct===n.questions.length?'two-correct':correct===0?'practice':'check-again',correct};
   }
   function resource(nodeId,registry){
     const n=find(nodeId);if(!n)return null;
-    const item=n.source&&registry?.get(n.source);
-    const href=item?.publicUrl||(item?.kind==='public'?item.url:null);
-    // Only first-party public learning paths, never the account cabinet.
-    return typeof href==='string'&&/^\/(?!\/|learning(?:\/|$))/.test(href)?href:null;
+    const item=n.source&&typeof registry?.get==='function'?registry.get(n.source):null;
+    return publicHref(item?.publicUrl)|| (item?.kind==='public'?publicHref(item.url):null);
   }
   function selection(value){
     if(value&&goal(value.goal)&&find(value.node))return {goal:value.goal,node:value.node};
@@ -99,15 +108,16 @@ function factory(){
     for(const n of nodes){
       if(seen.has(n.id))throw Error('Duplicate skill '+n.id);seen.add(n.id);
       if(!n.source&&!n.extra.length)throw Error('Missing learning resource '+n.id);
+      if(n.extra.some(href=>!publicHref(href)))throw Error('Nonpublic route '+n.id);
       if(n.questions.length!==0&&n.questions.length!==2)throw Error('Probe size '+n.id);
       for(const q of n.questions)if(q.choices.length!==3||!q.choices.some((_,i)=>String(i)===q.answer)||new Set(q.choices).size!==3)throw Error('Bad probe '+n.id);
     }
     function visit(id){if(stack.has(id))throw Error('Cycle '+id);if(done.has(id))return;const n=find(id);if(!n)throw Error('Missing skill '+id);stack.add(id);n.before.forEach(visit);stack.delete(id);done.add(id);}
     nodes.forEach(n=>visit(n.id));
-    for(const g of goals){if(!g.path.includes(g.start)||new Set(g.path).size!==g.path.length||g.path.some(id=>!find(id)))throw Error('Bad goal '+g.id);}
+    for(const g of goals){if(!publicHref(g.href)||!g.path.includes(g.start)||new Set(g.path).size!==g.path.length||g.path.some(id=>!find(id)))throw Error('Bad goal '+g.id);}
     return true;
   }
   validate();
-  return {version:1,nodes,goals,find,goal,next,result,resource,selection,validate};
+  return {version:1,nodes,goals,find,goal,next,result,resource,publicHref,selection,validate};
 }
 );
