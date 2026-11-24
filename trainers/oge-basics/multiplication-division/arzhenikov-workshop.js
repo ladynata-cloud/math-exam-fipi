@@ -158,14 +158,39 @@
   function remaining(scene, piles) {
     return scene.total - piles.reduce((sum, n) => sum + n, 0);
   }
+  // A pack is a group of fixed size, not a distribution across all offered places.
+  function packGuidance(scene, piles) {
+    const left = remaining(scene, piles);
+    const name = i => '«' + scene.targets[i] + '»';
+    const over = piles.findIndex(n => n > scene.size);
+    const partial = piles.map((n,i) => ({n,i})).filter(p => p.n > 0 && p.n < scene.size);
+    if (over >= 0) return 'На карточке ' + name(over) + ' предметов больше, чем нужно: ' + piles[over] + ' вместо ' + scene.size + '. Нажми там «Забрать», чтобы вернуть лишнее на стол.';
+    if (left === 0 && partial.length > 1) {
+      const receiver = partial.reduce((a,b) => b.n > a.n ? b : a);
+      const donor = partial.find(p => p.i !== receiver.i);
+      return 'На карточке ' + name(receiver.i) + ' сейчас ' + receiver.n + ' из ' + scene.size + '. Нажми «Забрать» на карточке ' + name(donor.i) + ', затем «+» на карточке ' + name(receiver.i) + '. Пустая карточка не ошибка.';
+    }
+    if (left === 0 && !partial.length) return 'Все предметы собраны в полные группы. Нажми «Проверить раскладку».';
+    if (partial.length && left > 0) {
+      const p = partial.reduce((a,b) => b.n > a.n ? b : a);
+      return 'Дополни карточку ' + name(p.i) + ': сейчас ' + p.n + ' из ' + scene.size + '. Нажимай «+» на ней, пока группа не станет полной.';
+    }
+    if (left > 0) {
+      const empty = piles.indexOf(0);
+      if (empty >= 0) return 'Собери ' + (left === scene.total ? 'первую' : 'следующую') + ' группу: нажимай «+» на карточке ' + name(empty) + ', пока в ней не будет ' + scene.size + ' предметов.';
+    }
+    return 'Собери полные группы: на каждой занятой карточке должно быть ' + scene.size + ' предметов, а остальные могут быть пустыми.';
+  }
   function validateLayout(scene, piles) {
+    if (scene.kind === 'pack') {
+      return remaining(scene, piles) === 0 && piles.every(n => n === 0 || n === scene.size)
+        ? '' : packGuidance(scene, piles);
+    }
     if (remaining(scene, piles) > 0) return 'На столе ещё есть предметы. Найди место для каждого.';
     if (scene.kind === 'share') {
       if (piles.some(n => n !== scene.size)) return 'Пока получилось не поровну. Сравни, где больше и где меньше. Кнопка «Забрать» вернёт один предмет на стол.';
-    } else if (piles.some(n => n !== scene.size && (scene.kind !== 'pack' || n !== 0))) {
-      return scene.kind === 'pack'
-        ? 'Проверь каждую собранную группу. В ней должно быть ровно ' + scene.size + '. Лишний предмет можно забрать и переложить. Пустые места можно оставить.'
-        : 'Сравни раскладку с условием. В каждом месте должно оказаться ровно ' + scene.size + '. Предмет можно забрать и переложить.';
+    } else if (piles.some(n => n !== scene.size)) {
+      return 'Сравни раскладку с условием. В каждом месте должно оказаться ровно ' + scene.size + '. Предмет можно забрать и переложить.';
     }
     return '';
   }
@@ -458,24 +483,32 @@
       const take = action('Забрать', 'return', () => applyMove(i, -1), 'ws-return');
       take.dataset.index = i;
       take.setAttribute('aria-label', 'Забрать один предмет. ' + name);
-      group.append(add, take); targets.append(group); placesUI.push({add, take});
+      group.append(add, take); targets.append(group); placesUI.push({group, add, take});
     });
     function redraw() {
       const left = remaining(scene, run.piles);
       const firstMove = left === scene.total;
-      // Suggest a starting point, but accept a move to any valid target.
-      if (firstMove) instruction.textContent = 'Нажми «+» на карточке «' + scene.targets[0] + '».';
-      else if (left === 0) instruction.textContent = 'Теперь нажми «Проверить раскладку».';
+      // Explain the next useful move, even when the stock is empty but the layout is wrong.
+      const issue = validateLayout(scene, run.piles);
+      if (scene.kind === 'pack') instruction.textContent = packGuidance(scene, run.piles);
+      else if (firstMove) instruction.textContent = 'Нажми «+» на карточке «' + scene.targets[0] + '».';
+      else if (left === 0) instruction.textContent = issue || 'Теперь нажми «Проверить раскладку».';
       else if (scene.kind === 'share') instruction.textContent = 'Продолжай раздавать поровну.';
       else instruction.textContent = 'Нажимай «+», чтобы класть по одному.';
-      placesUI[0].add.classList.toggle('ws-first-move', firstMove);
-      check.classList.toggle('primary', left === 0);
+      placesUI[0].add.classList.toggle('ws-first-move', firstMove && scene.kind !== 'pack');
+      check.classList.toggle('primary', !issue);
       const caption = scene.kind === 'count' ? (left ? 'Предметы на столе' : 'Все предметы разложены') : 'На столе осталось ' + left;
       stock.replaceChildren(element('span', 'ws-caption', caption), icons(scene.item, left));
-      placesUI.forEach(({add, take}, i) => {
+      placesUI.forEach(({group, add, take}, i) => {
         const amount = run.piles[i];
         add.replaceChildren(element('span', 'ws-name', scene.targets[i]), icons(scene.item, amount));
-        add.setAttribute('aria-label', 'Положить ' + scene.itemName + '. ' + scene.targets[i] + '. Сейчас предметов ' + amount + '.');
+        let status = '';
+        if (scene.kind === 'pack') {
+          group.dataset.packState = amount === 0 ? 'empty' : amount === scene.size ? 'full' : amount > scene.size ? 'over' : 'partial';
+          status = amount === 0 ? 'Свободно' : amount === scene.size ? 'Готово · ' + amount + ' из ' + scene.size : amount > scene.size ? 'Лишние · ' + amount + ' из ' + scene.size : 'Ещё не готово · ' + amount + ' из ' + scene.size;
+          add.append(element('span', 'ws-pack-status', status));
+        }
+        add.setAttribute('aria-label', 'Положить ' + scene.itemName + '. ' + scene.targets[i] + '. Сейчас предметов ' + amount + '. ' + status);
         add.disabled = left === 0;
         take.disabled = amount === 0;
       });

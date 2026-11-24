@@ -35,7 +35,10 @@ function checkBank(places) {
         assert.equal(new Set(scene.targets).size, scene.targets.length, scene.title);
         assert.equal(scene.total % scene.size, 0, scene.title);
         const groups = scene.total / scene.size;
-        if (scene.kind === 'pack') assert(scene.targets.length > groups, scene.title);
+        if (scene.kind === 'pack') {
+          assert(scene.targets.length > groups, scene.title);
+          assert(scene.prompt.includes('свободные карточки можно оставить пустыми'), scene.title);
+        }
         else assert.equal(scene.targets.length, groups, scene.title);
         assert(!plots.has(scene.prompt), 'Repeated situation: ' + scene.title);
         plots.add(scene.prompt);
@@ -115,6 +118,28 @@ async function exercise(browser, width, fullBank) {
       assert.equal(await board.locator('.ws-option:visible,.ws-equation:visible').count(),0);
     }
     const groups = scene.total / scene.size;
+    if (scene.title === 'Тренировка ударов') {
+      assert(scene.prompt.includes('Для одних ворот нужны 2 конуса'));
+      // Reproduce the reported 2,1,1,2 layout, with no cones left in stock.
+      for (const [index,amount] of [2,1,1,2].entries()) {
+        for (let n=0;n<amount;n++) await targetAction('place',index).click();
+      }
+      assert.equal(await stock.count(),0);
+      assert.deepEqual(await bins.evaluateAll(nodes=>nodes.map(n=>n.dataset.packState)),['full','partial','partial','full']);
+      const instruction = await board.locator('.ws-instruction').innerText();
+      assert(instruction.includes('У берёзы') && instruction.includes('У скамьи') && instruction.includes('Забрать'));
+      await act('check-layout').click();
+      await stage('layout');
+      assert((await board.locator('.ws-feedback').innerText()).includes('У скамьи'));
+      await targetAction('return',2).click();
+      await targetAction('place',1).click();
+      assert.deepEqual(await bins.evaluateAll(nodes=>nodes.map(n=>n.dataset.packState)),['full','full','empty','full']);
+      assert((await board.locator('.ws-instruction').innerText()).includes('Проверить раскладку'));
+      // Restore the empty layout, then run the regular path and verify the answer.
+      for (const [index,amount] of [2,2,0,2].entries()) {
+        for (let n=0;n<amount;n++) await targetAction('return',index).click();
+      }
+    }
     for (let group = 0; group < groups; group++) {
       const put = targetAction('place',group);
       if (probe) {
@@ -126,6 +151,10 @@ async function exercise(browser, width, fullBank) {
       }
     }
     assert.equal(await stock.count(),0);
+    if (scene.kind === 'pack') {
+      assert.equal(await bins.locator('xpath=self::*[@data-pack-state="full"]').count(),groups);
+      assert.equal(await bins.locator('xpath=self::*[@data-pack-state="empty"]').count(),scene.targets.length-groups);
+    }
     if (probe) {
       await targetAction('return',0).click();
       await targetAction('place',1).click();
