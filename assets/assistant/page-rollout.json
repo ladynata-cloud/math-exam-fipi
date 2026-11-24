@@ -3300,10 +3300,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "equations/linear-pilot/index.html": {
-      "beforeSha256": "d8247809882d295e0508701503a44c0058be7157aaf2897ab82713f00583c52e",
-      "afterSha256": "917c652fd1ad612588e1bc9c12dd25ec5ea578ce0463743f68ec16807f309c47",
+      "beforeSha256": "47522fbf405730000dafa80e960dfc96ea2f8fb38157eaabec04cc847f15258c",
+      "afterSha256": "0f060f7572c3301f90247d5db61fe29593c2719c6e9fa505227a09af5b10ed05",
       "placement": "before-head-close",
-      "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
+      "sourceSha": "ee164aa1bcdbb1421510da73239db5e8af992115"
     },
     "stereo-course/literacy/index.html": {
       "beforeSha256": "8f2cc6c0a23dc3990847e586ed02af1af76d91fdbe3fb9dda37a6f99f4ea1268",
