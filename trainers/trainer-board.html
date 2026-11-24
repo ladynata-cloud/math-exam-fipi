@@ -182,7 +182,7 @@
     function save(){if(shared.role==='student'||applyingRemote)return;clearTimeout(timer);timer=setTimeout(persistLocalBoard,140)}
     function page(){return state.pages[state.current]}
     // A transport connection alone is not an authenticated room.
-    function roomReady(){return !!(shared.roomId&&shared.connected&&roomStateReceived&&shared.socket?.connected!==false)}
+    function roomReady(){return !!(shared.roomId&&shared.connected&&roomStateReceived&&shared.socket?.connected===true)}
     function canWrite(){return shared.roomId?roomReady()&&!!(shared.me&&shared.control===shared.me.participantId):shared.role==='teacher'}
     let roomConnectGeneration=0;
     function readRecovery(){
@@ -213,12 +213,12 @@
       }else if(!shared.roomId&&(shared.roomError||missingTeacherRoomSession)){
         message=shared.role==='teacher'?'Общая комната недоступна. Записи остались на этой доске, но ученик их не видит. Создайте новую комнату и отправьте новую ссылку.':'Комната недоступна. Вы видите прежние записи. Попросите учителя прислать новую ссылку.';
         if(shared.role==='teacher')actionText='Создать новую комнату';
-      }else if(!shared.roomId&&shared.role==='teacher'&&params.get('demo')!=='1'){
-        message='Локальная доска: ученик не видит записи. Для совместного урока создайте комнату.';
-        actionText='Создать комнату';
       }else if(!shared.roomId&&shared.role==='student'){
         message='Нет комнаты урока. Попросите учителя прислать ссылку ученика.';
       }
+      // Ordinary local work uses the compact header status. Reserve the large
+      // notice for connection loss, an offline pupil or failed room recovery.
+      shareStatus.title=!shared.roomId&&shared.role==='teacher'?'Локальная доска: ученик не видит записи. Для общего урока создайте комнату.':'';
       $('roomNoticeText').textContent=message;notice.hidden=!message;
       action.textContent=actionText;action.hidden=!actionText;
       const panel=$('roomRecovery'),choice=$('roomRecoveryChoice'),selected=choice.value;
@@ -601,7 +601,7 @@
     function flushPendingTrainerState(){if(bridgeSession||readyCandidate||!pendingTrainerState||!frame.contentWindow||!frameLoaded||trainerRegistry.status!=='ready')return;const entry=mirrorEntryFromPayload(pendingTrainerState),trainer=entry?.trainerId;if(canWrite()||!entry?.allowLegacyHtml||!isMirroredTrainerUrl(trainer,state.trainerUrl))return;const validation=MathExamBoard.validateState(pendingTrainerState.state,{allowHtml:true});if(!validation.ok)return;postTrainerMessage({type:'mathexam:apply-trainer-state',trainer,trainerId:trainer,state:pendingTrainerState.state});pendingTrainerState=null}
     function postBridgeTrainerState(payload){const trainer=mirrorTrainerFromPayload(payload);if(trainerRegistry.status!=='ready'||!bridgeSession?.hydrated||!payload||!trainer||!payload.state||!isMirroredTrainerUrl(trainer,state.trainerUrl))return false;const trainerState=bridgeStateFromPayload(payload,trainer);return !!trainerState&&postTrainerMessage(bridgeEnvelope('mathexam:apply-trainer-state',{state:trainerState}),bridgeSession.origin)}
     function applyTrainerStateToFrame(payload){if(!payload||!payload.state)return;latestTrainerState=payload;if(trainerRegistry.status!=='ready'||canWrite())return;const trainer=mirrorTrainerFromPayload(payload);if(!trainer||!isMirroredTrainerUrl(trainer,state.trainerUrl)){updateMirrorStatusForCurrentTrainer();return}if(bridgeSession||readyCandidate){if(!bridgeSession?.hydrated){maybeHydrateTrainer();return}postBridgeTrainerState(payload);return}pendingTrainerState=payload;flushPendingTrainerState()}
-    function setStatus(text,kind=''){shareStatus.textContent=text;shareStatus.className=`status ${kind}`.trim();refreshRoomNotice()}
+    function setStatus(text,kind=''){const local=shared.role==='teacher'&&!shared.roomId&&!shared.roomError&&!missingTeacherRoomSession&&params.get('demo')!=='1';shareStatus.textContent=local?(text==='локальный режим'?'Локально — ученик не видит':`Локально: ${text}`):text;shareStatus.className=`status ${kind}`.trim();refreshRoomNotice()}
     function participantRole(role){return role==='teacher'?'Учитель':role==='student'?'Ученик':'Участник'}
     function participantColor(value){const color=String(value||'');return /^#[0-9a-f]{3,8}$/i.test(color)?color:'#647086'}
     function participantToMe(participant,role=participant?.role||shared.role){if(!participant?.id)return null;return{participantId:participant.id,role,name:participant.name,color:participant.color,caps:{...(participant.caps||{})}}}
@@ -760,19 +760,21 @@
         if(attempt!==roomConnectGeneration||room!==shared.roomId||token!==shared.token||server!==shared.server)return;
         shared.socket=io(server,{transports:['polling','websocket'],tryAllTransports:true,reconnection:true});
         const liveSocket=shared.socket;
-        const onRoomEvent=(event,handler)=>liveSocket.on(event,payload=>{if(shared.socket===liveSocket&&roomReady())handler(payload)});
+        const isCurrentSocket=()=>shared.socket===liveSocket&&attempt===roomConnectGeneration&&room===shared.roomId&&token===shared.token&&server===shared.server;
+        const onLiveEvent=(event,handler)=>liveSocket.on(event,payload=>{if(isCurrentSocket())handler(payload)});
+        const onRoomEvent=(event,handler)=>onLiveEvent(event,payload=>{if(roomReady())handler(payload)});
         let socketConnectedOnce=false;
-        shared.socket.on('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключение','wait');updateControlUi();shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
-        shared.socket.on('connect_error',()=>{
+        onLiveEvent('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключение','wait');updateControlUi();shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
+        onLiveEvent('connect_error',()=>{
           if(shared.roomError)return;
           setStatus('Повторяем подключение к комнате…','wait');
           guestConnectionHint('Ждём ответа сервера. Можно повторить подключение.',true);
         });
-        shared.socket.on('disconnect',()=>{captureInterruptedBoard();shared.connected=false;roomStateReceived=false;imageImportEpoch++;cancelGesture(false);closeTextEditor();clearPendingHistory();pruneSharedRedo();if(mirrorEntryFromUrl(state.trainerUrl))setMirrorStatus('pending');setStatus('нет связи','bad');updateControlUi()});
-        shared.socket.on('reconnect_attempt',()=>setStatus('переподключение','wait'));
-        shared.socket.on('room:error',handleRoomError);
-        shared.socket.on('room:state',payload=>{
-          if(!shared.connected||shared.socket?.connected===false)return;
+        onLiveEvent('disconnect',()=>{captureInterruptedBoard();shared.connected=false;roomStateReceived=false;imageImportEpoch++;cancelGesture(false);closeTextEditor();clearPendingHistory();pruneSharedRedo();if(mirrorEntryFromUrl(state.trainerUrl))setMirrorStatus('pending');setStatus('нет связи','bad');updateControlUi()});
+        onLiveEvent('reconnect_attempt',()=>setStatus('переподключение','wait'));
+        onLiveEvent('room:error',handleRoomError);
+        onLiveEvent('room:state',payload=>{
+          if(!shared.connected||liveSocket.connected!==true)return;
           clearPendingHistory();
           rememberUnconfirmed(payload?.state);
           shared.roomError='';
