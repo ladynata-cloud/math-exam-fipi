@@ -1,0 +1,4471 @@
+{
+  "schemaVersion": 1,
+  "kind": "git-source-inventory-not-live-crawl",
+  "commit": "85a9971123fc752390c63f9a59e4bcd1be40378e",
+  "sitemapBlob": "c8c72b8ca3b6ce331a2329eb8014aa84a626d774",
+  "summary": {
+    "urls": 632,
+    "regularHtml": 632,
+    "problemUrls": 0,
+    "groups": {
+      "(home)": 1,
+      "articles": 24,
+      "books": 1,
+      "courses": 5,
+      "credit-payment-table-trainer.html": 1,
+      "ege-baza": 8,
+      "ege-profil": 37,
+      "equations": 2,
+      "foundations": 1,
+      "geometry-course": 138,
+      "geometry-merzlyak": 85,
+      "geometry-pogorelov": 90,
+      "grade7": 2,
+      "laboratory": 1,
+      "lessons": 1,
+      "oge": 4,
+      "okruglenie-trener.html": 1,
+      "pedagogam": 20,
+      "rounding-fresh-v8.html": 1,
+      "rounding.html": 1,
+      "school": 14,
+      "soviet-math": 1,
+      "stereo-course": 5,
+      "topics": 7,
+      "trainers": 180,
+      "vpr": 1
+    }
+  },
+  "limits": {
+    "httpStatus": null,
+    "searchIndexStatus": null,
+    "canonicalFromLive": null,
+    "pedagogicalReview": null
+  },
+  "rows": [
+    {
+      "url": "https://mathexam.space/",
+      "path": "index.html",
+      "blob": "3a32802e08f76f50a2630cdb9c89f8a73c958d2b",
+      "bytes": 20468,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/",
+      "path": "articles/index.html",
+      "blob": "029499cbe6018f146e4747eee8f2b921e556f08b",
+      "bytes": 6770,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/index.html",
+      "blob": "66b02c552687be14293f556c92e5ea9476693e5d",
+      "bytes": 9137,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html",
+      "blob": "8bb08d64c51934fe5ac382c548a94c2f11aadd6e",
+      "bytes": 17331,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/02-uslovie-i-dokazatelstvo/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/02-uslovie-i-dokazatelstvo/index.html",
+      "blob": "a66b0ed8b4990d8c50626dd5a623e518536e4848",
+      "bytes": 17853,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/03-nalozhenie-figur/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/03-nalozhenie-figur/index.html",
+      "blob": "29940bc4ea4d79941c4bc6722e1ae24c7980fd38",
+      "bytes": 20667,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/04-pervyi-priznak/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/04-pervyi-priznak/index.html",
+      "blob": "359c23e8ab5e0f8e8ccbee5254c1112b7f438305",
+      "bytes": 20693,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/05-mediana-bissektrisa-vysota/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/05-mediana-bissektrisa-vysota/index.html",
+      "blob": "7c2daaec3fb9cc876155ac8e17f53cb9244e0918",
+      "bytes": 21798,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/06-ravnobedrennyi-treugolnik/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/06-ravnobedrennyi-treugolnik/index.html",
+      "blob": "1d53e57232cf23b34d854a4a3144cc7a59ebab76",
+      "bytes": 23072,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/07-chitat-chertezh/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/07-chitat-chertezh/index.html",
+      "blob": "0ce86122c7c7fdc4141685f074c4578aca4629bd",
+      "bytes": 16741,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/moy-vzglyad-na-geometriyu-atanasyana/08-marshrut-po-geometrii/",
+      "path": "articles/moy-vzglyad-na-geometriyu-atanasyana/08-marshrut-po-geometrii/index.html",
+      "blob": "08a60d1e386ec16a0f9d01dec1687b0abf3c6f17",
+      "bytes": 18961,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/pedagogicheskiy-webcoding/",
+      "path": "articles/pedagogicheskiy-webcoding/index.html",
+      "blob": "361c8ad35f8c8d1576bd292d80a753aade5ae555",
+      "bytes": 23109,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/",
+      "path": "articles/stroynost-kursa-geometrii/index.html",
+      "blob": "f9aed375c83e796bd957529095f2c410ee1338e4",
+      "bytes": 22936,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/01-chto-takoe-stroynost/",
+      "path": "articles/stroynost-kursa-geometrii/01-chto-takoe-stroynost/index.html",
+      "blob": "d6d7ac8ffcbb5210dddd0faa0866d6faab0cba21",
+      "bytes": 28584,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/02-vhod-v-geometriyu/",
+      "path": "articles/stroynost-kursa-geometrii/02-vhod-v-geometriyu/index.html",
+      "blob": "154b27333fad693f04d66030573919cb8a068617",
+      "bytes": 22266,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/03-akciomy-i-pravila-igry/",
+      "path": "articles/stroynost-kursa-geometrii/03-akciomy-i-pravila-igry/index.html",
+      "blob": "00a554a2442b67a921e2e222a6dab5a55094db18",
+      "bytes": 24298,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/04-ravenstvo-nalozhenie-dvizhenie/",
+      "path": "articles/stroynost-kursa-geometrii/04-ravenstvo-nalozhenie-dvizhenie/index.html",
+      "blob": "8333b2edf51b175b7ea5c579d35af9652628cc2d",
+      "bytes": 28726,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/05-pervyi-priznak-ravenstva/",
+      "path": "articles/stroynost-kursa-geometrii/05-pervyi-priznak-ravenstva/index.html",
+      "blob": "51bf46bacf8752dd20b37622e30bd78c8a83f65d",
+      "bytes": 18223,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/06-kak-uchat-dokazyvat/",
+      "path": "articles/stroynost-kursa-geometrii/06-kak-uchat-dokazyvat/index.html",
+      "blob": "cbf5edb4cb45775984c6f6d40258c890b21f1942",
+      "bytes": 17810,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/07-neobhodimo-i-dostatochno/",
+      "path": "articles/stroynost-kursa-geometrii/07-neobhodimo-i-dostatochno/index.html",
+      "blob": "a36eb495efee5d10a121ce2aaf4bbed898382ce2",
+      "bytes": 17365,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/08-sistema-zadach/",
+      "path": "articles/stroynost-kursa-geometrii/08-sistema-zadach/index.html",
+      "blob": "9afab2237219b85124f7613059881974276d4480",
+      "bytes": 16956,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/09-chertezh-i-dokazatelstvo/",
+      "path": "articles/stroynost-kursa-geometrii/09-chertezh-i-dokazatelstvo/index.html",
+      "blob": "0254f4a673ca033c5e71c7ec47dfd4dbe34091b8",
+      "bytes": 15955,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/10-tri-arhitektury-kursa/",
+      "path": "articles/stroynost-kursa-geometrii/10-tri-arhitektury-kursa/index.html",
+      "blob": "f7dbf084ef49f72ea6f8395f0498540bae585a4b",
+      "bytes": 17941,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/",
+      "path": "articles/stroynost-kursa-geometrii/11-bazovyi-i-uglublennyi-merzlyak/index.html",
+      "blob": "8daa645507ebe0327dd50ba2504bafea34f4b013",
+      "bytes": 18010,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/",
+      "path": "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html",
+      "blob": "a1a0558c744536c7ce993bd5c5d5f8bad86cad22",
+      "bytes": 22110,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/books/",
+      "path": "books/index.html",
+      "blob": "e71330f32940024190bb2f5b7d3640027693beea",
+      "bytes": 6444,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/courses/",
+      "path": "courses/index.html",
+      "blob": "e8d9c811ce02249569775a5b4bd5c4008576c307",
+      "bytes": 24815,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/courses/vilenkin-5-part-1/",
+      "path": "courses/vilenkin-5-part-1/index.html",
+      "blob": "4b515f2b97545d3664c395ac94d6f0e84e75c5f5",
+      "bytes": 12399,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/courses/vilenkin-5/",
+      "path": "courses/vilenkin-5/index.html",
+      "blob": "bb964bc3b4d96ea498921a3fba7ea6ffcae5bd3c",
+      "bytes": 8784,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/courses/vilenkin-6-part-1/textbook.html",
+      "path": "courses/vilenkin-6-part-1/textbook.html",
+      "blob": "1c52b12f3f42e2cbd353fe10651ebae206dee788",
+      "bytes": 3005,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/courses/vilenkin-6/",
+      "path": "courses/vilenkin-6/index.html",
+      "blob": "28c558df16e8c0fa8e02924ddbb8f42df8fb5d34",
+      "bytes": 4710,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/credit-payment-table-trainer.html",
+      "path": "credit-payment-table-trainer.html",
+      "blob": "0003e36c865b9eb9762a854db684fa37238dbb30",
+      "bytes": 103875,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-baza/",
+      "path": "ege-baza/index.html",
+      "blob": "d2ed0657603225263b552e8dca6973e0499f0f49",
+      "bytes": 21689,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-baza/path/",
+      "path": "ege-baza/path/index.html",
+      "blob": "f60d0110b321c2fab44a2191a631b3648a06dc86",
+      "bytes": 7625,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-baza/reference/",
+      "path": "ege-baza/reference/index.html",
+      "blob": "a721530d287bca35a0b8e1cde2415c18d68773e9",
+      "bytes": 3293,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-baza/reference/exam.html",
+      "path": "ege-baza/reference/exam.html",
+      "blob": "121573fd47cdab79bd85334b3ea9a281f8d9ad6a",
+      "bytes": 3073,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-baza/topics/izmenenie-tseny-procenty/",
+      "path": "ege-baza/topics/izmenenie-tseny-procenty/index.html",
+      "blob": "1b9d289267fbcf8de7dfd91e62a6e513903fa758",
+      "bytes": 7465,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-baza/topics/upakovki-okruglenie/",
+      "path": "ege-baza/topics/upakovki-okruglenie/index.html",
+      "blob": "2cc090b9d4134abcc795340a6f30e4fb0a948272",
+      "bytes": 7442,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-baza/topics/veroyatnost/",
+      "path": "ege-baza/topics/veroyatnost/index.html",
+      "blob": "b20fbf14b5692218d66ef89362bf6b30cf759934",
+      "bytes": 7994,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-baza/work-rate/",
+      "path": "ege-baza/work-rate/index.html",
+      "blob": "59e06d74d42023db9b38070056690d9bc5052c4f",
+      "bytes": 2358,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/",
+      "path": "ege-profil/index.html",
+      "blob": "0625e192557cee4aa60f1b2f030e5fb93be2f00a",
+      "bytes": 66260,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/atanasyan-10-11/",
+      "path": "ege-profil/atanasyan-10-11/index.html",
+      "blob": "7e8946561516bcdd311478a17f2b7d6405010a07",
+      "bytes": 7606,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/azbuka-metodov/",
+      "path": "ege-profil/azbuka-metodov/index.html",
+      "blob": "f8591e691dab26ad26e085ada5b43556076cd39a",
+      "bytes": 4510,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/circle/",
+      "path": "ege-profil/circle/index.html",
+      "blob": "2c492b55ee32ff7f59bfe6e297c463a10f4e5d05",
+      "bytes": 2576,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/exam/full-exam.html",
+      "path": "ege-profil/exam/full-exam.html",
+      "blob": "17506069803ba2f80bf71ba9998fd80cdb0edb45",
+      "bytes": 40697,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/exam/variant.html",
+      "path": "ege-profil/exam/variant.html",
+      "blob": "58dc75c9e00b73d1e052dc43d3ca89cea4970fb9",
+      "bytes": 28295,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/part-two/",
+      "path": "ege-profil/part-two/index.html",
+      "blob": "359c3d695c8de3b42830a18922a471213aacde0c",
+      "bytes": 5261,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/review.html",
+      "path": "ege-profil/review.html",
+      "blob": "093fd732568a3512489b08e8291fbb3e6adf8266",
+      "bytes": 13428,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/start/",
+      "path": "ege-profil/start/index.html",
+      "blob": "3b83eab5e3c9d1c5dd6f899791fc1e9a8e120ba0",
+      "bytes": 9368,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/applied-t910.html",
+      "path": "ege-profil/trainers/applied-t910.html",
+      "blob": "f5f580b8c33949e162b6081399fb394802d0ecdc",
+      "bytes": 43283,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/derivative-t8.html",
+      "path": "ege-profil/trainers/derivative-t8.html",
+      "blob": "27bdf4cdb3c137e1239576762bbe7dc863ad3b1b",
+      "bytes": 92468,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/expert.html",
+      "path": "ege-profil/trainers/expert.html",
+      "blob": "ee84aef216f9a1ef3cdded9019583407dd82d10a",
+      "bytes": 35089,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/finance.html",
+      "path": "ege-profil/trainers/finance.html",
+      "blob": "6c77c39560afe7a6fd7a6ad5b51dbb1b7a2f5d08",
+      "bytes": 138287,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/functions-t1112.html",
+      "path": "ege-profil/trainers/functions-t1112.html",
+      "blob": "fa086305d43fac72b3f406778f48d53f645301b9",
+      "bytes": 42145,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/inequalities.html",
+      "path": "ege-profil/trainers/inequalities.html",
+      "blob": "b5e971c497409bcf6c6c25596cc30217d875a4d0",
+      "bytes": 362531,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/interval-method.html",
+      "path": "ege-profil/trainers/interval-method.html",
+      "blob": "391fe596483e432629b29ddb53d5a3b8bd3f31df",
+      "bytes": 103966,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/numbers-t19.html",
+      "path": "ege-profil/trainers/numbers-t19.html",
+      "blob": "3655421ee8b563aa8056cf0a44bbada5485fc82e",
+      "bytes": 66632,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/parameters-18/",
+      "path": "ege-profil/trainers/parameters-18/index.html",
+      "blob": "19d6b6622ecbf593e6c278cdc349a3851ea9899c",
+      "bytes": 21029,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/parameters-18/fractional.html",
+      "path": "ege-profil/trainers/parameters-18/fractional.html",
+      "blob": "42889bcc8978162e4dddfe67bc94a52294492038",
+      "bytes": 40983,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/parameters-18/intro.html",
+      "path": "ege-profil/trainers/parameters-18/intro.html",
+      "blob": "6803bae6c089b91748147e582ffdd9134b602c7e",
+      "bytes": 40185,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/parameters-18/irrational.html",
+      "path": "ege-profil/trainers/parameters-18/irrational.html",
+      "blob": "f6d53197ce4e88a6f9f29d4631afcb9716dad18e",
+      "bytes": 43475,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/parameters-18/linear.html",
+      "path": "ege-profil/trainers/parameters-18/linear.html",
+      "blob": "9b184c809bfe6047860e5c0b03fbe1bfb1b9ab5d",
+      "bytes": 38353,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/parameters-18/quadratic.html",
+      "path": "ege-profil/trainers/parameters-18/quadratic.html",
+      "blob": "45bcd39635011eadcc6964b61943ba6c18b6fe6c",
+      "bytes": 42422,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/parameters-t18.html",
+      "path": "ege-profil/trainers/parameters-t18.html",
+      "blob": "5d6383c66239e911cf96930f129536d3bbb8a4c4",
+      "bytes": 43211,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/planimetry-t1.html",
+      "path": "ege-profil/trainers/planimetry-t1.html",
+      "blob": "5cd8c45e8fa5d28b46f6a159a4a2fa8151c247d0",
+      "bytes": 125216,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/planimetry-t17.html",
+      "path": "ege-profil/trainers/planimetry-t17.html",
+      "blob": "55cd567a1f12974581c9df4578e6640d563331fa",
+      "bytes": 42605,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/planimetry-yashchenko-t1.html",
+      "path": "ege-profil/trainers/planimetry-yashchenko-t1.html",
+      "blob": "17019b42a91466ed441baba6d13f1bee2ba39049",
+      "bytes": 111270,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/probability-t45.html",
+      "path": "ege-profil/trainers/probability-t45.html",
+      "blob": "650956f86f1bf3457f8375d7694fa3dd1faee391",
+      "bytes": 92490,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/pryamougolny-treugolnik-trenazher.html",
+      "path": "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html",
+      "blob": "a5fb507b4da61af5ed8d98144dc14da55cd0a7b3",
+      "bytes": 284333,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/stereo-t14.html",
+      "path": "ege-profil/trainers/stereo-t14.html",
+      "blob": "b6bc3c5cedb15c081a0d7397841c121d99e91016",
+      "bytes": 61949,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/stereo/",
+      "path": "ege-profil/trainers/stereo/index.html",
+      "blob": "17e3107a68cf681a5aa9883ee6e38ea32892dd41",
+      "bytes": 9743,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/stereo/trainer.html",
+      "path": "ege-profil/trainers/stereo/trainer.html",
+      "blob": "22fb5eb96086bd1c15f5508271ed400aeaf2f5ba",
+      "bytes": 4312,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/trig-sum-to-product.html",
+      "path": "ege-profil/trainers/trig-sum-to-product.html",
+      "blob": "c2262bccb10c03b7cc3646f18d19bc116ca88937",
+      "bytes": 101151,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/trigonometry.html",
+      "path": "ege-profil/trainers/trigonometry.html",
+      "blob": "4b77c8bbe92f4d9618cb653f6ed64de60924dcf9",
+      "bytes": 217690,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/vectors-t2.html",
+      "path": "ege-profil/trainers/vectors-t2.html",
+      "blob": "47cc7a3d5db236822a2fcd6c80797ad9c29a641f",
+      "bytes": 146097,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trainers/vectors-yashchenko-t2.html",
+      "path": "ege-profil/trainers/vectors-yashchenko-t2.html",
+      "blob": "71f631289beae71ea768d72ddf428014c94cdc6c",
+      "bytes": 65893,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/ege-profil/trigonometry/",
+      "path": "ege-profil/trigonometry/index.html",
+      "blob": "6466be96aebec9e0070f74d0308494a0b6683609",
+      "bytes": 1997,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/equations/",
+      "path": "equations/index.html",
+      "blob": "0f6d4b09646d47d6c88aff27da69db1a6ab7c48e",
+      "bytes": 3262,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/equations/linear-pilot/",
+      "path": "equations/linear-pilot/index.html",
+      "blob": "b3ca365106835482dfdc5a2b161a54714146c111",
+      "bytes": 3526,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/foundations/",
+      "path": "foundations/index.html",
+      "blob": "5ff802c286af92480e2eecaf0b9f76586cd0cfa8",
+      "bytes": 12248,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/",
+      "path": "geometry-course/index.html",
+      "blob": "d08261d0210ef62a972f2961d8b48f62609b0e49",
+      "bytes": 110655,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/angle-locus.html",
+      "path": "geometry-course/atlas/angle-locus.html",
+      "blob": "60602c5c96fc3a534173d0b68afafcc65b3487e9",
+      "bytes": 386416,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/angles.html",
+      "path": "geometry-course/atlas/angles.html",
+      "blob": "dec2623591fedb28ea867463e455d0b645f528dc",
+      "bytes": 397503,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/area-basics.html",
+      "path": "geometry-course/atlas/area-basics.html",
+      "blob": "7138b676b24d8b251e2ec3df70a9d0d2533452da",
+      "bytes": 386476,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/area-parallelogram.html",
+      "path": "geometry-course/atlas/area-parallelogram.html",
+      "blob": "3f88a96a652ac09443fb8cff509c893cb2c21bdc",
+      "bytes": 387966,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/area-sine.html",
+      "path": "geometry-course/atlas/area-sine.html",
+      "blob": "6a49fdfa8d0eb016294c1b4a03a0d5aacd1724b8",
+      "bytes": 385894,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/area-trapezoid.html",
+      "path": "geometry-course/atlas/area-trapezoid.html",
+      "blob": "669275c07842abf86ea76302e99d76d74b9b8e60",
+      "bytes": 385724,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/area-triangle.html",
+      "path": "geometry-course/atlas/area-triangle.html",
+      "blob": "7619234aeb64be256b1d4a22e63932554fd81ca6",
+      "bytes": 389383,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/axis.html",
+      "path": "geometry-course/atlas/axis.html",
+      "blob": "23146c8acb4ee019d614de5cfb8dd141dd7feedd",
+      "bytes": 386293,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/centers.html",
+      "path": "geometry-course/atlas/centers.html",
+      "blob": "e8fe690746b6d40886aecf0c01a21ab37934da70",
+      "bytes": 385909,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/central.html",
+      "path": "geometry-course/atlas/central.html",
+      "blob": "f8e0661eba9d5549f8ae6f138d76d40848c85bbd",
+      "bytes": 385898,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/cevians.html",
+      "path": "geometry-course/atlas/cevians.html",
+      "blob": "10b4d0719119acd515a712a443c1ea90c346b4a2",
+      "bytes": 386890,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/chord-angles.html",
+      "path": "geometry-course/atlas/chord-angles.html",
+      "blob": "520dfecf604d9c5bec37c5ee199010c9bc4163db",
+      "bytes": 386135,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/chords-tangent.html",
+      "path": "geometry-course/atlas/chords-tangent.html",
+      "blob": "f77b1d641e45bc48e3b5a7b97ecb49aba5b914c1",
+      "bytes": 386595,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/circle-metric.html",
+      "path": "geometry-course/atlas/circle-metric.html",
+      "blob": "5aecaa14b5aea2319dccfb5e527df445d129cfa1",
+      "bytes": 386524,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/circle-position.html",
+      "path": "geometry-course/atlas/circle-position.html",
+      "blob": "327c89c55c4188c738d905291f859584d7c0e5f7",
+      "bytes": 388909,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/compass.html",
+      "path": "geometry-course/atlas/compass.html",
+      "blob": "29f27ccd9a953426d6e22342f46f63ab988d9e6b",
+      "bytes": 386727,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/coordinates.html",
+      "path": "geometry-course/atlas/coordinates.html",
+      "blob": "7dd8cd93abc7531d87400344bcd37841ea8b583d",
+      "bytes": 386121,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/cosine-rule.html",
+      "path": "geometry-course/atlas/cosine-rule.html",
+      "blob": "c7149e2da1e9b5224cfc1dd76ce6c2afc111210d",
+      "bytes": 385710,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/cyclic-quad.html",
+      "path": "geometry-course/atlas/cyclic-quad.html",
+      "blob": "2286a37a1d1798ad39fb7b4dc422478eb9271506",
+      "bytes": 386338,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/distance.html",
+      "path": "geometry-course/atlas/distance.html",
+      "blob": "7266d18450a7ce31eb864b948c32354b4baf92c1",
+      "bytes": 386227,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/dot-product.html",
+      "path": "geometry-course/atlas/dot-product.html",
+      "blob": "a4e9b79e30f4b5b9512d4a0ed5c3e3567bc4cc44",
+      "bytes": 386674,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/equality.html",
+      "path": "geometry-course/atlas/equality.html",
+      "blob": "f0eb8671253bd9adf478cc97e83a5704a9ee5048",
+      "bytes": 387160,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/heron.html",
+      "path": "geometry-course/atlas/heron.html",
+      "blob": "03c5b9a5dac5b21e10309cc613011077fc6f0562",
+      "bytes": 385953,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/homothety.html",
+      "path": "geometry-course/atlas/homothety.html",
+      "blob": "90182c1824ff16fc3d0c25d2a84f4947d55a1e76",
+      "bytes": 386483,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/inscribed.html",
+      "path": "geometry-course/atlas/inscribed.html",
+      "blob": "6c77a6793feecfc90caee84a29784f98873b7288",
+      "bytes": 386511,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/length.html",
+      "path": "geometry-course/atlas/length.html",
+      "blob": "67a7fec23db79ee46628f0fc729b38c6d1e10ae1",
+      "bytes": 385761,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/line-circle-equations.html",
+      "path": "geometry-course/atlas/line-circle-equations.html",
+      "blob": "4fb469de9eddab9a722ebfcb77f508947a0d6bea",
+      "bytes": 386346,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/measure-angle.html",
+      "path": "geometry-course/atlas/measure-angle.html",
+      "blob": "4d197af8b357ae14e664780b5337d6a5d893fd46",
+      "bytes": 385620,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/midline.html",
+      "path": "geometry-course/atlas/midline.html",
+      "blob": "2164877f5ca5c366e04dab38f27fd66216355651",
+      "bytes": 390010,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/movement.html",
+      "path": "geometry-course/atlas/movement.html",
+      "blob": "97991096542084b9ad78b50e5a77818169abb590",
+      "bytes": 386503,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/parallel-angles.html",
+      "path": "geometry-course/atlas/parallel-angles.html",
+      "blob": "b4d0dee34c86c21bc855fc5e85f786d315571e0b",
+      "bytes": 386494,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/parallelogram.html",
+      "path": "geometry-course/atlas/parallelogram.html",
+      "blob": "fb8d0f4788a24f825b56be966ff42f4587324232",
+      "bytes": 386174,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/parallels.html",
+      "path": "geometry-course/atlas/parallels.html",
+      "blob": "dd9f0329604a237895e79ca82217ffbade25e2f8",
+      "bytes": 386963,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/perp-locus.html",
+      "path": "geometry-course/atlas/perp-locus.html",
+      "blob": "5d816a4c9b843b9b8f892e8c1b0689611ce93433",
+      "bytes": 386335,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/perpendicular.html",
+      "path": "geometry-course/atlas/perpendicular.html",
+      "blob": "286ee81530b7ca0ce15b9e1f0d895f7f1daec07f",
+      "bytes": 386140,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/polygon-similarity.html",
+      "path": "geometry-course/atlas/polygon-similarity.html",
+      "blob": "8cce8041e0ceb7259628961feb749b230049053c",
+      "bytes": 388213,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/polygons.html",
+      "path": "geometry-course/atlas/polygons.html",
+      "blob": "e1f0874517cc2cbe7e7037b27c5dc1340a207131",
+      "bytes": 386294,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/projections.html",
+      "path": "geometry-course/atlas/projections.html",
+      "blob": "0090348d36abb762348cb4c6d7fdb14103425751",
+      "bytes": 386063,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/pythagoras.html",
+      "path": "geometry-course/atlas/pythagoras.html",
+      "blob": "92f502cd793dcc0926a069f01e9283948a19f85f",
+      "bytes": 386568,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/rectangle.html",
+      "path": "geometry-course/atlas/rectangle.html",
+      "blob": "d50b8a9a9487076b8a703b8f060373f435b629d2",
+      "bytes": 385647,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/regular-polygons.html",
+      "path": "geometry-course/atlas/regular-polygons.html",
+      "blob": "a84de6ea3a19fb49bc16ed682852dad1441543f7",
+      "bytes": 387327,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/rhombus.html",
+      "path": "geometry-course/atlas/rhombus.html",
+      "blob": "3c4c4ec40acc99fddd9dac05f58d224b7355420c",
+      "bytes": 385881,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/right-triangle.html",
+      "path": "geometry-course/atlas/right-triangle.html",
+      "blob": "9892f7afa4ea1b9c97e4caeacef1e2a57817b9b5",
+      "bytes": 386470,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/segments.html",
+      "path": "geometry-course/atlas/segments.html",
+      "blob": "e5c2a58a1f98bf504fc70dafdc6513939686eaa4",
+      "bytes": 387053,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/similarity-measure.html",
+      "path": "geometry-course/atlas/similarity-measure.html",
+      "blob": "2cef1ac6279367560b835ab8987e5b7a03e47bdf",
+      "bytes": 386849,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/similarity-method.html",
+      "path": "geometry-course/atlas/similarity-method.html",
+      "blob": "b86681a9a3480354c80ef870cff6d776249d6cf1",
+      "bytes": 386205,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/similarity-signs.html",
+      "path": "geometry-course/atlas/similarity-signs.html",
+      "blob": "d3064304935f0c1e9cd687dc721ba4b65af23891",
+      "bytes": 386451,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/similarity.html",
+      "path": "geometry-course/atlas/similarity.html",
+      "blob": "db2bac6362a485a0268d6897c3271f1a33ec33cb",
+      "bytes": 386684,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/sine-rule.html",
+      "path": "geometry-course/atlas/sine-rule.html",
+      "blob": "bb9119cb78ed4ecd2197ce0f5d886e303049e663",
+      "bytes": 386038,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/solve-triangle.html",
+      "path": "geometry-course/atlas/solve-triangle.html",
+      "blob": "a49df965e0f55315fdacec72d4a708a5202abe21",
+      "bytes": 388388,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/symmetry-method.html",
+      "path": "geometry-course/atlas/symmetry-method.html",
+      "blob": "1054be4f9c75abd003fd30a61eb2a0bdbea1b168",
+      "bytes": 386919,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/translation-rotation.html",
+      "path": "geometry-course/atlas/translation-rotation.html",
+      "blob": "7aecaf09748807f37f4943b4ecd4ef83e3ad24a2",
+      "bytes": 386073,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/trapezoid.html",
+      "path": "geometry-course/atlas/trapezoid.html",
+      "blob": "0ece0d1caf6176b3abb27b8f1d69ed239774b1e8",
+      "bytes": 386073,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/triangle-angles.html",
+      "path": "geometry-course/atlas/triangle-angles.html",
+      "blob": "7d713a53c61b921587dd8d0b94ccc8a3d6885880",
+      "bytes": 386894,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/triangle-circles.html",
+      "path": "geometry-course/atlas/triangle-circles.html",
+      "blob": "e494358cc40332e305f8a178f6fe370e63df1f5a",
+      "bytes": 385934,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/triangle-sas.html",
+      "path": "geometry-course/atlas/triangle-sas.html",
+      "blob": "4dc5378631a261107630882853fb7dc69d1c5f9d",
+      "bytes": 386128,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/triangle-signs.html",
+      "path": "geometry-course/atlas/triangle-signs.html",
+      "blob": "367f6baebf4653354f8140c11712f778c62b81e8",
+      "bytes": 385948,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/trig-circle.html",
+      "path": "geometry-course/atlas/trig-circle.html",
+      "blob": "f839aa6f2e4e3cbce72fe0b19229c0771ebf555e",
+      "bytes": 387056,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/trig-right.html",
+      "path": "geometry-course/atlas/trig-right.html",
+      "blob": "063b0977ad04a19f7987e8e16db57bdceb355f40",
+      "bytes": 386411,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/vector-add.html",
+      "path": "geometry-course/atlas/vector-add.html",
+      "blob": "5df8589fd35dd185cf48abb2b587b50eeede158c",
+      "bytes": 386371,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/vector-basis.html",
+      "path": "geometry-course/atlas/vector-basis.html",
+      "blob": "fe278166a92327037ea99845500c36ad723eda48",
+      "bytes": 387444,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/vector-scale.html",
+      "path": "geometry-course/atlas/vector-scale.html",
+      "blob": "9f8174275046938df087be17fc0f017f34136ae8",
+      "bytes": 385918,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/atlas/vectors.html",
+      "path": "geometry-course/atlas/vectors.html",
+      "blob": "2a916345e64e3725a49c8e096a0876360ef89701",
+      "bytes": 386343,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/first-steps/",
+      "path": "geometry-course/first-steps/index.html",
+      "blob": "a9772454d857f279ed2d03a839ab36575d4d96ad",
+      "bytes": 1787,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/grade7/",
+      "path": "geometry-course/grade7/index.html",
+      "blob": "d663f557cf03b8d22da3a75a0a90984ea7d64030",
+      "bytes": 25525,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/ichenskaya-7-works/",
+      "path": "geometry-course/ichenskaya-7-works/index.html",
+      "blob": "aab8c152666de575690a22430370a0ed13b7f411",
+      "bytes": 1956,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/textbook/",
+      "path": "geometry-course/textbook/index.html",
+      "blob": "08bf810623d03dae57edad52271d696d971a25ed",
+      "bytes": 2411,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch1-p3-t2-fold-imprint.html",
+      "path": "geometry-course/trainers/ch1-p3-t2-fold-imprint.html",
+      "blob": "fda41a4cec7a935adddf3105df244116c3aaf5ad",
+      "bytes": 39769,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch1-p6-t1-adjacent-vertical.html",
+      "path": "geometry-course/trainers/ch1-p6-t1-adjacent-vertical.html",
+      "blob": "1637e402ae4088d2bf26aac99c785e6596eb4b02",
+      "bytes": 39040,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch1-p6-t2-angle-problems.html",
+      "path": "geometry-course/trainers/ch1-p6-t2-angle-problems.html",
+      "blob": "42bd918746eceee98e600ffff0d30e5fdf8f7df5",
+      "bytes": 35901,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch1-p6-t3-two-perpendiculars.html",
+      "path": "geometry-course/trainers/ch1-p6-t3-two-perpendiculars.html",
+      "blob": "356c2723686504fad8daa928295a1de9f11973b9",
+      "bytes": 45965,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-constr-angle-bisector.html",
+      "path": "geometry-course/trainers/ch2-constr-angle-bisector.html",
+      "blob": "e9b8d6027f4c4c9c1e3871a059c76fd3f5d1fdc1",
+      "bytes": 25320,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-constr-copy-angle.html",
+      "path": "geometry-course/trainers/ch2-constr-copy-angle.html",
+      "blob": "3e57abbee7f0fa3c1fe9d237b002c113c1408a1d",
+      "bytes": 28091,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-constr-perp-bisector.html",
+      "path": "geometry-course/trainers/ch2-constr-perp-bisector.html",
+      "blob": "69229483039b30f3c34f40fefe7c8a6f3c666498",
+      "bytes": 25574,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-constr-perpendicular-point.html",
+      "path": "geometry-course/trainers/ch2-constr-perpendicular-point.html",
+      "blob": "17fd3f5f52f7aeb69aec807e40b395303a8360bb",
+      "bytes": 28001,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p1-t1-overlay-equality.html",
+      "path": "geometry-course/trainers/ch2-p1-t1-overlay-equality.html",
+      "blob": "9bd8d044da0b24e502ff852f7ae53d7567bd9fc0",
+      "bytes": 25186,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p1-t2-overlay-sas.html",
+      "path": "geometry-course/trainers/ch2-p1-t2-overlay-sas.html",
+      "blob": "425f731f9d918db2103dc64f0d5f70a39cba3471",
+      "bytes": 26238,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p1-t3-proof-sas.html",
+      "path": "geometry-course/trainers/ch2-p1-t3-proof-sas.html",
+      "blob": "20bec09996694a1964c9176b972561b9025754c8",
+      "bytes": 23024,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p1-t4-find-equal.html",
+      "path": "geometry-course/trainers/ch2-p1-t4-find-equal.html",
+      "blob": "d0c30112ea1674039d64ebc8255c771f9cf918d9",
+      "bytes": 32393,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p1-t5-quiz.html",
+      "path": "geometry-course/trainers/ch2-p1-t5-quiz.html",
+      "blob": "b4ceb02d8a79f0b3d1466b9901c2a4c036418b45",
+      "bytes": 56245,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p2-t0-three-cevians.html",
+      "path": "geometry-course/trainers/ch2-p2-t0-three-cevians.html",
+      "blob": "3f5b788e42f8eb9a651108e1b3bee0cdbc8b10ba",
+      "bytes": 36686,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p2-t1-perp-fold.html",
+      "path": "geometry-course/trainers/ch2-p2-t1-perp-fold.html",
+      "blob": "95942ba2e3969fcdb9ebc812dac622d761a7014c",
+      "bytes": 31214,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p2-t2-isosceles-intro.html",
+      "path": "geometry-course/trainers/ch2-p2-t2-isosceles-intro.html",
+      "blob": "7acdd9c3eba4f2ebfd534d93b17933a33e8dcc0c",
+      "bytes": 28321,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p2-t3-proof-base-angles.html",
+      "path": "geometry-course/trainers/ch2-p2-t3-proof-base-angles.html",
+      "blob": "46a41c15af195c2492cb58229d2832f2f7f6f0c1",
+      "bytes": 22191,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p2-t4-three-in-one.html",
+      "path": "geometry-course/trainers/ch2-p2-t4-three-in-one.html",
+      "blob": "de2285ed9317496932d0d867b3438ba52afd79ce",
+      "bytes": 32066,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p2-t5-find-equal-iso.html",
+      "path": "geometry-course/trainers/ch2-p2-t5-find-equal-iso.html",
+      "blob": "012d2e2b0ba9de28c4d998ef2df9543a5dcb3689",
+      "bytes": 36467,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p2-t6-quiz.html",
+      "path": "geometry-course/trainers/ch2-p2-t6-quiz.html",
+      "blob": "c87681b9f8ac772c73e7816c8e50f5fc0a90af82",
+      "bytes": 17442,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p3-t0-adjacent-opposite.html",
+      "path": "geometry-course/trainers/ch2-p3-t0-adjacent-opposite.html",
+      "blob": "ffa2a07379ea92e44c425038646ce21b194182e9",
+      "bytes": 38860,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p3-t1-overlay-asa.html",
+      "path": "geometry-course/trainers/ch2-p3-t1-overlay-asa.html",
+      "blob": "e2f473868da3c35636ff5b21aeefe774abd39e2b",
+      "bytes": 35069,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p3-t2-proof-asa.html",
+      "path": "geometry-course/trainers/ch2-p3-t2-proof-asa.html",
+      "blob": "83b268e59bbc40f5f58da6a45670dfa9d91c11a6",
+      "bytes": 32722,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p3-t3-which-sign.html",
+      "path": "geometry-course/trainers/ch2-p3-t3-which-sign.html",
+      "blob": "5122b2bc34046b5472f2cfaab3cfc2d4a514c9f1",
+      "bytes": 19823,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p3-t4-find-equal-asa.html",
+      "path": "geometry-course/trainers/ch2-p3-t4-find-equal-asa.html",
+      "blob": "73539148a1949b16ae2b62ea9b69d7f66ea9fe20",
+      "bytes": 40613,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p3-t5-quiz.html",
+      "path": "geometry-course/trainers/ch2-p3-t5-quiz.html",
+      "blob": "4feea1684b4c4facc7a0716f4b34d12a0fe3a42a",
+      "bytes": 15291,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p4-t0-rigidity.html",
+      "path": "geometry-course/trainers/ch2-p4-t0-rigidity.html",
+      "blob": "bd5c009d09dc2b22ddc391dcda4c096eefc2132c",
+      "bytes": 25097,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p4-t1-overlay-sss.html",
+      "path": "geometry-course/trainers/ch2-p4-t1-overlay-sss.html",
+      "blob": "63af18cbf34ec4bc077453ca47ec687a181825c3",
+      "bytes": 30393,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p4-t2-proof-sss.html",
+      "path": "geometry-course/trainers/ch2-p4-t2-proof-sss.html",
+      "blob": "f0bb42e38746e6a1ddd741e3e5e639fd9d0e2b5b",
+      "bytes": 39978,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p4-t3-which-sign.html",
+      "path": "geometry-course/trainers/ch2-p4-t3-which-sign.html",
+      "blob": "81951e92caaaaad2f1e7bace8e9865cd49e4ad63",
+      "bytes": 21299,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p4-t4-find-equal-sss.html",
+      "path": "geometry-course/trainers/ch2-p4-t4-find-equal-sss.html",
+      "blob": "833723a8e98d422d2c26c9767b129b925d3bb018",
+      "bytes": 41812,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch2-p4-t5-quiz.html",
+      "path": "geometry-course/trainers/ch2-p4-t5-quiz.html",
+      "blob": "9d18eb12df39e1b94764d327a067c04a33b740c1",
+      "bytes": 17747,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p1-t1-crossing-parallel.html",
+      "path": "geometry-course/trainers/ch3-p1-t1-crossing-parallel.html",
+      "blob": "ad7330cab4e5a140aa61f866547fe500d0cf6653",
+      "bytes": 37690,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p1-t2-eight-angles.html",
+      "path": "geometry-course/trainers/ch3-p1-t2-eight-angles.html",
+      "blob": "177da716c46781a9213d3807c5af785e417837bd",
+      "bytes": 36430,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p1-t3-sign-lab.html",
+      "path": "geometry-course/trainers/ch3-p1-t3-sign-lab.html",
+      "blob": "32ce77f4c04e4d63cb05196598ce13081a8d7b15",
+      "bytes": 32521,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p1-t4-proof-sign.html",
+      "path": "geometry-course/trainers/ch3-p1-t4-proof-sign.html",
+      "blob": "acce6ddb6491c660b7af878a9c4df0bd3c343cd5",
+      "bytes": 47968,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p1-t5-two-more-signs.html",
+      "path": "geometry-course/trainers/ch3-p1-t5-two-more-signs.html",
+      "blob": "28490326bc9f3b59ce315048fe967a9b22072dbd",
+      "bytes": 31051,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p1-t6-practical.html",
+      "path": "geometry-course/trainers/ch3-p1-t6-practical.html",
+      "blob": "10f728768177548654658f161076aab658c50b6b",
+      "bytes": 33025,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p1-t7-find-equal.html",
+      "path": "geometry-course/trainers/ch3-p1-t7-find-equal.html",
+      "blob": "ccaf841d2965b85cffb00afda1c96520aad86a9b",
+      "bytes": 29598,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p2-t1-parallel-axiom.html",
+      "path": "geometry-course/trainers/ch3-p2-t1-parallel-axiom.html",
+      "blob": "16f0928c8d81f7ce3986b4941c78962dca59407f",
+      "bytes": 39428,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p2-t4-property-alt-angles.html",
+      "path": "geometry-course/trainers/ch3-p2-t4-property-alt-angles.html",
+      "blob": "b74dbc32f6fddd7e481dd9309168a30ee729d7f5",
+      "bytes": 42426,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p2-t5-properties-2-3.html",
+      "path": "geometry-course/trainers/ch3-p2-t5-properties-2-3.html",
+      "blob": "c5cbae105aef4e4f6becdad32f5455116fa5fb6c",
+      "bytes": 35443,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch3-p2-t6-direct-converse.html",
+      "path": "geometry-course/trainers/ch3-p2-t6-direct-converse.html",
+      "blob": "c22cb13d4c1a0a4675f6a07a88d76542eb72914a",
+      "bytes": 37810,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p1-t1-angle-sum-lab.html",
+      "path": "geometry-course/trainers/ch4-p1-t1-angle-sum-lab.html",
+      "blob": "14cf76ed239feb3b050adfca048c91fd9a0c3c79",
+      "bytes": 37261,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html",
+      "path": "geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html",
+      "blob": "a263c15b659086a5cda9f14819a090f0449939f2",
+      "bytes": 29713,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p1-t3-exterior-angle.html",
+      "path": "geometry-course/trainers/ch4-p1-t3-exterior-angle.html",
+      "blob": "e12f39daa2eefe47f839c0dbb949f5253535545e",
+      "bytes": 36160,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p1-t4-triangle-types.html",
+      "path": "geometry-course/trainers/ch4-p1-t4-triangle-types.html",
+      "blob": "0a01c867e1d170bde4b0553812e562881a627448",
+      "bytes": 28529,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p1-t5-find-angles.html",
+      "path": "geometry-course/trainers/ch4-p1-t5-find-angles.html",
+      "blob": "44300553ef5420a80278cc765718791167aec7ad",
+      "bytes": 26393,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p1-t6-quiz.html",
+      "path": "geometry-course/trainers/ch4-p1-t6-quiz.html",
+      "blob": "7e608f233e70603737931f8d374267c459dcbbe5",
+      "bytes": 28058,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p2-t1-side-angle-lab.html",
+      "path": "geometry-course/trainers/ch4-p2-t1-side-angle-lab.html",
+      "blob": "3c9e8558366d63ce693777be11a607284f0c194c",
+      "bytes": 24358,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p2-t2-proof-side-angle.html",
+      "path": "geometry-course/trainers/ch4-p2-t2-proof-side-angle.html",
+      "blob": "d3c6bfae55612e97f945bb07ca9c4d1576b86765",
+      "bytes": 40229,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p2-t3-converse-iso.html",
+      "path": "geometry-course/trainers/ch4-p2-t3-converse-iso.html",
+      "blob": "ffdcdf95a5a762c7ed164f8f3cc8df2832e5fcbc",
+      "bytes": 42376,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p2-t4-hypotenuse-leg.html",
+      "path": "geometry-course/trainers/ch4-p2-t4-hypotenuse-leg.html",
+      "blob": "eb4f38e9aeb10756d7e2dc53c9f168404cb5a6cf",
+      "bytes": 31576,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p2-t5-triangle-inequality.html",
+      "path": "geometry-course/trainers/ch4-p2-t5-triangle-inequality.html",
+      "blob": "40a8cf5b236e4aa027459f77890f25669d1dc4de",
+      "bytes": 29538,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p2-t6-prove-inequality.html",
+      "path": "geometry-course/trainers/ch4-p2-t6-prove-inequality.html",
+      "blob": "395e54c6e031be5a00ab418b743ef75e75d0634a",
+      "bytes": 33015,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p2-t7-triangle-generator.html",
+      "path": "geometry-course/trainers/ch4-p2-t7-triangle-generator.html",
+      "blob": "60a5f9ff9a0881ff403a66eb83eb4e332a925f5e",
+      "bytes": 26120,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p2-t8-quiz.html",
+      "path": "geometry-course/trainers/ch4-p2-t8-quiz.html",
+      "blob": "71c2da7fdea5ee9848392a4278305cdf623c5244",
+      "bytes": 28174,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t1-two-acute-angles.html",
+      "path": "geometry-course/trainers/ch4-p3-t1-two-acute-angles.html",
+      "blob": "0e6d16a4acce82d513c2143fff6a685b6f9a64eb",
+      "bytes": 42847,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t2-leg-against-30.html",
+      "path": "geometry-course/trainers/ch4-p3-t2-leg-against-30.html",
+      "blob": "da4fcab978c9fe204e30b8bf5db683a1769c617d",
+      "bytes": 43146,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t3-half-means-30.html",
+      "path": "geometry-course/trainers/ch4-p3-t3-half-means-30.html",
+      "blob": "240e9f4deaa057817348fa0db81935403fc8cb32",
+      "bytes": 42072,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t4-median-to-hypotenuse.html",
+      "path": "geometry-course/trainers/ch4-p3-t4-median-to-hypotenuse.html",
+      "blob": "f17442810ef30db1c7e09d879622b3e111e737c4",
+      "bytes": 45136,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t5-median-converse.html",
+      "path": "geometry-course/trainers/ch4-p3-t5-median-converse.html",
+      "blob": "b90099b3da18cb37f1a61e9a097614c67ca0d7c3",
+      "bytes": 43951,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t6-which-sign.html",
+      "path": "geometry-course/trainers/ch4-p3-t6-which-sign.html",
+      "blob": "5fcc635dc084a6eccb86919bc7f15c248b5c742d",
+      "bytes": 43655,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t7-hyp-leg-congruence.html",
+      "path": "geometry-course/trainers/ch4-p3-t7-hyp-leg-congruence.html",
+      "blob": "4272e8eb22fb437bd07dab7e9ed8682b717b760e",
+      "bytes": 43542,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t8-generator.html",
+      "path": "geometry-course/trainers/ch4-p3-t8-generator.html",
+      "blob": "9a643b485983fea027121e96fec0d14cbad0ba56",
+      "bytes": 31000,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p3-t9-quiz.html",
+      "path": "geometry-course/trainers/ch4-p3-t9-quiz.html",
+      "blob": "6d6b0bbbb6548757694d97deac58702395322030",
+      "bytes": 32794,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p4-t1-distance-point-line.html",
+      "path": "geometry-course/trainers/ch4-p4-t1-distance-point-line.html",
+      "blob": "04a6fd7fa6b69691ce08d0165c886bd2f0c75e74",
+      "bytes": 18893,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p4-t2-distance-parallels.html",
+      "path": "geometry-course/trainers/ch4-p4-t2-distance-parallels.html",
+      "blob": "dab692e72c0ca4007b87b8354d20758bce8f4394",
+      "bytes": 39729,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p4-t3-construct-sss.html",
+      "path": "geometry-course/trainers/ch4-p4-t3-construct-sss.html",
+      "blob": "d09fada8565a4b5f575034bd5b676a1a56d48f77",
+      "bytes": 30588,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-course/trainers/ch4-p4-t4-construct-two-sides-angle.html",
+      "path": "geometry-course/trainers/ch4-p4-t4-construct-two-sides-angle.html",
+      "blob": "420e7809497f16036e625b1940c1d73b8bfbe26d",
+      "bytes": 36787,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/",
+      "path": "geometry-merzlyak/index.html",
+      "blob": "fcca07cd5ccc7ac35f6746f07123f4cd20783767",
+      "bytes": 57010,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-7-17.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-7-17.html",
+      "blob": "c2b47b5ba4da14455dd2c8556f4c0c97233cb69b",
+      "bytes": 20199,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-7-23.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-7-23.html",
+      "blob": "feef499f8d0717dc10034d6463967df74168b74a",
+      "bytes": 20289,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-8-11.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-8-11.html",
+      "blob": "f60b7587f133c67f76d510c3534c458d1271c915",
+      "bytes": 19825,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-8-13.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-8-13.html",
+      "blob": "a55e2c2000f0709a81b972641e4e67700de56e76",
+      "bytes": 20127,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-8-16.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-8-16.html",
+      "blob": "b716be1af478bf90f4595441be761ac6af83e8a5",
+      "bytes": 19973,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-8-17.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-8-17.html",
+      "blob": "6010e7e925d57fe5f23b1e5b92349491026a5c77",
+      "bytes": 20630,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-8-4.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-8-4.html",
+      "blob": "a554d89fa9dfd0e020dd74827318bb0edfe6ec1f",
+      "bytes": 20220,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-8-8-menelaus.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-8-8-menelaus.html",
+      "blob": "fbd768dd0a4994adec5f6936baf0b935790b1a6f",
+      "bytes": 20230,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-8-9.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-8-9.html",
+      "blob": "ab34b5b6b2dee048ff5f05ce0b28691f65b162ee",
+      "bytes": 20205,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-9-18.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-9-18.html",
+      "blob": "cb0f70faf13ee276983f8bb1bdce8a55780a8f15",
+      "bytes": 20107,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-9-22.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-9-22.html",
+      "blob": "4ddd6c2ef1ce33b4661de3d508830d4aeeb099af",
+      "bytes": 19631,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-9-26.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-9-26.html",
+      "blob": "358d61a86d3302b56a43b7e8f792551f8281f99f",
+      "bytes": 20078,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-9-8.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-9-8.html",
+      "blob": "96e2d37b1fedf1569e548d00e111f31bc5227f37",
+      "bytes": 19882,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-9-9-ceva.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-9-9-ceva.html",
+      "blob": "f699008b610569b631ae17030de68425f115957e",
+      "bytes": 20252,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-9-9-inversion.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-9-9-inversion.html",
+      "blob": "04d1465672901d04c285d610b991e75b72039527",
+      "bytes": 19856,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-advanced-9-9-radical.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-advanced-9-9-radical.html",
+      "blob": "8c928e4a4988c76f05d958291d71b4fee0e179c7",
+      "bytes": 20236,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-1.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-1.html",
+      "blob": "e31ca7fb49e237bc93a478795a4704e756b8cff3",
+      "bytes": 20050,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-10.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-10.html",
+      "blob": "7d523fc39911cf1d8a141507869625f7b70f2996",
+      "bytes": 20293,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-11.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-11.html",
+      "blob": "09a3c584090e4faee9599406dd802db11fc77ffa",
+      "bytes": 21101,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-12.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-12.html",
+      "blob": "7add07fb8559f82efbff955570aee02c188c8b56",
+      "bytes": 20176,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-13.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-13.html",
+      "blob": "d86a61bad77921bd37a594573205239fe97864e9",
+      "bytes": 20183,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-14.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-14.html",
+      "blob": "986435f43781ea76b087b9d5dee46f7600746475",
+      "bytes": 20393,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-15.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-15.html",
+      "blob": "e8fdfa306289c034fe47dd87cdc8dfa99abd5f08",
+      "bytes": 20300,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-16.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-16.html",
+      "blob": "2a0bc590670720dd3f80b6e84edd5319bfa04b3d",
+      "bytes": 20261,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-17.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-17.html",
+      "blob": "fdf7e2ad69deda4c460ea25ae5b528816473e3e4",
+      "bytes": 20186,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-18.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-18.html",
+      "blob": "858c06da4fcfb5f19a5aea1e2b3d446ba1867823",
+      "bytes": 20333,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-19.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-19.html",
+      "blob": "bbf5fa800a983e027bc2a57c637c5d268b8ced1a",
+      "bytes": 20754,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-2.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-2.html",
+      "blob": "91ffaecdde805f8ae9d43661aaf27d59e1044d12",
+      "bytes": 19766,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-20.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-20.html",
+      "blob": "19b5a2e07ceb1fb1536abce42b787a0ea6e2cbe2",
+      "bytes": 20967,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-21.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-21.html",
+      "blob": "46bb076a675192a542084f4b63b126299ea75df8",
+      "bytes": 20193,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-22.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-22.html",
+      "blob": "dd79f870a64ffa800637957e0402871d9d4b1304",
+      "bytes": 20620,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-23.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-23.html",
+      "blob": "e3cdcd10fc57982ec01a3d3cc9c64cfced46025d",
+      "bytes": 21096,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-3.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-3.html",
+      "blob": "aa37fc6058576a3a7af917a0b7acaf473b77be94",
+      "bytes": 19678,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-4.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-4.html",
+      "blob": "a680557201a0ef040afd22031eed2f166148fe09",
+      "bytes": 20033,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-5.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-5.html",
+      "blob": "f0239d59f81623875dc89ab10bd3d8688fcbd505",
+      "bytes": 20655,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-6.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-6.html",
+      "blob": "b6c1b1adf19d2cc7c5d8b8348a7e464e7e663d39",
+      "bytes": 20259,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-7.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-7.html",
+      "blob": "673555c23f3068e588a4e2e8abd7af08ae8742a8",
+      "bytes": 20885,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-8.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-8.html",
+      "blob": "fd880337c89ce1e71786b681f55ce8668f7e0765",
+      "bytes": 21331,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-7-9.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-7-9.html",
+      "blob": "eefca823f8d470dc9734db4b2dfaa78d01d35055",
+      "bytes": 20619,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-1.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-1.html",
+      "blob": "ef1f10ac06d706127d9927ef51bb0bf5742dbedb",
+      "bytes": 20338,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-10.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-10.html",
+      "blob": "13dc3879404b33cf238d669a32e0d8be755125ea",
+      "bytes": 20535,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-11.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-11.html",
+      "blob": "187bc622ade15c36586a6e599c9f461d22f6a6dd",
+      "bytes": 20748,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-12.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-12.html",
+      "blob": "9ab92a1c09c949a0c141f5b69222da9a9603d3b5",
+      "bytes": 20748,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-13.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-13.html",
+      "blob": "732dc626585fe7e114ff7fd7fc335c05c42dd6dc",
+      "bytes": 20616,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-14.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-14.html",
+      "blob": "5def64f30b3b2cdef922871164507fa0504fe243",
+      "bytes": 22663,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-15.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-15.html",
+      "blob": "1b7c9f69230f729d4664ca29fb9d7b5020445b37",
+      "bytes": 20381,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-16.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-16.html",
+      "blob": "e09f222be61132fbfda5ec11bfb2aea057c4976e",
+      "bytes": 20363,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-17.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-17.html",
+      "blob": "297da140f0fa70713b36a3cda174bce3728e892f",
+      "bytes": 20797,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-18.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-18.html",
+      "blob": "c2b96625ca81bf7ee7ececeb313afd9b5d7d6cda",
+      "bytes": 20370,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-19.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-19.html",
+      "blob": "be73fff24ee609a2d30a19774aa0d458a190fb62",
+      "bytes": 19919,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-2.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-2.html",
+      "blob": "caff8cc6098d5b4ebdf8c6a3dff737bdde631c53",
+      "bytes": 20429,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-20.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-20.html",
+      "blob": "67a39d9d3362514fe12b8eebd41034dbb7d591fe",
+      "bytes": 20652,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-21.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-21.html",
+      "blob": "7ef73096afd397bd7b9eaee746d432fecdff5534",
+      "bytes": 20429,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-22.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-22.html",
+      "blob": "99e4af93c52466096db1886598bb9413457eb2cf",
+      "bytes": 20439,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-23.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-23.html",
+      "blob": "8bdc0052ac0696721cf7bbc8350230b069111be6",
+      "bytes": 19823,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-3.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-3.html",
+      "blob": "0a5ba2a17613c182902d4be19b82eb26e81c38cd",
+      "bytes": 20257,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-4.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-4.html",
+      "blob": "7718826914d50c51b54feb75844d6facf537f210",
+      "bytes": 19515,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-5.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-5.html",
+      "blob": "fbd2b0f99a06454cd8e1c26421f6b5c086343870",
+      "bytes": 19549,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-6.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-6.html",
+      "blob": "44ce0437579645e58fe1887506482f1d95ceb9df",
+      "bytes": 19854,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-7.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-7.html",
+      "blob": "a36c3967f260a147a1f28c01b0171cafb1bd2350",
+      "bytes": 20385,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-8.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-8.html",
+      "blob": "0db5b6f7cf4a392f5e49ac2c16fc3e778c48c38e",
+      "bytes": 20112,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-8-9.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-8-9.html",
+      "blob": "8aa76a770e0b671b4666c5826d7eb39f7a888571",
+      "bytes": 27287,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-1.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-1.html",
+      "blob": "7a61a272e8a8c88f85aa07fecf11629c912086b0",
+      "bytes": 20590,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-10.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-10.html",
+      "blob": "e1afdb1f0adce04a12d2100422647edb20c32b61",
+      "bytes": 20044,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-11.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-11.html",
+      "blob": "29b586d6723c760813e9ef4439225d11438f2ec5",
+      "bytes": 20440,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-12.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-12.html",
+      "blob": "1ca4684c48940e7990e942cda5c0d50e321c4e38",
+      "bytes": 19891,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-13.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-13.html",
+      "blob": "228f9410deb93831656a34d9122dbfc8b0cde408",
+      "bytes": 21059,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-14.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-14.html",
+      "blob": "f5ea13cd3df2ffe217f382839668a2d2d447d96c",
+      "bytes": 20070,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-15.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-15.html",
+      "blob": "66e195f79afc08bc00b1352dd181f4e272b0a43a",
+      "bytes": 19980,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-16.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-16.html",
+      "blob": "e76439678e2177fe0186fd229a5603f3fb4e0f0a",
+      "bytes": 20390,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-17.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-17.html",
+      "blob": "6bb1b23f8430291c54b7dd0dcbf54f146d497708",
+      "bytes": 20117,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-18.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-18.html",
+      "blob": "9e2de901e5245747ea97ff72a8d73c348b22a275",
+      "bytes": 20109,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-19.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-19.html",
+      "blob": "00db1a472f65040d5d76cfd2d8bcc8bebc21541f",
+      "bytes": 20086,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-2.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-2.html",
+      "blob": "6cefe11a2afa89d7e3355a43e71bfb03909d35ea",
+      "bytes": 19810,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-20.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-20.html",
+      "blob": "23b17a5d16513d53faa869ddd10e497e0f93aba9",
+      "bytes": 20121,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-21.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-21.html",
+      "blob": "fb763da22c39ee72d18f900e06ee7c03060fe1db",
+      "bytes": 20626,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-22.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-22.html",
+      "blob": "244b5a50d648097b8a30b7df26783f112df03aab",
+      "bytes": 20474,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-3.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-3.html",
+      "blob": "1a79357f36ba7c03db28efc9b0a213ca1d934368",
+      "bytes": 20056,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-4.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-4.html",
+      "blob": "de12837c4f73e19cc47fe82564248f7131dbb5a4",
+      "bytes": 20743,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-5.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-5.html",
+      "blob": "d06bb73db2d21ed5771b1a67f0ca51645e530e6c",
+      "bytes": 20481,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-6.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-6.html",
+      "blob": "aba992ad5f0cabfcb65982430f26b4c53a4d57a1",
+      "bytes": 20489,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-7.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-7.html",
+      "blob": "0965074ab43131408be60f5b33643856db6eeaa4",
+      "bytes": 20307,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-8.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-8.html",
+      "blob": "683b686042cef1e38f0fbd84001cf6a0353bf6c6",
+      "bytes": 20486,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-merzlyak/atlas/merzlyak-base-9-9.html",
+      "path": "geometry-merzlyak/atlas/merzlyak-base-9-9.html",
+      "blob": "a3998bd0fad22bf1b74adf3ec1496bc43ecc4da0",
+      "bytes": 20216,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/",
+      "path": "geometry-pogorelov/index.html",
+      "blob": "24ee5407689657505abf774ba43a7341e60034fe",
+      "bytes": 59706,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-1.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-1.html",
+      "blob": "e94da9c2957d1646d7d30bc5b238efb7fe512372",
+      "bytes": 21363,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-11.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-11.html",
+      "blob": "dfdb9fa2d6e3b8ea0fb6255a371511243ca0f245",
+      "bytes": 20607,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-12.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-12.html",
+      "blob": "6ed6c29b2ba34babc10c7c21c8c794db6fa227bb",
+      "bytes": 21154,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-14.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-14.html",
+      "blob": "5e78dcf7bace816f6909bae30401a0b685193adc",
+      "bytes": 20608,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-16.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-16.html",
+      "blob": "c9aa93392e3c40f0aa46774e855e8311bd99322e",
+      "bytes": 21275,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-17.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-17.html",
+      "blob": "3506a09919d740fc74426e6ebce2258f992e1a12",
+      "bytes": 20836,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-18.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-18.html",
+      "blob": "ebcfa8d601f581aefa1e5c77155807dc2ea9626b",
+      "bytes": 20058,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-19.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-19.html",
+      "blob": "45155dfd8b122b31198e5032ae12659a6d557a26",
+      "bytes": 20989,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-20.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-20.html",
+      "blob": "f2e76bf709ed6ffbbd888103d5b246a798264da7",
+      "bytes": 22191,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-23.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-23.html",
+      "blob": "99106fcfad2485e0f633fc7f6e353cbde3f7f55d",
+      "bytes": 20817,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-24.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-24.html",
+      "blob": "c082bc141b04c7c88672e3d8cd017446792f79c3",
+      "bytes": 20414,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-25.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-25.html",
+      "blob": "d8b7b5f98b7ae705ac5c5ef550ec7e3893297ab7",
+      "bytes": 21248,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-27.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-27.html",
+      "blob": "f8dcc1c9f3e032569ffdd4dfcb7ecdb4aafb7612",
+      "bytes": 20528,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-28.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-28.html",
+      "blob": "781b73f29b846de3314ca9e3c765af972e9ddf92",
+      "bytes": 20974,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-29.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-29.html",
+      "blob": "80ca5464345c0a1d6fd55653b3061adbc0d1d552",
+      "bytes": 21328,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-32.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-32.html",
+      "blob": "2dff021e7915d337050872ab421345e0187def54",
+      "bytes": 21090,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-33.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-33.html",
+      "blob": "8433975207b147d6d30ce89e7a3ec1a808dc4ad8",
+      "bytes": 21092,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-35.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-35.html",
+      "blob": "e10d6ca81bfa81316b06cdb01c472faab658b7cb",
+      "bytes": 20608,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-36.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-36.html",
+      "blob": "95a87d4a715567fe2e40f6b2453eb58c58698775",
+      "bytes": 20806,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-37.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-37.html",
+      "blob": "df692dfbc2b1017528b038b9a06abe3dc0bd0ede",
+      "bytes": 20999,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-38.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-38.html",
+      "blob": "8ae41c039a6dd411184059d67b03172b97705d3f",
+      "bytes": 20962,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-39.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-39.html",
+      "blob": "38b37fd4d9e6e515e90975477d5e1f96b6d73279",
+      "bytes": 21000,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-40.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-40.html",
+      "blob": "55a2f1450ded77e0685919f630ecafa733678a1a",
+      "bytes": 20953,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-41.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-41.html",
+      "blob": "792a8fa8a6f9e4735d45a20373cde76875a406c8",
+      "bytes": 20932,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-42.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-42.html",
+      "blob": "6c8c9345330070f61f117f3be06c4a00a77293b3",
+      "bytes": 21772,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-45.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-45.html",
+      "blob": "944e90227ee7041c35c0f709d2ae284f67d2c083",
+      "bytes": 20163,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-46.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-46.html",
+      "blob": "bb002c6c8cd73aff70d6a3a91b12b3a743732700",
+      "bytes": 21316,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-48.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-48.html",
+      "blob": "98c12cd2de96029e18e5126f05ba0c4403400297",
+      "bytes": 21440,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-7.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-7.html",
+      "blob": "0a1efc4e802d728850079fc676ba709fdec1d59e",
+      "bytes": 20324,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-7-9.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-7-9.html",
+      "blob": "a78776aa4504d38393ac53dba38109e3fb3166aa",
+      "bytes": 20703,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-50.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-50.html",
+      "blob": "3d7fddc97d1291a0cb4d6bbee2a1951e7bc03147",
+      "bytes": 21014,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-51.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-51.html",
+      "blob": "f772db7b76ea4c2ea6d90102f9bec0b84e44e0d7",
+      "bytes": 21743,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-54.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-54.html",
+      "blob": "a0c9da274e44d1e45851839951f5f9d60428bd98",
+      "bytes": 20481,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-55.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-55.html",
+      "blob": "eba85891e0c1fa8e8e78b06a8652056c1e81c563",
+      "bytes": 20496,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-56.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-56.html",
+      "blob": "e4b5cf82801589369a1eda8196683e7a1bd12576",
+      "bytes": 20526,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-57.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-57.html",
+      "blob": "54ec78b521b85df535fa492796b7fd6a9d395cf9",
+      "bytes": 21112,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-58.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-58.html",
+      "blob": "5beb9abe62114cf2f82bc2751d33e16f29952e7d",
+      "bytes": 22096,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-59.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-59.html",
+      "blob": "e530d4a9d6dbe2e3c26b4f278b6d52a8198ad2dd",
+      "bytes": 20896,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-60.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-60.html",
+      "blob": "81ee87d22964fd55f5045e17ef0273ab53f13218",
+      "bytes": 21119,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-61.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-61.html",
+      "blob": "695e1dbc6353c72ae6f41662253730547272bf90",
+      "bytes": 22475,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-62.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-62.html",
+      "blob": "c4fcc1a87f9302fee6a33e0f140c6a7580cc34c1",
+      "bytes": 21248,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-63.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-63.html",
+      "blob": "a9ca3343edfdd46ac08ddf9d9a3dcebbda1c2e52",
+      "bytes": 20923,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-65.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-65.html",
+      "blob": "7ab25c1e5879cb87944348ea5af3ba95a03eaf0e",
+      "bytes": 20531,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-66.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-66.html",
+      "blob": "f667dfd058e2b033931d586a18619fecd2d48222",
+      "bytes": 20856,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-67.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-67.html",
+      "blob": "9315dad4c6fabc9dfb623c67b24c9d9c653ee2f8",
+      "bytes": 22220,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-71.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-71.html",
+      "blob": "b5ca6c974925833c7f07fc7721d3811e12bdf5ed",
+      "bytes": 21028,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-74.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-74.html",
+      "blob": "9eef47ceb90013a48014794b33065d9ba8756551",
+      "bytes": 20474,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-75.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-75.html",
+      "blob": "75ca028f7b9c5211851b564c3c56088042076447",
+      "bytes": 21229,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-78.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-78.html",
+      "blob": "1cdc983187f0416cac5720b18fecc649944ef22e",
+      "bytes": 20941,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-80.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-80.html",
+      "blob": "e851f83e17a2aeab30d20fc8ef23a3496882a13e",
+      "bytes": 21923,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-81.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-81.html",
+      "blob": "5d44dc10bfdcdbf213cec1725a803d69a20e00b1",
+      "bytes": 21233,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-82.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-82.html",
+      "blob": "aa78c4d611635b162caeeec21d67fb8fd76a56e0",
+      "bytes": 20948,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-84.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-84.html",
+      "blob": "5e5bd6b275511a7188b1fdfbad7d84464091ac65",
+      "bytes": 20489,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-85.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-85.html",
+      "blob": "2162568d2606271585ea4a0e6e1ad1b9d63c8479",
+      "bytes": 20678,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-86.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-86.html",
+      "blob": "a8da478782b19fedd7c90af25c8edb3b65d91b3f",
+      "bytes": 20301,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-87.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-87.html",
+      "blob": "f900b4a4fe326190958ee6ef475e42e724a614dc",
+      "bytes": 21512,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-91.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-91.html",
+      "blob": "d67d54d750345bf7f03e45335593038a4b5931e5",
+      "bytes": 20785,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-93.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-93.html",
+      "blob": "26aa7901e6a980b0a4673c9cc50343837e545bfd",
+      "bytes": 20381,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-94.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-94.html",
+      "blob": "fbb37e92e532aa4f1c330fb1338e3554358b51b7",
+      "bytes": 20605,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-96.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-96.html",
+      "blob": "7bcc1b47b59c27f78bea20244a9fdd21e2fc2608",
+      "bytes": 20296,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-97.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-97.html",
+      "blob": "0f8a740a25a7ea6a862428a72c0ddfe0a209eddb",
+      "bytes": 20681,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-8-98.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-8-98.html",
+      "blob": "637681a2482089c0ab1bcc983ba05aaeceefa10b",
+      "bytes": 22555,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-100.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-100.html",
+      "blob": "797d3d2de3eccb4facae251ecf7d4c4524a31259",
+      "bytes": 21066,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-103.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-103.html",
+      "blob": "e152058b931adc37f2003fbc1a7207460d5a4d67",
+      "bytes": 21230,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-106.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-106.html",
+      "blob": "7b728ba481a105604a19b08e0a9b7d21f2b5b362",
+      "bytes": 20522,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-107.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-107.html",
+      "blob": "b20b5d68b8f3e77c40cdadab3efb5ffe17cab67d",
+      "bytes": 27693,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-108.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-108.html",
+      "blob": "fbc7d31cf02778ea557e624ddca5cdb598ed006a",
+      "bytes": 21109,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-110.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-110.html",
+      "blob": "0502be5a19a465cb3c214529b766c53fa605159b",
+      "bytes": 20257,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-111.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-111.html",
+      "blob": "a320c0ce2c63291d3a24fe0398682e259a81ed7e",
+      "bytes": 20515,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-112.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-112.html",
+      "blob": "6527ab72281e9f24edd63f2e5f5ba02ada5ea85b",
+      "bytes": 21394,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-113.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-113.html",
+      "blob": "eda1512b86ac996c29d12eedc13ff79f874aa011",
+      "bytes": 21168,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-114.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-114.html",
+      "blob": "7f7a0ddd77b0b337a6b969aa70756c8523fab62f",
+      "bytes": 21009,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-116.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-116.html",
+      "blob": "488141bd2ee8eeeaeead9cbb8b464feca4aa2ee6",
+      "bytes": 21640,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-119.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-119.html",
+      "blob": "1fa9a1a8d6923e81061ffb2b6593cd9333ae9fa4",
+      "bytes": 20704,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-120.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-120.html",
+      "blob": "3d78a4ad01190b0f5f99c41fdafe523613fbc1e9",
+      "bytes": 20849,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-121.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-121.html",
+      "blob": "b4acfeb6699463413c8ed7e9df0e6b988e0bec5d",
+      "bytes": 20824,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-123.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-123.html",
+      "blob": "5d0ff089656f6aa43458905df943bd8d240c39fb",
+      "bytes": 20960,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-125.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-125.html",
+      "blob": "910b14e2306844f3a0fd439bbaf88d25fbbc68f9",
+      "bytes": 20825,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-126.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-126.html",
+      "blob": "6813ca5aed50ad11df3bd8329a6361df4b46b51f",
+      "bytes": 20831,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-127.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-127.html",
+      "blob": "41a4b1f5ad32657960b5949b6bfdc21859ed6aed",
+      "bytes": 21560,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-128.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-128.html",
+      "blob": "ccae40a3dc9cc7f1441e480df0586c6cc6b82854",
+      "bytes": 20255,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-129.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-129.html",
+      "blob": "defb2756515b499059e0096eef60572aa5848b12",
+      "bytes": 20716,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-130.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-130.html",
+      "blob": "07115ef1478f42a73c055cea98d239a883a8c276",
+      "bytes": 20644,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-131.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-131.html",
+      "blob": "924010b3a3bad2f20d898eb190311e4fcb583052",
+      "bytes": 22176,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-132.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-132.html",
+      "blob": "4b71431eaf11b99d7b2d0ffff23d35cc5096de2f",
+      "bytes": 21450,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-134.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-134.html",
+      "blob": "1fb2940aa472468dac0c3f0d66fca7c3af577a45",
+      "bytes": 21301,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-135.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-135.html",
+      "blob": "3e07f7a661321321ea6e641d2c50d12861002f19",
+      "bytes": 20955,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/atlas/pogorelov-base-9-136.html",
+      "path": "geometry-pogorelov/atlas/pogorelov-base-9-136.html",
+      "blob": "9559c42c30e842ad0f11dc0a36922b75bace4468",
+      "bytes": 20861,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/geometry-pogorelov/textbook/",
+      "path": "geometry-pogorelov/textbook/index.html",
+      "blob": "75b9abbc0c05abb8ea9cd441ae74c32ab6eed1f4",
+      "bytes": 2101,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/grade7/",
+      "path": "grade7/index.html",
+      "blob": "d3f593a2938b8f9761d0418e09e79663b574695c",
+      "bytes": 20496,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/grade7/geometry-rebuild/",
+      "path": "grade7/geometry-rebuild/index.html",
+      "blob": "03905440c14ef32155778e26ded2c52ed1596623",
+      "bytes": 9034,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/laboratory/",
+      "path": "laboratory/index.html",
+      "blob": "cf7b942c4c07c47560e37cc840227c507dc6c1ee",
+      "bytes": 17024,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/lessons/",
+      "path": "lessons/index.html",
+      "blob": "3432f8fc7b6ca81f24fa08d9cb250aff4e2297d8",
+      "bytes": 30854,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/oge/",
+      "path": "oge/index.html",
+      "blob": "26c93414e2653ce95ef3477a76157a975f968a5c",
+      "bytes": 65032,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/oge/geometry/task-15-external-angle.html",
+      "path": "oge/geometry/task-15-external-angle.html",
+      "blob": "748be71e27e3943b777e997e228881a73a827146",
+      "bytes": 8563,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/oge/skills/",
+      "path": "oge/skills/index.html",
+      "blob": "e4663e7fbd7775ca5184a70ebfae59c5d00166ff",
+      "bytes": 747131,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/oge/variants/2027/",
+      "path": "oge/variants/2027/index.html",
+      "blob": "0e4079854730b2ecab5d8356db78aa30d1f070f7",
+      "bytes": 86808,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/okruglenie-trener.html",
+      "path": "okruglenie-trener.html",
+      "blob": "3280594174eee7810b8359df4cb1233255c42e98",
+      "bytes": 19661,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/",
+      "path": "pedagogam/index.html",
+      "blob": "4f74244dcfff1054d640caadd8b18c283e0eb694",
+      "bytes": 25253,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/kak-skachat-i-adaptirovat-trenazher/",
+      "path": "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
+      "blob": "cde5a2f5cd8d4873838c72241edfb8295bc4604a",
+      "bytes": 19446,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/materialy/diagnostika-vychisleniy/",
+      "path": "pedagogam/materialy/diagnostika-vychisleniy/index.html",
+      "blob": "eb08847333b631233930ab9c4804ef61288b45ae",
+      "bytes": 12500,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/materialy/lineynye-uravneniya/",
+      "path": "pedagogam/materialy/lineynye-uravneniya/index.html",
+      "blob": "8426fa0edf823969f1e49d5eaa407fd9bb98318c",
+      "bytes": 11835,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/materialy/obyknovennye-drobi/",
+      "path": "pedagogam/materialy/obyknovennye-drobi/index.html",
+      "blob": "042d02e02b0094faea703cde129985811cc63148",
+      "bytes": 12567,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/materialy/procenty/",
+      "path": "pedagogam/materialy/procenty/index.html",
+      "blob": "b0c901dc6e778fabf179d3e5ba769dcaaaa53c52",
+      "bytes": 12197,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/materialy/ravenstvo-treugolnikov/",
+      "path": "pedagogam/materialy/ravenstvo-treugolnikov/index.html",
+      "blob": "97533599bd5776052abd5c2e5006b5cf6e2c9d36",
+      "bytes": 19006,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/",
+      "path": "pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/index.html",
+      "blob": "11bd0ef77e0f1964059dd542cb3bea956b8467fb",
+      "bytes": 24155,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/",
+      "path": "pedagogam/raboty/index.html",
+      "blob": "036ec79bc83d8561f9c9ec3420697acea6963d12",
+      "bytes": 1708336,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/alg-arithmetic-progression/",
+      "path": "pedagogam/raboty/alg-arithmetic-progression/index.html",
+      "blob": "21af728fa6b749f8538f3fccbcbf17ebc8f36497",
+      "bytes": 61130,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/alg-derivatives/",
+      "path": "pedagogam/raboty/alg-derivatives/index.html",
+      "blob": "6b1628ab0840976075ac25dadf51637c7dda5536",
+      "bytes": 67991,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/alg-linear/",
+      "path": "pedagogam/raboty/alg-linear/index.html",
+      "blob": "58969fa0fc0815368314d3465c71630dae397ccd",
+      "bytes": 62918,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/alg-quadratics/",
+      "path": "pedagogam/raboty/alg-quadratics/index.html",
+      "blob": "73d135a5b32098da4ac62e26b657fff5453d4fc0",
+      "bytes": 65612,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/alg-roots/",
+      "path": "pedagogam/raboty/alg-roots/index.html",
+      "blob": "77eb3f835f4d3bfdb659f6a9101bb26083e22c0e",
+      "bytes": 69490,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/alg-trig-equations/",
+      "path": "pedagogam/raboty/alg-trig-equations/index.html",
+      "blob": "94f1d202eb7fb216596c96fcdc760089196e0fc0",
+      "bytes": 70165,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/arith-decimals/",
+      "path": "pedagogam/raboty/arith-decimals/index.html",
+      "blob": "b9eb9c225f18a0916923dc04239ffba232f3684c",
+      "bytes": 43333,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/arith-fraction-add-subtract/",
+      "path": "pedagogam/raboty/arith-fraction-add-subtract/index.html",
+      "blob": "2eea066b7899ce8bb7d83b2b4aef2d337558d90b",
+      "bytes": 48671,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/arith-gcd-lcm/",
+      "path": "pedagogam/raboty/arith-gcd-lcm/index.html",
+      "blob": "e521c28fe307356f9f8d6d5995184248e815b2bc",
+      "bytes": 45360,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/geo-ravenstvo-treugolnikov/",
+      "path": "pedagogam/raboty/geo-ravenstvo-treugolnikov/index.html",
+      "blob": "af46dffdcaf7affad4504024af9c9210950ccd30",
+      "bytes": 44891,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/pedagogam/raboty/istochniki.html",
+      "path": "pedagogam/raboty/istochniki.html",
+      "blob": "d7da58d979d91cef8e3ca848b239346eb1d585fe",
+      "bytes": 39938,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/rounding-fresh-v8.html",
+      "path": "rounding-fresh-v8.html",
+      "blob": "b1aa9d7546a33326f02f2f2116f125e42c98e6de",
+      "bytes": 39740,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/rounding.html",
+      "path": "rounding.html",
+      "blob": "9b950d156d731a601f5eb6aea2ce90c963b41414",
+      "bytes": 36455,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/alimov10-11/",
+      "path": "school/alimov10-11/index.html",
+      "blob": "e84802ff851d4f50f460a675e9176c86666095bc",
+      "bytes": 2722,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/m9-exercises/",
+      "path": "school/m9-exercises/index.html",
+      "blob": "6967f4229a9b7d83bc2ce91182d6896a23aca421",
+      "bytes": 1949,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/makarychev7/",
+      "path": "school/makarychev7/index.html",
+      "blob": "33aeb23db30139f5025077a54ec91a131db6dd24",
+      "bytes": 3270,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/makarychev8/",
+      "path": "school/makarychev8/index.html",
+      "blob": "6459d3cd8ffb008b2915a9f99142f6f72a16da79",
+      "bytes": 13115,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/makarychev8/topics/diskriminant-korni/",
+      "path": "school/makarychev8/topics/diskriminant-korni/index.html",
+      "blob": "7ce4c38b8dd0e92254e8dccbe03bbd2829c0e109",
+      "bytes": 7643,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/makarychev8/topics/koren-iz-kvadrata/",
+      "path": "school/makarychev8/topics/koren-iz-kvadrata/index.html",
+      "blob": "340d2e0768e30d0e41809659e3f9a952c7453a15",
+      "bytes": 7004,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/makarychev8/topics/sokrashchenie-drobei-odz/",
+      "path": "school/makarychev8/topics/sokrashchenie-drobei-odz/index.html",
+      "blob": "723bc3a72b8d2ea1fbfae9bd8f8ef947dd543c67",
+      "bytes": 8001,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/nikolsky10/",
+      "path": "school/nikolsky10/index.html",
+      "blob": "c6ebd87014bf521460f95d9b5487f6363af29bf9",
+      "bytes": 2154,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/peterson5/",
+      "path": "school/peterson5/index.html",
+      "blob": "af3206e1e73129d9e569631465cfb6bb6999c1fe",
+      "bytes": 14523,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/peterson6/",
+      "path": "school/peterson6/index.html",
+      "blob": "a041b5a855a0a30885fe378e152c06a1853ed9ba",
+      "bytes": 13098,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/peterson6/textbook/",
+      "path": "school/peterson6/textbook/index.html",
+      "blob": "25a5338ae0934c98216667d5c610fa0bb281289a",
+      "bytes": 2551,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/peterson6/topics/droby-i-desyatichnye/",
+      "path": "school/peterson6/topics/droby-i-desyatichnye/index.html",
+      "blob": "6f4207c15e02e504d3812584da633d80033085a6",
+      "bytes": 8887,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/peterson6/topics/dvizhenie-po-reke/",
+      "path": "school/peterson6/topics/dvizhenie-po-reke/index.html",
+      "blob": "1b4b7e41844dbb08004a9fdfaf00837630b218ba",
+      "bytes": 7503,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/school/peterson6/topics/zadachi-na-procenty/",
+      "path": "school/peterson6/topics/zadachi-na-procenty/index.html",
+      "blob": "724b5c989f2dc6367d9a4e701392113332b80f2c",
+      "bytes": 7103,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/soviet-math/",
+      "path": "soviet-math/index.html",
+      "blob": "3d1bf5c53ff5f6c773c57ded70919dbf76d76271",
+      "bytes": 11350,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/stereo-course/",
+      "path": "stereo-course/index.html",
+      "blob": "492fe3c6f82485bb92164d076fdcc684cce9a347",
+      "bytes": 692200,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/stereo-course/literacy/",
+      "path": "stereo-course/literacy/index.html",
+      "blob": "17e924c91f215dc20952209a017d0d5a811b9af0",
+      "bytes": 1977,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/stereo-course/merzlyak-10-base/",
+      "path": "stereo-course/merzlyak-10-base/index.html",
+      "blob": "7a8339b4a2e372978d8ffe1994bc6c90aca5fbd4",
+      "bytes": 2541,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/stereo-course/sections/",
+      "path": "stereo-course/sections/index.html",
+      "blob": "c525131ebbe8ccf19dc7a4d8041da42bb6175b8f",
+      "bytes": 4534,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/stereo-course/textbook/",
+      "path": "stereo-course/textbook/index.html",
+      "blob": "12f447e5623d8fbb9f63baef52939f5b599b5d9e",
+      "bytes": 2129,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/topics/",
+      "path": "topics/index.html",
+      "blob": "7976d5f65a7b0540a75abae997697dd5ecf68668",
+      "bytes": 11235,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/topics/delenie-ugolkom/",
+      "path": "topics/delenie-ugolkom/index.html",
+      "blob": "976f60d0854f270f136170f7911d30fcbf8ff596",
+      "bytes": 18684,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/topics/lineynye-uravneniya/",
+      "path": "topics/lineynye-uravneniya/index.html",
+      "blob": "4823f9f98d787bdd4042cef04f933912f1dc70e5",
+      "bytes": 14819,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/topics/metod-arzhenikova/",
+      "path": "topics/metod-arzhenikova/index.html",
+      "blob": "70a84aac659662b576a18e9c66cd5f3f86f80b27",
+      "bytes": 35340,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/topics/obyknovennye-drobi/",
+      "path": "topics/obyknovennye-drobi/index.html",
+      "blob": "0d7475f1a28ece27af331e06760c38ec6ad979f6",
+      "bytes": 17105,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/topics/oge-geometriya/",
+      "path": "topics/oge-geometriya/index.html",
+      "blob": "342acd93ad6f04c8db6401b816ec313161c70cdd",
+      "bytes": 16929,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/topics/procenty/",
+      "path": "topics/procenty/index.html",
+      "blob": "3dc3314ac0f177e45b056c45868aedaade2e8f95",
+      "bytes": 17131,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/",
+      "path": "trainers/index.html",
+      "blob": "5f228570fecc32828e184c1e20b3d3e47183826d",
+      "bytes": 97967,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/algebra-7/control-work.html",
+      "path": "trainers/algebra-7/control-work.html",
+      "blob": "93d8af2ec570ca07b53c0597e8339bca8dc6587f",
+      "bytes": 170208,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/arifmetika.html",
+      "path": "trainers/arifmetika.html",
+      "blob": "77c5e2f21e1d0b3e3e78e85bb9cd41a8ff35eadf",
+      "bytes": 127493,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/attestaciya-1-kurs.html",
+      "path": "trainers/attestaciya-1-kurs.html",
+      "blob": "367efd4b1c4718520908e821bb288a33c19c4c49",
+      "bytes": 281302,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/college-functions/",
+      "path": "trainers/college-functions/index.html",
+      "blob": "2f1e557e7018eb10b91977fedb1dda6f0dc55fe4",
+      "bytes": 7961,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/college-logarithms/",
+      "path": "trainers/college-logarithms/index.html",
+      "blob": "cddb49d65ac2bb8e874bd8973e943db701735ae3",
+      "bytes": 5955,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/college-logarithms/intro/",
+      "path": "trainers/college-logarithms/intro/index.html",
+      "blob": "62ba5e01bc08a2c7d95baeb394adf68d5acdfb69",
+      "bytes": 4085,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/college-stereometry/",
+      "path": "trainers/college-stereometry/index.html",
+      "blob": "f467fe79df2476baf273482c2ac78a8b1e0c0bb5",
+      "bytes": 5318,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/college-stereometry/lessons/",
+      "path": "trainers/college-stereometry/lessons/index.html",
+      "blob": "b0be12d2316e80b0cf56753c2721c202bef36236",
+      "bytes": 595209,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/college-stereometry/polyhedra-sections/",
+      "path": "trainers/college-stereometry/polyhedra-sections/index.html",
+      "blob": "cefc99c94ecadaf865875b7cab25b594b1d38344",
+      "bytes": 99280,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/college-stereometry/pyramids/",
+      "path": "trainers/college-stereometry/pyramids/index.html",
+      "blob": "314edfcc090c33772ab7f00a9317a9866b106664",
+      "bytes": 11204,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/credit-differential-payment-trainer.html",
+      "path": "trainers/credit-differential-payment-trainer.html",
+      "blob": "18393620a7a0f1f346e7e5cec0086f6027d01cec",
+      "bytes": 59219,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/decimal-cash-trainer.html",
+      "path": "trainers/decimal-cash-trainer.html",
+      "blob": "def022b48d9422cd6eaa1a82d896aa306b5f559d",
+      "bytes": 13157,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/desyatichnye-drobi-level-1.html",
+      "path": "trainers/desyatichnye-drobi-level-1.html",
+      "blob": "a326ff39b79e089d8d7f0a8053963f946c673303",
+      "bytes": 14114,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/drobi-oge-trainer.html",
+      "path": "trainers/drobi-oge-trainer.html",
+      "blob": "178cf8724d0933a6f72fffdb6ab7748e322f39b4",
+      "bytes": 186945,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/dvi/math-18-20-video-studio.html",
+      "path": "trainers/dvi/math-18-20-video-studio.html",
+      "blob": "1cfb7d35acdda849d78aa93c2bd4c6d5cb17476c",
+      "bytes": 127949,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/dvi/math-18-20.html",
+      "path": "trainers/dvi/math-18-20.html",
+      "blob": "02f705a3f2f8fe770190f63a841693777420a885",
+      "bytes": 109930,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-baza/course/",
+      "path": "trainers/ege-baza/course/index.html",
+      "blob": "1bea23d17d7da77cd0777b9b7ddc333076ee1eac",
+      "bytes": 65774,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-baza/data-course/",
+      "path": "trainers/ege-baza/data-course/index.html",
+      "blob": "0669cda5dd7a506e45a73d4b34b4ad02c0030d92",
+      "bytes": 44050,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-informatics-task1-graphs-trainer.html",
+      "path": "trainers/ege-informatics-task1-graphs-trainer.html",
+      "blob": "383ab05df0a83dd2608447a156435d497f8ead7c",
+      "bytes": 1789012,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-informatics-task15-logic-operations.html",
+      "path": "trainers/ege-informatics-task15-logic-operations.html",
+      "blob": "d366f3d68e0182e2f71453c6c9ebb47d2aab493f",
+      "bytes": 158861,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-methods.html",
+      "path": "trainers/ege-methods.html",
+      "blob": "f16183235680a82c2c7db6930b851b6bbac63175",
+      "bytes": 5151,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-profile-vectors-trainer.html",
+      "path": "trainers/ege-profile-vectors-trainer.html",
+      "blob": "8209a275c92d5bb9804ff39438a7791952c44b57",
+      "bytes": 122243,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-profile/inequalities/",
+      "path": "trainers/ege-profile/inequalities/index.html",
+      "blob": "5c6c8b85f6c314e7a21cb6ab52c40ecbe9a22da4",
+      "bytes": 4038,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-profile/inequalities/lesson.html",
+      "path": "trainers/ege-profile/inequalities/lesson.html",
+      "blob": "42d0f54efd4f094b920d2640f1efde98690d1d6d",
+      "bytes": 6130,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-profile/log-inequalities/",
+      "path": "trainers/ege-profile/log-inequalities/index.html",
+      "blob": "59ff79c6c1476f230e9d1c9f8fc228e82ce41b23",
+      "bytes": 11488,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-profile/log-inequalities/lesson.html",
+      "path": "trainers/ege-profile/log-inequalities/lesson.html",
+      "blob": "7e219fff6a0a3303b98a60507e721e4e0921cf14",
+      "bytes": 8592,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-profile/log-inequalities/nested.html",
+      "path": "trainers/ege-profile/log-inequalities/nested.html",
+      "blob": "3af5ab1bbe65b56980873db9fc971faa627bee46",
+      "bytes": 8661,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-profile/yashchenko-lines-1-2.html",
+      "path": "trainers/ege-profile/yashchenko-lines-1-2.html",
+      "blob": "0516a3bee7537d87b147726ed1417b5cac414c39",
+      "bytes": 379889,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/ege-t1-planimetry-generator.html",
+      "path": "trainers/ege-t1-planimetry-generator.html",
+      "blob": "e62cff867fd0e39d5223fcc73e5d14d20e0724ab",
+      "bytes": 76468,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/equations-builder.html",
+      "path": "trainers/equations-builder.html",
+      "blob": "40515897fb9c022a460eb8a67d8857dbaac3e104",
+      "bytes": 18412,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/finance-nonstandard-trainer.html",
+      "path": "trainers/finance-nonstandard-trainer.html",
+      "blob": "fef997c4c0c630f3ceeed9683965f575b7ab6ccf",
+      "bytes": 124821,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/formuly-sokrashchennogo-umnozheniya-trainer.html",
+      "path": "trainers/formuly-sokrashchennogo-umnozheniya-trainer.html",
+      "blob": "81a4fa685df23c8cb73f014434c7b691c3e438a0",
+      "bytes": 63679,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/formuly-sokrashchennogo-umnozheniya.html",
+      "path": "trainers/formuly-sokrashchennogo-umnozheniya.html",
+      "blob": "c6481d7f030755d08ad3a26b2682697c0285d73d",
+      "bytes": 119035,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/geometry-7/control-work.html",
+      "path": "trainers/geometry-7/control-work.html",
+      "blob": "9a729d25e147170492538cda74eadf554d15a3cd",
+      "bytes": 98100,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/grade6-nod.html",
+      "path": "trainers/grade6-nod.html",
+      "blob": "bc7801265754965e090ec8cb4ec0dce2dbb267fa",
+      "bytes": 2632,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/grade6-nok.html",
+      "path": "trainers/grade6-nok.html",
+      "blob": "c2e6df6269e87175ba69c410c8556d188220c007",
+      "bytes": 2636,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/inequalities-number-line-reader.html",
+      "path": "trainers/inequalities-number-line-reader.html",
+      "blob": "3beb500d6eca604a3a1e9c382f9c721b437b332b",
+      "bytes": 23693,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/inequalities-number-line.html",
+      "path": "trainers/inequalities-number-line.html",
+      "blob": "0cbc8573003eac25db7a3c2057a7416001c909cd",
+      "bytes": 11696,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/like-terms-factory.html",
+      "path": "trainers/like-terms-factory.html",
+      "blob": "d20d5bc5fc48badd5e3fcf8720b4e7269b702099",
+      "bytes": 18159,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/like-terms-lab.html",
+      "path": "trainers/like-terms-lab.html",
+      "blob": "721f18ab9a83434a461af79f9e9e047a319f4b97",
+      "bytes": 18520,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/like-terms-trainer.html",
+      "path": "trainers/like-terms-trainer.html",
+      "blob": "36a3c9610c4da9a941144c4e5cce1aadebe4d026",
+      "bytes": 78844,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/linear-inequalities-basic.html",
+      "path": "trainers/linear-inequalities-basic.html",
+      "blob": "189fe24ee7ab88ba8b7c0945187b449c387b54a0",
+      "bytes": 18262,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/linear-inequalities-stepwise.html",
+      "path": "trainers/linear-inequalities-stepwise.html",
+      "blob": "80ed5088ad3caee6803210b81b61dabd580dbea5",
+      "bytes": 12550,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/linear-systems-trainer.html",
+      "path": "trainers/linear-systems-trainer.html",
+      "blob": "25353d4f2a075959b1b66ed12a595e5ea2605407",
+      "bytes": 21426,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/long-division-claude.html",
+      "path": "trainers/long-division-claude.html",
+      "blob": "99eb91f11f1d1dafe4c2f4f69628e107fcd6e6b1",
+      "bytes": 75512,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/long-division-stepwise.html",
+      "path": "trainers/long-division-stepwise.html",
+      "blob": "57b651c242252d34202435f2350d127fee31ef1e",
+      "bytes": 11985,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/makarychev9-2017/",
+      "path": "trainers/makarychev9-2017/index.html",
+      "blob": "7c968f01047563d6fba813af969b39896efe02d4",
+      "bytes": 2493,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/merzlyak9-2014/",
+      "path": "trainers/merzlyak9-2014/index.html",
+      "blob": "bb112d727a1b5ef3820727692637a8e8998c44e2",
+      "bytes": 2262,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/motion-grade6/",
+      "path": "trainers/motion-grade6/index.html",
+      "blob": "0b62d6bcf306593bcac2d8149fadd9483f5291f9",
+      "bytes": 1887,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/motion-grade6/river-lab.html",
+      "path": "trainers/motion-grade6/river-lab.html",
+      "blob": "1c0daf537313c60f00574c6483a6e9bb71e0155f",
+      "bytes": 44298,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/negative-numbers-line.html",
+      "path": "trainers/negative-numbers-line.html",
+      "blob": "19e3fe2fe4522abcd8c47e2e6f7d9450f8946a9c",
+      "bytes": 22505,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/negative-numbers.html",
+      "path": "trainers/negative-numbers.html",
+      "blob": "3c49e1fde1a0f2ddc21e53b0757391e245d48a95",
+      "bytes": 28394,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "path": "trainers/oge-1-5-trainers/percent-table-trainer.html",
+      "blob": "c1c708092ca4cc3c02ed1a29c8e79320784f0028",
+      "bytes": 132922,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+      "blob": "21866bf4b57efc820706186dc622843e643d11af",
+      "bytes": 67187,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "blob": "9e44b08ef147d5ec634076a5a62dfe8acfe8f17e",
+      "bytes": 69851,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-land-plots.html",
+      "blob": "3918fe635afc537dea57224956aa64a53079a3eb",
+      "bytes": 34820,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "blob": "32f055597bdd29ecbc7d4f1b2d3286b574dace67",
+      "bytes": 29715,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html",
+      "blob": "aa76ee03911efa79b10a08e8dc021240de099ded",
+      "bytes": 65862,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+      "blob": "99897248c73dc33ecbfa184ad67600308f47883e",
+      "bytes": 40345,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "blob": "e99bbae97627dc1968d51e814fd6645f91cc4594",
+      "bytes": 108100,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-roads-schema.html",
+      "blob": "fac74cfda3140f31be5523baf76738ac49d0b7bd",
+      "bytes": 62786,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html",
+      "blob": "05483f9644d1e9ae5e85edcab1bc7f2d48331439",
+      "bytes": 39050,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-stoves.html",
+      "blob": "040daea1635c9f49721603630dbedf56eba5462b",
+      "bytes": 83834,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-tariffs.html",
+      "blob": "03bef4c1841105984da1b737e851d21c9ab09561",
+      "bytes": 33634,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "path": "trainers/oge-1-5-trainers/practice-1-5-tires.html",
+      "blob": "53c7488481b8792e07d7a9613ecd7602d87cb7ca",
+      "bytes": 165293,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-2027-analogue-1.html",
+      "path": "trainers/oge-2027-analogue-1.html",
+      "blob": "191aad3e229b967d6503cf67fc09d7d2aad1c277",
+      "bytes": 75620,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/",
+      "path": "trainers/oge-basics/index.html",
+      "blob": "fc7290d489ae6cca6fa85fb2ff5b873d43534189",
+      "bytes": 34486,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/arithmetic-route.html",
+      "path": "trainers/oge-basics/arithmetic-route.html",
+      "blob": "f7681f48fc5e2985b2866a6f025366cdd73b6dec",
+      "bytes": 8693,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/decimal-add-subtract.html",
+      "path": "trainers/oge-basics/decimal-add-subtract.html",
+      "blob": "b5ea5498e4781d1fb14211682e6614a1143a5da6",
+      "bytes": 47864,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/fraction-common-denominator.html",
+      "path": "trainers/oge-basics/fraction-common-denominator.html",
+      "blob": "2b1289ff7d10192c8b6c962f67c70bb95572b8c0",
+      "bytes": 56322,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/fraction-meaning.html",
+      "path": "trainers/oge-basics/fraction-meaning.html",
+      "blob": "4f08160481a8e590067459008aa29f38e4d2b2f6",
+      "bytes": 55967,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division.html",
+      "path": "trainers/oge-basics/multiplication-division.html",
+      "blob": "28b58881f976bf502f88ed7072f1b8008ae56350",
+      "bytes": 48117,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/",
+      "path": "trainers/oge-basics/multiplication-division/index.html",
+      "blob": "c3e58a8178c12bac88081a90e426b1da65f3b360",
+      "bytes": 17382,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/arithmetic-foundations.html",
+      "path": "trainers/oge-basics/multiplication-division/arithmetic-foundations.html",
+      "blob": "653e74e60c2aef66136c197d28c947e3b109d721",
+      "bytes": 1976,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/arzhenikov-map.html",
+      "path": "trainers/oge-basics/multiplication-division/arzhenikov-map.html",
+      "blob": "f8411d01382d93e8a538829cd12e72354291f9fa",
+      "bytes": 37142,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "blob": "8610d551ed169eabf51a91f89a290ad8be056ecf",
+      "bytes": 46492,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "blob": "6c4cf9fc976361410a6e0ab4281f6c5c254a1527",
+      "bytes": 45905,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-append-zeros.html",
+      "path": "trainers/oge-basics/multiplication-division/course-append-zeros.html",
+      "blob": "a1441c52f44a80a2c039457a25c792d989db5b19",
+      "bytes": 3514,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-bring-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/course-bring-digit.html",
+      "blob": "efa30049332d35a4755700cc089ee19e16fd9c19",
+      "bytes": 3538,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-four-by-one.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-four-by-one.html",
+      "blob": "f5ac3b87d58631fdbb1e95d1aef6e3ac8219f41d",
+      "bytes": 3478,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-mixed.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-mixed.html",
+      "blob": "4fe56efcbabab0c27f4123b3866af0681fd89ec8",
+      "bytes": 3549,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-one-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-one-digit.html",
+      "blob": "ccfdedc10f496e09f0329b42deb5f06bb41605ba",
+      "bytes": 3468,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-three-by-one.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-three-by-one.html",
+      "blob": "86ecd418b176d04a18567fcec3ad718e812234b7",
+      "bytes": 3466,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-three-by-three.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-three-by-three.html",
+      "blob": "b6637ebddff32014e2323caaa0e535ee2fdb3d56",
+      "bytes": 3471,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-three-by-two.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-three-by-two.html",
+      "blob": "5c850531f74a2bc10e15b838d32a028f1fc8148f",
+      "bytes": 3465,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-two-by-three.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-two-by-three.html",
+      "blob": "e5b4440d8e90a9c578577de583645c032d527c4f",
+      "bytes": 3465,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-two-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-two-digit.html",
+      "blob": "9dff11444c40213d1ec7e520ed287c5d6098facc",
+      "bytes": 3468,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-zeros.html",
+      "path": "trainers/oge-basics/multiplication-division/course-column-zeros.html",
+      "blob": "97102c7be0ab2915560b6a7c8774abb50cebd34a",
+      "bytes": 3493,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-decimal-divisor.html",
+      "path": "trainers/oge-basics/multiplication-division/course-decimal-divisor.html",
+      "blob": "cd04b2f352b842dea6babecbabda17ded6326f83",
+      "bytes": 3569,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-decimal-natural.html",
+      "path": "trainers/oge-basics/multiplication-division/course-decimal-natural.html",
+      "blob": "33fdcb51b17d42d4480e08d5a26f9e54a11770e9",
+      "bytes": 3523,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-digit-choice.html",
+      "path": "trainers/oge-basics/multiplication-division/course-digit-choice.html",
+      "blob": "758f0fb976d0f34db826f41bba8df478b8eef23d",
+      "bytes": 3442,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-estimate.html",
+      "path": "trainers/oge-basics/multiplication-division/course-estimate.html",
+      "blob": "d7c142314e0fbebe56bd69189ba26bd9ca9b4e01",
+      "bytes": 4533,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-first-part.html",
+      "path": "trainers/oge-basics/multiplication-division/course-first-part.html",
+      "blob": "e13c7d59447761db8630ef06e7bb37689829e67c",
+      "bytes": 3484,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-independent-check.html",
+      "path": "trainers/oge-basics/multiplication-division/course-independent-check.html",
+      "blob": "08b54a956ee2e4e16d5db9625c252c66acbd3561",
+      "bytes": 3527,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-mixed-guided.html",
+      "path": "trainers/oge-basics/multiplication-division/course-mixed-guided.html",
+      "blob": "b3da18ee2576620f5c6b931da03e893501fcc345",
+      "bytes": 3520,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-multiply-bridge.html",
+      "path": "trainers/oge-basics/multiplication-division/course-multiply-bridge.html",
+      "blob": "a6fa3ad7f945a8efe5e07a013cb9604982ea435b",
+      "bytes": 3491,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-multiply-two-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/course-multiply-two-digit.html",
+      "blob": "f0cae6f2321de997ca7af698411d9d035dce2f73",
+      "bytes": 3473,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-remainder.html",
+      "path": "trainers/oge-basics/multiplication-division/course-remainder.html",
+      "blob": "3148d8c35dece391995f6e26e49d4f53a79c5c29",
+      "bytes": 3517,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-simple-check.html",
+      "path": "trainers/oge-basics/multiplication-division/course-simple-check.html",
+      "blob": "b7282ed1398c0a276daee831fa3073af317d6f41",
+      "bytes": 3547,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-subtract.html",
+      "path": "trainers/oge-basics/multiplication-division/course-subtract.html",
+      "blob": "e412ebf392f5563a9a6c076f905534efbe6ef313",
+      "bytes": 3450,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-whole-simple.html",
+      "path": "trainers/oge-basics/multiplication-division/course-whole-simple.html",
+      "blob": "c4ab663d321bc4ef0889b1d0aafc1ede6be301b9",
+      "bytes": 3555,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-whole-two-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/course-whole-two-digit.html",
+      "blob": "c5d0bd196aa771529206d5447fb393b7f635faa0",
+      "bytes": 3546,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/course-zeros.html",
+      "path": "trainers/oge-basics/multiplication-division/course-zeros.html",
+      "blob": "23d5176938b1773fc72394d2d7673c50a1771549",
+      "bytes": 3461,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "path": "trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "blob": "800ce10c9890657cf98d87479d183106787b1910",
+      "bytes": 47392,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "path": "trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "blob": "554e4a3be68eef7516045b260cc6b44ddfea8793",
+      "bytes": 52471,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "path": "trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "blob": "26c1aee2151c877c8b3157d9b01137eb79b0fea1",
+      "bytes": 47451,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-checkpoint.html",
+      "path": "trainers/oge-basics/multiplication-division/division-checkpoint.html",
+      "blob": "a1aa447fe5c3dd0927adf88b70dbce932d7be288",
+      "bytes": 5061,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-course.html",
+      "path": "trainers/oge-basics/multiplication-division/division-course.html",
+      "blob": "7eafb1bf0fa9bf47b1be3045d4866cbde3cc38ee",
+      "bytes": 5442,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-lab.html",
+      "path": "trainers/oge-basics/multiplication-division/division-lab.html",
+      "blob": "222774cb049df912b77967457be1f2776914e99e",
+      "bytes": 6358,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-path.html",
+      "path": "trainers/oge-basics/multiplication-division/division-path.html",
+      "blob": "88b033f54aff4af21d256917239a3c89521a02f6",
+      "bytes": 22408,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "path": "trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "blob": "3db34cc4d5c14576c8a5d13080fc10f47972b99b",
+      "bytes": 47163,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "path": "trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "blob": "87fefce50106a87e811f59c34b91636da28e3408",
+      "bytes": 64441,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "blob": "480b449ce6dcbcfaf1b505028e0c4a3d063a7635",
+      "bytes": 47510,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "blob": "e09730a0798455c84fe8134ee7bd7a6f1ca8099c",
+      "bytes": 51938,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "path": "trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "blob": "f217210bd1bca0910c1ccfd4b41065a25986dce1",
+      "bytes": 47424,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "path": "trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "blob": "76396454d0d75a9b043f83450a004d5fa446cfb0",
+      "bytes": 46999,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "path": "trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "blob": "a42399b3df2f931679e53652d1068815c75375a1",
+      "bytes": 47242,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "path": "trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "blob": "9cf7a27c422b905935458d57e15cd14f6fc8f238",
+      "bytes": 45514,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "path": "trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "blob": "7ea91d91a499b36345b4ee0ace575a29bd033c81",
+      "bytes": 49526,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "path": "trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "blob": "fd7139e5ccc5d1af8c6eb3185d29d1edd5d26102",
+      "bytes": 48096,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "path": "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "blob": "9d5bf74a332fd6e7b94645f5a79f41ffc5d43ecb",
+      "bytes": 47406,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "path": "trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "blob": "9e070b64f111549012d50255a451bfa7a432fbe9",
+      "bytes": 46196,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/quotient-estimate.html",
+      "path": "trainers/oge-basics/multiplication-division/quotient-estimate.html",
+      "blob": "75e9ca323ca666b7d003565868b58651e33606f9",
+      "bytes": 4975,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/multiplication-division/tabular-division.html",
+      "path": "trainers/oge-basics/multiplication-division/tabular-division.html",
+      "blob": "7b3cd5fc1ab1951a1f26ffdd2942be72b8e5c820",
+      "bytes": 46213,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/negative-add-subtract.html",
+      "path": "trainers/oge-basics/negative-add-subtract.html",
+      "blob": "44b1a81042778a100c4360676b8c34cee87e7247",
+      "bytes": 47198,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/negative-number-line.html",
+      "path": "trainers/oge-basics/negative-number-line.html",
+      "blob": "ab3c6e8120867683e3543f62d3d4f3a377a36b45",
+      "bytes": 49025,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/order-of-operations.html",
+      "path": "trainers/oge-basics/order-of-operations.html",
+      "blob": "5c62bec264bed9ca6b6f627c26a531400e761257",
+      "bytes": 49066,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/",
+      "path": "trainers/oge-basics/percentages/index.html",
+      "blob": "e1de03c4065c7ccce495b3f462ee6d3707e34777",
+      "bytes": 18856,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-change.html",
+      "path": "trainers/oge-basics/percentages/percent-change.html",
+      "blob": "332d8a6cbfa61f53b72585bd3e7ad19d09976724",
+      "bytes": 46757,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-choose-question.html",
+      "path": "trainers/oge-basics/percentages/percent-choose-question.html",
+      "blob": "a8cf77d20247743fd95d396292ccdb1bde8809e6",
+      "bytes": 48300,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "path": "trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "blob": "3737bcf4d194878c710ffffbbf34cb406fa31835",
+      "bytes": 43410,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-meaning.html",
+      "path": "trainers/oge-basics/percentages/percent-meaning.html",
+      "blob": "bbfdbf15116cc4cf03080c59eafd12298e9d4c99",
+      "bytes": 42395,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "path": "trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "blob": "288a5a7ee25eeebf7303393471e30ee89934e682",
+      "bytes": 41631,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/percentages/proportion.html",
+      "path": "trainers/oge-basics/percentages/proportion.html",
+      "blob": "c00ad666f98101abc329e3363d3c0bea93af65dd",
+      "bytes": 47735,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/rounding.html",
+      "path": "trainers/oge-basics/rounding.html",
+      "blob": "9b12c41536c622acc753df8e59d50aec20ea5516",
+      "bytes": 51111,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/units-area.html",
+      "path": "trainers/oge-basics/units-area.html",
+      "blob": "3b54adf124027a7d4e386ce56299c1bd7158ed6f",
+      "bytes": 48019,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-basics/units-length-time.html",
+      "path": "trainers/oge-basics/units-length-time.html",
+      "blob": "1120577facbe5a4c56179e17db45b0751566196e",
+      "bytes": 47699,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-course/",
+      "path": "trainers/oge-course/index.html",
+      "blob": "8df6274ca9f89f9c622a176d0d1dfa99d5b615c7",
+      "bytes": 58169,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-informatics-1-10-tutor.html",
+      "path": "trainers/oge-informatics-1-10-tutor.html",
+      "blob": "7310de5013651fb97b304f97f9159c00edfbe822",
+      "bytes": 123952,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task10-probability.html",
+      "path": "trainers/oge-task10-probability.html",
+      "blob": "3247797685f43f71f0b6e67f780b1c93367a674d",
+      "bytes": 121229,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task11-graphs-trainer.html",
+      "path": "trainers/oge-task11-graphs-trainer.html",
+      "blob": "43ab30487014294159cd78518fb733cd7290ce15",
+      "bytes": 340645,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task12-formulas-trainer.html",
+      "path": "trainers/oge-task12-formulas-trainer.html",
+      "blob": "254dd980c0c634c0e069db6b345fc13fd5b97d97",
+      "bytes": 163428,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task14-progressions.html",
+      "path": "trainers/oge-task14-progressions.html",
+      "blob": "9ddc6198936f9fb09d66eabcff679806b1c85384",
+      "bytes": 200476,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task15-triangles.html",
+      "path": "trainers/oge-task15-triangles.html",
+      "blob": "8016c6b87e51a00972a14b262c92d24551b0bd3c",
+      "bytes": 232702,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task16-circle.html",
+      "path": "trainers/oge-task16-circle.html",
+      "blob": "47904ba280e478a3e6eefbdb99c31c25dd0f5bd0",
+      "bytes": 173995,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task17-quadrilaterals.html",
+      "path": "trainers/oge-task17-quadrilaterals.html",
+      "blob": "7240f51914afe498ad7e3aba7c40aa8b2596f60b",
+      "bytes": 163386,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task18-grid.html",
+      "path": "trainers/oge-task18-grid.html",
+      "blob": "5e145e8e8fa87ebe783ce503d75877f803bffa2d",
+      "bytes": 124014,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task20-equations.html",
+      "path": "trainers/oge-task20-equations.html",
+      "blob": "7794559859d744f78a450366c5e750312ae637e1",
+      "bytes": 173074,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task21-word-problems.html",
+      "path": "trainers/oge-task21-word-problems.html",
+      "blob": "9ec7b328aba5ceb02aa653de5878c74584baadce",
+      "bytes": 180668,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task22-functions-graphs.html",
+      "path": "trainers/oge-task22-functions-graphs.html",
+      "blob": "2f96730a298b08d0f653ac457c2b71fdc27e55be",
+      "bytes": 107116,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task23-geometry-calculations.html",
+      "path": "trainers/oge-task23-geometry-calculations.html",
+      "blob": "1ce637f9ebfa2f70f90d63d011421d1785888a9d",
+      "bytes": 200567,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task24-proofs.html",
+      "path": "trainers/oge-task24-proofs.html",
+      "blob": "a2b33fec66d3e0b7efb2a9cfa00460bb3b2ad0f9",
+      "bytes": 168742,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task25-geometry.html",
+      "path": "trainers/oge-task25-geometry.html",
+      "blob": "f255d2a61c02b68a6ac9c25f531ce8544cbc8d3b",
+      "bytes": 191676,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task6-fractions.html",
+      "path": "trainers/oge-task6-fractions.html",
+      "blob": "c1bb6b2b36f0d31598402396742dfe981b39164c",
+      "bytes": 153211,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task7-number-line.html",
+      "path": "trainers/oge-task7-number-line.html",
+      "blob": "d9f762565c8f3c231e108bcc3863a3ec85f2300f",
+      "bytes": 221126,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task8-powers-roots.html",
+      "path": "trainers/oge-task8-powers-roots.html",
+      "blob": "493a65895cc058edb9250c3d609ba61b544a5623",
+      "bytes": 145322,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge-task9-equations.html",
+      "path": "trainers/oge-task9-equations.html",
+      "blob": "95f46a00734bd53e4574fb2b90e04137a751acea",
+      "bytes": 289525,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/oge13-inequalities-series.html",
+      "path": "trainers/oge13-inequalities-series.html",
+      "blob": "8f0cc8182ba6b36e6d3a266f528f26bf366a9fb2",
+      "bytes": 93755,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/peterson6-workshop/",
+      "path": "trainers/peterson6-workshop/index.html",
+      "blob": "87ba69092405d91c16590cd57a5881fc4e5bf987",
+      "bytes": 2400,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/pitosha-python-trainer.html",
+      "path": "trainers/pitosha-python-trainer.html",
+      "blob": "1346657a33c5715875a4870d72c8970d21ca0cc4",
+      "bytes": 55209,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/practice-topics/",
+      "path": "trainers/practice-topics/index.html",
+      "blob": "7a5676ef36d6e85176ef58e5d4702da688231d6c",
+      "bytes": 7731,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/quadratic-inequalities-lab.html",
+      "path": "trainers/quadratic-inequalities-lab.html",
+      "blob": "73087e8c4ee46850462c748d26e2cc25364fd784",
+      "bytes": 15091,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/quadratic-inequalities-visual.html",
+      "path": "trainers/quadratic-inequalities-visual.html",
+      "blob": "1dfaf67cabb757e1ec311cd5084c18265e490365",
+      "bytes": 21616,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/recursion_ladder_paths.html",
+      "path": "trainers/recursion_ladder_paths.html",
+      "blob": "a1283077cc6183590457552851afb1b89835c951",
+      "bytes": 47674,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/rounding-stepwise.html",
+      "path": "trainers/rounding-stepwise.html",
+      "blob": "2283b61534f3996d12e0240b64f7d3094179849a",
+      "bytes": 27847,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/school-workshop-check/",
+      "path": "trainers/school-workshop-check/index.html",
+      "blob": "156244b59b7c3aed72a260718713383a5e01a41c",
+      "bytes": 3048,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/simple-equations-stepwise.html",
+      "path": "trainers/simple-equations-stepwise.html",
+      "blob": "1d2d1e9e43567428a9b59b45f7f5ac1dd3c3e72b",
+      "bytes": 47293,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/task14-progressions-trainer.html",
+      "path": "trainers/task14-progressions-trainer.html",
+      "blob": "fddb3f31184f05adbc76bcd2839ac7ebc3488ecf",
+      "bytes": 61689,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/task19-trainer.html",
+      "path": "trainers/task19-trainer.html",
+      "blob": "d74618f31dbbf657b2e602eb8595e63cc95009a3",
+      "bytes": 7322,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/teatr-formul-daily.html",
+      "path": "trainers/teatr-formul-daily.html",
+      "blob": "6e9178ab50f537284230fd4c9cd672bffbb4fcba",
+      "bytes": 72721,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/trenazher-mcko-linejka-progress.html",
+      "path": "trainers/trenazher-mcko-linejka-progress.html",
+      "blob": "942aba6a64957eb27e212bcd1e7a38184e0b4707",
+      "bytes": 175574,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/turing-trainer-modular-v3.html",
+      "path": "trainers/turing-trainer-modular-v3.html",
+      "blob": "dba315a141ff50cffbff5d50cf68e05f9c1306bd",
+      "bytes": 161111,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/turing-trainer-polish.html",
+      "path": "trainers/turing-trainer-polish.html",
+      "blob": "63d2e2acb16d8cf8cd35fc8c6f709f1d8b7629ea",
+      "bytes": 362146,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/turing-trainer-universal.html",
+      "path": "trainers/turing-trainer-universal.html",
+      "blob": "746929f6f98a580f326927b2c86c120e1ff8f00f",
+      "bytes": 341322,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/turing-trainer-upgrade.html",
+      "path": "trainers/turing-trainer-upgrade.html",
+      "blob": "e16d2841eea72af56e5a7db52ec716fbe6487dfb",
+      "bytes": 247576,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/tyurin-statistics/",
+      "path": "trainers/tyurin-statistics/index.html",
+      "blob": "9e494dd746237962e432e424a2badfe77566faa4",
+      "bytes": 2079,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/vilenkin6-percent/",
+      "path": "trainers/vilenkin6-percent/index.html",
+      "blob": "3e1ab9fc36f46ea79f3f6cc61651cfeff0e73c7d",
+      "bytes": 3650,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/vpr-math/",
+      "path": "trainers/vpr-math/index.html",
+      "blob": "c5a4b043e90348b66a9053c7459dc42751388ac5",
+      "bytes": 3736,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/trainers/who-is-stronger.html",
+      "path": "trainers/who-is-stronger.html",
+      "blob": "a3f0486c9f2d9b1d1e5d042898ba9499b7696fd9",
+      "bytes": 32825,
+      "problems": []
+    },
+    {
+      "url": "https://mathexam.space/vpr/",
+      "path": "vpr/index.html",
+      "blob": "4fcaec089915224862f4514819e3a589885653f8",
+      "bytes": 12518,
+      "problems": []
+    }
+  ]
+}
