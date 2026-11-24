@@ -32,6 +32,20 @@ async function run() {
         await page.goto(url);
         const controls=page.locator('#controls button'), writing=page.locator('#writing');
         const title=page.locator('#title'), figure=page.locator('#figure');
+        const firstHistory=page.locator('#first-record'), firstText=page.locator('#first');
+        const inspectFirst=async expected=>{
+          assert.equal(await firstText.textContent(),expected,'Original record is retained in the document');
+          if(!(await firstHistory.evaluate(el=>el.open))) await firstHistory.locator('summary').click();
+          assert(await firstText.isVisible(),'First record must be visible after opening its history');
+          assert.equal(await firstText.innerText(),expected,'Visible first record matches the original');
+          await firstHistory.locator('summary').click();
+          assert.equal(await firstHistory.evaluate(el=>el.open),false,'History can be closed again');
+        };
+        const home=page.locator('a[data-mathexam-home-link]');
+        assert.equal(await home.count(),1);
+        assert.equal(await home.getAttribute('href'),'/');
+        assert.equal(await home.getAttribute('target'),'_self');
+        assert(await home.isVisible());
         const verifyOverflow=async label=>assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), 'Horizontal overflow: '+width+' '+label);
         assert.match(await title.innerText(),/Медиана является высотой/);
         assert.equal(await figure.locator('polyline').count(),1,'Given right angle is marked');
@@ -39,11 +53,15 @@ async function run() {
         await verifyOverflow('initial');
         await writing.fill('AM = MC.');
         await page.locator('#save').click();
-        assert.equal(await page.locator('#first').innerText(),'AM = MC.');
+        await inspectFirst('AM = MC.');
         await writing.fill('AM = MC. BM общая.');
         await controls.nth(0).click();
         assert.match(await page.locator('#notice').innerText(),/Сначала зафиксируй/);
         assert.equal(await page.locator('#help section').count(),0);
+        await page.locator('#next').click();
+        await page.locator('#prev').click();
+        assert.equal(await writing.inputValue(),'AM = MC. BM общая.','Uncommitted draft survives task switching');
+        await inspectFirst('AM = MC.');
         await page.locator('#save').click();
         await controls.nth(0).click();
         assert.equal(await page.locator('#help section').count(),1);
@@ -58,7 +76,7 @@ async function run() {
         for (const b of await controls.all()) assert(await b.isDisabled());
         await page.locator('#prev').click();
         assert.equal(await writing.inputValue(),'Исправлено после вопроса.');
-        assert.equal(await page.locator('#first').innerText(),'AM = MC.');
+        await inspectFirst('AM = MC.');
         assert(await page.locator('#help-checklist input').first().isChecked());
         await verifyOverflow('expanded supports');
         for(const id of ids) {
@@ -69,7 +87,7 @@ async function run() {
         await page.locator('#nav').selectOption('p24-return');
         assert.equal(await figure.locator('polyline').count(),0,'Unproved right angle is not marked');
         await page.locator('#unable').click();
-        assert.equal(await page.locator('#first').innerText(),'Не смог начать');
+        await inspectFirst('Не смог начать');
         await controls.nth(4).click();
         assert.equal(await figure.locator('polyline').count(),1,'Model reveals established right angle');
         await verifyOverflow('established figure');
@@ -82,6 +100,8 @@ async function run() {
         const data=JSON.parse(Buffer.concat(chunks).toString('utf8'));
         assert.equal(data.tasks.length,6);
         assert.equal(data.tasks[0].first.text,'AM = MC.');
+        assert.equal(data.tasks[0].draft,'Исправлено после вопроса.');
+        assert.equal(data.tasks[0].attempts.length,3);
         assert.deepEqual(data.tasks[0].attempts[1].helpBefore,[]);
         assert.deepEqual(data.tasks[0].attempts[2].helpBefore,['hint1']);
         assert.deepEqual(data.tasks[0].checks,[0]);
