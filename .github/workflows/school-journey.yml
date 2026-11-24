@@ -1,0 +1,30 @@
+name: Unified school journey prototype
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'learning/school-journey.js'
+      - 'learning/preparation-map.js'
+      - 'learning/division-course-map.js'
+      - 'assets/school-journey-home.*'
+      - 'tools/school-journey.*'
+      - '.github/workflows/school-journey.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  journey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --test tools/school-journey.test.cjs
+      - run: |
+          npm install --prefix "$RUNNER_TEMP/route-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/route-qa/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/route-qa/node_modules" node tools/school-journey.browser.cjs
