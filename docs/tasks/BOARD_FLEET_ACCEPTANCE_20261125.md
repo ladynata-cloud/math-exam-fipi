@@ -61,3 +61,17 @@ Initial pure planner probes checked independently in the available JS runtime.
 Full Chromium/Node checkout execution is delegated to GitHub CI; its outcome
 is pending at initial commit. The existing #752/#753 branches are not altered
 by this independent PR.
+
+## First full audit: 2026-11-25
+
+Run 45477384515 covered all 74 mirrors; 10 harness unit tests passed, but the
+browser aggregate was 0/74. This is not evidence that all 74 trainers are
+broken: the test incorrectly expected the pupil to retain control after the
+last pupil connection closes, contrary to the server's explicit disconnect
+policy. Correct the test to wait for control return, reconnect as a read-only
+pupil, then hand over control again and verify the actual adapter snapshot.
+Also sample the initial SDK snapshot atomically with the host-accepted state
+instead of demanding an unnecessary second message after hydration. These
+changes preserve the state equality checks and add sanitized phase diagnostics.
+The remaining failures, if any, require individual investigation; a new full
+CI run is required before making a fleet-wide claim.

@@ -90,10 +90,15 @@ async function accepted(page,id,owner){
     {id,owner},{timeout:22000});
 }
 async function wire(page,id,after){
-  await page.waitForFunction(({id,after})=>
-    window.__boardFleetObservation?.count>after&&window.__boardFleetObservation.last?.trainerId===id,
-    {id,after},{timeout:12000});
-  return page.evaluate(()=>window.__boardFleetObservation.last);
+  const observed=await page.waitForFunction(({id,after})=>{
+    const probe=window.__boardFleetObservation;
+    if(!probe||probe.count<=after||probe.last?.trainerId!==id)return false;
+    // Resolve the snapshot atomically with the host's own accepted state.
+    // A previously observed wire event may be superseded during hydration.
+    if(latestTrainerState?.trainerId!==id||JSON.stringify(latestTrainerState.state)!==JSON.stringify(probe.last.state))return false;
+    return probe.last;
+  },{id,after},{timeout:15000});
+  try{return await observed.jsonValue();}finally{await observed.dispose();}
 }
 const counter=page=>page.evaluate(()=>window.__boardFleetObservation?.count||0);
 async function sameAccepted(page,id,state){
@@ -141,10 +146,11 @@ async function probe(browser,site,backend,row){
     await teacher.keyboard.press('Escape');
     await accepted(teacher,row.trainerId,true);
     stage('teacher-state');
-    const before=await counter(teacher);
-    await teacher.evaluate(()=>requestTrainerState());
-    const first=await wire(teacher,row.trainerId,before);validateWire(first,row);
-    await sameAccepted(teacher,row.trainerId,first.state);
+    // Normal hydration already requests the initial state. Do not require an
+    // extra emission after an arbitrary counter sample; observe a genuine
+    // validated SDK message and ask again if one has not arrived.
+    await teacher.evaluate(()=>{if(!window.__boardFleetObservation?.count)requestTrainerState();});
+    const first=await wire(teacher,row.trainerId,0);validateWire(first,row);
     data.stateBytes=Buffer.byteLength(JSON.stringify(first.state),'utf8');
     stage('pupil-entry');
     await student.goto(invitation.href,{waitUntil:'domcontentloaded'});
@@ -161,12 +167,24 @@ async function probe(browser,site,backend,row){
     // A pupil re-serializes actual applied state, not merely the host's receipt.
     assert.deepEqual(second.state,first.state,'pupil adapter reconstructs accepted state');
     await sameAccepted(teacher,row.trainerId,second.state);
-    stage('pupil-reload');
+    stage('pupil-disconnect');
     const beforeReload=await diagnostics(student,row.file);
     if(beforeReload.length)data.pupilDiagnosticsBeforeReload=beforeReload;
+    // The server intentionally returns control to the teacher when the last
+    // pupil socket disconnects. Wait for that policy to complete before reload.
+    await student.evaluate(()=>shared.socket.disconnect());
+    await accepted(teacher,row.trainerId,true);
+    await teacher.waitForFunction(()=>shared.participants.some(p=>p.role==='student'&&p.connected===false&&Number(p.onlineCount||0)===0),null,{timeout:12000});
+    stage('pupil-reload');
     await student.reload({waitUntil:'domcontentloaded'});
-    await accepted(student,row.trainerId,true);await sameAccepted(student,row.trainerId,second.state);
-    const reloadCount=await counter(student);await student.evaluate(()=>requestTrainerState());
+    await accepted(student,row.trainerId,false);await sameAccepted(student,row.trainerId,second.state);
+    assert.equal(await student.locator('#trainerFrame').evaluate(el=>el.inert),true,'returning pupil does not acquire control automatically');
+    await teacher.waitForFunction(()=>shared.participants.some(p=>p.role==='student'&&(p.connected||Number(p.onlineCount)>0)),null,{timeout:12000});
+    stage('pupil-reload-handoff');
+    const reloadCount=await counter(student);
+    await teacher.locator('#boardControlToggle').click();
+    await Promise.all([accepted(student,row.trainerId,true),accepted(teacher,row.trainerId,false)]);
+    await student.evaluate(()=>requestTrainerState());
     const restored=await wire(student,row.trainerId,reloadCount);validateWire(restored,row);
     assert.deepEqual(restored.state,second.state,'reload restores the actual adapter state');
     stage('return-control');
@@ -180,7 +198,7 @@ async function probe(browser,site,backend,row){
   }catch(error){
     data.error=cleanError(error);
     for(const [index,page] of pages.entries()){
-      const info=await page.evaluate(()=>({mirror:document.querySelector('#mirrorStatus')?.dataset.mirrorStatus||'missing',connected:typeof shared!=='undefined'&&!!shared.connected,accepted:typeof roomStateReceived!=='undefined'&&!!roomStateReceived,hydrated:typeof bridgeSession!=='undefined'&&!!bridgeSession?.hydrated})).catch(()=>({mirror:'unavailable'}));
+      const info=await page.evaluate(()=>({mirror:document.querySelector('#mirrorStatus')?.dataset.mirrorStatus||'missing',connected:typeof shared!=='undefined'&&!!shared.connected,accepted:typeof roomStateReceived!=='undefined'&&!!roomStateReceived,hydrated:typeof bridgeSession!=='undefined'&&!!bridgeSession?.hydrated,writer:typeof canWrite==='function'&&canWrite(),observed:window.__boardFleetObservation?.count||0,wireTrainer:window.__boardFleetObservation?.last?.trainerId||null,acceptedTrainer:typeof latestTrainerState!=='undefined'?latestTrainerState?.trainerId||null:null})).catch(()=>({mirror:'unavailable'}));
       data[index===0?'teacher':'pupil']=info;
       data[index===0?'teacherDiagnostics':'pupilDiagnostics']=await diagnostics(page,row.file).catch(()=>['diagnostic-read-failed']);
     }
@@ -215,6 +233,7 @@ async function main(){
     for(const row of selection.entries){
       const checked=await probe(browser,site.origin,backend.origin,row);result.rows.push(checked);
       console.log(checked.status+' '+checked.trainerId+' '+checked.stage+' '+checked.durationMs+'ms');
+      if(checked.status!=='PASS')console.log(JSON.stringify({trainerId:checked.trainerId,error:checked.error,teacher:checked.teacher,pupil:checked.pupil,teacherDiagnostics:checked.teacherDiagnostics,pupilDiagnostics:checked.pupilDiagnostics,pageErrors:checked.pageErrors}));
       report(result,opt.index);
     }
     if(result.rows.some(row=>row.status!=='PASS'))process.exitCode=1;
