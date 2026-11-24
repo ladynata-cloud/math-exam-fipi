@@ -38,7 +38,10 @@ reviewed contract, never silently skip failures to obtain green CI.
 Reports: per-shard JSON and job summary contain trainer ID, path, PASS/FAIL,
 phase, duration, state byte size and sanitized diagnostics. No snapshots,
 tokens, invitation URLs or external request payloads are written to artifacts.
-Browser HTTP traffic is restricted to temporary loopback hosts. No new runtime
+Browser HTTP and WebSocket traffic is restricted to temporary loopback hosts.
+The final aggregator verifies the exact merge candidate identity and compares
+planned versus observed trainer IDs across all six reports. Missing, stale,
+duplicate, truncated or failed shards cannot produce a green aggregate. No new runtime
 dependencies; Chromium is pinned in CI.
 
 ## Gate / rollback

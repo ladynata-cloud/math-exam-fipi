@@ -32,7 +32,7 @@ jobs:
         id: plan
         run: |
           node --check tools/board-fleet-audit.cjs
-          node --test tools/board-fleet-plan.test.cjs
+          node --test tools/board-fleet-plan.test.cjs tools/board-fleet-summary.test.cjs
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
             mode="--base $(git rev-parse HEAD^1)"
           else
@@ -57,5 +57,39 @@ jobs:
         with:
           name: board-fleet-shard-${{ matrix.shard }}
           path: artifacts/board-fleet
+          if-no-files-found: warn
+          retention-days: 14
+  summary:
+    if: always()
+    needs: fleet
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: board-fleet-shard-*
+          merge-multiple: true
+          path: artifacts/board-fleet
+      - name: Verify exact candidate and complete coverage
+        env:
+          BOARD_FLEET_REPORT_DIR: artifacts/board-fleet
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            node tools/board-fleet-summary.cjs --base "$(git rev-parse HEAD^1)" --total 6
+          else
+            node tools/board-fleet-summary.cjs --all --total 6
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: board-fleet-summary
+          path: artifacts/board-fleet/fleet-summary.json
           if-no-files-found: warn
           retention-days: 14

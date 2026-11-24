@@ -4,7 +4,7 @@
 // The only mutation is ordinary ownership transfer in temporary local rooms.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const http=require('node:http'),net=require('node:net'),os=require('node:os');
-const {spawn}=require('node:child_process'),{execFileSync}=require('node:child_process');
+const {spawn,execFileSync}=require('node:child_process');
 const {project,mirrors,plan,args}=require('./board-fleet-plan.cjs');
 const ROOT=fs.realpathSync(path.resolve(__dirname,'..'));
 const HOST='127.0.0.1',BOARD='/trainers/trainer-board.html';
@@ -71,6 +71,14 @@ async function contextFor(browser,site,backend,external){
     if(['data:','blob:','about:'].includes(u.protocol))return route.continue();
     if(external.size<30)external.add(u.origin);
     return route.abort('blockedbyclient');
+  });
+  // WebSockets need their own interception; HTTP routing does not cover them.
+  await context.routeWebSocket('**/*',ws=>{
+    let u;try{u=new URL(ws.url());}catch(_){ws.close();return;}
+    const httpOrigin=(u.protocol==='wss:'?'https:':'http:')+'//'+u.host;
+    if(httpOrigin===site||httpOrigin===backend){ws.connectToServer();return;}
+    if(external.size<30)external.add(u.origin);
+    ws.close({code:1000,reason:'External network disabled in board fleet audit'});
   });
   return context;
 }
@@ -174,6 +182,7 @@ async function probe(browser,site,backend,row){
     for(const [index,page] of pages.entries()){
       const info=await page.evaluate(()=>({mirror:document.querySelector('#mirrorStatus')?.dataset.mirrorStatus||'missing',connected:typeof shared!=='undefined'&&!!shared.connected,accepted:typeof roomStateReceived!=='undefined'&&!!roomStateReceived,hydrated:typeof bridgeSession!=='undefined'&&!!bridgeSession?.hydrated})).catch(()=>({mirror:'unavailable'}));
       data[index===0?'teacher':'pupil']=info;
+      data[index===0?'teacherDiagnostics':'pupilDiagnostics']=await diagnostics(page,row.file).catch(()=>['diagnostic-read-failed']);
     }
   }finally{
     data.durationMs=Date.now()-started;data.externalOrigins=[...external].sort();data.pageErrors=errors;
@@ -193,7 +202,7 @@ function report(result,index){
 async function main(){
   const opt=args(process.argv.slice(2)),selection=plan(opt.base,opt.index,opt.total,opt.all);
   if(opt.planOnly){console.log(selection.entries.length);return;}
-  const result={schemaVersion:1,commit:execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(),base:opt.base||null,mode:selection.mode,selected:selection.total,shard:opt.index,shards:opt.total,rows:[]};
+  const result={schemaVersion:1,commit:execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim(),base:opt.base||null,mode:selection.mode,selected:selection.total,shard:opt.index,shards:opt.total,plannedIds:selection.entries.map(row=>row.trainerId),rows:[]};
   if(!selection.entries.length){report(result,opt.index);return;}
   const temp=fs.mkdtempSync(path.join(os.tmpdir(),'mathexam-board-fleet-'));
   let site,backend,browser;
