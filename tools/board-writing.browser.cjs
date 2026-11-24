@@ -575,6 +575,24 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   assert.deepEqual([teacherSession.iframeNavigations, studentSession.iframeNavigations], navigations, 'view changes do not reload either trainer');
   if (ARTIFACTS) await teacher.screenshot({ path: join(ARTIFACTS, 'writing-teacher-shared.png') });
 
+  phase = 'real two-client transport loss and authenticated rejoin';
+  const beforeLoss=semantic(await snapshot(teacher));
+  await teacher.evaluate(()=>shared.socket.disconnect());
+  await teacher.waitForFunction(()=>!shared.connected&&!canWrite()&&!document.getElementById('roomNotice').hidden);
+  assert.match(await teacher.locator('#roomNoticeText').textContent(),/Ученик не получает/);
+  assert.equal(await teacher.locator('#addSheet').isEnabled(),false);
+  assert.equal(await teacher.locator('[data-tool="pen"]').isEnabled(),false);
+  await mouseGesture(teacher,{x:100,y:120},{x:200,y:150});
+  assert.deepEqual(semantic(await snapshot(teacher)),beforeLoss);
+  assert.deepEqual(semantic(await snapshot(student)),beforeLoss);
+  await teacher.evaluate(()=>shared.socket.connect());
+  await connected(teacher);
+  await sameBoard(teacher,student,'rejoin restores both clients without replaying stale state');
+  assert.equal(await teacher.locator('#roomNotice').isVisible(),false);
+  await teacher.locator('#zoomReset').click();
+  await drawStroke(teacher,'pen',{x:110,y:110},{x:170,y:135});
+  await sameBoard(teacher,student,'new handwriting reaches pupil after reconnect');
+
   phase = 'authoritative stroke bytes survive teacher/student reload and late join';
   // Observer objects already contain the server timestamp; compare all bytes.
   const canonicalBytes = await rawPages(student);

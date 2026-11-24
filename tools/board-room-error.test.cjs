@@ -653,4 +653,50 @@ for (const order of ['registry-first', 'room-first']) test(`ordinary reconnect w
   } finally { f.close(); }
 });
 
+test('teacher freezes mutations during transport loss and preserves an unconfirmed copy on rejoin', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect(), accepted=f.snapshot();
+    f.evaluate("state.pages[0].strokes.push({objectId:'unconfirmed-object',kind:'text',x:12,y:20,text:'local work',size:5,color:'#111'})");
+    socket.deliver('disconnect');
+    assert.equal(f.evaluate('canWrite()'),false);
+    assert.equal(f.frame.inert,true);
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/Ученик не получает/);
+    assert.equal(f.w.document.getElementById('addSheet').disabled,true);
+    assert.equal(f.evaluate("openTrainer('negative-numbers.html')"),false);
+    const count=socket.sent.length;
+    f.evaluate("emitWriter('board:text-add',{stroke:{text:'blocked'}})");
+    assert.equal(socket.sent.length,count);
+    socket.deliver('connect');
+    assert.equal(f.evaluate('canWrite()'),false,'transport alone is not room acceptance');
+    assert.notEqual(f.w.document.getElementById('shareStatus').textContent,'подключено');
+    socket.deliver('room:state',{state:{...accepted,control:'fixture-teacher',controlVersion:4,participants:[{id:'fixture-teacher',role:'teacher',connected:true}]},you:{participantId:'fixture-teacher',role:'teacher'}});
+    await tick();
+    assert.equal(f.evaluate('canWrite()'),true);
+    assert.deepEqual(f.snapshot(),accepted,'authoritative room is not overwritten');
+    assert.equal(f.evaluate('recovery.copies.length'),1);
+    assert.equal(f.evaluate('recovery.copies[0].snapshot.pages[0].strokes[0].objectId'),'unconfirmed-object');
+    assert.equal(f.w.document.getElementById('roomRecovery').hidden,false);
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+    const stored=JSON.parse(f.w.sessionStorage.getItem('mathexam.trainerBoard.recovery.v1'));
+    assert.equal(stored.copies.length,1);
+    assert(!JSON.stringify(stored).includes('fixture-teacher-token'));
+  } finally { f.close(); }
+});
+
+test('terminal teacher recovery retains local writing for a fresh room', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const old=await f.connect();
+    old.deliver('room:error',{message:'Комната не найдена'});
+    assert.equal(f.evaluate('canWrite()'),true);
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/Создайте новую комнату/);
+    f.evaluate("addStroke({objectId:'new-local',kind:'text',x:1,y:2,text:'saved',color:'#111',size:5})");
+    const next=await f.clickCreateRoom(), snapshot=f.snapshot();
+    next.deliver('connect');f.accept(next,{empty:true});
+    assert.deepEqual(next.sent.find(x=>x.name==='board:snapshot').payload.state,snapshot);
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+  } finally { f.close(); }
+});
+
 module.exports = { createBoardFixture };
