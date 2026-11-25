@@ -860,7 +860,6 @@
         nav.append(next);
       } else nav.append(link('К темам №13', '#fipi/2027/13', 'button quiet'));
       section.append(nav);
-      root.requestAnimationFrame(() => { if (heading.isConnected) heading.focus(); });
     }
     main.querySelector('.grid').before(section);
   }

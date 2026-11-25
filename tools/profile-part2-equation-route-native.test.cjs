@@ -91,9 +91,22 @@ async function journey(page, url) {
     if (step === 'interval') {
       await route.locator('a[href="#lesson/p14-circle-selection/model"]').click();
       await page.locator('#model-lab[open] [data-lab-prediction]').waitFor();
+      // Hold the next frame until the pupil has focused the navigation link.
+      // A callback from the previous render must not take the next Enter key.
+      const now = Date.now();
+      await page.clock.install({ time: now });
+      await page.clock.pauseAt(now + 60000);
       await page.goBack();
       await title.waitFor();
       assert.equal(await answer.inputValue(), exactAnswer.interval);
+      assert(await title.evaluate(node => node === document.activeElement), 'the returned step receives focus when rendered');
+      const next = route.locator('[data-school-next]');
+      await next.focus();
+      await page.clock.runFor(32);
+      assert(await next.evaluate(node => node === document.activeElement), 'the next frame preserves the pupil’s focus');
+      await page.keyboard.press('Enter');
+      await page.clock.resume();
+      continue;
     }
     await route.locator('[data-school-next]').press('Enter');
   }
