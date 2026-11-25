@@ -1,10 +1,12 @@
 (function (global) {
   'use strict';
 
-  // The pilot deliberately supports only the two already bridged trainers.
+  // Only reviewed, same-origin bridges are allowed. Geometry has a separate
+  // persisted slot; adding it here does not make it an assignable exercise.
   const TRAINERS = Object.freeze({
     'negative-numbers-line': Object.freeze({ path: '/trainers/negative-numbers-line.html', title: 'Отрицательные числа', version: '1.0.0' }),
-    'linear-inequalities-stepwise': Object.freeze({ path: '/trainers/linear-inequalities-stepwise.html', title: 'Линейные неравенства', version: '1.0.0' })
+    'linear-inequalities-stepwise': Object.freeze({ path: '/trainers/linear-inequalities-stepwise.html', title: 'Линейные неравенства', version: '1.0.0' }),
+    'spacemath': Object.freeze({ path: '/trainers/spacemath/index.html', title: 'SpaceMath — построения', version: '1.0.0' })
   });
   const TIMEOUT_MS = 10000;
   const MAX_BYTES = 64 * 1024;
@@ -204,7 +206,10 @@
         const style = doc.createElement('style');
         style.id = 'group-trainer-presentation';
         // Solo statistics are device-local, not this student's group results.
-        style.textContent = '.download-panel,.back{display:none!important}' +
+        style.textContent = this.trainerId === 'spacemath'
+          ? '.app-header{min-height:52px;padding:8px 12px;gap:10px}.app-header .brand,.save-status{display:none!important}.document-name{width:100%;max-width:400px}.workspace{padding:10px;gap:10px}.file-actions,.help{display:none!important}.jxgbox{height:54vh;min-height:300px}' +
+            (this.preview ? '.app-header,.tools,.construction-bar,.canvas-controls,.feedback,.inspector{display:none!important}.workspace{display:block!important;padding:0!important}.jxgbox{height:480px!important;min-height:480px!important}' : '')
+          : '.download-panel,.back{display:none!important}' +
           (this.trainerId === 'negative-numbers-line'
             ? '.page>.card~.card{display:none!important}.top{display:none!important}body{padding:10px!important}.card{margin-bottom:0!important}'
             : '.grid>aside{display:none!important}.grid{display:block!important}.hero{display:none!important}.page{padding:10px!important}.card{margin-bottom:0!important}') +
@@ -229,15 +234,24 @@
     _setAccess() {
       const locked = this.readOnly || !this._ready || this._failed;
       this.element.dataset.readOnly = String(locked);
-      this.viewport.inert = locked;
-      this.iframe.tabIndex = locked ? -1 : 0;
-      this.iframe.style.pointerEvents = locked ? 'none' : 'auto';
-      this.overlay.style.display = locked ? 'block' : 'none';
+      // Geometry has its own complete read-only mode. Keep its document
+      // scrollable so an observer can inspect objects and formulas below the
+      // drawing; legacy trainers still require the whole-frame input shield.
+      const editor = this.trainerId === 'spacemath' && this._document?.defaultView?.SpaceMathApp;
+      const inspectable = locked && this.readOnly && this._ready && !this._failed && !this.preview && typeof editor?.setReadOnly === 'function';
+      const blocked = locked && !inspectable;
       if (this._document && this._document.body) {
-        this._document.body.inert = locked;
-        if (locked && this._document.activeElement && typeof this._document.activeElement.blur === 'function') this._document.activeElement.blur();
+        // Stop active geometry gestures as well as DOM input when control is
+        // revoked. Backend role/version fences remain the authority.
+        if (typeof editor?.setReadOnly === 'function') editor.setReadOnly(locked);
+        this._document.body.inert = blocked;
+        if (blocked && this._document.activeElement && typeof this._document.activeElement.blur === 'function') this._document.activeElement.blur();
       }
-      if (locked && document.activeElement === this.iframe) this.iframe.blur();
+      this.viewport.inert = blocked;
+      this.iframe.tabIndex = blocked ? -1 : 0;
+      this.iframe.style.pointerEvents = blocked ? 'none' : 'auto';
+      this.overlay.style.display = blocked ? 'block' : 'none';
+      if (blocked && document.activeElement === this.iframe) this.iframe.blur();
     }
 
     _fit() {
@@ -245,12 +259,12 @@
       const width = this.element.clientWidth;
       const height = this.element.clientHeight;
       if (!width || !height) return;
-      const nativeWidth = this.trainerId === 'negative-numbers-line' ? 800 : 850;
+      const nativeWidth = this.trainerId === 'spacemath' ? 800 : this.trainerId === 'negative-numbers-line' ? 800 : 850;
       this.iframe.style.width = nativeWidth + 'px';
       const page = this._document && this._document.querySelector('main.page');
       // Measure actual task content, not body.scrollHeight (which includes the old
       // iframe viewport and would create an ever-shrinking resize feedback loop).
-      const contentHeight = page ? Math.ceil(page.getBoundingClientRect().bottom + 12) : 360;
+      const contentHeight = this.trainerId === 'spacemath' ? 480 : page ? Math.ceil(page.getBoundingClientRect().bottom + 12) : 360;
       const scale = Math.min(width / nativeWidth, height / Math.max(1, contentHeight));
       this.iframe.style.height = Math.max(1, contentHeight) + 'px';
       this.iframe.style.transform = 'scale(' + scale + ')';

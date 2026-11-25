@@ -90,3 +90,30 @@ canvas.preview-board{display:block;width:min(100%,calc(100cqh * 4 / 3));height:a
   body[data-role=student][data-view=personal] .canvas-wrap canvas{width:100%;height:auto;min-height:0;aspect-ratio:4/3}
 }
 @media(max-width:1049px){.teacher-watch{display:none}.workspace-layout{display:block;flex:1}.workspace-layout>.focus{min-height:100%}}
+
+/* Three persistent materials share the lesson, not each other's saved state. */
+.material-navigation{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 10px}
+.material-tabs{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:10px;background:#eaf0f8;max-width:100%}
+.material-tab{border:0;border-radius:7px;min-height:38px;padding:8px 17px;background:transparent;color:#566b85;font-weight:650;font-size:13px}
+.material-tab:hover{background:#f7faff;color:var(--blue)}
+.material-tab[aria-pressed=true]{background:#fff;color:var(--blue);box-shadow:0 2px 6px #20395a12}
+.material-tab[data-surface=geometry][aria-pressed=true]{color:var(--green)}
+.surface-caption{color:var(--muted);font-size:11px}
+.workspace-panels[data-surface]:not([data-surface=split]){grid-template-columns:minmax(0,1fr)}
+.geometry-panel{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff;border:1px solid #c7ded1;border-radius:10px;overflow:hidden}
+.geometry-panel>.panel-heading{background:#f5faf7}
+.geometry-host{position:relative;display:flex;flex:1;min-width:0;min-height:0;flex-direction:column}
+.geometry-host>.group-trainer-frame{flex:1;min-height:570px!important}
+#geometryControlButton{color:var(--green);border-color:#b8d6c4}
+@media(min-width:1050px) and (min-height:650px){
+  .geometry-host>.group-trainer-frame{min-height:0!important}
+  body[data-role=student][data-view=personal] .workspace-panels[data-surface]:not([data-surface=split]){display:flex;overflow:auto}
+  body[data-role=student][data-view=personal] .workspace-panels[data-surface]:not([data-surface=split])>.geometry-panel,
+  body[data-role=student][data-view=personal] .workspace-panels[data-surface]:not([data-surface=split])>.trainer-panel{flex:1;min-height:480px}
+  body[data-role=student][data-view=personal] .workspace-panels[data-surface=board]>.board-panel{flex:1}
+}
+@media(max-width:760px){
+  .material-navigation{gap:5px}.material-tabs{width:100%;gap:2px;padding:3px}.material-tab{flex:1;min-width:0;padding:8px 5px;font-size:12px;min-height:40px}.surface-caption{font-size:10px;padding-left:4px}
+  .workspace-panels[data-surface=geometry]{min-height:580px}.geometry-host>.group-trainer-frame{min-height:540px!important}
+}
+@media(max-width:420px){.material-tab{font-size:11px;padding:8px 3px}.panel-heading{padding:9px}.panel-status{font-size:10px}}
