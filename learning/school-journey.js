@@ -41,18 +41,18 @@ function factory(){
     p('percent','Проценты','Дроби и отношения',['ratio','decimals'],'oge-basics:percentages/percent-of-number-and-whole',[city+'#course-c-percent','/topics/procenty/'],[
       q('15% от 200 = ?',['15','30','45'],1,'0,15 × 200 = 30.'),
       q('После повышения цены на 10% товар стоит 110 рублей. Какова прежняя цена?',['99','110','100'],2,'110 рублей — 110% прежней цены: 110 : 1,1 = 100.')]),
-    p('expression','Переменные и преобразования','Алгебра',['signed','fractions'],'path:grade7-a-expression-structure',['/school/makarychev7/'],[
+    p('expression','Переменные и преобразования','Алгебра',['signed','fractions'],'path:grade7-a-expression-structure',['/school/makarychev7/','/trainers/like-terms-factory.html'],[
       q('Раскрой скобки: 2(a + 3).',['2a + 6','2a + 3','a + 6'],0,'Двойка умножает оба слагаемых.'),
       q('Вычисли 3x − x + 2 при x = 4.',['6','10','14'],1,'3x − x = 2x; 2 × 4 + 2 = 10.')]),
     p('linear','Линейные уравнения','Алгебра',['expression','fraction-meaning','signed'],'path:equations-linear',['/equations/linear-pilot/','/equations/'],[
       q('x/3 + 2 = 6. Чему равен x?',['4','8','12'],2,'x/3 = 4, значит x = 12; подстановка даёт 6.'),
       q('−3x + 5 = −7. Чему равен x?',['4','−4','2'],0,'−3x = −12; делим обе части на −3.')]),
-    p('modeling','Текстовые задачи и моделирование','Алгебра',['ratio','linear'],'path:grade7-a-equation-word-perimeter',['/trainers/oge-task21-word-problems.html']),
-    p('function','Функции и графики','Алгебра',['expression','linear'],'public:linear-function',['/trainers/oge-task22-functions-graphs.html']),
+    p('modeling','Текстовые задачи и моделирование','Алгебра',['ratio','linear'],'path:grade7-a-equation-word-perimeter',['/trainers/oge-task21-word-problems.html','/trainers/motion-grade6/']),
+    p('function','Функции и графики','Алгебра',['expression','linear'],'public:linear-function',['/trainers/oge-task22-functions-graphs.html','/trainers/college-functions/']),
     p('quadratic','Квадратные уравнения и дальнейшая алгебра','Алгебра',['expression','linear','function'],null,['/school/makarychev8/','/ege-profil/']),
     p('geometry','Планиметрия: фигуры и измерения','Геометрия',['place','ratio'],'public:geometry-course',['/geometry-course/textbook/']),
-    p('proof','Геометрические доказательства','Геометрия',['geometry'],null,['/trainers/oge-task24-proofs.html','/geometry-course/']),
-    p('probability','Вероятность и данные','Старшие темы',['fraction-meaning','ratio'],null,['/trainers/oge-task10-probability.html','/ege-profil/trainers/probability-t45.html?topic=basic']),
+    p('proof','Геометрические доказательства','Геометрия',['geometry'],null,['/trainers/oge-task24-proofs.html','/geometry-course/','/trainers/oge-written-practice.html']),
+    p('probability','Вероятность и данные','Старшие темы',['fraction-meaning','ratio'],null,['/trainers/oge-task10-probability.html','/ege-profil/trainers/probability-t45.html?topic=basic','/trainers/tyurin-statistics/']),
     p('trig','Тригонометрия','Старшие темы',['geometry','function','fractions'],null,['/ege-profil/trigonometry/']),
     p('stereo','Стереометрия','Старшие темы',['geometry','proof'],null,['/stereo-course/textbook/']),
     p('analysis','Производная и начала анализа','Старшие темы',['function','quadratic'],null,['/ege-profil/trainers/derivative-t8.html','/ege-profil/'])
@@ -63,11 +63,11 @@ function factory(){
   const common=[...foundation,'expression','linear','modeling','function','geometry','proof','quadratic','probability'];
   const goals=[
     {id:'foundations',title:'Восстановить основы',path:foundation,start:'place',href:'/foundations/'},
-    {id:'school',title:'Изучать школьную математику',path:common,start:'fraction-meaning',href:'/courses/'},
+    {id:'school',title:'Изучать школьную математику',path:[...common,'trig','stereo','analysis'],start:'fraction-meaning',href:'/courses/'},
     {id:'algebra',title:'Разобраться в алгебре',path:algebra,start:'linear',href:'/equations/'},
     {id:'geometry',title:'Разобраться в геометрии',path:geometry,start:'geometry',href:'/geometry-course/'},
     {id:'oge',title:'Подготовиться к ОГЭ',path:common,start:'fractions',href:'/oge/'},
-    {id:'base',title:'Подготовиться к базовому ЕГЭ',path:common,start:'percent',href:'/ege-baza/'},
+    {id:'base',title:'Подготовиться к базовому ЕГЭ',path:[...common,'stereo'],start:'percent',href:'/ege-baza/'},
     {id:'profile',title:'Подготовиться к профильному ЕГЭ',path:[...common,'trig','stereo','analysis'],start:'function',href:'/ege-profil/'}
   ];
   const find=id=>nodes.find(n=>n.id===id);
