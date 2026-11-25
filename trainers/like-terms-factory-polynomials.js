@@ -623,12 +623,12 @@
   const applications = createWorkshop(applicationSteps, applicationKey, {
     summaryId:'applications', stepPrefix:'application-', backLabel:'← Итоги урока об алгебраических дробях',
     summaryTitle:'Итоги: уравнения и неравенства',
-    links:[['Линейные уравнения','../equations/linear-pilot/'],['Макарычев 8 · Квадратный трёхчлен','../school/makarychev8/#lesson/p24'],['Макарычев 8 · Дробные рациональные уравнения','../school/makarychev8/#lesson/p26'],['Никольский · Рациональные уравнения','../school/nikolsky10/#lesson/p16'],['Никольский · Метод интервалов','../school/nikolsky10/#lesson/p18'],['Никольский · Рациональные неравенства','../school/nikolsky10/#lesson/p19'],['Курс ОГЭ','oge-course/index.html'],['Профильный ЕГЭ','../ege-profil/']]
+    links:[['Линейные уравнения','../equations/linear-pilot/'],['Макарычев 8 · Формула корней и дискриминант','../school/makarychev8/#lesson/p21'],['Макарычев 8 · Теорема Виета','../school/makarychev8/#lesson/p23'],['Макарычев 8 · Квадратный трёхчлен','../school/makarychev8/#lesson/p24'],['Макарычев 8 · Разложение квадратного трёхчлена','../school/makarychev8/#lesson/p25'],['Макарычев 8 · Дробные рациональные уравнения','../school/makarychev8/#lesson/p26'],['Макарычев 8 · Решение систем','../school/makarychev8/#lesson/p31'],['Макарычев 8 · Уравнения с параметром','../school/makarychev8/#lesson/p33'],['Никольский · Рациональные уравнения','../school/nikolsky10/#lesson/p16'],['Никольский · Метод интервалов','../school/nikolsky10/#lesson/p18'],['Никольский · Рациональные неравенства','../school/nikolsky10/#lesson/p19'],['Курс ОГЭ','oge-course/index.html'],['Профильный ЕГЭ','../ege-profil/']]
   });
   const rational = createWorkshop(rationalSteps, rationalKey, {
     summaryId:'rational', stepPrefix:'rational-', backLabel:'← Итоги урока о формулах',
     summaryTitle:'Итоги: алгебраические дроби и ОДЗ',
-    links:[['Макарычев 8 · Рациональные выражения','../school/makarychev8/#lesson/p01'],['§2 · Сокращение дробей','../school/makarychev8/#lesson/p02'],['§4 · Общий знаменатель','../school/makarychev8/#lesson/p04'],['§5 · Умножение','../school/makarychev8/#lesson/p05'],['§6 · Деление дробей','../school/makarychev8/#lesson/p06'],['§7 · Преобразование','../school/makarychev8/#lesson/p07']],
+    links:[['Макарычев 8 · Рациональные выражения','../school/makarychev8/#lesson/p01'],['§2 · Сокращение дробей','../school/makarychev8/#lesson/p02'],['§3 · Сложение и вычитание: одинаковые знаменатели','../school/makarychev8/#lesson/p03'],['§4 · Сложение и вычитание: разные знаменатели','../school/makarychev8/#lesson/p04'],['§5 · Умножение','../school/makarychev8/#lesson/p05'],['§6 · Деление дробей','../school/makarychev8/#lesson/p06'],['§7 · Преобразование','../school/makarychev8/#lesson/p07']],
     nextId:'rationalToApplications', nextLabel:'Дальше: уравнения и неравенства', next:applications.open
   });
   const identities = createWorkshop(identitySteps, identityKey, {

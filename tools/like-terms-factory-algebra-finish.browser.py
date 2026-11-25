@@ -87,6 +87,38 @@ def assert_rejected(page,answers,index,value,fragment):
     expect(page.locator('#poly-feedback')).to_contain_text(fragment)
     expect(page.locator('#poly-next')).to_have_count(0)
 
+# These are the existing school lessons, not a second practice bank.
+FOLLOW_UPS = {
+    'rational': [
+        ('p03','§3 · Сложение и вычитание: одинаковые знаменатели','Сложение и вычитание дробей с одинаковыми знаменателями'),
+        ('p04','§4 · Сложение и вычитание: разные знаменатели','Сложение и вычитание дробей с разными знаменателями'),
+    ],
+    'applications': [
+        ('p21','Макарычев 8 · Формула корней и дискриминант','Формула корней квадратного уравнения'),
+        ('p23','Макарычев 8 · Теорема Виета','Теорема Виета'),
+        ('p25','Макарычев 8 · Разложение квадратного трёхчлена','Разложение квадратного трёхчлена на множители'),
+        ('p31','Макарычев 8 · Решение систем','Алгебраический способ решения систем уравнений'),
+        ('p33','Макарычев 8 · Уравнения с параметром','Уравнения с параметром'),
+    ],
+}
+
+def check_follow_ups(page, stage, verify_destination=False):
+    for lesson, label, title in FOLLOW_UPS.get(stage['name'], []):
+        link = page.locator('#bridgeContent a[href="../school/makarychev8/#lesson/'+lesson+'"]')
+        expect(link).to_have_count(1)
+        expect(link).to_be_visible()
+        expect(link).to_have_text(label)
+        if verify_destination:
+            target = page.context.new_page()
+            try:
+                # Navigate to the actual href from the factory, and check the
+                # resolved course lesson instead of merely a successful HTTP load.
+                response = target.goto(link.evaluate('(a) => a.href'))
+                assert response is not None and response.ok, lesson
+                expect(target.locator('h1.lesson-title')).to_have_text(title, timeout=15000)
+            finally:
+                target.close()
+
 def run(browser,url,width,offline=False):
     with browser.new_context(viewport={'width':width,'height':850},offline=offline) as context:
         context.route('https://**/*',lambda route:route.abort())
@@ -130,6 +162,7 @@ def run(browser,url,width,offline=False):
                 page.locator('#poly-next').click()
             expect(page.locator('#bridgeContent')).to_have_attribute('data-step',stage['name'])
             expect(page.locator('#bridgeContent a[href$="'+stage['link']+'"]')).to_be_visible()
+            check_follow_ups(page,stage,verify_destination=(width==1280 and not offline))
             records=state(page,stage)['records']
             assert len(records)==len(stage['ids']) and all(r['done'] for r in records.values())
             assert records[stage['ids'][0]]['first']=='assisted'
