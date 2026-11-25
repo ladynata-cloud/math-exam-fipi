@@ -769,4 +769,50 @@ test('a queued callback from the old socket cannot unlock or reject the replacem
   } finally { f.close(); }
 });
 
+test('late empty initial room snapshot requests fresh current trainer state without reloading the frame', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect(),before=f.snapshot(),instance=f.child.instanceId;
+    const publications=()=>socket.sent.filter(x=>x.name==='board:trainer-state-change');
+    assert.equal(publications().length,1);
+    f.child.draft={answer:'latest live work'};
+    // The first room:state response was generated before the initial SDK state
+    // reached the server. It can therefore explicitly carry null.
+    socket.deliver('room:state',{state:{...before,latestTrainerState:null,control:'fixture-teacher',controlVersion:4},you:{participantId:'fixture-teacher',role:'teacher'}});
+    await tick();
+    assert.equal(publications().length,2);
+    assert.deepEqual(publications().at(-1).payload.state,{answer:'latest live work'});
+    assert.deepEqual(copy(f.evaluate('latestTrainerState.state')),{answer:'latest live work'});
+    assert.equal(f.child.instanceId,instance);
+    assert.equal(f.status(),'connected');
+  } finally { f.close(); }
+});
+
+test('empty authoritative snapshot does not let a read-only pupil republish state', async () => {
+  const f=await createBoardFixture({role:'student'});
+  try {
+    const socket=await f.connect(),before=f.snapshot();
+    socket.deliver('room:state',{state:{...before,latestTrainerState:null,control:'fixture-teacher',controlVersion:5},you:{participantId:'fixture-student',role:'student'}});
+    await tick();
+    assert.equal(f.evaluate('canWrite()'),false);
+    assert.equal(socket.sent.filter(x=>x.name==='board:trainer-state-change').length,1);
+    // The single earlier publication belongs to fixture setup, before the
+    // authoritative control change. The viewer never sends a second one.
+  } finally { f.close(); }
+});
+
+test('an existing nonempty authoritative snapshot is not replaced by a new publication', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect(),before=f.snapshot();
+    const count=socket.sent.filter(x=>x.name==='board:trainer-state-change').length;
+    const latest={trainerId:TRAINER,trainer:TRAINER,protocolVersion:1,trainerVersion:'1.0.0',stateSchemaVersion:1,state:{answer:'server accepted work'}};
+    socket.deliver('room:state',{state:{...before,latestTrainerState:latest,control:'fixture-teacher',controlVersion:4},you:{participantId:'fixture-teacher',role:'teacher'}});
+    await tick();
+    assert.equal(socket.sent.filter(x=>x.name==='board:trainer-state-change').length,count);
+    assert.deepEqual(copy(f.evaluate('latestTrainerState.state')),latest.state);
+    assert.deepEqual(f.child.draft,latest.state);
+  } finally { f.close(); }
+});
+
 module.exports = { createBoardFixture };

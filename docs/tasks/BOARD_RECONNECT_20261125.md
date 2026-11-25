@@ -25,3 +25,6 @@ Run `tools/board-room-error.test.cjs`, `tools/board-writing.browser.cjs`, picker
 
 ## Execution
 Draft until required gates and independent technical review complete.
+## Follow-up: initial trainer-state race (2026-11-25)
+
+Fleet audit #755 run 45480897299: 60/74 passed, 14 observed real SDK state with no accepted host trainer state. Code review identified a possible shared initialization race: an explicit empty authoritative room snapshot may overwrite the initial SDK publication. Request the actual live adapter state again only for the current authorized writer and the same hydrated bridge when the authoritative initialized room explicitly has no trainer state. Never reuse a cached state, bypass permissions, or rehydrate the frame. Added deterministic late-empty, read-only and nonempty-authority regression cases. Existing reconnect checks remain in force. Main advanced through verified #752; merged its picker cache version without changing its trainer, catalog or SEO files. Full candidate CI and fleet evidence still required.

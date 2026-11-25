@@ -134,7 +134,7 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261121-peterson-parts23"></script>
+  <script src="board-picker.js?v=20261124-vilenkin6-proportion"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
@@ -782,6 +782,11 @@
           setControlState(payload?.state||payload||{});
           setSharedMe(payload?.you);
           roomStateReceived=true;
+          // An initial room snapshot can arrive after the first SDK publication.
+          // Reconcile an explicitly empty authoritative trainer state from the
+          // live hydrated frame; do not replay a cached snapshot or grant control.
+          const hydratedBeforeSnapshot=bridgeSession?.hydrated?bridgeSession:null;
+          const emptyAuthoritativeTrainer=payload?.state?.latestTrainerState===null&&Array.isArray(payload.state.pages)&&payload.state.pages.length>0;
           const prepared=takePreparedProfileTrainer(payload?.state);
           latestTrainerState=payload?.state?.latestTrainerState||prepared||null;
           updateMirrorStatusForCurrentTrainer();
@@ -793,7 +798,8 @@
           }
           if(pausedTrainerBridge||bridgeReloadNeeded)reconcileTrainerMirror();
           recoverExpiredBridgeOnce();maybeHydrateTrainer();if(latestTrainerState&&!canWrite())applyTrainerStateToFrame(latestTrainerState);scheduleLegacyTrainerRequest();
-          fallbackSharedMe();setStatus('подключено','ok');updateControlUi()
+          fallbackSharedMe();setStatus('подключено','ok');updateControlUi();
+          if(emptyAuthoritativeTrainer&&!latestTrainerState&&hydratedBeforeSnapshot&&bridgeSession===hydratedBeforeSnapshot&&canWrite())requestTrainerState()
         });
         onRoomEvent('participants:state',payload=>{setParticipants(payload?.participants);updateControlUi()});
         onRoomEvent('control:changed',payload=>{
