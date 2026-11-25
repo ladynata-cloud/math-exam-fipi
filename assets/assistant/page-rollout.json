@@ -2541,9 +2541,10 @@
       "placement": "before-head-close"
     },
     "trainers/inequalities-number-line.html": {
-      "beforeSha256": "15776767697105730deb7a119ec1d04a8660d62452ea49736a0adc41607f9ac0",
-      "afterSha256": "54e064d30d8e7e2a7d39b9f1130ca5023bd3b590038c4c3b7cd2a990f917f9db",
-      "placement": "before-head-close"
+      "beforeSha256": "13e20f542b16026b685f46a3eaf9e56122ccfa1a3e21fa59c9f3908159d816cc",
+      "afterSha256": "f857b4202f4b27ac95ed5f84a4c878ea060446380f9badcaf5a38f18b18e26f6",
+      "placement": "before-head-close",
+      "sourceSha": "258fd7572e2614abcad2e90ed561f8fa00402d6e"
     },
     "trainers/jsxgraph-midpoint.html": {
       "beforeSha256": "9e91193a7cee8b5b7b9967823a8f5b3e6e777d4bf7cecadb005e779362084298",
@@ -6890,6 +6891,16 @@
       ],
       "reason": "Bind exact number-line adapter class-state canonicalization; preserve all other source bindings and navigator runtime.",
       "bindingScope": "Per-page sourceSha; global base and exact shared navigator pair unchanged."
+    },
+    {
+      "sourceBaseSha": "258fd7572e2614abcad2e90ed561f8fa00402d6e",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/INEQUALITIES_LINE_MIRROR_20261125.md",
+      "changedPaths": [
+        "trainers/inequalities-number-line.html"
+      ],
+      "reason": "Bind exact structured mirror adapter and pure remote render; preserve all other page bindings.",
+      "bindingScope": "Per-page sourceSha; global base and shared navigator snippet unchanged."
     }
   ],
   "coverageUpdates": [
