@@ -120,7 +120,7 @@ def check_follow_ups(page, stage, verify_destination=False):
                 target.close()
 
 EXAM_FOLLOW_UPS = [
-    ("ОГЭ №9 · Уравнения", "oge-task9-equations.html", "ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam", "Задание 9. Уравнения"),
+    ("ОГЭ №9 · Уравнения", "oge-task9-equations.html", "ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam", "ОГЭ №9 · Уравнения"),
     ("ОГЭ №13 · Неравенства", "oge13-inequalities-series.html", "ОГЭ №13: неравенства — тренажёр с подсказками | MathExam", "ОГЭ №13. Неравенства"),
     ("ОГЭ №20 · Письменные уравнения", "oge-task20-equations.html", "Задание 20 ОГЭ — тренажёр", "Алгебра"),
     ("ЕГЭ база · Линейные уравнения со скобками", "../ege-baza/path/index.html#lesson=equations-brackets", "Линейные: сначала раскрой скобки · ЕГЭ база", None),
@@ -140,12 +140,15 @@ def check_exam_follow_ups(page, verify_destination=False):
                 assert response is not None and response.ok, href
                 expect(target).to_have_title(title, timeout=15000)
                 if heading:
+                    assert target.url.endswith('/trainers/'+href), target.url
                     expect(target.locator('h1').first).to_have_text(heading)
+                    expect(target.locator('h1').first).to_be_visible()
                 else:
                     # The route must resolve to the specific generated family,
                     # not merely to the generic exam map or HTTP 200.
-                    expect(target.locator('main')).to_contain_text('Линейные: сначала раскрой скобки', timeout=15000)
-                    assert target.url.endswith('#lesson=equations-brackets')
+                    expect(target.locator('main h1')).to_have_text('Линейные: сначала раскрой скобки', timeout=15000)
+                    expect(target.locator('main h1')).to_be_visible()
+                    assert target.url.endswith('/ege-baza/path/index.html#lesson=equations-brackets'), target.url
             finally:
                 target.close()
 
