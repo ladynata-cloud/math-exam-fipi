@@ -56,7 +56,7 @@ function mount(host,type,initial,onChange){
  function change(p,rebuild=false){m=normalize(type,{...m,...p});onChange({...m});if(rebuild){build();}paint();}
  function button(text,fn,pressed){const b=E('button',text);b.type='button';if(pressed!==undefined)b.setAttribute('aria-pressed',String(pressed));b.addEventListener('click',fn);controls.append(b);return b;}
  function range(title,key,min,max,step=1){const w=E('label',title+' '),input=E('input'),out=E('output',String(m[key]));input.type='range';input.min=min;input.max=max;input.step=step;input.value=m[key];input.setAttribute('aria-label',title);input.addEventListener('input',()=>{out.textContent=input.value;change({[key]:Number(input.value)});});w.append(input,out);controls.append(w);}
- function select(title,key,values){const w=E('label',title+' '),s=E('select');for(const [value,t] of values){const o=E('option',t);o.value=value;s.append(o);}s.value=m[key];s.onchange=()=>change({[key]:Number(s.value)},type==='dice'||type==='venn');w.append(s);controls.append(w);}
+ function select(title,key,values){const w=E('label',title+' '),s=E('select');for(const [value,t] of values){const o=E('option',t);o.value=value;s.append(o);}s.value=m[key];s.onchange=()=>change({[key]:Number(s.value),...(type==='dice'?{cells:[],checked:false}:type==='venn'?{mask:0,checked:false}:{})},type==='dice'||type==='venn');w.append(s);controls.append(w);}
  function build(){
  controls.replaceChildren();
  if(type==='line'||type==='rline'){m.signs.forEach((sign,i)=>button('Интервал '+(i+1)+': '+sign,()=>{const a=m.signs.slice();a[i]={'?':'+','+':'−','−':'?'}[a[i]];change({signs:a,checked:false},true);}));button('Проверить знаки',()=>change({checked:true}));}
@@ -84,7 +84,7 @@ function mount(host,type,initial,onChange){
   show(s,'0 0 460 205');status.textContent=m.checked?(m.signs.join('')===(rational?'−+−+':'+−+')?'Все знаки верны. Выбери нужные интервалы с учётом граничных точек.':'Проверь знак подстановкой числа из каждого интервала.'):'Нажимай кнопки над моделью: ? → + → −. '+(rational?'Точка −3 исключена из ОДЗ.':'Нули −7 и 3 не входят в строгое неравенство.');return;
  }
  if(type==='setline'){
-  const x=v=>40+(v+6)*38,open=(v,y,c)=>circle(x(v),y,5,'white',c),closed=(v,y,c)=>circle(x(v),y,5,c,c),ray=(a,b,y,c)=>line(a,b?y:y,b,y,c,5);
+  const x=v=>40+(v+6)*38,open=(v,y,c)=>circle(x(v),y,5,'white',c),closed=(v,y,c)=>circle(x(v),y,5,c,c);
   let s=label(24,55,'A')+label(24,100,'B')+label(25,155,'?');
   s+=line(x(-3),50,x(5),50,'#125b8f',5)+closed(-3,50,'#125b8f')+closed(5,50,'#125b8f');
   s+=line(42,95,x(4),95,'#8a4c8d',5)+path('M48 89 L39 95 L48 101','#8a4c8d',2)+open(4,95,'#8a4c8d');
@@ -131,7 +131,7 @@ function mount(host,type,initial,onChange){
  function matrix(rows,highlight){const t=E('table',undefined,'matrix');const body=E('tbody');rows.forEach((r,i)=>{const tr=E('tr');r.forEach((v,j)=>{const td=E('td',String(v));if(highlight?.(i,j))td.style.background='#d5ebdf';tr.append(td);});body.append(tr);});t.append(body);view.append(t);}
  if(type==='det'){matrix([[m.a,m.b],[m.c,m.d]]);status.textContent='Δ = ('+m.a+')·('+m.d+') − ('+m.b+')·('+m.c+') = '+(m.a*m.d-m.b*m.c)+'.';return;}
  if(type==='det3'){
-  const a=[[1,2,3],[0,1,2],[1,0,4]],r=[[0,0,0],[0,1,2],[0,2,1],[2,1,0],[0,2,1],[0,1,2]];const perm=[[0,1,2],[1,2,0],[2,0,1],[2,1,0],[0,2,1],[1,0,2]];matrix(a,(i,j)=>m.step>0&&j===perm[m.step-1][i]);
+  const a=[[1,2,3],[0,1,2],[1,0,4]];const perm=[[0,1,2],[1,2,0],[2,0,1],[2,1,0],[0,2,1],[1,0,2]];matrix(a,(i,j)=>m.step>0&&j===perm[m.step-1][i]);
   const terms=[4,4,0,3,0,0];const sums=terms.slice(0,m.step).map((v,i)=>(i<3?'+':'−')+v).join(' ');
   status.textContent=m.step===0?'Выделяй по одной диагонали. Первые три произведения складываются, последние три вычитаются.':'Шаг '+m.step+' из 6: '+sums+(m.step===6?' = 5.':'');return;
  }
