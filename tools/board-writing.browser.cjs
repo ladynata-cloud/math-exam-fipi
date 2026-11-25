@@ -305,6 +305,25 @@ async function localWriting(browser, siteOrigin, boardOrigin) {
   assert.equal(pen.size, selectedSize, 'quick thickness is used by real handwriting');
   const ink = await bitmap(page); assert.notEqual(ink.hash, blank.hash, 'pen creates visible ink');
   await chooseTool(page, 'eraser');
+  assert.equal(await page.locator('.pen-widths').getAttribute('aria-label'), 'Ширина ластика');
+  assert.equal(await page.locator('#size').inputValue(), '24', 'initial eraser width is independent of the pen');
+  for (const width of [8, 24, 34]) {
+    const preset = page.locator('[data-eraser-size="' + width + '"]');
+    assert.equal(await preset.isVisible(), true);
+    assert.equal(await preset.getAttribute('aria-label'), 'Ластик ' + width + ' пикселей');
+    await preset.click();
+    assert.equal(await preset.getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#size').inputValue(), String(width));
+    const erased = await drawStroke(page, 'eraser', { x: 88, y: 140 }, { x: 232, y: 140 });
+    assert.equal(erased.size, width, 'real eraser stroke uses the selected width');
+    assert.deepEqual(await bitmap(page), blank, 'eraser at each preset retains the grid and opaque paper');
+    await page.locator('#undo').click();
+    assert.deepEqual(await bitmap(page), ink, 'undo retains original ink');
+  }
+  await chooseTool(page, 'pen');
+  assert.equal(await page.locator('#size').inputValue(), String(selectedSize), 'eraser changes do not alter the pen width');
+  await chooseTool(page, 'eraser');
+  assert.equal(await page.locator('#size').inputValue(), '34', 'returning to the eraser restores its last width');
   await boardSettings(page, async () => { await page.locator('#size').focus(); await page.keyboard.press('End'); });
   await drawStroke(page, 'eraser', { x: 88, y: 140 }, { x: 232, y: 140 });
   assert.deepEqual(await bitmap(page), blank, 'eraser removes only ink: grid, paper and opacity match the blank sheet');
@@ -459,6 +478,25 @@ async function localWriting(browser, siteOrigin, boardOrigin) {
   assert.equal(await rawPages(page), localBytes, 'local reload preserves the stored stroke bytes');
   assert(await page.locator('#lesson').evaluate(element => element.classList.contains('hide-trainer')), 'local board-only preference survives reload');
   await imageVisible(page, uploaded);
+
+  phase = 'visible clear action preserves neighboring sheets and trainer';
+  const firstSheet = (await snapshot(page)).pages[0], trainerAtClear = await frameState(page);
+  await page.locator('#addSheet').click();
+  await drawStroke(page, 'pen', { x: 110, y: 120 }, { x: 200, y: 150 });
+  const beforeClear = await rawPages(page);
+  assert.equal(await page.locator('.toolbar #clear').count(), 1, 'clear is on the primary writing toolbar');
+  assert.equal(await page.locator('#boardPanel #clear').count(), 0, 'single clear control');
+  assert.equal(await page.locator('#clear').isVisible(), true);
+  page.once('dialog', async dialog => { assert.match(dialog.message(), /Очистить текущий лист/); await dialog.dismiss(); });
+  await page.locator('#clear').click();
+  assert.equal(await rawPages(page), beforeClear, 'cancel preserves all records');
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#clear').click();
+  const afterClear = await snapshot(page);
+  assert.equal(afterClear.currentPage, 1);
+  assert.deepEqual(afterClear.pages[0], firstSheet, 'clearing page two preserves page one');
+  assert.deepEqual(afterClear.pages[1].strokes, [], 'clear removes every object on the current page');
+  assert.equal(await frameState(page), trainerAtClear, 'clear never resets the trainer');
   await session.context.close();
   console.log('PASS local writing: opaque eraser/PNG; screenshot and ink layers; tools/shapes; split/camera; pen/secondary touch; reload');
 }
@@ -593,6 +631,36 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   await drawStroke(teacher,'pen',{x:110,y:110},{x:170,y:135});
   await sameBoard(teacher,student,'new handwriting reaches pupil after reconnect');
 
+  phase = 'real interrupted handwriting is retained privately and remote preview disappears';
+  {
+    await chooseTool(teacher,'pen');
+    const beforeInterrupted=semantic(await snapshot(teacher));
+    const priorCopies=await teacher.evaluate(()=>recovery.copies.length);
+    await mouseGesture(teacher,{x:100,y:120},{x:200,y:150},{keepDown:true});
+    const interruptedId=await teacher.evaluate(()=>drawing&&current?.objectId);
+    assert(interruptedId,'real in-progress gesture has an object ID');
+    await student.waitForFunction(id=>current?.objectId===id,interruptedId);
+    await teacher.evaluate(()=>shared.socket.disconnect());
+    await teacher.mouse.up();
+    await student.waitForFunction(()=>current===null&&document.getElementById('roomNoticeText').textContent.includes('Учитель не в сети'));
+    assert.deepEqual(semantic(await snapshot(student)),beforeInterrupted,'no incomplete stroke becomes a confirmed object');
+    assert(await teacher.evaluate(id=>recovery.pending?.snapshot.pages.some(p=>p.strokes.some(s=>s.objectId===id)),interruptedId),'local interrupted gesture is retained');
+    await teacher.evaluate(()=>shared.socket.connect());
+    await connected(teacher);
+    await sameBoard(teacher,student,'only confirmed records remain after interrupted stroke');
+    assert.deepEqual(semantic(await snapshot(teacher)),beforeInterrupted);
+    assert.equal(await teacher.evaluate(()=>recovery.copies.length),priorCopies+1);
+    assert(await teacher.evaluate(id=>recovery.copies.at(-1).snapshot.pages.some(p=>p.strokes.some(s=>s.objectId===id)),interruptedId));
+    await student.waitForFunction(()=>document.getElementById('roomNotice').hidden);
+    // Remove only the synthetic test copy so subsequent viewport and reload
+    // scenarios are evaluated against the same setup as before.
+    await teacher.locator('#roomRecoveryChoice').selectOption(String(priorCopies));
+    teacher.once('dialog',dialog=>dialog.accept());
+    await teacher.locator('#roomRecoveryDiscard').click();
+    assert.equal(await teacher.evaluate(()=>recovery.copies.length),priorCopies);
+    assert.deepEqual(semantic(await snapshot(teacher)),beforeInterrupted);
+  }
+
   phase = 'real pupil disconnect leaves teacher room authoritative and reports pupil offline';
   await student.evaluate(()=>shared.socket.disconnect());
   await teacher.waitForFunction(()=>document.getElementById('roomNoticeText').textContent.includes('Ученик не в сети'));
@@ -620,6 +688,33 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   await imageVisible(lateSession.page, screenshot);
   await teacher.locator('#prevSheet').click(); await lateSession.page.waitForFunction(() => publicSnapshot().currentPage === 0);
   await sameBoard(teacher, lateSession.page, 'late join follows subsequent sheet navigation');
+
+  phase = 'visible shared clear respects ownership, confirmation and page scope';
+  await sameBoard(teacher, student, 'all participants agree before clear');
+  const beforeClear = semantic(await snapshot(teacher)), currentTrainer = await frameState(teacher);
+  const clearCommands = await teacher.evaluate(() => window.__writingOutgoing['board:clear-page'] || 0);
+  assert.equal(await teacher.locator('.toolbar #clear').isVisible(), true, 'teacher finds clear without opening settings');
+  assert.equal(await student.locator('#clear').isEnabled(), false, 'read-only pupil cannot clear');
+  await chooseTool(teacher, 'eraser');
+  await teacher.locator('[data-eraser-size="24"]').click();
+  const eraserStateBefore = semantic(await snapshot(teacher));
+  assert.deepEqual(eraserStateBefore, beforeClear, 'choosing a width is local and never changes records');
+  assert.equal(await student.locator('[data-eraser-size="24"]').isEnabled(), false, 'observer cannot change drawing widths');
+  {
+    teacher.once('dialog', dialog => dialog.dismiss());
+    await teacher.locator('#clear').click();
+    assert.deepEqual(semantic(await snapshot(teacher)), beforeClear);
+    assert.equal(await teacher.evaluate(() => window.__writingOutgoing['board:clear-page'] || 0), clearCommands);
+  }
+  teacher.once('dialog', dialog => dialog.accept());
+  await teacher.locator('#clear').click();
+  await sameBoard(teacher, student, 'confirmed clear reaches pupil');
+  const cleared = await sameBoard(teacher, lateSession.page, 'confirmed clear reaches late viewer');
+  assert.equal(cleared.currentPage, beforeClear.currentPage);
+  assert.deepEqual(cleared.pages[cleared.currentPage].strokes, []);
+  for (let i=0;i<cleared.pages.length;i++) if(i!==cleared.currentPage) assert.deepEqual(cleared.pages[i], beforeClear.pages[i], 'other pages untouched');
+  assert.equal(await teacher.evaluate(() => window.__writingOutgoing['board:clear-page'] || 0), clearCommands+1, 'one confirmed clear sends one event');
+  assert.equal(await frameState(teacher), currentTrainer, 'clear preserves trainer');
   await lateSession.context.close(); await studentSession.context.close(); await teacherSession.context.close();
   console.log('PASS shared writing: owner-only input; real handoff; own undo/redo across sheets; mid-gesture revoke; screenshot bytes/pixels; reload/late join');
 }

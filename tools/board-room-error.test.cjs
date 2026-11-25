@@ -815,4 +815,45 @@ test('an existing nonempty authoritative snapshot is not replaced by a new publi
   } finally { f.close(); }
 });
 
+
+test('a viewer sees the teacher offline and discards only the unconfirmed remote preview', async () => {
+  const f=await createBoardFixture({role:'student'});
+  try {
+    const socket=await f.connect(), before=f.snapshot();
+    const teacher={id:'fixture-teacher',role:'teacher',connected:true,onlineCount:1};
+    const student={id:'fixture-student',role:'student',connected:true,onlineCount:1};
+    socket.deliver('room:state',{state:{...before,control:teacher.id,controlVersion:5,participants:[teacher,student]},you:{participantId:student.id,role:'student'}});
+    assert.equal(f.evaluate('canWrite()'),false);
+    socket.deliver('board:stroke-start',{pageIndex:before.currentPage,stroke:{objectId:'interrupted-remote',kind:'path',tool:'pen',points:[{x:10,y:10},{x:20,y:20}],color:'#111',size:5}});
+    assert.equal(f.evaluate('current?.objectId'),'interrupted-remote');
+    socket.deliver('participants:state',{participants:[{...teacher,connected:false,onlineCount:0},student]});
+    assert.equal(f.evaluate('current'),null,'only transient remote ink disappears');
+    assert.deepEqual(f.snapshot(),before,'accepted objects and pages remain unchanged');
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/Учитель не в сети/);
+    assert.equal(f.evaluate('canWrite()'),false);
+    socket.deliver('participants:state',{participants:[teacher,student]});
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+    assert.deepEqual(f.snapshot(),before);
+  } finally { f.close(); }
+});
+
+test('another connected writer socket does not discard preview, and an offline teacher is not a pupil transport failure', async () => {
+  const f=await createBoardFixture({role:'student'});
+  try {
+    const socket=await f.connect(), before=f.snapshot();
+    const teacher={id:'fixture-teacher',role:'teacher',connected:true,onlineCount:1};
+    const student={id:'fixture-student',role:'student',connected:true,onlineCount:1};
+    socket.deliver('room:state',{state:{...before,control:teacher.id,controlVersion:5,participants:[teacher,student]},you:{participantId:student.id,role:'student'}});
+    socket.deliver('board:stroke-start',{pageIndex:before.currentPage,stroke:{objectId:'valid-remote',kind:'path',tool:'pen',points:[{x:10,y:10}],color:'#111',size:5}});
+    socket.deliver('participants:state',{participants:[{...teacher,connected:false,onlineCount:1},student]});
+    assert.equal(f.evaluate('current?.objectId'),'valid-remote');
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+    socket.deliver('control:changed',{control:student.id,controlVersion:6});
+    assert.equal(f.evaluate('canWrite()'),true);
+    socket.deliver('participants:state',{participants:[{...teacher,connected:false,onlineCount:0},student]});
+    assert.equal(f.evaluate('canWrite()'),true,'pupil still has authenticated room and permission');
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/ваши записи будут доступны учителю/);
+  } finally { f.close(); }
+});
+
 module.exports = { createBoardFixture };
