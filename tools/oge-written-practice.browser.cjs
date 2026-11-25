@@ -20,8 +20,9 @@ async function run() {
       try {
         const requests = [], errors = [], localNavigationAssets = new Set();
         const optionalNavigation = new Map([
-          ['https://mathexam.test/assets/assistant/navigator-data.js?v=20261105-site1','assets/assistant/navigator-data.js'],
-          ['https://mathexam.test/assets/assistant/navigator-widget.js?v=20261105-site1','assets/assistant/navigator-widget.js']
+          ['https://mathexam.test/assets/assistant/navigator-data.js?v=20261105-site1',{path:'assets/assistant/navigator-data.js',type:'application/javascript'}],
+          ['https://mathexam.test/assets/assistant/navigator-widget.js?v=20261105-site1',{path:'assets/assistant/navigator-widget.js',type:'application/javascript'}],
+          ['https://mathexam.test/assets/assistant/widget.css?v=20261105-site1',{path:'assets/assistant/widget.css',type:'text/css'}]
         ]);
         await context.addInitScript(values => { for (const [k,v] of Object.entries(values)) localStorage.setItem(k,v); },baseline);
         await context.route('**/*', async route => {
@@ -30,7 +31,8 @@ async function run() {
           if(u==='https://mathexam.test/favicon.ico') return route.fulfill({status:204,body:''});
           if(optionalNavigation.has(u)){
             localNavigationAssets.add(u);
-            return route.fulfill({status:200,contentType:'application/javascript; charset=utf-8',body:fs.readFileSync(path.join(root,optionalNavigation.get(u)),'utf8')});
+            const asset=optionalNavigation.get(u);
+            return route.fulfill({status:200,contentType:asset.type+'; charset=utf-8',body:fs.readFileSync(path.join(root,asset.path),'utf8')});
           }
           requests.push(u);
           return route.abort();
@@ -117,7 +119,7 @@ async function run() {
         assert.equal(data.tasks[3].help[0].kind,'model');
         assert.deepEqual(await page.evaluate(keys=>Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)])),keys),baseline);
         assert.deepEqual(requests,[],'no external or unexpected requests');
-        assert.deepEqual([...localNavigationAssets].sort(),[...optionalNavigation.keys()].sort(),'only the two standard public navigation scripts are loaded');
+        assert.deepEqual([...localNavigationAssets].sort(),[...optionalNavigation.keys()].sort(),'only the three standard public navigation assets are loaded');
         assert.deepEqual(errors,[]);
         console.log('PASS written practice at '+width+'px: independent drafts, help, square, export and preserved old keys');
       } finally {await context.close();}
