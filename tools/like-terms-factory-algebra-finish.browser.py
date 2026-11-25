@@ -119,6 +119,36 @@ def check_follow_ups(page, stage, verify_destination=False):
             finally:
                 target.close()
 
+EXAM_FOLLOW_UPS = [
+    ("ОГЭ №9 · Уравнения", "oge-task9-equations.html", "ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam", "Задание 9. Уравнения"),
+    ("ОГЭ №13 · Неравенства", "oge13-inequalities-series.html", "ОГЭ №13: неравенства — тренажёр с подсказками | MathExam", "ОГЭ №13. Неравенства"),
+    ("ОГЭ №20 · Письменные уравнения", "oge-task20-equations.html", "Задание 20 ОГЭ — тренажёр", "Алгебра"),
+    ("ЕГЭ база · Линейные уравнения со скобками", "../ege-baza/path/index.html#lesson=equations-brackets", "Линейные: сначала раскрой скобки · ЕГЭ база", None),
+]
+
+def check_exam_follow_ups(page, verify_destination=False):
+    for label, href, title, heading in EXAM_FOLLOW_UPS:
+        link = page.locator('#bridgeContent a[href="'+href+'"]')
+        expect(link).to_have_count(1)
+        expect(link).to_be_visible()
+        expect(link).to_have_text(label)
+        if verify_destination:
+            # A separate tab preserves the pupil's existing factory view.
+            target = page.context.new_page()
+            try:
+                response = target.goto(link.evaluate('(a) => a.href'))
+                assert response is not None and response.ok, href
+                expect(target).to_have_title(title, timeout=15000)
+                if heading:
+                    expect(target.locator('h1').first).to_have_text(heading)
+                else:
+                    # The route must resolve to the specific generated family,
+                    # not merely to the generic exam map or HTTP 200.
+                    expect(target.locator('main')).to_contain_text('Линейные: сначала раскрой скобки', timeout=15000)
+                    assert target.url.endswith('#lesson=equations-brackets')
+            finally:
+                target.close()
+
 def run(browser,url,width,offline=False):
     with browser.new_context(viewport={'width':width,'height':850},offline=offline) as context:
         context.route('https://**/*',lambda route:route.abort())
@@ -163,6 +193,8 @@ def run(browser,url,width,offline=False):
             expect(page.locator('#bridgeContent')).to_have_attribute('data-step',stage['name'])
             expect(page.locator('#bridgeContent a[href$="'+stage['link']+'"]')).to_be_visible()
             check_follow_ups(page,stage,verify_destination=(width==1280 and not offline))
+            if stage['name']=='applications':
+                check_exam_follow_ups(page,verify_destination=(width==1280 and not offline))
             records=state(page,stage)['records']
             assert len(records)==len(stage['ids']) and all(r['done'] for r in records.values())
             assert records[stage['ids'][0]]['first']=='assisted'
