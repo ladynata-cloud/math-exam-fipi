@@ -5,6 +5,7 @@ on:
       - 'trainers/like-terms-factory.html'
       - 'trainers/like-terms-factory-*.js'
       - 'tools/like-terms-factory.*'
+      - 'tools/like-terms-factory-*.*'
       - '.github/workflows/like-terms-factory.yml'
   push:
     branches: [main]
@@ -12,6 +13,7 @@ on:
       - 'trainers/like-terms-factory.html'
       - 'trainers/like-terms-factory-*.js'
       - 'tools/like-terms-factory.*'
+      - 'tools/like-terms-factory-*.*'
       - '.github/workflows/like-terms-factory.yml'
   workflow_dispatch:
 permissions:
