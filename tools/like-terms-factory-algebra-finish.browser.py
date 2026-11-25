@@ -105,6 +105,10 @@ def run(browser,url,width,offline=False):
                     expect(page.locator('#poly-answer-0')).to_have_value(answers[0])
                     page.get_by_role('button',name='Подсказка',exact=True).click()
                     assert state(page,stage)['records'][step]['hints']==1
+                if step=='linear':
+                    assert_rejected(page,answers,4,'1 3','Введи точное число')
+                if step=='domain':
+                    assert_rejected(page,answers,0,'0 4','исходные знаменатели')
                 if step=='not-square':
                     assert_rejected(page,answers,0,'10x','Проверь знак')
                 if step=='cube-sum':
@@ -119,6 +123,7 @@ def run(browser,url,width,offline=False):
                     assert_rejected(page,answers,2,'[-1;+∞)','границы')
                 if step=='rational-sign':
                     assert_rejected(page,answers,5,'(-∞;-1]∪[2;+∞)','границы')
+                    assert_rejected(page,answers,5,'(-∞;-1)∪[0 2;+∞)','границы')
                 if step.startswith('independent-'):
                     expect(page.get_by_role('button',name='Подсказка',exact=True)).to_have_count(0)
                 poly.fill(page,answers); expect(page.locator('#poly-next')).to_be_visible()

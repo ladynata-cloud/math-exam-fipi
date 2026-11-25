@@ -362,7 +362,11 @@
   // floating-point tolerance, or arbitrary code. Fractions/decimals are reduced.
   function gcd(a,b) { a=a<0n?-a:a; b=b<0n?-b:b; while(b){const t=a%b;a=b;b=t;} return a; }
   function normalizeMath(value) { return value.trim().replace(/[−–—]/g,'-').replace(/\s+/g,''); }
+  // Whitespace may separate tokens, but must never join two digit strings.
+  // E.g. '1 3' is not a written 13 and '1 5/10' is not 15/10.
+  const splitDigits = value => /\d\s+\d/.test(value);
   function parseNumber(value) {
+    if (splitDigits(value)) return null;
     const s=normalizeMath(value);
     if (!s || s.length>240) return null;
     let n,d;
@@ -377,6 +381,7 @@
   }
   const numberKey = v => v.n+'/'+v.d;
   function parseSet(value) {
+    if (splitDigits(value)) return null;
     let s=normalizeMath(value).toLowerCase();
     if (s==='нет'||s==='∅'||s==='{}'||s==='пусто') return [];
     if (s.startsWith('{')&&s.endsWith('}')) s=s.slice(1,-1);
@@ -395,6 +400,7 @@
     const k=a.n*b.d-b.n*a.d;return k<0n?-1:k>0n?1:0;
   }
   function parseIntervals(value) {
+    if (splitDigits(value)) return null;
     const s=normalizeMath(value).replace(/[Uu∪]/g,'∪');
     if (!s || s.length>240) return null;
     const parsed=[];

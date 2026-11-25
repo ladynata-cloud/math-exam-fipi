@@ -115,3 +115,18 @@ test('all prior keys unchanged; new stage resumes drafts, rejects false completi
   }
   for(const k of previous)assert.equal(saved.get(k),'{"untouched":true}');
 });
+
+test('spaces between tokens are allowed, spaces within digit strings are never silently joined',()=>{
+  change('applications','linear',4,'1 3','number');
+  change('applications','zero-product',0,'1 5/10','number');
+  change('rational','domain',0,'0 4','domain');
+  change('applications','zero-product',2,'{3/2; -0 4}','roots');
+  change('applications','negative-inequality',2,'(-∞;-0 1]','intervals');
+  change('applications','rational-sign',5,'(-∞;-1)∪[0 2;+∞)','intervals');
+  change('applications','linear',4,'1\u00a03','number');
+  check('applications','linear',['4x-11','3x','18','6',' 13 '],'correct');
+  check('applications','rational-equation',['1; -1','2x+2','3x-3','5','1 / 2'],'correct');
+  check('applications','zero-product',['1, 5','-4','{3 / 2; -4}'],'correct');
+  check('applications','negative-inequality',['-2x+6','2','( -∞ ; -1 ]'],'correct');
+  check('applications','rational-sign',['-1','2','+','−','+','(-∞; -1) U [2; +∞)'],'correct');
+});
