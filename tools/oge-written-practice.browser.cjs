@@ -18,12 +18,20 @@ async function run() {
     for (const width of [320,390,1280]) {
       const context = await browser.newContext({viewport:{width,height:900},acceptDownloads:true,reducedMotion:'reduce'});
       try {
-        const requests = [], errors = [];
+        const requests = [], errors = [], localNavigationAssets = new Set();
+        const optionalNavigation = new Map([
+          ['https://mathexam.test/assets/assistant/navigator-data.js?v=20261105-site1','assets/assistant/navigator-data.js'],
+          ['https://mathexam.test/assets/assistant/navigator-widget.js?v=20261105-site1','assets/assistant/navigator-widget.js']
+        ]);
         await context.addInitScript(values => { for (const [k,v] of Object.entries(values)) localStorage.setItem(k,v); },baseline);
         await context.route('**/*', async route => {
           const u=route.request().url();
           if(u===url) return route.fulfill({status:200,contentType:'text/html; charset=utf-8',body:html});
           if(u==='https://mathexam.test/favicon.ico') return route.fulfill({status:204,body:''});
+          if(optionalNavigation.has(u)){
+            localNavigationAssets.add(u);
+            return route.fulfill({status:200,contentType:'application/javascript; charset=utf-8',body:fs.readFileSync(path.join(root,optionalNavigation.get(u)),'utf8')});
+          }
           requests.push(u);
           return route.abort();
         });
@@ -108,7 +116,8 @@ async function run() {
         assert(data.tasks[3].first.unable);
         assert.equal(data.tasks[3].help[0].kind,'model');
         assert.deepEqual(await page.evaluate(keys=>Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)])),keys),baseline);
-        assert.deepEqual(requests,[]);
+        assert.deepEqual(requests,[],'no external or unexpected requests');
+        assert.deepEqual([...localNavigationAssets].sort(),[...optionalNavigation.keys()].sort(),'only the two standard public navigation scripts are loaded');
         assert.deepEqual(errors,[]);
         console.log('PASS written practice at '+width+'px: independent drafts, help, square, export and preserved old keys');
       } finally {await context.close();}
