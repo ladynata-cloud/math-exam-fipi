@@ -593,6 +593,36 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   await drawStroke(teacher,'pen',{x:110,y:110},{x:170,y:135});
   await sameBoard(teacher,student,'new handwriting reaches pupil after reconnect');
 
+  phase = 'real interrupted handwriting is retained privately and remote preview disappears';
+  {
+    await chooseTool(teacher,'pen');
+    const beforeInterrupted=semantic(await snapshot(teacher));
+    const priorCopies=await teacher.evaluate(()=>recovery.copies.length);
+    await mouseGesture(teacher,{x:100,y:120},{x:200,y:150},{keepDown:true});
+    const interruptedId=await teacher.evaluate(()=>drawing&&current?.objectId);
+    assert(interruptedId,'real in-progress gesture has an object ID');
+    await student.waitForFunction(id=>current?.objectId===id,interruptedId);
+    await teacher.evaluate(()=>shared.socket.disconnect());
+    await teacher.mouse.up();
+    await student.waitForFunction(()=>current===null&&document.getElementById('roomNoticeText').textContent.includes('Учитель не в сети'));
+    assert.deepEqual(semantic(await snapshot(student)),beforeInterrupted,'no incomplete stroke becomes a confirmed object');
+    assert(await teacher.evaluate(id=>recovery.pending?.snapshot.pages.some(p=>p.strokes.some(s=>s.objectId===id)),interruptedId),'local interrupted gesture is retained');
+    await teacher.evaluate(()=>shared.socket.connect());
+    await connected(teacher);
+    await sameBoard(teacher,student,'only confirmed records remain after interrupted stroke');
+    assert.deepEqual(semantic(await snapshot(teacher)),beforeInterrupted);
+    assert.equal(await teacher.evaluate(()=>recovery.copies.length),priorCopies+1);
+    assert(await teacher.evaluate(id=>recovery.copies.at(-1).snapshot.pages.some(p=>p.strokes.some(s=>s.objectId===id)),interruptedId));
+    await student.waitForFunction(()=>document.getElementById('roomNotice').hidden);
+    // Remove only the synthetic test copy so subsequent viewport and reload
+    // scenarios are evaluated against the same setup as before.
+    await teacher.locator('#roomRecoveryChoice').selectOption(String(priorCopies));
+    teacher.once('dialog',dialog=>dialog.accept());
+    await teacher.locator('#roomRecoveryDiscard').click();
+    assert.equal(await teacher.evaluate(()=>recovery.copies.length),priorCopies);
+    assert.deepEqual(semantic(await snapshot(teacher)),beforeInterrupted);
+  }
+
   phase = 'real pupil disconnect leaves teacher room authoritative and reports pupil offline';
   await student.evaluate(()=>shared.socket.disconnect());
   await teacher.waitForFunction(()=>document.getElementById('roomNoticeText').textContent.includes('Ученик не в сети'));
