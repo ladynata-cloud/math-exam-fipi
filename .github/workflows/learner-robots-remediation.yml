@@ -1,0 +1,52 @@
+name: Learner robot remediation
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/learner-robots-remediation.yml'
+      - 'tools/learner-robots/remediate.py'
+      - 'tools/learner-robots/personas.py'
+permissions:
+  contents: read
+jobs:
+  source-snapshots:
+    if: github.head_ref == 'test/learner-robots-weekly-audit'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Capture public scoped code without changing branches
+        shell: python
+        run: |
+          import subprocess, pathlib, tarfile, io, json
+          def git(*args): return subprocess.check_output(['git',*args])
+          git('fetch','origin','main','refs/pull/126/head','refs/pull/129/head','refs/pull/146/head')
+          refs={'main':'64c1079e0f2e73ad77d9fbd1d58526be5517246d','pr126':'9d17170801415d326d7e18667e823c853990d855','pr129':'c747035d887c2c28476ebdc7d8dfe8767f3b2d5c','pr146':'2069d21d96943602a03844ffb52f83d50b4700c9','audit':git('rev-parse','HEAD').decode().strip()}
+          out=pathlib.Path('remediation-evidence');out.mkdir()
+          for name in ['pr126','pr129','pr146']:
+            refs['base-'+name]=git('merge-base',refs['main'],refs[name]).decode().strip()
+            result=subprocess.run(['git','merge-tree','--write-tree',refs['main'],refs[name]],capture_output=True)
+            (out/(name+'-virtual.txt')).write_bytes(result.stdout+result.stderr)
+          roots=('tools/','docs/','oge/','board-server/','assets/','learning/','.github/','trainers/oge','trainers/learning','trainers/task19','trainers/trainer-board','trainers/board-compat')
+          exts=('.md','.html','.js','.mjs','.cjs','.json','.yml','.yaml','.py','.css')
+          manifests={}
+          with tarfile.open(out/'sources.tar.gz','w:gz') as tar:
+            for label,ref in refs.items():
+              manifests[label]={}
+              for line in git('ls-tree','-rl',ref).decode().splitlines():
+                meta,p=line.split('\t',1);m=meta.split()
+                if m[1]!='blob' or not p.endswith(exts) or int(m[3])>1200000:continue
+                if not (p.startswith(roots) or p in ('AGENTS.md','CLAUDE.md','package.json')):continue
+                b=git('show',ref+':'+p);t=tarfile.TarInfo(label+'/'+p);t.size=len(b);tar.addfile(t,io.BytesIO(b))
+                manifests[label][p]={'blob':m[2],'bytes':len(b)}
+          (out/'refs.json').write_text(json.dumps(refs,indent=2))
+          (out/'manifests.json').write_text(json.dumps(manifests,indent=2))
+      - uses: actions/upload-artifact@v4
+        with:
+          name: remediation-scoped-sources
+          path: remediation-evidence/
+          retention-days: 7
