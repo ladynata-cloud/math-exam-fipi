@@ -55,27 +55,44 @@
 
   function reflectMode() {
     const hash = location.hash.slice(1);
-    const mode = /^harbor(?:-\d+)?$/.test(hash) ? 'harbor' : hash.startsWith('garden-') ? 'garden' : legacy.has(hash) ? 'skills' : 'city';
+    const mode = /^(?:courses(?:-(?:arithmetic|written|fractions|decimals|connections|algebra|geometry))?|course-.+)$/.test(hash) ? 'courses'
+      : /^journey(?:-.*)?$/.test(hash) ? 'journey'
+      : /^discoveries(?:-.*)?$/.test(hash) ? 'discoveries'
+        : hash === 'next-course' ? 'bridge'
+          : /^harbor(?:-\d+)?$/.test(hash) ? 'harbor' : hash.startsWith('garden-') ? 'garden' : legacy.has(hash) ? 'skills' : 'city';
     document.body.dataset.adventureMode = mode;
     album.hidden = mode !== 'city';
     byId('adventure-harbor-link').hidden = mode !== 'city';
     byId('division-harbor').hidden = mode !== 'harbor';
-    if (mode === 'harbor') {
+    if (byId('journey-map')) byId('journey-map').hidden = mode !== 'journey';
+    if (byId('discoveries')) byId('discoveries').hidden = mode !== 'discoveries';
+    if (byId('next-course')) byId('next-course').hidden = mode !== 'bridge';
+    if (byId('journey-entry')) byId('journey-entry').hidden = mode !== 'city';
+    if (byId('arz-courses')) byId('arz-courses').hidden = mode !== 'courses';
+    if (byId('course-entry')) byId('course-entry').hidden = mode !== 'city';
+    if (['harbor','journey','discoveries','bridge','courses'].includes(mode)) {
       byId('workshop').hidden = true;
       byId('garden').hidden = true;
       document.querySelector('.layout').hidden = true;
       document.querySelector('.intro .meter').hidden = true;
       document.querySelectorAll('.life-modes a').forEach(link => {
-        if (link.hash === '#harbor') link.setAttribute('aria-current','page');
+        const current = {harbor:'#harbor',journey:'#journey',discoveries:'#discoveries',bridge:'#next-course',courses:'#courses'}[mode];
+        if (link.hash === current) link.setAttribute('aria-current','page');
         else link.removeAttribute('aria-current');
       });
     }
-    byId('adventure-title').textContent = mode === 'city' ? 'Город маленьких дел'
-      : mode === 'harbor' ? 'Порт отправлений' : mode === 'garden' ? 'Оранжерея равных групп' : 'Деление по шагам';
+    byId('adventure-title').textContent = mode === 'courses' ? 'Математика шаг за шагом' : mode === 'city' ? 'Город маленьких дел'
+      : mode === 'journey' ? 'Математика: карта путешествий'
+        : mode === 'discoveries' ? 'Бюро открытий'
+          : mode === 'bridge' ? 'Дальше — алгебра и геометрия'
+            : mode === 'harbor' ? 'Порт отправлений' : mode === 'garden' ? 'Оранжерея равных групп' : 'Деление по шагам';
     byId('adventure-eyebrow').textContent = mode === 'city' ? 'Игра с математикой' : 'Математическая мастерская';
-    byId('adventure-subtitle').textContent = mode === 'city'
+    byId('adventure-subtitle').textContent = mode === 'courses' ? 'Разберись. Покажи. Реши. Объясни.' : mode === 'city'
       ? 'Помоги друзьям. Собери 8 открыток.'
-      : mode === 'harbor' ? 'Полные наборы, остаток и место для всего груза.'
+      : mode === 'journey' ? 'Приблизь интересное место. Исследуй. Вернись к целому.'
+        : mode === 'discoveries' ? 'Предскажи. Проверь действием. Объясни.'
+          : mode === 'bridge' ? 'От предметного действия — к неизвестному числу и свойствам фигур.'
+            : mode === 'harbor' ? 'Полные наборы, остаток и место для всего груза.'
         : mode === 'garden' ? 'Выращивай растения, решай новые задачи и проверяй себя.'
         : 'От равных групп к делению уголком. Выбери навык на карте.';
   }

@@ -33,6 +33,20 @@
   }
   const plant = id => stations.find(s => s.id === id);
   const progress = id => state.book[id] ||= {missions:0, independent:0, journal:[]};
+  const taskStarted = task => task && (task.moves > 0 || task.correct ||
+    task.events?.length || Object.keys(task.tools || {}).length ||
+    task.values?.some(value => String(value).trim() !== ''));
+  function studiedIds() {
+    // Merely opening a plot creates an empty draft. A review card from an older
+    // queue is not evidence that its teaching sequence has been visited.
+    return ids.filter(id => {
+      const run = state.series[id], book = state.book[id];
+      return book?.missions > 0 || book?.journal?.some(entry => entry.fingerprint?.startsWith('bed.' + id + '.')) ||
+        run && (run.round > 0 || run.step > 0 || run.done || taskStarted(run.task));
+    });
+  }
+  const taskCount = count => count + (count === 1 ? ' задача' : count >= 2 && count <= 4 ? ' задачи' : ' задач');
+  const reviewSize = () => Math.min(3, studiedIds().length);
   const stageNames = ['Исследуй','Проверь догадку','Реши самостоятельно'];
   function note(text,cls) { return node('p',text,cls); }
   function updates(status) {
@@ -40,6 +54,7 @@
     if (Object.keys(state.series).length) launch.textContent = 'Продолжить в оранжерее';
     const dueLink = document.getElementById('garden-repeat');
     dueLink.hidden = !(state.due && Date.now()>=state.due);
+    dueLink.textContent = 'Повторить после перерыва · ' + taskCount(reviewSize());
     document.querySelector('.garden-cover').hidden = status;
     panel.hidden = !status;
     const legacy = ids.includes(location.hash.slice(1));
@@ -89,22 +104,52 @@
     box.append(view,caption,add,back); parent.append(box); draw();
   }
   function startReview() {
-    if (!state.review || state.review.done) {
-      const studied = ids.filter(id => state.book[id]?.missions);
+    if (!state.review || state.review.done || !state.review.queue.length) {
+      const studied = studiedIds();
       const ranked = [...studied].sort((a,b) => {
         const priority = id => {
-          const last = state.book[id].journal.at(-1);
+          const last = state.book[id]?.journal?.at(-1);
           return (last?.status === 'Самостоятельно' ? 0 : 1) + (state.reviewCount[id] || 0)*-2;
         };
         return priority(b)-priority(a);
       });
-      const main = ranked[0] || 'count';
-      const previous = {count:'share',share:'count',pack:'share',inverse:'count',bridge:'inverse',zero:'bridge',remainder:'pack',transfer:'bridge'}[main];
-      const queue = [...new Set([main,previous,...ranked,...ids])].slice(0,3);
+      const queue = ranked.slice(0,3);
       state.review = {queue:queue.map(id => ({id,round:(state.reviewCount[id] || 0)%rounds})),
         step:0,task:newTask(),done:false,delayed:Boolean(state.due && Date.now()>=state.due)};
       save();
     }
+  }
+  function restoreReview() {
+    const run = state.review;
+    if (!run || run.done) return;
+    if (!Array.isArray(run.queue) || !Number.isInteger(run.step) || run.step < 0 || run.step >= run.queue.length || !run.task) {
+      if (run.queue?.length === 0) return;
+      state.review = null;
+      return;
+    }
+    const studied = new Set(studiedIds());
+    // Completed answers keep their original journal and first-attempt evidence.
+    // Only the uncompleted tail is filtered; this migration awards nothing.
+    const currentDone = run.task.correct === true;
+    const pendingAt = run.step + Number(currentDone);
+    const completed = run.queue.slice(0,pendingAt);
+    const pending = run.queue.slice(pendingAt).filter(item => studied.has(item.id));
+    if (completed.length + pending.length === run.queue.length) return;
+    const currentRemoved = !currentDone && !studied.has(run.queue[run.step].id);
+    if (currentRemoved && taskStarted(run.task)) {
+      // Preserve an unfinished legacy attempt even when it should not have
+      // appeared in review. It remains readable and never becomes a new pass.
+      (state.reviewDrafts ||= []).push({assignment:run.queue[run.step],task:run.task,at:Date.now()});
+      state.seen[['mix',run.queue[run.step].id,run.queue[run.step].round,2].join('.')] = true;
+    }
+    run.queue = [...completed,...pending];
+    run.adjusted = true;
+    if (currentRemoved) run.task = newTask();
+    if (!pending.length && !currentDone) {
+      run.done = completed.length > 0;
+      run.step = Math.max(0,completed.length-1);
+    }
+    save();
   }
   function journal(c,t) {
     const log = progress(c.id), fingerprint = [c.review?'mix':'bed',c.id,c.round,c.phase].join('.');
@@ -132,7 +177,8 @@
       grid.append(item);
     });
     details.append(grid);
-    const mixed = link(state.due && Date.now()>=state.due?'Пора повторить · три задачи':'Смешанная грядка · три задачи','garden-review','garden-link');
+    const countLabel = reviewSize() ? taskCount(reviewSize()) : 'сначала начни участок';
+    const mixed = link((state.due && Date.now()>=state.due?'Пора повторить · ':'Смешанная грядка · ')+countLabel,'garden-review','garden-link');
     details.append(mixed); return details;
   }
   function render(shouldFocus=false) {
@@ -144,9 +190,21 @@
       return;
     }
     const review = route === 'review';
-    if (review && (!state.review || (state.review.done && state.due && Date.now()>=state.due))) startReview();
+    if (review) {
+      restoreReview();
+      if (!state.review || !state.review.queue.length || (state.review.done && state.due && Date.now()>=state.due)) startReview();
+    }
     state.last = route;
     const run = review ? state.review : session(route);
+    if (review && !run.queue.length) {
+      panel.replaceChildren();
+      const title = node('h2','Смешанная грядка'); title.tabIndex = -1;
+      panel.append(title,note('Здесь будут задачи только по участкам, где ты уже начал заниматься. Сначала выбери участок и попробуй первое действие.'),
+        link('Начать с равных групп','garden-count','garden-go'),gallery(''));
+      historyView(panel);
+      if (shouldFocus) title.focus();
+      save(); return;
+    }
     const assignment = review ? run.queue[run.step] : {id:route,round:run.round};
     const station = plant(assignment.id), t = run.task;
     const phase = review ? 2 : run.step;
@@ -160,6 +218,7 @@
     const emblem = node('span',station.icon,'garden-emblem'); emblem.setAttribute('aria-hidden','true');
     heading.append(emblem,title);
     panel.append(strip,gallery(station.id),heading);
+    if (review && run.adjusted) panel.append(note('В прежней очереди были новые участки. Впереди остались только уже начатые; выполненные ответы и черновики сохранены.','garden-explain'));
     if (!review) {
       const grown = run.done ? 3 : run.step + Number(t.correct);
       const growth = node('div',null,'garden-growth');
@@ -174,7 +233,7 @@
     if (shouldFocus) title.focus();
     if (run.done) {
       const log = progress(station.id);
-      panel.append(note(review?'Три задачи решены. Смешанная грядка готова!':'В коллекции растёт '+station.plant.toLowerCase()+'!','garden-prize'));
+      panel.append(note(review?'Смешанная грядка готова! Решено задач: '+run.queue.length+'.':'В коллекции растёт '+station.plant.toLowerCase()+'!','garden-prize'));
       if (!review) panel.append(note('Пройдено миссий на участке: '+log.missions+'. Самостоятельных проверок на новых задачах: '+log.independent+'.'));
       const actions = node('div',null,'actions');
       if (!review) {
@@ -189,15 +248,16 @@
       }
       panel.append(actions); historyView(panel); return;
     }
-    const label = node('p',(review?'Смешанная проверка':stageNames[phase])+' · '+(run.step+1)+' из 3','garden-stage');
+    const total = review ? run.queue.length : 3;
+    const label = node('p',(review?'Смешанная проверка':stageNames[phase])+' · '+(run.step+1)+' из '+total,'garden-stage');
     const meter = node('div',null,'garden-meter');
     meter.setAttribute('aria-hidden','true');
-    for(let i=0;i<3;i++) meter.append(node('i',null,i<=run.step?'filled':''));
+    for(let i=0;i<total;i++) meter.append(node('i',null,i<=run.step?'filled':''));
     panel.append(label,meter,note(c.prompt,'garden-question'));
     if (t.correct) {
       panel.append(note('Верно! '+t.result.status+'.','garden-prize'),note(c.why,'garden-explain'));
-      const next = button(run.step===2 ? (review?'Завершить повторение':'Вырастить растение') : 'Следующая задача',()=>{
-        if (run.step===2) {
+      const next = button(run.step===total-1 ? (review?'Завершить повторение':'Вырастить растение') : 'Следующая задача',()=>{
+        if (run.step===total-1) {
           run.done=true;
           if (review) state.due=Date.now()+day;
           else { progress(route).missions++; if (!state.due) state.due=Date.now()+day; }
@@ -236,10 +296,7 @@
     }
     if(c.model) help('model','Попробовать на модели',box=>model(box,c.model,t));
     help('hint','Нужна подсказка',box=>box.append(note(c.hint,'help')));
-    function solution() {
-      help('solution','Посмотреть разбор',box=>box.append(note(c.why,'help')));
-    }
-    if(t.events.some(e=>e.kind==='answer')) solution();
+    help('solution','Посмотреть разбор',box=>box.append(note(c.why,'help')));
     panel.append(support);
     const prerequisite = {count:'count',share:'count',pack:'share',inverse:'count',bridge:'inverse',zero:'bridge',remainder:'pack',transfer:'bridge'};
     function feedback(wrong) {
@@ -261,7 +318,7 @@
       t.values=values;
       const ordinal=t.events.filter(e=>e.kind==='answer').length+1;
       t.events.push({kind:'answer',attempt:ordinal,values:[...values],wrong,at:Date.now()});
-      if(wrong.length){feedback(wrong[0]);inputs[wrong[0]].focus();if(ordinal===1)solution();save();return;}
+      if(wrong.length){feedback(wrong[0]);inputs[wrong[0]].focus();save();return;}
       t.correct=true;journal(c,t);
       if(review) state.reviewCount[station.id]=(state.reviewCount[station.id]||0)+1;
       save();render(true);
@@ -278,7 +335,24 @@
       const entry=node('details');entry.append(node('summary',plant(id).name+' · '+j.status),note(c.prompt));
       for(const ev of j.events) entry.append(note(ev.kind==='answer'?'Попытка '+ev.attempt+': '+ev.values.map((v,i)=>c.fields[i].options?.find(o=>o[0]===v)?.[1]??v).join(' · ')+(ev.wrong.length?' — исправь: '+ev.wrong.map(i=>c.fields[i].label).join(', '):' — верно') : ({hint:'Открыта подсказка',model:'Открыта модель',solution:'Открыт разбор'}[ev.kind])));
       if(attempts.length) details.append(entry);
-    });parent.append(details);
+    });
+    for (const draft of state.reviewDrafts || []) {
+      if (!ids.includes(draft.assignment?.id)) continue;
+      const c = card(draft.assignment.id,draft.assignment.round,2,true);
+      const entry = node('details');
+      entry.append(node('summary',plant(draft.assignment.id).name+' · Черновик прежнего повторения'),note(c.prompt),
+        note('Это задание ещё не завершено. Оно сохранено отдельно и не даёт отметки за самостоятельное решение.'));
+      for (const [index,value] of (draft.task.values || []).entries()) {
+        if (c.fields[index] && String(value).trim()) entry.append(note(c.fields[index].label+': '+value));
+      }
+      for (const event of draft.task.events || []) {
+        if (event.kind === 'answer') entry.append(note('Попытка '+event.attempt+': '+event.values.join(' · ')));
+        else entry.append(note({hint:'Открыта подсказка',model:'Открыта модель',solution:'Открыт разбор'}[event.kind] || 'Действие сохранено'));
+      }
+      entry.append(link('Познакомиться с участком','garden-'+draft.assignment.id));
+      details.append(entry);
+    }
+    parent.append(details);
   }
   window.addEventListener('hashchange',()=>render(true));render();
 })();
