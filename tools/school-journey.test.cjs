@@ -67,3 +67,49 @@ test('invalid or missing resources and incomplete probe arrays fail closed',()=>
   assert.equal(m.result('missing',[]).kind,'not-tested');
   for(const answers of [Array(2),['0',,],['0',undefined],[0,1]])assert.equal(m.result('linear',answers).kind,'incomplete');
 });
+
+test('typed prerequisites are authored hypotheses and reuse the single source of edges',()=>{
+ assert(m.validate(m.nodes,m.goals,registry));
+ const edges=m.candidateEdges();
+ assert.deepEqual(edges.map(e=>[e.from,e.to]),m.nodes.flatMap(n=>n.before.map(id=>[id,n.id])));
+ assert.equal(new Set(edges.map(e=>e.from+':'+e.to)).size,edges.length);
+ for(const e of edges){
+  assert.equal(e.type,'candidate-prerequisite');
+  assert.equal(e.status,'hypothesis');
+  assert.equal(e.provenance,'school-journey-v1-authored');
+  assert(m.find(e.from));assert(m.find(e.to));
+ }
+});
+test('graph contract rejects broken sources, duplicate and sparse data, and circular prerequisites',()=>{
+ const copy=x=>JSON.parse(JSON.stringify(x));
+ const cases=[
+  ['duplicate skill',(n,g)=>n.push(copy(n[0]))],
+  ['duplicate goal',(n,g)=>g.push(copy(g[0]))],
+  ['unknown prerequisite',(n,g)=>n[0].before.push('not-a-skill')],
+  ['self edge',(n,g)=>n[0].before.push(n[0].id)],
+  ['duplicate edge',(n,g)=>n[1].before.push(n[1].before[0])],
+  ['cycle',(n,g)=>n[0].before.push(n[1].id)],
+  ['missing source',(n,g)=>n[0].source='absent'],
+  ['private route',(n,g)=>n[0].extra.push('/learning/#private')],
+  ['duplicate route',(n,g)=>n[0].extra.push(n[0].extra[0])],
+  ['unknown goal skill',(n,g)=>g[0].path.push('not-a-skill')],
+  ['duplicate goal skill',(n,g)=>g[0].path.push(g[0].path[0])],
+  ['unknown start',(n,g)=>g[0].start='not-a-skill'],
+  ['blank prompt',(n,g)=>n[0].questions[0].prompt=' '],
+  ['blank explanation',(n,g)=>n[0].questions[0].explain=''],
+  ['blank choice',(n,g)=>n[0].questions[0].choices[0]=''],
+  ['blank title',(n,g)=>n[0].title=' '],
+  ['no resources',(n,g)=>{n[0].source=null;n[0].extra=[]}],
+  ['sparse prerequisites',(n,g)=>n[0].before.length=1],
+  ['sparse choices',(n,g)=>delete n[0].questions[0].choices[1]],
+  ['sparse goal path',(n,g)=>delete g[0].path[1]]
+ ];
+ for(const [label,change] of cases){
+  const n=copy(m.nodes),g=copy(m.goals);change(n,g);
+  assert.throws(()=>m.validate(n,g,registry),undefined,label);
+ }
+ assert.throws(()=>m.validate(m.nodes,m.goals,{get:()=>({id:'different',publicUrl:'/foundations/'})}));
+ assert.throws(()=>m.validate(m.nodes,m.goals,{get:id=>({id,kind:'managed',url:'/learning/#private'})}));
+ const extraOnly=copy(m.nodes);extraOnly[0].source=null;
+ assert(m.validate(extraOnly,m.goals,registry),'A valid public secondary route is sufficient');
+});
