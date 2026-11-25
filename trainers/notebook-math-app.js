@@ -13,12 +13,12 @@ function equivalent(a,b){
  const p=number(x),q=number(y);
  return p!==null&&q!==null&&Math.abs(p-q)<=1e-10*Math.max(1,Math.abs(q));
 }
-function matches(value,expected){
+function matches(value,expected,question=''){
  if(!String(value??'').trim())return false;
  return String(expected).split('|').some(v=>{
   if(equivalent(value,v))return true;
   const a=String(value).trim().replace(/^\{|\}$/g,'').split(';'),b=v.trim().replace(/^\{|\}$/g,'').split(';');
-  if(a.length>1&&a.length===b.length&&a.every(s=>number(normalize(s))!==null)&&b.every(s=>number(normalize(s))!==null))return a.every((s,i)=>equivalent(s,b[i]));
+  if(a.length>1&&a.length===b.length&&a.every(s=>number(normalize(s))!==null)&&b.every(s=>number(normalize(s))!==null)){const unordered=/корни через|элементы через|найди (?:a∩b|b∖a|u∖a)/i.test(question)&&! /(?:по|в порядке) возрастания/i.test(question);return unordered?a.map(s=>number(normalize(s))).sort((p,q)=>p-q).every((s,i)=>equivalent(s,b.map(t=>number(normalize(t))).sort((p,q)=>p-q)[i])):a.every((s,i)=>equivalent(s,b[i]));}
   return false;
  });
 }
@@ -28,7 +28,7 @@ function cleanState(x){
  x=x&&typeof x==='object'?x:{};const l=data[lessonIndex(x.lesson)],n=(v,max)=>Number.isInteger(v)?Math.min(max,Math.max(0,v)):0;
  const task=n(x.task,l[6].length-1),answer=typeof x.answer==='string'?x.answer.slice(0,220):'';
  let feedback=['idle','empty','correct','incorrect','reveal'].includes(x.feedback)?x.feedback:'idle';
- if(feedback==='correct'&&!matches(answer,l[6][task][1]))feedback='idle';
+ if(feedback==='correct'&&!matches(answer,l[6][task][1],l[6][task][0]))feedback='idle';
  return {lesson:l[0],mode:x.mode==='practice'?'practice':'learn',step:n(x.step,l[5].length),task,answer,feedback,hint:x.hint===true,model:models.normalize(l[7],x.model)};
 }
 root.NotebookMathCore=Object.freeze({normalize,matches,makeState,cleanState,lessonIndex});
@@ -114,7 +114,7 @@ function onInput(){
 }
 $('answer').addEventListener('input',onInput);$('answer').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('check').click();}});
 $('check').onclick=()=>{
- const t=task();if(!state.answer.trim())state.feedback='empty';else state.feedback=matches(state.answer,t[1])?'correct':'incorrect';
+ const t=task();if(!state.answer.trim())state.feedback='empty';else state.feedback=matches(state.answer,t[1],t[0])?'correct':'incorrect';
  if(!framed&&state.feedback==='correct'){personal[taskKey(current(),state.task)]=true;try{localStorage.setItem(key,JSON.stringify(personal));}catch(_){}progress();}
  renderFeedback();notify();
 };
