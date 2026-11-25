@@ -28,8 +28,8 @@ function equationSequence() {
   ${links ? '<div class="actions">'+links+'</div>' : ''}</li>`;
  }).join('');
  return `<section class="route-group" id="equations" aria-labelledby="equations-title">
- <h2 id="equations-title" tabindex="-1">Тригонометрические уравнения и задание №13</h2>
- <p><a class="button" href="../part-two/#fipi/2027/13/school">Пройти 10 шагов от окружности к заданию №13</a></p>
+ <h2 id="equations-title" tabindex="-1">От окружности к заданию №13</h2>
+ <div class="actions"><a class="button" href="../part-two/#fipi/2027/13/school">Начать маршрут из 10 шагов</a></div>
  <p>Если вы уже решали уравнения, проверьте знакомые приёмы ниже и переходите к самостоятельным условиям.</p>
  <ol>${steps}</ol>
  <p><a href="../../downloads/trainers/ege-profil-part-two/ege-profil-part-two-package.zip" download>Скачать вторую часть для работы без сети (ZIP)</a>.
