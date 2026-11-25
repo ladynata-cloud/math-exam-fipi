@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Неравенства и промежутки · ЕГЭ база №18 · MathExam</title>
+  <meta name="description" content="Как сопоставить показательные и логарифмические неравенства с промежутками. Два разбора, опыт на числовой оси и самостоятельная проверка к заданию №18 базового ЕГЭ.">
+  <link rel="canonical" href="https://mathexam.space/ege-baza/inequality-match/">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="lesson.js"></script>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+</head>
+<body>
+  <a class="skip" href="#lesson">К уроку</a>
+  <header>
+    <nav aria-label="Навигация по курсу">
+      <a href="/" target="_self" data-mathexam-home-link>MathExam · Главная</a>
+      <a href="../index.html">ЕГЭ база</a>
+      <a href="../path/index.html#lesson=practice-inequality-match">Задание №18</a>
+    </nav>
+  </header>
+  <main id="lesson" tabindex="-1">
+    <div class="intro">
+      <p class="kicker">ЕГЭ база · Задание 18</p>
+      <h1>Неравенства и&nbsp;промежутки</h1>
+      <p>У каждого неравенства есть своё множество решений. Чтобы найти его среди предложенных промежутков, выясни, где проходит граница, с какой стороны лежат подходящие числа и входит ли сама граница в ответ.</p>
+    </div>
+
+    <section aria-labelledby="warmup-title">
+      <h2 id="warmup-title">С какой стороны от единицы?</h2>
+      <p>Для каких <var>x</var> выполняется <span class="formula">(½)<sup>x</sup> &lt; ½</span>? Подставь по очереди 0, 1 и 2. Где знак «меньше» верен?</p>
+      <details>
+        <summary>Сверить три подстановки</summary>
+        <p>Получаются 1, ½ и ¼. Из трёх чисел подходит только <var>x</var> = 2. С ростом показателя степень с основанием ½ убывает. Подходят все <var>x</var> &gt; 1. При <var>x</var> = 1 получилось бы равенство.</p>
+      </details>
+    </section>
+
+    <section aria-labelledby="examples-title">
+      <h2 id="examples-title">Два разбора по шагам</h2>
+      <h3>Степень с основанием больше единицы</h3>
+      <p class="display-formula">3<sup>x + 1</sup> ≥ 81</p>
+      <ol class="steps">
+        <li>Запиши 81 с тем же основанием. Получится 3<sup>x + 1</sup> ≥ 3<sup>4</sup>.</li>
+        <li>Степень с основанием 3 возрастает. Чтобы её значение было не меньше 3<sup>4</sup>, нужен показатель не меньше 4. Значит, <var>x</var> + 1 ≥ 4, откуда <var>x</var> ≥ 3.</li>
+        <li>Подставь границу. При <var>x</var> = 3 обе стороны равны 81. Тройка входит, а все большие значения подходят. Ответ <strong>[3; +∞)</strong>.</li>
+      </ol>
+      <h3>Логарифм с дробным основанием</h3>
+      <p class="display-formula">log<sub>½</sub>(<var>x</var> + 4) &gt; −2</p>
+      <ol class="steps">
+        <li>Аргумент должен быть положительным. Из <var>x</var> + 4 &gt; 0 получаем область допустимых значений (ОДЗ) <var>x</var> &gt; −4.</li>
+        <li>При каком аргументе логарифм равен −2? Поскольку (½)<sup>−2</sup> = 4, граница достигается при <var>x</var> + 4 = 4, то есть при <var>x</var> = 0.</li>
+        <li>С ростом аргумента этот логарифм убывает. Для значения больше −2 нужен аргумент меньше 4. Совмести оба условия: 0 &lt; <var>x</var> + 4 &lt; 4. Ответ <strong>(−4; 0)</strong>.</li>
+      </ol>
+      <p>Проверка: при <var>x</var> = −3 аргумент равен 1 и логарифм равен 0. Точка −4 запрещена областью определения, а при нуле получается равенство, хотя знак строгий.</p>
+      <details>
+        <summary>Как собрать из четырёх решений экзаменационный ответ?</summary>
+        <p>Пусть А и Б — два примера выше. В строке В дано (2<var>x</var> − 1)/(<var>x</var> − 4) &lt; 0, в строке Г — 4<var>x</var> + 5 ≤ 7. Предложены четыре промежутка.</p>
+        <ol><li>(−∞; 0,5]</li><li>(−4; 0)</li><li>[3; +∞)</li><li>(0,5; 4)</li></ol>
+        <p>Для А получили [3; +∞), это номер 3. Для Б получили (−4; 0), это номер 2.</p>
+        <p>В строке В дробь отрицательна, когда у числителя и знаменателя разные знаки. Между 0,5 и 4 числитель положителен, а знаменатель отрицателен. Снаружи знаки совпадают. При 0,5 дробь равна нулю, при 4 она не определена. Подходит номер 4.</p>
+        <p>В строке Г вычтем 5 и разделим обе части на 4. Получим <var>x</var> ≤ 0,5, то есть номер 1. Читаем номера в порядке букв А, Б, В, Г и записываем <strong>3241</strong>.</p>
+      </details>
+    </section>
+
+    <section id="model-panel" hidden aria-labelledby="model-title">
+      <h2 id="model-title">Проверь число на оси</h2>
+      <p>Исследуй <span class="formula">log<sub>a</sub>(<var>x</var> − 1) ≤ 1</span>. При основании 2 попробуй <var>x</var> = 1, 2 и 3. Какая точка запрещена, а в какой обе стороны равны? Оставь <var>x</var> = 2 и смени основание на ½. Затем проверь <var>x</var> = 1,25 при каждом основании.</p>
+      <div class="model-controls">
+        <label for="base-select">Основание <var>a</var>
+          <select id="base-select"><option value="2">2</option><option value="0.5">½</option></select>
+        </label>
+        <label for="test-x">Проверяемое число <var>x</var>
+          <input id="test-x" type="range" min="-1" max="5" step="0.25" value="1.5">
+        </label>
+      </div>
+      <svg id="model-line" viewBox="0 0 620 120" role="img" aria-label="Числовая ось с границами промежутка и проверяемой точкой"></svg>
+      <p class="axis-key">Толстая линия показывает решения. Закрашенная точка входит в ответ, пустая исключена. Стрелка сверху отмечает выбранное число.</p>
+      <p id="model-readout" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="practice-panel" hidden aria-labelledby="practice-title">
+      <h2 id="practice-title">Сопоставь четыре неравенства</h2>
+      <p>Реши каждую строку и запиши рядом номер её промежутка. В поле ответа перенеси четыре номера подряд в порядке А, Б, В, Г.</p>
+      <p>В каждом третьем варианте встретятся все четыре вида неравенств из разбора.</p>
+      <div data-exercise></div>
+    </section>
+
+    <section aria-labelledby="help-title">
+      <h2 id="help-title">Если два промежутка кажутся одинаково подходящими</h2>
+      <details>
+        <summary>Где поставить круглую или квадратную скобку?</summary>
+        <p>Подставь границу в исходное неравенство. Если обе части определены и знак допускает равенство, точка входит. При строгом знаке точку равенства исключают. У бесконечности всегда ставят круглую скобку.</p>
+      </details>
+      <details>
+        <summary>Почему одного сравнения показателей или аргументов мало?</summary>
+        <p>Посмотри на основание. При основании больше 1 порядок сохраняется, а при основании между 0 и 1 обращается. Для логарифма отдельно проверь, что аргумент положителен. Удобно подставить одно число внутри выбранного промежутка и одно снаружи.</p>
+      </details>
+      <p>Повторение откроется в новой вкладке, чтобы здесь сохранилось место.</p>
+      <ul class="links">
+        <li><a href="../reference/index.html#sheet=powers-roots" target="_blank" rel="noopener">Как работать со степенями</a></li>
+        <li><a href="../algebra/index.html#log" target="_blank" rel="noopener">Что показывает логарифм</a></li>
+        <li><a href="../reference/index.html#sheet=inequality-line" target="_blank" rel="noopener">Как читать промежуток на числовой оси</a></li>
+      </ul>
+    </section>
+
+    <section id="check-panel" hidden aria-labelledby="check-title">
+      <h2 id="check-title">Самостоятельная проверка</h2>
+      <p>Это новый набор без подсказок. Проверь порядок цифр до отправки: на один набор отводится одна попытка.</p>
+      <div data-exercise></div>
+    </section>
+    <noscript>
+      <section aria-labelledby="paper-title">
+        <h2 id="paper-title">Самостоятельная задача на бумаге</h2>
+        <p>Интерактивная ось и автоматическая проверка работают с JavaScript. Этот набор можно решить и сверить здесь.</p>
+        <p>Для каждого неравенства подбери номер промежутка. Запиши свой ответ в порядке А, Б, В, Г.</p>
+        <ol class="inequalities">
+          <li>А. 2<sup>x</sup> ≥ 16</li><li>Б. (½)<sup>x</sup> &gt; ¼</li>
+          <li>В. log<sub>5</sub>(<var>x</var> + 4) ≤ 1</li><li>Г. log<sub>½</sub>(<var>x</var> − 2) &lt; 0</li>
+        </ol>
+        <ol><li>(3; +∞)</li><li>(−4; 1]</li><li>[4; +∞)</li><li>(−∞; 2)</li></ol>
+        <details><summary>Сверить после решения</summary>
+          <p>Ответ <strong>3421</strong>. В строке А нужно <var>x</var> ≥ 4, так как 16 = 2<sup>4</sup>. В строке Б функция с основанием ½ убывает, поэтому <var>x</var> &lt; 2. В строке В получаем 0 &lt; <var>x</var> + 4 ≤ 5. В строке Г логарифм с основанием ½ отрицателен при аргументе больше 1, откуда <var>x</var> &gt; 3.</p>
+        </details>
+      </section>
+    </noscript>
+    <footer>
+      <a href="../path/index.html#lesson=practice-inequality-match">Вернуться к сопоставлению в курсе №18 →</a>
+    </footer>
+  </main>
+</body>
+</html>

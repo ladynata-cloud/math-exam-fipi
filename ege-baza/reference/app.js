@@ -21,6 +21,13 @@
   if(!hash||hash==='catalogue'){catalogue();return;}
   filters.hidden=true;status.textContent='';
   content.innerHTML='<a class="ref-back" href="#catalogue">← Все справочные листы</a>'+(U.sheet(id)?U.card(id):'<section class="ref-empty"><h2>Этот лист не найден</h2><p>Выбери правило в справочнике.</p></section>');
+  if(id==='inequality-line'){
+   const lesson=document.createElement('a');
+   lesson.className='ref-pin';
+   lesson.href='../inequality-match/index.html';
+   lesson.textContent='№18. Сопоставить показательные и логарифмические неравенства с промежутками →';
+   content.querySelector('.ref-rule-text').after(lesson);
+  }
   document.title=U.sheet(id)?U.sheet(id).title+' · Справочник MathExam':'Справочник с тренажёрами · MathExam';
  }
  document.querySelector('.ref-skip')?.addEventListener('click',e=>{e.preventDefault();content.focus({preventScroll:true});content.scrollIntoView?.({block:'start'});});
