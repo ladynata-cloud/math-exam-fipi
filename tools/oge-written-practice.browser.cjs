@@ -56,6 +56,10 @@ async function run() {
         assert.equal(await home.getAttribute('href'),'/');
         assert.equal(await home.getAttribute('target'),'_self');
         assert(await home.isVisible());
+        await home.scrollIntoViewIfNeeded();
+        const homeBox=await home.boundingBox();
+        assert(homeBox && homeBox.x>=0 && homeBox.y>=0 && homeBox.x+homeBox.width<=width+1 && homeBox.height>=44, 'Home return reachable at '+width+'px');
+        await home.click({trial:true});
         const verifyOverflow=async label=>assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), 'Horizontal overflow: '+width+' '+label);
         assert.match(await title.innerText(),/Медиана является высотой/);
         assert.equal(await figure.locator('polyline').count(),1,'Given right angle is marked');

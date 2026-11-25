@@ -123,10 +123,26 @@ function ownUndoIndex() {
   return page().strokes.findLastIndex(stroke => stroke.authorId === shared.me?.participantId);
 }
 
+function presetWidth(button) {
+  return Number(tool === 'eraser' ? button.dataset.eraserSize : button.dataset.penSize);
+}
+
 function syncPenControls() {
+  const erasing = tool === 'eraser';
   sizeText.textContent = `${size.value} px`;
+  const widths = document.querySelector('.pen-widths');
+  if (widths) {
+    widths.dataset.activeTool = erasing ? 'eraser' : 'drawing';
+    widths.setAttribute('aria-label', erasing ? 'Ширина ластика' : 'Толщина линии');
+  }
+  const label = document.querySelector('label[for="size"]');
+  if (label) label.textContent = erasing ? 'Ширина ластика' : 'Толщина линии';
   document.querySelectorAll('[data-pen-size]').forEach(button => {
-    button.setAttribute('aria-pressed', String(+button.dataset.penSize === +size.value));
+    const width = presetWidth(button);
+    button.dataset.width = String(width);
+    button.setAttribute('aria-pressed', String(width === +size.value));
+    button.setAttribute('aria-label', (erasing ? 'Ластик ' : 'Толщина ') + width + ' пикселей');
+    button.title = (erasing ? 'Ластик ' : 'Толщина ') + width + ' px';
   });
   document.querySelectorAll('[data-pen-color]').forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.penColor === color.value));
@@ -492,7 +508,12 @@ function bindBoardWriting() {
     button.onclick = () => { if (!canWrite()) return; finishText(); color.value = button.dataset.penColor; syncPenControls(); };
   });
   document.querySelectorAll('[data-pen-size]').forEach(button => {
-    button.onclick = () => { if (!canWrite()) return; finishText(); size.value = button.dataset.penSize; toolWidths[tool] = +size.value; syncPenControls(); };
+    button.onclick = () => {
+      if (!canWrite() || activePointerId !== null || pendingHistory) return;
+      const width = presetWidth(button);
+      if (!Number.isFinite(width) || width < +size.min || width > +size.max) return;
+      finishText(); size.value = String(width); toolWidths[tool] = +size.value; syncPenControls();
+    };
   });
   size.oninput = () => { finishText(); toolWidths[tool] = +size.value; syncPenControls(); };
   color.oninput = color.onchange = () => { finishText(); syncPenControls(); };
