@@ -165,7 +165,9 @@ async function probe(browser,site,backend,row){
     await student.evaluate(()=>requestTrainerState());
     const second=await wire(student,row.trainerId,pupilBefore);validateWire(second,row);
     // A pupil re-serializes actual applied state, not merely the host's receipt.
+    data.assertion='handoff-state-equality';
     assert.deepEqual(second.state,first.state,'pupil adapter reconstructs accepted state');
+    delete data.assertion;
     await sameAccepted(teacher,row.trainerId,second.state);
     stage('pupil-disconnect');
     const beforeReload=await diagnostics(student,row.file);
@@ -186,7 +188,9 @@ async function probe(browser,site,backend,row){
     await Promise.all([accepted(student,row.trainerId,true),accepted(teacher,row.trainerId,false)]);
     await student.evaluate(()=>requestTrainerState());
     const restored=await wire(student,row.trainerId,reloadCount);validateWire(restored,row);
+    data.assertion='reload-state-equality';
     assert.deepEqual(restored.state,second.state,'reload restores the actual adapter state');
+    delete data.assertion;
     stage('return-control');
     await teacher.locator('#boardControlToggle').click();
     await Promise.all([accepted(teacher,row.trainerId,true),accepted(student,row.trainerId,false)]);
@@ -197,6 +201,22 @@ async function probe(browser,site,backend,row){
     data.status='PASS';stage('complete');
   }catch(error){
     data.error=cleanError(error);
+    // Report field paths only, never state values or credentials.
+    if(data.assertion&&error?.name==='AssertionError'){
+      const different=[];
+      function walk(a,b,prefix,depth){
+        if(different.length>=16||depth>5)return;
+        if(a===b)return;
+        if(a&&b&&typeof a==='object'&&typeof b==='object'){
+          for(const key of new Set([...Object.keys(a),...Object.keys(b)])){
+            if(different.length>=16)break;
+            const safe=/^[a-zA-Z_][a-zA-Z0-9_]{0,63}$/.test(key)?key:/^\d+$/.test(key)?'[]':'[key]';
+            walk(a[key],b[key],prefix?prefix+'.'+safe:safe,depth+1);
+          }
+        }else different.push(prefix||'root');
+      }
+      walk(error.actual,error.expected,'',0);data.differentFields=different;
+    }
     for(const [index,page] of pages.entries()){
       const info=await page.evaluate(()=>({mirror:document.querySelector('#mirrorStatus')?.dataset.mirrorStatus||'missing',connected:typeof shared!=='undefined'&&!!shared.connected,accepted:typeof roomStateReceived!=='undefined'&&!!roomStateReceived,hydrated:typeof bridgeSession!=='undefined'&&!!bridgeSession?.hydrated,writer:typeof canWrite==='function'&&canWrite(),observed:window.__boardFleetObservation?.count||0,wireTrainer:window.__boardFleetObservation?.last?.trainerId||null,acceptedTrainer:typeof latestTrainerState!=='undefined'?latestTrainerState?.trainerId||null:null})).catch(()=>({mirror:'unavailable'}));
       data[index===0?'teacher':'pupil']=info;

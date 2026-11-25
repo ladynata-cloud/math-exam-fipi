@@ -2618,9 +2618,10 @@
       "placement": "before-head-close"
     },
     "trainers/negative-numbers-line.html": {
-      "beforeSha256": "9d5d27351841a39132224e1d9223612b6a59c944f48ee0de28a5c0fcac490f01",
-      "afterSha256": "138afefaaa4df157d140e164e396a65e5790d3ab2399c89be1c427460565043e",
-      "placement": "before-head-close"
+      "beforeSha256": "88779fa8b0cfa1eb5905d361eb2354f0c2700eb47ea15a043a0260943a90f799",
+      "afterSha256": "4efc987cdc806b3ce56a15191137456168882734ad7389765507da7f233e4194",
+      "placement": "before-head-close",
+      "sourceSha": "c2ac7dc3dcb1c903658f8dc39d8a61005e9d18ab"
     },
     "trainers/negative-numbers.html": {
       "beforeSha256": "c345cbbf6cfa79e3c7cf51a82a6571cf411d79660d281c0c0ddd7499f110d7b0",
@@ -6868,6 +6869,16 @@
       ],
       "bindingScope": "Three retained per-page sourceSha bindings from reviewed candidate; Vilenkin first-part file and original binding restored from current main. All #740 bindings retained.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "sourceBaseSha": "c2ac7dc3dcb1c903658f8dc39d8a61005e9d18ab",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/NUMBER_LINE_STATE_ROUNDTRIP_20261125.md",
+      "changedPaths": [
+        "trainers/negative-numbers-line.html"
+      ],
+      "reason": "Bind exact number-line adapter class-state canonicalization; preserve all other source bindings and navigator runtime.",
+      "bindingScope": "Per-page sourceSha; global base and exact shared navigator pair unchanged."
     }
   ],
   "coverageUpdates": [

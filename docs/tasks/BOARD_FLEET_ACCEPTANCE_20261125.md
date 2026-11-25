@@ -79,3 +79,7 @@ CI run is required before making a fleet-wide claim.
 ## Second audit and composed candidate: 2026-11-25
 
 Run 45480897299 completed all 74 mirrors, with 60 PASS and 14 FAIL. All failures occurred at teacher-state: a real structured wire event was observed, the host was connected/hydrated and authorized to write, but its accepted trainer state was null. This is evidence of a common initial-state problem, not proof of 14 distinct adapter defects. #753 now contains a bounded recovery candidate for an explicitly empty authoritative snapshot. #752 has been merged and adds the 75th registered mirror. This draft is temporarily stacked on the exact #753 candidate 58f2071e4405f1920d720e5e4b4dd32f73ad340c, for a real fleet run against the combined code. Do not merge this draft into the reconnect branch; after #753 release, retarget to main, compare tree/delta and rerun applicable gates. No production pupils or credentials used.
+
+## Third fleet result
+
+Run 45532175617: 75 checked, 74 PASS, 1 FAIL (negative-numbers-line, handoff). All remaining initialization cases passed. #753 specialized gates 22/22. #756 isolates a deterministic adapter class-serialization inconsistency and adds targeted tests; the full fleet now validates that candidate. Exact temporary base: 322c4c29e24e9315ec0d631544abb80587356710. This is a validation stack, not a release authorization; merge #753 and #756 only through their own reviewed gates, then retarget this draft to main and revalidate.
