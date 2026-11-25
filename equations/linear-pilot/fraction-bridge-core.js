@@ -143,7 +143,21 @@ function factory(){
     }
     return s;
   }
-  function append(events,ev){const next=[...events,ev];return {events:next,state:replay(next)};}
+  function append(events,ev){
+    const next=[...events,ev],state=replay(next);
+    // Keep every answer, first access to help and meaningful transition.
+    // Repeated link clicks and completed revisits that add no evidence must
+    // not consume the finite log budget. Validate before compacting.
+    if(ev.type==='resource'){
+      const before=replay(events);
+      if(before.round.helps.includes('resource:'+ev.id))return {events:events.slice(),state};
+    }
+    if(ev.type==='return'&&events.at(-1)?.type==='open-probe'){
+      const without=events.slice(0,-1),before=replay(without);
+      if(JSON.stringify(before)===JSON.stringify(state))return {events:without,state};
+    }
+    return {events:next,state};
+  }
   function draftKey(pair,phase,probe){
     if(!pairFor(pair))return null;
     if(phase==='original'||phase==='transfer')return pair+':'+phase;
