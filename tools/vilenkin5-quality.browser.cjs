@@ -20,6 +20,14 @@ const server=http.createServer((req,res)=>{
     await go('#course/vilenkin5');assert.equal(await page.locator('.v5-unit-card').count(),53);assert.equal(await page.locator('.v5q-quick-links a').count(),4);
     await page.screenshot({path:path.join(shots,'course-desktop.png'),fullPage:true});
     const ids=await page.evaluate(()=>WorkshopCurriculum.pathById.vilenkin5.ids);
+    const printedCounts=await page.evaluate(()=>{
+      const list=WorkshopCurriculum.pathById.vilenkin5.numbered.map(id=>WorkshopCurriculum.byId[id]);
+      return [1,2].map(part=>list.filter(lesson=>lesson.source.part===part).map(lesson=>lesson.number));
+    });
+    assert.deepEqual(printedCounts[0],Array.from({length:125},(_,i)=>'1.'+(i+1)));
+    assert.deepEqual(printedCounts[1],Array.from({length:50},(_,i)=>'5.'+(i+1)));
+    const assessmentCards=await page.evaluate(()=>WorkshopCurriculum.pathById.vilenkin5.printedChecks);
+    assert.deepEqual(assessmentCards,['check-2-1','check-2-2','check-3-1','check-3-2','check-4','check-25-1','check-25-2','check-25-3'].map(key=>'v5f-printed-'+key));
     // Every canonical lesson mounts its actual visual, including all of part two.
     for(const [i,id]of ids.entries()){
       await page.evaluate(id=>{location.hash='#lesson/'+id;},id);await page.waitForFunction(id=>Vilenkin5Quality.getState().scene?.id===id,id);
@@ -153,6 +161,110 @@ const server=http.createServer((req,res)=>{
     fs.writeFileSync(path.join(shots,'mobile-model-metrics.json'),JSON.stringify(visualMetrics,null,2));
     await page.locator('#answer').focus();await page.keyboard.type('65');assert.equal(await page.locator('#answer').inputValue(),'65');
     await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>document.body.style.zoom='2');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'200% zoom overflow');
-    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,screenshots:23,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
+    await page.close();page=await newLearnerPage();await page.setViewportSize({width:320,height:840});
+    for(const [id,rows] of [['v5f-printed-1-1',10],['v5f-printed-1-2',4],['v5f-printed-1-3',3],['v5f-printed-1-4',8],['v5f-printed-1-5',6],['v5f-printed-1-6',12],['v5f-printed-1-7',3],['v5f-printed-1-8',15],['v5f-printed-1-9',4],['v5f-printed-1-10',6],['v5f-printed-1-11',2],['v5f-printed-1-12',2],['v5f-printed-1-13',8],['v5f-printed-1-14',9],['v5f-printed-1-15',6],['v5f-printed-1-16',5],['v5f-printed-1-17',8],['v5f-printed-1-18',12],['v5f-printed-1-19',9],['v5f-printed-1-20',6],['v5f-printed-1-21',4],['v5f-printed-1-22',2],['v5f-printed-1-23',2],['v5f-printed-1-24',3],['v5f-printed-1-25',3],['v5f-printed-1-26',3],['v5f-printed-1-27',5],['v5f-printed-1-28',6],['v5f-printed-1-29',4],['v5f-printed-1-30',4],['v5f-printed-1-31',4],['v5f-printed-1-32',2],['v5f-printed-1-33',4],['v5f-printed-1-34',6],['v5f-printed-1-35',8],['v5f-printed-1-36',3],['v5f-printed-1-37',1],['v5f-printed-1-38',2],['v5f-printed-1-39',2],['v5f-printed-1-40',2],['v5f-printed-1-41',4],['v5f-printed-1-42',2],['v5f-printed-1-43',4],['v5f-printed-1-44',2],['v5f-printed-1-45',4],['v5f-printed-1-46',5],['v5f-printed-1-47',3],['v5f-printed-1-48',3],['v5f-printed-1-49',2],['v5f-printed-1-50',3],['v5f-printed-1-51',3],['v5f-printed-1-52',3],['v5f-printed-1-53',3],['v5f-printed-1-54',4],['v5f-printed-1-55',2],['v5f-printed-1-56',6],['v5f-printed-1-57',3],['v5f-printed-1-58',1],['v5f-printed-1-59',7],['v5f-printed-1-60',3],['v5f-printed-1-61',2],['v5f-printed-1-62',2],['v5f-printed-1-63',2],['v5f-printed-1-64',3],['v5f-printed-1-65',2],['v5f-printed-1-66',3],['v5f-printed-1-67',6],['v5f-printed-1-68',7],['v5f-printed-1-69',20],['v5f-printed-1-70',3],['v5f-printed-1-71',4],['v5f-printed-1-72',2],['v5f-printed-1-73',3],['v5f-printed-1-74',3],['v5f-printed-1-75',3],['v5f-printed-1-76',2],['v5f-printed-1-77',2],['v5f-printed-1-78',2],['v5f-printed-1-79',4],['v5f-printed-1-80',6],['v5f-printed-1-81',3],['v5f-printed-1-82',3],['v5f-printed-1-83',13],['v5f-printed-1-84',5],['v5f-printed-1-85',3],['v5f-printed-1-86',2],['v5f-printed-1-87',3],['v5f-printed-1-88',4],['v5f-printed-1-89',2],['v5f-printed-1-90',2],['v5f-printed-1-91',4],['v5f-printed-check-3-1',5],['v5f-printed-check-3-2',4],['v5f-printed-1-92',2],['v5f-printed-1-93',6],['v5f-printed-1-94',3],['v5f-printed-1-95',2],['v5f-printed-1-96',3],['v5f-printed-1-97',3],['v5f-printed-1-98',3],['v5f-printed-1-99',3],['v5f-printed-1-100',4],['v5f-printed-1-101',3],['v5f-printed-1-102',5],['v5f-printed-1-103',6],['v5f-printed-1-104',4],['v5f-printed-1-105',2],['v5f-printed-1-106',4],['v5f-printed-1-107',4],['v5f-printed-1-108',3],['v5f-printed-1-109',9],['v5f-printed-1-110',3],['v5f-printed-1-111',4],['v5f-printed-1-112',4],['v5f-printed-1-113',3],['v5f-printed-1-114',2],['v5f-printed-1-115',4],['v5f-printed-1-116',2],['v5f-printed-1-117',3],['v5f-printed-1-118',2],['v5f-printed-1-119',3],['v5f-printed-1-120',3],['v5f-printed-1-121',3],['v5f-printed-1-122',2],['v5f-printed-1-123',2],['v5f-printed-1-124',4],['v5f-printed-1-125',3],['v5f-printed-check-4',7]]){
+      await go('#lesson/'+id);
+      const survey=page.locator('#task-panel table').first();
+      assert.equal(await survey.locator('tbody tr').count(),rows);
+      assert(await survey.locator('caption').isVisible());
+      assert(await page.locator('#task-panel .v5q-table-scroll').evaluateAll(boxes=>boxes.every(box=>box.scrollWidth<=box.clientWidth+1)),'all source-table columns fit at 320px');
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'numbered table at 320px');
+      if(id==='v5f-printed-1-84'){
+        await page.locator('#answer').fill('MN NP PK KS SM');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();
+        await page.locator('#answer').fill('27');await page.locator('#answer-form button').click();assert.equal(await page.locator('#answer').isEnabled(),true);
+        await page.locator('#answer').fill('2,6');await page.locator('#answer-form button').click();assert.match(await page.locator('.feedback').innerText(),/сантиметры/);
+        await page.locator('#answer').fill('2');await page.reload();await page.locator('#answer').waitFor();assert.equal(await page.locator('#answer').inputValue(),'2');
+        await page.locator('#answer').fill('26');await page.locator('#answer-form button').click();
+        const result=await page.evaluate(()=>Vilenkin5Quality.getState().scene);assert(result.correct);assert.deepEqual(result.hintLevels,{});
+      }
+      if(['v5f-printed-check-3-2','v5f-printed-1-92','v5f-printed-1-93','v5f-printed-1-94'].includes(id)){
+        const sizes=await page.locator('#model svg text').evaluateAll(nodes=>nodes.map(x=>parseFloat(getComputedStyle(x).fontSize)));assert(sizes.length>0);assert(sizes.every(n=>n>=9&&n<=16),'diagram and ruler labels retain their authored scale on small screens');
+      }
+      if(id==='v5f-printed-1-110'){
+        await page.locator('#answer').fill('4');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();await page.locator('#answer').fill('AKLF');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel .feedback').textContent(),/соседей/);
+        await page.locator('[data-v5-param=k]').fill('3');await page.locator('[data-v5-param=k]').press('Tab');await page.locator('[data-v5-param=l]').fill('7');await page.locator('[data-v5-param=l]').press('Tab');await page.reload();
+        assert.equal(await page.locator('[data-v5-param=k]').inputValue(),'3');assert.equal(await page.locator('[data-v5-param=l]').inputValue(),'7');await page.locator('#answer').fill('FKLAF');await page.locator('#answer-form button').click();assert(await page.evaluate(()=>Vilenkin5Quality.getState().scene.correct));
+      }
+      if(id==='v5f-printed-1-103'){
+        for(const val of ['46;26;20','37;10;27','55;30;25']){await page.locator('#answer').fill(val);await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();}
+        await page.locator('#answer').fill('62;18;44');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel .feedback').textContent(),/уже дано/);
+        await page.locator('#answer').fill('63;18;');await page.reload();assert.equal(await page.locator('#answer').inputValue(),'63;18;');await page.locator('#answer').fill('63;18;45');await page.locator('#answer-form button').click();assert(await page.evaluate(()=>Vilenkin5Quality.getState().scene.correct));
+      }
+      if(id==='v5f-printed-1-101'){
+        await page.locator('[data-v5-param=zone]').selectOption('1');await page.locator('[data-v5-param=at]').selectOption('3');await page.locator('[data-v5-prediction]').fill('3003');await page.locator('[data-v5-predict] button').click();await page.reload();
+        assert.match(await page.locator('#model svg').textContent(),/3003/);assert.equal(await page.locator('[data-v5-param=zone]').inputValue(),'1');
+      }
+      if(id==='v5f-printed-1-99'){
+        await page.locator('[data-v5-param=stage]').selectOption({value:'2'});await page.locator('[data-v5-param=tint]').selectOption('1');assert.equal(await page.locator('#model svg polygon').count(),7);
+        await page.locator('[data-v5-param=shift]').selectOption('1');await page.reload();assert.equal(await page.locator('#model svg polygon').count(),2);assert.equal(await page.locator('[data-v5-param=stage]').inputValue(),'2');
+      }
+      if(id==='v5f-printed-1-95'){
+        await page.locator('#answer').fill('7');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel .feedback').innerText(),/самого отрезка/);
+        await page.locator('#answer').fill('2');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();await page.locator('#answer').fill('8');await page.reload();assert.equal(await page.locator('#answer').inputValue(),'8');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();
+        assert.match(await page.locator('#task-panel svg').textContent(),/L=M/);
+      }
+      if(id==='v5f-printed-1-92'){
+        await page.locator('#answer').fill('B A K');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel .feedback').innerText(),/штриха/);
+        await page.locator('[data-v5-param=extend]').selectOption('1');await page.locator('[data-v5-param=which]').selectOption('3');
+        await page.locator('#answer').fill('D');await page.reload();assert.equal(await page.locator('#answer').inputValue(),'D');assert.equal(await page.locator('[data-v5-param=extend]').inputValue(),'1');
+        await page.locator('#answer').fill('Д В К А');await page.locator('#answer-form button').click();assert(await page.evaluate(()=>Vilenkin5Quality.getState().scene.correct));
+      }
+      if(id==='v5f-printed-1-72'){
+        const own=page.locator('#v5-quality-note');
+        assert(await own.isVisible());assert.equal(await page.locator('.v5q-notes textarea').evaluate(node=>node.closest('details')===null),true);
+        await own.fill('В магазине сравню цену за килограмм. На площадке измерю дальность трёх прыжков.');
+        let scene=await page.evaluate(()=>Vilenkin5Quality.getState().scene);assert.equal(scene.attempt,0);assert.equal(scene.firstAttempt,null);
+        await page.reload();await own.waitFor();assert.match(await own.inputValue(),/за килограмм/);
+        await page.locator('#answer').fill('48');await page.locator('#answer-form button').click();assert.match(await page.locator('#task-panel').innerText(),/количеств/i);
+        await page.locator('#answer').fill('135');await page.locator('#answer-form button').click();scene=await page.evaluate(()=>Vilenkin5Quality.getState().scene);assert(scene.correct);assert.deepEqual(scene.hintLevels,{});
+      }
+      if(id==='v5f-printed-1-7')assert(await survey.locator('tbody td').evaluateAll(cells=>cells.every(cell=>{const r=document.createRange();r.selectNodeContents(cell);return r.getClientRects().length<=1;})),'each printed number stays on one line');
+      if(id==='v5f-printed-1-26'){
+        await page.locator('#model svg').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,'leading-zero-tree-320.png')});
+        assert.equal(await page.locator('#model svg rect').count(),2,'only the nonzero first digit becomes a child node');
+      }
+      if(id==='v5f-printed-1-8'){
+        await page.locator('[data-v5-weather-sky]').selectOption('2');await page.locator('[data-v5-weather-rain]').check();
+        await page.locator('[data-v5-weather-temp]').fill('9,5');await page.locator('[data-v5-weather-form] button').click();
+        assert.match(await page.locator('#model').innerText(),/1 из 15/);await page.reload();await page.locator('[data-v5-weather-temp]').waitFor();
+        assert.equal(await page.locator('[data-v5-weather-temp]').inputValue(),'9,5');
+        await page.locator('[data-v5-weather-form]').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,'weather-diary-entry-320.png')});
+      }
+      await survey.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,id+'-mobile.png')});
+      await page.locator('[data-cmd=mode][data-value=practice]').click();
+      const practice=await page.evaluate(()=>{
+        const scene=Vilenkin5Quality.getState().scene,source=WorkshopMath.generate(scene.id,0),task=WorkshopMath.generate(scene.id,scene.seed);
+        return {id:scene.id,mode:scene.mode,seed:scene.seed,sourceKey:source.conditionKey,key:task.conditionKey,prompt:task.prompt};
+      });
+      assert.equal(practice.id,id);assert.equal(practice.mode,'practice');assert(practice.seed>0);
+      assert(practice.key);assert.notEqual(practice.key,practice.sourceKey,id+' uses new practice data');
+      assert.equal(await page.locator('#task-panel .question').textContent(),practice.prompt);
+      assert(await page.locator('#task-panel table').first().isVisible());
+      if(id==='v5f-printed-1-119'){
+        await page.reload();await page.locator('#answer').waitFor();
+        assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.seed),practice.seed);
+        await page.locator('#answer').fill('нет');await page.locator('#answer-form button').click();
+        await page.locator('[data-cmd=next]').click();
+        const nextKey=await page.evaluate(()=>{const s=Vilenkin5Quality.getState().scene;return WorkshopMath.generate(s.id,s.seed).conditionKey;});
+        assert.notEqual(nextKey,practice.key,'next ray differs after reload');assert.notEqual(nextKey,practice.sourceKey);
+      }
+    }
+
+    for(const width of [320,375]){
+      await page.setViewportSize({width,height:840});await go('#lesson/v5f-printed-check-2-1');
+      const modes=await page.locator('.lesson-head .v5q-mode').evaluateAll(items=>items.map(b=>({width:b.offsetWidth,height:b.offsetHeight})));
+      assert.equal(modes.length,3);assert(modes.every(b=>b.width>=130&&b.height<=60),'all three mode labels remain whole at '+width+' px');
+      const receipt=page.locator('#task-panel table');assert.equal(await receipt.locator('tbody tr').count(),4);
+      assert.equal(await receipt.locator('tbody td').filter({hasText:/^\?$/}).count(),3);await receipt.scrollIntoViewIfNeeded();
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(shots,'printed-receipt-'+width+'.png')});
+      await go('#lesson/v5f-printed-check-2-2');const own=page.locator('[data-v5-print-number]');
+      await own.locator('input').fill(width===320?'909':'404');await own.locator('button').click();
+      const number=width===320?'909':'404';await page.waitForFunction(n=>Vilenkin5Quality.getState().scene.seed===Number(n),number);
+      await page.locator('#answer').fill('6');await page.locator('#answer-form button').click();await page.locator('[data-cmd=next]').click();
+      await page.reload();await own.locator('input').waitFor();assert.equal(await own.locator('input').inputValue(),number);
+      assert.equal(await page.evaluate(()=>Vilenkin5Quality.getState().scene.step),1);await own.scrollIntoViewIfNeeded();
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(shots,'printed-chosen-number-'+width+'.png')});
+    }
+    assert.deepEqual(errors,[]);console.log(JSON.stringify({gate:'VILENKIN5_QUALITY_BROWSER_PASS',lessons:ids.length,numberedPart1:printedCounts[0].length,numberedPart2:printedCounts[1].length,printedAssessmentCards:assessmentCards.length,screenshots:157,journeys:'134 guided flows, long division, draft/note/model reload, learning detour, fractional portions, rounding, actual GIF play/stop, focused mobile diagrams and readable labels, right-angle marker, keyboard and zoom'}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

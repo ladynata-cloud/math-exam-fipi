@@ -1,0 +1,1225 @@
+{
+  "parts": {
+    "selfcheck-VI-1": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е"
+    ],
+    "selfcheck-VI-2": [
+      null
+    ],
+    "selfcheck-VI-3": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VI-4": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VI-5": [
+      null
+    ],
+    "selfcheck-VI-6": [
+      null
+    ],
+    "selfcheck-VI-7": [
+      null
+    ],
+    "selfcheck-VI-8": [
+      null
+    ],
+    "selfcheck-VI-9": [
+      null
+    ],
+    "selfcheck-VI-10": [
+      null
+    ],
+    "selfcheck-VI-11": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "selfcheck-VI-12": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VI-13": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VI-14": [
+      "а",
+      "б"
+    ],
+    "selfcheck-VI-15": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "selfcheck-VI-1": {
+      "id": "source-selfcheck-6-01",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 1",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "1",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-2": {
+      "id": "source-selfcheck-6-02",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 2",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "2",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-3": {
+      "id": "source-selfcheck-6-03",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 3",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "3",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-4": {
+      "id": "source-selfcheck-6-04",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 4",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "4",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-5": {
+      "id": "source-selfcheck-6-05",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 5",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "5",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-6": {
+      "id": "source-selfcheck-6-06",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 6",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "6",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-7": {
+      "id": "source-selfcheck-6-07",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 7",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "7",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-8": {
+      "id": "source-selfcheck-6-08",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 8",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "8",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-9": {
+      "id": "source-selfcheck-6-09",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 9",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "9",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-10": {
+      "id": "source-selfcheck-6-10",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 10",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "10",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-11": {
+      "id": "source-selfcheck-6-11",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 11",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "11",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-12": {
+      "id": "source-selfcheck-6-12",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 12",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "12",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-13": {
+      "id": "source-selfcheck-6-13",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 13",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "13",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-14": {
+      "id": "source-selfcheck-6-14",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 14",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "14",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "selfcheck-VI-15": {
+      "id": "source-selfcheck-6-15",
+      "kind": "exercise",
+      "title": "Вопросы к главе VI · вопрос 15",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "selfcheck",
+        "exercise": "15",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          156,
+          157
+        ],
+        "pdfPages": [
+          158,
+          159
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-selfcheck-vi-01-a": {
+      "raw": "4eb5c8a13a9439297d5c934d442c99113281a8efa80ca931978b62d2c4dcd939",
+      "authored": "25f3741cde45dc3b4bcff113a5e066cd1bad7568b424b8e21627f1ea4458a6fc",
+      "integrated": "b349f91193f12b35c26f113ac68b767bafdf5bd2d59db791b69d0485ff0c0be9"
+    },
+    "ex-selfcheck-vi-01-b": {
+      "raw": "ac9fa20782334f9d85b40e126b97264c8a668ce45314780dedc31113dc024427",
+      "authored": "e1f73cea07b9b257e06d68dab8104937f9d15581b1fbeaa58876aa8c8a2dd065",
+      "integrated": "fd4146311bf6c359f390b52b79b85fe20797851abd417aa7e613685d78c36a0c"
+    },
+    "ex-selfcheck-vi-01-c": {
+      "raw": "c4671f874f7138e538922f5b46440d82c4acfbac790741ad51e74bafd0484fbf",
+      "authored": "38505583a4f49c475c59ae3b7a2c191aa4e89888c0b7d29c8d3b9d594df9380a",
+      "integrated": "d7054a9a8552ca37eb7a2b454e9c1d7925fe16c820535ea1a51daa74b0bfa1d6"
+    },
+    "ex-selfcheck-vi-01-d": {
+      "raw": "62d952d0e4ff8f08ab27d24a7e99434e5c760d821746f4a5af72e201a7606b31",
+      "authored": "8e134142a14598a478cb6e7d70c543c49b7a42a4f8962ff024e8edc1d502fea3",
+      "integrated": "fe0fda9611893f957d45041ac0dfa284df738bbc3a8313c32d78074a37b36507"
+    },
+    "ex-selfcheck-vi-01-e": {
+      "raw": "6847f6ce0953ebd1e5f6c933e050cd221f59d120ed7af792b3f8a36dba452e71",
+      "authored": "51b6a554861ed82e1c50381ee308974a69b42b96a1a74933e0dea7394fd2a539",
+      "integrated": "6f94f2c55b340d7073b74b148a958cb2c0681ee06fbc93b302b1fd985efe9ee4"
+    },
+    "ex-selfcheck-vi-01-f": {
+      "raw": "7f141157358a0940408fedc93550460a990b4cab9289b10700ea479d05a1c3e2",
+      "authored": "f28148670ec86392c21edf7e1188ba7cb8f4c72803c1209d007cf757f383e798",
+      "integrated": "0c03a376c6d5a72a1b133bb61215dadf87147670dd4be44abf363f7e83bd98d2"
+    },
+    "ex-selfcheck-vi-02": {
+      "raw": "268c16c12c66cda6a54f57ddaf975d07f6d8bd7948a2ba1d0420b5036224bb47",
+      "authored": "5d9fd1e31cc3e258e2ed1aad8b0db20107dbf8f25c1f3a5c5482bbe2d9f1d9b5",
+      "integrated": "a323e1bec8c111888dfc4e0016a6dbc01083529356908aecdae4e7efe4c3dacf"
+    },
+    "ex-selfcheck-vi-03-a": {
+      "raw": "8b3937b87bed661347d1f568da1c586acbc84d3749f68b8c9cf98eb406b1eb3f",
+      "authored": "c2a08de6030bf00eb9c42c7020303ff81dc90c897d21899d51c80f4fa2b83ace",
+      "integrated": "330ea6953770e0ded1fa60b717972b13387f8efada3b257c1d243b070a4b8f55"
+    },
+    "ex-selfcheck-vi-03-b": {
+      "raw": "3f8e739e29041f32526f55991d5f40243b5948aaced909446d711800274e1553",
+      "authored": "1feb8f85245fb9bf822640ecfef1577095f8b4df0a32c5da3b9c5d53db01ee7f",
+      "integrated": "fc80c45444abe3db634e0ca3a9ca573e46fb3415158d520145150b2c52e0f95d"
+    },
+    "ex-selfcheck-vi-04-a": {
+      "raw": "a0029a291921d701b1708f6580486ad006218d392378f7659ce5211a6dfd98f4",
+      "authored": "ac8308cd6627f2f4ca351e6fae5bf8885dcf4e4b139db1ea7f8421117fe660a2",
+      "integrated": "837f3516907764235e928dedcc163a41449b353b9065165daf684e7afbf511f4"
+    },
+    "ex-selfcheck-vi-04-b": {
+      "raw": "007aa6a1987d0c29c45a2a200d2fee327f95590114b6d36b04396c0051e5497a",
+      "authored": "dfb1e4bc0847caa3a632ccadf3ca919bec3e7fcbfa8413f9fff358120e96d62f",
+      "integrated": "a05731986a91d3982275ac72f3fe6e2ff9e2f3fe8951f5098525a6a7f3a36386"
+    },
+    "ex-selfcheck-vi-05": {
+      "raw": "d8a9e93d10f5d3f13024d7b71672dfd9385cc00d29c266d9a1d5c7899a8291e4",
+      "authored": "93e1d6f8bba39fc05ac723c5cd1c5085ae69f8e36deb8bb99d2a64f02349eedb",
+      "integrated": "d4ebd21ed35bc3eb0a0dec19310790016b3e336c15d760a783a071cc2bc1b009"
+    },
+    "ex-selfcheck-vi-06": {
+      "raw": "61efe8595bded4615334fc29528b38f9cb8026378c3c2ce8a54428f605a410ef",
+      "authored": "30ee122b80ac16e40bfd53ac1319ee8a7667d88f967b8df8dccf5b7a2fd744ef",
+      "integrated": "b6446e4950a36e3cde88b235d1aeda44bc787770867fee1208e417cb88070ba5"
+    },
+    "ex-selfcheck-vi-07": {
+      "raw": "d45d2aff74055bcd74160e1be477803651c55d3144d3c2cee5905f77e460e0b2",
+      "authored": "931d3e08e60b0362916c901e540e22cde5c9219885eeaed206c2f4fc48d5605d",
+      "integrated": "e0ef8150627ae2f968dfef94786425775806d3dd773c0911f639b8ab1fed954c"
+    },
+    "ex-selfcheck-vi-08": {
+      "raw": "865abe42427e7e3943d5f99c2c6dc8aa31258a2178d5471af1e48d0267a1bbb8",
+      "authored": "4ee09935a0ea84a5236674c3a21761a2ceda1c8793c1b50f3eaac68e2f5c5a23",
+      "integrated": "c8a0aa514a8588c25915ac8dd8f6c4a145167888c9099eaf38a0c4a198ebdb38"
+    },
+    "ex-selfcheck-vi-09": {
+      "raw": "47de1779e018bfeafe2c8420f0bccb3026553fefb3bb81a60fc883920c3fd960",
+      "authored": "8abb74d5f7a2f33c87d9d3d8a242f43b0c491dba20ea37101489ad8023ccc362",
+      "integrated": "d265de33830f8d1ddf56e861ad5ce910517d337dba66ab1360456c908e8b1690"
+    },
+    "ex-selfcheck-vi-10": {
+      "raw": "d23be57bcb5aa4f99f7806470b6b5db5c7540852294c85629300bdc0116b6959",
+      "authored": "1fc4b6104145974a545a632fe181698e60feedf7cc56a3b24524fa9aa6dbebef",
+      "integrated": "5753b1452c62f98ee930738c9db33235dfd6210d021a93fe5444d3fd27b3e377"
+    },
+    "ex-selfcheck-vi-11-a": {
+      "raw": "83e37f5527e6db40212aff493deca17067aee09e9783cc6b35ce1a7c21c405d6",
+      "authored": "41b386a1129bb3f49986f8594118a7db810cb1486d7b1aa2dc84ee7ed4da5baa",
+      "integrated": "cf157aaa9d9e3a1c25b7571c6055607cd3146de1d658b6544d7b50d999dfd989"
+    },
+    "ex-selfcheck-vi-11-b": {
+      "raw": "49cb3a8c17485f90dd8f055301f3a8eb883a398390794ecd01b23ab096aa0d5d",
+      "authored": "a2b56e4b7eb74187ba1e84d4c3521df53ab0db263ed8ba00f6dc0835ecb2d56a",
+      "integrated": "d00221a6b20eb2c327d69a536a283d8902955c788bed644da6ca1baa8463a761"
+    },
+    "ex-selfcheck-vi-11-c": {
+      "raw": "93a3a4968d71f8f685459d2bdededbfc83460a0c78020e8c1f06bf4c26fda58a",
+      "authored": "01da7498f64a8001ea2f9e7e14086fa4374ded5175c9d64a2c7a916d812f54d9",
+      "integrated": "76aae15d9196d1e43b72551c6963048456c6f2d86ccd0f9c84adecc1ace7257a"
+    },
+    "ex-selfcheck-vi-11-d": {
+      "raw": "8085f900d36ecaf6a210885eef32a9425afc7b4e22886389f6b5c4a5b686a0be",
+      "authored": "03c8b46a3d7dff3a2c06c75570efe4bd38f2ea246f316a946fe271e5448253b9",
+      "integrated": "15df40d118cf9f298cfb582b8ffcbbf072c4c375afd9492697b9f86b6c0f72ff"
+    },
+    "ex-selfcheck-vi-12-a": {
+      "raw": "cc70435738e494d4d7d74e6c8232d30476244f6209ec003d6edef6e1ff0c7c07",
+      "authored": "6d78ffa4b088187e7e49fc8d2df42e9ab43200c1a266db06654a0c6fda589dc3",
+      "integrated": "4e3e687efbd9d389d9c7640ad850049b0be7d421221a619b467c1f33428132fa"
+    },
+    "ex-selfcheck-vi-12-b": {
+      "raw": "c36f697ebfd7377ebfdae68eb4f9922f9643b626d8c6dcee27c2a2d34d748091",
+      "authored": "49925edcdd05f4c7818a74b7b6e72be009f0ffed0abf4d77f6d0c4c4d2fe6b39",
+      "integrated": "b3b13da1343880b16a03158815f4ab41e7ff1924c63c3ad3b3ca501f7af4a84a"
+    },
+    "ex-selfcheck-vi-13-a": {
+      "raw": "da577e08b0814d80342f88b6c0ccc9a74fd0cd7652209ca6c349ea40a8fc00c4",
+      "authored": "94e3e1b5753efd0ecdd3a9525e2b435a16ba887dca395b18b6c3c62466dc6a03",
+      "integrated": "c1909585cd8c67a5656cf3a9e3aeebe02098350c8edb06ede0384ec70660cfad"
+    },
+    "ex-selfcheck-vi-13-b": {
+      "raw": "33e4a3a2c785403dbce844c44e82f474a07c805e537cb43f78203026bc952574",
+      "authored": "14e67ae13faeace276deb2dc79c3738d9158fb114d2fa35391f8209caeb0d842",
+      "integrated": "827c5fd481cd74cd2b60bacbfc504096250a8d5afe692a995293813fe60b7b01"
+    },
+    "ex-selfcheck-vi-14-a": {
+      "raw": "ded109d67b6eec03f5ef1461eee5dc7e1b12948c87303a2e1105a3a6e370517b",
+      "authored": "be66d66f9722c310f38c6af904b48f1fe20334cffc21a557057a19c242792f29",
+      "integrated": "c7927e18251fbf0b06c577f1b2174848efe2932627979988fcf6a4f2865278bf"
+    },
+    "ex-selfcheck-vi-14-b": {
+      "raw": "d6b3e96170613388ac965b7c266535fa151c010a55b58644081b4fa475a582f0",
+      "authored": "58812e63e80e871785d3862735d8715bfce0dde399222738245888c668981139",
+      "integrated": "6c7f54945997ed81177e5eeb7bac5dd4f3a6be23dba5f8aeaadf60dc7ad06d2a"
+    },
+    "ex-selfcheck-vi-15": {
+      "raw": "77ba4a0a43de18c1b4e653b7d25a6b3688e332d7cea2efa22cfd273a1b023a6d",
+      "authored": "b278a9fcef2fc790303b2f78903971d1f1f836a61991e4f650f76cb9c9ab5103",
+      "integrated": "18f01c43e89dc16b49a175e4d00f6f1b93b0474610b38afd6e703945e029b09e"
+    }
+  },
+  "cases": [
+    [
+      "ex-selfcheck-vi-01-a|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-a-condition"
+    ],
+    [
+      "ex-selfcheck-vi-01-a|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-01-a|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-01-a|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-01-a|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-01-a|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-01-b|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-b-condition"
+    ],
+    [
+      "ex-selfcheck-vi-01-b|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-01-b|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-01-b|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-01-b|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-01-b|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-01-c|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-c-condition"
+    ],
+    [
+      "ex-selfcheck-vi-01-c|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-c-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-01-c|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-c-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-01-c|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-c-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-01-c|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-c-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-01-c|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-c-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-01-d|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-d-condition"
+    ],
+    [
+      "ex-selfcheck-vi-01-d|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-d-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-01-d|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-d-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-01-d|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-d-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-01-d|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-d-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-01-d|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-d-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-01-e|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-e-condition"
+    ],
+    [
+      "ex-selfcheck-vi-01-e|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-e-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-01-e|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-e-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-01-e|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-e-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-01-e|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-e-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-01-e|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-e-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-01-f|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-f-condition"
+    ],
+    [
+      "ex-selfcheck-vi-01-f|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-f-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-01-f|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-f-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-01-f|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-f-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-01-f|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-f-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-01-f|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-01-f-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-02|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-02-condition"
+    ],
+    [
+      "ex-selfcheck-vi-02|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-02-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-02|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-02-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-02|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-02-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-02|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-02-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-02|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-02-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-03-a|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-a-condition"
+    ],
+    [
+      "ex-selfcheck-vi-03-a|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-03-a|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-03-a|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-03-a|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-03-a|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-03-b|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-b-condition"
+    ],
+    [
+      "ex-selfcheck-vi-03-b|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-03-b|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-03-b|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-03-b|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-03-b|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-03-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-04-a|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-a-condition"
+    ],
+    [
+      "ex-selfcheck-vi-04-a|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-04-a|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-04-a|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-04-a|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-04-a|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-04-b|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-b-condition"
+    ],
+    [
+      "ex-selfcheck-vi-04-b|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-04-b|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-04-b|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-04-b|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-04-b|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-04-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-05|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-05-condition"
+    ],
+    [
+      "ex-selfcheck-vi-05|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-05-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-05|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-05-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-05|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-05-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-05|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-05-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-05|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-05-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-06|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-06-condition"
+    ],
+    [
+      "ex-selfcheck-vi-06|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-06-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-06|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-06-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-06|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-06-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-06|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-06-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-06|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-06-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-07|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-07-condition"
+    ],
+    [
+      "ex-selfcheck-vi-07|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-07-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-07|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-07-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-07|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-07-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-07|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-07-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-07|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-07-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-08|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-08-condition"
+    ],
+    [
+      "ex-selfcheck-vi-08|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-08-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-08|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-08-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-08|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-08-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-08|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-08-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-08|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-08-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-09|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-09-condition"
+    ],
+    [
+      "ex-selfcheck-vi-09|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-09-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-09|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-09-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-09|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-09-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-09|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-09-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-09|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-09-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-10|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-10-condition"
+    ],
+    [
+      "ex-selfcheck-vi-10|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-10-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-10|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-10-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-10|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-10-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-10|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-10-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-10|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-10-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-11-a|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-a-condition"
+    ],
+    [
+      "ex-selfcheck-vi-11-a|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-11-a|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-11-a|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-11-a|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-11-a|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-11-b|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-b-condition"
+    ],
+    [
+      "ex-selfcheck-vi-11-b|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-11-b|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-11-b|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-11-b|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-11-b|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-11-c|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-c-condition"
+    ],
+    [
+      "ex-selfcheck-vi-11-c|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-c-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-11-c|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-c-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-11-c|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-c-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-11-c|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-c-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-11-c|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-c-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-11-d|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-d-condition"
+    ],
+    [
+      "ex-selfcheck-vi-11-d|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-d-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-11-d|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-d-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-11-d|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-d-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-11-d|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-d-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-11-d|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-11-d-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-12-a|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-a-condition"
+    ],
+    [
+      "ex-selfcheck-vi-12-a|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-12-a|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-12-a|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-12-a|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-12-a|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-12-a|step-4",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-a-step-4"
+    ],
+    [
+      "ex-selfcheck-vi-12-b|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-b-condition"
+    ],
+    [
+      "ex-selfcheck-vi-12-b|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-12-b|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-12-b|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-12-b|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-12-b|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-12-b|step-4",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-12-b-step-4"
+    ],
+    [
+      "ex-selfcheck-vi-13-a|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-a-condition"
+    ],
+    [
+      "ex-selfcheck-vi-13-a|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-13-a|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-13-a|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-13-a|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-13-a|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-13-b|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-b-condition"
+    ],
+    [
+      "ex-selfcheck-vi-13-b|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-13-b|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-13-b|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-13-b|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-13-b|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-13-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-14-a|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-a-condition"
+    ],
+    [
+      "ex-selfcheck-vi-14-a|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-a-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-14-a|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-a-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-14-a|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-a-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-14-a|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-a-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-14-a|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-a-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-14-b|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-b-condition"
+    ],
+    [
+      "ex-selfcheck-vi-14-b|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-b-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-14-b|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-b-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-14-b|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-b-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-14-b|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-b-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-14-b|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-14-b-step-3"
+    ],
+    [
+      "ex-selfcheck-vi-15|condition",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-15-condition"
+    ],
+    [
+      "ex-selfcheck-vi-15|help:h1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-15-help-h1"
+    ],
+    [
+      "ex-selfcheck-vi-15|help:h2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-15-help-h2"
+    ],
+    [
+      "ex-selfcheck-vi-15|step-1",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-15-step-1"
+    ],
+    [
+      "ex-selfcheck-vi-15|step-2",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-15-step-2"
+    ],
+    [
+      "ex-selfcheck-vi-15|step-3",
+      "vector-chapter-selfcheck-ex-selfcheck-vi-15-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "ed1e6616ac32f74cac13b5dd5907a6c7c3c72a3e8ce05d2efa5d9a3558db4ec5",
+      "afterSHA256": "fe5ac6b41be57fe5db9cff02f2c34c0b4889145cc186f1fa4a87a4128e300f1f"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "d2bee8f8d5b06e4c878265db237e950c649bedd68f540083cc0f856c88e45767",
+      "afterSHA256": "2b9a0b971e3ee3c4a7d672d7af26529c2e9247094fc60e8e08f9a7e25a2e4233"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T21:19:38Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–612, with 1,027 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "e695311b133c6f16ee8caf6480d9288c87667733367ae11a2a9a5ef58d9cfc24",
+    "index": "f79666da8c5b8d9efacfbc861ac24300ce853e9863715e8a4ce042bf56bb2e28",
+    "registry": "a970e14dcd1f08e2efb5bbb8f9fd91466a3a0a745ae9f9d1d8adeb9c4e1ccc85",
+    "cases": "c6c575265de58dd30d7148d86d616b5122006d772e4e0549f1404f7c79f094b3"
+  }
+}

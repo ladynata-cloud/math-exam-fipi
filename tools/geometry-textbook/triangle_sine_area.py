@@ -1,0 +1,193 @@
+"""Theorem 104 and exercises 1109–1113 from the 2023 edition; side names match the printed triangles."""
+import argparse
+import json
+from math import cos, radians, sin, sqrt
+from coordinate_curves import graph
+from upper_semicircle import BOOK, ROOT, author
+from trigonometric_signs import grade
+
+OUT = ROOT / 'geometry-course/textbook/data/triangle-sine-area.json'
+CAPTION = 'На чертеже сохраняются отношения длин и величины углов. Высота перпендикулярна прямой, содержащей основание.'
+
+
+def triangle(label, names, base, side, angle, altitude=True):
+    vertex, end, top = names
+    x = round(side*cos(radians(angle)), 10)
+    y = round(side*sin(radians(angle)), 10)
+    points = {vertex:(0,0), end:(base,0), top:(x,y)}
+    edges = [(vertex,end),(end,top),(top,vertex)]
+    if altitude:
+        points['H']=(x,0)
+        edges.append((top,'H'))
+    return graph(label,points,edges=edges)
+
+
+def parallelogram(label,base,side,angle,diagonal):
+    x=round(side*cos(radians(angle)),10)
+    y=round(side*sin(radians(angle)),10)
+    points={'A':(0,0),'B':(base,0),'C':(base+x,y),'D':(x,y),'H':(x,0)}
+    sides=[('A','B'),('B','C'),('C','D'),('D','A'),('D','H')]
+    if diagonal:sides.append(('B','D'))
+    return graph(label,points,edges=sides)
+
+
+def rectangle(label,diagonal,angle):
+    w=diagonal*cos(radians(angle/2));h=diagonal*sin(radians(angle/2))
+    points={'A':(0,0),'B':(w,0),'C':(w,h),'D':(0,h),'K':(w/2,h/2)}
+    return graph(label,points,edges=[('A','B'),('B','C'),('C','D'),('D','A'),('A','C'),('B','D')])
+
+
+def heights(label,angle,b,c,show_k=True):
+    x=round(cos(radians(angle)),10);y=round(sin(radians(angle)),10)
+    points={'A':(0,0),'B':(c,0),'C':(b*x,b*y),'H':(c*x*x,c*x*y),'K':(b*x,0)}
+    # Merge exact geometric coincidences before building visible labels.
+    for name in ('H','K'):
+        for v in 'ABC':
+            if sum((q-r)**2 for q,r in zip(points[name],points[v]))<1e-12:points[name]=points[v];break
+    edges=[('A','B'),('A','C'),('B','C'),('B','H'),('H','C')]
+    if show_k:
+        edges.extend([('C','K'),('K','B')])
+    else:
+        del points['K']
+    return graph(label,points,edges=edges)
+
+
+def school_figure(card):
+    model=card['visualization']['model']
+    for view in model['views'].values():
+        view['dashSegments']=[]
+        view['segments']=[pair for pair in view['segments'] if not any(key.startswith(('_left__','_base__','head_')) for key in pair)]
+        visible=[]
+        for key in view['points']:
+            names=[name for name in model['labels'][key].split('=') if name not in ('O','x','y')]
+            if not names:continue
+            model['labels'][key]='='.join(names)
+            visible.append(key)
+        view['points']=visible
+        ids={name:key for key in visible for name in model['labels'][key].split('=')}
+        # A candidate mark is drawn only where both displayed line segments really are perpendicular.
+        for foot in ('H','K'):
+            if foot not in ids:continue
+            key=ids[foot];neighbors=[]
+            for a,b in view['segments']:
+                if a==key and b!=key:neighbors.append(b)
+                if b==key and a!=key:neighbors.append(a)
+            if len(neighbors)<2:continue
+            pts=model['points'];center=pts[key];marked=False
+            for i,a in enumerate(neighbors):
+                for b in neighbors[i+1:]:
+                    u=[v-w for v,w in zip(pts[a],center)];v=[n-w for n,w in zip(pts[b],center)]
+                    if abs(u[0]*v[0]+u[1]*v[1])<.00001 and min(u[0]**2+u[1]**2,v[0]**2+v[1]**2)>2:
+                        view['rightAngles'].append({'vertex':key,'a':a,'b':b,'size':1.6});marked=True;break
+                if marked:break
+    return card
+
+
+def area(n,part,pages,question,reason,hint,steps,views,probes,*,title=None,refs=None):
+    item=author(n,part,pages,question,reason,hint,steps,views,probes,refs or [104],title=title,caption=CAPTION)
+    if item['kind']=='exercise':
+        item['help'][1]['text']='Найди вершину угла между данными сторонами и проведи высоту к выбранному основанию.'
+        item['answer']['prompt']='Обоснуй формулу, объяснив каждый множитель с помощью сторон, углов, диагоналей или высот.'
+    return school_figure(item)
+
+
+def theorem():
+    views=[triangle('Острый угол между CB и CA','CBA',6,4,30),triangle('Основание высоты вне треугольника','CBA',6,4,120),triangle('Прямой угол между новыми сторонами','CBA',5,3,90)]
+    return area(104,None,[276],'Как выразить площадь через две стороны и угол между ними? Докажи формулу для острого, прямого и тупого угла.',
+        'Если BC=a, CA=b, ∠C=γ, высота из A к прямой BC равна h=b sin γ. Следовательно S=ah/2=ab sin γ/2. Для тупого γ используем sin(180°−γ)=sin γ, а при 90° имеем h=b.',
+        'Опусти перпендикуляр на всю прямую BC. Для тупого угла основание высоты может лежать за вершиной C.',
+        [('Вырази высоту','При BC=6, CA=4 и γ=30° имеем AH=4 sin 30°=2. Поэтому S=6·2/2=6.','В формуле участвуют стороны, между которыми заключён угол.'),
+         ('Разбери тупой угол','При γ=120° точка H лежит на продолжении BC за C. Высота AH=4 sin 60°=4 sin 120°=2√3, а площадь 6√3.','Синусы смежных углов равны.'),
+         ('Проверь прямой угол','Пусть стороны 5 и 3 перпендикулярны. Теперь высота равна стороне 3, а площадь 15/2. Результат совпадает с формулой через sin 90°=1.','Выбери основание и назови высоту, которая ему соответствует.')],views,
+        [('Какова высота при CA=4 и γ=30°?','2','Умножь 4 на синус 30°.'),('Какова удвоенная площадь при сторонах 5, 3 и угле 90°?','15','Для катетов удвоенная площадь равна произведению длин.')],title='Теорема о площади треугольника')
+
+
+def given_sides():
+    specs=[
+        ('а','ABC',6*sqrt(8),4,60,'AB=6√8 см, AC=4 см, ∠A=60°','(6√8)·4·(√3/2)/2=6√24=12√6',['12√6','12*sqrt(6)','12sqrt(6)','6√24'],'√24=2√6. Сократи корень после подстановки.','Какой коэффициент при √6 в ответе?','12','24√6','24'),
+        ('б','BCA',3,18*sqrt(2),45,'BC=3 см, AB=18√2 см, ∠B=45°','3·18√2·(√2/2)/2=27',['27','27,0','27.0'],'У произведения √2·√2 значение 2. Сохрани множитель 1/2 площади.','Чему равна исходная площадь в см²?','27','54','54'),
+        ('в','CBA',7,14,48,'AC=14 см, CB=7 см, ∠C=48°','7·14·sin 48°/2=49 sin 48°',['49sin48°','49 sin 48°','49*sin(48°)','49sin(48°)','36,41','36.41'],'Для угла 48° оставь точный синус или выбери режим градусов на калькуляторе.','Чему равен множитель перед sin 48°?','49','98 sin 48°','98')]
+    cards=[]
+    for part,names,a,b,angle,given,substitution,forms,detail,probe,coef,transfer,newcoef in specs:
+        views=[triangle('Данные стороны и включённый угол',names,a,b,angle,False),triangle('Высота к первой стороне',names,a,b,angle),triangle('Вдвое длиннее вторая сторона',names,a,2*b,angle)]
+        hint='Умножь половину произведения данных сторон на синус угла между ними. '+detail
+        question=f'В треугольнике ABC {given}. Найди площадь.'
+        if part=='в':question+=' Оставь точное выражение или округли до сотых.'
+        q=area(1109,part,[281],question,f'Обе стороны сходятся в {names[0]}. Поэтому S={substitution} см².',hint,
+               [('Выбери включённый угол',f'Вершина {names[0]} соединяет данные стороны. Высота ко второй стороне умножает длину первой стороны на sin {angle}°.','Угол, лежащий напротив одной из этих сторон, здесь не подойдёт.'),
+                ('Подставь длины',f'Получаем S={substitution} см². {detail}','Проверь единицу площади.'),
+                ('Измени вторую сторону',f'При неизменных основании и угле удвоение второй стороны удвоит высоту и площадь. Новая площадь {transfer} см².','Сравни высоты при общем основании.')],views,
+               [(probe,coef,detail),('Каким станет это число при удвоении второй стороны?',newcoef,'Коэффициент или всё числовое значение удваивается вместе с площадью.')])
+        cards.append(grade(q,forms+[v+' см²' for v in forms],hint,'Введи площадь в квадратных сантиметрах.'))
+    return cards
+
+
+def parallelogram_area():
+    views=[parallelogram('Высота DH к прямой AB',6,4,30,False),parallelogram('Два треугольника по диагонали BD',6,4,30,True),parallelogram('Новый смежный угол',6,4,150,True)]
+    return area(1110,None,[281],'Как выражается площадь параллелограмма через две смежные стороны и угол между ними? Докажи формулу.',
+                'Пусть AB=a, AD=b, ∠DAB=α. Высота к AB равна b sin α, поэтому S=ab sin α. Другой вывод даёт диагональ BD: она делит параллелограмм на два равных треугольника площадью ab sin α/2 каждый.',
+                'Перпендикулярная составляющая соседней стороны даёт высоту. При переходе от одного треугольника к целому параллелограмму площадь удваивается.',
+                [('Выдели высоту','При AB=6, AD=4 и α=30° высота DH равна 2. Получаем площадь 6·2=12.','Перпендикуляр опускается на прямую AB.'),
+                 ('Проверь по диагонали','Диагональ BD делит фигуру на два равных треугольника. S_ABD=ab sin α/2, следовательно S_ABCD=ab sin α.','Учитывай обе половины параллелограмма.'),
+                 ('Построй фигуру с тупым углом','Замени 30° на 150° при тех же сторонах 6 и 4. Высота снова равна 2, поскольку sin 150°=1/2. Новая площадь 12.','Для смежных углов высоты совпадут при той же длине стороны.')],views,
+                [('Чему равна площадь параллелограмма при 30°?','12','Высота равна 2, основание 6.'),('Чему равна площадь при 150° и тех же сторонах?','12','Сравни синусы 30° и 150°.')])
+
+
+def recover_side():
+    views=[triangle('Известны AC и угол A','ABC',16,15,30,False),triangle('Высота CH к прямой AB','ABC',16,15,30),triangle('Вдвое меньшая площадь при той же высоте','ABC',8,15,30)]
+    hint='Чтобы восстановить основание, раздели удвоенную площадь на высоту. Здесь высота равна AC sin A.'
+    q=area(1111,None,[281],'Площадь ABC равна 60 см². Известны AC=15 см и ∠A=30°. Найди AB.',
+           'CH=15·sin 30°=7,5 см. Из S=AB·CH/2 следует AB=2·60/7,5=16 см.',hint,
+           [('Найди высоту','Из C опусти CH к прямой AB. Синус 30° равен 1/2, поэтому CH=15·1/2=7,5 см.','Высота должна соответствовать основанию AB.'),
+            ('Вырази неизвестную сторону','Из 60=AB·7,5/2 получаем AB=120/7,5=16 см. Подставь 16 обратно в равенство площади.','При делении самой площади на высоту получается только половина основания.'),
+            ('Замени площадь','При той же высоте и новой площади 30 см² получим AB=60/7,5=8 см.','При фиксированной высоте основание пропорционально площади.')],views,
+           [('Какова удвоенная исходная площадь?','120','Умножь 60 на 2.'),('Каково новое основание для площади 30 см²?','8','Раздели 60 на 7,5.')])
+    return grade(q,['16','16 см','16,0','16.0'],hint,'Введи длину AB в сантиметрах.')
+
+
+def rectangle_area():
+    views=[rectangle('Равные диагонали пересеклись в K',10,30),rectangle('Четыре треугольника вокруг K',10,30),rectangle('Диагонали другой длины пересекаются перпендикулярно',8,90)]
+    hint='Половины диагоналей имеют длину d/2. Для соседних углов в точке K синусы равны.'
+    q=area(1112,None,[281],'Диагональ прямоугольника равна 10 см, меньший угол между диагоналями составляет 30°. Какова его площадь?',
+           'Во всех четырёх треугольниках вокруг K две стороны равны 5 см, а синус включённого угла равен 1/2. Площадь каждого 25/4 см², площадь всего прямоугольника 25 см².',hint,
+           [('Раздели диагонали','Точка K делит обе диагонали пополам. Поэтому KA=KB=KC=KD=5 см.','Пока речь идёт о сторонах малых треугольников.'),
+            ('Сложи четыре площади','Для углов 30° и 150° синус равен 1/2. Каждый треугольник имеет площадь 5·5·(1/2)/2=25/4 см². Четыре вместе дают 25 см². Получается формула S=d² sin α/2.','Сложи площади всех четырёх треугольников.'),
+            ('Проверь новый квадрат','Для диагоналей длины 8 под прямым углом площадь равна 8²·sin 90°/2=32 см².','Новый синус равен 1.')],views,
+           [('Какова исходная длина KA?','5','Раздели длину диагонали пополам.'),('Какова площадь при d=8 и угле 90°?','32','Вычисли 8²/2.')])
+    return grade(q,['25','25 см²','25,0','25.0'],hint,'Введи площадь в квадратных сантиметрах.')
+
+
+def altitude_formulas():
+    rows=[]
+    for part in ('а','б'):
+        if part=='а':
+            views=[heights('Две высоты и угол A',30,8,6),heights('Высоты исходного треугольника',30,8,6),heights('Прямой угол при A',90,4,3)]
+            question='Угол A равен α, высоты из вершин B и C равны соответственно h_b и h_c. Вырази площадь через эти три величины.'
+            reason='Если AB=c, AC=b, то h_b=c sin α и h_c=b sin α. Подставляя стороны в S=bc sin α/2, получаем S=h_b h_c/(2 sin α). У невырожденного треугольника sin α>0.'
+            steps=[('Назови основания высот','Отрезок BH перпендикулярен AC, CK перпендикулярен AB. При α=30°, высотах 3 и 4 получаем AB=6 и AC=8.','У высоты из B длина зависит от AB.'),
+                   ('Вырази площадь',reason+' В примере S=6·8·sin 30°/2=12.','После подстановки один множитель sin α сокращается.'),
+                   ('Рассмотри прямой угол','При α=90° и тех же высотах 3, 4 получаем площадь 6. В этом случае стороны AB и AC сами служат высотами.','Проверь значение синуса прямого угла.')]
+            probes=[('Какова площадь при α=30°, h_b=3, h_c=4?','12','Знаменатель 2 sin 30° равен единице.'),('Какова площадь при α=90° и тех же высотах?','6','Знаменатель стал равен 2.')]
+        else:
+            views=[heights('Углы A, B и высота BH',30,2*sqrt(3),6,False),heights('Восстанови основание AC',30,2*sqrt(3),6,False),heights('Углы 45°, 45° и высота 4',45,4,4*sqrt(2),False)]
+            question='Известны ∠A=α, ∠B=β и высота h из B к прямой AC. Найди площадь через α, β и h.'
+            reason='Из прямоугольного треугольника AB=h/sin α. Для γ=180°−α−β выполняется sin γ=sin(α+β). По теореме синусов AC=AB·sin β/sin γ. Затем S=AC·h/2=h² sin β/(2 sin α sin(α+β)).'
+            steps=[('Восстанови сторону AB','Из BH=AB sin α имеем AB=h/sin α. При α=30°, β=30° и h=3 получаем AB=6.','Это высота из B к основанию AC.'),
+                   ('Найди AC и площадь',reason+' В числовой модели γ=120°, AC=6 sin 30°/sin 120°=2√3, площадь 3√3. Основание высоты H лежит за C на прямой AC.','Сторона AC противолежит β, а AB противолежит γ.'),
+                   ('Проверь другие углы','Пусть α=β=45°, h=4. Тогда γ=90°, AB=4√2, AC=4 и площадь 4·4/2=8.','При прямом угле C сторона AB является гипотенузой.')]
+            probes=[('Чему равно AB при α=30°, h=3?','6','Раздели 3 на sin 30°.'),('Чему равна площадь при α=β=45°, h=4?','8','Основание AC равно 4.')]
+        hint='Проверь, из какой вершины проведена высота и на какую сторону она опущена. Для теоремы синусов сопоставь сторону именно противолежащему углу.'
+        rows.append(area(1113,part,[281],question,reason,hint,steps,views,probes,refs=[104] if part=='а' else [104,105]))
+    return rows
+
+
+def build():
+    return {'bookId':BOOK,'lessons':[theorem(),*given_sides(),parallelogram_area(),recover_side(),rectangle_area(),*altitude_formulas()]}
+
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--check',action='store_true')
+    result=json.dumps(build(),ensure_ascii=False,separators=(',',':'))+'\n'
+    if parser.parse_args().check:assert OUT.read_text()==result
+    else:OUT.write_text(result)

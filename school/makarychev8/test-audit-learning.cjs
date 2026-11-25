@@ -1,7 +1,14 @@
 'use strict';
 const assert=require('node:assert/strict'),test=require('node:test'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 const models=require('./models.js'),math=models.math;
-function boot(hash='#home',saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://m8.test/'+hash,runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};if(saved)w.localStorage.setItem('mathexam.makarychev8.2024.v1',JSON.stringify(saved));for(const f of ['../peterson6/math.js','task-graphs.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+f,'utf8'));const d=w.document;return {w,d,api:w.MakarychevApp,close:()=>w.close(),input(el,value){assert(el);el.value=String(value);el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));},button(text){const b=Array.from(d.querySelectorAll('button')).find(b=>b.textContent===text);assert(b,text);b.click();},answer(value){this.input(d.querySelector('#final-answer'),value);d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}};}
+const loadCourseWindow=require('./test-course-window.cjs');
+// JSDOM releases a closed window's queued events on the next turn.
+test.afterEach(async()=>{
+ await new Promise(setImmediate);await new Promise(setImmediate);
+ global.gc?.();
+});
+
+function boot(hash='#home',saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://m8.test/'+hash,runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};if(saved)w.localStorage.setItem('mathexam.makarychev8.2024.v1',JSON.stringify(saved));loadCourseWindow(dom);const d=w.document;return {w,d,api:w.MakarychevApp,close:()=>w.close(),input(el,value){assert(el);el.value=String(value);el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));},button(text){const b=Array.from(d.querySelectorAll('button')).find(b=>b.textContent===text);assert(b,text);b.click();},answer(value){this.input(d.querySelector('#final-answer'),value);d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}};}
 function begin(rt,value=0){rt.input(rt.d.querySelector('.m8-prediction select'),value);rt.button('Сохранить прогноз и исследовать');}
 function numeric(rt,label,value){rt.input(Array.from(rt.d.querySelectorAll('#model input[type=number]')).find(el=>el.getAttribute('aria-label')===label+': точное значение'),value);}
 
@@ -162,9 +169,161 @@ test('both reciprocal graphs use one x and retain their shared investigation', (
 
 test('the number finder and course overview describe the reviewed range consistently',()=>{
  const rt=boot('#home');
- assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–509 имеют разбор/);
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–1075, №1077–1087 имеют разбор/);
  const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
- assert.match(overview.textContent,/№1–509 разобраны полностью/);
+ assert.match(overview.textContent,/№1–1075, №1077–1087 разобраны полностью/);
  assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
  assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
+});
+
+test('incomplete quadratic practice covers each real-root case on new numbers and all equivalent signed radicals',()=>{
+ const checker=require('./check.js'), model=require('./models.js');
+ for(const [user,expected] of [['±sqrt(1/3)','-√3/3;√3/3'],['±1/√3','-√3/3;√3/3'],
+   ['±√(3/2)','-√6/2;√6/2'],['-sqrt(2.4);sqrt(2.4)','-2√15/5;2√15/5'],['±√12,6','-3√35/5;3√35/5']]){
+  assert(checker.check(user,{kind:'set',answer:expected}));
+ }
+ for(const wrong of ['±√3/2','±√(-1/3)','0.57735;-0.57735','±sqrt(1/0)','±√','±√3/0','√3/3']){
+  assert(!checker.check(wrong,{kind:'set',answer:'-√3/3;√3/3'}));
+ }
+ for(const signs of [[false,false],[true,false],[false,true]]){
+  const q={kind:'incomplete-coefficients',hasLinear:signs[0],hasConstant:signs[1]};
+  for(const a of [-3,0,2])for(const b of [-1,0,3])for(const c of [-4,0,2]){
+   assert.equal(checker.check([a,b,c].join(';'),q),a!==0&&(b!==0)===signs[0]&&(c!==0)===signs[1]);
+  }
+ }
+ for(const level of [1,2,3]){
+  let previous='';
+  for(let seed=1;seed<=45;seed++){
+   const q=model.practiceQuadratic(seed,level),match=/Реши (\d+)x²(?: ([−+]) (\d+)(x?))? = 0/.exec(q.prompt);
+   assert(match);assert.notEqual(q.prompt,previous);previous=q.prompt;
+   const a=Number(match[1]),b=match[4]?Number(match[3])*(match[2]==='−'?-1:1):0,c=match[4]||!match[3]?0:Number(match[3])*(match[2]==='−'?-1:1);
+   const disc=b*b-4*a*c;
+   const roots=disc<0?'нет':[...new Set([(-b-Math.sqrt(disc))/(2*a),(-b+Math.sqrt(disc))/(2*a)])].join(';');
+   assert(checker.check(roots,q));
+   assert.deepEqual(model.practiceQuadratic(seed,level),q);
+  }
+ }
+});
+
+test('quadratic formula accepts exactly equivalent radical pairs, while simplification still requires reduced terms',()=>{
+ const C=require('./check.js'), model=require('./models.js');
+ for(const [answer,user] of [
+  ['(3-√29)/2;(3+√29)/2','(6±2sqrt(29))/4'],
+  ['(10-√2)/7;(10+√2)/7','10/7+sqrt(2)/7;10/7-sqrt(2)/7'],
+  ['-3-2√7;-3+2√7','-3±sqrt(28)'],
+  ['1;4/3','1 1/3;1'],['17','17'],['нет','∅']
+ ])assert(C.check(user,{kind:'quadratic-roots',answer}),user);
+ const pair={kind:'quadratic-roots',answer:'(3-√29)/2;(3+√29)/2'};
+ for(const value of ['(3±√28)/2','(3±√29)/4','(3±√29)/0','3/2;3/2','(3+√29)/2','(3±√29','-1.19258;4.19258','(3±√(-29))/2','±±3'])assert(!C.check(value,pair));
+ assert(C.check('√8+√2',{kind:'radical-value',answer:'3√2'}));
+ assert(!C.check('√8+√2',{kind:'radical-value',answer:'3√2',requireSimplified:true}));
+ assert(!C.check('2+3√20/2',{kind:'radical-value',answer:'2+3√5',requireSimplified:true}));
+ assert(C.check('3*sqrt(5)+2',{kind:'radical-value',answer:'2+3√5',requireSimplified:true}));
+ for(const level of [1,2,3]){
+  let prior='';
+  for(let seed=1;seed<=40;seed++){
+   const task=model.practiceFormula(seed,level),[a,b,c]=task.quadraticCoefficients;
+   const d=b*b-4*a*c;assert.equal(d,Number(task.steps[1].answer));
+   assert(C.check(task.answer,task));assert.notEqual(task.prompt,prior);prior=task.prompt;
+   const values=C.quadraticEntries(task.answer);assert.equal(values.length,d<0?0:d===0?1:2);
+   for(const value of values){
+    const number=C.radicalSum(value).reduce((total,t)=>total+t.sign*Math.sqrt(Number(t.n)/Number(t.d)),0);
+    assert(Math.abs(a*number*number+b*number+c)<1e-8);
+   }
+  }
+ }
+});
+
+test('new applied conditions have the stated physical answers at each difficulty',()=>{
+ const {practiceStory}=require('./models.js');
+ const checker=require('./check.js');
+ for(const level of [1,2,3]){
+  const prompts=new Set();
+  for(let seed=0;seed<37;seed++){
+   const q=practiceStory(seed,level);prompts.add(q.prompt);
+   const fields=Array.from(q.prompt.matchAll(/\d+/g),m=>Number(m[0]));
+   if(level===1){
+    const [area,difference]=fields,side=(Math.sqrt(difference**2+4*area)-difference)/2;
+    assert.equal(Number(q.answer),2*(2*side+difference));
+   }else if(level===2){
+    assert.equal(Number(q.answer)*(Number(q.answer)-1)/2,fields[0]);
+   }else{
+    const [perimeter,difference]=fields,short=(perimeter/2-difference)/2;
+    assert.equal(Number(q.answer),short*(short+difference));
+   }
+   assert(q.steps.every(step=>checker.check(step.answer,step)));
+  }
+  assert(prompts.size>=12);
+ }
+});
+
+test('Vieta practice recovers the coefficients from both new roots',()=>{
+ const {practiceVieta}=require('./models.js'),checker=require('./check.js');
+ for(const level of [1,2,3]){
+  const prompts=new Set();
+  for(let seed=0;seed<40;seed++){
+   const task=practiceVieta(seed,level);prompts.add(task.prompt);
+   const [a,c]=task.steps[0].answer.split(';').map(Number),[p,q]=task.answer.split(';').map(Number);
+   if(level===1){assert.equal(a,1);assert.equal(q,c);assert(p*p-4*q>=0);}
+   if(level===2){assert.equal(p*q,c/a);assert(p!==q);}
+   if(level===3){
+    const given=Number(task.prompt.match(/равен (-?\d+)/)[1]);
+    assert.equal(given*p,c/a);assert.equal(given+p,-q/a);
+   }
+   assert(checker.check(task.answer,task));
+   assert(task.steps.every(step=>checker.check(step.answer,step)));
+  }
+  assert(prompts.size>=15);
+ }
+});
+
+test('trinomial practice, factored form, common scalar and expanded correction',()=>{
+ const {practiceTrinomial}=require('./models.js'),c=require('./check.js');
+ for(const level of [1,2,3]){
+  const prompts=new Set();
+  for(let seed=0;seed<35;seed++){
+   const task=practiceTrinomial(seed,level);prompts.add(task.prompt);
+   const {a,h,k}=task.graph;assert.deepEqual(task.answer.split(';').map(Number),level===3?[h,k]:[a,h,k]);
+   assert.equal(Number(task.steps[0].answer),a);assert.equal(Number(task.steps[1].answer),-2*a*h);
+   assert(c.check(task.answer,task));
+  }
+  assert(prompts.size>=16);
+ }
+ const expected='(a+3)*(b-5)';
+ for(const candidate of ['(a+3)(b-5)','(b-5)(3+a)','-(5-b)(a+3)','(2a+6)(b/2-5/2)','((3+a)(b-5))'])assert.equal(c.factoredPair(candidate,expected),'factored');
+ for(const candidate of ['ab+3b-5a-15','1*(ab+3b-5a-15)','(ab+3b-5a-15)(1)'])assert.equal(c.factoredPair(candidate,expected),'expanded');
+ assert.equal(c.factoredPair('(a-3)(b-5)',expected),'different');
+});
+
+test('factor forms allow multiplicity, scalar positions and both families of free examples',()=>{
+ const {practiceFactors}=require('./models.js'),c=require('./check.js');
+ for(const level of [1,2,3]){
+  const prompts=new Set();
+  for(let seed=0;seed<40;seed++){
+   const task=practiceFactors(seed,level);prompts.add(task.prompt);assert(c.check(task.answer,task));
+   assert(task.steps.every(step=>c.check(step.answer,step)));
+  }
+  assert(prompts.size>=12);
+ }
+ for(const n of [1,2,7,99,100001]){
+  assert.equal(c.progressionFactors([n,3*n,2*n,n+'(x+1)(x+2)'].join(';')),'factored');
+  assert.equal(c.progressionFactors([2*n,3*n,n,n+'(2x+1)(x+1)'].join(';')),'factored');
+ }
+ assert.equal(c.progressionFactors('3;6;9;(3x+3)(x+3)'),'roots');
+ assert.equal(c.progressionFactors('6;9;3;6x^2+9x+3'),'expanded');
+ assert.equal(c.progressionFactors('6;10;3;6(x+1)^2'),'ratio');
+ assert.equal(c.factoredPair('(1/6)(1+x)(x+2)','(x+1)(x+2)/6'),'factored');
+ assert.equal(c.factoredPair('2(2a-b)(a^2-b^2)','2(2a-b)(a-b)(a+b)',3),'expanded');
+});
+
+test('reciprocal line cases use exact discriminant and generated rational roots survive every original denominator',()=>{
+ const c=require('./check.js'),{practiceRationalEquation}=require('./models.js');
+ for(const [line,count] of [['0;0',0],['0;-2',1],['-1;0',0],['-1;-2',1],['-1;3',2],['1/9;0',2],['-1/4;1',1],['-1/4;1.001',2]])assert.equal(c.reciprocalIntersections(line).count,count,line);
+ for(const level of [1,2,3])for(let seed=0;seed<60;seed++){
+  const q=practiceRationalEquation(seed,level),banned=c.quadraticEntries(q.excludedRoots),answer=c.quadraticEntries(q.answer);
+  assert(q.steps.every(step=>c.check(step.answer,step))&&c.check(q.answer,q));
+  assert(answer.every(v=>!banned.includes(v)));
+  assert(!c.check(banned[0],q));
+ }
+ assert.deepEqual(c.classifyRationalCandidates('2;3/2','2','3/2').map(g=>g.status),['excluded','correct']);
 });

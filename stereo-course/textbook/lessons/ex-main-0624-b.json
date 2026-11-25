@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0624-b",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Точка перед M",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "624",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      158
+    ],
+    "pdfPages": [
+      160
+    ],
+    "subpart": "б"
+  },
+  "statement": {
+    "text": "M, N, P лежат на одной прямой, O вне неё. Известно MP=−PN/2 как равенство векторов.",
+    "goal": "Разложи OP по OM и ON в указанном порядке."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "O вне прямой MN. Для P выполнено MP=−PN/2.",
+    "model": {
+      "points": {
+        "O": [
+          0,
+          0,
+          0
+        ],
+        "M": [
+          0,
+          1,
+          1
+        ],
+        "N": [
+          2,
+          1.2,
+          1
+        ],
+        "P": [
+          -2,
+          0.8,
+          1
+        ],
+        "T": [
+          1.0,
+          1.1,
+          1.0
+        ]
+      },
+      "edges": [
+        [
+          "M",
+          "N"
+        ]
+      ],
+      "faces": [],
+      "arrows": [
+        [
+          "O",
+          "M"
+        ],
+        [
+          "O",
+          "N"
+        ],
+        [
+          "O",
+          "P"
+        ],
+        [
+          "M",
+          "N"
+        ],
+        [
+          "M",
+          "P"
+        ],
+        [
+          "N",
+          "P"
+        ],
+        [
+          "O",
+          "T"
+        ],
+        [
+          "M",
+          "T"
+        ]
+      ],
+      "labelNames": [
+        "O",
+        "M",
+        "N",
+        "P",
+        "T"
+      ],
+      "views": {
+        "neutral": {
+          "label": "O вне прямой MN. Для P выполнено MP=−PN/2.",
+          "segments": [
+            [
+              "O",
+              "M"
+            ],
+            [
+              "O",
+              "N"
+            ],
+            [
+              "O",
+              "P"
+            ],
+            [
+              "M",
+              "N"
+            ],
+            [
+              "M",
+              "P"
+            ]
+          ]
+        },
+        "parameter": {
+          "label": "Представь P как M+t·MN; t отсчитывает направленные шаги от M.",
+          "segments": [
+            [
+              "M",
+              "N"
+            ],
+            [
+              "M",
+              "P"
+            ],
+            [
+              "N",
+              "P"
+            ],
+            [
+              "O",
+              "P"
+            ]
+          ]
+        },
+        "new": {
+          "label": "В другой конфигурации точка T определяется новым значением параметра.",
+          "segments": [
+            [
+              "M",
+              "N"
+            ],
+            [
+              "M",
+              "T"
+            ],
+            [
+              "O",
+              "T"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Как найти положение P?",
+      "text": "Пусть MP=t·MN, тогда PN=(1−t)MN. Из t=−(1−t)/2 следует t=−1.",
+      "view": "parameter"
+    },
+    {
+      "id": "h2",
+      "question": "Как переписать путь из O?",
+      "text": "OP=OM+t(ON−OM)=(1−t)OM+tON. Веса складываются в 1, даже если P вне отрезка.",
+      "view": "new"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Направленная доля",
+      "prompt": "Вычисли t из MP=t·MN для данного условия.",
+      "input": {
+        "prompt": "Направленная доля",
+        "accepted": [
+          "-1"
+        ],
+        "feedback": "Сохраняй порядок букв: PN=MN−MP, а NP=MP−MN."
+      },
+      "explanation": "Пусть MP=t·MN, тогда PN=(1−t)MN. Из t=−(1−t)/2 следует t=−1.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Векторы на одной прямой сравниваются по знаковым коэффициентам.",
+          "theoryId": "theory-067"
+        }
+      ],
+      "view": "parameter"
+    },
+    {
+      "id": "step-2",
+      "title": "Вес M",
+      "prompt": "Каков коэффициент при OM?",
+      "input": {
+        "prompt": "Вес M",
+        "accepted": [
+          "2"
+        ],
+        "feedback": "В выражении OM+t(ON−OM) выполни группировку при OM."
+      },
+      "explanation": "Вес M равен 1−t.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Раскрытие скобок для векторной линейной комбинации.",
+          "theoryId": "theory-067"
+        }
+      ],
+      "view": "neutral"
+    },
+    {
+      "id": "step-3",
+      "title": "Новая точка",
+      "prompt": "В другой задаче P лежит на половине MN от M к N. Найди коэффициенты OP.",
+      "input": {
+        "prompt": "Новая точка",
+        "accepted": [
+          "1/2;1/2"
+        ],
+        "feedback": "Найди её новый параметр t и запиши сначала 1−t, затем t."
+      },
+      "explanation": "Коэффициенты новой точки: 1/2, 1/2.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Аффинные веса двух концов имеют сумму 1.",
+          "theoryId": "theory-067"
+        }
+      ],
+      "view": "new"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "2;-1"
+    ],
+    "prompt": "Укажи два коэффициента OP при OM, ON через точку с запятой. Для буквенного параметра пиши k.",
+    "feedback": "Пусть MP=t·MN, тогда PN=(1−t)MN. Из t=−(1−t)/2 следует t=−1. Общая формула OP=(1−t)OM+tON."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 158, printed page 158, the zero-vector convention on 142, and keys 269 where supplied; independent directed edge sums and original polyhedral models.",
+    "at": "2026-11-21T21:48:53Z"
+  }
+}

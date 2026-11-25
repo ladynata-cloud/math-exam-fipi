@@ -1,0 +1,312 @@
+{
+  "parts": {
+    "571": [
+      "а",
+      "б",
+      "в"
+    ],
+    "572": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ]
+  },
+  "previousCatalog": {
+    "571": {
+      "id": "source-main-0571",
+      "kind": "exercise",
+      "title": "Задача № 571",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "571",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "572": {
+      "id": "source-main-0572",
+      "kind": "exercise",
+      "title": "Задача № 572",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "572",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0571-a": {
+      "raw": "cdd55e1ad06a889aad302d2c0a1916fa029999c239cffba7652b3c7ebfc46058",
+      "authored": "d0af8f330f78652a667a5cef4540753819521999ebd5dbb34912154b10ddb0c8",
+      "integrated": "979e045352a0d3fb650a17ae133d05be016d636dabdafa7e98c2baf843529ed9"
+    },
+    "ex-main-0571-b": {
+      "raw": "64454bf1c78197d47abaeacde634ca50bcc950579f22b3a041417b8d7a97fadc",
+      "authored": "3af2237c61d9d6df9f3a99c27b49e1e2a51aab9e2e97da4e5a70ecd31f1469f9",
+      "integrated": "02f9c2fa7c7a38f28370a83df51fe75f84ec48999bbc7034e7d8a921c7929f00"
+    },
+    "ex-main-0571-c": {
+      "raw": "3f46cf6c8aa68b4ddd79832b471a512f69d5710f53e065ce9aec1eadbba3d627",
+      "authored": "95071aa5b87268e4f40e37d5f52fbff890acd91e298b5dd56e97c627da1f2562",
+      "integrated": "02c80213f963ad51b3b73f71ae6685bc9cc430ebe98ea190c7611305e28203a5"
+    },
+    "ex-main-0572-a": {
+      "raw": "82fdf4f631fb26c8a5479238d81f5103535791aad694a222ffeb0c59c133d38c",
+      "authored": "678de7b487fd608596dc59b7df399503a88d2eccc86c0798c8944e144424c189",
+      "integrated": "c61a259e6e796c2bdf92ce048264b220913e99b71ac1f8a95d4902e98704f2d0"
+    },
+    "ex-main-0572-b": {
+      "raw": "e828e869f1337f9165cd21b673494c0f38d9cb6196129e0d9d0134160cb5bdf9",
+      "authored": "dd5be56e0b23656cfa3e4f85f4822ffbd7b2bde0909804f19f3c3bd9b37551ef",
+      "integrated": "7d0d9cb0ecadbbdae0925d6b2117f276f9ab2b13845326f7e24fee078b36dd12"
+    },
+    "ex-main-0572-c": {
+      "raw": "841c134aac7bd5cf24453c613abff0fcb6e37a1ce46b4ab23147d820177f35af",
+      "authored": "cb225b7be05087d2241b8ab89ea2b5d6f8214ba3693fb5a0948e44ac84d9baf8",
+      "integrated": "467136b8f957a0aca2f60f94ace572cb5b3f3c901f37260720c8584ad1027996"
+    },
+    "ex-main-0572-d": {
+      "raw": "49ce6c8c8357b090f31f2ab0e84fec4dadf4ab3c5516baa3c017ca389e6b1ad4",
+      "authored": "115654b3e5d8eee18e5dc16ce86dec3a534a0fb5020e821a15a3170e7ae1a4f2",
+      "integrated": "57ed7dc8752401e6e50c9e82b6352718f0e9a5648180171681594e3bc4132352"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0571-a|condition",
+      "prism-diagonals-and-vector-paths-ex-main-0571-a-condition"
+    ],
+    [
+      "ex-main-0571-a|help:h1",
+      "prism-diagonals-and-vector-paths-ex-main-0571-a-help-h1"
+    ],
+    [
+      "ex-main-0571-a|help:h2",
+      "prism-diagonals-and-vector-paths-ex-main-0571-a-help-h2"
+    ],
+    [
+      "ex-main-0571-a|step-1",
+      "prism-diagonals-and-vector-paths-ex-main-0571-a-step-1"
+    ],
+    [
+      "ex-main-0571-a|step-2",
+      "prism-diagonals-and-vector-paths-ex-main-0571-a-step-2"
+    ],
+    [
+      "ex-main-0571-a|step-3",
+      "prism-diagonals-and-vector-paths-ex-main-0571-a-step-3"
+    ],
+    [
+      "ex-main-0571-a|step-4",
+      "prism-diagonals-and-vector-paths-ex-main-0571-a-step-4"
+    ],
+    [
+      "ex-main-0571-b|condition",
+      "prism-diagonals-and-vector-paths-ex-main-0571-b-condition"
+    ],
+    [
+      "ex-main-0571-b|help:h1",
+      "prism-diagonals-and-vector-paths-ex-main-0571-b-help-h1"
+    ],
+    [
+      "ex-main-0571-b|help:h2",
+      "prism-diagonals-and-vector-paths-ex-main-0571-b-help-h2"
+    ],
+    [
+      "ex-main-0571-b|step-1",
+      "prism-diagonals-and-vector-paths-ex-main-0571-b-step-1"
+    ],
+    [
+      "ex-main-0571-b|step-2",
+      "prism-diagonals-and-vector-paths-ex-main-0571-b-step-2"
+    ],
+    [
+      "ex-main-0571-b|step-3",
+      "prism-diagonals-and-vector-paths-ex-main-0571-b-step-3"
+    ],
+    [
+      "ex-main-0571-b|step-4",
+      "prism-diagonals-and-vector-paths-ex-main-0571-b-step-4"
+    ],
+    [
+      "ex-main-0571-c|condition",
+      "prism-diagonals-and-vector-paths-ex-main-0571-c-condition"
+    ],
+    [
+      "ex-main-0571-c|help:h1",
+      "prism-diagonals-and-vector-paths-ex-main-0571-c-help-h1"
+    ],
+    [
+      "ex-main-0571-c|help:h2",
+      "prism-diagonals-and-vector-paths-ex-main-0571-c-help-h2"
+    ],
+    [
+      "ex-main-0571-c|step-1",
+      "prism-diagonals-and-vector-paths-ex-main-0571-c-step-1"
+    ],
+    [
+      "ex-main-0571-c|step-2",
+      "prism-diagonals-and-vector-paths-ex-main-0571-c-step-2"
+    ],
+    [
+      "ex-main-0571-c|step-3",
+      "prism-diagonals-and-vector-paths-ex-main-0571-c-step-3"
+    ],
+    [
+      "ex-main-0571-c|step-4",
+      "prism-diagonals-and-vector-paths-ex-main-0571-c-step-4"
+    ],
+    [
+      "ex-main-0572-a|condition",
+      "prism-diagonals-and-vector-paths-ex-main-0572-a-condition"
+    ],
+    [
+      "ex-main-0572-a|help:h1",
+      "prism-diagonals-and-vector-paths-ex-main-0572-a-help-h1"
+    ],
+    [
+      "ex-main-0572-a|help:h2",
+      "prism-diagonals-and-vector-paths-ex-main-0572-a-help-h2"
+    ],
+    [
+      "ex-main-0572-a|step-1",
+      "prism-diagonals-and-vector-paths-ex-main-0572-a-step-1"
+    ],
+    [
+      "ex-main-0572-a|step-2",
+      "prism-diagonals-and-vector-paths-ex-main-0572-a-step-2"
+    ],
+    [
+      "ex-main-0572-a|step-3",
+      "prism-diagonals-and-vector-paths-ex-main-0572-a-step-3"
+    ],
+    [
+      "ex-main-0572-a|step-4",
+      "prism-diagonals-and-vector-paths-ex-main-0572-a-step-4"
+    ],
+    [
+      "ex-main-0572-b|condition",
+      "prism-diagonals-and-vector-paths-ex-main-0572-b-condition"
+    ],
+    [
+      "ex-main-0572-b|help:h1",
+      "prism-diagonals-and-vector-paths-ex-main-0572-b-help-h1"
+    ],
+    [
+      "ex-main-0572-b|help:h2",
+      "prism-diagonals-and-vector-paths-ex-main-0572-b-help-h2"
+    ],
+    [
+      "ex-main-0572-b|step-1",
+      "prism-diagonals-and-vector-paths-ex-main-0572-b-step-1"
+    ],
+    [
+      "ex-main-0572-b|step-2",
+      "prism-diagonals-and-vector-paths-ex-main-0572-b-step-2"
+    ],
+    [
+      "ex-main-0572-b|step-3",
+      "prism-diagonals-and-vector-paths-ex-main-0572-b-step-3"
+    ],
+    [
+      "ex-main-0572-b|step-4",
+      "prism-diagonals-and-vector-paths-ex-main-0572-b-step-4"
+    ],
+    [
+      "ex-main-0572-c|condition",
+      "prism-diagonals-and-vector-paths-ex-main-0572-c-condition"
+    ],
+    [
+      "ex-main-0572-c|help:h1",
+      "prism-diagonals-and-vector-paths-ex-main-0572-c-help-h1"
+    ],
+    [
+      "ex-main-0572-c|help:h2",
+      "prism-diagonals-and-vector-paths-ex-main-0572-c-help-h2"
+    ],
+    [
+      "ex-main-0572-c|step-1",
+      "prism-diagonals-and-vector-paths-ex-main-0572-c-step-1"
+    ],
+    [
+      "ex-main-0572-c|step-2",
+      "prism-diagonals-and-vector-paths-ex-main-0572-c-step-2"
+    ],
+    [
+      "ex-main-0572-c|step-3",
+      "prism-diagonals-and-vector-paths-ex-main-0572-c-step-3"
+    ],
+    [
+      "ex-main-0572-c|step-4",
+      "prism-diagonals-and-vector-paths-ex-main-0572-c-step-4"
+    ],
+    [
+      "ex-main-0572-d|condition",
+      "prism-diagonals-and-vector-paths-ex-main-0572-d-condition"
+    ],
+    [
+      "ex-main-0572-d|help:h1",
+      "prism-diagonals-and-vector-paths-ex-main-0572-d-help-h1"
+    ],
+    [
+      "ex-main-0572-d|help:h2",
+      "prism-diagonals-and-vector-paths-ex-main-0572-d-help-h2"
+    ],
+    [
+      "ex-main-0572-d|step-1",
+      "prism-diagonals-and-vector-paths-ex-main-0572-d-step-1"
+    ],
+    [
+      "ex-main-0572-d|step-2",
+      "prism-diagonals-and-vector-paths-ex-main-0572-d-step-2"
+    ],
+    [
+      "ex-main-0572-d|step-3",
+      "prism-diagonals-and-vector-paths-ex-main-0572-d-step-3"
+    ],
+    [
+      "ex-main-0572-d|step-4",
+      "prism-diagonals-and-vector-paths-ex-main-0572-d-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "2689e679f76e350dc13b5120eafef10482043f733e2188b851f06e8c0efd6fd7",
+      "afterSHA256": "203d4ee8b80018245f57f344651e32f53bdac37226658794fa8b7fb41829b180"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "44fce2e16bbf572a800248a04fce6151c8b102e2a743e2f0b37f65adcb03b901",
+      "afterSHA256": "090e372d0f61731601c5971487cc4ea1cae4f3118e90892c6477755875f30b11"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T19:02:00Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–570, with 944 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "8de4b5b0252e5dc53525afe992b891d7fea1ae3d18abb5857b63727aa11e2eb4",
+    "index": "696e4b77cb4ffbc5b9fda82730e78c7a7111722f02e579addb505c2ab5f87b3d",
+    "registry": "067641e5d177258b4b22cbc407af322de997fdad3c03c8b4c9a5b475364a50f2",
+    "cases": "c0f54e164580fe9ba3c7df2aebfdc23a231408fd01de06039edb2368cc8866d5"
+  }
+}

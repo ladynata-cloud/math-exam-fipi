@@ -45,12 +45,57 @@ jobs:
           node tools/stereo-textbook/prism-volumes.test.cjs
           node tools/stereo-textbook/cross-sections.test.cjs
           node tools/stereo-textbook/oblique-prisms.test.cjs
+          node tools/stereo-textbook/pyramid-volumes.test.cjs
+          node tools/stereo-textbook/pyramid-projections.test.cjs
+          node tools/stereo-textbook/pyramid-frusta.test.cjs
+          node tools/stereo-textbook/cone-volumes.test.cjs
+          node tools/stereo-textbook/cone-nets-and-frusta.test.cjs
+          node tools/stereo-textbook/sphere-measures.test.cjs
+          node tools/stereo-textbook/sphere-applications.test.cjs
+          node tools/stereo-textbook/volume-selfcheck.test.cjs
+          node tools/stereo-textbook/prism-applications.test.cjs
+          node tools/stereo-textbook/normal-prism-applications.test.cjs
+          node tools/stereo-textbook/pyramid-angle-applications.test.cjs
+          node tools/stereo-textbook/pyramid-comparison-applications.test.cjs
+          node tools/stereo-textbook/cylinder-applications.test.cjs
+          node tools/stereo-textbook/inscribed-volume-applications.test.cjs
+          node tools/stereo-textbook/sphere-volume-angles.test.cjs
+          node tools/stereo-textbook/volume-chapter-end.test.cjs
+          node tools/stereo-textbook/vector-basics.test.cjs
+          node tools/stereo-textbook/vector-pairs.test.cjs
+          node tools/stereo-textbook/vector-properties.test.cjs
+          node tools/stereo-textbook/spatial-vector-sums.test.cjs
+          node tools/stereo-textbook/opposite-and-difference-vectors.test.cjs
+          node tools/stereo-textbook/vector-origin-and-paths.test.cjs
+          node tools/stereo-textbook/prism-diagonals-and-vector-paths.test.cjs
+          node tools/stereo-textbook/signed-vector-combinations.test.cjs
+          node tools/stereo-textbook/prism-vector-equations.test.cjs
+          node tools/stereo-textbook/pyramid-vector-midpoints.test.cjs
+          node tools/stereo-textbook/midlines-vector-coefficients.test.cjs
+          node tools/stereo-textbook/collinearity-vector-conditions.test.cjs
+          node tools/stereo-textbook/coplanar-vector-directions.test.cjs
+          node tools/stereo-textbook/parallelepiped-directed-bases.test.cjs
+          node tools/stereo-textbook/fields-and-midpoint-vectors.test.cjs
+          node tools/stereo-textbook/centroids-in-tetrahedra.test.cjs
+          node tools/stereo-textbook/height-and-midpoint-proofs.test.cjs
+          node tools/stereo-textbook/vector-chapter-selfcheck.test.cjs
+          node tools/stereo-textbook/additional-directed-edge-sums.test.cjs
+          node tools/stereo-textbook/vector-span-and-barycentres.test.cjs
+          node tools/stereo-textbook/vector-chapter-six-end.test.cjs
+          node tools/stereo-textbook/cartesian-coordinate-start.test.cjs
+          node tools/stereo-textbook/coordinate-vectors-and-diagrams.test.cjs
+          node tools/stereo-textbook/signed-coordinate-arithmetic.test.cjs
+          node tools/stereo-textbook/coordinate-span-ratios.test.cjs
+          node tools/stereo-textbook/spatial-points-and-centroid.test.cjs
+          node tools/stereo-textbook/midpoints-and-vector-lengths.test.cjs
+          node tools/stereo-textbook/spatial-distances-and-equal-loci.test.cjs
+          node tools/stereo-textbook/coordinate-spheres-section-end.test.cjs
           node tools/stereo-textbook/runtime.test.cjs
           node tools/stereo-textbook/browser-shards.test.cjs
   additional-mobile:
     needs: additional-source-math
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 105
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -85,6 +130,231 @@ jobs:
         env:
           TEXTBOOK_PRACTICE_GROUP: oblique
           INSCRIBED_SOLIDS_ARTIFACTS: artifacts/oblique-prisms
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify area, height, units and angles in pyramids
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramids
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-volumes
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify pyramid projections and tangencies on phone and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: projections
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-projections
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify cut pyramids and diagonal sections on phone and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: frusta
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-frusta
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify right cones and both admissible axial triangles
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cones
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cone-volumes
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify cone nets, axial trapezoids and disk volumes
+        env:
+          TEXTBOOK_PRACTICE_GROUP: sectors
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cone-nets-and-frusta
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify ball measurement, spherical caps, layers, sectors and water displacement
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spheres
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-measures
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify intersections, volume alternatives, sectors, surface area and the cone proof
+        env:
+          TEXTBOOK_PRACTICE_GROUP: sphereApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify all printed chapter V volume review questions including subparts on phone, tablet and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: volumeSelfcheck
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/volume-selfcheck
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify prism areas, perpendicular diagonals and reconstructed side lengths
+        env:
+          TEXTBOOK_PRACTICE_GROUP: prismApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify angle to a face, parallel-line shifts and normal sections of triangular prisms
+        env:
+          TEXTBOOK_PRACTICE_GROUP: normalPrismApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/normal-prism-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify distances to a face, lateral dihedral angles and radius formulas for pyramids
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramidAngleApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-angle-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check pyramid diagonals, both pairs of equal tetrahedron edges and a midheight slice
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramidComparisonApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-comparison-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check cylinder areas, a constant lateral surface and litres in a conical tank
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cylinderApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cylinder-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check nested pyramids, cylinders, cones and spheres in six source applications
+        env:
+          TEXTBOOK_PRACTICE_GROUP: inscribedVolumeApplications
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/inscribed-volume-applications
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check sphere volumes, bisected dihedral angles and both axial rectangles for problem 550
+        env:
+          TEXTBOOK_PRACTICE_GROUP: sphereVolumeAngles
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/sphere-volume-angles
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check circumsphere centres, cap volumes, equal-area solids and both copper shells
+        env:
+          TEXTBOOK_PRACTICE_GROUP: volumeChapterEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/volume-chapter-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check spatial vector arrows, their lengths, translations, and tetrahedron and box exercises
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorBasics
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-basics
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check same, opposite and equal arrows on two source solids and the square midpoint section
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorPairs
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-pairs
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check vector directions, relative positions of flats and five prescribed affine displacements
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorProperties
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-properties
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check polygon, scalar and parallelogram rules with all named sum vectors and three proofs in a tetrahedron
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialVectorSums
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-vector-sums
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check source opposites, edge versus diagonal convention and every possible difference endpoint
+        env:
+          TEXTBOOK_PRACTICE_GROUP: oppositeDifference
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/opposite-and-difference-vectors
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check arbitrary origins, every valid marked-point difference and closed spatial vector paths
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorOriginPaths
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-origin-and-paths
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check magnitudes of reflected prism diagonals and the exact result of each spatial path
+        env:
+          TEXTBOOK_PRACTICE_GROUP: diagonalPaths
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-diagonals-and-vector-paths
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all sign assignments and equivalent sums for arbitrary source vertices
+        env:
+          TEXTBOOK_PRACTICE_GROUP: signedVectorCombinations
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/signed-vector-combinations
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check arbitrary origins and all vertex solutions to equations in a parallelepiped and a triangular prism
+        env:
+          TEXTBOOK_PRACTICE_GROUP: prismVectorEquations
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/prism-vector-equations
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check pairs of vectors in two pyramids, central symmetry and signed ratios in a cube
+        env:
+          TEXTBOOK_PRACTICE_GROUP: pyramidVectorMidpoints
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/pyramid-vector-midpoints
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check directed midpoint differences, ordered vector coefficients and the diagonal identity
+        env:
+          TEXTBOOK_PRACTICE_GROUP: midlinesVectorCoefficients
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/midlines-vector-coefficients
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check affine division, the counterexample to printed exercise 587, and collinearity arguments
+        env:
+          TEXTBOOK_PRACTICE_GROUP: collinearityVectorConditions
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/collinearity-vector-conditions
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check oblique vector bases, all four translated triples, midpoints and a changing parallelogram
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coplanarVectorDirections
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coplanar-vector-directions
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all five translated edge paths and both coefficient triples in the printed parallelepiped exercises
+        env:
+          TEXTBOOK_PRACTICE_GROUP: parallelepipedDirectedBases
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/parallelepiped-directed-bases
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check the three-charge field, oblique bases, midpoint vectors and the centroid proof
+        env:
+          TEXTBOOK_PRACTICE_GROUP: fieldsAndMidpointVectors
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/fields-and-midpoint-vectors
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check seven planar-basis cases, all four tetrahedron heights and both source proofs
+        env:
+          TEXTBOOK_PRACTICE_GROUP: centroidsInTetrahedra
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/centroids-in-tetrahedra
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check signed projection heights, the strict skew-segment bound and the common diagonal midpoint
+        env:
+          TEXTBOOK_PRACTICE_GROUP: heightAndMidpointProofs
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/height-and-midpoint-proofs
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check the complete set of vector chapter questions on the two printed pages
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorChapterSelfcheck
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-chapter-selfcheck
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check all affine edge sums and the directed octahedron in printed figure 173
+        env:
+          TEXTBOOK_PRACTICE_GROUP: additionalDirectedEdgeSums
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/additional-directed-edge-sums
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check exact scalar boundary, affine weights and the strictly disjoint plane for every connector
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorSpanAndBarycentres
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-span-and-barycentres
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Exercise every chapter VI closing field and centroid task on phone and desktop
+        env:
+          TEXTBOOK_PRACTICE_GROUP: vectorChapterSixEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/vector-chapter-six-end
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check coordinate axes, planes, all eighteen projections and each cube point on small and large screens
+        env:
+          TEXTBOOK_PRACTICE_GROUP: cartesianCoordinateStart
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/cartesian-coordinate-start
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Read the exact orientations of figures 185 and 186 and exercise every signed vector sum
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinateVectorsAndDiagrams
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-vectors-and-diagrams
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Exercise twelve signed and fractional vector entries and the general combination and reversal cases
+        env:
+          TEXTBOOK_PRACTICE_GROUP: signedCoordinateArithmetic
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/signed-coordinate-arithmetic
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify signed ratios, zero and plane membership in every corresponding coordinate exercise
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinateSpanRatios
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-span-ratios
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Verify position vectors, oriented paths, three lines and planes and the centroid median on three screen widths
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialPointsAndCentroid
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-points-and-centroid
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Teach the seven distinctions between vector length expressions and check all midpoint, perimeter and median cases
+        env:
+          TEXTBOOK_PRACTICE_GROUP: midpointsAndVectorLengths
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/midpoints-and-vector-lengths
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check spatial projections, triangle classification, every isosceles root and all equal-distance loci and circumcentres
+        env:
+          TEXTBOOK_PRACTICE_GROUP: spatialDistancesAndEqualLoci
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/spatial-distances-and-equal-loci
+        run: node tools/stereo-textbook/inscribed-solids.browser.cjs
+      - name: Check full sphere equations, completing the square and both spatial distances to the midpoint
+        env:
+          TEXTBOOK_PRACTICE_GROUP: coordinateSpheresSectionEnd
+          INSCRIBED_SOLIDS_ARTIFACTS: artifacts/coordinate-spheres-section-end
         run: node tools/stereo-textbook/inscribed-solids.browser.cjs
       - name: Wait for exact published course bundle
         if: github.event_name == 'push'
@@ -127,5 +397,50 @@ jobs:
             artifacts/prism-volumes/
             artifacts/cross-sections/
             artifacts/oblique-prisms/
+            artifacts/pyramid-volumes/
+            artifacts/pyramid-projections/
+            artifacts/pyramid-frusta/
+            artifacts/cone-volumes/
+            artifacts/cone-nets-and-frusta/
+            artifacts/sphere-measures/
+            artifacts/sphere-applications/
+            artifacts/volume-selfcheck/
+            artifacts/prism-applications/
+            artifacts/normal-prism-applications/
+            artifacts/pyramid-angle-applications/
+            artifacts/pyramid-comparison-applications/
+            artifacts/cylinder-applications/
+            artifacts/inscribed-volume-applications/
+            artifacts/sphere-volume-angles/
+            artifacts/volume-chapter-end/
+            artifacts/vector-basics/
+            artifacts/vector-pairs/
+            artifacts/vector-properties/
+            artifacts/spatial-vector-sums/
+            artifacts/opposite-and-difference-vectors/
+            artifacts/vector-origin-and-paths/
+            artifacts/prism-diagonals-and-vector-paths/
+            artifacts/signed-vector-combinations/
+            artifacts/prism-vector-equations/
+            artifacts/pyramid-vector-midpoints/
+            artifacts/midlines-vector-coefficients/
+            artifacts/collinearity-vector-conditions/
+            artifacts/coplanar-vector-directions/
+            artifacts/parallelepiped-directed-bases/
+            artifacts/fields-and-midpoint-vectors/
+            artifacts/centroids-in-tetrahedra/
+            artifacts/height-and-midpoint-proofs/
+            artifacts/vector-chapter-selfcheck/
+            artifacts/additional-directed-edge-sums/
+            artifacts/vector-span-and-barycentres/
+            artifacts/vector-chapter-six-end/
+            artifacts/cartesian-coordinate-start/
+            artifacts/coordinate-vectors-and-diagrams/
+            artifacts/signed-coordinate-arithmetic/
+            artifacts/coordinate-span-ratios/
+            artifacts/spatial-points-and-centroid/
+            artifacts/midpoints-and-vector-lengths/
+            artifacts/spatial-distances-and-equal-loci/
+            artifacts/coordinate-spheres-section-end/
           retention-days: 14
           if-no-files-found: error

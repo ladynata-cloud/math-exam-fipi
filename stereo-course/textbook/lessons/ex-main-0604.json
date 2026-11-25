@@ -1,0 +1,336 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-main-0604",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Три доли из десяти на медиане",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "main",
+    "exercise": "604",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      155
+    ],
+    "pdfPages": [
+      157
+    ]
+  },
+  "statement": {
+    "text": "A₁ делит BC пополам в тетраэдре. На медиане AA₁ точка K делит отрезок в отношении AK:KA₁=3:7.",
+    "goal": "Разложи DK по DA, DB, DC."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "A₁ — середина BC, K — ближе к A на медиане AA₁.",
+    "model": {
+      "points": {
+        "D": [
+          0.7,
+          -0.6,
+          2.8
+        ],
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          3,
+          0.2,
+          0
+        ],
+        "C": [
+          0.4,
+          2.9,
+          0
+        ],
+        "A1": [
+          1.7,
+          1.55,
+          0.0
+        ],
+        "K": [
+          0.51,
+          0.46499999999999997,
+          0.0
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "D",
+          "A"
+        ],
+        [
+          "D",
+          "B"
+        ],
+        [
+          "D",
+          "C"
+        ]
+      ],
+      "faces": [
+        [
+          "A",
+          "C",
+          "B"
+        ],
+        [
+          "A",
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "C",
+          "D"
+        ],
+        [
+          "C",
+          "A",
+          "D"
+        ]
+      ],
+      "arrows": [
+        [
+          "D",
+          "A"
+        ],
+        [
+          "D",
+          "B"
+        ],
+        [
+          "D",
+          "C"
+        ],
+        [
+          "D",
+          "A1"
+        ],
+        [
+          "D",
+          "K"
+        ],
+        [
+          "A",
+          "K"
+        ],
+        [
+          "K",
+          "A1"
+        ]
+      ],
+      "labelNames": [
+        "D",
+        "A",
+        "B",
+        "C",
+        "A1",
+        "K"
+      ],
+      "views": {
+        "neutral": {
+          "label": "A₁ — середина BC, K — ближе к A на медиане AA₁.",
+          "segments": [
+            [
+              "B",
+              "A1"
+            ],
+            [
+              "A1",
+              "C"
+            ],
+            [
+              "A",
+              "K"
+            ],
+            [
+              "K",
+              "A1"
+            ],
+            [
+              "D",
+              "K"
+            ]
+          ]
+        },
+        "ratio": {
+          "label": "Вся медиана содержит десять долей. На путь от A до K приходятся три.",
+          "segments": [
+            [
+              "A",
+              "K"
+            ],
+            [
+              "K",
+              "A1"
+            ],
+            [
+              "D",
+              "A"
+            ],
+            [
+              "D",
+              "K"
+            ]
+          ]
+        },
+        "face": {
+          "label": "До A₁ из D ведёт полусумма DB и DC.",
+          "segments": [
+            [
+              "D",
+              "B"
+            ],
+            [
+              "D",
+              "C"
+            ],
+            [
+              "D",
+              "A1"
+            ],
+            [
+              "B",
+              "A1"
+            ],
+            [
+              "A1",
+              "C"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Тройка относится ко всей медиане?",
+      "text": "Три и семь — длины двух частей в одних условных долях. Чтобы перейти к доле от целого, сложи эти числа.",
+      "view": "ratio"
+    },
+    {
+      "id": "h2",
+      "question": "Как заменить DA₁?",
+      "text": "Усредни векторы из D к концам ребра BC.",
+      "view": "face"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Доля медианы",
+      "prompt": "Чему равно AK/AA₁?",
+      "input": {
+        "prompt": "Доля медианы",
+        "accepted": [
+          "3/10"
+        ],
+        "feedback": "Знаменатель — общее число долей: 3+7."
+      },
+      "explanation": "AK=3AA₁/10.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Доля от целого вычисляется как отношение части к сумме частей.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "ratio"
+    },
+    {
+      "id": "step-2",
+      "title": "Вес вершины A",
+      "prompt": "Какой коэффициент при DA в DK?",
+      "input": {
+        "prompt": "Вес вершины A",
+        "accepted": [
+          "7/10"
+        ],
+        "feedback": "K ближе к A. Взвешенное среднее использует коэффициент 1−3/10 при DA."
+      },
+      "explanation": "DK=(7/10)DA+(3/10)DA₁.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Для K=A+t(A₁−A) веса концов равны 1−t и t.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "ratio"
+    },
+    {
+      "id": "step-3",
+      "title": "Три коэффициента",
+      "prompt": "В порядке DA, DB, DC разложи DK.",
+      "input": {
+        "prompt": "Три коэффициента",
+        "accepted": [
+          "7/10;3/20;3/20"
+        ],
+        "feedback": "Доля A₁ равна 3/10. Раздели именно её пополам между B и C."
+      },
+      "explanation": "DK=0,7DA+0,15DB+0,15DC.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "A₁ — середина BC, поэтому DA₁=(DB+DC)/2.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "face"
+    },
+    {
+      "id": "step-4",
+      "title": "Другое отношение",
+      "prompt": "В новом тетраэдре AK:KA₁=2:3. Запиши новую тройку.",
+      "input": {
+        "prompt": "Другое отношение",
+        "accepted": [
+          "3/5;1/5;1/5"
+        ],
+        "feedback": "AA₁ состоит из пяти долей, к A₁ приходится вес 2/5."
+      },
+      "explanation": "Новые веса равны 3/5, 1/5 и 1/5.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Сумма весов концов всегда равна единице.",
+          "theoryId": "theory-070"
+        }
+      ],
+      "view": "ratio"
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "7/10;3/20;3/20"
+    ],
+    "prompt": "Введи три коэффициента исходного DK через точку с запятой.",
+    "feedback": "Вес стороны BC составляет 3/10 и распределяется поровну между B и C."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: supplied Atanasyan 2024, printed 155, answer key 268–269 where supplied; independent affine, Euclidean and geometric verification.",
+    "at": "2026-11-21T21:14:01Z"
+  }
+}

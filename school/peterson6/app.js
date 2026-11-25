@@ -207,7 +207,15 @@ function firstErrorsHTML(t,s){
  const saved=state.tasks[current.id];
  return saved&&(saved.methodVersion||1)<(current.methodVersion||1)?resolveTask(current.id,saved.methodVersion||1):current;
 }
-  function currentCredit(task){const saved=ts(task.id);return boardSession||(saved.methodVersion||1)===(task.methodVersion||1);}
+  function currentCredit(task) {
+    const saved = state.tasks[task.id];
+    return !!saved && (boardSession || (saved.methodVersion || 1) === (task.methodVersion || 1));
+  }
+  function taskStatus(task) {
+    const saved = state.tasks[task.id];
+    if (saved?.correct && currentCredit(task)) return '✓';
+    return task.kind === 'manual' && saved?.value === 'recorded' ? '•' : '';
+  }
   function archiveTask(id,saved){
  if(boardSession)return;
  const list=state.history[id]||(state.history[id]=[]),copy=JSON.parse(JSON.stringify(saved));
@@ -269,6 +277,51 @@ function firstErrorsHTML(t,s){
     helpOpen[taskId] = value;
     try { localStorage.setItem(HELP_KEY, JSON.stringify(helpOpen)); } catch (_) {}
   }
+  // Course data is immutable. Saved links and board snapshots use the original array index.
+  const readingOrders = new WeakMap();
+  const subpartOrder = new Intl.Collator('ru', { numeric: true });
+  function readingOrder(lesson) {
+    let indices = readingOrders.get(lesson);
+    if (indices) return indices;
+    indices = lesson.tasks.map((_, index) => index);
+    if (lesson.orderBySource) {
+      indices.sort((a, b) => {
+        const left = lesson.tasks[a].source, right = lesson.tasks[b].source;
+        return left.exercise - right.exercise ||
+          subpartOrder.compare(String(left.readingKey || left.subpart || ''), String(right.readingKey || right.subpart || ''));
+      });
+    }
+    readingOrders.set(lesson, indices);
+    return indices;
+  }
+  function partStart(part) {
+    const first = D.lessons.find(lesson => partOf(lesson) === part);
+    if (!first?.orderBySource) return '';
+    const index = readingOrder(first)[0];
+    let lastPrinted = 0, coverage = '';
+    for (const topic of D.lessons.filter(candidate => partOf(candidate) === part)) {
+      const section = topic.completeSourceSection;
+      if (!section || section.first !== lastPrinted + 1) break;
+      const count = topic.tasks.filter(task => task.source?.type === 'textbook' &&
+        task.source.exercise >= section.first && task.source.exercise <= section.last).length;
+      coverage += '<p class="small">В теме «' + e(topic.title) + '» разобраны №' +
+        section.first + '–' + section.last + ' со всеми подпунктами (с. ' + section.firstPage + '–' +
+        section.lastPage + '). Число карточек с разбором — ' + count + '.</p>';
+      if (section.printingNote) coverage += '<p class="small">' + e(section.printingNote) + '</p>';
+      lastPrinted = section.last;
+      const review = topic.completeSourceReview;
+      if (review && review.first === lastPrinted + 1) {
+        const start = readingOrder(topic).find(i => topic.tasks[i].source.exercise === review.first);
+        if (Number.isInteger(start)) {
+          coverage += '<p class="small"><a href="#lesson/' + e(topic.id) + '/' + start + '">Самопроверка · №' +
+            review.first + '–' + review.last + ' · с. ' + review.firstPage + '</a></p>';
+          lastPrinted = review.last;
+        }
+      }
+    }
+    return '<p><a class="button quiet" href="#lesson/' + first.id + '/' + index + '">' +
+      'С начала части ' + part + ' · ' + e(first.tasks[index].source.reference) + '</a></p>' + coverage;
+  }
   function partOf(lesson){return Number(lesson?.part)||1;}
   function sourceLimit(part){return ({1:497,2:589,3:778})[part]||497;}
   function isGenerated(id){return /^(?:practice|check):/.test(id);}
@@ -304,8 +357,8 @@ function firstErrorsHTML(t,s){
     if(location.hash!==hash)location.hash=hash;
     route();
   }
-  function count(lesson){return lesson.tasks.filter(t=>currentCredit(t)&&ts(t.id).correct).length;}
-  function independent(lesson){return lesson.tasks.filter(t=>currentCredit(t)&&ts(t.id).independent).length;}
+  function count(lesson){return lesson.tasks.filter(t=>state.tasks[t.id]?.correct&&currentCredit(t)).length;}
+  function independent(lesson){return lesson.tasks.filter(t=>state.tasks[t.id]?.independent&&currentCredit(t)).length;}
   function returnBanner(){return state.origin?'<div class="return-banner"><div><strong>Тренируем отдельный навык</strong><br><span class="small">Условие, ответы и шаги исходной задачи сохранены.</span></div>'+button('← Вернуться к задаче','return')+'</div>':'';}
   function skillLinks(ids){return (ids||[]).filter(id=>skills[id]).map(id=>button(e(skills[id].title),'detour','data-skill="'+id+'"',true)).join('');}
   function home() {
@@ -326,7 +379,7 @@ ${[1, 2, 3]
         2: 'Отношения, пропорции и целые числа',
         3: 'Рациональные числа, геометрия и координаты',
       }[part] +
-      '</h2><div class="grid">' +
+      '</h2>' + partStart(part) + '<div class="grid">' +
       D.lessons
         .filter((l) => partOf(l) === part)
         .map(
@@ -393,7 +446,7 @@ ${[1, 2, 3]
   r.innerHTML='<h3>№ '+n+' · страница '+ref.page+'</h3><p>'+e(exact.topic)+'</p><div class="row"><a class="button" href="'+e(href)+'" target="'+(inCabinet?'_self':'_blank')+'" rel="noopener noreferrer">Разобрать № '+n+' через неизвестную '+(inCabinet?'→':'↗')+'</a></div><p class="small">'+note+'</p>';
   return;
  }
-    const matches=ref?.missing?[]:D.lessons.filter(x=>partOf(x)===part).flatMap(x=>x.tasks.map((t,i)=>({t,l:x,i}))).filter(x=>x.t.source?.type==='textbook'&&(Number(String(x.t.source.number||'').match(/\d+/)?.[0])===n||new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference||'')));
+    const matches=ref?.missing?[]:D.lessons.filter(x=>partOf(x)===part).flatMap(x=>readingOrder(x).map(i=>({t:x.tasks[i],l:x,i}))).filter(x=>x.t.source?.type==='textbook'&&(Number(String(x.t.source.number||'').match(/\d+/)?.[0])===n||new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference||'')));
     r.innerHTML='<h3>Часть '+part+' · № '+n+(ref?' · страница '+ref.page:'')+'</h3>'+((ref?.notice||ref?.sourceNotice)?'<p class="source-note">'+e(ref.notice||ref.sourceNotice)+'</p>':'')+(l?'<p>'+e(ref.review?'Блок самопроверки. Повтори связанные темы.':l.title)+'</p>':'')+'<div class="row">'+(l?'<a class="button quiet" href="#lesson/'+l.id+'">Открыть тему</a>':'')+matches.map(x=>'<a class="button quiet" href="#lesson/'+x.l.id+'/'+x.i+'">Разбор '+e(x.t.source.reference)+'</a>').join('')+'</div>'+(matches.length?'':'<p class="small">'+(ref?.missing?'Такого номера в этой части учебника нет. Ориентируйся на соседние номера и страницу.':'Индивидуальный разбор этого номера ещё не включён. Выбери его тему в курсе.')+'</p>')+(l?'<div class="row">'+skillLinks(l.skills)+'</div>':'');
   }
   function skillPage(){main.innerHTML=returnBanner()+'<p class="eyebrow">Вычислительная мастерская</p><h1>Потренируй один навык</h1><p class="lead">Выбери действие. Начни с простых чисел, затем переходи к более сложным. Кнопка «Новый пример» даёт другое задание.</p><div class="skill-grid">'+M.skills.map(s=>'<article class="skill-card"><span class="eyebrow">Практика</span><h2>'+e(s.title)+'</h2><p>'+e(s.description)+'</p><a class="button quiet" href="#practice/'+s.id+'/1">Начать →</a></article>').join('')+'</div>';}
@@ -401,12 +454,14 @@ ${[1, 2, 3]
     const l = byId[id];
     if (!l) return home();
     index=Math.max(0,Math.min(l.tasks.length-1,Number(index)||0));
+    const order = readingOrder(l), position = order.indexOf(index);
     const t = workTask(l.tasks[index]),
       next = D.lessons[D.lessons.indexOf(l) + 1];
+    const nextLessonRoute = next && '#lesson/' + next.id + (next.orderBySource ? '/' + readingOrder(next)[0] : '');
     active={lesson:l,task:t,index,practice:false,checking:false};
     state.last={hash:'#lesson/'+id+'/'+index};
     save();
-    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(i+1)+'. '+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
+    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details'+(boardSession||(window.matchMedia&&window.matchMedia('(min-width: 901px)').matches)?' open':'')+'><summary>Задачи этой темы</summary><div class="side-list">'+order.map((i,ordinal)=>{const q=l.tasks[i];return '<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+taskStatus(q)+'</span>'+(ordinal+1)+'. '+e(q.title)+'</button>'}).join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(position>0?button('← Предыдущая','task','data-index="'+order[position-1]+'"',true):'<span></span>')+(position+1<order.length?button('Следующая задача →','task','data-index="'+order[position+1]+'"',true):next?'<a class="button quiet" href="'+nextLessonRoute+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
     renderProblem();
     cleanup=window.PetersonModels?.mount(document.getElementById('model'),l,boardSession?{task:t}:{
       task:t,inquiry:true,state:ts(t.id).inquiry,onChange(value){
@@ -481,12 +536,14 @@ ${[1, 2, 3]
     'p33-t04': [['−2', 'y', '−1'], ['+3', '−y', '−4']],
   };
   function ratioPair(t) {
+    if (t.ratioQuantities) return t.ratioQuantities;
     if (ratioExamples[t.id]) return ratioExamples[t.id];
     if (active.skill === 'ratio' && t.calculation?.op === 'divide')
       return [Number(t.calculation.left), Number(t.calculation.right)];
     return null;
   }
   function bracketTerms(t) {
+    if (t.distributedTerms) return t.distributedTerms;
     if (bracketProducts[t.id]) return bracketProducts[t.id];
     if (active.skill === 'bracket-evaluate' && t.calculation?.op === 'bracket') {
       const {right,third} = t.calculation;
@@ -495,8 +552,8 @@ ${[1, 2, 3]
     return null;
   }
   function repairSkill(t) {
-    if (t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
-    if (ratioExamples[t.id]) return ['p15-t01','p15-t02'].includes(t.id) ? 'ratio' : 'percent-ratio';
+    if (t.distributedTerms || t.id === 'p33-t01' || t.id === 'p33-t02') return 'bracket-evaluate';
+    if (t.ratioQuantities || ratioExamples[t.id]) return t.answerFormat === 'reduced-fraction' ? 'ratio' : 'percent-ratio';
     return null;
   }
   function methodModel(t) {
@@ -510,7 +567,7 @@ ${[1, 2, 3]
     if (pair) {
       const [first, second, unit = ''] = pair;
       const max = Math.max(first, second);
-      const row = (name,value) => '<li>' + name + ' — ' + e(value + unit) + ' <meter aria-label="' +
+      const row = (name,value) => '<li>' + name + ' — ' + e(String(value).replace('.',',') + unit) + ' <meter aria-label="' +
         name + '" min="0" max="' + max + '" value="' + value + '"></meter></li>';
       return '<figure><figcaption>Две величины в одном масштабе</figcaption><ul>' +
         row('Первая',first) + row('Вторая',second) +
@@ -519,8 +576,8 @@ ${[1, 2, 3]
     const products = bracketTerms(t);
     if (!products) return '';
     return '<figure><figcaption>Куда идёт множитель перед скобками?</figcaption><ul>' +
-      products.map(([factor,one,two]) => '<li>' + e(factor + ' × (' + one + ')') + ' и ' +
-        e(factor + ' × (' + two + ')') + '</li>').join('') +
+      products.map(([factor,...terms]) => '<li>' +
+        terms.map(term => e(factor + ' × (' + term + ')')).join(' и ') + '</li>').join('') +
       '</ul><p>Проверь знак числа или коэффициента в каждом произведении. Слагаемые за скобками перепиши со своими знаками.</p></figure>';
   }
   function wrongAnswerCue(t,value) {
@@ -574,12 +631,8 @@ ${[1, 2, 3]
     const t=active.task,s=ts(t.id),manual=t.kind==='manual',checking=active.checking,host=document.getElementById('problem');
     if (active.lesson)
       main.querySelectorAll('.side-list [data-index]').forEach((el) => {
-        const task=active.lesson.tasks[Number(el.dataset.index)],record=ts(task.id);
-        el.querySelector('.status').textContent = currentCredit(task) && record.correct
-          ? '✓'
-          : task.kind === 'manual' && record.value === 'recorded'
-            ? '•'
-            : '';
+        const task = active.lesson.tasks[Number(el.dataset.index)];
+        el.querySelector('.status').textContent = taskStatus(task);
       });
     boardStepFeedback = '';
     const help=checking?'':('<div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+(t.steps?.length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p>'+methodModel(t)+'</div>':'')+(s.guided?renderSteps(t,s):''));
@@ -737,7 +790,7 @@ ${[1, 2, 3]
       '</tbody></table></div><p class="small">Записано для проверки: ' +
       D.lessons
         .flatMap((l) => l.tasks)
-        .filter((t) => t.kind === 'manual' && ts(t.id).value === 'recorded').length +
+        .filter((t) => t.kind === 'manual' && state.tasks[t.id]?.value === 'recorded').length +
       '. Эти работы не входят в автоматический зачёт.</p><p><a href="#diagnostic">Рекомендации и новые проверки →</a></p><h2>Отдельные тренировки</h2><p>Решено ' +
       pr.length +
       ' примеров, из них ' +

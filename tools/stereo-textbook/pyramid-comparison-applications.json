@@ -1,0 +1,298 @@
+{
+  "parts": {
+    "534": [
+      null
+    ],
+    "535": [
+      null
+    ],
+    "536": [
+      "а",
+      "б"
+    ],
+    "537": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "534": {
+      "id": "source-main-0534",
+      "kind": "exercise",
+      "title": "Задача № 534",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "534",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          140
+        ],
+        "pdfPages": [
+          142
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "535": {
+      "id": "source-main-0535",
+      "kind": "exercise",
+      "title": "Задача № 535",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "535",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          140
+        ],
+        "pdfPages": [
+          142
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "536": {
+      "id": "source-main-0536",
+      "kind": "exercise",
+      "title": "Задача № 536",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "536",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          140
+        ],
+        "pdfPages": [
+          142
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "537": {
+      "id": "source-main-0537",
+      "kind": "exercise",
+      "title": "Задача № 537",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "537",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          140
+        ],
+        "pdfPages": [
+          142
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0534": {
+      "raw": "1c1ce9002174b857da52ce7d95717ceddc5d490ac78413f9f3cdb8c52c7085e4",
+      "authored": "b0f889e00d76912c60e8ef84e5c63b4844ed952328bb1f72189be10bf3c898d8",
+      "integrated": "ea35af190e111c70e01d1303b992393f4e6cfc2c416886c24e6b9d80c0703d4b"
+    },
+    "ex-main-0535": {
+      "raw": "cdb19ada3a6dedb0500e5fd5df9f18ad6d10ecbf539cd79613863769e3b5920a",
+      "authored": "34685801326c86be23efd5c4a6f8df0d95299148a0956849385ee6c2eb0a1293",
+      "integrated": "0edf2229bbbaf5f5a7b3dff6df87ccc360461ef73f6cc1cb5af28d272d56e10e"
+    },
+    "ex-main-0536-a": {
+      "raw": "779193f89a6806112bfe073d2f26787ed82021b24aed6367c9704eb4b935ab07",
+      "authored": "03d08f7cc683ec100b3c3754ac000f5801a83812ace2dd00b411f683480e8e85",
+      "integrated": "755ae2e878b4de07a5566ccb2c956b0599224b2bb2df02bfcd83edac22a703fa"
+    },
+    "ex-main-0536-b": {
+      "raw": "bcf2856a32dfd4ec3244e04f4bfa5c3c1df32ed18cddb10196d1726aeb20ac75",
+      "authored": "1cbf7f13fd88ee0c857478aa61804af6483f20cc1c0e3ff1609706cbfdc7799f",
+      "integrated": "d530b199c5f1708313f3537cc1c1f4716f5355722022c6fffcccc3cfa2f19bbf"
+    },
+    "ex-main-0537": {
+      "raw": "8d6487759bca30b65906b374bb142ef8e22249ab3e1bffea6edc602841634984",
+      "authored": "667e7deb2509260ac406100c50fe5304156ecbf3af6d40b3b1b687aed0c607de",
+      "integrated": "2e6162ccce4cdd3da3f7caf505b7cb0c62667c5d094faa71d67e552593732c2d"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0534|condition",
+      "pyramid-comparison-ex-main-0534-condition"
+    ],
+    [
+      "ex-main-0534|help:h1",
+      "pyramid-comparison-ex-main-0534-help-h1"
+    ],
+    [
+      "ex-main-0534|help:h2",
+      "pyramid-comparison-ex-main-0534-help-h2"
+    ],
+    [
+      "ex-main-0534|step-1",
+      "pyramid-comparison-ex-main-0534-step-1"
+    ],
+    [
+      "ex-main-0534|step-2",
+      "pyramid-comparison-ex-main-0534-step-2"
+    ],
+    [
+      "ex-main-0534|step-3",
+      "pyramid-comparison-ex-main-0534-step-3"
+    ],
+    [
+      "ex-main-0534|step-4",
+      "pyramid-comparison-ex-main-0534-step-4"
+    ],
+    [
+      "ex-main-0534|step-5",
+      "pyramid-comparison-ex-main-0534-step-5"
+    ],
+    [
+      "ex-main-0535|condition",
+      "pyramid-comparison-ex-main-0535-condition"
+    ],
+    [
+      "ex-main-0535|help:h1",
+      "pyramid-comparison-ex-main-0535-help-h1"
+    ],
+    [
+      "ex-main-0535|help:h2",
+      "pyramid-comparison-ex-main-0535-help-h2"
+    ],
+    [
+      "ex-main-0535|step-1",
+      "pyramid-comparison-ex-main-0535-step-1"
+    ],
+    [
+      "ex-main-0535|step-2",
+      "pyramid-comparison-ex-main-0535-step-2"
+    ],
+    [
+      "ex-main-0535|step-3",
+      "pyramid-comparison-ex-main-0535-step-3"
+    ],
+    [
+      "ex-main-0535|step-4",
+      "pyramid-comparison-ex-main-0535-step-4"
+    ],
+    [
+      "ex-main-0536-a|condition",
+      "pyramid-comparison-ex-main-0536-a-condition"
+    ],
+    [
+      "ex-main-0536-a|help:h1",
+      "pyramid-comparison-ex-main-0536-a-help-h1"
+    ],
+    [
+      "ex-main-0536-a|help:h2",
+      "pyramid-comparison-ex-main-0536-a-help-h2"
+    ],
+    [
+      "ex-main-0536-a|step-1",
+      "pyramid-comparison-ex-main-0536-a-step-1"
+    ],
+    [
+      "ex-main-0536-a|step-2",
+      "pyramid-comparison-ex-main-0536-a-step-2"
+    ],
+    [
+      "ex-main-0536-a|step-3",
+      "pyramid-comparison-ex-main-0536-a-step-3"
+    ],
+    [
+      "ex-main-0536-a|step-4",
+      "pyramid-comparison-ex-main-0536-a-step-4"
+    ],
+    [
+      "ex-main-0536-a|step-5",
+      "pyramid-comparison-ex-main-0536-a-step-5"
+    ],
+    [
+      "ex-main-0536-b|condition",
+      "pyramid-comparison-ex-main-0536-b-condition"
+    ],
+    [
+      "ex-main-0536-b|help:h1",
+      "pyramid-comparison-ex-main-0536-b-help-h1"
+    ],
+    [
+      "ex-main-0536-b|help:h2",
+      "pyramid-comparison-ex-main-0536-b-help-h2"
+    ],
+    [
+      "ex-main-0536-b|step-1",
+      "pyramid-comparison-ex-main-0536-b-step-1"
+    ],
+    [
+      "ex-main-0536-b|step-2",
+      "pyramid-comparison-ex-main-0536-b-step-2"
+    ],
+    [
+      "ex-main-0536-b|step-3",
+      "pyramid-comparison-ex-main-0536-b-step-3"
+    ],
+    [
+      "ex-main-0536-b|step-4",
+      "pyramid-comparison-ex-main-0536-b-step-4"
+    ],
+    [
+      "ex-main-0536-b|step-5",
+      "pyramid-comparison-ex-main-0536-b-step-5"
+    ],
+    [
+      "ex-main-0537|condition",
+      "pyramid-comparison-ex-main-0537-condition"
+    ],
+    [
+      "ex-main-0537|help:h1",
+      "pyramid-comparison-ex-main-0537-help-h1"
+    ],
+    [
+      "ex-main-0537|help:h2",
+      "pyramid-comparison-ex-main-0537-help-h2"
+    ],
+    [
+      "ex-main-0537|step-1",
+      "pyramid-comparison-ex-main-0537-step-1"
+    ],
+    [
+      "ex-main-0537|step-2",
+      "pyramid-comparison-ex-main-0537-step-2"
+    ],
+    [
+      "ex-main-0537|step-3",
+      "pyramid-comparison-ex-main-0537-step-3"
+    ],
+    [
+      "ex-main-0537|step-4",
+      "pyramid-comparison-ex-main-0537-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "cbfe89528f306b25437766ce61e003866c91d9a36fcced2eaa3275f605f4497c",
+      "afterSHA256": "04f406d46e8df14dec8189da058c2fe236c086ac4ee7393074dfe540ae73d381"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "d587c61a7c062bfb342ce96e2604749ca2811311b8bdc83e6453eb65c2383d06",
+      "afterSHA256": "289fffce2e8f286ed2b41dc1d7d00fe10a38402e6f42134b98c12eb1e151b590"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T16:44:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 533, points 52–62 and all chapter V self-checks, with 870 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "a7d06a4bd56febd89b9a62b61b310a2703cfc89f53f5136adea70dbd655f266a",
+    "index": "783f6fc96bf2462f3a189cdbca40e5978a53c1baebd6d33e366501fb42c127a8",
+    "registry": "b99f1638554b76bfa8b989f2897213e59c45d2e7e872339b1c24c7c5e3c9b383",
+    "cases": "2c99d41537d1e9f5e33eb78576675d6fc06f7fe83364a3ad8c647993664065aa"
+  }
+}

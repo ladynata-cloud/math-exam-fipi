@@ -12,7 +12,52 @@ const groups = {
   volume: {manifests:[require('./box-volumes.json')],count:21},
   prism: {manifests:[require('./prism-volumes.json')],count:26},
   cross: {manifests:[require('./cross-sections.json')],count:3},
-  oblique: {manifests:[require('./oblique-prisms.json')],count:12}
+  oblique: {manifests:[require('./oblique-prisms.json')],count:12},
+  pyramids: {manifests:[require('./pyramid-volumes.json')],count:9},
+  projections: {manifests:[require('./pyramid-projections.json')],count:10},
+  frusta: {manifests:[require('./pyramid-frusta.json')],count:4},
+  cones: {manifests:[require('./cone-volumes.json')],count:7},
+  sectors: {manifests:[require('./cone-nets-and-frusta.json')],count:4},
+  spheres: {manifests:[require('./sphere-measures.json')],count:13},
+  sphereApplications: {manifests:[require('./sphere-applications.json')],count:9},
+  volumeSelfcheck: {manifests:[require('./volume-selfcheck.json')],count:17},
+  prismApplications: {manifests:[require('./prism-applications.json')],count:7},
+  normalPrismApplications: {manifests:[require('./normal-prism-applications.json')],count:4},
+  pyramidAngleApplications: {manifests:[require('./pyramid-angle-applications.json')],count:5},
+  pyramidComparisonApplications: {manifests:[require('./pyramid-comparison-applications.json')],count:5},
+  cylinderApplications: {manifests:[require('./cylinder-applications.json')],count:5},
+  inscribedVolumeApplications: {manifests:[require('./inscribed-volume-applications.json')],count:6},
+  sphereVolumeAngles: {manifests:[require('./sphere-volume-angles.json')],count:4},
+  volumeChapterEnd: {manifests:[require('./volume-chapter-end.json')],count:7},
+  vectorBasics: {manifests:[require('./vector-basics.json')],count:6},
+  vectorPairs: {manifests:[require('./vector-pairs.json')],count:5},
+  vectorProperties: {manifests:[require('./vector-properties.json')],count:11},
+  spatialVectorSums: {manifests:[require('./spatial-vector-sums.json')],count:11},
+  oppositeDifference: {manifests:[require('./opposite-and-difference-vectors.json')],count:9},
+  vectorOriginPaths: {manifests:[require('./vector-origin-and-paths.json')],count:5},
+  diagonalPaths: {manifests:[require('./prism-diagonals-and-vector-paths.json')],count:7},
+  signedVectorCombinations: {manifests:[require('./signed-vector-combinations.json')],count:6},
+  prismVectorEquations: {manifests:[require('./prism-vector-equations.json')],count:6},
+  pyramidVectorMidpoints: {manifests:[require('./pyramid-vector-midpoints.json')],count:6},
+  midlinesVectorCoefficients: {manifests:[require('./midlines-vector-coefficients.json')],count:6},
+  collinearityVectorConditions: {manifests:[require('./collinearity-vector-conditions.json')],count:10},
+  coplanarVectorDirections: {manifests:[require('./coplanar-vector-directions.json')],count:9},
+  parallelepipedDirectedBases: {manifests:[require('./parallelepiped-directed-bases.json')],count:7},
+  fieldsAndMidpointVectors: {manifests:[require('./fields-and-midpoint-vectors.json')],count:8},
+  centroidsInTetrahedra: {manifests:[require('./centroids-in-tetrahedra.json')],count:15},
+  heightAndMidpointProofs: {manifests:[require('./height-and-midpoint-proofs.json')],count:3},
+  vectorChapterSelfcheck: {manifests:[require('./vector-chapter-selfcheck.json')],count:28},
+  additionalDirectedEdgeSums: {manifests:[require('./additional-directed-edge-sums.json')],count:14},
+  vectorSpanAndBarycentres: {manifests:[require('./vector-span-and-barycentres.json')],count:15},
+  vectorChapterSixEnd: {manifests:[require('./vector-chapter-six-end.json')],count:14},
+  cartesianCoordinateStart: {manifests:[require('./cartesian-coordinate-start.json')],count:14},
+  coordinateVectorsAndDiagrams: {manifests:[require('./coordinate-vectors-and-diagrams.json')],count:13},
+  signedCoordinateArithmetic: {manifests:[require('./signed-coordinate-arithmetic.json')],count:18},
+  coordinateSpanRatios: {manifests:[require('./coordinate-span-ratios.json')],count:13},
+  spatialPointsAndCentroid: {manifests:[require('./spatial-points-and-centroid.json')],count:14},
+  midpointsAndVectorLengths: {manifests:[require('./midpoints-and-vector-lengths.json')],count:20},
+  spatialDistancesAndEqualLoci: {manifests:[require('./spatial-distances-and-equal-loci.json')],count:18},
+  coordinateSpheresSectionEnd: {manifests:[require('./coordinate-spheres-section-end.json')],count:13}
 };
 const group = groups[process.env.TEXTBOOK_PRACTICE_GROUP || 'solids'];
 assert(group, 'Unknown textbook practice group');
@@ -58,9 +103,14 @@ async function exercise(page, card, base, width) {
   const views = new Set([await model.getAttribute('data-view')]);
   const errors = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
   assert(errors <= 1, card.id + ': no horizontal scrolling at ' + width);
-  const before = await model.getAttribute('data-yaw');
-  await page.getByRole('button', {name:'Повернуть вправо', exact:true}).click();
-  assert.notEqual(await model.getAttribute('data-yaw'), before);
+  const rotate = page.getByRole('button', {name:'Повернуть вправо', exact:true});
+  if (card.visualization.model.planar) {
+    assert.equal(await rotate.count(), 0, 'the exact plane angle is shown face-on');
+  } else {
+    const before = await model.getAttribute('data-yaw');
+    await rotate.click();
+    assert.notEqual(await model.getAttribute('data-yaw'), before);
+  }
   const out = process.env.INSCRIBED_SOLIDS_ARTIFACTS;
   if (out) {
     await fs.mkdir(out, {recursive:true});
@@ -122,16 +172,35 @@ async function exercise(page, card, base, width) {
       await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
       base = 'http://127.0.0.1:' + server.address().port + '/stereo-course/textbook/';
     }
-    browser = await chromium.launch({headless:true, executablePath:process.env.GEOMETRY_CHROMIUM});
     const errors = [];
     let checks = 0;
+    // The complete bank is loaded twice per journey to check recovery after reload.
+    // Recycle the renderer processes between small sets, while keeping the same
+    // learner context throughout every individual attempt and reload.
+    const batchSize = 4;
     for (const width of [320,390,1280]) {
-      const context = await browser.newContext({viewport:{width,height:900}});
-      const page = await context.newPage();
-      page.setDefaultTimeout(90000);
-      page.on('pageerror', error => errors.push(error.message));
-      for (const card of cards) checks += await exercise(page, card, base, width);
-      await context.close();
+      for (let start = 0; start < cards.length; start += batchSize) {
+        browser = await chromium.launch({
+          headless:true, executablePath:process.env.GEOMETRY_CHROMIUM,
+          args:['--disable-dev-shm-usage','--js-flags=--max-old-space-size=240']
+        });
+        try {
+          for (const card of cards.slice(start,start+batchSize)) {
+            const context = await browser.newContext({viewport:{width,height:900}});
+            try {
+              const page = await context.newPage();
+              page.setDefaultTimeout(90000);
+              page.on('pageerror', error => errors.push(error.message));
+              checks += await exercise(page, card, base, width);
+            } finally {
+              await context.close();
+            }
+          }
+        } finally {
+          await browser.close();
+          browser = undefined;
+        }
+      }
     }
     assert.equal(cards.length,group.count);
     assert.deepEqual(errors, []);

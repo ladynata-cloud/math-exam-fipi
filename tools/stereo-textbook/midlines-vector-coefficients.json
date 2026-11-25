@@ -1,0 +1,320 @@
+{
+  "parts": {
+    "582": [
+      "а",
+      "б"
+    ],
+    "583": [
+      null
+    ],
+    "584": [
+      "а",
+      "б"
+    ],
+    "585": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "582": {
+      "id": "source-main-0582",
+      "kind": "exercise",
+      "title": "Задача № 582",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "582",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "583": {
+      "id": "source-main-0583",
+      "kind": "exercise",
+      "title": "Задача № 583",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "583",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "584": {
+      "id": "source-main-0584",
+      "kind": "exercise",
+      "title": "Задача № 584",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "584",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "585": {
+      "id": "source-main-0585",
+      "kind": "exercise",
+      "title": "Задача № 585",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "585",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0582-a": {
+      "raw": "5274e56a44d2f2315abc52fe0e4748513fd31f46058439ffca7d7ba3be224395",
+      "authored": "da865eba227ff144ef40f0ae0d929aa2dadcbca771e4aa5ec8ebf0fd82f248a2",
+      "integrated": "32931ba3e7502823180cd06ec063ff2e528b8e93c235749e31e5a39b009dab89"
+    },
+    "ex-main-0582-b": {
+      "raw": "204f4079f6ef390ce6b96f50fe5c9e8bc276d38b8cbd5e920943f6815ee0fee6",
+      "authored": "b512d242b5ff6d32d2aaad967aabe1ef5109b8c94ae0705c725516089f2872a6",
+      "integrated": "c43982c3ae4b5df20dcaab040465a834fda2b06d83f5e2a626e13a9e432a5606"
+    },
+    "ex-main-0583": {
+      "raw": "b0ac0819a4063c74bb7952e61e90a44c84d5928ca257bae0a2d20373f7e1ec24",
+      "authored": "05195e299d2e2b088246230e6641a0e25ada44b7bf7f638a0b7b93e34328399f",
+      "integrated": "88f2af3cbf3640fec941a38a0b96ea6b7c6ac13690f2daf66c79f444e125023c"
+    },
+    "ex-main-0584-a": {
+      "raw": "45917baf87424fff7844d01693863eb5f9cedf8e10f97768fe42fc1b37358e6d",
+      "authored": "355d6cd1fcc9033c8562de37dd54af74c4dd0f938c710f0c89267b8fea85d95f",
+      "integrated": "012073ebf2417d33ef6a128054d8ea6d83311a045f7e8ae8013db6103d5dff31"
+    },
+    "ex-main-0584-b": {
+      "raw": "0444f4bf582785a9c0101a743c4a34908162a09371d2bb363ef1c5b4a88442de",
+      "authored": "e18c28fffc8dc34b107201f6bdceba88fe260a29699291c8efa22cb2cf0d9cc6",
+      "integrated": "bb1df9622a1296c30e9b3a5ad83c27f9d508458f116feba57be687240f1caaf3"
+    },
+    "ex-main-0585": {
+      "raw": "62217b8d141082dc2ebc011f6c083810722bfb24635d49b30a065cd2a086db77",
+      "authored": "9b82b09854fd255978c6fa4866d35c49b31014672a86da6457cd69cfe72104c6",
+      "integrated": "0ad263c98246333dd1ab09a703ea99a3ce93ec21c322f47531b78d896a4fc3f5"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0582-a|condition",
+      "midlines-vector-coefficients-ex-main-0582-a-condition"
+    ],
+    [
+      "ex-main-0582-a|help:h1",
+      "midlines-vector-coefficients-ex-main-0582-a-help-h1"
+    ],
+    [
+      "ex-main-0582-a|help:h2",
+      "midlines-vector-coefficients-ex-main-0582-a-help-h2"
+    ],
+    [
+      "ex-main-0582-a|step-1",
+      "midlines-vector-coefficients-ex-main-0582-a-step-1"
+    ],
+    [
+      "ex-main-0582-a|step-2",
+      "midlines-vector-coefficients-ex-main-0582-a-step-2"
+    ],
+    [
+      "ex-main-0582-a|step-3",
+      "midlines-vector-coefficients-ex-main-0582-a-step-3"
+    ],
+    [
+      "ex-main-0582-a|step-4",
+      "midlines-vector-coefficients-ex-main-0582-a-step-4"
+    ],
+    [
+      "ex-main-0582-b|condition",
+      "midlines-vector-coefficients-ex-main-0582-b-condition"
+    ],
+    [
+      "ex-main-0582-b|help:h1",
+      "midlines-vector-coefficients-ex-main-0582-b-help-h1"
+    ],
+    [
+      "ex-main-0582-b|help:h2",
+      "midlines-vector-coefficients-ex-main-0582-b-help-h2"
+    ],
+    [
+      "ex-main-0582-b|step-1",
+      "midlines-vector-coefficients-ex-main-0582-b-step-1"
+    ],
+    [
+      "ex-main-0582-b|step-2",
+      "midlines-vector-coefficients-ex-main-0582-b-step-2"
+    ],
+    [
+      "ex-main-0582-b|step-3",
+      "midlines-vector-coefficients-ex-main-0582-b-step-3"
+    ],
+    [
+      "ex-main-0582-b|step-4",
+      "midlines-vector-coefficients-ex-main-0582-b-step-4"
+    ],
+    [
+      "ex-main-0583|condition",
+      "midlines-vector-coefficients-ex-main-0583-condition"
+    ],
+    [
+      "ex-main-0583|help:h1",
+      "midlines-vector-coefficients-ex-main-0583-help-h1"
+    ],
+    [
+      "ex-main-0583|help:h2",
+      "midlines-vector-coefficients-ex-main-0583-help-h2"
+    ],
+    [
+      "ex-main-0583|step-1",
+      "midlines-vector-coefficients-ex-main-0583-step-1"
+    ],
+    [
+      "ex-main-0583|step-2",
+      "midlines-vector-coefficients-ex-main-0583-step-2"
+    ],
+    [
+      "ex-main-0583|step-3",
+      "midlines-vector-coefficients-ex-main-0583-step-3"
+    ],
+    [
+      "ex-main-0583|step-4",
+      "midlines-vector-coefficients-ex-main-0583-step-4"
+    ],
+    [
+      "ex-main-0584-a|condition",
+      "midlines-vector-coefficients-ex-main-0584-a-condition"
+    ],
+    [
+      "ex-main-0584-a|help:h1",
+      "midlines-vector-coefficients-ex-main-0584-a-help-h1"
+    ],
+    [
+      "ex-main-0584-a|help:h2",
+      "midlines-vector-coefficients-ex-main-0584-a-help-h2"
+    ],
+    [
+      "ex-main-0584-a|step-1",
+      "midlines-vector-coefficients-ex-main-0584-a-step-1"
+    ],
+    [
+      "ex-main-0584-a|step-2",
+      "midlines-vector-coefficients-ex-main-0584-a-step-2"
+    ],
+    [
+      "ex-main-0584-a|step-3",
+      "midlines-vector-coefficients-ex-main-0584-a-step-3"
+    ],
+    [
+      "ex-main-0584-a|step-4",
+      "midlines-vector-coefficients-ex-main-0584-a-step-4"
+    ],
+    [
+      "ex-main-0584-b|condition",
+      "midlines-vector-coefficients-ex-main-0584-b-condition"
+    ],
+    [
+      "ex-main-0584-b|help:h1",
+      "midlines-vector-coefficients-ex-main-0584-b-help-h1"
+    ],
+    [
+      "ex-main-0584-b|help:h2",
+      "midlines-vector-coefficients-ex-main-0584-b-help-h2"
+    ],
+    [
+      "ex-main-0584-b|step-1",
+      "midlines-vector-coefficients-ex-main-0584-b-step-1"
+    ],
+    [
+      "ex-main-0584-b|step-2",
+      "midlines-vector-coefficients-ex-main-0584-b-step-2"
+    ],
+    [
+      "ex-main-0584-b|step-3",
+      "midlines-vector-coefficients-ex-main-0584-b-step-3"
+    ],
+    [
+      "ex-main-0584-b|step-4",
+      "midlines-vector-coefficients-ex-main-0584-b-step-4"
+    ],
+    [
+      "ex-main-0585|condition",
+      "midlines-vector-coefficients-ex-main-0585-condition"
+    ],
+    [
+      "ex-main-0585|help:h1",
+      "midlines-vector-coefficients-ex-main-0585-help-h1"
+    ],
+    [
+      "ex-main-0585|help:h2",
+      "midlines-vector-coefficients-ex-main-0585-help-h2"
+    ],
+    [
+      "ex-main-0585|step-1",
+      "midlines-vector-coefficients-ex-main-0585-step-1"
+    ],
+    [
+      "ex-main-0585|step-2",
+      "midlines-vector-coefficients-ex-main-0585-step-2"
+    ],
+    [
+      "ex-main-0585|step-3",
+      "midlines-vector-coefficients-ex-main-0585-step-3"
+    ],
+    [
+      "ex-main-0585|step-4",
+      "midlines-vector-coefficients-ex-main-0585-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "c9c01512c8133ad45e8d055002efe568f0e0b76c825de2779d2ec115e71725f8",
+      "afterSHA256": "455135f3db49b6bebe9f0558dac22669cff3c79dc9dcbbcabef361b8cf9493a5"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "2a52e3c6c209a4363851963550af1089459bfe9af60ef56671a942dd76bea103",
+      "afterSHA256": "5a13fe32eba928c5bcbf247a96b83dc03f9a8d4a88cd9df5761e94b950d3e05f"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T19:39:22Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–581, with 969 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "0a7f75c135218afe40c1e38261730f923ac17c843871a82fcc7db9480836a8d5",
+    "index": "df8c418d2ada4722690af6d30378645d48d3da21de9403e4dababd2b1e7c2b1a",
+    "registry": "1279f916a5a82836e03beb306f5ec00d3b6174b389c8ed58bedbfef2424005d8",
+    "cases": "898b16df3f4d9882407f589def0973ba82a0f3586aaa5c7116a7e7fa106d5a86"
+  }
+}

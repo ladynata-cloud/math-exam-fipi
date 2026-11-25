@@ -1,0 +1,529 @@
+{
+  "parts": {
+    "564": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д"
+    ],
+    "565": [
+      "а",
+      "б",
+      "в"
+    ],
+    "theory-65": [
+      null
+    ],
+    "theory-66": [
+      null
+    ],
+    "theory-67": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "564": {
+      "id": "source-main-0564",
+      "kind": "exercise",
+      "title": "Задача № 564",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "564",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          148
+        ],
+        "pdfPages": [
+          150
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "565": {
+      "id": "source-main-0565",
+      "kind": "exercise",
+      "title": "Задача № 565",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "565",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          148
+        ],
+        "pdfPages": [
+          150
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-65": {
+      "id": "source-theory-065",
+      "kind": "theory",
+      "title": "65. Сложение и вычитание векторов",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "65",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          145,
+          146
+        ],
+        "pdfPages": [
+          147,
+          148
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-66": {
+      "id": "source-theory-066",
+      "kind": "theory",
+      "title": "66. Сумма нескольких векторов",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "66",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          146,
+          147
+        ],
+        "pdfPages": [
+          148,
+          149
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "theory-67": {
+      "id": "source-theory-067",
+      "kind": "theory",
+      "title": "67. Умножение вектора на число",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "theory",
+        "point": "67",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          147,
+          148
+        ],
+        "pdfPages": [
+          149,
+          150
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0564-a": {
+      "raw": "a8c7ac8cf393444f8fd3733c6da3c3953c9a9ad72641402302df8293dfb075c6",
+      "authored": "eba30a657229d21f09c9174f492987e43a1283dc6eb9b1d87f1cef20c1193f63",
+      "integrated": "37c85c0b0d42ca830547309748c585253de3c76eb09aa571230e6a1dcae2c194"
+    },
+    "ex-main-0564-b": {
+      "raw": "7eaf47aeb0b4c5fe89ed2d8c4e92f22f040317ffc80e7dd747fdb0466be302a7",
+      "authored": "b54821f9964c8090ddab3f266c9c96079879116092a33d542ca208fc66e4fad7",
+      "integrated": "3dbc3b4c5abb1dd8d6edc5f60ea81053e82727ac398077f9e41213cbf276e25a"
+    },
+    "ex-main-0564-c": {
+      "raw": "32551bff6e15a91557c6e70a9fa4fa39251855c85f04e73d7e0d433ab99632e5",
+      "authored": "25f75a3cd24de2fe601b0d3e48798498810856d84f2323c36334ab836c59b9be",
+      "integrated": "5b41694d957b7d22cd2bdcfffe3e1721e8f789fa29d58405040be5a1fa409fc7"
+    },
+    "ex-main-0564-d": {
+      "raw": "e68671f43fa89c1c809241eebbc59125ac162053188a7208a0039ba2348806f4",
+      "authored": "ea26558b97df887a52d0d09339dbe570cf4263cca7aa0a265015f39d350219b7",
+      "integrated": "4677108a9c4ea33ea7872ec9ef78488bfb02287460686bb6216fb0604ca3ed5e"
+    },
+    "ex-main-0564-e": {
+      "raw": "57df0b8128e6cae58ff39224b5fd82f283581eedcec12897d4212fd08560f37b",
+      "authored": "c9806ba43974bfc4a7baf95444a157089cfa847e7f944a7719ad9dc3b599b2ce",
+      "integrated": "91143e099e987b62c83bfeacb261c9b691a1b06d97cfbe84732ff87e9a4d34c0"
+    },
+    "ex-main-0565-a": {
+      "raw": "427e90e1f424901c0aa966ee7a00e39eb38d9ab2316598413e0ae8268e3b1948",
+      "authored": "3819bfc41d0db1513355233e51eb3303107d6417a263be8045f4ba3a11ed12c2",
+      "integrated": "3f808f33545ecaa89057ac296ef8f0a36dcbbafa184d21e853a6c6ce6469343d"
+    },
+    "ex-main-0565-b": {
+      "raw": "5d621c4eb171294f8cc6e00234b1e288c416e23f9e473d0fad709f8dffc6ddaa",
+      "authored": "e7eab2aca5061d9834190ba5c62f60df1f73b36d2f4e27e7257dd652d4c3f353",
+      "integrated": "cd3228ec4b6b8bf99c86fd0e680c8273fc6bbe8dbf3cbb82440b6a027daf2d10"
+    },
+    "ex-main-0565-c": {
+      "raw": "dba7d352ba4a0a22eafb44c20c8117af05a67a453b12905d85d9db0701b69dd6",
+      "authored": "b892695f8af1329126394dc1dae3672fbab859e76b3ceb577010aac3241eeb9d",
+      "integrated": "91b025cd40caf2afb92176002c4ee4d63aa99de6bfaa56fd17621938a02e35e2"
+    },
+    "theory-065": {
+      "raw": "b46eacf7339fb7bcfc461b39332bfcd6a97096177a7b90883daf87bbca6e321c",
+      "authored": "5a2b507681a774099c9bedeef7a1e4f32a7841b7123d568fc435d5e8cc3a14cc",
+      "integrated": "254206a19e1e9eb23426006f221f8d873adc39f35726a6f0034161dde6b6c0cd"
+    },
+    "theory-066": {
+      "raw": "d3d40f005625989497a8272a65033e0b53be1661b9a44f303ecb6fe56b46f17d",
+      "authored": "cef2b943e3ca21ec719205bf7d0c8b60bb0be7d9cf07f5ffc8f66ce5cee56211",
+      "integrated": "0fe1cbdc66f5125dec7383138383c59f973066e9f97e16f38f6ba6f421da0332"
+    },
+    "theory-067": {
+      "raw": "6f2e27b60a469636a7f33b9bc689b6ed18116823eafb5c1319556813df4a2ed5",
+      "authored": "1700cad9da00d5961043e98c2f3c893819e5192c4ec84b186b5f8e3b2b838d12",
+      "integrated": "dcaba313c57f5a5a2ad4d158a15b24a52fe54e4e6c56fe8dc526c69438e4ebe3"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0564-a|condition",
+      "spatial-vector-sums-ex-main-0564-a-condition"
+    ],
+    [
+      "ex-main-0564-a|help:h1",
+      "spatial-vector-sums-ex-main-0564-a-help-h1"
+    ],
+    [
+      "ex-main-0564-a|help:h2",
+      "spatial-vector-sums-ex-main-0564-a-help-h2"
+    ],
+    [
+      "ex-main-0564-a|step-1",
+      "spatial-vector-sums-ex-main-0564-a-step-1"
+    ],
+    [
+      "ex-main-0564-a|step-2",
+      "spatial-vector-sums-ex-main-0564-a-step-2"
+    ],
+    [
+      "ex-main-0564-a|step-3",
+      "spatial-vector-sums-ex-main-0564-a-step-3"
+    ],
+    [
+      "ex-main-0564-a|step-4",
+      "spatial-vector-sums-ex-main-0564-a-step-4"
+    ],
+    [
+      "ex-main-0564-b|condition",
+      "spatial-vector-sums-ex-main-0564-b-condition"
+    ],
+    [
+      "ex-main-0564-b|help:h1",
+      "spatial-vector-sums-ex-main-0564-b-help-h1"
+    ],
+    [
+      "ex-main-0564-b|help:h2",
+      "spatial-vector-sums-ex-main-0564-b-help-h2"
+    ],
+    [
+      "ex-main-0564-b|step-1",
+      "spatial-vector-sums-ex-main-0564-b-step-1"
+    ],
+    [
+      "ex-main-0564-b|step-2",
+      "spatial-vector-sums-ex-main-0564-b-step-2"
+    ],
+    [
+      "ex-main-0564-b|step-3",
+      "spatial-vector-sums-ex-main-0564-b-step-3"
+    ],
+    [
+      "ex-main-0564-b|step-4",
+      "spatial-vector-sums-ex-main-0564-b-step-4"
+    ],
+    [
+      "ex-main-0564-c|condition",
+      "spatial-vector-sums-ex-main-0564-c-condition"
+    ],
+    [
+      "ex-main-0564-c|help:h1",
+      "spatial-vector-sums-ex-main-0564-c-help-h1"
+    ],
+    [
+      "ex-main-0564-c|help:h2",
+      "spatial-vector-sums-ex-main-0564-c-help-h2"
+    ],
+    [
+      "ex-main-0564-c|step-1",
+      "spatial-vector-sums-ex-main-0564-c-step-1"
+    ],
+    [
+      "ex-main-0564-c|step-2",
+      "spatial-vector-sums-ex-main-0564-c-step-2"
+    ],
+    [
+      "ex-main-0564-c|step-3",
+      "spatial-vector-sums-ex-main-0564-c-step-3"
+    ],
+    [
+      "ex-main-0564-c|step-4",
+      "spatial-vector-sums-ex-main-0564-c-step-4"
+    ],
+    [
+      "ex-main-0564-d|condition",
+      "spatial-vector-sums-ex-main-0564-d-condition"
+    ],
+    [
+      "ex-main-0564-d|help:h1",
+      "spatial-vector-sums-ex-main-0564-d-help-h1"
+    ],
+    [
+      "ex-main-0564-d|help:h2",
+      "spatial-vector-sums-ex-main-0564-d-help-h2"
+    ],
+    [
+      "ex-main-0564-d|step-1",
+      "spatial-vector-sums-ex-main-0564-d-step-1"
+    ],
+    [
+      "ex-main-0564-d|step-2",
+      "spatial-vector-sums-ex-main-0564-d-step-2"
+    ],
+    [
+      "ex-main-0564-d|step-3",
+      "spatial-vector-sums-ex-main-0564-d-step-3"
+    ],
+    [
+      "ex-main-0564-d|step-4",
+      "spatial-vector-sums-ex-main-0564-d-step-4"
+    ],
+    [
+      "ex-main-0564-e|condition",
+      "spatial-vector-sums-ex-main-0564-e-condition"
+    ],
+    [
+      "ex-main-0564-e|help:h1",
+      "spatial-vector-sums-ex-main-0564-e-help-h1"
+    ],
+    [
+      "ex-main-0564-e|help:h2",
+      "spatial-vector-sums-ex-main-0564-e-help-h2"
+    ],
+    [
+      "ex-main-0564-e|step-1",
+      "spatial-vector-sums-ex-main-0564-e-step-1"
+    ],
+    [
+      "ex-main-0564-e|step-2",
+      "spatial-vector-sums-ex-main-0564-e-step-2"
+    ],
+    [
+      "ex-main-0564-e|step-3",
+      "spatial-vector-sums-ex-main-0564-e-step-3"
+    ],
+    [
+      "ex-main-0564-e|step-4",
+      "spatial-vector-sums-ex-main-0564-e-step-4"
+    ],
+    [
+      "ex-main-0565-a|condition",
+      "spatial-vector-sums-ex-main-0565-a-condition"
+    ],
+    [
+      "ex-main-0565-a|help:h1",
+      "spatial-vector-sums-ex-main-0565-a-help-h1"
+    ],
+    [
+      "ex-main-0565-a|help:h2",
+      "spatial-vector-sums-ex-main-0565-a-help-h2"
+    ],
+    [
+      "ex-main-0565-a|step-1",
+      "spatial-vector-sums-ex-main-0565-a-step-1"
+    ],
+    [
+      "ex-main-0565-a|step-2",
+      "spatial-vector-sums-ex-main-0565-a-step-2"
+    ],
+    [
+      "ex-main-0565-a|step-3",
+      "spatial-vector-sums-ex-main-0565-a-step-3"
+    ],
+    [
+      "ex-main-0565-a|step-4",
+      "spatial-vector-sums-ex-main-0565-a-step-4"
+    ],
+    [
+      "ex-main-0565-b|condition",
+      "spatial-vector-sums-ex-main-0565-b-condition"
+    ],
+    [
+      "ex-main-0565-b|help:h1",
+      "spatial-vector-sums-ex-main-0565-b-help-h1"
+    ],
+    [
+      "ex-main-0565-b|help:h2",
+      "spatial-vector-sums-ex-main-0565-b-help-h2"
+    ],
+    [
+      "ex-main-0565-b|step-1",
+      "spatial-vector-sums-ex-main-0565-b-step-1"
+    ],
+    [
+      "ex-main-0565-b|step-2",
+      "spatial-vector-sums-ex-main-0565-b-step-2"
+    ],
+    [
+      "ex-main-0565-b|step-3",
+      "spatial-vector-sums-ex-main-0565-b-step-3"
+    ],
+    [
+      "ex-main-0565-b|step-4",
+      "spatial-vector-sums-ex-main-0565-b-step-4"
+    ],
+    [
+      "ex-main-0565-c|condition",
+      "spatial-vector-sums-ex-main-0565-c-condition"
+    ],
+    [
+      "ex-main-0565-c|help:h1",
+      "spatial-vector-sums-ex-main-0565-c-help-h1"
+    ],
+    [
+      "ex-main-0565-c|help:h2",
+      "spatial-vector-sums-ex-main-0565-c-help-h2"
+    ],
+    [
+      "ex-main-0565-c|step-1",
+      "spatial-vector-sums-ex-main-0565-c-step-1"
+    ],
+    [
+      "ex-main-0565-c|step-2",
+      "spatial-vector-sums-ex-main-0565-c-step-2"
+    ],
+    [
+      "ex-main-0565-c|step-3",
+      "spatial-vector-sums-ex-main-0565-c-step-3"
+    ],
+    [
+      "ex-main-0565-c|step-4",
+      "spatial-vector-sums-ex-main-0565-c-step-4"
+    ],
+    [
+      "theory-065|condition",
+      "spatial-vector-sums-theory-065-condition"
+    ],
+    [
+      "theory-065|help:h1",
+      "spatial-vector-sums-theory-065-help-h1"
+    ],
+    [
+      "theory-065|help:h2",
+      "spatial-vector-sums-theory-065-help-h2"
+    ],
+    [
+      "theory-065|help:h3",
+      "spatial-vector-sums-theory-065-help-h3"
+    ],
+    [
+      "theory-065|step-1",
+      "spatial-vector-sums-theory-065-step-1"
+    ],
+    [
+      "theory-065|step-2",
+      "spatial-vector-sums-theory-065-step-2"
+    ],
+    [
+      "theory-065|step-3",
+      "spatial-vector-sums-theory-065-step-3"
+    ],
+    [
+      "theory-065|step-4",
+      "spatial-vector-sums-theory-065-step-4"
+    ],
+    [
+      "theory-066|condition",
+      "spatial-vector-sums-theory-066-condition"
+    ],
+    [
+      "theory-066|help:h1",
+      "spatial-vector-sums-theory-066-help-h1"
+    ],
+    [
+      "theory-066|help:h2",
+      "spatial-vector-sums-theory-066-help-h2"
+    ],
+    [
+      "theory-066|help:h3",
+      "spatial-vector-sums-theory-066-help-h3"
+    ],
+    [
+      "theory-066|step-1",
+      "spatial-vector-sums-theory-066-step-1"
+    ],
+    [
+      "theory-066|step-2",
+      "spatial-vector-sums-theory-066-step-2"
+    ],
+    [
+      "theory-066|step-3",
+      "spatial-vector-sums-theory-066-step-3"
+    ],
+    [
+      "theory-066|step-4",
+      "spatial-vector-sums-theory-066-step-4"
+    ],
+    [
+      "theory-067|condition",
+      "spatial-vector-sums-theory-067-condition"
+    ],
+    [
+      "theory-067|help:h1",
+      "spatial-vector-sums-theory-067-help-h1"
+    ],
+    [
+      "theory-067|help:h2",
+      "spatial-vector-sums-theory-067-help-h2"
+    ],
+    [
+      "theory-067|help:h3",
+      "spatial-vector-sums-theory-067-help-h3"
+    ],
+    [
+      "theory-067|step-1",
+      "spatial-vector-sums-theory-067-step-1"
+    ],
+    [
+      "theory-067|step-2",
+      "spatial-vector-sums-theory-067-step-2"
+    ],
+    [
+      "theory-067|step-3",
+      "spatial-vector-sums-theory-067-step-3"
+    ],
+    [
+      "theory-067|step-4",
+      "spatial-vector-sums-theory-067-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "a976d2e81a1bcabb7af8b92f0a332f75c6b7a0ac7cf21cfd5ae3b9cdca0cb11e",
+      "afterSHA256": "76c6ebcbce1a77cffeba4b50ff24f2db38671cf2b2d8c23388c0769ac7f2a9a9"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "172caf36101e63fa871dc2c38a8ba559230dadf1228fb46151a8d7152abad33d",
+      "afterSHA256": "24b2780f0d348a86f699b5af5af8fa30626b1914b79149cc1e568875ec220fe7"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T18:42:00Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–64 and source exercises 557–563, with 919 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "82028411ff4282c4c76956a2eeb1356e5ffb291fe66a38a1bc66c6af1ef9573e",
+    "index": "ec4ae4e6476ec21f0ccb7bb4a906dec19310c6db16ca9c9e798e9373bce646f7",
+    "registry": "9a1382ef7467b7c141e24d4e6d2ad8508b561dbd52c662f659383c04a1d06cd7",
+    "cases": "2907d03b0501658350c683a15b664cab793ec0de96b99465954555929f0676df"
+  }
+}

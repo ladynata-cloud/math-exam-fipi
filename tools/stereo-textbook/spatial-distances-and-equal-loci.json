@@ -1,0 +1,781 @@
+{
+  "parts": {
+    "668": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "669": [
+      "а",
+      "б"
+    ],
+    "670": [
+      null
+    ],
+    "671": [
+      null
+    ],
+    "672": [
+      null
+    ],
+    "673": [
+      null
+    ],
+    "674": [
+      "а",
+      "б",
+      "в"
+    ],
+    "675": [
+      "а",
+      "б",
+      "в"
+    ],
+    "676": [
+      "а",
+      "б"
+    ]
+  },
+  "previousCatalog": {
+    "668": {
+      "id": "source-main-0668",
+      "kind": "exercise",
+      "title": "Задача № 668",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "668",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "669": {
+      "id": "source-main-0669",
+      "kind": "exercise",
+      "title": "Задача № 669",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "669",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "670": {
+      "id": "source-main-0670",
+      "kind": "exercise",
+      "title": "Задача № 670",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "670",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "671": {
+      "id": "source-main-0671",
+      "kind": "exercise",
+      "title": "Задача № 671",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "671",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "672": {
+      "id": "source-main-0672",
+      "kind": "exercise",
+      "title": "Задача № 672",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "672",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "673": {
+      "id": "source-main-0673",
+      "kind": "exercise",
+      "title": "Задача № 673",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "673",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "674": {
+      "id": "source-main-0674",
+      "kind": "exercise",
+      "title": "Задача № 674",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "674",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "675": {
+      "id": "source-main-0675",
+      "kind": "exercise",
+      "title": "Задача № 675",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "675",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "676": {
+      "id": "source-main-0676",
+      "kind": "exercise",
+      "title": "Задача № 676",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "676",
+        "chapter": "VII. Метод координат в пространстве. Движения",
+        "printedPages": [
+          170
+        ],
+        "pdfPages": [
+          172
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0668-a": {
+      "raw": "488fdb8629e4922bfd71002cddb616f5a6f5632a6e4b2ff13f4b1ec741b0b121",
+      "authored": "989ecff6fcdc02abf172c8ff3e86952581fad2e46c686d2c70560742e45098cb",
+      "integrated": "e07c1d4c13edb358a871fb02e1ab8cdc8ae91df2a64cc05f9daad1a0f2070419"
+    },
+    "ex-main-0668-b": {
+      "raw": "fb5045d15e0486668e501cb13794e55438714009b2e8aa10e995c5602c610967",
+      "authored": "b813224623c594894db439ffde7fe85adbd9dd2b562699ad8ddd3ecb5cb88556",
+      "integrated": "4cee1b0c03d809974400732520cf697d4b448d5fb798c1806ff6366f0dfdc906"
+    },
+    "ex-main-0668-c": {
+      "raw": "34c00b926630343743fd9806deb2502cc827eea178b61371dba690a3b3f02474",
+      "authored": "7601008e48d7aa8f8427aa57a35a29595213a87285606a8267764c8286823dcc",
+      "integrated": "77dddecce49fd0fb388f8de6ef867879ce677b4c028d6769ff486fee49e683e3"
+    },
+    "ex-main-0668-d": {
+      "raw": "80d3a2bc740d0e1a7c6cd757d3897958ebfd784e4d798710b346d6ba3f91fb6c",
+      "authored": "941ebddd61599ad788c61bdc7929dbd7822be1c2b50c8c954ec78a6e931c2e36",
+      "integrated": "1d6a7074ae2a67602ef499dec3be12e76a69512180a0dc31a797440e91ff8edf"
+    },
+    "ex-main-0669-a": {
+      "raw": "62587b97199bc07d912a66e10aba69c388adf19fd527e3844358147ae73d863a",
+      "authored": "ba84fc720053850d904c6507bf4b065872081307061932c96b62a96f5ff581be",
+      "integrated": "e9da7f08b412be13ada7eea117d6bb6b77360a514ba3e5a55636ce34a1d95611"
+    },
+    "ex-main-0669-b": {
+      "raw": "cd58ab458c9bf6f5583cd9549fdd4eb483943e60e3dc186dbb8da09b29ac0b44",
+      "authored": "b285b1c3740184d329911902b788b3e94d7c6f19380e09dc2056ca97dd2da6ec",
+      "integrated": "130dca652b2b2ed75e155e79846be37e80300d8dfdd974504a9e4cfb82578dcb"
+    },
+    "ex-main-0670": {
+      "raw": "4f77f3e008e62cfd8db1d4babdfedd17155da3fea17c8dc16075a68effb6ef9f",
+      "authored": "d257c998c72374b6dbb26463e14f30c869257593bfc1c1fffc70c258272182e9",
+      "integrated": "cf47f406468015a0930977878f6595983fbf88b0e0cffd02f02e2a5e65112b5f"
+    },
+    "ex-main-0671": {
+      "raw": "3ce39a6c5da44d49155261e7921a6773956f9e17e5bea8025ac316e23627ac7d",
+      "authored": "9451a7df89aefd7cbf5f5059b2fad531d53bf45a5c4c903d67a61ecadad91d57",
+      "integrated": "973cf8169a9cfd01c47728246412cd2a61418bdc7780a3627782bfdf52441189"
+    },
+    "ex-main-0672": {
+      "raw": "e2bf54736c84eb8d5b32200bb3750822a3f269bc7d7d0b992470b7286ea02b95",
+      "authored": "deb943d8bb3a670c8d5aa2c9fe1729a31feb1bc9a36ca3489640287b269b53aa",
+      "integrated": "502d42bf88543818d5089cfa295909a81ab2ffeaa294df046db750f36b5125c9"
+    },
+    "ex-main-0673": {
+      "raw": "107517ad83d7d59f8c86367ae262d8b0f16273529f1eb14593d3dceeefd7a206",
+      "authored": "545b7799bc6d1da826e4dc3299bbd3af87cdcfa095bffc7356afec63fe800b8e",
+      "integrated": "06896b1d713e4e609ab4a11948ef9d5ab42e6135673be7e9ba0b7fe73b24d819"
+    },
+    "ex-main-0674-a": {
+      "raw": "9bac583ccf3be576490a56ad71107451add19b288fd57475a0b88ee2a492574f",
+      "authored": "47a33fd73864dc01cc298d763f5f2cdfc5b22fc6d5396157e165030ce23ad1ff",
+      "integrated": "41e47798d6a8d7e5fb6504ef8e8c3bbca34fb19c05f421c5a9eb00081a239feb"
+    },
+    "ex-main-0674-b": {
+      "raw": "de3736d5f8727cabb89b6b0039295307783d4a46432939e95bb47f6e7c12fb54",
+      "authored": "6de854f26870b4a2807e4e9db06b0480282eeda41448a1c622b5d8e156ae31c9",
+      "integrated": "381e9cfaff2c2e44142588a61a12943c849393f390991e74aefde51f64fe2f3e"
+    },
+    "ex-main-0674-c": {
+      "raw": "7a2e88299360b7a8d596fa823252619a7b6dd7d723d28632dca63fd268302b65",
+      "authored": "fd3de4073d4600d51d073eb9de09fd65d1ca19d4347bb82f705079ec5b38f7d6",
+      "integrated": "437889e168545a4082da9a9f8ed1a610fc39027225a1ffb7eead4c372d570386"
+    },
+    "ex-main-0675-a": {
+      "raw": "070e472941f40401a66934d373205136fe55c0f4eb244be6973d559a8f090f2b",
+      "authored": "8e4bad1216b77c94b57c570308b90eb8dd1d30985fe67252396a2aec0b1b449d",
+      "integrated": "c757a343503e7530bb3e8e3b7b123881e16079b215615005bf636539018d4009"
+    },
+    "ex-main-0675-b": {
+      "raw": "ee02cbab176b18f836cdaac3deaef0f95cb87a265d85bf112e2a1a234a39a823",
+      "authored": "6495370abbd567ab2ad06815d56f32b20d7e33545960654dc5a428b12fa196f1",
+      "integrated": "459abe7101bdf51d3e4a595e6a916cf63ea4e882557ec0f85e642069a9c10adc"
+    },
+    "ex-main-0675-c": {
+      "raw": "ed0d62245cb2c7168bec931e621e0596d2f5280f8f5360df20fec1882034d979",
+      "authored": "0bda1dc9e389d4e286282a01de82804d4fd7a2bd16d8bb06edee3f103ad5d7ae",
+      "integrated": "892211587b5b319be92f2e129e06b4d2f09e15e1f2c5073fe2e747fb3fd1d7bf"
+    },
+    "ex-main-0676-a": {
+      "raw": "8da5f927a9eda65cb74123ab4847de17e15bc9003bb706e64dd4f61646187f1f",
+      "authored": "e0bbd5a9041dc3eba5cfe44a95f89fdeb056930ca05b3abf4d7f0dba2f0db7cc",
+      "integrated": "a7abaf71b1d48f8ca7859773ccbe1e74b3f1a5aca81c1e6f228ac59295223288"
+    },
+    "ex-main-0676-b": {
+      "raw": "f86acaf4f6d61e5586b655679775d2c84ca1356310fb009257eddacef8707ddc",
+      "authored": "32bf1a78ee943d55c7ce273474ade4065ae0c03ff93e67fddd2a043ce59082cf",
+      "integrated": "6eed1ad01c0c80a90fd536dc554948249bf0ebfb3e4c07bee77306851d2b029b"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0668-a|condition",
+      "spatial-distances-and-equal-loci-ex-main-0668-a-condition"
+    ],
+    [
+      "ex-main-0668-a|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0668-a-help-h1"
+    ],
+    [
+      "ex-main-0668-a|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0668-a-help-h2"
+    ],
+    [
+      "ex-main-0668-a|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0668-a-step-1"
+    ],
+    [
+      "ex-main-0668-a|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0668-a-step-2"
+    ],
+    [
+      "ex-main-0668-a|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0668-a-step-3"
+    ],
+    [
+      "ex-main-0668-b|condition",
+      "spatial-distances-and-equal-loci-ex-main-0668-b-condition"
+    ],
+    [
+      "ex-main-0668-b|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0668-b-help-h1"
+    ],
+    [
+      "ex-main-0668-b|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0668-b-help-h2"
+    ],
+    [
+      "ex-main-0668-b|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0668-b-step-1"
+    ],
+    [
+      "ex-main-0668-b|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0668-b-step-2"
+    ],
+    [
+      "ex-main-0668-b|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0668-b-step-3"
+    ],
+    [
+      "ex-main-0668-c|condition",
+      "spatial-distances-and-equal-loci-ex-main-0668-c-condition"
+    ],
+    [
+      "ex-main-0668-c|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0668-c-help-h1"
+    ],
+    [
+      "ex-main-0668-c|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0668-c-help-h2"
+    ],
+    [
+      "ex-main-0668-c|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0668-c-step-1"
+    ],
+    [
+      "ex-main-0668-c|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0668-c-step-2"
+    ],
+    [
+      "ex-main-0668-c|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0668-c-step-3"
+    ],
+    [
+      "ex-main-0668-d|condition",
+      "spatial-distances-and-equal-loci-ex-main-0668-d-condition"
+    ],
+    [
+      "ex-main-0668-d|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0668-d-help-h1"
+    ],
+    [
+      "ex-main-0668-d|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0668-d-help-h2"
+    ],
+    [
+      "ex-main-0668-d|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0668-d-step-1"
+    ],
+    [
+      "ex-main-0668-d|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0668-d-step-2"
+    ],
+    [
+      "ex-main-0668-d|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0668-d-step-3"
+    ],
+    [
+      "ex-main-0669-a|condition",
+      "spatial-distances-and-equal-loci-ex-main-0669-a-condition"
+    ],
+    [
+      "ex-main-0669-a|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0669-a-help-h1"
+    ],
+    [
+      "ex-main-0669-a|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0669-a-help-h2"
+    ],
+    [
+      "ex-main-0669-a|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0669-a-step-1"
+    ],
+    [
+      "ex-main-0669-a|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0669-a-step-2"
+    ],
+    [
+      "ex-main-0669-a|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0669-a-step-3"
+    ],
+    [
+      "ex-main-0669-a|step-4",
+      "spatial-distances-and-equal-loci-ex-main-0669-a-step-4"
+    ],
+    [
+      "ex-main-0669-b|condition",
+      "spatial-distances-and-equal-loci-ex-main-0669-b-condition"
+    ],
+    [
+      "ex-main-0669-b|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0669-b-help-h1"
+    ],
+    [
+      "ex-main-0669-b|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0669-b-help-h2"
+    ],
+    [
+      "ex-main-0669-b|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0669-b-step-1"
+    ],
+    [
+      "ex-main-0669-b|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0669-b-step-2"
+    ],
+    [
+      "ex-main-0669-b|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0669-b-step-3"
+    ],
+    [
+      "ex-main-0669-b|step-4",
+      "spatial-distances-and-equal-loci-ex-main-0669-b-step-4"
+    ],
+    [
+      "ex-main-0670|condition",
+      "spatial-distances-and-equal-loci-ex-main-0670-condition"
+    ],
+    [
+      "ex-main-0670|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0670-help-h1"
+    ],
+    [
+      "ex-main-0670|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0670-help-h2"
+    ],
+    [
+      "ex-main-0670|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0670-step-1"
+    ],
+    [
+      "ex-main-0670|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0670-step-2"
+    ],
+    [
+      "ex-main-0670|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0670-step-3"
+    ],
+    [
+      "ex-main-0670|step-4",
+      "spatial-distances-and-equal-loci-ex-main-0670-step-4"
+    ],
+    [
+      "ex-main-0671|condition",
+      "spatial-distances-and-equal-loci-ex-main-0671-condition"
+    ],
+    [
+      "ex-main-0671|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0671-help-h1"
+    ],
+    [
+      "ex-main-0671|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0671-help-h2"
+    ],
+    [
+      "ex-main-0671|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0671-step-1"
+    ],
+    [
+      "ex-main-0671|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0671-step-2"
+    ],
+    [
+      "ex-main-0671|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0671-step-3"
+    ],
+    [
+      "ex-main-0671|step-4",
+      "spatial-distances-and-equal-loci-ex-main-0671-step-4"
+    ],
+    [
+      "ex-main-0672|condition",
+      "spatial-distances-and-equal-loci-ex-main-0672-condition"
+    ],
+    [
+      "ex-main-0672|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0672-help-h1"
+    ],
+    [
+      "ex-main-0672|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0672-help-h2"
+    ],
+    [
+      "ex-main-0672|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0672-step-1"
+    ],
+    [
+      "ex-main-0672|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0672-step-2"
+    ],
+    [
+      "ex-main-0672|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0672-step-3"
+    ],
+    [
+      "ex-main-0672|step-4",
+      "spatial-distances-and-equal-loci-ex-main-0672-step-4"
+    ],
+    [
+      "ex-main-0673|condition",
+      "spatial-distances-and-equal-loci-ex-main-0673-condition"
+    ],
+    [
+      "ex-main-0673|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0673-help-h1"
+    ],
+    [
+      "ex-main-0673|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0673-help-h2"
+    ],
+    [
+      "ex-main-0673|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0673-step-1"
+    ],
+    [
+      "ex-main-0673|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0673-step-2"
+    ],
+    [
+      "ex-main-0673|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0673-step-3"
+    ],
+    [
+      "ex-main-0674-a|condition",
+      "spatial-distances-and-equal-loci-ex-main-0674-a-condition"
+    ],
+    [
+      "ex-main-0674-a|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0674-a-help-h1"
+    ],
+    [
+      "ex-main-0674-a|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0674-a-help-h2"
+    ],
+    [
+      "ex-main-0674-a|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0674-a-step-1"
+    ],
+    [
+      "ex-main-0674-a|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0674-a-step-2"
+    ],
+    [
+      "ex-main-0674-a|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0674-a-step-3"
+    ],
+    [
+      "ex-main-0674-b|condition",
+      "spatial-distances-and-equal-loci-ex-main-0674-b-condition"
+    ],
+    [
+      "ex-main-0674-b|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0674-b-help-h1"
+    ],
+    [
+      "ex-main-0674-b|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0674-b-help-h2"
+    ],
+    [
+      "ex-main-0674-b|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0674-b-step-1"
+    ],
+    [
+      "ex-main-0674-b|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0674-b-step-2"
+    ],
+    [
+      "ex-main-0674-b|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0674-b-step-3"
+    ],
+    [
+      "ex-main-0674-c|condition",
+      "spatial-distances-and-equal-loci-ex-main-0674-c-condition"
+    ],
+    [
+      "ex-main-0674-c|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0674-c-help-h1"
+    ],
+    [
+      "ex-main-0674-c|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0674-c-help-h2"
+    ],
+    [
+      "ex-main-0674-c|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0674-c-step-1"
+    ],
+    [
+      "ex-main-0674-c|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0674-c-step-2"
+    ],
+    [
+      "ex-main-0674-c|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0674-c-step-3"
+    ],
+    [
+      "ex-main-0675-a|condition",
+      "spatial-distances-and-equal-loci-ex-main-0675-a-condition"
+    ],
+    [
+      "ex-main-0675-a|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0675-a-help-h1"
+    ],
+    [
+      "ex-main-0675-a|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0675-a-help-h2"
+    ],
+    [
+      "ex-main-0675-a|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0675-a-step-1"
+    ],
+    [
+      "ex-main-0675-a|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0675-a-step-2"
+    ],
+    [
+      "ex-main-0675-a|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0675-a-step-3"
+    ],
+    [
+      "ex-main-0675-b|condition",
+      "spatial-distances-and-equal-loci-ex-main-0675-b-condition"
+    ],
+    [
+      "ex-main-0675-b|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0675-b-help-h1"
+    ],
+    [
+      "ex-main-0675-b|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0675-b-help-h2"
+    ],
+    [
+      "ex-main-0675-b|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0675-b-step-1"
+    ],
+    [
+      "ex-main-0675-b|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0675-b-step-2"
+    ],
+    [
+      "ex-main-0675-b|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0675-b-step-3"
+    ],
+    [
+      "ex-main-0675-c|condition",
+      "spatial-distances-and-equal-loci-ex-main-0675-c-condition"
+    ],
+    [
+      "ex-main-0675-c|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0675-c-help-h1"
+    ],
+    [
+      "ex-main-0675-c|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0675-c-help-h2"
+    ],
+    [
+      "ex-main-0675-c|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0675-c-step-1"
+    ],
+    [
+      "ex-main-0675-c|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0675-c-step-2"
+    ],
+    [
+      "ex-main-0675-c|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0675-c-step-3"
+    ],
+    [
+      "ex-main-0676-a|condition",
+      "spatial-distances-and-equal-loci-ex-main-0676-a-condition"
+    ],
+    [
+      "ex-main-0676-a|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0676-a-help-h1"
+    ],
+    [
+      "ex-main-0676-a|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0676-a-help-h2"
+    ],
+    [
+      "ex-main-0676-a|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0676-a-step-1"
+    ],
+    [
+      "ex-main-0676-a|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0676-a-step-2"
+    ],
+    [
+      "ex-main-0676-a|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0676-a-step-3"
+    ],
+    [
+      "ex-main-0676-b|condition",
+      "spatial-distances-and-equal-loci-ex-main-0676-b-condition"
+    ],
+    [
+      "ex-main-0676-b|help:h1",
+      "spatial-distances-and-equal-loci-ex-main-0676-b-help-h1"
+    ],
+    [
+      "ex-main-0676-b|help:h2",
+      "spatial-distances-and-equal-loci-ex-main-0676-b-help-h2"
+    ],
+    [
+      "ex-main-0676-b|step-1",
+      "spatial-distances-and-equal-loci-ex-main-0676-b-step-1"
+    ],
+    [
+      "ex-main-0676-b|step-2",
+      "spatial-distances-and-equal-loci-ex-main-0676-b-step-2"
+    ],
+    [
+      "ex-main-0676-b|step-3",
+      "spatial-distances-and-equal-loci-ex-main-0676-b-step-3"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "a48b1f1204214948c270816a93f408f4eaea4de05e8b5147b89a1ffdd3053d40",
+      "afterSHA256": "a95460d69b52bec4e1fbdb9cc272446add906eaddaeb7667e5f84639ad8d92fe"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "1a2cd350d3ed4c9f750b6c374fc631fb5d216953948853a001b8728f196fae6a",
+      "afterSHA256": "969f0a27a3e8b1728df8da8eb1e07b0ff70160ad10a6d2ac5a510b3f6cbe103b"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T22:36:21Z",
+    "scope": "Chapters I–VI and chapter VII points 71–75 plus exercises 637–667, with 1,190 reviewed cards. Other inventoried source positions remain drafts."
+  },
+  "before": {
+    "course": "91612f4228ac3fb2b0cb27082d542d1277a5c84ac673d548053252b2de1c8fdd",
+    "index": "2f7cfc21287e2b2522d8f13906d15729a0f0e761753e2e3ceaa945c9d980b5f7",
+    "registry": "8e62f1d1c3cc48edc6c2aa2fe1b205208b0a1c48b2e84d77984491e92363e385",
+    "cases": "55c68bae8c7cc9e4964c8792a502743eb2427f10253bb16ef012405f0dfec8e2"
+  }
+}

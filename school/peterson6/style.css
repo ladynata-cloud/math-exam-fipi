@@ -20,4 +20,20 @@ body:has(main details.inquiry-model[open],main details.first-errors[open],main .
 .help figure ul { margin: .65rem 0; padding-inline-start: 1.15rem; }
 .help figure li + li { margin-top: .4rem; }
 .help figure meter { display: block; width: min(100%, 14rem); }
-.pm-visual .pm-chart.pcm-segment { min-width: 0; }
+.pm-visual .pm-chart.pcm-segment, .pm-visual .pm-chart.pcm-group-rule { min-width: 0; }
+.pm-task-figure .pm-chart.pcm-ratio-triangle, .pm-visual .pm-chart.pcm-ratio-triangle { min-width: 0; }
+.pm-task-figure .pm-chart.pcm-dissection, .pm-visual .pm-chart.pcm-dissection { min-width: 0; }
+.pm-task-figure .pm-chart.pcm-tangent-nest, .pm-task-figure .pm-chart.pcm-five-lines, .pm-task-figure .pm-chart.pcm-city-scale, .pm-task-figure .pm-chart.pcm-flat-scale, .pm-task-figure .pm-chart.pcm-parcel-scale, .pm-task-figure .pm-chart.pcm-altitude-lesson, .pm-task-figure .pm-chart.pcm-operation-spokes, .pm-task-figure .pm-chart.pcm-hundred-table, .pm-task-figure .pm-chart.pcm-plan-garden, .pm-task-figure .pm-chart.pcm-road-triangle { min-width: 0; }
+
+.pm-visual .pm-table.pcm-route-table { width: 100%; min-width: 0; table-layout: fixed; }
+.pcm-route-table :is(th, td) { white-space: normal; overflow-wrap: anywhere; }
+.pcm-route-table :is(th, td):first-child { width: 35%; }
+
+.pcm-factor-strip { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; margin-block: .6rem; }
+.pcm-factor-chip { padding: .2rem .45rem; border: 1px solid #5c8069; border-radius: .35rem; color: #244d39; background: #e4f0e7; font-weight: 650; }
+.pcm-factor-chip[data-sign=negative] { color: #743e20; background: #f7e9d9; border-color: #aa7952; }
+
+.pcm-like-groups { display: grid; gap: .45rem; }
+.pcm-coefficient-group { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem .8rem; border: 1px solid #b9cabe; border-radius: .5rem; padding: .45rem .6rem; }
+.pcm-coefficient-group[data-selected="true"] { border: 2px solid #45725c; background: #e7f1e9; }
+.pcm-coefficient-group strong { min-width: 3.2ch; }

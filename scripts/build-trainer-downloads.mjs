@@ -313,22 +313,23 @@ function copyAssetToPackage(assetPath, pkgDir, preserveRoot = false) {
   copyFile(src, dest);
 }
 
-function createZip(sourceDir, zipPath) {
+function createZip(sourceDir, zipPath, compressionLevel) {
   fs.rmSync(zipPath, { force: true });
   if (process.platform !== "win32") {
     // Python's standard library keeps the existing builder usable on cloud/Linux.
     const result = spawnSync("python3", ["-c", `
 from pathlib import Path
 import sys, zipfile
-source, output = map(Path, sys.argv[1:])
-with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+source, output = map(Path, sys.argv[1:3])
+level = int(sys.argv[3])
+with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=level) as archive:
     for file in sorted(source.rglob('*')):
         if file.is_file():
             info = zipfile.ZipInfo(file.relative_to(source).as_posix(), (2020, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o644 << 16
-            archive.writestr(info, file.read_bytes())
-`, sourceDir, zipPath], { cwd: root, encoding: "utf8" });
+            archive.writestr(info, file.read_bytes(), compresslevel=level)
+`, sourceDir, zipPath, String(compressionLevel)], { cwd: root, encoding: "utf8" });
     if (result.status !== 0) throw new Error(`Cannot create ZIP ${zipPath}: ${result.stderr || result.error || result.stdout}`);
     return;
   }
@@ -420,7 +421,9 @@ function prepareTrainer(entry) {
   if (entry.adaptation) writeAdaptationFiles(root, pkgDir, entry);
 
   const zipName = `${entry.slug}-package.zip`;
-  createZip(pkgDir, path.join(destDir, zipName));
+  // The full geometry book embeds its banks for offline use. Use maximum DEFLATE
+  // for this large bundle and preserve the existing level for other trainers.
+  createZip(pkgDir, path.join(destDir, zipName), entry.slug === 'geometry-course' ? 9 : 6);
 
   if (!downloadsOnly) injectPanel(sourceFile, entry);
 

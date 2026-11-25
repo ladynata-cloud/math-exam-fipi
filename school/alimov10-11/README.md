@@ -5,9 +5,9 @@ Route: `/school/alimov10-11/`. Additive static course in the published Makaryche
 ## Coverage and source fidelity
 
 - 73 numbered paragraphs in 13 chapters, plus five appendix topics (78 lessons).
-- 234 concise original theory blocks, 300 tasks, 695 individually checked worked steps.
+- 234 concise original theory blocks, 302 tasks, 703 individually checked worked steps.
 - 252 authored tasks (three practice conditions per topic plus 18 deeper examples).
-- 48 selected source conditions with exact printed pages and references. These are NOT solutions to all numbered exercises. The final revision and extracurricular sections are not exhaustively transferred.
+- 50 selected source conditions with exact printed pages and references. These are NOT solutions to all numbered exercises. The final revision and extracurricular sections are not exhaustively transferred.
 - Topic titles/start pages follow the printed contents, pp. 461–463. PDF page = printed page + 3. Selected conditions were visually inspected at printed pp. 5, 92, 120, 171, 204, 264, 295, 320 and 339. Worked explanations are original.
 - Search distinguishes paragraph/name lookup from selected exercise lookup. No fabricated exercise ranges or implied individual solutions.
 
@@ -23,7 +23,7 @@ Exact rational answers accept equivalent fractions and decimals. Root sets are o
 
 ## Storage and boundaries
 
-Course-isolated key `mathexam.alimov10-11.2016.v1`, export envelope `alimov10-11-2016`. Browser-local answers only; downloadable/importable JSON. Import preserves existing work and assistance history; invalid records are sanitized. A corrupt stored record is not overwritten. Cloud execution/development is not cloud pupil storage. Board synchronization, student accounts, server persistence, production deployment and real-pupil outcome validation are not claimed.
+Course-isolated key `mathexam.alimov10-11.2016.v1`, export envelope `alimov10-11-2016`. Browser-local answers only; downloadable/importable JSON. Import preserves existing work and assistance history; invalid records are sanitized. A corrupt stored record is not overwritten. The Workshop edition `#book/source-18` links 78 printed sections to the free course and the shared-board wrapper `/trainers/alimov10-11.html`. The classic board mirrors route, draft, intermediate work, help and model settings in its own session. It keeps personal storage isolated. On the personal route, correcting an answer without opening help is tracked separately from solving it with help.
 
 ## Verification
 
@@ -35,12 +35,13 @@ node school/alimov10-11/test-course.cjs
 node school/alimov10-11/test-models.cjs
 node school/alimov10-11/test-state.cjs
 node school/alimov10-11/test-import.cjs
+node tools/tyurin-statistics.board.browser.cjs --alimov10-11
 NODE_PATH=/path/to/jsdom/node_modules node school/alimov10-11/test-ui.cjs
 python tools/build-sitemap.py --check
 python tools/seo-sitemap.test.py
 ```
 
-The scoped workflow installs jsdom 26.1.0 in an isolated temporary directory. Content tests include independently calculated final-answer fixtures for all 234 base tasks and brute-force enumeration of the two source counting exercises. Model tests include 445 numerical/structural assertions. DOM tests traverse all 300 tasks, all 695 steps and 597 control changes, search, corrupt storage, return journeys and model restoration. Storage/import regression cases cover completion snapshots, partial drafts and prototype-shaped inputs.
+The scoped workflow installs jsdom 26.1.0 in an isolated temporary directory. Content tests include independently calculated final-answer fixtures for all 234 base tasks and brute-force enumeration of the two source counting exercises. Model tests include 2,260 numerical/structural assertions. DOM tests traverse all 302 tasks and all 703 steps, search, corrupt storage, return journeys and model restoration. Storage/import regression cases cover completion snapshots, partial drafts and prototype-shaped inputs.
 
 Headless Chromium visual QA inspected desktop home, logarithmic domain work and tangent model, and 390 px mobile routes: home, logarithms, circle, tangent, antiderivative, statistics, workshop, progress. No page errors or page-level horizontal overflow. Screenshots were visually inspected. Physical touch-device and real-pupil checks not run. Claude consultation and exact-head external review unavailable (no connected provider/API credential); technical checks are not external approval.
 

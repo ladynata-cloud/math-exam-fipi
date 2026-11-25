@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "id": "ex-selfcheck-vi-12-a",
+  "revision": 1,
+  "kind": "exercise",
+  "title": "Когда AC и BD параллельны",
+  "status": "reviewed",
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "collection": "selfcheck",
+    "exercise": "12",
+    "chapter": "VI. Векторы в пространстве",
+    "printedPages": [
+      157
+    ],
+    "pdfPages": [
+      159
+    ],
+    "subpart": "а"
+  },
+  "statement": {
+    "text": "A, B, C неколлинеарны и AB=k·CD как векторы. При каких допустимых k прямые AC и BD параллельны?",
+    "goal": "Введи единственное значение k для параллельности."
+  },
+  "visualization": {
+    "type": "scene3d",
+    "caption": "В одной плоскости показаны AB, CD и две линии AC, BD.",
+    "model": {
+      "points": {
+        "A": [
+          0,
+          0,
+          0
+        ],
+        "B": [
+          2,
+          0,
+          0
+        ],
+        "C": [
+          0,
+          2,
+          0
+        ],
+        "D": [
+          2.0,
+          2,
+          0
+        ],
+        "E": [
+          1.0,
+          2,
+          0
+        ],
+        "X": [
+          0,
+          4,
+          0
+        ]
+      },
+      "edges": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "B",
+          "D"
+        ]
+      ],
+      "faces": [],
+      "arrows": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "C",
+          "D"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "D"
+        ],
+        [
+          "B",
+          "E"
+        ],
+        [
+          "E",
+          "X"
+        ]
+      ],
+      "labelNames": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "X"
+      ],
+      "views": {
+        "neutral": {
+          "label": "В одной плоскости показаны AB, CD и две линии AC, BD.",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "C",
+              "D"
+            ],
+            [
+              "A",
+              "C"
+            ],
+            [
+              "B",
+              "D"
+            ]
+          ]
+        },
+        "reason": {
+          "label": "От C отложен CD=AB/k. Все четыре точки заведомо лежат в плоскости ABC.",
+          "segments": [
+            [
+              "A",
+              "B"
+            ],
+            [
+              "C",
+              "D"
+            ],
+            [
+              "A",
+              "C"
+            ],
+            [
+              "B",
+              "D"
+            ]
+          ]
+        },
+        "transfer": {
+          "label": "В новом случае k=2, D заменена точкой E. Прямая BE проходит через X, лежащую на AC.",
+          "segments": [
+            [
+              "B",
+              "E"
+            ],
+            [
+              "E",
+              "X"
+            ],
+            [
+              "A",
+              "C"
+            ],
+            [
+              "C",
+              "X"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "help": [
+    {
+      "id": "h1",
+      "question": "Почему k=0 исключено?",
+      "text": "AB ненулевой, так как A, B, C не лежат на одной прямой. Поэтому CD=AB/k и точка D принадлежит плоскости ABC.",
+      "view": "reason"
+    },
+    {
+      "id": "h2",
+      "question": "Как проверить пересечение?",
+      "text": "Положи A=(0,0), B=(2,0), C=(0,2). Тогда D=(2/k,2). Прямая BD вертикальна только при 2/k=2.",
+      "view": "transfer"
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Допустимость",
+      "prompt": "Может ли k=0 при указанном условии?",
+      "explanation": "У AB ненулевая длина, а 0·CD всегда даёт нулевой вектор.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Ноль не имеет обратного множителя.",
+          "theoryId": "theory-069"
+        }
+      ],
+      "view": "neutral",
+      "input": {
+        "prompt": "Допустимость",
+        "accepted": [
+          "нет"
+        ],
+        "feedback": "Из неколлинеарности следует A≠B."
+      }
+    },
+    {
+      "id": "step-2",
+      "title": "Параллельные линии",
+      "prompt": "Для A=(0,0), B=(2,0), C=(0,2), D=(2/k,2) при каком k обе AC и BD вертикальны?",
+      "explanation": "Требуется 2/k=2, значит k=1. Тогда прямые различны. При ином допустимом k обе прямые лежат в плоскости и непараллельны.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "В одной плоскости непараллельные прямые пересекаются.",
+          "theoryId": "theory-069"
+        }
+      ],
+      "view": "reason",
+      "input": {
+        "prompt": "Параллельные линии",
+        "accepted": [
+          "1"
+        ],
+        "feedback": "Проверь координату x у B и D."
+      }
+    },
+    {
+      "id": "step-3",
+      "title": "Новый случай",
+      "prompt": "При k=2 прямая BE идёт из (2,0) через (1,2). Какова координата y её пересечения X с осью AC, где x=0?",
+      "explanation": "Подставь x=0 в B+t(E−B). Получаем y=4 за точкой E.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Точки прямой имеют вид B+t(E−B).",
+          "theoryId": "theory-069"
+        }
+      ],
+      "view": "transfer",
+      "input": {
+        "prompt": "Новый случай",
+        "accepted": [
+          "4"
+        ],
+        "feedback": "Найди t по координате x, затем вычисли y=2t."
+      }
+    },
+    {
+      "id": "step-4",
+      "title": "Вопрос о скрещивании",
+      "prompt": "Могут ли эти прямые оказаться скрещивающимися?",
+      "explanation": "D=C+AB/k лежит в плоскости ABC, значит, AC и BD компланарны.",
+      "justifications": [
+        {
+          "kind": "theorem",
+          "text": "Скрещивающиеся прямые не принадлежат одной плоскости.",
+          "theoryId": "theory-069"
+        }
+      ],
+      "view": "reason",
+      "input": {
+        "prompt": "Вопрос о скрещивании",
+        "accepted": [
+          "нет"
+        ],
+        "feedback": "От C откладывается вектор, параллельный AB."
+      }
+    }
+  ],
+  "answer": {
+    "mode": "exact",
+    "accepted": [
+      "1"
+    ],
+    "prompt": "Введи единственное значение k для параллельности.",
+    "feedback": "k=1 даёт параллельность, а любое k, отличное от 0 и 1, даёт пересечение. Скрещивания нет."
+  },
+  "review": {
+    "source": "passed",
+    "mathematics": "passed",
+    "pedagogy": "passed",
+    "reviewer": "Codex: issued 2024 volume, chapter VI questions, printed page 157. Source-part order and independent explicit spatial models checked.",
+    "at": "2026-11-21T21:28:45Z"
+  }
+}

@@ -15,14 +15,208 @@ on:
       - 'geometry-course/textbook/data/midpoint-lessons.json'
       - 'geometry-course/textbook/data/circle-lessons.json'
       - 'tools/geometry-textbook/*circle*'
+      - 'tools/geometry-textbook/*grade9_vectors*'
+      - 'geometry-course/textbook/data/grade9-vectors.json'
+      - 'tools/geometry-textbook/*vector_conclusions*'
+      - 'geometry-course/textbook/data/vector-conclusions.json'
+      - 'tools/geometry-textbook/*vector_sums*'
+      - 'geometry-course/textbook/data/vector-sums.json'
+      - 'tools/geometry-textbook/*vector_sum_problems*'
+      - 'geometry-course/textbook/data/vector-sum-problems.json'
+      - 'geometry-course/textbook/data/vector-identities.json'
+      - 'tools/geometry-textbook/*vector_identities*'
+      - 'geometry-course/textbook/data/vector-scaling.json'
+      - 'tools/geometry-textbook/*vector_scaling*'
+      - 'tools/geometry-textbook/vector_model_measurements.py'
+      - 'geometry-course/textbook/data/scalar-problems.json'
+      - 'tools/geometry-textbook/*scalar_problems*'
+      - 'geometry-course/textbook/data/vector-midpoint-proofs.json'
+      - 'tools/geometry-textbook/*vector_midpoint_proofs*'
+      - 'geometry-course/textbook/data/vector-applications.json'
+      - 'tools/geometry-textbook/*vector_applications*'
+      - 'geometry-course/textbook/data/vector-length-problems.json'
+      - 'tools/geometry-textbook/*vector_length_problems*'
+      - 'geometry-course/textbook/data/vector-extra-problems.json'
+      - 'tools/geometry-textbook/*vector_extra_problems*'
+      - 'geometry-course/textbook/data/vector-chapter-review.json'
+      - 'tools/geometry-textbook/*vector_chapter_review*'
+      - 'geometry-course/textbook/data/coordinate-coefficients.json'
+      - 'tools/geometry-textbook/*coordinate_coefficients*'
+      - 'geometry-course/textbook/data/coordinate-relations.json'
+      - 'tools/geometry-textbook/*coordinate_relations*'
+      - 'geometry-course/textbook/data/coordinate-grid.json'
+      - 'tools/geometry-textbook/*coordinate_grid*'
+      - 'geometry-course/textbook/data/coordinate-actions.json'
+      - 'tools/geometry-textbook/*coordinate_actions*'
+      - 'geometry-course/textbook/data/coordinate-positions.json'
+      - 'tools/geometry-textbook/*coordinate_positions*'
+      - 'geometry-course/textbook/data/coordinate-tables.json'
+      - 'tools/geometry-textbook/*coordinate_tables*'
+      - 'geometry-course/textbook/data/coordinate-distances.json'
+      - 'tools/geometry-textbook/*coordinate_distances*'
+      - 'geometry-course/textbook/data/coordinate-figures.json'
+      - 'tools/geometry-textbook/*coordinate_figures*'
+      - 'geometry-course/textbook/data/coordinate-couriers.json'
+      - 'tools/geometry-textbook/*coordinate_couriers*'
+      - 'geometry-course/textbook/data/coordinate-proof-method.json'
+      - 'tools/geometry-textbook/*coordinate_proof_method*'
+      - 'geometry-course/textbook/data/coordinate-curves.json'
+      - 'geometry-course/textbook/data/circle-intersections.json'
+      - 'geometry-course/textbook/data/circle-equations.json'
+      - 'geometry-course/textbook/data/coordinate-lines.json'
+      - 'geometry-course/textbook/data/circle-line-positions.json'
+      - 'geometry-course/textbook/data/coordinate-loci.json'
+      - 'geometry-course/textbook/data/coordinate-chapter-review.json'
+      - 'tools/geometry-textbook/*coordinate_chapter_review*'
+      - 'tools/geometry-textbook/*coordinate_additional_vectors*'
+      - 'tools/geometry-textbook/*coordinate_additional_figures*'
+      - 'tools/geometry-textbook/*coordinate_additional_curves*'
+      - 'geometry-course/textbook/data/coordinate-additional-curves.json'
+      - 'tools/geometry-textbook/*coordinate_additional_applications*'
+      - 'tools/geometry-textbook/*upper_semicircle*'
+      - 'tools/geometry-textbook/*trigonometric_signs*'
+      - 'geometry-course/textbook/data/trigonometric-signs.json'
+      - 'tools/geometry-textbook/*trigonometric_rays*'
+      - 'tools/geometry-textbook/*triangle_sine_area*'
+      - 'geometry-course/textbook/data/triangle-sine-area.json'
+      - 'tools/geometry-textbook/*triangle_relations*'
+      - 'tools/geometry-textbook/*solve_triangle*'
+      - 'tools/geometry-textbook/*field_trigonometry*'
+      - 'tools/geometry-textbook/*scalar_product*'
+      - 'tools/geometry-textbook/*scalar_coordinates*'
+      - 'tools/geometry-textbook/*scalar_geometry*'
+      - 'tools/geometry-textbook/*trigonometry_review*'
+      - 'tools/geometry-textbook/*triangle_review*'
+      - 'tools/geometry-textbook/*vector_product_review*'
+      - 'tools/geometry-textbook/*additional_triangle_area*'
+      - 'tools/geometry-textbook/*additional_solve_triangles*'
+      - 'tools/geometry-textbook/*additional_scalar_vectors*'
+      - 'tools/geometry-textbook/*chapter_twelve_finale*'
+      - 'tools/geometry-textbook/*regular_polygon_definition*'
+      - 'tools/geometry-textbook/*regular_polygon_angles*'
+      - 'tools/geometry-textbook/*regular_polygon_centers*'
+      - 'tools/geometry-textbook/*regular_polygon_tables*'
+      - 'tools/geometry-textbook/*polygon_circle_applications*'
+      - 'tools/geometry-textbook/*regular_polygon_areas*'
+      - 'tools/geometry-textbook/*regular_polygon_constructions*'
+      - 'geometry-course/textbook/data/regular-polygon-constructions.json'
+      - 'geometry-course/textbook/data/regular-polygon-areas.json'
+      - 'geometry-course/textbook/data/polygon-circle-applications.json'
+      - 'geometry-course/textbook/data/regular-polygon-tables.json'
+      - 'geometry-course/textbook/data/regular-polygon-centers.json'
+      - 'geometry-course/textbook/data/regular-polygon-angles.json'
+      - 'geometry-course/textbook/data/regular-polygon-definition.json'
+      - 'geometry-course/textbook/data/chapter-twelve-finale.json'
+      - 'geometry-course/textbook/data/additional-scalar-vectors.json'
+      - 'geometry-course/textbook/data/additional-solve-triangles.json'
+      - 'geometry-course/textbook/data/additional-triangle-area.json'
+      - 'geometry-course/textbook/data/vector-product-review.json'
+      - 'geometry-course/textbook/data/triangle-review.json'
+      - 'geometry-course/textbook/data/trigonometry-review.json'
+      - 'geometry-course/textbook/data/scalar-geometry.json'
+      - 'geometry-course/textbook/data/scalar-coordinates.json'
+      - 'geometry-course/textbook/data/scalar-product.json'
+      - 'geometry-course/textbook/data/field-trigonometry.json'
+      - 'geometry-course/textbook/data/solve-triangle.json'
+      - 'tools/geometry-textbook/*oblique_triangle_cases*'
+      - 'geometry-course/textbook/data/oblique-triangle-cases.json'
+      - 'tools/geometry-textbook/*triangle_section_applications*'
+      - 'geometry-course/textbook/data/triangle-section-applications.json'
+      - 'geometry-course/textbook/data/triangle-relations.json'
+      - 'geometry-course/textbook/data/trigonometric-rays.json'
+      - 'tools/geometry-textbook/*slope_and_reflection*'
+      - 'geometry-course/textbook/data/slope-and-reflection.json'
+      - 'geometry-course/textbook/data/upper-semicircle.json'
+      - 'geometry-course/textbook/data/coordinate-additional-applications.json'
+      - 'geometry-course/textbook/data/coordinate-additional-figures.json'
+      - 'geometry-course/textbook/data/coordinate-additional-vectors.json'
+      - 'tools/geometry-textbook/*coordinate_curves*'
       - 'tools/geometry-textbook/chord_followup.py'
       - '.github/workflows/atanasyan-area-lessons.yml'
 permissions:
   contents: read
 jobs:
-  practice:
+  content:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      shards: ${{ steps.matrix.outputs.shards }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - id: matrix
+        run: echo "shards=$(node tools/geometry-textbook/area-lessons.browser.cjs --matrix)" >> "$GITHUB_OUTPUT"
+      - run: python3 content-drafts/atanasyan-grade8-area-842-844/verify_areas.py && python3 tools/geometry-textbook/build_area_lessons.py --check && python3 tools/geometry-textbook/build_area_similarity.py --check && python3 tools/geometry-textbook/check_area_supplement.py && python3 tools/geometry-textbook/check_area_similarity.py && python3 tools/geometry-textbook/build_midpoint_lessons.py --check && python3 tools/geometry-textbook/check_midpoint_lessons.py
+      - run: python3 tools/geometry-textbook/build_circle_lessons.py --check && python3 tools/geometry-textbook/check_circle_lessons.py
+      - run: python3 tools/geometry-textbook/build_grade9_vectors.py --check && python3 tools/geometry-textbook/check_grade9_vectors.py
+      - run: python3 tools/geometry-textbook/build_vector_conclusions.py --check && python3 tools/geometry-textbook/check_vector_conclusions.py
+      - run: python3 tools/geometry-textbook/build_vector_sums.py --check && python3 tools/geometry-textbook/check_vector_sums.py
+      - run: python3 tools/geometry-textbook/vector_sum_problems.py --check && python3 tools/geometry-textbook/check_vector_sum_problems.py
+      - run: python3 tools/geometry-textbook/vector_identities.py --check && python3 tools/geometry-textbook/check_vector_identities.py
+      - run: python3 tools/geometry-textbook/vector_scaling.py --check && python3 tools/geometry-textbook/check_vector_scaling.py
+      - run: python3 tools/geometry-textbook/scalar_problems.py --check && python3 tools/geometry-textbook/check_scalar_problems.py
+      - run: python3 tools/geometry-textbook/vector_midpoint_proofs.py --check && python3 tools/geometry-textbook/check_vector_midpoint_proofs.py
+      - run: python3 tools/geometry-textbook/vector_applications.py --check && python3 tools/geometry-textbook/check_vector_applications.py
+      - run: python3 tools/geometry-textbook/vector_length_problems.py --check && python3 tools/geometry-textbook/check_vector_length_problems.py
+      - run: python3 tools/geometry-textbook/vector_extra_problems.py --check && python3 tools/geometry-textbook/check_vector_extra_problems.py
+      - run: python3 tools/geometry-textbook/vector_chapter_review.py --check && python3 tools/geometry-textbook/check_vector_chapter_review.py
+      - run: python3 tools/geometry-textbook/coordinate_coefficients.py --check && python3 tools/geometry-textbook/check_coordinate_coefficients.py
+      - run: python3 tools/geometry-textbook/coordinate_relations.py --check && python3 tools/geometry-textbook/check_coordinate_relations.py
+      - run: python3 tools/geometry-textbook/coordinate_grid.py --check && python3 tools/geometry-textbook/check_coordinate_grid.py
+      - run: python3 tools/geometry-textbook/coordinate_actions.py --check && python3 tools/geometry-textbook/check_coordinate_actions.py
+      - run: python3 tools/geometry-textbook/coordinate_positions.py --check && python3 tools/geometry-textbook/check_coordinate_positions.py
+      - run: python3 tools/geometry-textbook/coordinate_tables.py --check && python3 tools/geometry-textbook/check_coordinate_tables.py
+      - run: python3 tools/geometry-textbook/coordinate_distances.py --check && python3 tools/geometry-textbook/check_coordinate_distances.py
+      - run: python3 tools/geometry-textbook/coordinate_figures.py --check && python3 tools/geometry-textbook/check_coordinate_figures.py
+      - run: python3 tools/geometry-textbook/coordinate_couriers.py --check && python3 tools/geometry-textbook/check_coordinate_couriers.py
+      - run: python3 tools/geometry-textbook/coordinate_proof_method.py --check && python3 tools/geometry-textbook/check_coordinate_proof_method.py
+      - run: python3 tools/geometry-textbook/coordinate_curves.py --check && python3 tools/geometry-textbook/check_coordinate_curves.py
+      - run: python3 tools/geometry-textbook/circle_intersections.py --check && python3 tools/geometry-textbook/check_circle_intersections.py
+      - run: python3 tools/geometry-textbook/circle_equations.py --check && python3 tools/geometry-textbook/check_circle_equations.py
+      - run: python3 tools/geometry-textbook/coordinate_lines.py --check && python3 tools/geometry-textbook/check_coordinate_lines.py
+      - run: python3 tools/geometry-textbook/circle_line_positions.py --check && python3 tools/geometry-textbook/check_circle_line_positions.py
+      - run: python3 tools/geometry-textbook/trigonometric_signs.py --check && python3 tools/geometry-textbook/trigonometric_rays.py --check && python3 tools/geometry-textbook/slope_and_reflection.py --check && python3 tools/geometry-textbook/check_trigonometric_rays.py
+      - run: python3 tools/geometry-textbook/regular_polygon_constructions.py --check && python3 tools/geometry-textbook/check_regular_polygon_constructions.py
+      - run: python3 tools/geometry-textbook/regular_polygon_areas.py --check && python3 tools/geometry-textbook/check_regular_polygon_areas.py
+      - run: python3 tools/geometry-textbook/polygon_circle_applications.py --check && python3 tools/geometry-textbook/check_polygon_circle_applications.py
+      - run: python3 tools/geometry-textbook/regular_polygon_tables.py --check && python3 tools/geometry-textbook/check_regular_polygon_tables.py
+      - run: python3 tools/geometry-textbook/regular_polygon_centers.py --check && python3 tools/geometry-textbook/check_regular_polygon_centers.py
+      - run: python3 tools/geometry-textbook/regular_polygon_angles.py --check && python3 tools/geometry-textbook/check_regular_polygon_angles.py
+      - run: python3 tools/geometry-textbook/regular_polygon_definition.py --check && python3 tools/geometry-textbook/check_regular_polygon_definition.py
+      - run: python3 tools/geometry-textbook/chapter_twelve_finale.py --check && python3 tools/geometry-textbook/check_chapter_twelve_finale.py
+      - run: python3 tools/geometry-textbook/additional_scalar_vectors.py --check && python3 tools/geometry-textbook/check_additional_scalar_vectors.py
+      - run: python3 tools/geometry-textbook/additional_solve_triangles.py --check && python3 tools/geometry-textbook/check_additional_solve_triangles.py
+      - run: python3 tools/geometry-textbook/additional_triangle_area.py --check && python3 tools/geometry-textbook/check_additional_triangle_area.py
+      - run: python3 tools/geometry-textbook/vector_product_review.py --check && python3 tools/geometry-textbook/check_vector_product_review.py
+      - run: python3 tools/geometry-textbook/triangle_review.py --check && python3 tools/geometry-textbook/check_triangle_review.py
+      - run: python3 tools/geometry-textbook/trigonometry_review.py --check && python3 tools/geometry-textbook/check_trigonometry_review.py
+      - run: python3 tools/geometry-textbook/scalar_geometry.py --check && python3 tools/geometry-textbook/check_scalar_geometry.py
+      - run: python3 tools/geometry-textbook/scalar_coordinates.py --check && python3 tools/geometry-textbook/check_scalar_coordinates.py
+      - run: python3 tools/geometry-textbook/scalar_product.py --check && python3 tools/geometry-textbook/check_scalar_product.py
+      - run: python3 tools/geometry-textbook/field_trigonometry.py --check && python3 tools/geometry-textbook/check_field_trigonometry.py
+      - run: python3 tools/geometry-textbook/solve_triangle.py --check && python3 tools/geometry-textbook/oblique_triangle_cases.py --check && python3 tools/geometry-textbook/triangle_section_applications.py --check && python3 tools/geometry-textbook/check_triangle_section_applications.py
+      - run: python3 tools/geometry-textbook/triangle_sine_area.py --check && python3 tools/geometry-textbook/triangle_relations.py --check && python3 tools/geometry-textbook/check_triangle_sine_area.py
+      - run: python3 tools/geometry-textbook/upper_semicircle.py --check && python3 tools/geometry-textbook/check_upper_semicircle.py
+      - run: python3 tools/geometry-textbook/coordinate_additional_curves.py --check && python3 tools/geometry-textbook/coordinate_additional_applications.py --check && python3 tools/geometry-textbook/check_coordinate_additional_curves.py
+      - run: python3 tools/geometry-textbook/coordinate_additional_figures.py --check && python3 tools/geometry-textbook/check_coordinate_additional_figures.py
+      - run: python3 tools/geometry-textbook/coordinate_additional_vectors.py --check && python3 tools/geometry-textbook/check_coordinate_additional_vectors.py
+      - run: python3 tools/geometry-textbook/coordinate_chapter_review.py --check && python3 tools/geometry-textbook/check_coordinate_chapter_review.py
+      - run: python3 tools/geometry-textbook/coordinate_loci.py --check && python3 tools/geometry-textbook/check_coordinate_loci.py
+
+  browser:
+    name: Practice browser ${{ matrix.shard }}
+    needs: content
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.content.outputs.shards) }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -32,12 +226,44 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 && npx playwright install --with-deps chromium
-      - run: python3 content-drafts/atanasyan-grade8-area-842-844/verify_areas.py && python3 tools/geometry-textbook/build_area_lessons.py --check && python3 tools/geometry-textbook/build_area_similarity.py --check && python3 tools/geometry-textbook/check_area_supplement.py && python3 tools/geometry-textbook/check_area_similarity.py && python3 tools/geometry-textbook/build_midpoint_lessons.py --check && python3 tools/geometry-textbook/check_midpoint_lessons.py
-      - run: python3 tools/geometry-textbook/build_circle_lessons.py --check && python3 tools/geometry-textbook/check_circle_lessons.py
       - run: node tools/geometry-textbook/area-lessons.browser.cjs
         env:
+          AREA_SHARD_INDEX: ${{ matrix.shard }}
+          AREA_SHARD_COUNT: ${{ strategy.job-total }}
+          AREA_COVERAGE_DIR: artifacts/practice-coverage
           AREA_SCREENSHOTS: artifacts/numbered-area-lessons
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: numbered-area-lessons
+          name: numbered-area-lessons-${{ matrix.shard }}
           path: artifacts/numbered-area-lessons
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: practice-coverage-${{ matrix.shard }}
+          path: artifacts/practice-coverage
+          if-no-files-found: error
+
+  practice:
+    needs: [content, browser]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check all content and browser jobs
+        env:
+          CONTENT_RESULT: ${{ needs.content.result }}
+          BROWSER_RESULT: ${{ needs.browser.result }}
+        run: test "$CONTENT_RESULT" = success && test "$BROWSER_RESULT" = success
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: practice-coverage-*
+          path: artifacts/practice-coverage
+          merge-multiple: true
+      - run: node tools/geometry-textbook/area-lessons.browser.cjs --verify artifacts/practice-coverage

@@ -144,7 +144,7 @@
  function load(storage,ids){try{var raw=storage.getItem(KEY);return {state:raw?validate(JSON.parse(raw),ids):blank(),warning:''};}catch(e){return {state:blank(),warning:'Не удалось прочитать прежний прогресс. Он не перезаписан. Скачайте данные для восстановления или явно начните новую запись.',blocked:true};}}
  function save(storage,s){storage.setItem(KEY,JSON.stringify(s));}
  function evidence(s,id){return s.skills[id]||(s.skills[id]={learned:0,checks:[],reviews:0,nextReview:0,lastSuccess:0});}
- function fingerprint(id,t){return id+'|'+t.prompt;}
+ function fingerprint(id,t){return id+'|'+t.prompt+(t.conditionKey?'|'+t.conditionKey:'');}
  function expose(s,f){var old=s.seen.includes(f);if(!old){s.seen.push(f);if(s.seen.length>3000)s.seen.shift();}return old;}
  function selectTask(s,id,seed,generate){
   var task,known=new Set(s.seen);

@@ -1,0 +1,315 @@
+{
+  "parts": {
+    "529": [
+      null
+    ],
+    "530": [
+      null
+    ],
+    "531": [
+      null
+    ],
+    "532": [
+      null
+    ],
+    "533": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "529": {
+      "id": "source-main-0529",
+      "kind": "exercise",
+      "title": "Задача № 529",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "529",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "530": {
+      "id": "source-main-0530",
+      "kind": "exercise",
+      "title": "Задача № 530",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "530",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "531": {
+      "id": "source-main-0531",
+      "kind": "exercise",
+      "title": "Задача № 531",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "531",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "532": {
+      "id": "source-main-0532",
+      "kind": "exercise",
+      "title": "Задача № 532",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "532",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "533": {
+      "id": "source-main-0533",
+      "kind": "exercise",
+      "title": "Задача № 533",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "533",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0529": {
+      "raw": "2bae84fba9d3c98eec35c35aa17527a7e30031a58b4e094ea55c11b1e9e3c358",
+      "authored": "4d919bd23355cb8a28d419d7a74d4c546a1dfcf6b65beca6344e87a5528fe02e",
+      "integrated": "ee94db6f897d7942151936c7f5599824961c4bf16e57f34d921094796c97658c"
+    },
+    "ex-main-0530": {
+      "raw": "1de579f78981554bef38dca8e3b6470e9bbdc021f8ef144075b3bc1ba4179ad0",
+      "authored": "7bcb4f6f90fe9239122e07f03696b7d1e3d8e98beb0a97352d36c2d2724c2400",
+      "integrated": "c2bb4960ef7258dfedd3896356c3bff5460b5c929da2d599d922763ec624cdf4"
+    },
+    "ex-main-0531": {
+      "raw": "dc1ccd0af3fa814613ac55aa3dae6b70d6f1a6be5cd9585df092b75558ac9274",
+      "authored": "b0c59a7bca096973643fbeff0d2e9dc3017bc2c541a188dcca1ee38fbbfe91bb",
+      "integrated": "430fce22c155fd481733d168dbb256a20a5a6841e61b614bec7d494bd1d543c2"
+    },
+    "ex-main-0532": {
+      "raw": "8bfa72fd673b7314afc9658189d1fc7eb8a298ceeff2e1c4fc3b52076afcc37e",
+      "authored": "e18f6ce23a741477ad72bf7556f4b1c9eaa3473e1eb3511c0042eaf151c0e3b8",
+      "integrated": "2fce34b2c5eca38e8ece9d1bb094004c21df05bc74b8854eab394bc8810fbf8a"
+    },
+    "ex-main-0533": {
+      "raw": "a86748bb496f195aaf5c7313584dc65753d8947fe6f760fdbf982bee886d4898",
+      "authored": "d17d75b173ecc15f22887ef544114663c6705f0c4194cd954c4eb73af266cfa9",
+      "integrated": "8a53b01d6bcfc9ddb47d3d58a710c9b89fbc2b6724491597b5f22e6d4f1b2c1b"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0529|condition",
+      "pyramid-angle-ex-main-0529-condition"
+    ],
+    [
+      "ex-main-0529|help:h1",
+      "pyramid-angle-ex-main-0529-help-h1"
+    ],
+    [
+      "ex-main-0529|help:h2",
+      "pyramid-angle-ex-main-0529-help-h2"
+    ],
+    [
+      "ex-main-0529|step-1",
+      "pyramid-angle-ex-main-0529-step-1"
+    ],
+    [
+      "ex-main-0529|step-2",
+      "pyramid-angle-ex-main-0529-step-2"
+    ],
+    [
+      "ex-main-0529|step-3",
+      "pyramid-angle-ex-main-0529-step-3"
+    ],
+    [
+      "ex-main-0529|step-4",
+      "pyramid-angle-ex-main-0529-step-4"
+    ],
+    [
+      "ex-main-0530|condition",
+      "pyramid-angle-ex-main-0530-condition"
+    ],
+    [
+      "ex-main-0530|help:h1",
+      "pyramid-angle-ex-main-0530-help-h1"
+    ],
+    [
+      "ex-main-0530|help:h2",
+      "pyramid-angle-ex-main-0530-help-h2"
+    ],
+    [
+      "ex-main-0530|step-1",
+      "pyramid-angle-ex-main-0530-step-1"
+    ],
+    [
+      "ex-main-0530|step-2",
+      "pyramid-angle-ex-main-0530-step-2"
+    ],
+    [
+      "ex-main-0530|step-3",
+      "pyramid-angle-ex-main-0530-step-3"
+    ],
+    [
+      "ex-main-0530|step-4",
+      "pyramid-angle-ex-main-0530-step-4"
+    ],
+    [
+      "ex-main-0531|condition",
+      "pyramid-angle-ex-main-0531-condition"
+    ],
+    [
+      "ex-main-0531|help:h1",
+      "pyramid-angle-ex-main-0531-help-h1"
+    ],
+    [
+      "ex-main-0531|help:h2",
+      "pyramid-angle-ex-main-0531-help-h2"
+    ],
+    [
+      "ex-main-0531|step-1",
+      "pyramid-angle-ex-main-0531-step-1"
+    ],
+    [
+      "ex-main-0531|step-2",
+      "pyramid-angle-ex-main-0531-step-2"
+    ],
+    [
+      "ex-main-0531|step-3",
+      "pyramid-angle-ex-main-0531-step-3"
+    ],
+    [
+      "ex-main-0531|step-4",
+      "pyramid-angle-ex-main-0531-step-4"
+    ],
+    [
+      "ex-main-0532|condition",
+      "pyramid-angle-ex-main-0532-condition"
+    ],
+    [
+      "ex-main-0532|help:h1",
+      "pyramid-angle-ex-main-0532-help-h1"
+    ],
+    [
+      "ex-main-0532|help:h2",
+      "pyramid-angle-ex-main-0532-help-h2"
+    ],
+    [
+      "ex-main-0532|step-1",
+      "pyramid-angle-ex-main-0532-step-1"
+    ],
+    [
+      "ex-main-0532|step-2",
+      "pyramid-angle-ex-main-0532-step-2"
+    ],
+    [
+      "ex-main-0532|step-3",
+      "pyramid-angle-ex-main-0532-step-3"
+    ],
+    [
+      "ex-main-0532|step-4",
+      "pyramid-angle-ex-main-0532-step-4"
+    ],
+    [
+      "ex-main-0532|step-5",
+      "pyramid-angle-ex-main-0532-step-5"
+    ],
+    [
+      "ex-main-0533|condition",
+      "pyramid-angle-ex-main-0533-condition"
+    ],
+    [
+      "ex-main-0533|help:h1",
+      "pyramid-angle-ex-main-0533-help-h1"
+    ],
+    [
+      "ex-main-0533|help:h2",
+      "pyramid-angle-ex-main-0533-help-h2"
+    ],
+    [
+      "ex-main-0533|step-1",
+      "pyramid-angle-ex-main-0533-step-1"
+    ],
+    [
+      "ex-main-0533|step-2",
+      "pyramid-angle-ex-main-0533-step-2"
+    ],
+    [
+      "ex-main-0533|step-3",
+      "pyramid-angle-ex-main-0533-step-3"
+    ],
+    [
+      "ex-main-0533|step-4",
+      "pyramid-angle-ex-main-0533-step-4"
+    ],
+    [
+      "ex-main-0533|step-5",
+      "pyramid-angle-ex-main-0533-step-5"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "76c5c0116610f6eb5f5c9a03409384227cbe2a070714ce813c9eb0013b454a4c",
+      "afterSHA256": "cbfe89528f306b25437766ce61e003866c91d9a36fcced2eaa3275f605f4497c"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "ea07cb775609ea172017826fceae6bed3011f5ecb7d6d398ad2ee5cbca1c4bc1",
+      "afterSHA256": "d587c61a7c062bfb342ce96e2604749ca2811311b8bdc83e6453eb65c2383d06"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T16:44:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 528, points 52–62 and all chapter V self-checks, with 865 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "4c592041d9d834c78500bb3948244443c06fc03d5ee25662cb46eb244392782a",
+    "index": "ab11724c5174dd82bdee8fdae03cf70d9077b54fa9d46e77f532b2d7a897bc74",
+    "registry": "1a3c9c9d33c7e67a37755e0eb4ce2a70796c5e9e802288e336c1e360d7f73a27",
+    "cases": "a3d041af124d359d88d73dd9c0b82959fd9e503ab6bb5baa6f32ac804dbbebc5"
+  }
+}

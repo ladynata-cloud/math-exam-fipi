@@ -16,6 +16,14 @@ function historicalFile(file){
  if(!change)return raw;
  const quantity=require('./quantity-amendment.json');
  if(name===quantity.file){
+  const correction=require('./answer-correction-amendment.json');
+  const hashes=correction.files[prefix+name];
+  assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),hashes.afterSHA256,'Live independent correction');
+  for(const {before,after} of [...correction.edits].reverse()){
+   assert.equal(raw.toString('utf8').split(after).length,2,'Exactly one occurrence of each correction');
+   raw=Buffer.from(raw.toString('utf8').replace(after,before));
+  }
+  assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),hashes.beforeSHA256);
   assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),quantity.afterSha256,'Live quantitative self-check');
   const text=raw.toString();
   for(const marker of [quantity.start,quantity.end,quantity.call])assert.equal(text.split(marker).length,2);

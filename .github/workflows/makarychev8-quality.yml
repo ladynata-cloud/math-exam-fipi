@@ -13,10 +13,29 @@ on:
 permissions:
   contents: read
 jobs:
+  worked-solutions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        partition: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Solve every assigned task and restore its saved steps
+        env:
+          M8_UI_SHARD_INDEX: ${{ matrix.partition }}
+          M8_UI_SHARD_COUNT: ${{ strategy.job-total }}
+        run: |
+          npm install --prefix "$RUNNER_TEMP/makarychev-dom" --no-audit --no-fund --ignore-scripts jsdom@26.1.0
+          NODE_PATH="$RUNNER_TEMP/makarychev-dom/node_modules" node --max-old-space-size=1024 school/makarychev8/test-ui.cjs
   course:
     runs-on: ubuntu-latest
-    # Includes the new chapter and every earlier worked solution.
-    timeout-minutes: 45
+    # Includes the full sequential Chromium suite in addition to source and state checks.
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -42,6 +61,49 @@ jobs:
           python school/makarychev8/test-exercises-215-220.py
           python school/makarychev8/test-exercises-221-230.py
           python school/makarychev8/test-exercises-231-267.py
+          python school/makarychev8/test-exercises-510-530.py
+          python school/makarychev8/test-exercises-531-556.py
+          python school/makarychev8/test-exercises-557-577.py
+          python school/makarychev8/test-exercises-578-597.py
+          python school/makarychev8/test-exercises-598-616.py
+          python school/makarychev8/test-exercises-617-630.py
+          python school/makarychev8/test-exercises-631-647.py
+          python school/makarychev8/test-exercises-648-670.py
+          python school/makarychev8/test-exercises-671-686.py
+          python school/makarychev8/test-exercises-687-695.py
+          python school/makarychev8/test-exercises-696-701.py
+          python school/makarychev8/test-exercises-702-718.py
+          python school/makarychev8/test-exercises-719-732.py
+          python school/makarychev8/test-exercises-733-742.py
+          python school/makarychev8/test-exercises-743-752.py
+          python school/makarychev8/test-exercises-753-763.py
+          python school/makarychev8/test-exercises-764-782.py
+          python school/makarychev8/test-exercises-783-797.py
+          python school/makarychev8/test-exercises-798-805.py
+          python school/makarychev8/test-exercises-806-821.py
+          python school/makarychev8/test-exercises-822-831.py
+          python school/makarychev8/test-exercises-832-837.py
+          python school/makarychev8/test-exercises-838-845.py
+          python school/makarychev8/test-exercises-846-859.py
+          python school/makarychev8/test-exercises-860-868.py
+          python school/makarychev8/test-exercises-869-880.py
+          python school/makarychev8/test-exercises-881-897.py
+          python school/makarychev8/test-exercises-898-910.py
+          python school/makarychev8/test-exercises-911-931.py
+          python school/makarychev8/test-exercises-932-955.py
+          python school/makarychev8/test-exercises-956-972.py
+          python school/makarychev8/test-exercises-973-990.py
+          python school/makarychev8/test-exercises-991-1003.py
+          python school/makarychev8/test-exercises-1004-1013.py
+          python school/makarychev8/test-exercises-1014-1021.py
+          python school/makarychev8/test-exercises-1022-1031.py
+          python school/makarychev8/test-exercises-1032-1038.py
+          python school/makarychev8/test-exercises-1039-1048.py
+          python school/makarychev8/test-exercises-1049-1062.py
+          python school/makarychev8/test-exercises-1063-1068.py
+          python school/makarychev8/test-exercises-1069-1075.py
+          python school/makarychev8/test-exercises-1076-1079.py
+          python school/makarychev8/test-exercises-1080-1087.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -52,6 +114,41 @@ jobs:
           node --check school/makarychev8/task-graphs.js
           node school/makarychev8/test-task-graphs.cjs
           node school/makarychev8/test-course.cjs
+          node school/makarychev8/test-rate-stories.cjs
+          node school/makarychev8/test-plane-equations.cjs
+          node school/makarychev8/test-linear-systems.cjs
+          node school/makarychev8/test-graphical-systems.cjs
+          node school/makarychev8/test-system-substitution.cjs
+          node school/makarychev8/test-story-balances.cjs
+          node school/makarychev8/test-parameter-equations.cjs
+          node school/makarychev8/test-quadratic-review.cjs
+          node school/makarychev8/test-applied-review.cjs
+          node school/makarychev8/test-vieta-review.cjs
+          node school/makarychev8/test-trinomial-review.cjs
+          node school/makarychev8/test-rational-graphs.cjs
+          node school/makarychev8/test-mixtures-work.cjs
+          node school/makarychev8/test-lines-review.cjs
+          node school/makarychev8/test-inequality-evidence.cjs
+          node school/makarychev8/test-comparison-proofs.cjs
+          node school/makarychev8/test-order-rules.cjs
+          node school/makarychev8/test-bound-estimates.cjs
+          node school/makarychev8/test-combined-bounds.cjs
+          node school/makarychev8/test-set-operations.cjs
+          node school/makarychev8/test-source-intervals.cjs
+          node school/makarychev8/test-linear-rays.cjs
+          node school/makarychev8/test-domain-decisions.cjs
+          node school/makarychev8/test-system-intersections.cjs
+          node school/makarychev8/test-system-review.cjs
+          node school/makarychev8/test-proof-estimates.cjs
+          node school/makarychev8/test-river-proofs.cjs
+          node school/makarychev8/test-geometry-bounds.cjs
+          node school/makarychev8/test-open-interval-examples.cjs
+          node school/makarychev8/test-source-solution-audit.cjs
+          node school/makarychev8/test-chapter-four-end.cjs
+          node school/makarychev8/test-function-input-output.cjs
+          node school/makarychev8/test-function-domains.cjs
+          node school/makarychev8/test-graph-reading.cjs
+          node school/makarychev8/test-function-features.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
           git diff --check
@@ -59,19 +156,104 @@ jobs:
         run: |
           npm install --prefix "$RUNNER_TEMP/makarychev-qa" --no-audit --no-fund --ignore-scripts jsdom@26.1.0 playwright@1.62.1
           node "$RUNNER_TEMP/makarychev-qa/node_modules/playwright/cli.js" install --with-deps chromium
-      - name: Every worked solution and saved-work journey
+      - name: Saved-work import and learning audit
         run: |
-          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --max-old-space-size=1024 school/makarychev8/test-ui.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-import.cjs
-          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-audit-learning.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --expose-gc school/makarychev8/test-audit-learning.cjs
       - name: Square roots and two board participants
         run: |
-          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-roots-engine.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --expose-gc --max-old-space-size=250 school/makarychev8/test-roots-engine.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-board.cjs
       - name: Numbered fractions, self-drawn graphs and saved notes
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-fractions.cjs
       - name: Square roots, accepted work and narrow screens
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-roots.cjs
+      - name: Chromium incomplete quadratic equations and new conditions
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-quadratics.cjs
+      - name: Chromium quadratic formula, curves and investigation
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-quadratic-formula.cjs
+      - name: Word problem models and both scale constructions
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-word-problems.cjs
+      - name: Vieta, inverse verification, real parameters and proof chains
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-vieta.cjs
+      - name: Trinomial vertices, investigation, exact products and mobile views
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-trinomial.cjs
+      - name: Factor multiplicity, unrestricted examples and the missing point
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-factors.cjs
+      - name: Rational equations, source domains and reciprocal intersections
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-rational-equations.cjs
+      - name: Chromium word problems, physical limits and free equation coefficients
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-rate-stories.cjs
+      - name: Chromium graphs of two-variable equations and unions of lines
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-plane-equations.cjs
+      - name: Chromium linear systems, two-ray intersections and time segment
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-linear-systems.cjs
+      - name: Chromium graphical systems and independent intersection coordinates
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-graphical-systems.cjs
+      - name: Chromium substitution, radical pairs and strict intervals
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-system-substitution.cjs
+      - name: Chromium word problem models, integer constraints and source note
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-story-balances.cjs
+      - name: Chromium parameter equations, degree loss and saved model
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-parameter-equations.cjs
+      - name: Chromium supplementary proof and exact root checks
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-quadratic-review.cjs
+      - name: Chromium integer runs, frames and folding carton
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-applied-review.cjs
+      - name: Chromium Vieta proof and transformed equations
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-vieta-review.cjs
+      - name: Chromium factorizations and original expression restrictions
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-trinomial-review.cjs
+      - name: Chromium rational equations, reading graphs and removable holes
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-rational-graphs.cjs
+      - name: Chromium travel time, admissible currents and two-solution journeys
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-travel-times.cjs
+      - name: Chromium concentration, relative production and roles
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-mixtures-work.cjs
+      - name: Chromium linear systems, arbitrary coefficients and constructed function
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-lines-review.cjs
+      - name: Chromium comparison, equality and independent counterexamples
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-inequality-evidence.cjs
+      - name: Chromium paired comparisons, allowed examples and square-root means
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-comparison-proofs.cjs
+      - name: Chromium ordering, free rational coordinates and comparison rules
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-order-rules.cjs
+      - name: Chromium interval estimates and ordering radicals
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-bound-estimates.cjs
+      - name: Chromium combined bounds and median construction
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-combined-bounds.cjs
+      - name: Chromium finite sets, multiple witnesses and diagram restoration
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-set-operations.cjs
+      - name: Chromium building intervals and retaining distinct endpoint holes
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-source-intervals.cjs
+      - name: Chromium linear inequalities, reversing signs and free solutions
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-linear-rays.cjs
+      - name: Chromium domain restrictions, exceptional parameters and cube intersections
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-domain-decisions.cjs
+      - name: Chromium simultaneous conditions, domain holes and arbitrary examples
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-system-intersections.cjs
+      - name: Chromium moving roots, three constraints and speeds
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-system-review.cjs
+      - name: Chromium proof witnesses, radical equality and positive hypotheses
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-proof-estimates.cjs
+      - name: Chromium river hypotheses, observed models and independent conclusions
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-river-proofs.cjs
+      - name: Chromium geometric proofs and interval estimates
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-geometry-bounds.cjs
+      - name: Chromium open endpoints, counterexamples and infinite-set membership
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-open-interval-examples.cjs
+      - name: Chromium parameter signs, open denominator and constructed graph
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-source-solution-audit.cjs
+      - name: Chromium original applied problems and complete chapter four
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-chapter-four-end.cjs
+      - name: Chromium function input, ordinate, inverse and excluded arguments
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-input-output.cjs
+      - name: Chromium constructed function domains and missing reciprocal points
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-domains.cjs
+      - name: Chromium pressure and original graph reading
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-graph-reading.cjs
+      - name: Chromium constructed function graphs and endpoint ranges
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-function-features.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction

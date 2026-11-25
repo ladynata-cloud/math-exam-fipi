@@ -1,0 +1,421 @@
+{
+  "parts": {
+    "518": [
+      null
+    ],
+    "519": [
+      null
+    ],
+    "520": [
+      null
+    ],
+    "521": [
+      null
+    ],
+    "522": [
+      null
+    ],
+    "523": [
+      null
+    ],
+    "524": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "518": {
+      "id": "source-main-0518",
+      "kind": "exercise",
+      "title": "Задача № 518",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "518",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "519": {
+      "id": "source-main-0519",
+      "kind": "exercise",
+      "title": "Задача № 519",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "519",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "520": {
+      "id": "source-main-0520",
+      "kind": "exercise",
+      "title": "Задача № 520",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "520",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          138
+        ],
+        "pdfPages": [
+          140
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "521": {
+      "id": "source-main-0521",
+      "kind": "exercise",
+      "title": "Задача № 521",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "521",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "522": {
+      "id": "source-main-0522",
+      "kind": "exercise",
+      "title": "Задача № 522",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "522",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "523": {
+      "id": "source-main-0523",
+      "kind": "exercise",
+      "title": "Задача № 523",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "523",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "524": {
+      "id": "source-main-0524",
+      "kind": "exercise",
+      "title": "Задача № 524",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "524",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          139
+        ],
+        "pdfPages": [
+          141
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0518": {
+      "raw": "6c3120c900539146015dd3e4f143a3cbaeb865e3b455f1034d5116c5ba7a9a3d",
+      "authored": "706dd83c3ee334f3aa8718faa35d999e24aa567776e3448739895e3cf9975026",
+      "integrated": "b39a442c897f4b3349329356e912d51281497c9167c48088161e0b67df28a24e"
+    },
+    "ex-main-0519": {
+      "raw": "a41c1239240c3244cf22175dd6556b909eb949c051f15c32bcdfcac09cb0ce97",
+      "authored": "13b118ab0b27b0aea79689b1c0c863c057b12efb6b146dbd13112911c82aab2a",
+      "integrated": "0b9d7581851315a19c77221859d81d8483d424254f0760392e7c91b93745136b"
+    },
+    "ex-main-0520": {
+      "raw": "188c6c9a9cadba96e7b2fd8b110cb53acc6b3c1ba88a9f0a333f7004fe96c5a3",
+      "authored": "875e91122e1477efb87869e3d371e05289f43b6344f24b32129d01fc4ac0d0b9",
+      "integrated": "5d7830b819c5c609cc7289bf9895510dcb9fe7b90c01fc3150fbe2210dbc358f"
+    },
+    "ex-main-0521": {
+      "raw": "f0a3838596b696bf7451165ef99e48c68dd1fc2de264ba03e9f14284657af6e4",
+      "authored": "46de5457c4ce62822d6b92a9e6179beed0e49ae497422d687c7bec539eefbfe4",
+      "integrated": "22446e3bf423a24041c6a04908cc30d8d186a8fac6344b1b26e5d960e81e7ba9"
+    },
+    "ex-main-0522": {
+      "raw": "d850d25acfe5a3a8461c929a25653052830c12ed15fe66adc0711ded571ecf12",
+      "authored": "ccbfaf97930ca4e838f7b8a4b46c479fcf353fbd1729d40775305267dddb5757",
+      "integrated": "2b9682f98ba0b448dcadbc4fa7a97f525a9363a437ff95f2aaccd911639d72b3"
+    },
+    "ex-main-0523": {
+      "raw": "67b9a221f9cec0309095c89e9385dec7e76f4a75d2d66041a322e35b7067955e",
+      "authored": "fae5f8f78d9a0305fabef38d714cc0590764d6715723a68f1fb4f9fd01176715",
+      "integrated": "434908df74c9a7528a5ecff4040f41c85740eb68b63a576263ca4d04898e392f"
+    },
+    "ex-main-0524": {
+      "raw": "ba6f1a59d2fa286c02636e5931d294c10a90b25966d91c76b57da67e3e2c8e0b",
+      "authored": "b78e2035dc554fae1932fd4c0ddbed29c8e69fba9d920b5cdb07fc85f8b36153",
+      "integrated": "6edffc6b304d17a2a310f7912d56e7f01a435d49bceda1b11e26c511d1f40820"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0518|condition",
+      "prism-application-ex-main-0518-condition"
+    ],
+    [
+      "ex-main-0518|help:h1",
+      "prism-application-ex-main-0518-help-h1"
+    ],
+    [
+      "ex-main-0518|help:h2",
+      "prism-application-ex-main-0518-help-h2"
+    ],
+    [
+      "ex-main-0518|step-1",
+      "prism-application-ex-main-0518-step-1"
+    ],
+    [
+      "ex-main-0518|step-2",
+      "prism-application-ex-main-0518-step-2"
+    ],
+    [
+      "ex-main-0518|step-3",
+      "prism-application-ex-main-0518-step-3"
+    ],
+    [
+      "ex-main-0518|step-4",
+      "prism-application-ex-main-0518-step-4"
+    ],
+    [
+      "ex-main-0519|condition",
+      "prism-application-ex-main-0519-condition"
+    ],
+    [
+      "ex-main-0519|help:h1",
+      "prism-application-ex-main-0519-help-h1"
+    ],
+    [
+      "ex-main-0519|help:h2",
+      "prism-application-ex-main-0519-help-h2"
+    ],
+    [
+      "ex-main-0519|step-1",
+      "prism-application-ex-main-0519-step-1"
+    ],
+    [
+      "ex-main-0519|step-2",
+      "prism-application-ex-main-0519-step-2"
+    ],
+    [
+      "ex-main-0519|step-3",
+      "prism-application-ex-main-0519-step-3"
+    ],
+    [
+      "ex-main-0519|step-4",
+      "prism-application-ex-main-0519-step-4"
+    ],
+    [
+      "ex-main-0520|condition",
+      "prism-application-ex-main-0520-condition"
+    ],
+    [
+      "ex-main-0520|help:h1",
+      "prism-application-ex-main-0520-help-h1"
+    ],
+    [
+      "ex-main-0520|help:h2",
+      "prism-application-ex-main-0520-help-h2"
+    ],
+    [
+      "ex-main-0520|step-1",
+      "prism-application-ex-main-0520-step-1"
+    ],
+    [
+      "ex-main-0520|step-2",
+      "prism-application-ex-main-0520-step-2"
+    ],
+    [
+      "ex-main-0520|step-3",
+      "prism-application-ex-main-0520-step-3"
+    ],
+    [
+      "ex-main-0520|step-4",
+      "prism-application-ex-main-0520-step-4"
+    ],
+    [
+      "ex-main-0521|condition",
+      "prism-application-ex-main-0521-condition"
+    ],
+    [
+      "ex-main-0521|help:h1",
+      "prism-application-ex-main-0521-help-h1"
+    ],
+    [
+      "ex-main-0521|help:h2",
+      "prism-application-ex-main-0521-help-h2"
+    ],
+    [
+      "ex-main-0521|step-1",
+      "prism-application-ex-main-0521-step-1"
+    ],
+    [
+      "ex-main-0521|step-2",
+      "prism-application-ex-main-0521-step-2"
+    ],
+    [
+      "ex-main-0521|step-3",
+      "prism-application-ex-main-0521-step-3"
+    ],
+    [
+      "ex-main-0521|step-4",
+      "prism-application-ex-main-0521-step-4"
+    ],
+    [
+      "ex-main-0522|condition",
+      "prism-application-ex-main-0522-condition"
+    ],
+    [
+      "ex-main-0522|help:h1",
+      "prism-application-ex-main-0522-help-h1"
+    ],
+    [
+      "ex-main-0522|help:h2",
+      "prism-application-ex-main-0522-help-h2"
+    ],
+    [
+      "ex-main-0522|step-1",
+      "prism-application-ex-main-0522-step-1"
+    ],
+    [
+      "ex-main-0522|step-2",
+      "prism-application-ex-main-0522-step-2"
+    ],
+    [
+      "ex-main-0522|step-3",
+      "prism-application-ex-main-0522-step-3"
+    ],
+    [
+      "ex-main-0522|step-4",
+      "prism-application-ex-main-0522-step-4"
+    ],
+    [
+      "ex-main-0522|step-5",
+      "prism-application-ex-main-0522-step-5"
+    ],
+    [
+      "ex-main-0523|condition",
+      "prism-application-ex-main-0523-condition"
+    ],
+    [
+      "ex-main-0523|help:h1",
+      "prism-application-ex-main-0523-help-h1"
+    ],
+    [
+      "ex-main-0523|help:h2",
+      "prism-application-ex-main-0523-help-h2"
+    ],
+    [
+      "ex-main-0523|step-1",
+      "prism-application-ex-main-0523-step-1"
+    ],
+    [
+      "ex-main-0523|step-2",
+      "prism-application-ex-main-0523-step-2"
+    ],
+    [
+      "ex-main-0523|step-3",
+      "prism-application-ex-main-0523-step-3"
+    ],
+    [
+      "ex-main-0523|step-4",
+      "prism-application-ex-main-0523-step-4"
+    ],
+    [
+      "ex-main-0524|condition",
+      "prism-application-ex-main-0524-condition"
+    ],
+    [
+      "ex-main-0524|help:h1",
+      "prism-application-ex-main-0524-help-h1"
+    ],
+    [
+      "ex-main-0524|help:h2",
+      "prism-application-ex-main-0524-help-h2"
+    ],
+    [
+      "ex-main-0524|step-1",
+      "prism-application-ex-main-0524-step-1"
+    ],
+    [
+      "ex-main-0524|step-2",
+      "prism-application-ex-main-0524-step-2"
+    ],
+    [
+      "ex-main-0524|step-3",
+      "prism-application-ex-main-0524-step-3"
+    ],
+    [
+      "ex-main-0524|step-4",
+      "prism-application-ex-main-0524-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "4610ab7e9fd838a4aee55a3ba8b5ab4a85960df2b08ba8c28499ac5d2e13208b",
+      "afterSHA256": "a893cd00e6b9d71401120b909b21b3ea7978511ac13151e21a0082192df163e0"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "69a236b20dc84b297dfa588157796e7abedde2c803626b1dfed42654d2350ee4",
+      "afterSHA256": "de94e58a17b2f5d35ccb5f47ba763b240eb02b7325c7586559bce5c7260232b1"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T16:34:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 517, points 52–62 and the 14 chapter V self-checks, with 854 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "db10057bb26e693ed50535dbfe47ed640a868ffe7f10d9d815efb58441805964",
+    "index": "3c0842b3c6e4c2db00f818a3985d666ea3a4b268b1f17537d801c3b0bc121db5",
+    "registry": "2f53e226929fea678fa26f30531cbcb91eafcb4982346b2471290ad11cf41df4",
+    "cases": "46d25d3dedd25fe4a08884d6e1f0cd34d2dd80627accd7bff7dd0f4068912d1e"
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "parts": {
+    "490": [
+      null
+    ],
+    "491": [
+      null
+    ],
+    "492": [
+      null
+    ],
+    "493": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "490": {
+      "id": "source-main-0490",
+      "kind": "exercise",
+      "title": "Задача № 490",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "490",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          132
+        ],
+        "pdfPages": [
+          134
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "491": {
+      "id": "source-main-0491",
+      "kind": "exercise",
+      "title": "Задача № 491",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "491",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          132
+        ],
+        "pdfPages": [
+          134
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "492": {
+      "id": "source-main-0492",
+      "kind": "exercise",
+      "title": "Задача № 492",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "492",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          132
+        ],
+        "pdfPages": [
+          134
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "493": {
+      "id": "source-main-0493",
+      "kind": "exercise",
+      "title": "Задача № 493",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "493",
+        "chapter": "V. Объёмы тел",
+        "printedPages": [
+          132
+        ],
+        "pdfPages": [
+          134
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0490": {
+      "raw": "e78cf9e781bb78babfd284e0a8a1edfe27c19a246ee0f31279d4e34b31df2fdb",
+      "authored": "c15ff5bb342b3a96075b72942d08004cee7f1e0790b6b25ec1dda9ac51c5bb89",
+      "integrated": "cbc19861b731953004376f6c2e279eb9e741bb4f27f1cbd78b4c40d993775eea"
+    },
+    "ex-main-0491": {
+      "raw": "a8bb26f6cf5b983560943342107fbb621829f22996ea137d36dad5f5747a3c50",
+      "authored": "f5c8e810a920b86ff1217eb95063602de65267778483c05d47bc06fcf5b9270c",
+      "integrated": "b230eea6e20426450abe7e5c42621713ee105dc7407fa12c3ec3f7c77e05bbe0"
+    },
+    "ex-main-0492": {
+      "raw": "465b5c588e7fb6fdb3a65ebd5cd299101df6aaea8b2e5474394a35f1925c7415",
+      "authored": "d9e94d894404cd3099c142f472b9087a68f7af4c9cd526751c60b811402d1aaa",
+      "integrated": "2a002d6c666be7971978f881868b2658d1790877cd67b810ca6f0a4ce598634c"
+    },
+    "ex-main-0493": {
+      "raw": "7446aee6d10463a7669db90b86d80a37a8bb40d4cb5c7e9dcd6c91c29623fb7e",
+      "authored": "e7b0f6777e1ac55d0ec81285c6ca50e6f4cf693f77c8eae71bdba4aee9c9fb0c",
+      "integrated": "75d87e4c5e0674db80f0925efb8dfc006689f0a6941c9d5afb341399eee4f74d"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0490|condition",
+      "frustum-ex-main-0490-condition"
+    ],
+    [
+      "ex-main-0490|help:h1",
+      "frustum-ex-main-0490-help-h1"
+    ],
+    [
+      "ex-main-0490|help:h2",
+      "frustum-ex-main-0490-help-h2"
+    ],
+    [
+      "ex-main-0490|step-1",
+      "frustum-ex-main-0490-step-1"
+    ],
+    [
+      "ex-main-0490|step-2",
+      "frustum-ex-main-0490-step-2"
+    ],
+    [
+      "ex-main-0490|step-3",
+      "frustum-ex-main-0490-step-3"
+    ],
+    [
+      "ex-main-0490|step-4",
+      "frustum-ex-main-0490-step-4"
+    ],
+    [
+      "ex-main-0491|condition",
+      "frustum-ex-main-0491-condition"
+    ],
+    [
+      "ex-main-0491|help:h1",
+      "frustum-ex-main-0491-help-h1"
+    ],
+    [
+      "ex-main-0491|help:h2",
+      "frustum-ex-main-0491-help-h2"
+    ],
+    [
+      "ex-main-0491|step-1",
+      "frustum-ex-main-0491-step-1"
+    ],
+    [
+      "ex-main-0491|step-2",
+      "frustum-ex-main-0491-step-2"
+    ],
+    [
+      "ex-main-0491|step-3",
+      "frustum-ex-main-0491-step-3"
+    ],
+    [
+      "ex-main-0491|step-4",
+      "frustum-ex-main-0491-step-4"
+    ],
+    [
+      "ex-main-0492|condition",
+      "frustum-ex-main-0492-condition"
+    ],
+    [
+      "ex-main-0492|help:h1",
+      "frustum-ex-main-0492-help-h1"
+    ],
+    [
+      "ex-main-0492|help:h2",
+      "frustum-ex-main-0492-help-h2"
+    ],
+    [
+      "ex-main-0492|step-1",
+      "frustum-ex-main-0492-step-1"
+    ],
+    [
+      "ex-main-0492|step-2",
+      "frustum-ex-main-0492-step-2"
+    ],
+    [
+      "ex-main-0492|step-3",
+      "frustum-ex-main-0492-step-3"
+    ],
+    [
+      "ex-main-0492|step-4",
+      "frustum-ex-main-0492-step-4"
+    ],
+    [
+      "ex-main-0493|condition",
+      "frustum-ex-main-0493-condition"
+    ],
+    [
+      "ex-main-0493|help:h1",
+      "frustum-ex-main-0493-help-h1"
+    ],
+    [
+      "ex-main-0493|help:h2",
+      "frustum-ex-main-0493-help-h2"
+    ],
+    [
+      "ex-main-0493|step-1",
+      "frustum-ex-main-0493-step-1"
+    ],
+    [
+      "ex-main-0493|step-2",
+      "frustum-ex-main-0493-step-2"
+    ],
+    [
+      "ex-main-0493|step-3",
+      "frustum-ex-main-0493-step-3"
+    ],
+    [
+      "ex-main-0493|step-4",
+      "frustum-ex-main-0493-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "549c393dbfa5c1f2bf24a755ed3546adc5cbca0b3652265a38c263623fe5c98d",
+      "afterSHA256": "66d16db4249574e9ba5da3ee0e63b55807f86f2dc74a79057171b5620908a891"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "93b2f12ab611e540d4186cc6a5feea429fe4af741b837009f1c0a94801948b6c",
+      "afterSHA256": "619b479d05db5a88fdf36a77b07bd4c35a44b74bdba82977aef35a3429d4d214"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T15:22:00Z",
+    "scope": "Introduction and chapters I–IV, plus chapter V through exercise 489 and points 52–59, with 800 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "7c5813f0ef61114b2a9ee9920198fd8be1cbe796bc021d7694dc14d0a87b675a",
+    "index": "37645157045e64f8aec42e5ae8db32e846b49c21867cf4fb84a706c4370f81f0",
+    "registry": "9f433e12195d7ee7aaafe8e0bc21af9c13288cb8f828ccc58a984020c5da8ff2",
+    "cases": "e4c09442c79b3fb66dbb9598f7bb0d43622266661e39a96c8b5d7a382e0cb8e5"
+  }
+}

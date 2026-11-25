@@ -53,6 +53,27 @@ for file in ['exercises-221-230.json','exercises-231-267.json']:
     for topic,tasks in read(file)['topics'].items():
         by_lesson[topic]['tasks'].extend(tasks)
 
+by_lesson['p20']['tasks'].extend(read('exercises-510-530.json'))
+by_lesson['p21']['tasks'].extend(read('exercises-531-556.json'))
+by_lesson['p22']['tasks'].extend(read('exercises-557-577.json'))
+by_lesson['p23']['tasks'].extend(read('exercises-578-597.json'))
+by_lesson['p24']['tasks'].extend(read('exercises-598-616.json'))
+by_lesson['p25']['tasks'].extend(read('exercises-617-630.json'))
+by_lesson['p26']['tasks'].extend(read('exercises-631-647.json'))
+by_lesson['p27']['tasks'].extend(read('exercises-648-670.json'))
+by_lesson['p28']['tasks'].extend(read('exercises-671-686.json'))
+by_lesson['p29']['tasks'].extend(read('exercises-687-695.json'))
+by_lesson['p30']['tasks'].extend(read('exercises-696-701.json'))
+by_lesson['p31']['tasks'].extend(read('exercises-702-718.json'))
+by_lesson['p32']['tasks'].extend(read('exercises-719-732.json'))
+by_lesson['p33']['tasks'].extend(read('exercises-733-742.json'))
+by_lesson['p42']['tasks'].extend(read('exercises-1063-1068.json'))
+by_lesson['p42']['tasks'].extend(read('exercises-1069-1075.json'))
+by_lesson['p42']['tasks'].extend(read('exercises-1076-1079.json'))
+by_lesson['p42']['tasks'].extend(read('exercises-1080-1087.json'))
+for t in read('exercises-743-752.json')+read('exercises-753-763.json')+read('exercises-764-782.json')+read('exercises-783-797.json')+read('exercises-798-805.json')+read('exercises-806-821.json')+read('exercises-822-831.json')+read('exercises-832-837.json')+read('exercises-838-845.json')+read('exercises-846-859.json')+read('exercises-860-868.json')+read('exercises-869-880.json')+read('exercises-881-897.json')+read('exercises-898-910.json')+read('exercises-911-931.json')+read('exercises-932-955.json')+read('exercises-956-972.json')+read('exercises-973-990.json')+read('exercises-991-1003.json')+read('exercises-1004-1013.json')+read('exercises-1014-1021.json')+read('exercises-1022-1031.json')+read('exercises-1032-1038.json')+read('exercises-1039-1048.json')+read('exercises-1049-1062.json'):
+    by_lesson[t['id'][:3]]['tasks'].append(t)
+
 ranges = []
 for first, last in RANGES:
     name = f'roots-{first}-{last}.json'

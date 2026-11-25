@@ -86,7 +86,7 @@
         if (!lesson || !fields(work, ['draft', 'stepDrafts', 'revealed', 'assisted', 'checked', 'camera']) ||
             !draft(work.draft) || !object(work.stepDrafts) || !integer(work.revealed, 0, lesson.steps.length) ||
             !['assisted', 'checked'].every(key => typeof work[key] === 'boolean') || !camera(work.camera, lesson) ||
-            (work.revealed > 0 && !work.assisted)) return false;
+            (work.revealed > 0 && !work.assisted && !(work.checked && lesson.answer?.mode === 'exact'))) return false;
         const steps = new Map(lesson.steps.map(step => [step.id, step]));
         if (!Object.entries(work.stepDrafts).every(([id, value]) => steps.get(id)?.input && draft(value))) return false;
         if (!fields(view, ['model', 'opened', 'feedback', 'theory']) || !fields(view.model, ['camera', 'view', 'announcement']) ||

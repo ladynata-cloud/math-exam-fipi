@@ -1,0 +1,670 @@
+{
+  "parts": {
+    "604": [
+      null
+    ],
+    "605": [
+      "а",
+      "б",
+      "в",
+      "г",
+      "д",
+      "е",
+      "ж"
+    ],
+    "606": [
+      null
+    ],
+    "607": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "608": [
+      null
+    ],
+    "609": [
+      null
+    ]
+  },
+  "previousCatalog": {
+    "604": {
+      "id": "source-main-0604",
+      "kind": "exercise",
+      "title": "Задача № 604",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "604",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "605": {
+      "id": "source-main-0605",
+      "kind": "exercise",
+      "title": "Задача № 605",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "605",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "606": {
+      "id": "source-main-0606",
+      "kind": "exercise",
+      "title": "Задача № 606",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "606",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "607": {
+      "id": "source-main-0607",
+      "kind": "exercise",
+      "title": "Задача № 607",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "607",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "608": {
+      "id": "source-main-0608",
+      "kind": "exercise",
+      "title": "Задача № 608",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "608",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          155
+        ],
+        "pdfPages": [
+          157
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "609": {
+      "id": "source-main-0609",
+      "kind": "exercise",
+      "title": "Задача № 609",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "609",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          155,
+          156
+        ],
+        "pdfPages": [
+          157,
+          158
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0604": {
+      "raw": "ddf535ba332c97c2d721e24f635013a4fd3d3b4bf303c5b1d149112df9b9aa8e",
+      "authored": "1b70eec3f4987928aed2f392ecdcc2e22ac6ad47ecec2b73f414b32988d18f45",
+      "integrated": "1d82639bba4c437fa156ffea9ec476fe8a20bb7a6736cda52f579e1e788a47cd"
+    },
+    "ex-main-0605-a": {
+      "raw": "8b75c979deebdb2c9c1e3d5190f8aec1dd3479da871be0525aa598e874396789",
+      "authored": "4c811cf5e0ec451028fe1ac45b9539226f15a4502d72cb978a9407c867203893",
+      "integrated": "47941e23fc43a66e8b1688d3096039306cc7068de3e20d4f3060e55b3f8bb1a9"
+    },
+    "ex-main-0605-b": {
+      "raw": "77a6564bd998eb2fb68cbb8bfc8078882e2f85899639aa99eab788ae6638e62b",
+      "authored": "915e667662f525e559937de4bd3675a0c9fc10b7c3444cdca11fc35d6a3a5cf3",
+      "integrated": "5d33e09decdb4a06f572b0824ec80b9e9782088d69391dce8df6c495a4fd2088"
+    },
+    "ex-main-0605-c": {
+      "raw": "ea5f48709bbc4d68936841eaa7c6e3b318d77cb5d48246e1dabb88f3a8128f78",
+      "authored": "673bb18a324bb0edad524de1ff2c6f0c14eed5208cd2b58af8d1597b30971d6d",
+      "integrated": "ff4ce01ba5e1e8954e1682dfabcdbcb6883d1c41abce6ccd806b163ae5b642ae"
+    },
+    "ex-main-0605-d": {
+      "raw": "f9a7e5cc78a23d5ca95f8fea906ed8dd187e7d489648ef77d87d10900186b455",
+      "authored": "d9e47bdd00588c9cd128c58cd75f818ddedf876750230e10b057ac52a2eb3e70",
+      "integrated": "e3688dc1c95f5daebdf627be4265ee021859bba00e59feedca19cd665f20df46"
+    },
+    "ex-main-0605-e": {
+      "raw": "0b88315bcf5b5af50021a6c7f5c046e7120cfc1849bea92452d7b59e4fa2a464",
+      "authored": "cca435f8675ac42007951edd4d00180a88a62a51a03f01f6aa832f9228351d58",
+      "integrated": "79da09b84f494c3bcd9ddf5fceb8dd880bb2ef79622c9700d1fd834563548932"
+    },
+    "ex-main-0605-f": {
+      "raw": "73e3ded93b50ff39c3b450c74fd3edeba103218cd7f5c912c5833e09f6f25a40",
+      "authored": "024ce9753b48277e87ee9083a8331cc1051df957f62d5f5d48c750a4047155ef",
+      "integrated": "54358ce85bdec8ac8a11fe199cf9ba8189985b5aebda67c365ec0bd1cd047e9e"
+    },
+    "ex-main-0605-g": {
+      "raw": "4b80020ebc644d56c854c38e58393a88cdb30da707a59e4b8594c03947af3b6c",
+      "authored": "ea9b3a04e1ded76e64d4409b9d3be543785f3f6f26ed36fbd00cd7686408d067",
+      "integrated": "dadd30e3a0c46425389552e7e829a2a1fd5e73a3b2af94e23293939657e768de"
+    },
+    "ex-main-0606": {
+      "raw": "41ff212cb66fdf3d80cbe09e340451a256fd4b157c7fd6e42562a3388a6bfefa",
+      "authored": "b430a19d840a94ab50a0e75742c30d2fdcaedf58746f9cde4efa0eca823234f1",
+      "integrated": "5e5bcfaf56a3df05edc68b94853edd71d909027ce990a9b5a656734dc124d510"
+    },
+    "ex-main-0607-a": {
+      "raw": "78c3665dcf6252d817e1fc76f94ebb08d7cb7d1d0a4023c530d62016f582fa70",
+      "authored": "4b54d80ef64f641e11188aa8c2de44158b2c887d241d565cfc0253085cc31644",
+      "integrated": "c0a972fbebba6635418a1d513fd4de9eb37c06ed0d35d07a8051ad0ebe18743e"
+    },
+    "ex-main-0607-b": {
+      "raw": "27431086b13d2bd80de9575da568326fe0816b747e4b6d3942914458fd2bc7d4",
+      "authored": "6af216861def054b4cbdd10acaab0456376c320a956629d86fc368e068d3b847",
+      "integrated": "3eeeabe9a8b1188cc9a8237d7b94f4e7c9131fef6d9075b58fc000bf8a25b9de"
+    },
+    "ex-main-0607-c": {
+      "raw": "125ae449a122a5c13ec173d4b95807e281f6c79851c02bd7831d337046cd25b8",
+      "authored": "f32b2e79a723002aaa0799f0c0fb18c3f6febd4a96175606ff5754d68cb2c079",
+      "integrated": "bb92452a6009c746efb6efc4b4d466d4155c55d2af98853b78e9f6195f4e917f"
+    },
+    "ex-main-0607-d": {
+      "raw": "c942840f56dfd9d32badf92bd29a4a400475d13a4dad29b885d871ff74520850",
+      "authored": "b2f072f00026a936f5b59bff9142d480134ec5af779ff302ea3d562d0f27da60",
+      "integrated": "85a9012b8a3274508944a50913cb3be2dfbf390f876f02ed0d6cce526beeffad"
+    },
+    "ex-main-0608": {
+      "raw": "242215999bee4517b8d12487780c26420f86c2a54c275d18faaea00b1d3f5ea3",
+      "authored": "b552a78e840bc371eea2952710510fea50cd5f922b87bd8329090ce943ac5ac1",
+      "integrated": "2d92e4891f29cbfee110d2e682e573baf31255e2eda16e0c3224d815676eec21"
+    },
+    "ex-main-0609": {
+      "raw": "688562583ef8d794936fb108b0369c4dd573bc799926c46ac59e1004e42788f5",
+      "authored": "49ca60f3eca1749e817397e7cd617a41402ac56ef5eb3ea8bc504490361ad470",
+      "integrated": "d7222f73687d8c23f16223c34a4047250757550b306701b74368f7ebefa6b210"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0604|condition",
+      "centroids-in-tetrahedra-ex-main-0604-condition"
+    ],
+    [
+      "ex-main-0604|help:h1",
+      "centroids-in-tetrahedra-ex-main-0604-help-h1"
+    ],
+    [
+      "ex-main-0604|help:h2",
+      "centroids-in-tetrahedra-ex-main-0604-help-h2"
+    ],
+    [
+      "ex-main-0604|step-1",
+      "centroids-in-tetrahedra-ex-main-0604-step-1"
+    ],
+    [
+      "ex-main-0604|step-2",
+      "centroids-in-tetrahedra-ex-main-0604-step-2"
+    ],
+    [
+      "ex-main-0604|step-3",
+      "centroids-in-tetrahedra-ex-main-0604-step-3"
+    ],
+    [
+      "ex-main-0604|step-4",
+      "centroids-in-tetrahedra-ex-main-0604-step-4"
+    ],
+    [
+      "ex-main-0605-a|condition",
+      "centroids-in-tetrahedra-ex-main-0605-a-condition"
+    ],
+    [
+      "ex-main-0605-a|help:h1",
+      "centroids-in-tetrahedra-ex-main-0605-a-help-h1"
+    ],
+    [
+      "ex-main-0605-a|help:h2",
+      "centroids-in-tetrahedra-ex-main-0605-a-help-h2"
+    ],
+    [
+      "ex-main-0605-a|step-1",
+      "centroids-in-tetrahedra-ex-main-0605-a-step-1"
+    ],
+    [
+      "ex-main-0605-a|step-2",
+      "centroids-in-tetrahedra-ex-main-0605-a-step-2"
+    ],
+    [
+      "ex-main-0605-a|step-3",
+      "centroids-in-tetrahedra-ex-main-0605-a-step-3"
+    ],
+    [
+      "ex-main-0605-a|step-4",
+      "centroids-in-tetrahedra-ex-main-0605-a-step-4"
+    ],
+    [
+      "ex-main-0605-b|condition",
+      "centroids-in-tetrahedra-ex-main-0605-b-condition"
+    ],
+    [
+      "ex-main-0605-b|help:h1",
+      "centroids-in-tetrahedra-ex-main-0605-b-help-h1"
+    ],
+    [
+      "ex-main-0605-b|help:h2",
+      "centroids-in-tetrahedra-ex-main-0605-b-help-h2"
+    ],
+    [
+      "ex-main-0605-b|step-1",
+      "centroids-in-tetrahedra-ex-main-0605-b-step-1"
+    ],
+    [
+      "ex-main-0605-b|step-2",
+      "centroids-in-tetrahedra-ex-main-0605-b-step-2"
+    ],
+    [
+      "ex-main-0605-b|step-3",
+      "centroids-in-tetrahedra-ex-main-0605-b-step-3"
+    ],
+    [
+      "ex-main-0605-b|step-4",
+      "centroids-in-tetrahedra-ex-main-0605-b-step-4"
+    ],
+    [
+      "ex-main-0605-c|condition",
+      "centroids-in-tetrahedra-ex-main-0605-c-condition"
+    ],
+    [
+      "ex-main-0605-c|help:h1",
+      "centroids-in-tetrahedra-ex-main-0605-c-help-h1"
+    ],
+    [
+      "ex-main-0605-c|help:h2",
+      "centroids-in-tetrahedra-ex-main-0605-c-help-h2"
+    ],
+    [
+      "ex-main-0605-c|step-1",
+      "centroids-in-tetrahedra-ex-main-0605-c-step-1"
+    ],
+    [
+      "ex-main-0605-c|step-2",
+      "centroids-in-tetrahedra-ex-main-0605-c-step-2"
+    ],
+    [
+      "ex-main-0605-c|step-3",
+      "centroids-in-tetrahedra-ex-main-0605-c-step-3"
+    ],
+    [
+      "ex-main-0605-c|step-4",
+      "centroids-in-tetrahedra-ex-main-0605-c-step-4"
+    ],
+    [
+      "ex-main-0605-d|condition",
+      "centroids-in-tetrahedra-ex-main-0605-d-condition"
+    ],
+    [
+      "ex-main-0605-d|help:h1",
+      "centroids-in-tetrahedra-ex-main-0605-d-help-h1"
+    ],
+    [
+      "ex-main-0605-d|help:h2",
+      "centroids-in-tetrahedra-ex-main-0605-d-help-h2"
+    ],
+    [
+      "ex-main-0605-d|step-1",
+      "centroids-in-tetrahedra-ex-main-0605-d-step-1"
+    ],
+    [
+      "ex-main-0605-d|step-2",
+      "centroids-in-tetrahedra-ex-main-0605-d-step-2"
+    ],
+    [
+      "ex-main-0605-d|step-3",
+      "centroids-in-tetrahedra-ex-main-0605-d-step-3"
+    ],
+    [
+      "ex-main-0605-d|step-4",
+      "centroids-in-tetrahedra-ex-main-0605-d-step-4"
+    ],
+    [
+      "ex-main-0605-e|condition",
+      "centroids-in-tetrahedra-ex-main-0605-e-condition"
+    ],
+    [
+      "ex-main-0605-e|help:h1",
+      "centroids-in-tetrahedra-ex-main-0605-e-help-h1"
+    ],
+    [
+      "ex-main-0605-e|help:h2",
+      "centroids-in-tetrahedra-ex-main-0605-e-help-h2"
+    ],
+    [
+      "ex-main-0605-e|step-1",
+      "centroids-in-tetrahedra-ex-main-0605-e-step-1"
+    ],
+    [
+      "ex-main-0605-e|step-2",
+      "centroids-in-tetrahedra-ex-main-0605-e-step-2"
+    ],
+    [
+      "ex-main-0605-e|step-3",
+      "centroids-in-tetrahedra-ex-main-0605-e-step-3"
+    ],
+    [
+      "ex-main-0605-e|step-4",
+      "centroids-in-tetrahedra-ex-main-0605-e-step-4"
+    ],
+    [
+      "ex-main-0605-f|condition",
+      "centroids-in-tetrahedra-ex-main-0605-f-condition"
+    ],
+    [
+      "ex-main-0605-f|help:h1",
+      "centroids-in-tetrahedra-ex-main-0605-f-help-h1"
+    ],
+    [
+      "ex-main-0605-f|help:h2",
+      "centroids-in-tetrahedra-ex-main-0605-f-help-h2"
+    ],
+    [
+      "ex-main-0605-f|step-1",
+      "centroids-in-tetrahedra-ex-main-0605-f-step-1"
+    ],
+    [
+      "ex-main-0605-f|step-2",
+      "centroids-in-tetrahedra-ex-main-0605-f-step-2"
+    ],
+    [
+      "ex-main-0605-f|step-3",
+      "centroids-in-tetrahedra-ex-main-0605-f-step-3"
+    ],
+    [
+      "ex-main-0605-f|step-4",
+      "centroids-in-tetrahedra-ex-main-0605-f-step-4"
+    ],
+    [
+      "ex-main-0605-g|condition",
+      "centroids-in-tetrahedra-ex-main-0605-g-condition"
+    ],
+    [
+      "ex-main-0605-g|help:h1",
+      "centroids-in-tetrahedra-ex-main-0605-g-help-h1"
+    ],
+    [
+      "ex-main-0605-g|help:h2",
+      "centroids-in-tetrahedra-ex-main-0605-g-help-h2"
+    ],
+    [
+      "ex-main-0605-g|step-1",
+      "centroids-in-tetrahedra-ex-main-0605-g-step-1"
+    ],
+    [
+      "ex-main-0605-g|step-2",
+      "centroids-in-tetrahedra-ex-main-0605-g-step-2"
+    ],
+    [
+      "ex-main-0605-g|step-3",
+      "centroids-in-tetrahedra-ex-main-0605-g-step-3"
+    ],
+    [
+      "ex-main-0605-g|step-4",
+      "centroids-in-tetrahedra-ex-main-0605-g-step-4"
+    ],
+    [
+      "ex-main-0606|condition",
+      "centroids-in-tetrahedra-ex-main-0606-condition"
+    ],
+    [
+      "ex-main-0606|help:h1",
+      "centroids-in-tetrahedra-ex-main-0606-help-h1"
+    ],
+    [
+      "ex-main-0606|help:h2",
+      "centroids-in-tetrahedra-ex-main-0606-help-h2"
+    ],
+    [
+      "ex-main-0606|step-1",
+      "centroids-in-tetrahedra-ex-main-0606-step-1"
+    ],
+    [
+      "ex-main-0606|step-2",
+      "centroids-in-tetrahedra-ex-main-0606-step-2"
+    ],
+    [
+      "ex-main-0606|step-3",
+      "centroids-in-tetrahedra-ex-main-0606-step-3"
+    ],
+    [
+      "ex-main-0606|step-4",
+      "centroids-in-tetrahedra-ex-main-0606-step-4"
+    ],
+    [
+      "ex-main-0607-a|condition",
+      "centroids-in-tetrahedra-ex-main-0607-a-condition"
+    ],
+    [
+      "ex-main-0607-a|help:h1",
+      "centroids-in-tetrahedra-ex-main-0607-a-help-h1"
+    ],
+    [
+      "ex-main-0607-a|help:h2",
+      "centroids-in-tetrahedra-ex-main-0607-a-help-h2"
+    ],
+    [
+      "ex-main-0607-a|step-1",
+      "centroids-in-tetrahedra-ex-main-0607-a-step-1"
+    ],
+    [
+      "ex-main-0607-a|step-2",
+      "centroids-in-tetrahedra-ex-main-0607-a-step-2"
+    ],
+    [
+      "ex-main-0607-a|step-3",
+      "centroids-in-tetrahedra-ex-main-0607-a-step-3"
+    ],
+    [
+      "ex-main-0607-a|step-4",
+      "centroids-in-tetrahedra-ex-main-0607-a-step-4"
+    ],
+    [
+      "ex-main-0607-b|condition",
+      "centroids-in-tetrahedra-ex-main-0607-b-condition"
+    ],
+    [
+      "ex-main-0607-b|help:h1",
+      "centroids-in-tetrahedra-ex-main-0607-b-help-h1"
+    ],
+    [
+      "ex-main-0607-b|help:h2",
+      "centroids-in-tetrahedra-ex-main-0607-b-help-h2"
+    ],
+    [
+      "ex-main-0607-b|step-1",
+      "centroids-in-tetrahedra-ex-main-0607-b-step-1"
+    ],
+    [
+      "ex-main-0607-b|step-2",
+      "centroids-in-tetrahedra-ex-main-0607-b-step-2"
+    ],
+    [
+      "ex-main-0607-b|step-3",
+      "centroids-in-tetrahedra-ex-main-0607-b-step-3"
+    ],
+    [
+      "ex-main-0607-b|step-4",
+      "centroids-in-tetrahedra-ex-main-0607-b-step-4"
+    ],
+    [
+      "ex-main-0607-c|condition",
+      "centroids-in-tetrahedra-ex-main-0607-c-condition"
+    ],
+    [
+      "ex-main-0607-c|help:h1",
+      "centroids-in-tetrahedra-ex-main-0607-c-help-h1"
+    ],
+    [
+      "ex-main-0607-c|help:h2",
+      "centroids-in-tetrahedra-ex-main-0607-c-help-h2"
+    ],
+    [
+      "ex-main-0607-c|step-1",
+      "centroids-in-tetrahedra-ex-main-0607-c-step-1"
+    ],
+    [
+      "ex-main-0607-c|step-2",
+      "centroids-in-tetrahedra-ex-main-0607-c-step-2"
+    ],
+    [
+      "ex-main-0607-c|step-3",
+      "centroids-in-tetrahedra-ex-main-0607-c-step-3"
+    ],
+    [
+      "ex-main-0607-c|step-4",
+      "centroids-in-tetrahedra-ex-main-0607-c-step-4"
+    ],
+    [
+      "ex-main-0607-d|condition",
+      "centroids-in-tetrahedra-ex-main-0607-d-condition"
+    ],
+    [
+      "ex-main-0607-d|help:h1",
+      "centroids-in-tetrahedra-ex-main-0607-d-help-h1"
+    ],
+    [
+      "ex-main-0607-d|help:h2",
+      "centroids-in-tetrahedra-ex-main-0607-d-help-h2"
+    ],
+    [
+      "ex-main-0607-d|step-1",
+      "centroids-in-tetrahedra-ex-main-0607-d-step-1"
+    ],
+    [
+      "ex-main-0607-d|step-2",
+      "centroids-in-tetrahedra-ex-main-0607-d-step-2"
+    ],
+    [
+      "ex-main-0607-d|step-3",
+      "centroids-in-tetrahedra-ex-main-0607-d-step-3"
+    ],
+    [
+      "ex-main-0607-d|step-4",
+      "centroids-in-tetrahedra-ex-main-0607-d-step-4"
+    ],
+    [
+      "ex-main-0608|condition",
+      "centroids-in-tetrahedra-ex-main-0608-condition"
+    ],
+    [
+      "ex-main-0608|help:h1",
+      "centroids-in-tetrahedra-ex-main-0608-help-h1"
+    ],
+    [
+      "ex-main-0608|help:h2",
+      "centroids-in-tetrahedra-ex-main-0608-help-h2"
+    ],
+    [
+      "ex-main-0608|step-1",
+      "centroids-in-tetrahedra-ex-main-0608-step-1"
+    ],
+    [
+      "ex-main-0608|step-2",
+      "centroids-in-tetrahedra-ex-main-0608-step-2"
+    ],
+    [
+      "ex-main-0608|step-3",
+      "centroids-in-tetrahedra-ex-main-0608-step-3"
+    ],
+    [
+      "ex-main-0608|step-4",
+      "centroids-in-tetrahedra-ex-main-0608-step-4"
+    ],
+    [
+      "ex-main-0609|condition",
+      "centroids-in-tetrahedra-ex-main-0609-condition"
+    ],
+    [
+      "ex-main-0609|help:h1",
+      "centroids-in-tetrahedra-ex-main-0609-help-h1"
+    ],
+    [
+      "ex-main-0609|help:h2",
+      "centroids-in-tetrahedra-ex-main-0609-help-h2"
+    ],
+    [
+      "ex-main-0609|step-1",
+      "centroids-in-tetrahedra-ex-main-0609-step-1"
+    ],
+    [
+      "ex-main-0609|step-2",
+      "centroids-in-tetrahedra-ex-main-0609-step-2"
+    ],
+    [
+      "ex-main-0609|step-3",
+      "centroids-in-tetrahedra-ex-main-0609-step-3"
+    ],
+    [
+      "ex-main-0609|step-4",
+      "centroids-in-tetrahedra-ex-main-0609-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "71ada6b9f9ce86a1159596a337fa6fe553693d1b998b01f6cefb06c509282df3",
+      "afterSHA256": "40a033c5578444008345be2da7e6b94891e05abecfede54d36bf5ff8151ba626"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "a981e6826faab709edeb9828fc8ca33a5fbd03aaaa09287ce131b8e3eb000696",
+      "afterSHA256": "7f689be3168149e6606744d306212aa086b9d275d00b00baa9fa037a9a7c2d8b"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T21:05:43Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–70 and source exercises 557–603, with 1,009 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "3ed23045fa8af265e7ac28b22ea59511ca9459e808916aaed2492c65e76be239",
+    "index": "5fa3ddd0a51e55655bc5afb198dcf7f65a69f5b74326ba7b7d53cc6720c86391",
+    "registry": "20f992292c5de5bb0bc56215cbd5caef78cd8985b7a77d4ee19335fa5058c352",
+    "cases": "ff45dff3cd8ae0dd08f8fe354db48e4ea097fd0257c64f00b33b71ba572a7a06"
+  }
+}

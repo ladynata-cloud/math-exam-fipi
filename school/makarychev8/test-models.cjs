@@ -86,7 +86,7 @@ test('rational root sets accept a plus-minus pair and reject malformed lists', (
   assert(check('±1 1/3',roots('−4/3;4/3')));
   assert(!check('±√1 01',roots('−√101;√101')));
   assert(!check('√1 01;√102',roots('√101;√102')));
-  assert(!check('1 1/3;5',roots('11/3;5')));
   assert(check('1 1/3;5',roots('4/3;5')));
+  assert(!check('1 1/3;5',roots('11/3;5')));
   assert(!check('±6',{kind:'number',answer:'6'}));
 });

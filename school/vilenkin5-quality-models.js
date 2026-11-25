@@ -13,6 +13,8 @@
   function descriptor(lesson) {
     if (!lesson?.v5Course) throw new TypeError('Unknown Vilenkin lesson');
     const key = lesson.fullKey, point = lesson.point;
+    if (lesson.number==='1.8') return {kind:'weather'};
+    if (lesson.number) return {kind:'numbered'};
     if (['natural-add','natural-subtract','multiply-column','division-column','remainder-find'].includes(key)) return {kind:'arithmetic', skill:{'natural-add':'add','natural-subtract':'subtract','multiply-column':'multiply','division-column':'divide','remainder-find':'remainder'}[key]};
     if (key === 'formula-perimeter') return {kind:'lab', key:'area', show:'perimeter'};
     if (point <= 24) return {kind:'lab', key:part1[point]};
@@ -35,6 +37,8 @@
       return {...Object.fromEntries(config.controls.map(c => [c.k,c.def])),...(d.show?{show:d.show}:{})};
     }
     const common = {prediction:'',first:'',seen:false,notice:''};
+    if (d.kind==='weather') return root.Vilenkin5WeatherDiary.defaults();
+    if (d.kind==='numbered') return {...common,...Object.fromEntries(Object.entries(root.Vilenkin5Numbered.bounds[lesson.number]).map(([key,rule])=>[key,rule[2]]))};
     if (d.kind === 'arithmetic') return {seed:17,level:d.skill === 'multiply'?3:2,step:0,draft:'',helped:false,notice:''};
     if (d.kind === 'fraction') return {...common,an:d.op === 'subtract'?5:d.op === 'divide'?3:2,ad:d.op === 'subtract'?4:d.op === 'divide'?2:3,bn:1,bd:4,factor:2};
     if (d.kind === 'decimal') return {...common,a:lesson.fullKey==='decimal-divide-zero'?408:d.op === 'subtract'?300:d.op === 'divide'?150:d.op === 'round'?347:68,b:lesson.fullKey==='decimal-divide-zero'?4:d.naturalSecond?(d.powerOfTen?10:3):d.op === 'subtract'?48:d.op === 'divide'?25:57,places:1,factor:d.naturalSecond?1:10};
@@ -42,6 +46,9 @@
     if (d.kind === 'circle') return {...common,radius:4,shape:'circle'};
     if (d.kind === 'percent') return {...common,total:80,percent:25};
     return {...common,a:4,b:8,c:6};
+  }
+  function canReviseForecast(lesson) {
+    return lesson.source?.part === 2 && ['5.15','5.16','5.17','5.18','5.19','5.20','5.21','5.22','5.23','5.24','5.25','5.26','5.27','5.28','5.29','5.30','5.31','5.32','5.33','5.34','5.35','5.36','5.37','5.38','5.39','check-25-1','check-25-2','check-25-3','5.40','5.41','5.42','5.43','5.44','5.45','5.46','5.47','5.48','5.49','5.50'].includes(lesson.number);
   }
   function normalize(lesson, raw) {
     if (!plain(raw) || Object.keys(raw).length > 40) throw new TypeError('Invalid model state');
@@ -52,6 +59,7 @@
       if (!allowed.has(k) || !['number','string','boolean'].includes(typeof v) || typeof v === 'number' && !Number.isFinite(v) || typeof v === 'string' && !text(v,800)) throw new TypeError('Invalid model field');
     }
     const s = {...base,...raw};
+    if(d.kind==='weather')return root.Vilenkin5WeatherDiary.validate(s);
     if (d.kind === 'lab') {
       for (const c of root.VILENKIN_LABS[d.key].controls) {
         const v=s[c.k];
@@ -67,8 +75,9 @@
       if (s.step>task.steps.length) throw new TypeError('Invalid arithmetic step');
       return s;
     }
-    if (!text(s.prediction)||!text(s.first)||!text(s.notice,800)||typeof s.seen!=='boolean'||!s.seen&&s.first) throw new TypeError('Invalid model prediction');
+    if (!text(s.prediction)||!text(s.first)||!text(s.notice,800)||typeof s.seen!=='boolean'||!s.seen&&s.first&&!canReviseForecast(lesson)) throw new TypeError('Invalid model prediction');
     const check=(key,min,max)=>{if(!integer(s[key],min,max))throw new TypeError('Invalid model parameter '+key);};
+    if(d.kind==='numbered')for(const [key,[min,max]] of Object.entries(root.Vilenkin5Numbered.bounds[lesson.number]))check(key,min,max);
     if(d.kind==='fraction'){check('an',0,12);check('ad',2,12);check('bn',d.op==='divide'?1:0,12);check('bd',2,12);check('factor',1,6);if(d.op==='subtract'&&s.an*s.bd<s.bn*s.ad)throw new TypeError('Use nonnegative fraction difference');}
     if(d.kind==='decimal'){check('a',0,999);if(d.naturalSecond){if(d.powerOfTen){if(![10,100,1000].includes(s.b))throw new TypeError('Invalid power of ten');}else check('b',1,12);}else check('b',d.op==='divide'?1:0,999);check('places',0,1);if(![1,10,100].includes(s.factor))throw new TypeError('Invalid scale');if(d.op==='subtract'&&s.a<s.b)throw new TypeError('Use nonnegative decimal difference');}
     if(d.kind==='angle'){check('angle',0,180);check('target',10,170);check('start',0,10);}
@@ -194,6 +203,7 @@
     const d=descriptor(lesson),M=root.WorkshopMath;
     let s=normalize(lesson,options.state||{}),alive=true;
     const publish=()=>{if(alive)options.onChange?.({...s});};
+    if(d.kind==='weather')return root.Vilenkin5WeatherDiary.mount(host,{state:s,onChange:options.onChange});
     if(d.kind==='lab'){
       const markRightAngle=()=>{
         const target=host.querySelector('svg');if(!target||target.querySelector('[data-v5-right-angle]'))return;
@@ -210,8 +220,10 @@
     function draw() {
       if(!alive)return;
       if(d.kind==='arithmetic'){drawArithmetic();return;}
-      const view=describe(lesson,s,M);
-      host.innerHTML='<section class="v5q-model"><p class="eyebrow">Исследуй на отдельном примере</p><h2>'+view.title+'</h2>'+controls(view.controls)+'<div class="v5q-visual">'+view.visual+'</div><form data-v5-predict><label>'+mathHTML(view.question)+'<input data-v5-prediction autocomplete="off" value="'+esc(s.prediction)+'"'+(s.seen?' disabled':'')+'></label><button'+(s.seen?' disabled':'')+'>Проверить прогноз</button></form><p class="v5q-model-feedback" role="status">'+mathHTML(s.notice)+'</p>'+(s.seen?'<p class="v5q-model-why">'+mathHTML(view.why)+'</p>':'<button type="button" class="quiet" data-v5-reveal>Посмотреть объяснение</button>')+'<p class="tiny">Меняй числа и проверяй закономерность. Исследование помогает понять правило; самостоятельный результат проверяется на новой задаче.</p></section>';
+      const view=d.kind==='numbered'?root.Vilenkin5Numbered.explore(lesson,s,options.task):describe(lesson,s,M);
+      host.innerHTML='<section class="v5q-model"><p class="eyebrow">'+(d.kind==='numbered'?'Исследуй данные этого задания':'Исследуй на отдельном примере')+'</p><h2>'+view.title+'</h2>'+controls(view.controls)+'<div class="v5q-visual">'+view.visual+'</div><form data-v5-predict><label>'+mathHTML(view.question)+'<input data-v5-prediction autocomplete="off" value="'+esc(s.prediction)+'"'+(s.seen?' disabled':'')+'></label><button'+(s.seen?' disabled':'')+'>Проверить прогноз</button></form><p class="v5q-model-feedback" role="status">'+mathHTML(s.notice)+'</p>'+(s.seen?'<p class="v5q-model-why">'+mathHTML(view.why)+'</p>':'<button type="button" class="quiet" data-v5-reveal>Посмотреть объяснение</button>')+'<p class="tiny">Меняй числа и проверяй закономерность. Исследование помогает понять правило; самостоятельный результат проверяется на новой задаче.</p></section>';
+      const applyDrawing=host.querySelector('[data-v5-apply-drawing]');
+      if(applyDrawing)applyDrawing.onclick=()=>options.onDrawing?.(s);
       host.querySelectorAll('[data-v5-param]').forEach(input=>input.onchange=()=>{
         const key=input.dataset.v5Param,raw={...s,[key]:key==='shape'?input.value:Number(input.value),prediction:'',first:'',seen:false,notice:''};
         try{s=normalize(lesson,raw);publish();draw();host.querySelector('[data-v5-param="'+key+'"]').focus();}catch(_){s.notice='Проверь допустимый диапазон. Для вычитания первая величина должна быть не меньше второй.';publish();host.querySelector('[role=status]').textContent=s.notice;input.value=s[key];}
@@ -220,14 +232,28 @@
       host.querySelector('[data-v5-predict]').onsubmit=e=>{
         e.preventDefault();if(s.seen)return;const value=input.value.trim();
         if(!value){s.notice='Сначала запиши свой прогноз. Пустое поле не считается попыткой.';publish();host.querySelector('[role=status]').textContent=s.notice;return;}
-        if((typeof view.answer==='number'||view.answer&&typeof view.answer==='object')&&!M.parse(value)){s.notice='Запись пока не распознана. Введи число или точную дробь: например, 0,5 или 1/2.';publish();host.querySelector('[role=status]').textContent=s.notice;return;}
-        if(typeof view.answer==='string'&&!['<','>','='].includes(value)){s.notice='Для сравнения введи один знак: <, > или =.';publish();host.querySelector('[role=status]').textContent=s.notice;return;}
+        const comparison = typeof view.answer==='string' && M.parse(view.answer)===null;
+        const rawNumber = canReviseForecast(lesson) && root.Vilenkin5PartsOfUnits ? root.Vilenkin5PartsOfUnits.normalized(value) : value;
+        if(!comparison && !M.parse(rawNumber)){s.notice='Запись пока не распознана. Введи число или точную дробь: например, 0,5 или 1/2.';publish();host.querySelector('[role=status]').textContent=s.notice;return;}
+        if(comparison && !['<','>','='].includes(value)){s.notice='Для сравнения введи один знак: <, > или =.';publish();host.querySelector('[role=status]').textContent=s.notice;return;}
         if(d.kind==='angle'&&s.angle!==s.target){s.notice='Сначала поверни второй луч на '+s.target+'°. Сейчас он стоит на '+s.angle+'°.';publish();host.querySelector('[role=status]').textContent=s.notice;return;}
-        s.prediction=value;s.first=value;s.seen=true;
-        const correct=M.equal(value,view.answer)&&!(d.kind==='fraction'&&d.op==='reduce'&&!M.accepts(value,{answer:view.answer,answerFormat:'reduced-fraction'}));
-        s.notice=correct?'Прогноз подтвердился. Объясни по рисунку, почему.':'Первый прогноз: '+value+'. Сравни его с моделью и объяснением. Затем измени числа и проверь ещё раз.';publish();draw();
+        const correct=M.equal(comparison?value:rawNumber,view.answer)&&!(d.kind==='fraction'&&d.op==='reduce'&&!M.accepts(value,{answer:view.answer,answerFormat:'reduced-fraction'}));
+        if(canReviseForecast(lesson)){
+          const revised=Boolean(s.first);
+          s.prediction=value;
+          if(!s.first)s.first=value;
+          s.seen=correct;
+          if(!correct){
+            const clues={'5.47':'Сначала вырази всю длину в сантиметрах.','5.48':'Для обеих долей важно найти массу целого арбуза.','5.49':'У нижней полосы серую часть уже потратили.','5.50':'Сравни цветные и свободные области квадрата.','5.46':'Посмотри, какая доля нужна: цветная или свободная. В сумме они составляют единицу.','5.45':'Посмотри, какое число над дробной чертой, а какое под ней.','5.43':'Прочитай число равных долей в одной целой величине.','5.44':'Найди площадь целого, затем одной четверти и выбранного числа четвертей.','5.40':'Сосчитай оба цвета, а затем отдельно свободные интервалы.','5.41':'Пометь свободные интервалы и сравни их число с общим.','5.42':'Сколько клеток в целом квадрате и на сколько равных площадей он разделён?','check-25-1':'Найди центр и два равных отрезка по обе стороны от него.','check-25-2':'Сравни расстояние до точки с радиусом. Две буквы в одном месте ещё не означают две разные точки.','check-25-3':'Сравни расстояние между центрами с суммой и разностью радиусов.','5.37':'Сначала выясни массу одной порции и число таких порций.','5.38':'Вспомни, что осталось вне полных групп.','5.39':'Посмотри, к чему относится степень и что уже сделано в скобках.','5.35':'Посчитай, сколько коробок заполнится целиком, а что останется снаружи.','5.36':'Сосчитай кубики сверху и посмотри, сколько таких слоёв спрятано под верхним.','5.15':'Возьми результат перед выделенной строкой и сверь знак действия.','5.16':'Сначала раздели целое на выбранное число групп, затем вычти сотни.','5.17':'Посчитай половинки клеток и умножь на цену половинки.','5.18':'Переведи целое в миллиметры и раздели на знаменатель.','5.19':'Переведи целое в граммы и раздели на знаменатель.','5.30':'Проверь, доходит ли циркуль до D, и различаются ли три новые метки.','5.33':'Сначала уточни, считаешь ли ты радиусы или диаметры и в какую сторону идёт прикидка.','5.34':'Сверь, ищешь ли ты пока число в скобках или уже саму букву.','5.31':'Сравни расстояние между центрами и с разностью, и с суммой радиусов.','5.32':'Пройди от каждого центра по радиусу навстречу другому. Остался ли промежуток?','5.29':'От центра до граничной точки ровно один радиус. Проверь, входит ли граница в выбранную область.','5.28':'Посмотри, видна ли тень и какую именно отметку она выделяет.','5.26':'Посмотри, в какую сторону направлены стрелки, и какое событие нужно отменить.','5.27':'Скобки меняют очередность. Без скобок начни с действия слева.','5.24':'Раздели шаблон на три части и проверь, какую из них выбрал.','5.25':'Вся банка состоит из одной части стекла и нескольких таких же частей мёда.','5.22':'Выбери одну прямоугольную деталь. Произведение двух размеров даёт площадь одной стороны.','5.23':'Для грани сравни два направления, для объёма три.','5.21':'Раздели на рисунке площадь старого квадрата и добавленный слой. Сверь, что требуется найти.','5.20':'Проверь, что ты считаешь: кубики вдоль ребра, в слое, во всём кубе или длину ряда.'};
+            s.notice=clues[lesson.number]+' Исправь прогноз на этих же данных.';
+          }else s.notice=revised?'Прогноз исправлен самостоятельно.':'Прогноз подтвердился.';
+        }else{
+          s.prediction=value;s.first=value;s.seen=true;
+          s.notice=correct?'Прогноз подтвердился. Объясни по рисунку, почему.':'Первый прогноз: '+value+'. Сравни его с моделью и объяснением. Затем измени числа и проверь ещё раз.';
+        }
+        publish();draw();
       };
-      const reveal=host.querySelector('[data-v5-reveal]');if(reveal)reveal.onclick=()=>{s.seen=true;s.notice='Объяснение открыто без прогноза. Попробуй новое сочетание чисел.';publish();draw();};
+      const reveal=host.querySelector('[data-v5-reveal]');if(reveal)reveal.onclick=()=>{s.seen=true;s.notice=canReviseForecast(lesson)?'Объяснение открыто по твоему запросу. Измени данные, чтобы решить ещё раз.':'Объяснение открыто без прогноза. Попробуй новое сочетание чисел.';publish();draw();};
     }
     function drawArithmetic(){
       const task=root.ArithmeticPractice.generate(d.skill,s.level,s.seed),step=task.steps[s.step],names={add:'Сложение по разрядам',subtract:'Размен через нули',multiply:'Умножение в столбик',divide:'Деление уголком',remainder:'Полные группы и остаток'};

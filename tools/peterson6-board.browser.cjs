@@ -107,8 +107,9 @@ async function assertPersonalStorage(session, frame) {
 }
 
 async function waitConnected(page) {
+  // Allow one transport handshake and its retry. Both public status indicators must be ready.
   try {
-  await page.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' && document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected', null, { polling: 50, timeout: 15000 });
+  await page.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено' && document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected', null, { polling: 50, timeout: 35000 });
   } catch (error) {
     const status = await page.evaluate(() => ({
       share: document.querySelector('#shareStatus')?.textContent,
@@ -288,6 +289,27 @@ async function narrowShot(page, frame, name, selector) {
   await page.setViewportSize({ width: 1440, height: 1000 });
 }
 
+// Pause only the teacher's isolated test browser. Its peer and the local backend stay online.
+async function assertRoomRetry(teacher, studentFrame, teacherFrame, boardOrigin) {
+  const expected = await synchronized(teacherFrame, studentFrame, 'before the transport interruption');
+  let resume;
+  const held = new Promise(resolve => { resume = resolve; });
+  const opening = url => url.origin === boardOrigin && url.pathname === '/socket.io/' &&
+    url.searchParams.get('transport') === 'polling' && !url.searchParams.has('sid');
+  await teacher.route(opening, async route => { await held; await route.continue(); }, {times:1});
+  try {
+    await teacher.evaluate(() => window.__disconnectLocalTestTransport());
+    await teacher.getByText('переподключение', {exact:true}).waitFor();
+    assert.equal(await teacher.locator('#mirrorStatus').getAttribute('data-mirror-status'), 'pending');
+    assert.equal(await studentFrame.evaluate(() => location.pathname), '/trainers/' + WRAPPER);
+  } finally {
+    resume();
+  }
+  await waitConnected(teacher);
+  await waitSnapshot(teacherFrame, expected, 'same lesson and previous steps after reconnect');
+  await synchronized(teacherFrame, studentFrame, 'observer remains in the same room');
+}
+
 async function run(browser, siteOrigin, boardOrigin, failures) {
   phase = 'canonical course and visible board entry';
   const entry = await contextFor(browser, siteOrigin, 'entry', failures);
@@ -321,6 +343,13 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const teacherSession = await contextFor(browser, siteOrigin, 'teacher', failures);
   const studentSession = await contextFor(browser, siteOrigin, 'student', failures);
   const teacher = teacherSession.page, student = studentSession.page;
+  // The instrumented Socket.IO asset is served once, exclusively by the loopback fixture.
+  await teacher.route(boardOrigin + '/socket.io/socket.io.js', async route => {
+    const response = await route.fetch();
+    const hook = ';{const original=window.io;window.io=(...args)=>{const socket=original(...args);' +
+      'window.__disconnectLocalTestTransport=()=>socket.io.engine.transport.close();return socket;};}';
+    await route.fulfill({response, body:(await response.text()) + hook});
+  }, {times:1});
   await teacher.goto(siteOrigin + '/trainers/trainer-board.html?server=' + encodeURIComponent(boardOrigin), { waitUntil: 'domcontentloaded' });
   await teacher.locator('#openShare').click();
   await teacher.locator('#createRoom').click();
@@ -376,6 +405,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await teacherFrame.locator('[data-step-input="0"]').fill('0,5');
   await teacherFrame.locator('[data-step-form="0"] button').click();
   await synchronized(teacherFrame, studentFrame, 'accepted decimal step remains visible');
+  await assertRoomRetry(teacher, studentFrame, teacherFrame, boardOrigin);
   assert.match(await studentFrame.locator('.step.completed').innerText(), /0,5/);
   await teacherFrame.locator('#final-answer').fill('0,86');
   await teacherFrame.locator('.problem > details > summary').click();
@@ -470,13 +500,15 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   const lateSession = await contextFor(browser, siteOrigin, 'late', failures);
   await lateSession.page.goto(studentLink, { waitUntil: 'domcontentloaded' });
   await waitConnected(lateSession.page);
-  const lateFrame = await courseFrame(lateSession.page);
+  let lateFrame = await courseFrame(lateSession.page);
   await waitSnapshot(lateFrame, studentMean, 'late join');
   assert.deepEqual(await view(lateFrame), await view(teacherFrame), 'late join restores complete visible model');
   await teacherFrame.getByRole('button', { name: 'Переложить 1 кружок', exact: true }).click();
   const afterLate = await synchronized(teacherFrame, lateFrame, 'late participant follows teacher');
   await synchronized(teacherFrame, studentFrame, 'original participant follows teacher');
   assert.deepEqual(afterLate.view.model.piles, [5, 5, 5]);
+
+
 
   phase = 'feedback for ratio order and distributed signs';
   await lesson(teacherFrame, 'p15', 0);
@@ -505,6 +537,10 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame, studentFrame, 'each product shown to pupil');
   assert.match(await studentFrame.locator('.help figure').innerText(), /−1 × \(a\) и −1 × \(−b\)/);
   await narrowShot(teacher, teacherFrame, 'peterson-board-320-bracket-feedback', '.help figure');
+
+  await assertPersonalStorage(lateSession,lateFrame);
+  // This observer leaves and later rejoins the same room with the same browser storage.
+  await lateSession.page.goto('about:blank',{waitUntil:'commit'});
 
   phase = 'exact salt concentration and feedback on the shared board';
   await lesson(teacherFrame, 'p15', 9);
@@ -585,6 +621,248 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await waitSnapshot(teacherFrame, changedAngle, 'constructed angle restored on returning to the room');
   await manualWithoutCredit(teacherFrame, 'p15-t25', 0);
   await ownership(teacher, student, false);
+
+  phase = 'measure the triangle and compare the two acute angles';
+  await lesson(teacherFrame, 'p15', 31);
+  await synchronized(teacherFrame,studentFrame,'unmarked source before opening the model');
+  assert.equal(await studentFrame.locator('#task-figure [data-ruler]').count(),1);
+  assert.equal(await studentFrame.locator('#task-figure [data-role]').count(),0);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-trig-scale','#task-figure svg');
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Острый угол').selectOption('1');
+  await teacherFrame.getByLabel('Прямоугольный треугольник').selectOption('1');
+  await teacherFrame.getByLabel('Числитель синуса выбранного угла').selectOption('3');
+  const trigMistake = await synchronized(teacherFrame,studentFrame,'hypotenuse used as numerator');
+  assert.deepEqual(trigMistake.view.model.values,[1,1,3]);
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/гипотенуза.*в знаменателе/);
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Числитель синуса выбранного угла').selectOption('1');
+  await synchronized(studentFrame,teacherFrame,'chosen B uses AC as opposite');
+  assert.equal(await teacherFrame.locator('#model [data-role=opposite]').getAttribute('data-side'),'AC');
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-trig-roles','#model svg');
+  await studentFrame.getByLabel('Прямоугольный треугольник').selectOption('2');
+  await studentFrame.locator('#notebook').fill('Для B: sin B = 15/17, cos B = 8/17, tg B = 15/8. Квадраты дают 1.');
+  await studentFrame.locator('[data-action="record-manual"]').click();
+  const study = await synchronized(studentFrame,teacherFrame,'new 8-15-17 example and learner reasoning');
+  await teacher.reload({waitUntil:'domcontentloaded'});await waitConnected(teacher);teacherFrame=await courseFrame(teacher);
+  await waitSnapshot(teacherFrame,study,'triangle selection and note survive reload');
+  await manualWithoutCredit(teacherFrame,'p15-t32',0);
+  await ownership(teacher,student,false);
+
+  phase = 'part three printed distributive law and remaining distance';
+  await lesson(teacherFrame,'p33',23);
+  await teacherFrame.getByRole('button',{name:'b − 7',exact:true}).click();
+  await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await synchronized(teacherFrame,studentFrame,'wrong sign of the second constant sent to pupil');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/Минус перед вторыми скобками/);
+  await ownership(teacher,student,true);
+  await studentFrame.locator('[data-action=hint]').click();
+  await synchronized(studentFrame,teacherFrame,'two distributed products visible to teacher');
+  assert.match(await teacherFrame.locator('.help figure').innerText(),/−2 × \(b\).*−2 × \(−2\)/s);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-distributed-terms','.help figure');
+  await lesson(studentFrame,'p33',29);
+  await studentFrame.getByRole('button',{name:'6v + 25; 445, 505, 565 км',exact:true}).click();
+  await studentFrame.locator('#answer-form button[type=submit]').click();
+  await studentFrame.locator('[data-action=hint]').click();
+  const train=await synchronized(studentFrame,teacherFrame,'train stages, remaining-distance cue and quantity table');
+  assert.match(await teacherFrame.locator('.answer-form .feedback').innerText(),/пройденный путь/);
+  assert.match(await teacherFrame.locator('.help figure').innerText(),/3 ч, скорость v \+ 10/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-train-stages','.help figure');
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,train,'learner reopens the same three-stage model and reading error');
+
+  phase = 'read the first three printed tasks of part three';
+  await lesson(teacherFrame,'p33',32);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Число b',{exact:true}).selectOption('4');
+  await teacherFrame.getByLabel('Число c',{exact:true}).selectOption('1');
+  const subtraction=await synchronized(teacherFrame,studentFrame,'two backwards steps match one displacement');
+  assert.deepEqual(subtraction.view.model.values,[4,1]);
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/10 − \(4 \+ 1\) = 5/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-subtraction-path','#model svg');
+  await ownership(teacher,student,true);
+  await lesson(studentFrame,'p33',33);
+  await openModel(studentFrame);
+  await studentFrame.getByLabel('Число b',{exact:true}).selectOption('4');
+  await studentFrame.getByLabel('Число c',{exact:true}).selectOption('1');
+  await studentFrame.locator('#notebook').fill('Нарисовал 3 ряда, в каждой строке 4 зелёные и 1 оранжевая клетка.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const areas=await synchronized(studentFrame,teacherFrame,'the pupil measures two rectangle areas');
+  assert.deepEqual(await teacherFrame.locator('#model svg rect').evaluateAll(rows=>rows.map(row=>row.getAttribute('width'))),['124','31']);
+  await manualWithoutCredit(teacherFrame,'p33-t34',0);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-products-area','#model svg');
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,areas,'area and notebook restored after recharge');
+  await lesson(teacherFrame,'p33',38);
+  await teacherFrame.locator('[data-action=hint]').click();
+  await synchronized(teacherFrame,studentFrame,'all three signed products are present for 2e');
+  assert.match(await studentFrame.locator('.help figure').innerText(),/−1 × \(−n\).*−1 × \(\+r\).*−1 × \(−s\)/s);
+
+  phase = 'printed entry and next subpart keep the stored board task index';
+  for (const [part, id, index] of [[2, 'p15', 32], [3, 'p33', 31]]) {
+    await teacherFrame.locator('header nav a[href="#home"]').click();
+    await teacherFrame.getByRole('link', { name: 'С начала части ' + part + ' · №1а', exact: true }).click();
+    const firstInPrint = await synchronized(teacherFrame, studentFrame, 'printed first subpart in part ' + part);
+    assert.equal(firstInPrint.route, '#lesson/' + id + '/' + index);
+    await teacherFrame.locator('.navigation').getByRole('button', { name: 'Следующая задача →' }).click();
+    const secondInPrint = await synchronized(teacherFrame, studentFrame, 'printed second subpart in part ' + part);
+    assert.equal(secondInPrint.route, '#lesson/' + id + '/' + (index + 1));
+  }
+
+  phase = 'complete first ratio topic, similar triangles and both percentage baselines';
+  await teacherFrame.locator('header nav a[href="#home"]').click();
+  const firstRatioCoverage = teacherFrame.locator('#main p.small').filter({ hasText: /разобраны №1–27 со всеми подпунктами/ });
+  await firstRatioCoverage.waitFor({ state: 'visible' });
+  const ratiosHome = await synchronized(teacherFrame, studentFrame, 'both roles returned from part three to the course home');
+  assert.equal(ratiosHome.route, '#home');
+  assert.match(await firstRatioCoverage.innerText(), /№1–27 со всеми подпунктами.*— 93\./s);
+  await lesson(teacherFrame,'p15',86);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Треугольник',{exact:true}).selectOption('3');
+  await teacherFrame.getByLabel('Луч из A',{exact:true}).selectOption('1');
+  const similar=await synchronized(teacherFrame,studentFrame,'four similar triangles change together on a new ray');
+  assert.deepEqual(similar.view.model.values,[3,1]);
+  assert.equal(await studentFrame.locator('#model [data-base]').count(),4);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-similar-tangents','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Треугольник',{exact:true}).selectOption('1');
+  await studentFrame.locator('#notebook').fill('У треугольников общий угол A и по прямому углу, значит соответствующие катеты пропорциональны.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const proof=await synchronized(studentFrame,teacherFrame,'student writes a proof and selects another scale');
+  await manualWithoutCredit(teacherFrame,'p15-t87',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,proof,'similarity model and proof restore');
+  await lesson(teacherFrame,'p15',91);
+  await teacherFrame.locator('#final-answer').fill('75');
+  await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await synchronized(teacherFrame,studentFrame,'diagnose division by B in the opposite change');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/разница относительно B/);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Числа A и B',{exact:true}).selectOption('1');
+  await synchronized(teacherFrame,studentFrame,'new data mean a 150 percent increase from twelve');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/150/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-baseline-change','#model svg');
+
+  phase = 'chained calculations and unequal trip durations on the shared board';
+  await lesson(teacherFrame,'p33',60);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Буква',{exact:true}).selectOption('5');
+  await teacherFrame.getByLabel('Сколько действий выполнить',{exact:true}).selectOption('4');
+  await teacherFrame.getByLabel('Показать фигуру',{exact:true}).selectOption('1');
+  const letterState=await synchronized(teacherFrame,studentFrame,'four chained operations and the rhombus drawing');
+  assert.deepEqual(letterState.view.model.values,[5,4,1]);
+  assert.equal(await studentFrame.locator('#model tbody tr:last-child td:last-child').innerText(),'16');
+  assert.equal(await studentFrame.locator('#model svg line').count(),4);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-rhombus','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Буква',{exact:true}).selectOption('4');
+  assert.equal(await studentFrame.getByLabel('Сколько действий выполнить',{exact:true}).inputValue(),'0');
+  await studentFrame.getByLabel('Сколько действий выполнить',{exact:true}).selectOption('4');
+  await studentFrame.locator('#notebook').fill('Отметил четыре равные стороны ромба; у К получилось −2.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const independentRhom=await synchronized(studentFrame,teacherFrame,'new letter and a pupil drawing record');
+  await manualWithoutCredit(teacherFrame,'p33-t61',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,independentRhom,'restored alphabet chain and notebook');
+  await lesson(teacherFrame,'p33',62);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Авторские данные',{exact:true}).selectOption('1');
+  await teacherFrame.getByLabel('Показ расчёта',{exact:true}).selectOption('1');
+  await synchronized(teacherFrame,studentFrame,'five minutes and fifteen minutes have different weights');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/1200 м : 20 мин = 60 м\/мин/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-average-speed','#model table');
+
+  phase = 'nested signs and a general remainder proof on both screens';
+  await lesson(teacherFrame,'p33',51);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Значение z',{exact:true}).selectOption('-2');
+  await synchronized(teacherFrame,studentFrame,'inner and outer groups update for a negative value');
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/5 = 5/);
+  await lesson(teacherFrame,'p33',53);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Натуральное k',{exact:true}).selectOption('3');
+  const exampleRemainder=await synchronized(teacherFrame,studentFrame,'four full dozens and six remaining');
+  assert.deepEqual(exampleRemainder.view.model.values,[3]);
+  assert.equal(await studentFrame.locator('#model circle').count(),54);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-remainder','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Натуральное k',{exact:true}).selectOption('5');
+  await studentFrame.locator('#notebook').fill('Сумма 12(k + 1) + 6, остаток 6 меньше делителя.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const proofRemainder=await synchronized(studentFrame,teacherFrame,'changed sample and the general proof travel together');
+  await manualWithoutCredit(teacherFrame,'p33-t54',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,proofRemainder,'restored remainder proof');
+  await lesson(teacherFrame,'p33',55);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Положение скобки',{exact:true}).selectOption('1');
+  await synchronized(teacherFrame,studentFrame,'moving only the bracket changes the signs');
+  assert.deepEqual(await studentFrame.locator('#model tbody tr td:last-child').allTextContents(),['8','8']);
+
+  phase = 'compare equal areas and the same root in both equation sides';
+  await lesson(teacherFrame,'p15',70);
+  assert.equal(await teacherFrame.locator('#task-figure [data-triangle]').count(),8);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Длины катетов',{exact:true}).selectOption('1');
+  await teacherFrame.getByLabel('Раскладка',{exact:true}).selectOption('1');
+  const rearranged=await synchronized(teacherFrame,studentFrame,'same four triangles surround a square of area 169');
+  assert.deepEqual(rearranged.view.model.values,[1,1]);
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/13² = 169/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-pythagoras','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Раскладка',{exact:true}).selectOption('0');
+  await studentFrame.locator('#notebook').fill('Из равных площадей вычли четыре одинаковых треугольника.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const twoSquares=await synchronized(studentFrame,teacherFrame,'student rearrangement and proof recorded for review');
+  await manualWithoutCredit(teacherFrame,'p15-t71',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,twoSquares,'saved dissection and proof restore');
+  await lesson(teacherFrame,'p15',74);
+  await teacherFrame.locator('#final-answer').fill('3/2');
+  await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await synchronized(teacherFrame,studentFrame,'reciprocal root is diagnosed');
+  assert.match(await studentFrame.locator('.answer-form .feedback').innerText(),/обратное отношение/);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Какое значение проверяем?',{exact:true}).selectOption('2');
+  await synchronized(teacherFrame,studentFrame,'both sides have the same negative value at the exact root');
+  assert.deepEqual(await studentFrame.locator('#model tbody tr td:last-child').allTextContents(),['-47/3','-47/3']);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-both-sides','#model table');
+
+  phase = 'first part-two pages compare two groups with a chosen reference';
+  await lesson(teacherFrame,'p15',41);
+  await openModel(teacherFrame);
+  await teacherFrame.getByLabel('Первая величина',{exact:true}).selectOption('2');
+  await teacherFrame.getByLabel('Вторая величина — основание',{exact:true}).selectOption('1');
+  const roses=await synchronized(teacherFrame,studentFrame,'all 18 roses compared to 12 red roses');
+  assert.deepEqual(roses.view.model.values,[0,2,1]);
+  assert.match(await studentFrame.locator('#model .pm-result').innerText(),/больше 100 %/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-rose-baseline','#model svg');
+  await ownership(teacher,student,true);
+  await studentFrame.getByLabel('Набор чисел',{exact:true}).selectOption('1');
+  await studentFrame.getByLabel('Первая величина',{exact:true}).selectOption('0');
+  await studentFrame.getByLabel('Вторая величина — основание',{exact:true}).selectOption('2');
+  await studentFrame.locator('#notebook').fill('В своём примере 9 белых из 15, это 3/5 всех роз.');
+  await studentFrame.locator('[data-action=record-manual]').click();
+  const fresh=await synchronized(studentFrame,teacherFrame,'new rose counts, denominator and notebook travel together');
+  assert.deepEqual(fresh.view.model.values,[1,0,2]);
+  await manualWithoutCredit(teacherFrame,'p15-t42',0);
+  await ownership(teacher,student,false);
+  await student.reload({waitUntil:'domcontentloaded'});await waitConnected(student);studentFrame=await courseFrame(student);
+  await waitSnapshot(studentFrame,fresh,'chosen groups and new source values restored after reload');
+  await lesson(teacherFrame,'p15',58);
+  await teacherFrame.locator('#final-answer').fill('0,17');
+  await teacherFrame.locator('#answer-form button[type=submit]').click();
+  await teacherFrame.locator('[data-action=hint]').click();
+  await synchronized(teacherFrame,studentFrame,'centners and kilograms on a shared scale');
+  assert.deepEqual(await studentFrame.locator('.help meter').evaluateAll(ms=>ms.map(m=>[m.value,m.max])),[[3.4,20],[20,20]]);
+  assert.match(await studentFrame.locator('.help figure').innerText(),/3,4 кг/);
+  await narrowShot(teacher,teacherFrame,'peterson-board-320-mass-ratio','.help figure');
 
   phase = 'part-two lookup and mixed instruction/number steps';
   await teacherFrame.locator('header nav a[href="#home"]').click();
@@ -713,7 +991,22 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await synchronized(teacherFrame, studentFrame, 'multiple-choice solution');
   assert.equal(await studentFrame.locator('#answer-form button[type="submit"]').isDisabled(), true);
   const authoredWorkBeforeTour = Object.keys((await snapshot(teacherFrame)).work.tasks).filter(id => /^p\d\d-/.test(id)).sort();
+  // Rejoin the same room between groups of routes. The full route audit
+  // also checks that browser navigation can resume from the stored board state.
+  async function resumeRouteTour(label) {
+    const checkpoint = await snapshot(teacherFrame);
+    await student.reload({ waitUntil: 'domcontentloaded' });
+    await waitConnected(student);
+    studentFrame = await courseFrame(student);
+    await waitSnapshot(studentFrame, checkpoint, label + ' pupil returns');
+    await teacher.reload({ waitUntil: 'domcontentloaded' });
+    await waitConnected(teacher);
+    teacherFrame = await courseFrame(teacher);
+    await waitSnapshot(teacherFrame, checkpoint, label + ' teacher returns');
+    await synchronized(teacherFrame, studentFrame, label + ' rendered state');
+  }
   for (let n = 1; n <= 58; n++) {
+    if (n > 1 && (n - 1) % 15 === 0) await resumeRouteTour('topic ' + n);
     const id = 'p' + String(n).padStart(2, '0');
     await lesson(teacherFrame, id);
     const topic = await synchronized(teacherFrame, studentFrame, 'lesson ' + id);
@@ -730,6 +1023,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.equal(skills.length, 43);
   let practiceScreens = 0;
   for (const skill of skills) {
+    if (practiceScreens % 24 === 0) await resumeRouteTour('training ' + skill);
     await teacherFrame.locator('header nav a[href="#skills"]').click();
     await teacherFrame.locator('a[href="#practice/' + skill + '/1"]').click();
     for (const level of ['1', '2', '3']) {
@@ -756,6 +1050,11 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   assert.equal(rejected, true);
   assert.deepEqual(await snapshot(teacherFrame), beforeBad);
   assert.deepEqual(await view(teacherFrame), beforeBadView);
+  await lateSession.page.goto(studentLink,{waitUntil:'domcontentloaded'});
+  await waitConnected(lateSession.page);
+  lateFrame=await courseFrame(lateSession.page);
+  await waitSnapshot(lateFrame,beforeBad,'returning observer restores the final state after the complete lesson');
+  assert.deepEqual(await view(lateFrame),beforeBadView,'returning observer sees the same model and work');
   const stable = await quietMessages([teacher, student, lateSession.page], 'final quiescence');
   await wait(500);
   assert.deepEqual(await Promise.all([teacher, student, lateSession.page].map(messages)), stable);

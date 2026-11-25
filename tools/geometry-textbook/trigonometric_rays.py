@@ -1,0 +1,142 @@
+"""Construct a ray from one projection, scale it, and recover the angle from a point."""
+import argparse
+import json
+import re
+from math import acos, asin, degrees, sqrt
+from upper_semicircle import ROOT, BOOK, arc, author, coord
+from trigonometric_signs import grade
+
+OUT = ROOT / 'geometry-course/textbook/data/trigonometric-rays.json'
+
+
+def level(name, function, value, include_rays):
+    if function == 'sin':
+        angle = degrees(asin(value))
+        angles = [('M', angle), ('N', 180-angle)]
+        lines = [((-1.12, value), (1.12, value))]
+    else:
+        angles = [('M', degrees(acos(value)))]
+        lines = [((value, -.08), (value, 1.08))]
+    return arc(name, angles, lines=lines,
+               edges=[('O', point) for point, _ in angles] if include_rays else ())
+
+
+def constructions():
+    cases = [
+        ('а', 'sin', 2/3, '2/3', 'ординате', 'горизонтальную', 'x=±√5/3', 2,
+         'Верхняя дуга пересекает линию в двух точках. Проведи оба луча из O. Получаются острый и тупой углы, сумма которых 180°.',
+         1, '1', 1, 'Линия y=1 касается дуги в C. Единственное направление образует угол 90°.'),
+        ('б', 'cos', 3/4, '3/4', 'абсциссе', 'вертикальную', 'y=√7/4', 1,
+         'Точка M справа от Oy. Луч OM даёт единственный острый угол, потому что над каждой абсциссой верхней дуги есть ровно одна точка.',
+         -.75, '−3/4', 1, 'Отрази первую точку относительно Oy: новая абсцисса отрицательна, поэтому новый угол тупой.'),
+        ('в', 'cos', -.4, '−2/5', 'абсциссе', 'вертикальную', 'y=√21/5', 1,
+         'Отложи 2/5 единицы именно влево. Луч к верхней точке пересечения даёт единственный тупой угол.',
+         .4, '2/5', 1, 'Вертикаль x=2/5 пересекает верхнюю дугу в одной точке справа. Новый угол острый.')
+    ]
+    cards = []
+    for part, fn, v, text, component, direction, other, count, reason, nv, nt, nc, repeat in cases:
+        hint = ('Синус задаёт высоту. Проведи горизонталь и отметь все её пересечения с верхней дугой.'
+                if fn=='sin' else 'Косинус задаёт абсциссу. Проведи вертикаль в нужной половине плоскости и возьми верхнее пересечение.')
+        scaffold = ('Раздели единицу на три равные части, отложи две на Oy и проведи через отметку параллель к Ox.'
+                    if fn=='sin' else ('Раздели единицу на четыре равные части и отложи три вправо на Ox.' if part=='б'
+                    else 'Раздели единицу на пять равных частей и отложи две влево на Ox.')+' В этой точке восстанови перпендикуляр к Ox.')
+        views = [level('Построение линии заданного уровня',fn,v,False),level('Лучи через все пересечения',fn,v,True),level('Построение с новым значением',fn,nv,True)]
+        side = 'Сколько лучей у исходной конструкции?' if fn=='sin' else 'Какой знак у исходной абсциссы? Введи 1 или −1.'
+        first = count if fn=='sin' else (1 if v>0 else -1)
+        c = author(1104,part,[275],f'Построй угол от 0° до 180°, у которого {fn} α={text}. Объясни ход построения и сколько различных углов допускает условие.',
+                   f'{scaffold} Это строит {direction} прямую. Вторая координата удовлетворяет {other}. {reason}',hint,
+                   [('Построй линию заданной координаты',scaffold,f'Выбирай линию уровня по заданной {component}.'),
+                    ('Восстанови луч',f'{reason} Проверь {other} по равенству x²+y²=1.','Угол отсчитывается от положительной полуоси Ox.'),
+                    ('Построй на новых данных',f'Замени условие на {fn} β={nt}. {repeat}','Сначала отметь новый уровень и заново пересчитай пересечения.')],
+                   views,[(side,str(first),hint),('Сколько лучей у нового построения?',str(nc),'Сосчитай точки пересечения нового уровня с верхней дугой.')],[100,101])
+        c['answer']['prompt']='Опиши построение угла: какую линию уровня проводишь, сколько пересечений получаешь и как из них построить нужные лучи.'
+        cards.append(c)
+    return cards
+
+
+def radial(name, r, angle, show_projection):
+    points = {'A':coord(angle,r)}
+    return arc(name,[('M',angle)],markers=points,edges=[('O','A')],projections=[('A','H')] if show_projection else (),anchors=('E','B','C'),scale=1)
+
+
+def simplify_polar_labels(card):
+    # The distant point A determines these exercises. Keep its name and the unit point M legible on a narrow screen.
+    model=card['visualization']['model']
+    for view in model['views'].values():
+        visible=[]
+        for key in view['points']:
+            label=model['labels'][key]
+            parts=[part for part in label.split('=') if part not in ('E','B','C')]
+            if not parts:continue
+            model['labels'][key]='='.join(parts)
+            if 'M' in parts:model.setdefault('labelOffsets',{})[key]=[.4,5.8]
+            elif 'O' in parts:model.setdefault('labelOffsets',{})[key]=[-1.8,-5.5]
+            visible.append(key)
+        view['points']=visible
+    return card
+
+
+def pair_forms(x,y):
+    def forms(value):
+        result=[value,value.replace('√2','sqrt(2)').replace('√3','sqrt(3)')]
+        if '/' in value and '√' not in value:
+            a,b=map(int,value.split('/')); d=a/b
+            result.extend([str(d),str(d).replace('.',',')])
+        result.extend(re.sub(r'(\d)sqrt',r'\1*sqrt',item) for item in result.copy() if 'sqrt' in item)
+        return set(result)
+    return sorted({prefix+u+separator+v+end for u in forms(x) for v in forms(y)
+                   for prefix,end in [('', ''),('(',')')] for separator in [';', '; ']})
+
+
+def polar_points():
+    cases=[
+        ('а',3,45,'3','3√2/2','3√2/2','cos 45°=sin 45°=√2/2. Обе координаты положительны и совпадают.',9,'При r=6 получаем A=(3√2;3√2).'),
+        ('б',1.5,90,'1,5','0','3/2','При 90° луч идёт по положительной полуоси Oy. Поэтому x=0, y=r.',2.25,'При r=3 ордината новая: A=(0;3).'),
+        ('в',5,150,'5','-5√3/2','5/2','При 150° имеем cos=−√3/2, sin=1/2. Точка левее Oy, поэтому x отрицателен.',25,'При r=10 получаем A=(−5√3;5).'),
+        ('г',1,180,'1','-1','0','Направление 180° совпадает с отрицательной полуосью Ox: x=−r, y=0.',1,'При r=2 получаем A=(−2;0).'),
+        ('д',2,30,'2','√3','1','При 30° имеем cos=√3/2, sin=1/2. Множитель 2 нужен в обеих координатах.',4,'При r=4 получаем A=(2√3;2).')]
+    cards=[]
+    for part,r,angle,rt,x,y,work,norm,again in cases:
+        drawing = [radial('Исходная длина и направление',r,angle,False),radial('Проекции на оси',r,angle,True),radial('Та же сторона угла при удвоенной длине',2*r,angle,True)]
+        expected=f'({x.replace("-","−")};{y})'
+        hint='Абсцисса равна r cos α, ордината r sin α. Проверь знак каждой координаты по стороне от Oy и умножь обе на r.'
+        pretty=str(norm).replace('.',',')
+        q=author(1105,part,[275],f'Луч OA образует угол {angle}° с положительной полуосью Ox и пересекает верхнюю единичную полуокружность. Расстояние OA={rt}. Найди координаты A.',
+                 f'{work} Умножение (cos α;sin α) на {rt} даёт A={expected}. Сумма квадратов координат равна {pretty}.',hint,
+                 [('Определи единичный вектор',work,'Радиус единичной полуокружности равен 1.'),('Восстанови обе координаты',f'Умножь обе координаты M на {rt}. Получается A={expected}, а x²+y²={pretty}=OA².','Расстояние всегда неотрицательно, абсцисса может быть отрицательной.'),
+                  ('Удвой длину',again+' Каждая координата умножена на 2; угол сохранился.','Сравни направление луча и длину отрезка по отдельности.')],drawing,
+                 [({'а':'Чему равен квадрат длины OA?','б':'Чему равна абсцисса точки на положительной полуоси Oy?','в':'Какой знак у абсциссы исходной точки? Введи 1 или −1.','г':'Какова ордината исходной точки?','д':'Какова ордината A при OA=2?'}[part],{'а':'9','б':'0','в':'-1','г':'0','д':'1'}[part],'Используй положение луча и длину OA.'),({'а':'После удвоения OA чему равен квадрат его длины?','б':'Какова новая ордината точки?','в':'Какова новая ордината при удвоенной длине?','г':'Какова новая абсцисса при удвоенной длине?','д':'Какова новая ордината при OA=4?'}[part],{'а':'36','б':'3','в':'5','г':'-2','д':'2'}[part],'Угол тот же, обе координаты удваиваются.')],[100,102],caption='Одна клетка равна единице. M — точка единичной дуги на луче OA; A — точка из условия.')
+        cards.append(grade(simplify_polar_labels(q),pair_forms(x,y),hint,'Введи x;y. Можно использовать √ или sqrt().'))
+    return cards
+
+
+def recover_angles():
+    cases=[
+        ('а','2;2',2*sqrt(2),45,45,'Абсцисса и ордината равны и положительны. Отношение y/x=1, угол в первой четверти равен 45°.',135,'Отражение в Oy даёт (−2;2). Тангенс −1, угол 135°.'),
+        ('б','0;3',3,90,90,'Точка на положительной полуоси Oy. Получаем 90° без деления на нулевую абсциссу.',90,'Замена на (0;6) меняет расстояние, но направление остаётся равным 90°.'),
+        ('в','−√3;1',2,150,30,'Длина OA=2. Синус 1/2, косинус −√3/2. Острый угол с отрицательной полуосью Ox равен 30°, поэтому искомый угол 150°.',30,'У отражённой точки (√3;1) обе координаты положительны и угол равен 30°.'),
+        ('г','−2√2;2√2',4,135,45,'Координаты равны по модулю; x<0, y>0. Синус √2/2, косинус −√2/2. Искомый угол 135°.',45,'У точки (2√2;2√2) угол равен 45°, поскольку отношение координат равно 1 и x>0.')]
+    cards=[]
+    for part,pair,r,angle,probe,reason,newangle,repeat in cases:
+        changed_r=2*r if angle==90 else r
+        drawings=[radial('Точка определяет направление',r,angle,False),radial('Горизонтальная проекция',r,angle,True),radial('Новая точка относительно осей',changed_r,newangle,True)]
+        hint='Проверь четверть по знакам координат. Если абсцисса равна нулю, направление можно прочитать по полуоси Oy без деления.'
+        q=author(1106,part,[275],f'Точка A имеет координаты ({pair}). Какой угол образует луч OA с положительной полуосью Ox?',
+                 reason,hint,[('Определи положение точки',reason,'Угол лежит в диапазоне от 0° до 180°.'),('Проверь направление по единичному кругу','Подели обе координаты на длину OA. У единичной точки получится та же сторона угла и та же четверть. '+reason,'Длина OA не меняет направления.'),
+                              ('Проверь новый луч',repeat,'Для новой точки повторно проверь знак абсциссы.')],drawings,[('Какой меньший угол исходный луч образует с прямой Ox (в градусах)?',str(probe),'Сравни направление с обеими полуосями Ox.'),('Каков угол нового луча с положительной полуосью Ox?',str(newangle),'Определи четверть новой точки.')],[100,102],caption='Одна клетка равна единице. M — точка единичной дуги на луче OA; A — точка из условия.')
+        cards.append(grade(simplify_polar_labels(q),[str(angle),f'{angle}°',f'{angle} градусов'],hint,'Введи величину угла в градусах.'))
+    return cards
+
+
+def build():
+    return {'bookId':BOOK,'lessons':constructions()+polar_points()+recover_angles()}
+
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--check',action='store_true')
+    result=json.dumps(build(),ensure_ascii=False,separators=(',',':'))+'\n'
+    if parser.parse_args().check:
+        assert OUT.read_text()==result
+    else:
+        OUT.write_text(result)

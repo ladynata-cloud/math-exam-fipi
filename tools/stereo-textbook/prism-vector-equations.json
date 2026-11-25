@@ -1,0 +1,299 @@
+{
+  "parts": {
+    "575": [
+      null
+    ],
+    "576": [
+      "а",
+      "б"
+    ],
+    "577": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "previousCatalog": {
+    "575": {
+      "id": "source-main-0575",
+      "kind": "exercise",
+      "title": "Задача № 575",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "575",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "576": {
+      "id": "source-main-0576",
+      "kind": "exercise",
+      "title": "Задача № 576",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "576",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "577": {
+      "id": "source-main-0577",
+      "kind": "exercise",
+      "title": "Задача № 577",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "577",
+        "chapter": "VI. Векторы в пространстве",
+        "printedPages": [
+          149
+        ],
+        "pdfPages": [
+          151
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0575": {
+      "raw": "271a225f84a181aaa3196eeb523e379cacf6a6fd15c5aef44f4812a07ccc9bb4",
+      "authored": "7ce12c41e6163c64b42fe167fffbbb9e81c5dab1494730c5f0b4dec0de178eb0",
+      "integrated": "8784d37bf2904e5ecae742652c8aab0c17de57a6cbbefccef2f1ac4d34bb1379"
+    },
+    "ex-main-0576-a": {
+      "raw": "74d1e8f894836ddd9ea7b636ef5ca4d893e15f5ea837ee899527d128f72ffb45",
+      "authored": "fa22354c74fe76bf851a0091b87cf14e164a4c015e63be7b8c1eb4acaae99a38",
+      "integrated": "aea093912fe4ab55203b5a556c19217ac9e1c44a877303f3fe5d253b03c025db"
+    },
+    "ex-main-0576-b": {
+      "raw": "66dbf373a768481a2d647c69537bde2d82a238c1a05ccc8d12fb15667d4eee4a",
+      "authored": "b97ca34e7891a6a4b667b1857ff8b6d197a358b21d8f3d5b05c639f754f359b0",
+      "integrated": "4678f3e12d31ff42f9a5f02eab66842850e7710e1a89f303aefcc816acf56383"
+    },
+    "ex-main-0577-a": {
+      "raw": "6dd9cac36cc895f4c20d87f893d0f7d677bdf6de8c9278765e052c1d9c2e6c01",
+      "authored": "06013e2e085a91ca13cc9ac2f53db1b3a8b164f8699bb10180e79793fff9f5b0",
+      "integrated": "ef0b7d83ec520749b0e28e0bd13f5a7a3d7a7a1c9947a4633a84ab41f6ee6618"
+    },
+    "ex-main-0577-b": {
+      "raw": "177aee2757e635b91775a461505a60420da1a83b188506ca1898e9556fb8996f",
+      "authored": "2e346b6480b73379856c026f7617426debccc017be036dcc93dc85a0408d864d",
+      "integrated": "fcb6fee5ac9584a39977ddd90e250273d5b65f148bccb721582835ee37b9d510"
+    },
+    "ex-main-0577-c": {
+      "raw": "198e777527ba0bd515f4de3aba13652f83d32ee173525119fe4660b37d0fd8a1",
+      "authored": "8b2118d42bd6e077c056dcfdf633d26c5ad48415915119f7219e93f97c1168b1",
+      "integrated": "5c46f0e1beb3ef7a7fede14ea5a9afb0df6ba227f2497e00d82d8945ca03ed54"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0575|condition",
+      "prism-vector-equations-ex-main-0575-condition"
+    ],
+    [
+      "ex-main-0575|help:h1",
+      "prism-vector-equations-ex-main-0575-help-h1"
+    ],
+    [
+      "ex-main-0575|help:h2",
+      "prism-vector-equations-ex-main-0575-help-h2"
+    ],
+    [
+      "ex-main-0575|step-1",
+      "prism-vector-equations-ex-main-0575-step-1"
+    ],
+    [
+      "ex-main-0575|step-2",
+      "prism-vector-equations-ex-main-0575-step-2"
+    ],
+    [
+      "ex-main-0575|step-3",
+      "prism-vector-equations-ex-main-0575-step-3"
+    ],
+    [
+      "ex-main-0575|step-4",
+      "prism-vector-equations-ex-main-0575-step-4"
+    ],
+    [
+      "ex-main-0576-a|condition",
+      "prism-vector-equations-ex-main-0576-a-condition"
+    ],
+    [
+      "ex-main-0576-a|help:h1",
+      "prism-vector-equations-ex-main-0576-a-help-h1"
+    ],
+    [
+      "ex-main-0576-a|help:h2",
+      "prism-vector-equations-ex-main-0576-a-help-h2"
+    ],
+    [
+      "ex-main-0576-a|step-1",
+      "prism-vector-equations-ex-main-0576-a-step-1"
+    ],
+    [
+      "ex-main-0576-a|step-2",
+      "prism-vector-equations-ex-main-0576-a-step-2"
+    ],
+    [
+      "ex-main-0576-a|step-3",
+      "prism-vector-equations-ex-main-0576-a-step-3"
+    ],
+    [
+      "ex-main-0576-a|step-4",
+      "prism-vector-equations-ex-main-0576-a-step-4"
+    ],
+    [
+      "ex-main-0576-b|condition",
+      "prism-vector-equations-ex-main-0576-b-condition"
+    ],
+    [
+      "ex-main-0576-b|help:h1",
+      "prism-vector-equations-ex-main-0576-b-help-h1"
+    ],
+    [
+      "ex-main-0576-b|help:h2",
+      "prism-vector-equations-ex-main-0576-b-help-h2"
+    ],
+    [
+      "ex-main-0576-b|step-1",
+      "prism-vector-equations-ex-main-0576-b-step-1"
+    ],
+    [
+      "ex-main-0576-b|step-2",
+      "prism-vector-equations-ex-main-0576-b-step-2"
+    ],
+    [
+      "ex-main-0576-b|step-3",
+      "prism-vector-equations-ex-main-0576-b-step-3"
+    ],
+    [
+      "ex-main-0576-b|step-4",
+      "prism-vector-equations-ex-main-0576-b-step-4"
+    ],
+    [
+      "ex-main-0577-a|condition",
+      "prism-vector-equations-ex-main-0577-a-condition"
+    ],
+    [
+      "ex-main-0577-a|help:h1",
+      "prism-vector-equations-ex-main-0577-a-help-h1"
+    ],
+    [
+      "ex-main-0577-a|help:h2",
+      "prism-vector-equations-ex-main-0577-a-help-h2"
+    ],
+    [
+      "ex-main-0577-a|step-1",
+      "prism-vector-equations-ex-main-0577-a-step-1"
+    ],
+    [
+      "ex-main-0577-a|step-2",
+      "prism-vector-equations-ex-main-0577-a-step-2"
+    ],
+    [
+      "ex-main-0577-a|step-3",
+      "prism-vector-equations-ex-main-0577-a-step-3"
+    ],
+    [
+      "ex-main-0577-a|step-4",
+      "prism-vector-equations-ex-main-0577-a-step-4"
+    ],
+    [
+      "ex-main-0577-b|condition",
+      "prism-vector-equations-ex-main-0577-b-condition"
+    ],
+    [
+      "ex-main-0577-b|help:h1",
+      "prism-vector-equations-ex-main-0577-b-help-h1"
+    ],
+    [
+      "ex-main-0577-b|help:h2",
+      "prism-vector-equations-ex-main-0577-b-help-h2"
+    ],
+    [
+      "ex-main-0577-b|step-1",
+      "prism-vector-equations-ex-main-0577-b-step-1"
+    ],
+    [
+      "ex-main-0577-b|step-2",
+      "prism-vector-equations-ex-main-0577-b-step-2"
+    ],
+    [
+      "ex-main-0577-b|step-3",
+      "prism-vector-equations-ex-main-0577-b-step-3"
+    ],
+    [
+      "ex-main-0577-b|step-4",
+      "prism-vector-equations-ex-main-0577-b-step-4"
+    ],
+    [
+      "ex-main-0577-c|condition",
+      "prism-vector-equations-ex-main-0577-c-condition"
+    ],
+    [
+      "ex-main-0577-c|help:h1",
+      "prism-vector-equations-ex-main-0577-c-help-h1"
+    ],
+    [
+      "ex-main-0577-c|help:h2",
+      "prism-vector-equations-ex-main-0577-c-help-h2"
+    ],
+    [
+      "ex-main-0577-c|step-1",
+      "prism-vector-equations-ex-main-0577-c-step-1"
+    ],
+    [
+      "ex-main-0577-c|step-2",
+      "prism-vector-equations-ex-main-0577-c-step-2"
+    ],
+    [
+      "ex-main-0577-c|step-3",
+      "prism-vector-equations-ex-main-0577-c-step-3"
+    ],
+    [
+      "ex-main-0577-c|step-4",
+      "prism-vector-equations-ex-main-0577-c-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "ee7b80b8ca0c8a9514e676713bd44e26dfb5119627137dcea1e52e19b4b86db7",
+      "afterSHA256": "b07cfab9442e17048a9cc03c63187bd6a0e68c895287f33f674fb77fea5c76f4"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "219c81c01c7332f495159655bccc44c8d9effc5f939f1913c7264d569463f207",
+      "afterSHA256": "c6f0cccdc7e7af636507d2b0a2a097a8f3f3ea12bb330c27f9ed919e3f5ed5a1"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T19:13:00Z",
+    "scope": "Introduction and chapters I–V, followed by chapter VI points 63–67 and source exercises 557–574, with 957 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "1a10b58d15d84551719f34eacb3178459e57193dfe329cb49caa26637355aa06",
+    "index": "d7eae379b989d9b98a69e220d022b2f529802ba67d18482d9e2e719fa7d98347",
+    "registry": "12784a604497a00c3902f20d1790dd153f9828cecd4a617941b48dd66cad7867",
+    "cases": "8c62b9591086babf7a60c7e6582cf261889f1061a8daf87e7e88ef03fb2aad72"
+  }
+}
