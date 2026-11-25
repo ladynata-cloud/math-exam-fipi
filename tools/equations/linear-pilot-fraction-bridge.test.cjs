@@ -84,3 +84,34 @@ test('reuse existing public resources, not a second catalog or old learner stora
  assert.equal((html.match(/navigator-widget\.js/g)||[]).length,1);
  assert(html.includes('href="#fraction-bridge"'));
 });
+
+test('repeated visits and resource clicks do not exhaust the bounded log or erase learning evidence',()=>{
+ const resource=ev('resource',{probe:'whole',id:'oge-basics:fraction-meaning'});
+ const open=ev('open-probe',{probe:'whole'}),back=ev('return');
+ let log=wrong.slice();
+ const add=e=>{const result=m.append(log,e);log=result.events;assert.deepEqual(result.state,m.replay(log));return result.state;};
+ add(open);add(ev('probe-answer',{probe:'whole',value:22}));add(resource);add(back);
+ const initial=log.slice();
+ for(let i=0;i<600;i++){
+  add(open);add(resource);add(resource);add(back);
+ }
+ assert.deepEqual(log,initial,'only genuinely redundant visits/clicks compacted');
+ assert.throws(()=>m.append(log,resource),'resource outside probe is still rejected');
+ add(open);
+ const newResource=ev('resource',{probe:'whole',id:'path:pre7-fraction-part-whole'});
+ add(newResource);add(back);
+ assert(log.some(e=>e.id===newResource.id));
+ assert.throws(()=>m.append(log,ev('probe-answer',{probe:'whole',value:22})));
+ const before=m.decode(JSON.stringify(m.snapshot(log,{})));
+ assert.deepEqual(before.events,log);
+ const solved=add(ans('original-answer',20));
+ assert.equal(m.originalOutcome(solved),'correct-after-retry-with-help');
+ assert.equal(solved.round.probes.whole.value,22);
+ add(ev('transfer'));add(ans('transfer-answer',21));add(ev('next'));
+ assert.equal(m.replay(log).completed[0].transfer,'first-correct');
+ let later=wrong.slice();
+ for(const e of [open,back,open,ev('probe-answer',{probe:'whole',value:22}),back])
+  later=m.append(later,e).events;
+ assert.equal(m.replay(later).round.probes.whole.correct,true);
+ assert(later.some(e=>e.type==='probe-answer'));
+});
