@@ -283,6 +283,12 @@ def play_bridge(page):
             left.fill("3n+2")
             write_answer(page, answer)
             assert not bridge_steps(page)[slug]["done"], "A guessed number masked a false transformation"
+            expect(page.locator("#bridgeFeedback")).to_contain_text("левой чаши")
+            for unfinished in ("3n+3*2", "3n+2+2+2"):
+                left.fill(unfinished)
+                write_answer(page, answer)
+                assert not bridge_steps(page)[slug]["done"]
+                expect(page.locator("#bridgeFeedback")).to_contain_text("В первой строке значение верно")
             left.fill("6+3n")
         write_answer(page, answer)
         assert bridge_steps(page)[slug]["first"] == ("wrong" if slug == "balance" else "correct")

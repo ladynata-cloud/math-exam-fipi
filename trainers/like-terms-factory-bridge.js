@@ -106,7 +106,7 @@
     },
     {
       id: 'balance', title: 'Перенос в уравнение', checkpoint: true,
-      prompt: 'Весы в равновесии. Слева три коробки по n + 2 детали, справа два пакета по n деталей и ещё 13 отдельных деталей. Все детали весят одинаково, тара ничего не весит. Запиши без скобок число деталей слева и найди, сколько деталей в одном пакете.',
+      prompt: 'Весы в равновесии. Слева три коробки по n + 2 детали, справа два пакета по n деталей и ещё 13 отдельных деталей. Все детали весят одинаково, тара ничего не весит. В первой строке запиши число деталей на левой чаше. Раскрой скобки, вычисли произведения и приведи подобные слагаемые. Во второй строке укажи, сколько деталей в одном пакете.',
       expected: '7', label: 'Число деталей в пакете',
       explain: '3(n + 2) = 2n + 13. После раскрытия 3n + 6 = 2n + 13, откуда n = 7. Проверка: по 27 деталей на каждой чаше.'
     }
@@ -327,6 +327,7 @@
       const draft = step.choices ? form.querySelector(':checked')?.value || '' : form.querySelector('#bridgeAnswer').value;
       const left = form.querySelector('#bridgeBalanceLeft');
       let status;
+      let leftNeedsRevision = false;
       state = updateStep(step.id, latest => {
         if (step.id === 'boxes' && !latest.opened) { status = 'closed'; return; }
         latest.draft = draft;
@@ -334,7 +335,10 @@
         if (!draft.trim() || (left && !left.value.trim())) { status = 'empty'; return; }
         status = step.choices ? (step.valid.includes(draft) ? 'correct' : 'wrong')
           : window.FactoryMath.check(draft, step.expected, step.form).status;
-        if (left && status === 'correct') status = window.FactoryMath.check(left.value, '3n+6').status;
+        if (left && status === 'correct') {
+          status = window.FactoryMath.check(left.value, '3n+6').status;
+          leftNeedsRevision = status !== 'correct';
+        }
         latest.attempts++;
         if (!latest.first) latest.first = latest.hints ? 'assisted' : status === 'correct' ? 'correct' : 'wrong';
         latest.done = status === 'correct';
@@ -343,6 +347,11 @@
       if (state.done) {
         render();
         document.getElementById('bridgeNext').focus();
+      } else if (leftNeedsRevision) {
+        const text = status === 'collect' || status === 'multiply' || status === 'expand'
+          ? 'В первой строке значение верно. Раскрой скобки, вычисли произведения и приведи подобные слагаемые.'
+          : 'Проверь выражение для левой чаши в первой строке.';
+        feedback(message, text, 'err');
       } else if (status === 'closed') {
         feedback(message, 'Открой крышку хотя бы одной коробки и посмотри, что в ней лежит.', 'warn');
       } else {
