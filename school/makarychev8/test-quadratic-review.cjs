@@ -6,6 +6,13 @@ for(const q of cards.filter(t=>t.graph?.type==='root-residual')){
  if(q.graph.mode==='exact')assert(evidence.every(r=>r.exact),q.title);
  else assert(evidence.every(r=>!r.exact),q.title);
 }
+const equation533b=require('./exercises-531-556.json').find(task=>task.id==='p21-source-533-b');
+for(const exact of ['(3±√29)/2','(3±√29)/(4/2)','(3±√29)/4/0,5','(3±√29)/(-4)/(-0,5)']){
+ assert(C.check(exact,equation533b),exact);
+}
+for(const incorrect of ['(3±√29)/4/2','(3±√29)/(4)/2','(3±√29)/0','(3±√29)/(2/0)','(3±√29)//2']){
+ assert(!C.check(incorrect,equation533b),incorrect);
+}
 const coeff=[1,-2,-5];
 for(const trial of ['1±√6','1+√(6);1-√6','1+√24/2;1-√(24)/2'])assert(C.quadraticTrial(trial,coeff).every(e=>e.exact));
 assert.deepEqual(C.quadraticTrial('1+√6;1+√5',coeff).map(e=>e.exact),[true,false]);

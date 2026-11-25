@@ -201,8 +201,10 @@ function readingFractionsRegression(){
 
 function namedMeasuresQuarterRegression(){
   const f=boot(),v=f.w.Vilenkin5NamedParts,a='v5f-printed-5-43',b='v5f-printed-5-44',u=f.M.generate(a,0),square=f.M.generate(b,0);
-  const rows=[...u.steps,u],accepted=[['дециметр','1дм'],['10 кг','10кг'],['копейка','коп.'],['ч','час'],['секунда','сек.'],['мм²','кв. мм','1 мм^2'],['см³','см3','мл'],['ар','сотка','100 м²']];
+  const rows=[...u.steps,u],accepted=[['дециметр','1дм'],['10 кг','10кг','10.0 кг','0.1 ц','0,10 ц'],['копейка','коп.'],['ч','час'],['секунда','сек.'],['мм²','кв. мм','1 мм^2'],['см³','см3','мл'],['ар','сотка','100 м²']];
   rows.forEach((row,i)=>{for(const val of accepted[i])ok(f.M.accepts(val,row));ok(!f.M.accepts(accepted[(i+1)%8][0],row));});
+  for(const wrong of ['1.0 кг','1,0 кг','1..0 кг','0.01 ц'])ok(!f.M.accepts(wrong,rows[1]));
+  ok(!f.M.accepts('1.00 м²',rows[7]));
   equal(plain([...square.steps,square].map(x=>x.answer)),[64,16,32,48]);
   for(let seed=0;seed<80;seed++){const z=f.M.generate(b,seed),s=z.data.quarterPicture.side,t=f.M.generate(a,seed);equal(new Set(t.data.namedUnits).size,8);
     for(let count=1;count<=3;count++)for(const kind of [0,1])for(const angle of [0,17,45])equal(v.explore(z,{kind,angle,count}).answer*4,s*s*count);}

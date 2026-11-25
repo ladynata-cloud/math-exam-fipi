@@ -1231,10 +1231,17 @@ test('prove derived proportions on the common domain and measure corresponding r
   const set=(id,v)=>f.event(id,String(v),'change'),out=()=>f.q('#model .pm-result').textContent;
   for(const [rule,j]of [4,21,22,23,24,25,26].entries()){
    const c=go(j);
+   if(rule===6)assert.match(f.q('.prompt').textContent,/каждое равенство равносильно первому/);
    for(const i of [0,1,2,3,4,5]){
     set(c[0],i);set(c[1],1);const rows=[...f.d.querySelectorAll('#model tbody tr')],message=rows.map(row=>row.cells[2].textContent);
     assert.equal(rows.length,rule===6?3:2);
     if(i===0||i===1)assert(message.every(m=>m.includes(i===0?'Равенство верно':'Равенство ложно')));
+    if(rule===6&&i===4){
+     assert(message.every(m=>m.includes('Равенство верно')));
+     assert(message[0].includes('нулевой член'));
+     set(c[1],2);
+     assert.match(out(),/также a ≠ 0, c ≠ 0 и a\+b ≠ 0/);
+    }
     if(i===5)assert(message[0].includes('нулевой знаменатель'));
     if(i===2&&[4,5,6].includes(rule))assert(message[1].includes('нулевой знаменатель'));
     if(i===3&&[3,6].includes(rule))assert(message.some(m=>m.includes('нулевой знаменатель')));

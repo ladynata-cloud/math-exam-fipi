@@ -30,7 +30,16 @@
     ['кубического метра',1000,'кубический дециметр',['кубический дециметр','дм³','куб. дм','литр','л'],'1 м³ = 10 · 10 · 10 дм³. Один кубический дециметр равен одному литру.','мл','Миллилитров в кубическом метре миллион.']
   ];
   for(const [whole,den,label,forms,proof,near,hint] of otherUnits)units.push({whole,den,label,forms,proof,near:[near],hint});
-  const normal=x=>String(x).toLowerCase().replaceAll('ё','е').replace(/м\^?2/gu,'м²').replace(/м\^?3/gu,'м³').replace(/(\d)([а-я])/gu,'$1 $2').replace(/[.]/g,'').replace(/\s+/g,' ').trim();
+  function normal(value){
+    return String(value).toLowerCase().replaceAll('ё','е')
+      .replace(/м\^?2/gu,'м²').replace(/м\^?3/gu,'м³')
+      .replace(/^(\s*\d+)[.,](\d+)(?=\s*[а-я])/u,(_,whole,digits)=>{
+        const fraction=digits.replace(/0+$/,'');
+        return fraction?whole+','+fraction:whole;
+      })
+      .replace(/(\d)([а-я])/gu,'$1 $2').replace(/([а-я])\.(?=\s|$)/gu,'$1')
+      .replace(/\s+/g,' ').trim();
+  }
   function textAnswer(raw,row){const x=normal(raw),u=typeof row==='number'?units[row]:units.find(item=>item.label===row);if(!u)return false;if(x===normal(u.label))return true;return u.forms.some(f=>{const m=normal(f);return x===m||(!u.amount&&!/^\d/.test(m)&&x==='1 '+m);});}
   function rowTask(seed,r,step){
     const order=Array.from({length:8},(_,i)=>i);

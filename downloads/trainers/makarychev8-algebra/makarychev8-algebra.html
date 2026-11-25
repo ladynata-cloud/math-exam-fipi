@@ -3075,7 +3075,8 @@ function sameReal(a,b){
 function radicalSum(raw){
  if(typeof raw!=='string'||raw.length>160)return null;
  const ordinary=signedSquare(raw);if(ordinary)return [ordinary];
- let input=normalize(raw),scale=M.parse('1'),depth=0;
+ let input=normalize(raw),depth=0;
+ let multiplier=1n,denominator=1n;
  // A common denominator, e.g. (3 − √29)/2, scales every numerator term.
  if(input[0]==='('){
   for(let i=0;i<input.length;i++){
@@ -3084,7 +3085,16 @@ function radicalSum(raw){
    if(!depth){
     const suffix=input.slice(i+1);
     if(!suffix||suffix[0]==='/'){
-     if(suffix){scale=M.parse(suffix.slice(1));if(!scale||!scale.n)return null;}
+     // A/B/C divides by both B and C. A/(B/C) has one fractional divisor.
+     const divisions=suffix.match(/\/(?:\([^()]+\)|[^/()]+)/g)||[];
+     if(divisions.join('')!==suffix)return null;
+     for(const division of divisions){
+      const token=division.slice(1);
+      const divisor=M.parse(token.startsWith('(')?token.slice(1,-1):token);
+      if(!divisor||!divisor.n)return null;
+      multiplier*=BigInt(divisor.d);
+      denominator*=BigInt(divisor.n);
+     }
      input=input.slice(1,i);
     }
     break;
@@ -3102,10 +3112,9 @@ function radicalSum(raw){
  }
  if(depth||!input.length)return null;
  pieces.push(input.slice(start));if(pieces.length>9)return null;
- const multiplier=BigInt(scale.d),denominator=BigInt(scale.n);
  const values=pieces.map(part=>signedSquare(part.replace(/^\+/,'')));
  if(values.some(v=>!v))return null;
- return values.map(v=>({sign:v.sign*Math.sign(scale.n),n:v.n*multiplier*multiplier,d:v.d*denominator*denominator}));
+ return values.map(v=>({sign:denominator<0n?-v.sign:v.sign,n:v.n*multiplier*multiplier,d:v.d*denominator*denominator}));
 }
 function gcdInteger(a,b){while(b){const r=a%b;a=b;b=r;}return a<0n?-a:a;}
 function integerRoot(n){
