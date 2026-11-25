@@ -459,6 +459,25 @@ async function localWriting(browser, siteOrigin, boardOrigin) {
   assert.equal(await rawPages(page), localBytes, 'local reload preserves the stored stroke bytes');
   assert(await page.locator('#lesson').evaluate(element => element.classList.contains('hide-trainer')), 'local board-only preference survives reload');
   await imageVisible(page, uploaded);
+
+  phase = 'visible clear action preserves neighboring sheets and trainer';
+  const firstSheet = (await snapshot(page)).pages[0], trainerAtClear = await frameState(page);
+  await page.locator('#addSheet').click();
+  await drawStroke(page, 'pen', { x: 110, y: 120 }, { x: 200, y: 150 });
+  const beforeClear = await rawPages(page);
+  assert.equal(await page.locator('.toolbar #clear').count(), 1, 'clear is on the primary writing toolbar');
+  assert.equal(await page.locator('#boardPanel #clear').count(), 0, 'single clear control');
+  assert.equal(await page.locator('#clear').isVisible(), true);
+  page.once('dialog', async dialog => { assert.match(dialog.message(), /Очистить текущий лист/); await dialog.dismiss(); });
+  await page.locator('#clear').click();
+  assert.equal(await rawPages(page), beforeClear, 'cancel preserves all records');
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#clear').click();
+  const afterClear = await snapshot(page);
+  assert.equal(afterClear.currentPage, 1);
+  assert.deepEqual(afterClear.pages[0], firstSheet, 'clearing page two preserves page one');
+  assert.deepEqual(afterClear.pages[1].strokes, [], 'clear removes every object on the current page');
+  assert.equal(await frameState(page), trainerAtClear, 'clear never resets the trainer');
   await session.context.close();
   console.log('PASS local writing: opaque eraser/PNG; screenshot and ink layers; tools/shapes; split/camera; pen/secondary touch; reload');
 }
@@ -592,6 +611,28 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   await imageVisible(lateSession.page, screenshot);
   await teacher.locator('#prevSheet').click(); await lateSession.page.waitForFunction(() => publicSnapshot().currentPage === 0);
   await sameBoard(teacher, lateSession.page, 'late join follows subsequent sheet navigation');
+
+  phase = 'visible shared clear respects ownership, confirmation and page scope';
+  await sameBoard(teacher, student, 'all participants agree before clear');
+  const beforeClear = semantic(await snapshot(teacher)), currentTrainer = await frameState(teacher);
+  const clearCommands = await teacher.evaluate(() => window.__writingOutgoing['board:clear-page'] || 0);
+  assert.equal(await teacher.locator('.toolbar #clear').isVisible(), true, 'teacher finds clear without opening settings');
+  assert.equal(await student.locator('#clear').isEnabled(), false, 'read-only pupil cannot clear');
+  {
+    teacher.once('dialog', dialog => dialog.dismiss());
+    await teacher.locator('#clear').click();
+    assert.deepEqual(semantic(await snapshot(teacher)), beforeClear);
+    assert.equal(await teacher.evaluate(() => window.__writingOutgoing['board:clear-page'] || 0), clearCommands);
+  }
+  teacher.once('dialog', dialog => dialog.accept());
+  await teacher.locator('#clear').click();
+  await sameBoard(teacher, student, 'confirmed clear reaches pupil');
+  const cleared = await sameBoard(teacher, lateSession.page, 'confirmed clear reaches late viewer');
+  assert.equal(cleared.currentPage, beforeClear.currentPage);
+  assert.deepEqual(cleared.pages[cleared.currentPage].strokes, []);
+  for (let i=0;i<cleared.pages.length;i++) if(i!==cleared.currentPage) assert.deepEqual(cleared.pages[i], beforeClear.pages[i], 'other pages untouched');
+  assert.equal(await teacher.evaluate(() => window.__writingOutgoing['board:clear-page'] || 0), clearCommands+1, 'one confirmed clear sends one event');
+  assert.equal(await frameState(teacher), currentTrainer, 'clear preserves trainer');
   await lateSession.context.close(); await studentSession.context.close(); await teacherSession.context.close();
   console.log('PASS shared writing: owner-only input; real handoff; own undo/redo across sheets; mid-gesture revoke; screenshot bytes/pixels; reload/late join');
 }
