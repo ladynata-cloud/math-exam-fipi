@@ -138,7 +138,7 @@
 
   /* An affine expression is a*x+b. Track subexpressions to distinguish a physical
      model from simply typing the answer. The parser never executes learner input. */
-  function parseSide(source, c) {
+  function parseSide(source, model, distanceScale) {
     const text = source.toLowerCase().replace(/[х]/g, 'x').replace(/,/g, '.')
       .replace(/[−–]/g, '-').replace(/[·⋅×]/g, '*').replace(/[:÷]/g, '/');
     const token = /\s+|\d+(?:\.\d*)?|\.\d+|[x+*/()-]/gy;
@@ -154,33 +154,39 @@
     const peek = () => tokens[cursor];
     const take = () => tokens[cursor++];
     const fail = () => { throw Error('Проверь скобки и знаки действий. Для умножения можно написать 12x или 12*x.'); };
-    const closing = c.actors[0].speed - c.actors[1].speed;
-    const effectiveDistance = c.gap - c.targetGap;
-    const speeds = [closing, ...c.actors.map(p => Math.abs(p.speed))];
-    // Keep the signed contribution of paths (coefficient of x) and of a time
-    // derived as distance / speed (constant). Adding/cancelling terms on either
-    // side must add/cancel their evidence as well as their numerical value.
-    function term(a, b, path = 0, time = 0) {
+    const speeds = model.speeds.map(speed => speed * distanceScale);
+    const isSpeed = value => speeds.some(speed => near(Math.abs(value), speed));
+    // Signed contributions cancel along with the corresponding terms. Keep
+    // distance data (including a head start) separate from a computed time.
+    function term(a, b, path = 0, explicit = 0, distance = 0, time = 0) {
       if (!Number.isFinite(a) || !Number.isFinite(b) || Math.abs(a) > 1e10 || Math.abs(b) > 1e10) fail();
-      return { a, b, path: a === 0 ? 0 : path, time: b === 0 ? 0 : time };
+      return { a, b, path, explicit, distance, time };
     }
     function scale(expr, factor) {
       const a = expr.a * factor;
-      let path = expr.path * factor;
-      if (a !== 0 && speeds.some(v => near(Math.abs(a), v))) path = a;
-      return term(a, expr.b * factor, path, expr.time * factor);
+      const velocity = a !== 0 && factor !== 1 && isSpeed(a);
+      return term(a, expr.b * factor, velocity ? a : expr.path * factor,
+        velocity ? a : expr.explicit * factor, expr.distance * factor, expr.time * factor);
+    }
+    function givesTime(distance, speed) {
+      return model.scales.some(scale => near(Math.abs(distance.b), model.gap * scale) &&
+        near(Math.abs(speed), model.closing * scale)) && matches(distance.distance, distance.b);
     }
     function atom() {
       const part = take();
-      if (part === 'x') return term(1, 0);
+      if (part === 'x') return term(1, 0, isSpeed(1) ? 1 : 0);
       if (part === '+') return atom();
-      if (part === '-') { const n = atom(); return term(-n.a, -n.b, -n.path, -n.time); }
+      if (part === '-') { const n = atom(); return term(-n.a, -n.b, -n.path, -n.explicit, -n.distance, -n.time); }
       if (part === '(') {
         const n = sum();
         if (take() !== ')') fail();
         return n;
       }
-      if (part && /^(?:\d|\.)/.test(part)) return term(0, Number(part));
+      if (part && /^(?:\d|\.)/.test(part)) {
+        const value = Number(part);
+        const given = model.lengths.some(length => near(value, length));
+        return term(0, value, 0, 0, given ? value : 0);
+      }
       fail();
     }
     function product() {
@@ -191,7 +197,7 @@
         if (op === '/') {
           if (r.a !== 0) throw Error('Здесь можно записать уравнение без x в знаменателе. Вырази путь через скорость и время.');
           if (r.b === 0) throw Error('Делить на ноль нельзя. Проверь знаменатель.');
-          const isTime = !n.a && near(Math.abs(n.b), effectiveDistance) && near(Math.abs(r.b), closing);
+          const isTime = !n.a && givesTime(n, r.b);
           n = scale(n, 1 / r.b);
           if (isTime) n.time = n.b;
         } else {
@@ -199,10 +205,11 @@
           if (n.a || r.a) {
             n = n.a ? scale(n, r.b) : scale(r, n.b);
           } else {
-            const isTime = (near(Math.abs(n.b), effectiveDistance) && near(Math.abs(r.b), 1 / closing)) ||
-                           (near(Math.abs(r.b), effectiveDistance) && near(Math.abs(n.b), 1 / closing));
+            const isTime = givesTime(n, 1 / r.b) || givesTime(r, 1 / n.b);
             const value = n.b * r.b;
-            n = term(0, value, 0, isTime ? value : n.time ? n.time * r.b : r.time * n.b);
+            const distance = n.distance ? n.distance * r.b : r.distance * n.b;
+            const time = isTime ? value : n.time ? n.time * r.b : r.time * n.b;
+            n = term(0, value, 0, 0, distance, time);
           }
         }
       }
@@ -213,7 +220,8 @@
       while (peek() === '+' || peek() === '-') {
         const sign = take() === '+' ? 1 : -1;
         const r = product();
-        n = term(n.a + sign * r.a, n.b + sign * r.b, n.path + sign * r.path, n.time + sign * r.time);
+        n = term(n.a + sign * r.a, n.b + sign * r.b, n.path + sign * r.path,
+          n.explicit + sign * r.explicit, n.distance + sign * r.distance, n.time + sign * r.time);
       }
       return n;
     }
@@ -250,6 +258,11 @@
     return depth === 0 && numerator ? numerator : null;
   }
 
+  function matches(supported, actual) {
+    return supported !== 0 && actual !== 0 &&
+      Math.abs(supported - actual) <= 1e-9 * Math.max(Math.abs(supported), Math.abs(actual));
+  }
+
   function checkEquation(c, raw) {
     const reject = message => ({ ok: false, message });
     if (typeof raw !== 'string' || !raw.trim() || raw.length > 180) return reject('Запиши выражение для времени или короткое уравнение с x.');
@@ -264,7 +277,16 @@
       }
     }
     try {
-      const [left, right] = sides.map(s => parseSide(s, c));
+      const closing = c.actors[0].speed - c.actors[1].speed;
+      const speeds = c.actors.map(actor => Math.abs(actor.speed));
+      const gap = c.gap - c.targetGap;
+      // Metres, kilometres, or both sides divided by one participant's speed.
+      const scales = [1, 1000, ...speeds.map(v => 1 / v)];
+      const lengths = scales.flatMap(scale => [c.gap * scale, c.targetGap * scale, gap * scale]);
+      if (c.leadMinutes) lengths.push(c.leadMinutes, c.leadMinutes / 60);
+      const model = { closing, gap, speeds: [closing, ...speeds], scales, lengths };
+      const read = scale => sides.map(side => parseSide(side, model, scale));
+      const [left, right] = read(1);
       const slope = left.a - right.a;
       const initial = left.b - right.b;
       if (slope === 0) return reject(near(left.b, right.b)
@@ -282,9 +304,15 @@
         const wrongDirection = c.actors[1].speed < 0 ? 'Проверь, как меняется промежуток от движения каждого участника.' : 'Проверь, чей путь уменьшает промежуток, а чей увеличивает.';
         return reject(c.targetGap > 0 ? 'Проверь промежуток в конце. Какое расстояние должно остаться при первом радиоконтакте?' : c.id === 'delay' ? 'Проверь, где находилась Лена в момент выезда Маши, и как менялся отрыв дальше.' : wrongDirection);
       }
-      const matches = (supported, actual) => supported !== 0 && actual !== 0 &&
-        Math.abs(supported - actual) <= 1e-9 * Math.max(Math.abs(supported), Math.abs(actual));
-      if (!matches(left.path - right.path, slope) && !matches(left.time - right.time, initial)) return reject(isEquation
+      // A pupil may also scale an already constructed path equation, e.g.
+      // (12x+8x)/2 = 5. The velocity terms must still be supported independently.
+      lengths.push(Math.abs(slope / closing) * gap);
+      function showsModel([l, r]) {
+        if (matches(l.time - r.time, initial)) return true;
+        return matches(l.path - r.path, slope) && !near(l.explicit - r.explicit, 0) &&
+          matches(l.distance - r.distance, initial);
+      }
+      if (!scales.some(scale => showsModel(read(scale)))) return reject(isEquation
         ? 'У этого уравнения верное решение. Чтобы показать модель, запиши, откуда взялись числа: используй пути участников или деление нужного расстояния на скорость сближения.'
         : 'Значение верное. Покажи в выражении, из какого расстояния и какой скорости оно получилось.');
       return { ok: true, message: isEquation ? 'Уравнение задаёт нужный момент. Теперь найди время.' : 'Выражение связывает расстояние и скорость. Теперь вычисли время.' };

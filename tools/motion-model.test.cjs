@@ -77,6 +77,42 @@ for (const [id, expected] of Object.entries(scenarios)) {
   });
 }
 
+test('one distance unit or normalization applies to both sides of a physical model', () => {
+  const examples = {
+    meet: [
+      '200*60*x+8000*x=10000', '10000/(200*60+8000)', '10000/x=20000',
+      '0,5*(12x+8x)=0,5*10', '(12x+8x)/2=5', '2*(12x+8x)=20',
+      '12x=12*(10/(12+8))', '20x=10*0.5+10*0.5'
+    ],
+    chase: ['12000x=10000+8000x', '10000/(12000-8000)'],
+    delay: ['8/12*(x+0,75)=x', '12/8*x=x+0,75', '0,75/(12/8-1)', '6000/(12000-8000)'],
+    signal: ['6000x+4000x+5000=20000', '(20000-5000)/(6000+4000)', '(20000-5000)/x=10000']
+  };
+  for (const c of cases) {
+    for (const expression of examples[c.id]) {
+      assert.equal(checkEquation(c, expression).ok, true, expression);
+      if (expression.includes('=')) {
+        const reversed = expression.split('=').reverse().join('=');
+        assert.equal(checkEquation(c, reversed).ok, true, reversed);
+      }
+    }
+  }
+});
+
+test('a supplied answer stays unsupported after scaling, shifting, or cancelling physical terms', () => {
+  const shortcuts = [
+    '12x=12*0,5', '12*x=12*1/2', '12*x=12*(0.2+0.3)', '12*(x-1/2)=0', '12x=12*(0,25+0,25)', '20000x=20000*0,5',
+    '12x+8x=12*0,5+8*0,5', '12x=12*(10/20-10/20+0,5)', '12x=12*(20*0,5/20)',
+    'x=10/20-10000/20000+0,5', 'x+8000x=8000x+0,5', '1*x=0,5'
+  ];
+  for (const expression of shortcuts) {
+    assert.equal(checkEquation(cases[0], expression).ok, false, expression);
+    const reversed = expression.split('=').reverse().join('=');
+    assert.equal(checkEquation(cases[0], reversed).ok, false, reversed);
+  }
+  assert.equal(checkEquation(cases[2], '8/12*(x+0,75)-8/12*(x+0,75)+x=1,5').ok, false);
+});
+
 test('undefined, nonlinear, identity and answer-only inputs cannot satisfy the modeling gate', () => {
   for (const source of ['', 'x=x', '0=0', '12x+8x=12x+8x', '(x-.5)*(x+2)=0',
     '10+1/(x-x)=20x', '0,5', '1/2', '10/20-10/20+0.5', '12x+8x', 'x=undefined', 'x=Infinity',
