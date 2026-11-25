@@ -39,4 +39,5 @@ jobs:
           "$RUNNER_TEMP/factory-venv/bin/python" -m pip install playwright==1.62.1
           "$RUNNER_TEMP/factory-venv/bin/python" -m playwright install --with-deps chromium
       - name: Legacy modes, written lesson, offline and two-tab progress
-        run: "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory.browser.py
+        run: |
+          "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory.browser.py
