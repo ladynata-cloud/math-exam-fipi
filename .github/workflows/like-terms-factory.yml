@@ -31,7 +31,9 @@ jobs:
         run: |
           node --check trainers/like-terms-factory-math.js
           node --check trainers/like-terms-factory-bridge.js
+          node --check trainers/like-terms-factory-polynomials.js
           node --test tools/like-terms-factory.test.cjs
+          node --test tools/like-terms-factory-polynomials.test.cjs
           git diff --check
       - name: Install isolated Python browser tools
         run: |
@@ -41,3 +43,6 @@ jobs:
       - name: Legacy modes, written lesson, offline and two-tab progress
         run: |
           "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory.browser.py
+      - name: Polynomial continuation and preserved brackets progress
+        run: |
+          "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory-polynomials.browser.py

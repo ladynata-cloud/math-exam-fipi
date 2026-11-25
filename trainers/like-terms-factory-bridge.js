@@ -399,6 +399,9 @@
       link.href = url;
       links.append(link);
     }
+    root.append(button('Дальше: многочлены и общий множитель', 'bridgeToPolynomials', () => {
+      window.LikeTermsPolynomials.open(root, () => render(true));
+    }));
     root.append(links, button('Посмотреть свои записи', 'bridgePrev', () => goTo(steps[0].id), true));
     if (moveFocus) heading.focus();
   }
