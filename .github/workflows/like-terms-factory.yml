@@ -36,6 +36,7 @@ jobs:
           node --check trainers/like-terms-factory-polynomials.js
           node --test tools/like-terms-factory.test.cjs
           node --test tools/like-terms-factory-polynomials.test.cjs
+          node --test tools/like-terms-factory-grouping.test.cjs
           git diff --check
       - name: Install isolated Python browser tools
         run: |
@@ -48,3 +49,6 @@ jobs:
       - name: Polynomial continuation and preserved brackets progress
         run: |
           "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory-polynomials.browser.py
+      - name: Grouping and first identities, preserved polynomial progress
+        run: |
+          "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory-grouping.browser.py
