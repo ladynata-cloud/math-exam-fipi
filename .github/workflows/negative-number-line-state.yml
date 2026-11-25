@@ -1,0 +1,27 @@
+name: Number line mirror state roundtrip
+on:
+  pull_request:
+    paths:
+      - 'trainers/negative-numbers-line.html'
+      - 'tools/negative-number-line-state.test.cjs'
+      - '.github/workflows/negative-number-line-state.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/negative-numbers-line.html'
+      - 'tools/negative-number-line-state.test.cjs'
+      - '.github/workflows/negative-number-line-state.yml'
+permissions:
+  contents: read
+jobs:
+  state-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - run: node --test tools/negative-number-line-state.test.cjs
