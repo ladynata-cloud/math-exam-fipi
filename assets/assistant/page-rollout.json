@@ -228,9 +228,10 @@
       "sourceSha": "229f3617a44c093618626efc74fa01db4a4472af"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
-      "beforeSha256": "1e5749f8ed7c3a4f90b6d3aa37881ba8bc8620c4d6be4ca175addab0c81d1f28",
-      "afterSha256": "6c8532d2b624fd069df626a228d7805773ba2f0b589deac6ea45140ffa64a3b8",
-      "placement": "before-head-close"
+      "beforeSha256": "b56c7c95c71c8275c86047c8999529069a93c281ba204c1d9433e2f1c8714b67",
+      "afterSha256": "21b8954a025263c2aea47732e6bb14f2f27b2ab30aea26fe6eef866f74e630d4",
+      "placement": "before-head-close",
+      "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "credit-payment-table-trainer.html": {
       "beforeSha256": "84b0292aa95afb32b5e4416a9a0b0e5d65a18301d0721414a7f8147d3a8910a8",
@@ -2327,15 +2328,16 @@
       "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
     },
     "topics/index.html": {
-      "beforeSha256": "890c01aef8be1912978b5d7d44f049e55c55f31ea36652ee2d8fb00e69c616ba",
-      "afterSha256": "89b4678acb27832d5a57e880c2ee66b59d54a72c780e00e5d325ced9b75361c4",
+      "beforeSha256": "300977027f7e20324abf2f0b40db0af2815ef712a6cd724fc08e7b3f798756b7",
+      "afterSha256": "d459ed54a81deeffae9d4fa33a83a51c88a97433c3f951fc54d54877c189d48f",
       "placement": "before-head-close",
-      "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
+      "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "topics/lineynye-uravneniya/index.html": {
-      "beforeSha256": "76b27dd9d6b8a2df1029cdbda0b519f4cd9285f596b7a2239791bf2cf75d00b6",
-      "afterSha256": "3f20ecdfee0908071bf6185a49f05552bb068041af9c1fbd44ef0a5658a5b3db",
-      "placement": "before-head-close"
+      "beforeSha256": "3430e71bc56c8869d0c3489a330d115e47dd35466de9b5a2cb86e65d156f858e",
+      "afterSha256": "881b5640470d6c2b8b027f8fc44da63713220756eb39b7c0eb35a632aac129ec",
+      "placement": "before-head-close",
+      "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "topics/obyknovennye-drobi/index.html": {
       "beforeSha256": "f5b297836f05c71e7534afe84550957256559801a4a0a285163046c90635e879",
@@ -2400,9 +2402,10 @@
       "placement": "before-head-close"
     },
     "trainers/desyatichnye-drobi-level-1.html": {
-      "beforeSha256": "2db67207c0b5a239fa1816f6a62c726c18f4389eb3973455cd01f83b2cb0e548",
-      "afterSha256": "2fa9f3f8a4659b20f0fb96616f558d1a71f3f9e67e7759900cbb799c48c36df2",
-      "placement": "before-main-open"
+      "beforeSha256": "22b96799ddfe0e7f8989eb07462c80bad0c836cb7dc0b231d90d0878ad201251",
+      "afterSha256": "07f0c8afbb63b0677b9f02ca342074ad62c77d693412ae8ee7e8cd7d6bb43a17",
+      "placement": "before-main-open",
+      "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "trainers/drobi-oge-trainer.html": {
       "beforeSha256": "b0a75e84e58034d21afc2e8726e079b98e63af25a4181df91269f20d60a67602",
@@ -6879,6 +6882,24 @@
       ],
       "reason": "Bind the single additive written-reasoning workshop entrance; existing OGE material, shared navigator pair and all other bindings unchanged.",
       "bindingScope": "Exact per-page sourceSha; global base unchanged."
+    },
+    {
+      "sourceBaseSha": "85310a0bfbf82425ce945856381f19f1d6bd9776",
+      "previousSourceShas": {
+        "courses/vilenkin-6-part-1/textbook.html": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+        "topics/index.html": "dad2377d9d0249c74a31c504c7d6dd1f6d515151",
+        "topics/lineynye-uravneniya/index.html": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+        "trainers/desyatichnye-drobi-level-1.html": "2a5b85523dc89e734f77443685b7a3f0a530fab4"
+      },
+      "task": "docs/tasks/SEO_FIRST_LEARNING_ENTRIES_20261125.md",
+      "changedPaths": [
+        "courses/vilenkin-6-part-1/textbook.html",
+        "topics/index.html",
+        "topics/lineynye-uravneniya/index.html",
+        "trainers/desyatichnye-drobi-level-1.html"
+      ],
+      "reason": "Bind the four reviewed learning entry pages to their exact source commit. Each page retains the exact navigator includes.",
+      "bindingScope": "Per-page sourceSha only; the global base and every other page binding retain their original values."
     }
   ],
   "coverageUpdates": [
