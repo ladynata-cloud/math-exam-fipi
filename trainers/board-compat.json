@@ -1316,6 +1316,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "notebook-math",
+      "file": "trainers/notebook-math.html",
+      "title": "Математика по школьной тетради · индивидуальный курс",
+      "group": "Старшие классы · индивидуальные курсы",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Семантическое состояние урока, задания, ответа, шага, подсказки и модели. Личный прогресс вне комнаты."
     }
   ]
 }
