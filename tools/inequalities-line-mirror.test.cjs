@@ -27,7 +27,7 @@ test('all integer states roundtrip without changing score or echoing remote stat
 });
 test('malformed states do not change visible lesson or score',()=>{
  const f=fixture(source),s=f.config.getState();
- for(const invalid of [null,{}, {...s,a:9},{...s,x:1.5},{...s,mode:'toString'},{...s,score:-1},{...s,scored:true},{...s,extra:1}]){
+ for(const invalid of [null,{}, {...s,a:9},{...s,x:1.5},{...s,mode:'toString'},{...s,mode:['gt']},{...s,mode:1},{...s,score:-1},{...s,scored:true},{...s,extra:1}]){
   assert.throws(()=>f.config.applyState(invalid));
   assert.deepEqual(f.config.getState(),s);
  }

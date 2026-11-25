@@ -33,7 +33,7 @@ let boardBridge=null;
 function getBoardTrainerState(){return {mode:S.mode,a:S.a,x:S.x,interacted:S.interacted,score:S.score,scored:S.scored,hint:S.hint}}
 function validateBoardTrainerState(v){
   if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).sort().join(',')!=='a,hint,interacted,mode,score,scored,x')return false;
-  if(!Object.hasOwn(MODES,v.mode)||!Number.isInteger(v.a)||v.a< -8||v.a>8||!Number.isInteger(v.x)||v.x< -10||v.x>10||
+  if(typeof v.mode!=='string'||!Object.hasOwn(MODES,v.mode)||!Number.isInteger(v.a)||v.a< -8||v.a>8||!Number.isInteger(v.x)||v.x< -10||v.x>10||
     !Number.isSafeInteger(v.score)||v.score<0||typeof v.interacted!=='boolean'||typeof v.scored!=='boolean'||typeof v.hint!=='boolean')return false;
   const good=v.mode==='gt'?v.x>v.a+EPS:v.mode==='gte'?v.x>=v.a-EPS:v.mode==='lt'?v.x<v.a-EPS:v.x<=v.a+EPS;
   return v.scored===(v.interacted&&good)&&(!v.scored||v.score>0);
