@@ -201,15 +201,26 @@
       try{if(recovery.pending||recovery.copies.length)sessionStorage.setItem(RECOVERY_KEY,JSON.stringify(recovery));else sessionStorage.removeItem(RECOVERY_KEY);recoveryStorageFailed=false}
       catch(_){recoveryStorageFailed=true}
     }
+    function participantOnline(participant){return participant?.connected===true||Number(participant?.onlineCount)>0}
+    function knownRoleOffline(role){const participants=shared.participants.filter(p=>p?.role===role);return participants.length>0&&!participants.some(participantOnline)}
+    // Remote stroke-start / stroke-points are only a preview. The server
+    // persists a stroke at stroke-end, so an offline writer's preview must
+    // not be presented as accepted work or survive the next connection.
+    function clearOfflineWriterPreview(){
+      const writer=controlHolder();
+      if(current&&!drawing&&writer&&!participantOnline(writer)&&(writer.connected===false||writer.onlineCount===0)){current=null;scheduleRender()}
+    }
     function refreshRoomNotice(){
       const notice=$('roomNotice'),action=$('roomNoticeAction');
       let message='',actionText='';
       if(shared.roomId&&!roomReady()){
         message=shared.role==='teacher'?'Нет подтверждённой связи с комнатой. Ученик не получает новые записи. Письмо приостановлено до восстановления.':'Нет связи с комнатой. Вы видите последние полученные записи. Ждём восстановления.';
         actionText='Повторить подключение';
-      }else if(roomReady()&&shared.role==='teacher'&&shared.participants.some(p=>p?.role==='student')&&!shared.participants.some(p=>p?.role==='student'&&(p.connected===true||Number(p.onlineCount)>0))){
+      }else if(roomReady()&&shared.role==='teacher'&&knownRoleOffline('student')){
         message='Ученик не в сети. Записи сохраняются в комнате, но появятся у ученика только после подключения.';
         actionText='Участники';
+      }else if(roomReady()&&shared.role==='student'&&knownRoleOffline('teacher')){
+        message=canWrite()?'Учитель не в сети. Вы подключены к комнате; ваши записи будут доступны учителю после его подключения.':'Учитель не в сети. Вы видите последние записи комнаты; новые записи учителя пока не поступают.';
       }else if(!shared.roomId&&(shared.roomError||missingTeacherRoomSession)){
         message=shared.role==='teacher'?'Общая комната недоступна. Записи остались на этой доске, но ученик их не видит. Создайте новую комнату и отправьте новую ссылку.':'Комната недоступна. Вы видите прежние записи. Попросите учителя прислать новую ссылку.';
         if(shared.role==='teacher')actionText='Создать новую комнату';
@@ -801,7 +812,7 @@
           fallbackSharedMe();setStatus('подключено','ok');updateControlUi();
           if(emptyAuthoritativeTrainer&&!latestTrainerState&&hydratedBeforeSnapshot&&bridgeSession===hydratedBeforeSnapshot&&canWrite())requestTrainerState()
         });
-        onRoomEvent('participants:state',payload=>{setParticipants(payload?.participants);updateControlUi()});
+        onRoomEvent('participants:state',payload=>{setParticipants(payload?.participants);clearOfflineWriterPreview();updateControlUi()});
         onRoomEvent('control:changed',payload=>{
           const wasMine=canWrite();
           setControlState(payload||{});
