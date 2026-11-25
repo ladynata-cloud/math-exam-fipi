@@ -305,6 +305,25 @@ async function localWriting(browser, siteOrigin, boardOrigin) {
   assert.equal(pen.size, selectedSize, 'quick thickness is used by real handwriting');
   const ink = await bitmap(page); assert.notEqual(ink.hash, blank.hash, 'pen creates visible ink');
   await chooseTool(page, 'eraser');
+  assert.equal(await page.locator('.pen-widths').getAttribute('aria-label'), 'Ширина ластика');
+  assert.equal(await page.locator('#size').inputValue(), '24', 'initial eraser width is independent of the pen');
+  for (const width of [8, 24, 34]) {
+    const preset = page.locator('[data-eraser-size="' + width + '"]');
+    assert.equal(await preset.isVisible(), true);
+    assert.equal(await preset.getAttribute('aria-label'), 'Ластик ' + width + ' пикселей');
+    await preset.click();
+    assert.equal(await preset.getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#size').inputValue(), String(width));
+    const erased = await drawStroke(page, 'eraser', { x: 88, y: 140 }, { x: 232, y: 140 });
+    assert.equal(erased.size, width, 'real eraser stroke uses the selected width');
+    assert.deepEqual(await bitmap(page), blank, 'eraser at each preset retains the grid and opaque paper');
+    await page.locator('#undo').click();
+    assert.deepEqual(await bitmap(page), ink, 'undo retains original ink');
+  }
+  await chooseTool(page, 'pen');
+  assert.equal(await page.locator('#size').inputValue(), String(selectedSize), 'eraser changes do not alter the pen width');
+  await chooseTool(page, 'eraser');
+  assert.equal(await page.locator('#size').inputValue(), '34', 'returning to the eraser restores its last width');
   await boardSettings(page, async () => { await page.locator('#size').focus(); await page.keyboard.press('End'); });
   await drawStroke(page, 'eraser', { x: 88, y: 140 }, { x: 232, y: 140 });
   assert.deepEqual(await bitmap(page), blank, 'eraser removes only ink: grid, paper and opacity match the blank sheet');
@@ -618,6 +637,11 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   const clearCommands = await teacher.evaluate(() => window.__writingOutgoing['board:clear-page'] || 0);
   assert.equal(await teacher.locator('.toolbar #clear').isVisible(), true, 'teacher finds clear without opening settings');
   assert.equal(await student.locator('#clear').isEnabled(), false, 'read-only pupil cannot clear');
+  await chooseTool(teacher, 'eraser');
+  await teacher.locator('[data-eraser-size="24"]').click();
+  const eraserStateBefore = semantic(await snapshot(teacher));
+  assert.deepEqual(eraserStateBefore, beforeClear, 'choosing a width is local and never changes records');
+  assert.equal(await student.locator('[data-eraser-size="24"]').isEnabled(), false, 'observer cannot change drawing widths');
   {
     teacher.once('dialog', dialog => dialog.dismiss());
     await teacher.locator('#clear').click();
