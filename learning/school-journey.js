@@ -103,21 +103,50 @@ function factory(){
     if(value&&goal(value.goal)&&find(value.node))return {goal:value.goal,node:value.node};
     return {goal:'foundations',node:'place'};
   }
-  function validate(){
-    const seen=new Set(),stack=new Set(),done=new Set();
-    for(const n of nodes){
-      if(seen.has(n.id))throw Error('Duplicate skill '+n.id);seen.add(n.id);
+  // Derived view, never a second source of prerequisites. The type and
+  // provenance describe an authored hypothesis, not a validated causal claim.
+  function candidateEdges(graph=nodes){
+    return graph.flatMap(n=>n.before.map(id=>({
+      from:id,to:n.id,type:'candidate-prerequisite',
+      provenance:'school-journey-v1-authored',status:'hypothesis'
+    })));
+  }
+  function validate(graph=nodes,views=goals,registry=null){
+    const validId=id=>typeof id==='string'&&/^[a-z][a-z0-9-]*$/.test(id);
+    const nonempty=s=>typeof s==='string'&&s.trim().length>0;
+    const unique=values=>new Set(values).size===values.length;
+    const dense=values=>Array.isArray(values)&&Array.from({length:values.length},(_,i)=>Object.prototype.hasOwnProperty.call(values,i)).every(Boolean);
+    const byId=new Map(),goalIds=new Set(),stack=new Set(),done=new Set();
+    if(!dense(graph)||!graph.length||!dense(views)||!views.length)throw Error('Empty or sparse graph or goals');
+    for(const n of graph){
+      if(!n||!validId(n.id)||byId.has(n.id))throw Error('Invalid or duplicate skill '+n?.id);
+      byId.set(n.id,n);
+      if(!nonempty(n.title)||!nonempty(n.group))throw Error('Missing skill label '+n.id);
+      if(!dense(n.before)||!unique(n.before)||n.before.some(id=>!validId(id)||id===n.id))throw Error('Invalid prerequisite '+n.id);
+      if(n.source!==null&&!nonempty(n.source))throw Error('Invalid resource ID '+n.id);
+      if(!dense(n.extra)||!unique(n.extra)||n.extra.some(href=>!publicHref(href)))throw Error('Invalid public routes '+n.id);
       if(!n.source&&!n.extra.length)throw Error('Missing learning resource '+n.id);
-      if(n.extra.some(href=>!publicHref(href)))throw Error('Nonpublic route '+n.id);
-      if(n.questions.length!==0&&n.questions.length!==2)throw Error('Probe size '+n.id);
-      for(const q of n.questions)if(q.choices.length!==3||!q.choices.some((_,i)=>String(i)===q.answer)||new Set(q.choices).size!==3)throw Error('Bad probe '+n.id);
+      if(registry&&n.source){
+        const item=typeof registry.get==='function'?registry.get(n.source):null;
+        if(!item||(item.id!==n.source&&item.managedId!==n.source)||!(publicHref(item.publicUrl)||(item.kind==='public'&&publicHref(item.url))))throw Error('Unresolved public resource '+n.id+': '+n.source);
+      }
+      if(!dense(n.questions)||(n.questions.length!==0&&n.questions.length!==2))throw Error('Probe size '+n.id);
+      for(const q of n.questions)if(!q||!nonempty(q.prompt)||!nonempty(q.explain)||!dense(q.choices)||q.choices.length!==3||!q.choices.every(nonempty)||!q.choices.some((_,i)=>String(i)===q.answer)||!unique(q.choices))throw Error('Bad probe '+n.id);
     }
-    function visit(id){if(stack.has(id))throw Error('Cycle '+id);if(done.has(id))return;const n=find(id);if(!n)throw Error('Missing skill '+id);stack.add(id);n.before.forEach(visit);stack.delete(id);done.add(id);}
-    nodes.forEach(n=>visit(n.id));
-    for(const g of goals){if(!publicHref(g.href)||!g.path.includes(g.start)||new Set(g.path).size!==g.path.length||g.path.some(id=>!find(id)))throw Error('Bad goal '+g.id);}
+    function visit(id){
+      if(stack.has(id))throw Error('Cycle '+id);
+      if(done.has(id))return;
+      const n=byId.get(id);if(!n)throw Error('Missing skill '+id);
+      stack.add(id);n.before.forEach(visit);stack.delete(id);done.add(id);
+    }
+    graph.forEach(n=>visit(n.id));
+    for(const g of views){
+      if(!g||!validId(g.id)||goalIds.has(g.id)||!nonempty(g.title)||!publicHref(g.href)||!dense(g.path)||!g.path.includes(g.start)||!unique(g.path)||g.path.some(id=>!byId.has(id)))throw Error('Bad goal '+g?.id);
+      goalIds.add(g.id);
+    }
     return true;
   }
   validate();
-  return {version:1,nodes,goals,find,goal,next,result,resource,publicHref,selection,validate};
+  return {version:1,nodes,goals,find,goal,next,result,resource,publicHref,selection,validate,candidateEdges};
 }
 );
