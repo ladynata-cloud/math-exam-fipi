@@ -2551,9 +2551,10 @@
       "placement": "before-head-close"
     },
     "trainers/like-terms-factory.html": {
-      "beforeSha256": "c5577223269e588ca6fce53982a09638439e7d0ef75aa616c801ab0fecb152c6",
-      "afterSha256": "f182dfd4c9b57943940eb2ff77377a840fbc9a5f4a1e1950cd704aa55f1c6421",
-      "placement": "before-head-close"
+      "beforeSha256": "ffdba57120ac1ec36f5fbb0014ad49efcad0aa9525389a57a302e5462f1982e1",
+      "afterSha256": "4770957be4987432db6d18383197bd009c7c6ac2de96c454d6697b7941a8ad87",
+      "placement": "before-head-close",
+      "sourceSha": "957e99846672835c9df8b507c1d2c16136cfa8e6"
     },
     "trainers/like-terms-lab.html": {
       "beforeSha256": "55169ed27f752261292ec325c2474eec994dee7653e5bf371a50cacb8cfe4da9",
@@ -6879,6 +6880,17 @@
       ],
       "reason": "Bind the single additive written-reasoning workshop entrance; existing OGE material, shared navigator pair and all other bindings unchanged.",
       "bindingScope": "Exact per-page sourceSha; global base unchanged."
+    },
+    {
+      "sourceBaseSha": "957e99846672835c9df8b507c1d2c16136cfa8e6",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/LIKE_TERMS_TO_BRACKETS.md",
+      "changedPaths": [
+        "trainers/like-terms-factory.html"
+      ],
+      "reason": "Bind the reviewed algebra route to its exact source including the original navigator pair. Preserve all prior receipts and other bindings.",
+      "bindingScope": "Per-page sourceSha; global base and shared runtime unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
     }
   ],
   "coverageUpdates": [
