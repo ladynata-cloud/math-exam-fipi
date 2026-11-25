@@ -113,3 +113,16 @@ test('graph contract rejects broken sources, duplicate and sparse data, and circ
  const extraOnly=copy(m.nodes);extraOnly[0].source=null;
  assert(m.validate(extraOnly,m.goals,registry),'A valid public secondary route is sufficient');
 });
+
+
+test('school view includes the senior stage and existing cross-topic practice',()=>{
+  assert.deepEqual(new Set(m.goal('school').path),new Set(m.nodes.map(n=>n.id)));
+  assert.equal(m.next('school','probability').id,'trig');
+  assert.equal(m.next('school','trig').id,'stereo');
+  assert.equal(m.next('school','stereo').id,'analysis');
+  assert.equal(m.next('school','analysis'),null);
+  assert(m.goal('base').path.includes('stereo'));
+  const published={expression:'/trainers/like-terms-factory.html',modeling:'/trainers/motion-grade6/',function:'/trainers/college-functions/',proof:'/trainers/oge-written-practice.html',probability:'/trainers/tyurin-statistics/'};
+  for(const [id,url] of Object.entries(published)){assert(m.find(id).extra.includes(url),id);local(url);}
+  assert(m.find('linear').extra.includes('/equations/linear-pilot/'));
+});
