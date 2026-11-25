@@ -137,6 +137,291 @@
     }
   ];
 
+
+  // Separate storage namespaces let completed earlier workshops remain exact.
+  const identityKey = 'likeTermsFactory.identities.v1';
+  const rationalKey = 'likeTermsFactory.rational.v1';
+  const applicationKey = 'likeTermsFactory.applications.v1';
+  const excluded = expected => field('ОДЗ: исключённые значения x (через ;, если нет — «нет»)', expected, 'domain');
+  const rootSet = (label, expected) => field(label + ' (через ;, если нет — «нет»)', expected, 'roots');
+  const finalFraction = (n,d) => [
+    field('Итоговый числитель (стандартный вид)',''+n),
+    field('Итоговый знаменатель (стандартный вид)',''+d)
+  ];
+  const numberField = (label,expected) => field(label,expected,'number');
+  const intervals = expected => field('Ответ интервалами: например (-∞;0)∪[2;+∞)',expected,'intervals');
+  const sign = (label, expected) => field(label + ' (+ или −)',expected,'sign');
+  const identitySteps = [
+    {
+      id:'reverse-square', title:'Узнай квадрат суммы', expression:'9x² + 30x + 25',
+      prompt:'Найди основания крайних квадратов (с положительными коэффициентами). Проверь средний член, запиши двучлен под квадратом и раскрой его обратно.',
+      fields:[field('Основание первого квадрата','3x'),field('Основание последнего квадрата','5'),field('Удвоенное произведение','30x'),field('Двучлен под квадратом','3x+5'),field('Проверка: стандартный вид','9x²+30x+25')],
+      hints:['Из 9x² выдели квадрат одночлена, из 25 — квадрат числа.','Средний член должен равняться удвоенному произведению этих оснований.'],
+      explain:'9x²+30x+25=(3x+5)²: 2·3x·5=30x.'
+    },
+    {
+      id:'not-square', title:'Почему крайних квадратов недостаточно', expression:'4x² + 10x + 9',
+      prompt:'Предположи, что это квадрат суммы с основаниями 2x и 3. Какой средний член требовался бы? Найди разность исходного и предполагаемого многочленов.',
+      fields:[field('Средний член предполагаемого квадрата','12x'),field('Исходный многочлен минус предполагаемый квадрат','-2x')],
+      hints:['Средний член квадрата суммы не выбирают произвольно.','Квадрат суммы имеет средний член 2·2x·3; вычти его из 10x.'],
+      explain:'(2x+3)²=4x²+12x+9. Исходный многочлен отличается на −2x, поэтому предложенное тождество неверно.'
+    },
+    {
+      id:'cube-sum', title:'Куб суммы через уже известный квадрат', expression:'(x + 2)³',
+      prompt:'Сначала раскрой квадрат x + 2. Затем умножь полученные три члена на x + 2. Запиши все шесть произведений, только потом собери подобные.',
+      fields:[field('Стандартный вид квадрата','x²+4x+4'),field('Шесть произведений до приведения','x³+2x²+4x²+8x+4x+8','expanded'),field('Стандартный вид куба','x³+6x²+12x+8')],
+      hints:['Куб — это квадрат, умноженный ещё на одну такую же скобку.','Три члена умножаются на два: проверь шесть отдельных произведений.'],
+      explain:'(x+2)³=(x²+4x+4)(x+2)=x³+6x²+12x+8. В общем виде (a+b)³=a³+3a²b+3ab²+b³.'
+    },
+    {
+      id:'cube-difference', title:'Куб разности и чередование знаков', expression:'(2x − 1)³',
+      prompt:'Сначала раскрой квадрат разности. Умножь три полученных члена на 2x − 1, сохрани шесть произведений, затем приведи.',
+      fields:[field('Квадрат разности','4x²-4x+1'),field('Шесть произведений','8x³-4x²-8x²+4x+2x-1','expanded'),field('Стандартный вид куба','8x³-12x²+6x-1')],
+      hints:['Квадрат разности имеет два отрицательных смешанных произведения, а последний член положителен.','Умножая на −1, меняй знак каждого соответствующего произведения.'],
+      explain:'(2x−1)³=8x³−12x²+6x−1. У формулы (a−b)³ знаки +, −, +, −.'
+    },
+    {
+      id:'sum-cubes', title:'Сумма кубов — не куб суммы', expression:'8x³ + 27',
+      prompt:'Разложи сумму кубов. Запиши двучлен и трёхчлен с положительными старшими коэффициентами, затем проверку умножением (шесть отдельных произведений и стандартный вид).',
+      fields:[field('Двучлен','2x+3'),field('Трёхчлен','4x²-6x+9'),field('Шесть произведений','8x³-12x²+18x+12x²-18x+27','expanded'),field('Стандартный вид','8x³+27')],
+      hints:['Основания кубов — 2x и 3. Первая скобка содержит их сумму.','Средний член трёхчлена должен уничтожить смешанные члены при раскрытии.'],
+      explain:'8x³+27=(2x+3)(4x²−6x+9). Смешанные члены попарно сокращаются. a³+b³=(a+b)(a²−ab+b²).'
+    },
+    {
+      id:'difference-cubes', title:'Разность кубов', expression:'27a³ − 8',
+      prompt:'Разложи разность кубов на двучлен и трёхчлен с положительными старшими коэффициентами. Проверь шестью произведениями и стандартным видом.',
+      fields:[field('Двучлен','3a-2'),field('Трёхчлен','9a²+6a+4'),field('Шесть произведений','27a³+18a²+12a-18a²-12a-8','expanded'),field('Стандартный вид','27a³-8')],
+      hints:['Основания кубов — 3a и 2. Двучлен содержит разность.','В трёхчлене средний знак должен обеспечивать сокращение смешанных произведений.'],
+      explain:'27a³−8=(3a−2)(9a²+6a+4). В общем виде a³−b³=(a−b)(a²+ab+b²).'
+    },
+    {
+      id:'independent-square', title:'Самостоятельное распознавание квадрата', expression:'16y² − 40y + 25', checkpoint:true,
+      prompt:'Запиши двучлен с положительным коэффициентом при y, квадрат которого равен исходному многочлену. Проверь средний член и полное раскрытие.',
+      fields:[field('Двучлен под квадратом','4y-5'),field('Средний член со знаком','-40y'),field('Стандартный вид квадрата','16y²-40y+25')],
+      explain:'(4y−5)²=16y²−40y+25.'
+    },
+    {
+      id:'independent-chain', title:'Самостоятельно: выбери две формулы подряд', expression:'3x³ − 12x', checkpoint:true,
+      prompt:'Вынеси наибольший положительный общий одночленный множитель, затем разложи остаток на два двучлена с положительными коэффициентами при x. Проверь итоговое произведение. Порядок двучленов произвольный.',
+      fields:[field('Общий одночленный множитель','3x'),field('Остаток после вынесения','x²-4'),field('Первый двучлен','x-2'),field('Второй двучлен','x+2'),field('Проверка полного произведения','3x³-12x')],
+      variants:[['3x','x²-4','x+2','x-2','3x³-12x']],
+      explain:'3x³−12x=3x(x²−4)=3x(x−2)(x+2).'
+    },
+    {
+      id:'independent-identity', title:'Самостоятельно: доказательство тождества', expression:'(x + 4)² − x(x + 8)', checkpoint:true,
+      prompt:'Раскрой квадрат и произведение отдельно, затем вычти второй многочлен из первого. Покажи, почему результат не зависит от x.',
+      fields:[field('Стандартный вид квадрата','x²+8x+16'),field('Стандартный вид произведения','x²+8x'),field('Разность','16')],
+      explain:'(x+4)²−x(x+8)=x²+8x+16−x²−8x=16 для любого действительного x.'
+    }
+  ];
+  const rationalSteps = [
+    {
+      id:'domain', title:'Когда алгебраическая дробь имеет смысл?', expression:'(x + 1)/(x − 4)',
+      prompt:'Найди все значения, при которых исходный знаменатель равен нулю. Затем вычисли значение дроби при x = −1. Нулевой числитель не запрещён, если знаменатель ненулевой.',
+      fields:[excluded('4'),numberField('Значение при x = −1','0')],
+      hints:['Проверяй знаменатель исходной дроби.','При x = −1 числитель равен нулю; подставь это значение и в знаменатель.'],
+      explain:'ОДЗ: x≠4. При x=−1 получаем 0/(−5)=0.'
+    },
+    {
+      id:'cancel-monomial', title:'Сокращаются множители, а не слагаемые', expression:'12x²/(18x)',
+      prompt:'Сначала запиши ОДЗ. Сократи общий множитель числителя и знаменателя. Запиши несократимую дробь с положительным знаменателем.',
+      fields:[excluded('0'),field('Общий множитель','6x'),...finalFraction('2x','3')],
+      hints:['18x нельзя приравнивать к ненулевому числу без проверки x.','Раздели и числитель, и знаменатель на 6x в пределах ОДЗ.'],
+      explain:'При x≠0 сокращаем 6x и получаем 2x/3. При x=0 исходная дробь по-прежнему не определена.'
+    },
+    {
+      id:'cancel-square', title:'Формула разности квадратов помогает сокращению', expression:'(x² − 9)/(x − 3)',
+      prompt:'Запиши ОДЗ, затем два множителя числителя с положительными коэффициентами при x. Сократи общий множитель и запиши результат без знаменателя. Порядок множителей произвольный.',
+      fields:[excluded('3'),field('Первый множитель числителя','x-3'),field('Второй множитель числителя','x+3'),field('Упрощённое выражение','x+3')],
+      variants:[['3','x+3','x-3','x+3']],
+      hints:['В числителе разность квадратов.','После сокращения не возвращай исключённое значение 3 в область определения.'],
+      explain:'(x²−9)/(x−3)=(x−3)(x+3)/(x−3)=x+3 только при x≠3.'
+    },
+    {
+      id:'cancel-two-denominator', title:'Два исходных запрета сохраняются', expression:'(x² − 4)/(x² + x − 6)',
+      prompt:'Запиши все исключённые значения. Разложи знаменатель на два двучлена с положительными коэффициентами при x. Затем сократи дробь и запиши несократимые числитель и знаменатель с положительным старшим коэффициентом.',
+      fields:[excluded('-3;2'),field('Первый множитель знаменателя','x-2'),field('Второй множитель знаменателя','x+3'),...finalFraction('x+2','x+3')],
+      variants:[['-3;2','x+3','x-2','x+2','x+3']],
+      hints:['Найди два числа с суммой 1 и произведением −6.','В числителе разность квадратов. После сокращения x−2 остаются оба исходных ограничения.'],
+      explain:'(x−2)(x+2)/((x−2)(x+3))=(x+2)/(x+3), но x≠2 и x≠−3.'
+    },
+    {
+      id:'illegal-cancel', title:'Проверка ошибочного сокращения слагаемых', expression:'(x + 6)/(x + 3) ≟ 6/3',
+      prompt:'Ученик «сократил» x в двух суммах. Запиши ОДЗ, вычисли левую часть при x=1 и сравни с правой. Введи точные числа, не округляй.',
+      fields:[excluded('-3'),numberField('Левая часть при x = 1','7/4'),numberField('Правая часть','2')],
+      hints:['Сокращать можно только общие множители всего числителя и знаменателя.','Подставь 1 в обе части. Для опровержения тождества достаточно одного допустимого контрпримера.'],
+      explain:'7/4≠2, поэтому тождество неверно. Слагаемое x не является общим множителем сумм.'
+    },
+    {
+      id:'same-denominator', title:'Сложение с одинаковыми знаменателями', expression:'(3x − 1)/(x + 2) + (x + 5)/(x + 2)',
+      prompt:'Запиши ОДЗ, сложи числители и сохрани общий знаменатель. Запиши итоговую несократимую дробь.',
+      fields:[excluded('-2'),...finalFraction('4x+4','x+2')],
+      hints:['Знаменатель общий, его не нужно складывать.','В числителе сложи 3x и x, затем −1 и 5.'],
+      explain:'(4x+4)/(x+2), x≠−2. Общего неконстантного множителя у числителя и знаменателя нет.'
+    },
+    {
+      id:'different-denominators', title:'Приведение к общему знаменателю', expression:'1/(x − 2) + 3/(x + 2)',
+      prompt:'Запиши ОДЗ, дополнительные множители первой и второй дробей, затем числитель и знаменатель результата в стандартном виде.',
+      fields:[excluded('-2;2'),field('Дополнительный множитель первой дроби','x+2'),field('Дополнительный множитель второй дроби','x-2'),...finalFraction('4x-4','x²-4')],
+      hints:['Общий знаменатель — произведение двух исходных двучленов.','Числитель: 1·(x+2)+3·(x−2). Раскрой и приведи.'],
+      explain:'(x+2+3x−6)/((x−2)(x+2))=(4x−4)/(x²−4), x≠±2.'
+    },
+    {
+      id:'multiply-fractions', title:'Умножение дробей и сохранение ОДЗ', expression:'(x² − 4)/(x + 1) · (x + 1)/(x − 2)',
+      prompt:'Найди запреты по обоим исходным знаменателям, разложи x²−4, затем сократи произведение и запиши итоговое выражение.',
+      fields:[excluded('-1;2'),field('Множитель x²−4, совпадающий со вторым знаменателем','x-2'),field('Другой множитель','x+2'),field('Итоговое выражение','x+2')],
+      hints:['Оба исходных знаменателя должны быть ненулевыми.','Разность квадратов даёт два множителя. Сокращение не отменяет первоначальных запретов.'],
+      explain:'При x≠−1,2 произведение равно x+2.'
+    },
+    {
+      id:'divide-fractions', title:'Делитель тоже должен быть ненулевым', expression:'(x² − 9)/(x + 2) : (x − 3)/(x + 2)',
+      prompt:'Найди все исключённые значения с учётом того, что делить на ноль нельзя. Запиши числитель и знаменатель обратной дроби, затем упрощённый результат.',
+      fields:[excluded('-2;3'),field('Числитель обратной дроби','x+2'),field('Знаменатель обратной дроби','x-3'),field('Итоговое выражение','x+3')],
+      hints:['Проверь оба знаменателя и числитель дроби-делителя.','При делении умножь на обратную дробь, затем сократи общие множители.'],
+      explain:'x≠−2 (оба знаменателя), x≠3 (делитель равен нулю). После умножения на (x+2)/(x−3) получаем x+3.'
+    },
+    {
+      id:'independent-rational', title:'Самостоятельно: преобразование рационального выражения', expression:'(x² − 9)/(x − 3) − (2x + 6)/(x + 3)', checkpoint:true,
+      prompt:'Без подсказок запиши ОДЗ, упрости отдельно обе дроби и найди их разность. Сохрани запреты исходного выражения.',
+      fields:[excluded('-3;3'),field('Первая дробь после сокращения','x+3'),field('Вторая дробь после сокращения','2'),field('Разность','x+1')],
+      explain:'ОДЗ: x≠−3,3. Первая дробь равна x+3, вторая 2, поэтому разность x+1, но не при исключённых значениях.'
+    }
+  ];
+  const applicationSteps = [
+    {
+      id:'linear', title:'Равносильные преобразования уравнения', expression:'3(2x − 1) − 2(x + 4) = x + 7',
+      prompt:'Раскрой скобки слева. Перенеси члены с x влево, числа вправо. Запиши обе стороны полученного уравнения, корень и проверку подстановкой в исходное уравнение.',
+      fields:[field('Левая часть после упрощения','4x-11'),field('Левая часть после переноса','3x'),numberField('Правая часть после переноса','18'),rootSet('Корень','6'),numberField('Значение каждой исходной части при корне','13')],
+      hints:['Минус перед 2 умножает оба члена второй скобки.','Прибавь 11 к обеим частям, вычти x из обеих частей.'],
+      explain:'4x−11=x+7; 3x=18; x=6. Обе исходные части равны 13.'
+    },
+    {
+      id:'zero-product', title:'Произведение равно нулю', expression:'(2x − 3)(x + 4) = 0',
+      prompt:'Приравняй каждый множитель к нулю. Укажи корень первого, корень второго и полное множество решений.',
+      fields:[numberField('Корень первого множителя','3/2'),numberField('Корень второго множителя','-4'),rootSet('Все корни','-4;3/2')],
+      hints:['Произведение равно нулю, если хотя бы один множитель равен нулю.','Реши два линейных уравнения отдельно.'],
+      explain:'2x−3=0 или x+4=0; x=3/2 или x=−4.'
+    },
+    {
+      id:'square-equation', title:'Уравнение, сводящееся к квадрату', expression:'x² − 6x + 9 = 0',
+      prompt:'Распознай квадрат двучлена с положительным коэффициентом при x и найди корни.',
+      fields:[field('Двучлен под квадратом','x-3'),rootSet('Все корни','3')],
+      hints:['Проверь крайние квадраты и удвоенное произведение.','Квадрат действительного числа равен нулю только при нулевом основании.'],
+      explain:'(x−3)²=0, поэтому единственный корень 3.'
+    },
+    {
+      id:'excluded-root', title:'Почему после сокращения может исчезнуть корень', expression:'(x² − 4)/(x − 2) = 4',
+      prompt:'Укажи ОДЗ, упрощённую левую часть, кандидата из полученного уравнения и множество решений исходного уравнения.',
+      fields:[excluded('2'),field('Упрощённая левая часть','x+2'),rootSet('Кандидат','2'),rootSet('Корни исходного уравнения','нет')],
+      hints:['До сокращения исходный знаменатель не может быть нулём.','Кандидат должен принадлежать исходной ОДЗ.'],
+      explain:'При x≠2 имеем x+2=4, откуда кандидат 2. Он исключён; исходное уравнение не имеет корней.'
+    },
+    {
+      id:'numerator-roots', title:'Нуль дроби и допустимый корень', expression:'(x² − 5x + 6)/(x − 2) = 0',
+      prompt:'Запиши ОДЗ и оба корня числителя. Отбери корни исходного уравнения.',
+      fields:[excluded('2'),rootSet('Корни числителя','2;3'),rootSet('Корни исходного уравнения','3')],
+      hints:['Дробь равна нулю, если числитель равен нулю, а знаменатель — нет.','Числитель раскладывается на (x−2)(x−3).'],
+      explain:'Числитель равен нулю при 2 и 3; x=2 запрещён. Остаётся x=3.'
+    },
+    {
+      id:'rational-equation', title:'Уравнение с разными знаменателями', expression:'2/(x − 1) = 3/(x + 1)',
+      prompt:'Сначала зафиксируй ОДЗ. Умножь обе части на общий знаменатель и раскрой. Найди корни и проверь точное значение каждой исходной части.',
+      fields:[excluded('-1;1'),field('Левая часть после умножения','2x+2'),field('Правая часть после умножения','3x-3'),rootSet('Корни','5'),numberField('Значение обеих исходных частей','1/2')],
+      hints:['Общий знаменатель ненулевой на ОДЗ.','Слева остаётся 2(x+1), справа 3(x−1).'],
+      explain:'x≠±1; 2x+2=3x−3; x=5. Проверка: 2/4=3/6=1/2.'
+    },
+    {
+      id:'negative-inequality', title:'Неравенство и отрицательный множитель', expression:'−2(x − 3) ≥ 8',
+      prompt:'Раскрой левую часть, перенеси свободный член вправо и реши неравенство. Запиши решение интервалом; при делении на отрицательное число проверь знак.',
+      fields:[field('Левая часть после раскрытия','-2x+6'),numberField('Правая часть после переноса','2'),intervals('(-∞;-1]')],
+      hints:['После вычитания 6 из обеих частей получаем −2x≥2.','При делении обеих частей на −2 знак неравенства меняется.'],
+      explain:'−2x≥2, значит x≤−1. Ответ (−∞;−1].'
+    },
+    {
+      id:'rational-sign', title:'Метод интервалов: нуль и запрещённая точка', expression:'(x − 2)/(x + 1) ≥ 0',
+      prompt:'Найди исключённое значение и нуль числителя. Определи знаки дроби на трёх интервалах. Запиши решение: нуль числителя включается, запрещённая точка никогда не включается.',
+      fields:[excluded('-1'),rootSet('Нули числителя','2'),sign('Знак на (−∞;−1)','+'),sign('Знак на (−1;2)','-'),sign('Знак на (2;+∞)','+'),intervals('(-∞;-1)∪[2;+∞)')],
+      hints:['Раздели прямую точками −1 и 2; возьми по допустимому числу из каждого интервала.','В исходном неравенстве знак ≥, поэтому нуль числителя допустим, но знаменатель не может быть нулём.'],
+      explain:'На интервалах знаки +, −, +. x=2 входит, x=−1 исключён. Ответ (−∞;−1)∪[2;+∞).'
+    },
+    {
+      id:'independent-inequality', title:'Самостоятельно: строгое дробное неравенство', expression:'(x + 3)/(x − 2) < 0', checkpoint:true,
+      prompt:'Без подсказок найди ОДЗ, нули числителя, знаки на трёх интервалах и запиши множество решений.',
+      fields:[excluded('2'),rootSet('Нули числителя','-3'),sign('Знак на (−∞;−3)','+'),sign('Знак на (−3;2)','-'),sign('Знак на (2;+∞)','+'),intervals('(-3;2)')],
+      explain:'Дробь отрицательна только между −3 и 2. При строгом знаке нуль числителя не включается, а 2 запрещено. Ответ (−3;2).'
+    },
+    {
+      id:'independent-identity-domain', title:'Самостоятельно: тождество на ОДЗ', expression:'(x² − 9)/(x + 3) = x − 3', checkpoint:true,
+      prompt:'Найди исключённое значение, упрости левую часть, запиши все решения исходного уравнения интервалами. Не объявляй решением все действительные числа без проверки исходного знаменателя.',
+      fields:[excluded('-3'),field('Упрощённая левая часть','x-3'),intervals('(-∞;-3)∪(-3;+∞)')],
+      explain:'Левая часть равна x−3 при x≠−3. Уравнение истинно на всей ОДЗ: (−∞;−3)∪(−3;+∞).'
+    }
+  ];
+
+  // Exact numerical notation for roots and boundary values. No evaluation,
+  // floating-point tolerance, or arbitrary code. Fractions/decimals are reduced.
+  function gcd(a,b) { a=a<0n?-a:a; b=b<0n?-b:b; while(b){const t=a%b;a=b;b=t;} return a; }
+  function normalizeMath(value) { return value.trim().replace(/[−–—]/g,'-').replace(/\s+/g,''); }
+  function parseNumber(value) {
+    const s=normalizeMath(value);
+    if (!s || s.length>240) return null;
+    let n,d;
+    const fraction=s.match(/^([+-]?\d+)\/([+-]?\d+)$/);
+    const decimal=s.match(/^([+-]?)(\d+)(?:[.,](\d+))?$/);
+    if(fraction){n=BigInt(fraction[1]);d=BigInt(fraction[2]);}
+    else if(decimal){const f=decimal[3]||'';d=10n**BigInt(f.length);n=BigInt(decimal[2]+f)*(decimal[1]==='-'?-1n:1n);}
+    else return null;
+    if(d===0n)return null;
+    if(d<0n){n=-n;d=-d;}
+    const g=gcd(n,d);return {n:n/g,d:d/g};
+  }
+  const numberKey = v => v.n+'/'+v.d;
+  function parseSet(value) {
+    let s=normalizeMath(value).toLowerCase();
+    if (s==='нет'||s==='∅'||s==='{}'||s==='пусто') return [];
+    if (s.startsWith('{')&&s.endsWith('}')) s=s.slice(1,-1);
+    if (!s) return null;
+    const parts=s.split(';').map(parseNumber);
+    if(parts.some(v=>v===null))return null;
+    return [...new Set(parts.map(numberKey))].sort();
+  }
+  function endpoint(value) {
+    const s=value.toLowerCase();
+    if (/^-?(?:∞|inf|infty)$/.test(s)||/^\+(?:∞|inf|infty)$/.test(s)) return {inf:s[0]==='-'?-1:1};
+    return parseNumber(s);
+  }
+  function compareEndpoints(a,b) {
+    if(a.inf||b.inf)return (a.inf||0)-(b.inf||0);
+    const k=a.n*b.d-b.n*a.d;return k<0n?-1:k>0n?1:0;
+  }
+  function parseIntervals(value) {
+    const s=normalizeMath(value).replace(/[Uu∪]/g,'∪');
+    if (!s || s.length>240) return null;
+    const parsed=[];
+    for(const part of s.split('∪')){
+      const left=part[0],right=part[part.length-1];
+      if(!['(','['].includes(left)||![')',']'].includes(right))return null;
+      const pieces=part.slice(1,-1).split(';');if(pieces.length!==2)return null;
+      const a=endpoint(pieces[0]),b=endpoint(pieces[1]);
+      if(!a||!b||a.inf===1||b.inf===-1||compareEndpoints(a,b)>=0)return null;
+      if((a.inf&&left!=='(')||(b.inf&&right!==')'))return null;
+      parsed.push({a,b,lc:left==='[',rc:right===']'});
+    }
+    parsed.sort((x,y)=>compareEndpoints(x.a,y.a)||Number(y.lc)-Number(x.lc));
+    // The exercises request an ordinary union of intervals; coalesce equivalent
+    // overlapping or touching intervals when the common point is included.
+    const merged=[];
+    for(const item of parsed){
+      const last=merged[merged.length-1];const cmp=last?compareEndpoints(last.b,item.a):-1;
+      if(!last||cmp<0||(cmp===0&&!last.rc&&!item.lc)){merged.push({...item});continue;}
+      const end=compareEndpoints(last.b,item.b);
+      if(end<0){last.b=item.b;last.rc=item.rc;}
+      else if(end===0)last.rc=last.rc||item.rc;
+    }
+    const key=v=>v.inf?(v.inf<0?'-∞':'+∞'):numberKey(v);
+    return merged.map(v=>(v.lc?'[':'(')+key(v.a)+';'+key(v.b)+(v.rc?']':')')).join('∪');
+  }
+
   // The existing exact checker deliberately accepts repeated factors such as xx.
   // For this particular lesson, also require every monomial to have one occurrence
   // of each variable (with a power if needed). Do not alter the legacy checker.
@@ -150,6 +435,13 @@
   }
   function fieldStatus(value, f) {
     if (typeof value !== 'string' || !value.trim()) return 'empty';
+    if (f.form === 'number') {const a=parseNumber(value),b=parseNumber(f.expected);return a&&b&&numberKey(a)===numberKey(b)?'correct':'number';}
+    if (f.form === 'domain'||f.form === 'roots') {
+      const a=parseSet(value),b=parseSet(f.expected);
+      return a&&b&&JSON.stringify(a)===JSON.stringify(b)?'correct':f.form;
+    }
+    if (f.form === 'intervals') {const a=parseIntervals(value),b=parseIntervals(f.expected);return a&&a===b?'correct':'intervals';}
+    if (f.form === 'sign') return normalizeMath(value)===f.expected?'correct':'sign';
     if (f.form === 'degree') return /^\d+$/.test(value.trim()) && BigInt(value.trim()) === BigInt(f.expected) ? 'correct' : 'degree';
     const status = MathChecker.check(value, f.expected, f.form).status;
     return status === 'correct' && repeatedLetter(value) ? 'powers' : status;
@@ -183,6 +475,11 @@
     powers: 'Значение верно. Повторяющиеся буквы запиши одной буквой со степенью.',
     degree: 'Сравни степени членов уже приведённого многочлена. Для ab учитывай обе буквы.',
     maxfactor: 'Произведение равно исходному многочлену, но нужен наибольший общий одночленный множитель с положительным коэффициентом.',
+    number: 'Введи точное число (целое, десятичное или обыкновенную дробь). Проверь вычисление.',
+    domain: 'Проверь все исходные знаменатели и ограничения. При делении проверь, не равен ли делитель нулю. Перечисли исключённые числа через ;.',
+    roots: 'Проверь полноту множества корней, а в дробном уравнении — исходную ОДЗ. Числа разделяй ;, для пустого множества введи «нет».',
+    intervals: 'Проверь границы, знаки и включение конечных точек. Записывай интервалы через ;, объединение через ∪, бесконечность через ∞ или inf.',
+    sign: 'Подставь допустимое число из этого интервала. Введи только + или −.',
     wrong: 'Проверь знак, коэффициент и буквенную часть в этой строке.'
   };
   function cleanRecord(raw, step) {
@@ -312,9 +609,28 @@
   }
   return { steps, storageKey, grade, createStore, cleanProgress, open };
   }
+
+  const applications = createWorkshop(applicationSteps, applicationKey, {
+    summaryId:'applications', stepPrefix:'application-', backLabel:'← Итоги урока об алгебраических дробях',
+    summaryTitle:'Итоги: уравнения и неравенства',
+    links:[['Линейные уравнения','../equations/linear-pilot/'],['Макарычев 8 · Квадратный трёхчлен','../school/makarychev8/#lesson/p24'],['Макарычев 8 · Дробные рациональные уравнения','../school/makarychev8/#lesson/p26'],['Никольский · Рациональные уравнения','../school/nikolsky10/#lesson/p16'],['Никольский · Метод интервалов','../school/nikolsky10/#lesson/p18'],['Никольский · Рациональные неравенства','../school/nikolsky10/#lesson/p19'],['Курс ОГЭ','oge-course/index.html'],['Профильный ЕГЭ','../ege-profil/']]
+  });
+  const rational = createWorkshop(rationalSteps, rationalKey, {
+    summaryId:'rational', stepPrefix:'rational-', backLabel:'← Итоги урока о формулах',
+    summaryTitle:'Итоги: алгебраические дроби и ОДЗ',
+    links:[['Макарычев 8 · Рациональные выражения','../school/makarychev8/#lesson/p01'],['§2 · Сокращение дробей','../school/makarychev8/#lesson/p02'],['§4 · Общий знаменатель','../school/makarychev8/#lesson/p04'],['§5 · Умножение','../school/makarychev8/#lesson/p05'],['§6 · Деление дробей','../school/makarychev8/#lesson/p06'],['§7 · Преобразование','../school/makarychev8/#lesson/p07']],
+    nextId:'rationalToApplications', nextLabel:'Дальше: уравнения и неравенства', next:applications.open
+  });
+  const identities = createWorkshop(identitySteps, identityKey, {
+    summaryId:'identities', stepPrefix:'identity-', backLabel:'← Итоги урока о группировке',
+    summaryTitle:'Итоги: формулы и разложение на множители',
+    links:[['§32 · Квадраты и кубы','../school/makarychev7/#lesson/p32'],['§33 · Распознавание квадрата','../school/makarychev7/#lesson/p33'],['§36 · Сумма и разность кубов','../school/makarychev7/#lesson/p36'],['§37 · Тождественные преобразования','../school/makarychev7/#lesson/p37'],['Лаборатория формул сокращённого умножения','formuly-sokrashchennogo-umnozheniya.html']],
+    nextId:'identityToRational', nextLabel:'Дальше: алгебраические дроби и ОДЗ', next:rational.open
+  });
   const grouping = createWorkshop(groupingSteps, groupingKey, {
     summaryId: 'grouping', stepPrefix: 'grouping-', backLabel: '← Итоги урока о многочленах',
     summaryTitle: 'Итоги: группировка и первые формулы',
+    nextId:'groupingToIdentities', nextLabel:'Дальше: формулы и разложение на множители', next:identities.open,
     links: [['§29 · Умножение многочленов','../school/makarychev7/#lesson/p29'],['§30 · Группировка','../school/makarychev7/#lesson/p30'],['§32 · Квадраты и кубы двучленов','../school/makarychev7/#lesson/p32'],['§33 · Квадрат суммы и разности','../school/makarychev7/#lesson/p33'],['§34 · Сумма и разность','../school/makarychev7/#lesson/p34'],['§35 · Разность квадратов','../school/makarychev7/#lesson/p35'],['§36 · Сумма и разность кубов','../school/makarychev7/#lesson/p36'],['Лаборатория формул сокращённого умножения','formuly-sokrashchennogo-umnozheniya.html']]
   });
   const polynomials = createWorkshop(polynomialSteps, storageKey, {
@@ -323,5 +639,5 @@
     links: [['§25 · Стандартный вид', '../school/makarychev7/#lesson/p25'], ['§27 · Умножение одночлена', '../school/makarychev7/#lesson/p27'], ['§28 · Общий множитель', '../school/makarychev7/#lesson/p28'], ['§30 · Группировка', '../school/makarychev7/#lesson/p30']],
     nextId: 'polyToGrouping', nextLabel: 'Дальше: группировка и первые формулы', next: grouping.open
   });
-  return {...polynomials, grouping};
+  return {...polynomials, grouping, identities, rational, applications};
 });
