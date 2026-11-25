@@ -36,7 +36,7 @@ jobs:
       - name: Install isolated Python browser tools
         run: |
           python3 -m venv "$RUNNER_TEMP/factory-venv"
-          "$RUNNER_TEMP/factory-venv/bin/python" -m pip install playwright==1.62.1
+          "$RUNNER_TEMP/factory-venv/bin/python" -m pip install playwright==1.62.0
           "$RUNNER_TEMP/factory-venv/bin/python" -m playwright install --with-deps chromium
       - name: Legacy modes, written lesson, offline and two-tab progress
         run: |
