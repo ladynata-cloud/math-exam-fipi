@@ -101,6 +101,7 @@
 
   defs.squareMeasure={
     title:'Измерения квадрата',values:{side:4,focus:'sides',compare:false},controls:[['side','Измени сторону квадрата',2,6,0.5,'']],
+    controlsFor:p=>p.neutralSideControl===true?[['side','Измени длину стороны',2,6,0.5,'']]:defs.squareMeasure.controls,
     sample:p=>({points:{A:[0,0],B:[p.side,0],C:[p.side,p.side],D:[0,p.side],O:[p.side/2,p.side/2]},metrics:{side:p.side,area:p.side*p.side,perimeter:4*p.side,diagonal:p.side*Math.SQRT2,diagonalProduct:2*p.side*p.side,angle:90,otherArea:16}}),
     render:s=>{const p=s.values,P=s.points,M=s.metrics,u=p.compare?25:36,T=q=>[p.compare?315+q[0]*u:280+(q[0]-p.side/2)*u,270-q[1]*u],names=['A','B','C','D'],points=names.map(n=>T(P[n])),groups=equalityGroups([p.side,p.side,p.side,p.side,...(p.compare?[4,4,4,4]:[])]);let body=poly(points)+labelPoints(P,names,T)+polygonMarks(points,names,{sideGroups:groups.slice(0,4)});
       if(p.focus==='diagonals')body+=linked('AC',line(T(P.A),T(P.C),AMBER)+offsetTick(T(P.A),T(P.C),2,AMBER),'AC')+linked('BD',line(T(P.B),T(P.D),AMBER)+offsetTick(T(P.B),T(P.D),2,AMBER),'BD')+dot(T(P.O))+text(T(P.O)[0]+24,T(P.O)[1]+10,'O')+linked('diagonal-angle',rightMark(T(P.A),T(P.O),T(P.B),GREEN),'Прямой угол между диагоналями');

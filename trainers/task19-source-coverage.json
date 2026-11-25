@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "auditDate": "2026-10-21",
+  "auditDate": "2026-11-16",
   "officialBank": {
     "complete": false,
-    "status": "Rechecked 21 October 2026: the official mathematics bank returned HTTP503 or timed out in public HTTP/web/cloud-browser access. Its current question set could not be enumerated. The separately downloaded official 2027 draft demo provides 3 assertions, not an inventory of the live bank; authored and secondary-source coverage does not certify full FIPI coverage.",
+    "status": "Rechecked for the 16 November 2026 audit (retrievals 15 November UTC): four official public endpoints returned HTTP 503 and web fetch timed out. Zero current live-bank question bodies were read, and its complete contents remain unknown. Separately verified official PDFs contain 39 assertion occurrences. The 150-task secondary reproduction and 41-task cross-check are not verification of the current official live bank.",
     "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
     "indexUrl": "https://fipi.ru/oge/otkrytyy-bank-zadaniy-oge",
     "recommendedIds": [
@@ -134,7 +134,7 @@
       }
     ],
     "note": "These34 IDs are official preparation recommendations, not an inventory of the complete open bank; task texts cannot be inferred from IDs.",
-    "checkedAt": "2026-10-21",
+    "checkedAt": "2026-11-16",
     "currentIndexTarget": "https://oge.fipi.ru/bank/index.php?crproj=BD98FF424631BFE24D6010A4B1266CA8",
     "indexSnapshotSha256": "3e02fde781d0a77dae885c86e0b31ad35e19c3ba8eb2ca30ebd3e6d530f88406",
     "indexRetrievedAt": "2026-10-21T00:02:54.701703+00:00",
@@ -165,10 +165,39 @@
         "date": "2026-10-21",
         "result": "upstream connect error or disconnect/reset before headers. reset reason: connection timeout",
         "botDetectionObserved": false
+      },
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0",
+        "date": "2026-11-16",
+        "retrievedAt": "2026-11-15T20:56:08.890802+00:00",
+        "result": "HTTP503 Service Unavailable"
+      },
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/index.php?crproj=BD98FF424631BFE24D6010A4B1266CA8",
+        "date": "2026-11-16",
+        "retrievedAt": "2026-11-15T20:56:08.890281+00:00",
+        "result": "HTTP503 Service Unavailable"
+      },
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/",
+        "date": "2026-11-16",
+        "retrievedAt": "2026-11-15T20:56:08.890521+00:00",
+        "result": "HTTP503 Service Unavailable"
+      },
+      {
+        "method": "public-http",
+        "url": "https://oge.fipi.ru/bank/questions.php?proj=DE0E276E497AB3784C3FC4CC20248DC0&init_filter_themes=1",
+        "date": "2026-11-16",
+        "retrievedAt": "2026-11-15T20:57:18.845871+00:00",
+        "result": "HTTP503 Service Unavailable"
       }
     ],
     "recommendedIdsRecheckedAt": "2026-10-21",
-    "recommendedIdsChanged": false
+    "recommendedIdsChanged": false,
+    "examSourceAudit": "task19-exam-source-coverage.json"
   },
   "sources": [
     {
@@ -3663,11 +3692,131 @@
         }
       ],
       "visibleWatermark": "math100.ru"
+    },
+    {
+      "id": "audited-mirror-additions-20261116",
+      "type": "third-party-bank-reproduction-not-official-live-bank",
+      "url": "https://sdamgia.online/oge/matematika/zadanie-19",
+      "reviewedAt": "2026-11-16",
+      "sourceHashSha256": "31c6118d6093316683d2498a0064f64586ce31e58fbb7af3732177060c4413fd",
+      "sourceNote": "Ten missing direct formulations in the finite 150-task secondary sample. Each was read on sdamgia.online and cross-checked on gia.guide. Mirror item IDs are not evidence that their current bodies were read from the official live bank. The complete 669-observation coverage map is task19-exam-source-coverage.json; commercial source texts and PDFs are not republished.",
+      "entries": [
+        {
+          "sourceId": "978344-19-2",
+          "text": "Диагональ равнобедренной трапеции делит её на два равных треугольника.",
+          "truth": false,
+          "cardId": "isosceles_trapezoid_diagonal_equal_triangles",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/okruzhnosti-chetryokhugoleniki-treugoleniki-fipi-978344",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/978344/info/",
+          "semanticTypeId": "mirror-semantic-020",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "269D1C-19-3",
+          "text": "Внешний угол треугольника больше не смежного с ним внутреннего угла.",
+          "truth": true,
+          "cardId": "triangle_exterior_gt_nonadjacent",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/pr-me-i-ugl-chetryokhugoleniki-treugoleniki-fipi-269d1c",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/269D1C/info/",
+          "semanticTypeId": "mirror-semantic-088",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "C7D0DF-19-3",
+          "text": "Внешний угол треугольника равен сумме его внутренних углов.",
+          "truth": false,
+          "cardId": "triangle_exterior_sum_all_angles",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/okruzhnosti-chetryokhugoleniki-treugoleniki-fipi-c7d0df",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/C7D0DF/info/",
+          "semanticTypeId": "mirror-semantic-100",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "A9D5C9-19-1",
+          "text": "Всякий равносторонний треугольник является равнобедренным.",
+          "truth": true,
+          "cardId": "equilateral_triangle_is_isosceles",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/treugoleniki-okruzhnosti-chetryokhugoleniki-fipi-a9d5c9",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/A9D5C9/info/",
+          "semanticTypeId": "mirror-semantic-105",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "E4BA92-19-2",
+          "text": "В любой прямоугольник можно вписать окружность.",
+          "truth": false,
+          "cardId": "rectangle_always_has_incircle",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/pr-me-i-ugl-chetryokhugoleniki-treugoleniki-fipi-e4ba92",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/E4BA92/info/",
+          "semanticTypeId": "mirror-semantic-108",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "FA4567-19-1",
+          "text": "Все прямоугольные треугольники подобны.",
+          "truth": false,
+          "cardId": "right_triangles_always_similar",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/treugoleniki-pr-me-i-ugl-chetryokhugoleniki-fipi-fa4567",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/FA4567/info/",
+          "semanticTypeId": "mirror-semantic-113",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "EB6B6A-19-2",
+          "text": "Всякий равносторонний треугольник является остроугольным.",
+          "truth": true,
+          "cardId": "equilateral_triangle_is_acute",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/pr-me-i-ugl-treugoleniki-chetryokhugoleniki-fipi-eb6b6a",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/EB6B6A/info/",
+          "semanticTypeId": "mirror-semantic-118",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "F34539-19-1",
+          "text": "Диагонали прямоугольной трапеции равны.",
+          "truth": false,
+          "cardId": "right_trapezoid_diagonals_equal",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/chetryokhugoleniki-i-treugoleniki-fipi-f34539",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/F34539/info/",
+          "semanticTypeId": "mirror-semantic-119",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "B51738-19-1",
+          "text": "Если в параллелограмме диагонали равны и перпендикулярны, то этот параллелограмм является квадратом.",
+          "truth": true,
+          "cardId": "parallelogram_equal_perpendicular_diagonals_square",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/chetryokhugoleniki-pr-me-i-ugl-treugoleniki-fipi-b51738",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/B51738/info/",
+          "semanticTypeId": "mirror-semantic-121",
+          "officialBankBodyVerified": false
+        },
+        {
+          "sourceId": "E3F78B-19-1",
+          "text": "Если диагонали параллелограмма равны, то этот параллелограмм является квадратом.",
+          "truth": false,
+          "cardId": "parallelogram_equal_diagonals_square",
+          "matchType": "exact",
+          "url": "https://sdamgia.online/oge/matematika/zadanie-19/chetryokhugoleniki-i-treugoleniki-fipi-e3f78b",
+          "corroboratingUrl": "https://gia.guide/math_oge/19/E3F78B/info/",
+          "semanticTypeId": "mirror-semantic-122",
+          "officialBankBodyVerified": false
+        }
+      ]
     }
   ],
   "counts": {
-    "uniqueCards": 234,
-    "sourceEntries": 467,
+    "uniqueCards": 244,
+    "sourceEntries": 477,
     "summerAdded": 36,
     "referenceAdded": 30,
     "summerCovered": 178,
@@ -3675,6 +3824,7 @@
     "officialDemoCovered": 3,
     "userQuestionSetsCovered": 4,
     "userQuestionAssertionsCovered": 12,
-    "officialDemoAdded": 1
+    "officialDemoAdded": 1,
+    "auditedMirrorAdded": 10
   }
 }
