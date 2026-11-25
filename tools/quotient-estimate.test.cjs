@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const Q = require('../trainers/oge-basics/multiplication-division/quotient-estimate-core.js');
+const H = require('../trainers/oge-basics/multiplication-division/quotient-estimate-hundreds.js');
 const D = require('../trainers/oge-basics/multiplication-division/division-lab-core.js');
 const nearestTen = n => { const low = n - n % 10; return n - low < 5 ? low : low + 10; };
 
@@ -69,6 +70,36 @@ function audit(n,d) {
 test('all published examples are valid one-digit plans with checked arithmetic', () => {
   assert.ok(Q.examples.length >= 30);
   Q.examples.forEach(([n,d]) => audit(n,d));
+});
+
+test('practice to hundreds proves exact quotient digits with both two- and three-digit divisors', () => {
+  const first = H.make(1);
+  const examples = new Set();
+  for (let seed = 1; seed <= 23; seed++) {
+    const {task, steps} = H.make(seed);
+    const [, nText, dText] = task.prompt.match(/(\d+) : (\d+)/);
+    const n = Number(nText), d = Number(dText);
+    const digit = Number(steps.at(-1).answer);
+    const divisorPlace = d < 100 ? 10 : 100;
+    const nearest = (value, place) => {
+      const low = value - value % place;
+      return value - low < place / 2 ? low : low + place;
+    };
+    assert.match(steps[1].prompt, /до сотен/);
+    assert.deepEqual(steps.slice(0, 3).map(step => Number(step.answer)), [nearest(d, divisorPlace), nearest(n, 100), nearest(n, 100) / nearest(d, divisorPlace)]);
+    assert.ok(steps.every(step => D.check(step.answer, step)));
+    assert.ok(digit >= 0 && digit <= 9 && d * digit <= n && n < d * (digit + 1));
+    assert.ok(steps.some(step => step.kind === 'product' && Number(step.answer) === d * digit));
+    assert.ok(steps.some(step => step.kind === 'product' && Number(step.answer) === d * (digit + 1)) || digit === 9 || d * digit === n);
+    examples.add(task.prompt);
+  }
+  assert.equal(examples.size, 22);
+  assert.deepEqual(H.make(23), first);
+  assert.deepEqual(first.steps.slice(0, 3).map(step => step.answer), ['50', '400', '8']);
+  assert.deepEqual(first.steps.filter(step => step.kind === 'product').map(step => step.answer), ['416', '364']);
+  assert.equal(first.steps.at(-1).answer, '7');
+  assert.equal(D.check('8', first.steps.at(-1)), false, 'rounded estimate does not satisfy the final step');
+  assert.deepEqual(H.make(2).steps.filter(step => step.kind === 'product').map(step => step.answer), ['92', '138']);
 });
 
 test('bounded exhaustive oracle over eligible two-digit divisors and current numbers', () => {

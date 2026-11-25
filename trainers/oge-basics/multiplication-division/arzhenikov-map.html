@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Город маленьких дел — математическая игра по мотивам Арженикова | MathExam</title>
+  <meta name="description" content="Бесплатная математика по мотивам Арженикова: предметные истории, 24 исследования, карта с приближением и переход к алгебре и геометрии. Занятия онлайн и без интернета.">
+  <meta name="theme-color" content="#235b49">
+  <link rel="canonical" href="https://mathexam.space/trainers/oge-basics/multiplication-division/arzhenikov-map.html">
+  <link rel="stylesheet" href="arzhenikov-map.css">
+  <link rel="stylesheet" href="arzhenikov-workshop.css">
+  <link rel="stylesheet" href="arzhenikov-adventure.css">
+  <link rel="stylesheet" href="arzhenikov-harbor.css">
+  <link rel="stylesheet" href="arzhenikov-art.css">
+  <link rel="stylesheet" href="arzhenikov-discoveries.css">
+  <link rel="stylesheet" href="arzhenikov-journeys.css">
+  <link rel="stylesheet" href="arzhenikov-courses.css">
+  <link rel="stylesheet" href="arzhenikov-completion.css">
+  <script src="arzhenikov-art.js" defer></script>
+  <script src="arzhenikov-map.js" defer></script>
+  <script src="arzhenikov-garden-bank.js" defer></script>
+  <script src="arzhenikov-life-bank.js" defer></script>
+  <script src="arzhenikov-workshop.js" defer></script>
+  <script src="arzhenikov-life-map.js" defer></script>
+  <script src="arzhenikov-garden.js" defer></script>
+  <script src="arzhenikov-harbor-bank.js" defer></script>
+  <script src="arzhenikov-harbor.js" defer></script>
+  <script src="arzhenikov-discoveries-bank.js" defer></script>
+  <script src="arzhenikov-discoveries.js" defer></script>
+  <script src="arzhenikov-adventure.js" defer></script>
+  <script src="arzhenikov-course-arithmetic.js" defer></script>
+  <script src="arzhenikov-course-algebra.js" defer></script>
+  <script src="arzhenikov-course-geometry.js" defer></script>
+  <script src="arzhenikov-course-written.js" defer></script>
+  <script src="arzhenikov-course-fractions.js" defer></script>
+  <script src="arzhenikov-course-decimals.js" defer></script>
+  <script src="arzhenikov-course-connections.js" defer></script>
+  <script src="arzhenikov-course-engine.js" defer></script>
+  <script src="arzhenikov-course-numbers.js" defer></script>
+  <script src="arzhenikov-completion-bank.js" defer></script>
+  <script src="arzhenikov-completion-engine.js" defer></script>
+  <script src="arzhenikov-completion.js" defer></script>
+  <script src="arzhenikov-journeys.js" defer></script>
+  <script src="arzhenikov-courses.js" defer></script>
+
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+</head>
+<body class="arz-adventure">
+  <header><nav aria-label="Навигация"><a class="brand" href="/" data-mathexam-home-link target="_self" aria-label="На главную MathExam">MathExam</a><span>/</span><a href="index.html">Умножение и деление</a><a class="cabinet" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/">В кабинет</a></nav></header>
+  <main>
+    <div class="intro">
+      <div class="adv-heading">
+        <span class="adv-mascot" id="adventure-mascot" aria-hidden="true">🦊</span>
+        <div><p class="adv-eyebrow" id="adventure-eyebrow">Игра с математикой</p><h1 id="adventure-title">Город маленьких дел</h1><p class="adv-subtitle" id="adventure-subtitle">Помоги друзьям. Собери 8 открыток.</p></div>
+      </div>
+      <div class="meter"><strong id="total">Пройдено 0 из 8</strong><progress id="bar" value="0" max="8" aria-label="Пройденные навыки"></progress></div>
+    </div>
+    <section id="arz-courses" aria-label="Курсы арифметики, деления, дробей, алгебры и геометрии" hidden></section>
+    <section id="journey-map" aria-label="Карта математических путешествий" hidden></section>
+    <section id="discoveries" aria-label="Бюро открытий: предскажи, проверь, объясни" hidden><div id="discoveries-play"></div></section>
+    <section id="next-course" class="bridge-course" aria-labelledby="bridge-title" hidden>
+      <h2 id="bridge-title">После арифметики — два новых пути</h2>
+      <p class="bridge-intro">Когда можешь показать действие, объяснить ответ и решить похожую задачу с другими числами, попробуй следующий шаг. В алгебре мы ищем неизвестное и записываем связи буквами. В геометрии исследуем фигуры и объясняем, почему они устроены именно так.</p>
+      <p>Исторические ориентиры — советские издания учебников А. П. Киселёва. Теперь здесь есть два вводных курса MathExam: по восемь последовательных уроков с моделями, практикой и самостоятельной проверкой. Они работают и в автономном комплекте. Полный постраничный курс Киселёва пока не создан.</p>
+      <div class="bridge-options">
+        <article class="bridge-card">
+          <h3>Алгебра</h3>
+          <p>От неизвестного числа к уравнению.</p>
+          <p><a class="bridge-map" href="#courses-algebra">Пройти 8 уроков алгебры →</a></p>
+          <ol>
+            <li><a href="/trainers/simple-equations-stepwise.html">Найди неизвестное число</a> — выбери обратное действие и проверь ответ.</li>
+            <li><a href="/trainers/oge-basics/negative-number-line.html">Исследуй числа со знаком</a> на числовой прямой.</li>
+            <li><a href="/trainers/oge-basics/order-of-operations.html">Объясни порядок действий</a>, затем <a href="/school/makarychev7/">продолжи действующий курс алгебры по Макарычеву</a>.</li>
+          </ol>
+          <a class="bridge-map" href="#journey-algebra">Приблизить путь алгебры →</a>
+          <p class="bridge-source">Источник для исторического маршрута: А. П. Киселёв. «Алгебра», часть I, под редакцией А. Н. Барсукова. Учпедгиз, 1946, 21-е издание. <a href="https://search.rsl.ru/ru/record/01005810663" target="_blank" rel="noopener">Карточка издания в РГБ ↗</a>.</p>
+        </article>
+        <article class="bridge-card">
+          <h3>Геометрия</h3>
+          <p>От рисунка и измерения к объяснению.</p>
+          <p><a class="bridge-map" href="#courses-geometry">Пройти 8 уроков геометрии →</a></p>
+          <ol>
+            <li><a href="/geometry-course/atlas/segments.html">Начни с точек и отрезков</a> — двигай, сравнивай, замечай.</li>
+            <li><a href="/geometry-course/atlas/measure-angle.html">Исследуй и измерь угол</a>.</li>
+            <li><a href="/geometry-course/atlas/triangle-sas.html">Сравни два треугольника</a>, затем <a href="/geometry-course/first-steps/">продолжи начальные темы по Атанасяну</a>.</li>
+          </ol>
+          <a class="bridge-map" href="#journey-geometry">Приблизить путь геометрии →</a>
+          <p class="bridge-source">Источник для исторического маршрута: А. П. Киселёв. «Геометрия», часть I — планиметрия, под редакцией и с дополнениями Н. А. Глаголева. Учпедгиз, 1955, 16-е издание. <a href="https://search.rsl.ru/ru/record/01005583374" target="_blank" rel="noopener">Карточка издания в РГБ ↗</a>.</p>
+        </article>
+      </div>
+      <p>Если вычисления ещё требуют тренировки, открой <a href="#courses-written">деление уголком</a>, <a href="#courses-fractions">обыкновенные дроби</a> или <a href="#courses-decimals">десятичные дроби</a>. Прежний <a href="/soviet-math/">курс арифметики по советским учебникам</a> также доступен. Можно заниматься в своём темпе.</p>
+      <p class="bridge-availability">В скачиваемый комплект входят все 82 последовательных урока, город, порт, оранжерея, деление по шагам, Бюро открытий и карта путей. Занятия по внешним ссылкам открываются онлайн бесплатно.</p>
+      <a href="#journey">← Вся карта</a>
+    </section>
+    <section id="workshop" class="workshop" aria-labelledby="workshop-title">
+      <h2 id="workshop-title" class="adv-sr-only">Истории города</h2>
+      <div id="workshop-play"><noscript>Чтобы раскладывать предметы и сохранять решения, включите JavaScript. Можно заниматься и устно. На пикнике у трёх друзей шесть яблок. Как разделить их поровну? А если положить по два яблока в пакет, сколько пакетов удастся наполнить?</noscript></div>
+      <nav id="life-map" aria-label="Карта житейских задач"></nav>
+      <div class="ws-intro">
+        <div class="adv-hud"><span><span aria-hidden="true">✦</span> <strong id="adventure-story-count">0 из 48</strong> историй</span><button type="button" id="adventure-album-link" aria-controls="adventure-album" aria-expanded="false"><span aria-hidden="true">✉</span> Открытки <strong id="adventure-postcard-count">0 из 8</strong></button></div>
+        <div id="workshop-route-progress"></div>
+      </div>
+    </section>
+    <details id="adventure-album" class="adv-album">
+      <summary><span>Альбом открытий</span><span id="adventure-album-count">0 из 8 открыток</span></summary>
+      <p class="adv-album-note" id="adventure-album-note">Открытка — за три истории и их записи. В каждом месте есть ещё три истории.</p>
+      <div class="adv-postcards" id="adventure-postcards"></div>
+      <p class="adv-album-note" id="adventure-album-message">Можно выбирать любое место и возвращаться к нему.</p>
+    </details>
+    <a class="adv-harbor-stop" id="adventure-harbor-link" href="#harbor"><span class="adv-scene" data-place="harbor" aria-hidden="true">⛴️</span><span><strong>Порт отправлений</strong><span>Хватит ли полных наборов? Куда деть остаток?</span><small id="adventure-harbor-count">12 новых миссий и своя задача</small></span><span aria-hidden="true">→</span></a>
+    <section id="division-harbor" aria-label="Порт отправлений: деление и остаток" hidden><div id="harbor-play"></div></section>
+    <aside class="journey-entry" id="journey-entry" aria-label="Новые исследования и большая карта">
+      <div><strong>А что изменится, если…</strong><p>24 истории в Бюро открытий: сначала предположи, потом проверь действием и объясни.</p></div>
+      <a class="journey-open" href="#discoveries">Открыть Бюро →</a>
+      <a href="#journey">Большая карта с приближением ↗</a>
+    </aside>
+    <aside class="course-entry" id="course-entry" aria-label="Последовательные курсы">
+      <div><strong>От первого числа — через деление и дроби к алгебре и геометрии</strong><p>82 урока: объяснение, модель, собственная запись вычислений и проверка на новых числах. Все прежние истории и занятия доступны на карте.</p></div>
+      <a href="#courses">Выбрать курс →</a>
+    </aside>
+    <section class="garden" id="garden" aria-labelledby="garden-title">
+      <div class="garden-cover">
+        <div class="canopy" aria-hidden="true"><span>🌱</span><span>🌷</span><span>🌻</span></div>
+        <div><h2 id="garden-title">Оранжерея равных групп</h2>
+        <p>Посей семена, собери букеты и рассчитай места в теплице. На каждом участке тебя ждут три задачи и новое растение для коллекции.</p>
+        <a class="garden-go" id="garden-start" href="#garden-count">Посадить первую грядку</a> <a class="garden-go" id="garden-repeat" href="#garden-review" hidden>Повторить после перерыва</a></div>
+      </div>
+      <div id="garden-play" hidden></div>
+    </section>
+    <div class="layout">
+      <details id="route" open><summary>Карта навыков</summary>
+        <ol id="skills">
+          <li><a href="#count">Считаю равными шагами</a></li>
+          <li><a href="#share">Делю поровну</a></li>
+          <li><a href="#pack">Собираю равные группы</a></li>
+          <li><a href="#inverse">Нахожу множитель</a></li>
+          <li><a href="#bridge">Выбираю цифру частного</a></li>
+          <li><a href="#zero">Сохраняю ноль в частном</a></li>
+          <li><a href="#remainder">Объясняю остаток</a></li>
+          <li><a href="#transfer">Проверяю себя без модели</a></li>
+        </ol>
+      </details>
+      <section class="sheet" id="sheet" aria-labelledby="heading">
+        <div class="topline"><span id="phase">Практика</span><span id="stepNo"></span></div>
+        <h2 id="heading" tabindex="-1">Считаю равными шагами</h2>
+        <p id="prompt">Сосчитайте предметы равными группами, затем переходите к записи числом.</p>
+        <div id="activity"></div>
+        <p class="feedback" id="feedback" aria-live="polite"></p>
+        <noscript>Для ввода ответов включите JavaScript. Ниже есть ссылки на дополнительные упражнения и источники.</noscript>
+      </section>
+    </div>
+    <nav class="life-modes" aria-label="Разделы тренажёра">
+      <a href="#journey">Вся карта</a><a href="#courses">82 последовательных урока</a><a href="#courses-written">Деление уголком</a><a href="#courses-fractions">Обыкновенные дроби</a><a href="#courses-decimals">Десятичные дроби</a><a href="#workshop">Город маленьких дел</a><a href="#harbor">Порт отправлений</a><a href="#discoveries">Бюро открытий</a><a href="#garden-count">Оранжерея равных групп</a><a href="#count">Деление по шагам</a><a href="#next-course">Алгебра и геометрия</a>
+    </nav>
+    <details class="teachers" id="adventure-route"><summary>Куда можно отправиться дальше</summary>
+      <div class="adv-route-options">
+        <a href="#journey"><strong>Большая карта с приближением</strong><span>Весь путь, выбранный раздел и отдельная тема. Можно идти по порядку или выбрать своё направление.</span></a>
+        <a href="#workshop"><strong>Город маленьких дел</strong><span>48 историй с предметами. Делись поровну, собирай наборы и считай группами.</span></a>
+        <a href="#harbor"><strong>Порт отправлений</strong><span>12 миссий: деление нацело, остаток, полные наборы и место для всего груза. Можно менять числа в своей задаче.</span></a>
+        <a href="#discoveries"><strong>Бюро открытий</strong><span>24 истории: разные вопросы, изменение условия, остаток и нехватка, обратные задачи и два действия.</span></a>
+        <a href="#garden-count"><strong>Оранжерея равных групп</strong><span>Новые задачи, самостоятельная проверка и повторение после перерыва.</span></a>
+        <a href="#count"><strong>Деление по шагам</strong><span>Восемь навыков: от равных групп до деления уголком, нуля в частном и остатка.</span></a>
+        <a href="#next-course"><strong>Дальше — алгебра и геометрия</strong><span>Вводные упражнения, действующие курсы MathExam и советские издания Киселёва в библиотеке.</span></a>
+      </div>
+      <p>Выбирай по силам. В оранжерее и пошаговом делении встречаются большие числа. Можно оставаться в городе, пробовать другое место или сделать паузу.</p>
+    </details>
+    <section class="journey-access" aria-label="Бесплатные занятия без интернета">
+      <p><strong>Математика открыта каждому.</strong> Занятия здесь бесплатны, без регистрации и ключей ИИ. Скачиваемым комплектом можно делиться с детьми, семьями и преподавателями. Распакуй архив и открой <strong>index.html</strong>.</p>
+      <a href="arzhenikov-offline.zip" download>Скачать для занятий без интернета ↓</a>
+    </section>
+    <details class="teachers" id="course-methodology"><summary>Как пройти цельный курс · ученику и преподавателю</summary>
+      <p>Основной путь: смысл числа и четырёх действий → письменное деление → обыкновенные дроби → десятичные дроби → связывающие задачи с величинами, временем и процентами. После него открыты вводные алгебра и геометрия. На <a href="#journey">карте с приближением</a> можно увидеть весь путь, приблизить раздел и выбрать отдельный навык. Прежние город, порт, оранжерея, исследования и восемь ступеней деления остаются самостоятельными входами.</p>
+      <ol>
+        <li><strong>Выберите начало.</strong> Если ученик ещё учится считать предметы, начните с первого урока арифметики и действий с настоящими предметами. Для знакомого с вычислениями ученика входная проверка предложит конкретные темы для возвращения. Восемь ответов дают ориентир по выбранным навыкам, а не общую оценку ученика.</li>
+        <li><strong>Свяжите действие и запись.</strong> В каждом уроке назовите целое, части и единицы. Разберите пример, выполните две задачи с моделью, затем две тренировочные. Попросите показать на предметах или рисунке, что означает каждое число в записи. В дробях сохраняйте одно и то же целое; в делении различайте число групп и размер одной группы.</li>
+        <li><strong>Проверьте выполнение способа.</strong> Две проверочные задачи и вопрос с выбором объяснения завершают урок. Если даны промежуточные шаги, результат показывает выполнение этих шагов. Верный выбор из вариантов полезно дополнить собственным устным объяснением: сайт автоматически его не оценивает.</li>
+        <li><strong>Дайте новый перенос.</strong> Дополнительная пара меняет числа внутри темы. В итоговой смешанной работе ученик сам выбирает действия в новой ситуации. Бумага и собственный рисунок разрешены. Небольшую подсказку, разбор или объяснение урока можно открыть сразу; помощь и первый ответ сохраняются раздельно.</li>
+        <li><strong>Вернитесь к затруднению.</strong> После паузы откройте короткое повторение. Оно берёт только начатые темы, включая занятия с помощью. Обсудите одну ошибку, вернитесь к нужному уроку и попробуйте другой пример. Знакомый повтор остаётся тренировкой, даже если теперь ответ получен сразу.</li>
+      </ol>
+      <p>При выборе следующего шага различайте три наблюдения: урок завершён; новый числовой ответ получен с первого раза без открытой помощи; ученик сам объясняет и переносит способ на другую задачу. Первые два сайт фиксирует, третье требует разговора и наблюдения. Скорость и единичная ошибка не используются для вывода о способностях.</p>
+      <p>В основе — практическое направление Арженикова: осмысленная задача, величина, действие и переход к записи. Современная последовательность экранов, модели, условия и система проверок разработаны MathExam. Исторические источники указаны ниже и в разделах курса. <a href="#courses">Открыть все уроки →</a></p>
+    </details>
+    <details class="teachers" id="arzhenikov-about"><summary>Кто такой Аржеников</summary>
+      <p><strong>Константин Петрович Аржеников (1862–1933)</strong> — преподаватель математики и автор работ о начальном обучении арифметике. В 1886 году он окончил физико-математический факультет Московского университета. Он придавал большое значение самостоятельному решению задач из повседневной жизни и постепенному движению от первого десятка к большим числам. <a href="https://letopis.msu.ru/peoples/8648" target="_blank" rel="noopener">Биография в «Летописи Московского университета» ↗</a>.</p>
+      <p>Наш город, исследования и карта — современная авторская адаптация MathExam. Здесь ребёнок действует с предметами, объясняет результат и связывает действие с записью. <a href="https://repo.nspu.ru/handle/nspu/5833" target="_blank" rel="noopener">«Методика начальной арифметики», издание 1936 года, в репозитории НГПУ ↗</a>. Книга переиздана после смерти автора; переработка А. С. Пчёлко указана в <a href="https://www.mathedu.ru/text/arzhenikov_metodika_nachalnoy_arifmetiki_1936/" target="_blank" rel="noopener">библиографической записи Mathedu ↗</a>.</p>
+    </details>
+    <details class="teachers"><summary>Взрослым · как устроено занятие</summary>
+      <p>Последовательный маршрут объединяет 24 урока основ арифметики, по 12 уроков письменного деления, обыкновенных и десятичных дробей, 6 связующих уроков, 8 уроков алгебры и 8 уроков геометрии: всего 656 учебных условий и 82 вопроса с выбором объяснения. В каждом уроке первые две задачи проходят с моделью, затем идут две тренировочные и две проверочные. После выбора объяснения можно открыть ещё два новых условия. Пошаговые проверки внутри урока показывают выполнение изученного способа; для самостоятельного выбора способа есть отдельная смешанная итоговая работа. Подсказки, исправления и первый ответ сохраняются раздельно. Прогресс относится к этим заданиям и не заменяет наблюдение за тем, как ребёнок решает новую задачу.</p>
+      <p>Законченный базовый маршрут дополняют <a href="#course-check-placement">8 входных задач</a>, <a href="#course-check-review">короткое повторение начатых тем</a> и <a href="#course-check-final">16 итоговых ситуаций</a>. Отдельный банк содержит 48 новых условий; вход предлагает два набора по восемь задач, повторение и итоговая работа имеют свои варианты. Повторение также возвращает проверочные условия знакомых уроков. Новое условие, знакомый повтор, помощь и объяснение учитываются отдельно. Можно свободно выбрать любой урок.</p>
+      <p><a href="#courses-connections">Шесть связующих уроков</a> помогают понять дробь как результат деления, перейти между смешанными и неправильными дробями, самостоятельно выбрать размер долей, работать с общими единицами и временем, связать долю с процентом и выбрать действия в составной задаче. Историческая опора: часть IV задачника (1924), с. 6–9, 12–15, 32, 34–51, 68; часть III, с. 35. Это современные учебные условия MathExam.</p>
+      <p>Это авторская адаптация MathExam по мотивам задачников К. П. Арженикова: действие с величинами, объяснение, запись и самостоятельное применение. Город подходит для ребёнка, который уже считает предметы в пределах двадцати. Если читать условия трудно, взрослый может прочитать их вслух. Старшие ученики могут сразу выбрать вычисления с дробями. Полный постраничный исторический курс и полный школьный курс алгебры и геометрии здесь не заявляются.</p>
+      <p>В городе 48 житейских историй: по шесть в восьми местах. Сначала ребёнок действует с предметами, затем подбирает запись к своим решениям. Открытка появляется после трёх историй и их записей. Подсказки и исправления разрешены. Открытки отмечают завершённые места, а счётчик — разные решённые истории; они не заменяют самостоятельную проверку на новой задаче.</p>
+      <p>Попросите показать на рисунке, что означает каждое число. При раздаче поровну известны получатели, а при упаковке — сколько предметов помещается в одну группу. Экранное действие полезно повторить с настоящими предметами: например, раздать шесть карандашей двум людям, а затем собрать из этих карандашей наборы по два.</p>
+      <p>Прогресс сохраняется в этом браузере на этом устройстве. Можно закрыть страницу и продолжить позже. Регистрация и ключ ИИ для игры не нужны.</p>
+      <p>В Бюро открытий по четыре истории в шести линиях: две учебные и две новые проверочные. Прогноз, предметное действие и объяснение образуют одно исследование. Успех с подсказкой или после исправления остаётся учебным успехом; отдельный счётчик показывает новые проверочные истории, пройденные с первого раза без подсказки. Работа с предметами в этих проверках разрешена. Это не проверка устного счёта без модели.</p>
+      <p>В порту одно деление отвечает на разные вопросы. Для 14 предметов и вместимости 4 получаются 3 полные группы и остаток 2. Готовых наборов будет 3 — берём целую часть частного (округление вниз). Чтобы перевезти всё, нужны 4 ёмкости — округление вверх. Если остаток равен нулю, дополнительная ёмкость не нужна. Это выбор по смыслу задачи, а не округление до ближайшего целого.</p>
+      <p>На пятой ступени у ученика есть два входа в один пример. В первом он наполняет коробки, во втором пробует цифру и проверяет произведение. Выберите один вход до начала занятия и дайте одинаковое время на работу. Записав первый ответ на новой задаче, обсудите ошибку.</p>
+      <p>В восьмой ступени проверяются первая цифра, её обоснование, частное и остаток. Для следующей попытки предлагается другой пример. Чтобы сравнить два объяснения, чередуйте назначенный вход между учениками с похожей подготовкой и используйте один контрольный пример. Повторный ответ того же ученика уже зависит от тренировки.</p>
+      <p id="record">Результат самостоятельной проверки появится здесь после решения.</p>
+    </details>
+    <details class="teachers"><summary>Откуда взяты задания</summary>
+      <p>В задачнике К. П. Арженикова 1923 года в № 233 восемь килограммов распределяют на четыре дня, а в № 257 восемь картин располагают рядами по четыре. Эти два смысла деления лежат в основе второй и третьей ступеней. Порядок действий в пределах десятка, двадцати и круглых десятков виден и в издании 1924 года.</p>
+      <p>В третьей части задачника (1924, с. 24) записано деление 32 935 на 7 с нулём в частном. Разряды мы показываем на меньших числах. Житейские истории, город, открытки и переход к записи после трёх решений разработаны для MathExam. Успех на карте показывает выполнение этих заданий. Эффект методики на учениках требует отдельной проверки.</p>
+      <p>В части IV (1924) обыкновенные дроби рассматриваются на с. 5–33, десятичные — на с. 52–71. В обоих разделах есть все четыре действия; на с. 68 начинается переход между видами дробей. В нашей адаптации добавлены собственные современные условия, управляемые модели и проверяемые шаги. Источник показывает происхождение учебной линии, а не подтверждённую эффективность цифрового курса.</p>
+      <p><a href="https://djvu.online/file/1DTOtoJ55rIWv">Задачник, часть I (1923)</a> · <a href="https://ussrvopros.ru/sbornik-zadach-po-matematike-dlya-shkol-1-j-stupeni-chast-p1-1924">Часть I (1924)</a> · <a href="https://djvu.online/file/Zmmk0C6Gqh83D">Часть III (1924)</a> · <a href="https://djvu.online/file/AIsMeWPu7uz8w">Часть IV: обыкновенные и десятичные дроби (1924)</a> · <a href="https://repo.nspu.ru/handle/nspu/5833">«Методика начальной арифметики» (1936, переработка А. С. Пчёлко)</a></p>
+    </details>
+    <footer><span>Продолжить в MathExam</span><a href="long-division-quotient-digit.html">Линейка кратных</a><a href="long-division-zero-in-quotient.html">Нули в частном</a><a href="division-with-remainder.html">Деление с остатком</a></footer>
+    <p id="storage" role="status"></p>
+  </main>
+</body>
+</html>

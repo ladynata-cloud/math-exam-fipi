@@ -100,12 +100,12 @@
     result.setAttribute('aria-live', 'polite'); result.setAttribute('aria-atomic', 'true');
     host.append(controls, visual, result); return { controls, visual, result };
   }
-  function grid(label, range = 8) {
+  function grid(label, range = 8, { yLabelsAtEdge = false } = {}) {
     const s = chart(label, 520, 440), x = v => 260 + v * 25, y = v => 220 - v * 25;
     for (let i = -range; i <= range; i += 2) {
       line(s, x(i), y(-range), x(i), y(range), { stroke: '#e1e8df', 'stroke-width': 1 });
       line(s, x(-range), y(i), x(range), y(i), { stroke: '#e1e8df', 'stroke-width': 1 });
-      if (i) { text(s, x(i), y(0) + 22, n(i), { 'font-size': 15 }); text(s, x(0) - 13, y(i) + 5, n(i), { 'text-anchor': 'end', 'font-size': 15 }); }
+      if (i) { text(s, x(i), y(0) + 22, n(i), { 'font-size': 15 }); text(s, yLabelsAtEdge ? x(-range) - 6 : x(0) - 13, y(i) + 5, n(i), { 'text-anchor': 'end', 'font-size': 15 }); }
     }
     line(s, x(-range) - 12, y(0), x(range) + 15, y(0), { stroke: '#7f9486' });
     line(s, x(0), y(-range) + 12, x(0), y(range) - 15, { stroke: '#7f9486' });
@@ -143,7 +143,39 @@
     }
     draw();
   }
+  function squareEquationModel(host) {
+    const ui = frame(host, 'Какие числа в квадрате дают a?', 'Меняй правую часть уравнения. Точка на числовой прямой отмечает каждое подходящее значение x.');
+    let a = 16;
+    slider(ui.controls, 'Правая часть a', -16, 100, a, 1, value => { a = value; draw(); });
+    function draw() {
+      const side = rootValue(a);
+      const roots = side === null ? [] : side === 0 ? [0] : [-side, side];
+      const label = 'Корни уравнения x² = ' + n(a);
+      const axis = chart(label, 520, 100), x = value => 260 + 21 * value;
+      line(axis, x(-11), 45, x(11), 45);
+      for (let tick = -10; tick <= 10; tick += 2) {
+        line(axis, x(tick), 40, x(tick), 50);
+        text(axis, x(tick), 77, n(tick));
+      }
+      text(axis, x(11), 32, 'x');
+      roots.forEach(value => circle(axis, x(value), 45, 6, GREEN));
+      ui.visual.replaceChildren(equation('x² = ' + n(a)), axis);
+      if (a < 0) {
+        ui.result.textContent = 'Действительных корней нет. Квадрат любого действительного числа больше или равен нулю.';
+      } else if (a === 0) {
+        ui.result.textContent = 'Один корень: x = 0. Только ноль при возведении в квадрат даёт ноль.';
+      } else {
+        const exact = Number.isInteger(side);
+        const rootsText = exact ? 'x₁ = ' + n(-side) + ', x₂ = ' + n(side) + '.'
+          : 'x₁ = −√' + n(a) + ' ≈ ' + n(-side) + ', x₂ = √' + n(a) + ' ≈ ' + n(side) + '.';
+        ui.result.replaceChildren(el('p', 'm8-roots', 'Два корня: ' + rootsText),
+          el('p', '', 'Два противоположных числа дают один и тот же квадрат. Знак √ обозначает только неотрицательный корень.'));
+      }
+    }
+    draw();
+  }
   function rootModel(host, lesson) {
+    if (Number(lesson.order) === 12) return squareEquationModel(host);
     const signed = [16, 17, 18].includes(Number(lesson.order));
     const ui = frame(host, signed ? 'Корень из квадрата — модуль' : 'Площадь известна. Найди сторону.', signed ? 'Сдвинь число через нуль. Длина стороны остаётся неотрицательной.' : 'Меняй площадь квадрата. Проследи, как меняются длина стороны и ближайшие целые числа.');
     let value = signed ? -4 : 16;
@@ -270,25 +302,46 @@
     }
     sync(); draw();
   }
-  function powerModel(host, lesson) {
-    const scientificMode = Number(lesson.order) === 49 || Number(lesson.order) === 50;
-    const inverse = Number(lesson.order) === 51;
-    const ui = frame(host, scientificMode ? 'Стандартный вид числа' : inverse ? 'Отрицательная степень в графике' : 'Отрицательная степень — обратное число', scientificMode ? 'Меняй показатель 10. Мантисса остаётся от 1 до 10, а запятая сдвигается.' : inverse ? 'Сравни x⁻¹ и x⁻². У обеих функций x ≠ 0; знак значений различается.' : 'Меняй целый показатель. Проследи переход через нуль и объясни, почему отрицательный показатель даёт дробь.');
-    let a = scientificMode ? 3.2 : 2, power = scientificMode ? 4 : -2, inversePower = -1;
-    if (inverse) {
-      select(ui.controls, 'Показатель', [['-1', 'y = x⁻¹'], ['-2', 'y = x⁻²']], '-1', v => { inversePower = Number(v); draw(); });
-    } else {
-      slider(ui.controls, scientificMode ? 'Мантисса a' : 'Основание a', scientificMode ? 1 : 2, scientificMode ? 9.9 : 5, a, scientificMode ? 0.1 : 1, v => { a = v; draw(); });
-      slider(ui.controls, 'Целый показатель n', -6, 6, power, 1, v => { power = v; draw(); });
-    }
+  function compareReciprocals(host) {
+    const ui = frame(host, 'Два графика при одном x', 'Выбери значение x. Круг отмечает 1/x, квадрат отмечает 1/x². Сравни высоту точек сначала при x = 0,5, затем при x = 2.');
+    let power = -1, x = 1;
+    select(ui.controls, 'Исследуемая функция', [['-1', 'y = x⁻¹'], ['-2', 'y = x⁻²']], '-1', value => { power = Number(value); draw(); });
+    const values = [-2, -1, -0.5, 0, 0.5, 1, 2];
+    select(ui.controls, 'Общая абсцисса x', values.map(value => [String(value), n(value)]), String(x), value => { x = Number(value); draw(); });
     function draw() {
-      if (inverse) {
-        const g = grid(inversePower === -1 ? 'График y = x в степени минус один' : 'График y = x в степени минус два');
-        plot(g, x => x === 0 ? null : Math.pow(x, inversePower), GREEN, [[-8, -0.01], [0.01, 8]]);
-        ui.visual.replaceChildren(equation('y =', exponent('x', inversePower), '=', frac('1', inversePower === -1 ? 'x' : 'x²')), g.s);
-        ui.result.textContent = inversePower === -1 ? 'x ≠ 0. При x > 0 значения положительные, при x < 0 — отрицательные. График симметричен относительно начала координат.' : 'x ≠ 0. При любом допустимом x значение положительное. График симметричен относительно оси y. Значение 0 не достигается.';
+      const graph = grid('Графики 1/x и 1/x² на одних осях', 4, { yLabelsAtEdge: true });
+      graph.s.setAttribute('viewBox', '125 85 275 270');
+      const branches = [[-4, -0.01], [0.01, 4]];
+      plot(graph, value => 1 / value, GREEN, branches);
+      plot(graph, value => 1 / (value * value), ORANGE, branches);
+      graph.s.querySelectorAll('path').forEach(curve => {
+        const square = curve.getAttribute('stroke') === ORANGE;
+        if (square) curve.setAttribute('stroke-dasharray', '7 4');
+        curve.setAttribute('stroke-width', (square ? -2 : -1) === power ? '3' : '1.8');
+      });
+      ui.visual.replaceChildren(equation('y =', exponent('x', power), '=', frac('1', power === -1 ? 'x' : 'x²')), graph.s);
+      if (x === 0) {
+        ui.result.textContent = 'При x = 0 обе дроби имеют ноль в знаменателе. Ни у одного графика на этой вертикали нет точки.';
         return;
       }
+      const first = 1 / x, second = 1 / (x * x);
+      line(graph.s, graph.x(x), graph.y(-4), graph.x(x), graph.y(4), {stroke: '#71837c', 'stroke-dasharray': '3 4'});
+      const mark = circle(graph.s, graph.x(x), graph.y(first), 5.5, 'white', GREEN);
+      mark.setAttribute('data-reciprocal-value', String(first));
+      graph.s.append(svg('rect', {x: graph.x(x) - 3, y: graph.y(second) - 3, width: 6, height: 6, fill: ORANGE, 'data-square-reciprocal-value': second}));
+      const relation = first === second ? 'Обе точки совпали.' : first > second ? 'Круг выше квадрата.' : 'Квадрат выше круга.';
+      ui.result.textContent = 'При x = ' + n(x) + ' получаем 1/x = ' + n(first) + ' и 1/x² = ' + n(second) + '. ' + relation;
+    }
+    draw();
+  }
+  function powerModel(host, lesson) {
+    if (Number(lesson.order) === 51) return compareReciprocals(host);
+    const scientificMode = Number(lesson.order) === 49 || Number(lesson.order) === 50;
+    const ui = frame(host, scientificMode ? 'Стандартный вид числа' : 'Отрицательная степень — обратное число', scientificMode ? 'Меняй показатель 10. Мантисса остаётся от 1 до 10, а запятая сдвигается.' : 'Меняй целый показатель. Проследи переход через нуль и объясни, почему отрицательный показатель даёт дробь.');
+    let a = scientificMode ? 3.2 : 2, power = scientificMode ? 4 : -2;
+    slider(ui.controls, scientificMode ? 'Мантисса a' : 'Основание a', scientificMode ? 1 : 2, scientificMode ? 9.9 : 5, a, scientificMode ? 0.1 : 1, v => { a = v; draw(); });
+    slider(ui.controls, 'Целый показатель n', -6, 6, power, 1, v => { power = v; draw(); });
+    function draw() {
       const value = scientificMode ? a * Math.pow(10, power) : Math.pow(a, power);
       if (scientificMode) {
         ui.visual.replaceChildren(equation(n(a, 1), '×', exponent('10', power), '=', n(value, 8)));
@@ -318,6 +371,14 @@
     const order=Number(lesson.order);
     if(lesson.model==='rational')return { question:'После сокращения (x² − a²)/(x − a) можно подставить x = a?', options:['Можно: осталось x + a.','Нельзя: исходный знаменатель равен нулю.'], answer:1, challenge:'Выбери a, затем нажми «Проверить x = a». Сравни две записи.', explanation:'Почему запрет сохраняется?', choices:['Мы сравниваем значения исходного выражения; при x = a его нет.','Сокращение определяет дробь в любой точке.'], correct:0, goal:v=>Number(v[0])===Number(v[1])};
     if(lesson.model==='root'&&[16,17,18].includes(order))return {question:'При a < 0 чему равно √(a²)?',options:['a','−a'],answer:1,challenge:'Введи отрицательное a, отличное от начального. Сравни число и сторону квадрата.',explanation:'Почему результат не отрицательный?',choices:['Арифметический корень равен |a|, а длина неотрицательна.','Возведение в квадрат сохраняет знак a.'],correct:0,goal:v=>Number(v[0])<0};
+    if (lesson.model === 'root' && order === 12) return {
+      question: 'Если положительное a в уравнении x² = a увеличить в 4 раза, как изменится положительный корень?',
+      options: ['Увеличится в 2 раза.', 'Увеличится в 4 раза.'], answer: 0,
+      challenge: 'Сравни положительные корни при a = 4 и a = 16. Можно также проверить, сколько корней останется при нуле и при отрицательном a.',
+      explanation: 'Как найти положительный корень уравнения x² = a при a > 0?',
+      choices: ['Взять арифметический квадратный корень из a.', 'Разделить a пополам.'], correct: 0,
+      goal: v => [4, 16].includes(Number(v[0]))
+    };
     if(lesson.model==='root')return {question:'Если площадь увеличить в 4 раза, как изменится сторона квадрата?',options:['Увеличится в 2 раза.','Увеличится в 4 раза.'],answer:0,challenge:'Сравни площади 4 и 16. Запиши наблюдение о сторонах.',explanation:'Как объяснить найденную связь?',choices:['Сторона равна квадратному корню из площади.','Сторона равна половине площади.'],correct:0,goal:v=>[4,16].includes(Number(v[0]))};
     if(lesson.model==='quadratic')return {question:'При a = 0 уравнение ax² + bx + c = 0 всегда имеет два корня?',options:['Да.','Нет: нужно исследовать bx + c = 0.'],answer:1,challenge:'Поставь a = 0. Затем меняй b и c; проверь один корень, отсутствие корней и тождество.',explanation:'Почему формула с делением на 2a здесь не подходит?',choices:['Нельзя делить на 0; это уже не квадратное уравнение.','Любое уравнение без x² не имеет корней.'],correct:0,goal:v=>Number(v[0])===0};
     if(lesson.model==='inequalities')return {question:'Можно ли умножить неравенство на 0 и получить равносильное?',options:['Можно.','Нельзя: разные числа станут одинаковыми.'],answer:1,challenge:'Поставь m = 0, затем сравни положительный и отрицательный множители.',explanation:'При отрицательном множителе…',choices:['направление неравенства меняется.','направление неравенства сохраняется.'],correct:0,goal:v=>Number(v[1])<0};
@@ -325,7 +386,7 @@
     if(lesson.model==='graph'&&order===14)return {question:'Есть ли у y = √x значение при x = −1?',options:['Нет.','Да, y = −1.'],answer:0,challenge:'Поставь x = −1 и x = 0. Сравни график и таблицу.',explanation:'Какое ограничение требуется?',choices:['x ≥ 0','x ≠ 0'],correct:0,goal:v=>v[0]==='sqrt'&&Number(v[4])<0};
     if(lesson.model==='graph'&&order===46)return {question:'Чему равна целая часть числа −1,5?',options:['−2','−1'],answer:0,challenge:'Введи x = −1,5 и сравни ближайшие целые числа.',explanation:'[x] — это…',choices:['наибольшее целое, не превосходящее x.','число без дробных цифр.'],correct:0,goal:v=>v[0]==='floor'&&Number(v[4])===-1.5};
     if(lesson.model==='graph')return {question:'При k = 0 в y = k/(x + a) + b исчезает запрет x = −a?',options:['Исчезает.','Остаётся.'],answer:1,challenge:'Выбери рациональную функцию. Поставь k = 0 и изменяй a и b. Найди выколотую точку.',explanation:'Чем становится график при k = 0?',choices:['Прямой y = b без точки (−a; b), без вертикальной асимптоты.','Полной прямой y = b.'],correct:0,goal:v=>v[0]==='hyperbola'&&Number(v[1])===0};
-    if(order===51)return {question:'Может ли x⁻² быть отрицательным?',options:['Нет.','Да, при x < 0.'],answer:0,challenge:'Выбери x⁻². Сравни ветви при положительном и отрицательном x.',explanation:'Почему значения положительные?',choices:['1/x² > 0 для любого x ≠ 0.','Отрицательный показатель даёт отрицательное число.'],correct:0,goal:v=>v[0]==='-2'};
+    if(order===51)return {question:'Может ли x⁻² быть отрицательным?',options:['Нет.','Да, при x < 0.'],answer:0,challenge:'Выдели x⁻² и поставь отрицательное x. Сравни знаки значений у круга и квадрата. Почему квадрат остаётся выше оси x?',explanation:'Почему значения положительные?',choices:['1/x² > 0 для любого x ≠ 0.','Отрицательный показатель даёт отрицательное число.'],correct:0,goal:v=>v[0]==='-2'&&Number(v[1])<0};
     if(order===49||order===50)return {question:'Если показатель 10 уменьшить на 1, число…',options:['уменьшится в 10 раз.','уменьшится на 10.'],answer:0,challenge:'Измени показатель на соседнее целое. Сравни числа при той же мантиссе.',explanation:'Как связаны соседние значения?',choices:['Каждый шаг показателя означает умножение или деление на 10.','Каждый шаг означает прибавление или вычитание 10.'],correct:0,goal:()=>true};
     return {question:'Знак минус в показателе a⁻² означает отрицательный результат?',options:['Да.','Нет: это 1/a² при a ≠ 0.'],answer:1,challenge:'Поставь n = 0, затем n = −1 и n = −2. Сравни соседние степени.',explanation:'При уменьшении целого показателя на 1 значение…',choices:['делится на основание a.','уменьшается на a.'],correct:0,goal:v=>Number(v[1])<0};
   }

@@ -20,6 +20,10 @@ function resolvePublicScript(root, directory, src) {
 
 const shell = new Set(['/assets/oge-wayfinding.js', '/assets/assistant/navigator-data.js?v=20261105-site1',
   '/assets/assistant/navigator-widget.js?v=20261105-site1']);
+// The full Vilenkin 5 course reuses these exact first-part pure math/model
+// modules. Execute them in the model world; unknown absolute scripts still fail.
+const courseModels = new Set(['/courses/vilenkin-5-part-1/math.js?v=20261120',
+  '/courses/vilenkin-5-part-1/labs.js?v=20261122-forecast-retry', '/courses/vilenkin-5-part-1/practice.js?v=20261120']);
 function loadSchoolModels(root, html, world) {
   const directory = path.join(root, 'school');
   for (const match of html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>/g)) {
@@ -28,9 +32,10 @@ function loadSchoolModels(root, html, world) {
     const file = resolvePublicScript(root, directory, src);
     const compiled = new vm.Script(fs.readFileSync(file, 'utf8'), {filename: src});
     if (filename.startsWith('/')) {
-      assert.ok(shell.has(src), 'Unreviewed site-wide school script: ' + src);
+      assert.ok(shell.has(src) || courseModels.has(src), 'Unreviewed site-wide school script: ' + src);
       assert.equal(match[0], '<script defer src="' + src + '">');
-      continue; // These DOM shells are exercised by real browser gates.
+      if (courseModels.has(src)) compiled.runInContext(world);
+      continue; // DOM shells are exercised by real browser gates.
     }
     if (filename !== 'app.js') compiled.runInContext(world);
   }
@@ -61,7 +66,7 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   const publicModules = ['../skill-map-data.js?v=20261115-fipi-map', '../azbuka-metodov/catalog.js?v=20261115-fipi-map',
     '../skill-map.js?v=20261115-fipi-map',
     'journey.js?v=20261115-fipi-map', 'second-part.js?v=20261117-equation-sets', 'practice-feedback.js?v=20261109-active',
-    'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261113-foundations',
+    'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261118-opposites',
     'vector-basics-models.js?v=20261112-vectors', '/assets/trainer-skill-gif.js?v=20261117-research'];
   const pathname = src => new URL(src, 'https://mathexam.space/ege-profil/start/index.html').pathname;
   const publicPaths = new Set(publicModules.map(pathname));
@@ -84,7 +89,8 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
     ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
     ['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261117-research', 'app.js?v=20261115-fipi-map'],
+    ['app.js?v=20261118-opposites', 'app.js?v=20261115-fipi-map'],
+    ['calm-ui.js?v=20261118-opposites', 'calm-ui.js?v=20261115-fipi-map'],
     ['course-links.js?v=20261117-h12', 'course-links.js?v=20261115-fipi-map']
   ]);
   for (const current of cacheStamps.keys())

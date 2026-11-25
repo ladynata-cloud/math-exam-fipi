@@ -60,6 +60,53 @@ async function checkPracticeRoute(page, width) {
  report.cases.push({width,case:'exam results lead to practice with preserved work and manual grading',status:'PASS'});
 }
 
+async function checkFractionHintReturn(page, width) {
+ const exercise = base + '/trainers/oge-task6-fractions.html';
+ // The native card is parsed before this deferred restoration script. Exercise
+ // a slow response explicitly: a committed navigation is not a loaded page.
+ const adapterPattern = base + '/assets/oge-fractions-return.js*';
+ const delayedAdapter = async route => {
+  await new Promise(resolve => setTimeout(resolve, 250));
+  await route.continue();
+ };
+ await page.route(adapterPattern, delayedAdapter);
+ await page.goto(exercise);
+ await page.locator('#hintToggle').click();
+ await page.locator('#stepAnswer').fill(await page.evaluate(() => {
+  const [n,d] = hintSession().plan.steps[0].expected;
+  return `${n}/${d}`;
+ }));
+ await page.locator('#stepCheck').click();
+ const earlierSteps = await page.locator('#hintSteps').innerText();
+ const prompt = await page.locator('#stepPrompt').innerText();
+ assert(earlierSteps.trim(), 'The first step was actually accepted');
+ await page.locator('#ans').fill('5/');
+ await page.locator('#stepAnswer').fill('17/');
+ await page.locator('#stepHelpToggle').click();
+ const originalProgress = await page.evaluate(() => localStorage.getItem('mathExam.oge6.practice.v1'));
+ await page.locator('#settings > summary').click();
+ await page.getByRole('link', {name:'Потренировать общий знаменатель', exact:true}).click();
+ await page.getByRole('link', {name:'← Вернуться к задаче ОГЭ №6', exact:true}).click();
+ await page.waitForLoadState('load');
+ assert(await page.locator('#hintPanel').isVisible(), 'The original hint opens on return');
+ assert(await page.locator('#stepLab').isVisible(), 'The current investigation remains open');
+ assert.equal(await page.locator('#hintSteps').innerText(), earlierSteps);
+ assert.equal(await page.locator('#stepPrompt').innerText(), prompt);
+ assert.equal(await page.locator('#stepAnswer').inputValue(), '17/');
+ assert.equal(await page.locator('#ans').inputValue(), '5/');
+ assert.equal(await page.evaluate(() => localStorage.getItem('mathExam.oge6.practice.v1')), originalProgress);
+
+ await page.locator('#stepAnswer').fill('18/');
+ await page.locator('#settings > summary').click();
+ await page.getByRole('link', {name:'Повторить смысл дроби', exact:true}).click();
+ await page.goBack();
+ assert(await page.locator('#hintPanel').isVisible(), 'The browser Back button also restores the hint');
+ assert.equal(await page.locator('#stepPrompt').innerText(), prompt);
+ assert.equal(await page.locator('#stepAnswer').inputValue(), '18/');
+ await page.unroute(adapterPattern, delayedAdapter);
+ report.cases.push({width,case:'fraction support returns to the open step and both unsent answers',status:'PASS'});
+}
+
 (async()=>{let browser;try{
  if(!base){server=http.createServer((req,res)=>{try{const u=new URL(req.url,'http://local');let file=path.resolve(root,'.'+decodeURIComponent(u.pathname));assert(file.startsWith(root+path.sep)||file===root);if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res);}catch{res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));base='http://127.0.0.1:'+server.address().port;}
  browser=await chromium.launch({headless:true});
@@ -133,6 +180,7 @@ async function checkPracticeRoute(page, width) {
   await page.getByRole('link',{name:'Проверить себя: интерактивный вариант',exact:true}).click();await page.waitForURL(base+'/trainers/oge-2027-analogue-1.html');
   report.cases.push({width,case:'three learner starts, instructions and complete interactive variant',status:'PASS'});
   await checkPracticeRoute(page, width);
+  await checkFractionHintReturn(page, width);
   // Embedded exercise must leave return control to its board/cabinet host.
   await page.goto(base+'/trainers/task19-trainer.html?board=1');assert(!await page.locator('nav.oge-wayfinding').isVisible());
   await page.goto(base+'/trainers/task19-trainer.html');await page.evaluate(()=>{const frame=document.createElement('iframe');frame.src='/trainers/oge-task6-fractions.html';document.body.append(frame);});

@@ -24,7 +24,7 @@
     if (!firstHint || !start) return false;
 
     // The original action chooses the first practice task exactly once.
-    start.click();
+    if (practice.hidden) start.click();
     if (practice.hidden) return false;
     d.body.dataset.basicsStandalone = percent ? 'percent' : division ? 'division' : 'basic';
     d.body.classList.add('basics-task-first');
@@ -54,7 +54,8 @@
     const host = element('div', 'basics-help-host');
     host.setAttribute('data-basics-help-host', '');
     const anchor = percent ? $('p-q') : division ? $('phaseText') : $('practicePrompt');
-    anchor.after(host);
+    const helpAnchor = practice.querySelector('[data-basics-help-after]') || anchor;
+    helpAnchor.after(host);
     const helpRoot = element('div', 'bs-current-help');
     const hintControls = element('div', 'bs-hint-controls');
     firstHint.textContent = 'Небольшая подсказка';

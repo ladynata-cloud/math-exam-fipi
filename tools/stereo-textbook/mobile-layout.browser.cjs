@@ -44,6 +44,17 @@ let server,browser;
    const saved=await page.evaluate(k=>localStorage.getItem(k),key(card));await page.reload();await page.locator('[data-main-model] svg').waitFor();assert.equal(await page.evaluate(k=>localStorage.getItem(k),key(card)),saved);assert.equal(await page.locator('[data-step]').count(),card.steps.length);if(card.answer)assert.equal(await page.locator('#final-answer').inputValue(),'Проверка сохранения '+card.id);
    await page.getByRole('button',{name:'← Все материалы курса',exact:true}).click();assert(await page.locator('#catalog-search').isVisible());
   }
+  if(height>=800){
+   await page.locator('#catalog-chapter').selectOption('II. Перпендикулярность прямых и плоскостей');
+   await page.locator('#catalog-paragraph').selectOption('II:3');
+   await page.locator('#catalog-search').fill('167');
+   const task=page.locator('[data-lesson="ex-main-0167"]');
+   await task.click();
+   await page.getByRole('button',{name:'← Все материалы курса',exact:true}).click();
+   assert.equal(await page.locator('#catalog-search').inputValue(),'167');
+   assert.equal(await page.locator('#catalog-paragraph').inputValue(),'II:3');
+   assert(await task.evaluate(button=>document.activeElement===button),'keyboard focus returns to task 167');
+  }
   // Live checks verify deployed code as well as unchanged course content.
   if(process.env.MOBILE_LAYOUT_LIVE_URL)for(const file of resources){const response=await context.request.get(base+file+'?layout-check='+Date.now());assert.equal(response.status(),200);assert.equal(crypto.createHash('sha256').update(await response.body()).digest('hex'),evidence.resources[file],file+' deployed bytes');}
   await context.close();

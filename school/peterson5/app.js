@@ -1,7 +1,46 @@
 (function () {
 'use strict';
-const D=window.PetersonCourse,M=window.PetersonMath,main=document.getElementById('main');
-if(!D||!M){main.innerHTML='<h1>Не все файлы курса загрузились</h1><p>Обнови страницу, чтобы открыть курс.</p>';return;}
+const main=document.getElementById('main');
+const BOARD=document.body?.dataset.petersonBoard==='parts1-2';
+let loading=false;
+function missingAssets(){
+ const math=window.PetersonMath,lessons=window.PetersonCourse?.lessons,missing=[];
+ const expected=['letter-product','unlike-fraction-subtract','decimal-place-subtract'];
+ if(!Array.isArray(math?.skills)||!expected.every(id=>math.skills.some(skill=>skill.id===id)))
+  missing.push('math.js?v=p5-transfer-20261118');
+ const mapped=new Set();
+ for(const lesson of Array.isArray(lessons)?lessons:[]){
+  for(const task of lesson.tasks||[]){
+   if([1,2,3].includes(task.transfer?.level))mapped.add(task.transfer.skill);
+  }
+ }
+ if(!expected.every(id=>mapped.has(id)))
+  missing.push('data.js?v=p5-transfer-20261118');
+ return missing;
+}
+function loadScript(src){
+ return new Promise(resolve=>{
+  const script=document.createElement('script');
+  script.src=(BOARD?'/school/peterson5/':'')+src;
+  script.onload=script.onerror=()=>{script.remove();resolve();};
+  document.head.appendChild(script);
+ });
+}
+function openCourse(){
+ if(loading||window.PetersonApp)return;
+ const missing=missingAssets();
+ if(!missing.length){startCourse();return;}
+ loading=true;
+ main.innerHTML='<h1>Загружаем задания</h1><p role="status">Курс обновляется.</p>';
+ Promise.allSettled(missing.map(loadScript)).then(()=>{
+  loading=false;
+  if(!missingAssets().length){startCourse();return;}
+  main.innerHTML='<h1>Не удалось загрузить обновление курса</h1><p>Проверь подключение к интернету и попробуй ещё раз. Сохранённые ответы останутся в этом браузере.</p><button type="button" id="retry-course-assets">Повторить загрузку</button>';
+  document.getElementById('retry-course-assets').onclick=openCourse;
+ });
+}
+function startCourse(){
+const D=window.PetersonCourse,M=window.PetersonMath;
 const KEY='mathexam.peterson5.v1', blank=()=>({version:1,tasks:{},practice:{},last:null,origin:null});
 let state=blank(),writable=true,active=null,cleanup=null;
 const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -19,15 +58,38 @@ function fmt(v){
 const byId=Object.fromEntries(D.lessons.map(l=>[l.id,l])),skills=Object.fromEntries(M.skills.map(s=>[s.id,s])),taskById=Object.fromEntries(D.lessons.flatMap(l=>l.tasks.map(t=>[t.id,t])));
 function record(v){return !!v&&typeof v==='object'&&!Array.isArray(v);}
 function boundedModel(raw){if(!record(raw))return {};const out={};for(const [k,v]of Object.entries(raw).slice(0,30)){if(!/^[a-zA-Z][\w-]{0,40}$/.test(k)||['constructor','prototype','__proto__'].includes(k))continue;if(typeof v==='number'&&Number.isFinite(v)&&Math.abs(v)<=1e9)out[k]=v;else if(typeof v==='string')out[k]=v.slice(0,300);else if(typeof v==='boolean')out[k]=v;}return out;}
-function fresh(){return {value:'',values:[],step:0,revealed:0,guided:false,assisted:false,hint:false,stepHints:{},reveals:{},attempts:0,correct:false,independent:false,reviewed:false,note:'',feedback:'',signature:'',repeated:false,completion:null,model:{}};}
-function taskSignature(t){return t.prompt+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
+function fresh(){return {value:'',values:[],step:0,revealed:0,guided:false,assisted:BOARD,hint:false,stepHints:{},reveals:{},attempts:0,correct:false,independent:false,reviewed:false,note:'',feedback:'',signature:'',repeated:false,completion:null,model:{},firstErrors:{steps:{}}};}
+function taskSignature(t){
+ if(t.transfer?.skill==='letter-product'||t.skills?.[0]==='letter-product')return 'letter-product:'+t.answer;
+ return t.prompt+'\u241f'+t.answer+'\u241f'+(t.answerFormat||'');}
 function resolveTask(id){if(Object.prototype.hasOwnProperty.call(taskById,id))return taskById[id];const m=/^practice:([a-z-]+):([123]):(\d+)$/.exec(id);if(!m||!skills[m[1]])return null;const seed=Number(m[3]);if(!Number.isSafeInteger(seed)||seed<1||seed>=1000000)return null;try{const t=M.generate(m[1],seed,Number(m[2]));t.id=id;return t;}catch(_){return null;}}
 function check(user,q){if(!q||typeof q==='string'||q.kind==='manual')return false;if(q.kind==='choice'||q.kind==='comparison')return user.trim()===String(q.answer).trim();return M.check(user,q.answer,q.answerFormat);}
+
+const FORMAT_FEEDBACK='Запись пока не распознана. Введи число, например 0,5, дробь 1/2 или смешанное число 2 1/3. Это ещё не математическая попытка.';
+function invalidNumber(value,q){return q&&typeof q!=='string'&&!['choice','comparison','manual'].includes(q.kind)&&!M.parse(value);}
+function firstErrorsState(raw,t){
+ const out={steps:{}};if(!record(raw))return out;
+ function entry(v,q){if(!record(v)||typeof v.value!=='string'||v.value.length>200||!v.value.trim()||!q||typeof q==='string'||q.answer===undefined||q.kind==='manual'||invalidNumber(v.value,q)||check(v.value,q))return null;if(['choice','comparison'].includes(q.kind)&&q.choices&&!q.choices.includes(v.value))return null;return {value:v.value,assisted:v.assisted===true};}
+ const final=entry(raw.final,t);if(final)out.final=final;
+ if(record(raw.steps))for(const [i,v]of Object.entries(raw.steps)){if(!/^\d{1,2}$/.test(i)||String(Number(i))!==i||Number(i)>=(t.steps||[]).length)continue;const saved=entry(v,t.steps[Number(i)]);if(saved)out.steps[i]=saved;}
+ return out;
+}
+function rememberFirstError(s,q,value,index=null){
+ const errors=s.firstErrors||(s.firstErrors={steps:{}}),target=index===null?errors:errors.steps,key=index===null?'final':index;
+ if(!target[key])target[key]={value:String(value).slice(0,200),assisted:s.assisted===true};
+}
+function firstErrorsHTML(t,s){
+ const errors=s.firstErrors;if(!errors)return '';const rows=[];
+ function row(label,saved,current,correct){if(saved)rows.push('<li><strong>'+e(label)+'</strong><p>Первая неверная запись: '+fmt(saved.value)+' · '+(saved.assisted?'с помощью':'без подсказки')+'.</p>'+(correct?'<p>Исправлено: '+fmt(current)+' ✓</p>':'')+'</li>');}
+ row('Ответ к задаче',errors.final,s.value,s.correct);for(const [i,saved]of Object.entries(errors.steps||{}))row('Шаг '+(Number(i)+1),saved,s.values[Number(i)],s.step>Number(i));
+ return rows.length?'<details class="first-errors"><summary>Первая ошибка и исправление</summary><p class="small">Первая проверенная неверная запись сохраняется отдельно от текущего ответа. Это история работы, а не новая оценка.</p><ul>'+rows.join('')+'</ul></details>':'';
+}
 function validRoute(hash){if(typeof hash!=='string')return null;let m=/^#lesson\/(p\d{2})(?:\/(\d+))?$/.exec(hash);if(m&&byId[m[1]]){const i=Number(m[2]||0);return i<byId[m[1]].tasks.length?'#lesson/'+m[1]+'/'+i:null;}m=/^#practice\/([a-z-]+)\/([123])$/.exec(hash);return m&&skills[m[1]]?hash:null;}
 function sanitizeTask(raw,t){
  const safe=fresh(),steps=t.steps||[];if(!record(raw))return safe;
  for(const k of ['value','note','feedback'])if(typeof raw[k]==='string')safe[k]=raw[k].slice(0,k==='value'?200:15000);
  for(const k of ['guided','assisted','hint'])safe[k]=raw[k]===true;
+ safe.firstErrors=firstErrorsState(raw.firstErrors,t);
  safe.reviewed=t.kind==='manual'&&raw.reviewed===true&&!!safe.note.trim();safe.model=boundedModel(raw.model);
  safe.attempts=Number.isSafeInteger(raw.attempts)?Math.max(0,Math.min(1000000,raw.attempts)):0;
  safe.values=Array.isArray(raw.values)?raw.values.slice(0,steps.length).map(v=>typeof v==='string'?v.slice(0,200):''):[];
@@ -48,10 +110,15 @@ function sanitizeState(raw){
  const last=validRoute(raw.last?.hash);if(last)safe.last={hash:last};const origin=validRoute(raw.origin?.hash);if(origin&&origin.startsWith('#lesson/'))safe.origin={hash:origin,scroll:Number.isFinite(raw.origin.scroll)?Math.max(0,Math.min(10000000,raw.origin.scroll)):0};return safe;
 }
 function warn(msg){const el=document.getElementById('storage-warning');el.hidden=false;el.textContent=msg;}
-try{const raw=localStorage.getItem(KEY);if(raw)state=sanitizeState(JSON.parse(raw));}catch(_){writable=false;warn('Не удалось прочитать сохранение. Оно не перезаписано. Текущую работу можно скачать в разделе результатов.');}
-function save(){if(!writable)return;try{localStorage.setItem(KEY,JSON.stringify(state));}catch(_){writable=false;warn('Браузер не смог сохранить работу. Скачай результаты перед закрытием страницы.');}}
+try{const raw=BOARD?null:localStorage.getItem(KEY);if(raw)state=sanitizeState(JSON.parse(raw));}catch(_){writable=false;warn('Не удалось прочитать сохранение. Оно не перезаписано. Текущую работу можно скачать в разделе результатов.');}
+function save(){if(BOARD){window.dispatchEvent(new CustomEvent('peterson5:change'));return;}if(!writable)return;try{localStorage.setItem(KEY,JSON.stringify(state));}catch(_){writable=false;warn('Браузер не смог сохранить работу. Скачай результаты перед закрытием страницы.');}}
 function ts(id){if(!state.tasks[id])state.tasks[id]=fresh();return state.tasks[id];}
-function markAssisted(s){if(!s.correct)s.assisted=true;}
+function markAssisted(s){
+ if(s.correct||s.assisted)return;
+ s.assisted=true;
+ const slot=document.getElementById('transfer-action');
+ if(slot&&active?.task.transfer)slot.innerHTML=transferButton(active.task,s);
+}
 function button(label,action,extra='',quiet=false){return '<button type="button" data-action="'+action+'" '+extra+(quiet?' class="quiet"':'')+'>'+label+'</button>';}
 function go(hash){if(location.hash===hash)route();else location.hash=hash;}
 function count(l){return l.tasks.filter(t=>ts(t.id).correct).length;}
@@ -60,6 +127,7 @@ function reviewed(l){return l.tasks.filter(t=>t.kind==='manual'&&ts(t.id).review
 function skillLinks(ids){return (ids||[]).filter(id=>skills[id]).map(id=>button(e(skills[id].title),'detour','data-skill="'+id+'"',true)).join('');}
 function returnBanner(){return state.origin?'<div class="return-banner"><div><strong>Тренируем отдельный навык</strong><p class="small">Условие, ответы и шаги исходной задачи сохранены.</p></div>'+button('← Вернуться к задаче','return')+'</div>':'';}
 function home(){
+ if(window.PetersonWorkshop){cleanup=window.PetersonWorkshop.renderHome(main,{format:fmt,findNumber,legacyLast:state.last?.hash});return;}
  const total=D.lessons.reduce((s,l)=>s+l.tasks.length,0),done=D.lessons.reduce((s,l)=>s+count(l),0);
  main.innerHTML=`<section class="course-intro"><p class="eyebrow">К учебнику · 5 класс · части 1 и 2</p><h1>Петерсон: разбираемся<br>шаг за шагом</h1><p class="lead">Открой нужную тему или найди номер. Сначала попробуй сам, затем обратись к подсказке.</p><div class="row"><a class="button" href="${e(state.last?.hash||'#lesson/p01/0')}">${state.last?'Продолжить занятие':'Начать с первой темы'} →</a><a class="button quiet" href="#skills">Потренировать вычисления</a></div></section>
  <div class="stats"><div class="stat"><strong>${D.lessons.length}</strong><span>тем двух частей</span></div><div class="stat"><strong>${total}</strong><span>выбранных заданий</span></div><div class="stat"><strong>${M.skills.length}</strong><span>вычислительных тренировок</span></div><div class="stat"><strong>${done}</strong><span>решено в этом браузере</span></div></div>
@@ -75,8 +143,9 @@ function findNumber(n,part){const host=document.getElementById('number-result');
 function skillPage(){main.innerHTML=returnBanner()+'<p class="eyebrow">Вычислительная мастерская</p><h1>Потренируй один навык</h1><p class="lead">Начни с простых чисел. Новые примеры помогут закрепить действие, а затем можно вернуться к своей задаче.</p><div class="skill-grid">'+M.skills.map(s=>'<article class="skill-card"><h2>'+e(s.title)+'</h2><p>'+e(s.description)+'</p><a class="button quiet" href="#practice/'+s.id+'/1">Начать →</a></article>').join('')+'</div>';}
 function lessonView(id,index){
  const l=byId[id];if(!l)return home();index=Math.max(0,Math.min(l.tasks.length-1,Number(index)||0));const t=l.tasks[index],next=D.lessons[D.lessons.indexOf(l)+1];active={lesson:l,task:t,index,practice:false};state.last={hash:'#lesson/'+id+'/'+index};save();
- main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+l.part+' · с. '+l.page+'</span></div><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details open><summary>Задания этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':ts(q.id).reviewed?'•':'')+'</span>'+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel theory"><summary>Коротко о главном</summary>'+(l.theory||[]).map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><details class="panel model-panel"><summary>Попробовать модель темы</summary><div id="model" class="model"></div></details><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'/0">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
+ main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+l.part+' · с. '+l.page+'</span></div><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details open><summary>Задания этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(BOARD&&q.id!==t.id?'':ts(q.id).correct?'✓':ts(q.id).reviewed?'•':'')+'</span>'+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel theory"><summary>Коротко о главном</summary>'+(l.theory||[]).map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><details class="panel model-panel"><summary>Попробовать модель темы</summary><div id="model" class="model"></div></details><div data-p5-media-host></div><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'/0">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
  renderProblem();const s=ts(t.id);cleanup=window.PetersonModels?.mount(document.getElementById('model'),l,t,{inquiry:true,state:s.model,onChange(value){s.model=boundedModel(value);if(value.iq_open||value.iq_last||!Object.prototype.hasOwnProperty.call(value,'iq_open'))markAssisted(s);save();}});
+ window.Peterson5Media?.mount(main.querySelector('[data-p5-media-host]'),id,{onHelp(){markAssisted(s);save();}});
  const theory=main.querySelector('.theory'),modelPanel=main.querySelector('.model-panel');[theory,modelPanel].filter(Boolean).forEach(el=>el.addEventListener('toggle',()=>{if(el.open&&(el===theory||!modelPanel.querySelector('.model-inquiry'))){markAssisted(s);save();}}));
 }
 function practiceView(id,level){
@@ -85,14 +154,25 @@ function practiceView(id,level){
  document.getElementById('level').value=level;document.getElementById('level').onchange=ev=>go('#practice/'+id+'/'+ev.target.value);renderProblem();
 }
 function inputNote(t){return {'canonical-decimal':'Убери лишние нули слева от целой части и справа от дробной. Введи десятичную запись.','decimal':'Введи десятичную дробь с запятой или точкой.','reduced-fraction':'Введи несократимую дробь, например 3/4, или целое число.','improper-fraction':'Введи неправильную дробь, например 7/3.','mixed-number':'Введи смешанное число с пробелом: 2 1/3.','integer':'Введи целое число.'}[t.answerFormat]||'Можно ввести 3/4, 0,75 или 2 1/3. Единицы измерения не вводи.';}
+function transferButton(t,s){
+ if(t.transfer&&s.assisted&&!s.independent){
+  return '<div class="independent-check">'+button('Решить похожий пример самостоятельно','independent-check')+
+   '<p class="small">'+e(skills[t.transfer.skill].title)+'. Твои записи к этой задаче сохранятся.</p></div>';
+ }
+ if(!s.correct||s.independent)return '';
+ if(active.practice)return '<div class="independent-check">'+button('Проверить себя на новом примере','independent-check')+'</div>';
+ const skill=(t.skills||[]).find(id=>skills[id]);
+ return skill?'<div class="independent-check">'+button('Потренировать отдельный навык','independent-check')+
+  '<p class="small">'+e(skills[skill].title)+'.</p></div>':'';
+}
 function renderProblem(){
  if(!active)return;const t=active.task,s=ts(t.id),host=document.getElementById('problem');
- if(active.lesson)main.querySelectorAll('.side-list [data-index]').forEach(el=>{const q=ts(active.lesson.tasks[Number(el.dataset.index)].id);el.querySelector('.status').textContent=q.correct?'✓':q.reviewed?'•':'';});
+ if(active.lesson)main.querySelectorAll('.side-list [data-index]').forEach(el=>{const q=ts(active.lesson.tasks[Number(el.dataset.index)].id);el.querySelector('.status').textContent=BOARD&&active.lesson.tasks[Number(el.dataset.index)].id!==t.id?'':q.correct?'✓':q.reviewed?'•':'';});
  const manual=t.kind==='manual',label=t.finalLabel||(t.kind==='choice'?'Выбери верный ответ на вопрос задачи.':'Чему равен результат? Введи число.');
  const answer=manual?'<section class="manual-work"><h3>Запиши рассуждение</h3><p>Выполни задание в тетради или в записях ниже. Затем сверь шаги и покажи решение учителю.</p>'+button(s.reviewed?'Самопроверка отмечена':'Я записал и сверил решение','reviewed','',true)+'<p class="small">Самопроверка сохраняется отдельно. Автоматической оценки доказательства здесь нет.</p></section>':'<form class="answer-form" id="answer-form"><label '+(t.kind==='choice'?'':'for="final-answer"')+'>'+fmt(label)+'</label>'+(t.kind==='choice'?'<div class="choices" role="group" aria-label="Варианты ответа">'+t.choices.map((v,i)=>'<button type="button" data-action="choice" data-choice="'+i+'" class="'+(s.value===v?'selected':'')+'" aria-pressed="'+(s.value===v)+'">'+fmt(v)+'</button>').join('')+'</div><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button>':'<p class="small">'+e(inputNote(t))+'</p><div class="answer-controls"><input id="final-answer" name="final-answer" type="text" autocomplete="off" spellcheck="false" maxlength="200" value="'+e(s.value)+'" '+(s.correct?'readonly':'')+'><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button></div><div id="answer-preview" class="answer-preview small" aria-live="polite"></div>')+'</form>';
- host.innerHTML='<article class="problem"><div class="task-heading"><h2>'+e(t.title)+'</h2><span class="tag">'+(s.correct?s.independent?'Самостоятельно':'С помощью / после попыток':s.reviewed?'Самопроверка записана':'Твоя задача')+'</span></div>'+(t.source?'<p class="source-note">'+e(t.source.type==='textbook'?'К задаче '+t.source.reference+' · часть '+(t.source.part||active.lesson?.part)+' · с. '+t.source.page:'Авторский пример по теме учебника')+'</p>':'')+'<div class="prompt">'+fmt(t.prompt)+'</div><div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+((t.steps||[]).length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p></div>':'')+(s.guided?renderSteps(t,s):'')+answer+'<div class="feedback '+(s.feedback&&!s.correct?'error':'')+'" role="status">'+e(s.feedback)+'</div>'+(s.correct?'<div class="feedback"><strong>'+(s.independent?'Верно, самостоятельно.':'Верно. Теперь закрепи навык на новом примере.')+'</strong><p>'+fmt(t.explanation||'')+'</p></div>':'')+(s.correct&&!s.independent&&(active.practice||(t.skills||[]).some(id=>skills[id]))?'<div class="independent-check">'+button('Проверить себя на новом примере','independent-check')+'<p class="small">Разбор сохранён. Новая попытка проверяет навык без открытых подсказок.</p></div>':'')+((t.skills||[]).length?'<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">'+skillLinks(t.skills)+'</div></section>':'')+'<details '+(s.note||manual?'open':'')+'><summary>Мои записи к задаче</summary><label class="small" for="notebook">'+(manual?'Запиши рассуждение или укажи, что решение находится в тетради.':'Сохраняются вместе с этой задачей.')+'</label><textarea id="notebook" maxlength="15000" placeholder="Мои вычисления и рассуждения">'+e(s.note)+'</textarea></details></article>';
- const form=document.getElementById('answer-form');if(form)form.onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,200);save();preview(inp.value);};preview(inp.value);}
- document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);if(!s.note.trim())s.reviewed=false;save();};
+ host.innerHTML='<article class="problem"><div class="task-heading"><h2>'+e(t.title)+'</h2><span class="tag">'+(s.correct?s.independent?'Самостоятельно':'С помощью / после попыток':s.reviewed?'Самопроверка записана':'Твоя задача')+'</span></div>'+(t.source?'<p class="source-note">'+e(t.source.type==='textbook'?'К задаче '+t.source.reference+' · часть '+(t.source.part||active.lesson?.part)+' · с. '+t.source.page:'Авторский пример по теме учебника')+'</p>':'')+'<div class="prompt">'+fmt(t.prompt)+'</div><div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+((t.steps||[]).length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило темы.')+'</p></div>':'')+(s.guided?renderSteps(t,s):'')+answer+firstErrorsHTML(t,s)+'<div class="feedback '+(s.feedback&&!s.correct?'error':'')+'" role="status">'+e(s.feedback)+'</div>'+(s.correct?'<div class="feedback"><strong>'+(s.independent?'Верно, самостоятельно.':'Верно. Теперь закрепи навык на новом примере.')+'</strong><p>'+fmt(t.explanation||'')+'</p></div>':'')+'<div id="transfer-action">'+transferButton(t,s)+'</div>'+((t.skills||[]).length?'<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">'+skillLinks(t.skills)+'</div></section>':'')+'<details '+(s.note||manual?'open':'')+'><summary>Мои записи к задаче</summary><label class="small" for="notebook">'+(manual?'Запиши рассуждение или укажи, что решение находится в тетради.':'Сохраняются вместе с этой задачей.')+'</label><textarea id="notebook" maxlength="'+(BOARD?2000:15000)+'" placeholder="Мои вычисления и рассуждения">'+e(s.note)+'</textarea></details></article>';
+ const form=document.getElementById('answer-form');if(form)form.onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{if(s.correct)return;s.value=inp.value.slice(0,200);save();preview(inp.value);};preview(inp.value);}
+ document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,BOARD?2000:15000);if(!s.note.trim())s.reviewed=false;save();};
  host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,200);save();};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});
 }
 function preview(value){const p=document.getElementById('answer-preview');if(!p)return;const r=M.parse(value);p.innerHTML=value.trim()?(r?'Ты ввёл: '+fmt(value):'Формат пока не распознан. Примеры: 0,5 · 1/2 · 2 1/3'):'';}
@@ -107,23 +187,46 @@ function renderSteps(t,s){
  for(let i=0;i<Math.min(steps.length,s.step+1);i++){const q=steps[i],done=i<s.step;if(typeof q==='string'||q.answer===undefined){html+='<div class="step '+(done?'completed':'')+'"><span class="step-label">Шаг '+(i+1)+'</span><p>'+fmt(typeof q==='string'?q:q.explanation||q.prompt)+'</p>'+(!done?button(i===steps.length-1?'Шаг понятен':'Перейти к следующему шагу','continue-step','data-step="'+i+'"'):'')+'</div>';continue;}html+='<div class="step '+(done?'completed':'')+'"><span class="step-label">Шаг '+(i+1)+(done?' · готово':'')+'</span><h3>'+fmt(q.prompt)+'</h3>'+(done?'<div class="recorded">Твоя запись: '+fmt(s.values[i])+' ✓</div><p>'+fmt(q.explanation||'')+'</p>':'<form data-step-form="'+i+'"><p class="small">'+e(inputNote(q))+'</p><div class="answer-controls"><input aria-label="Ответ к шагу '+(i+1)+'" data-step-input="'+i+'" type="text" maxlength="200" autocomplete="off" value="'+e(s.values[i]||'')+'"><button>Проверить шаг</button></div></form><div class="row">'+button(s.stepHints[i]?'Скрыть подсказку':'Подсказка к этому шагу','step-hint','data-step="'+i+'"',true)+(s.stepHints[i]?button('Показать этот шаг','reveal','data-step="'+i+'"',true):'')+'</div>'+(s.stepHints[i]?'<div class="help">'+fmt(q.hint||q.explanation)+'</div>':'')+(s.reveals[i]?'<div class="help">'+fmt(q.explanation||'Выполни указанное действие.')+'<p>Результат шага: '+fmt(q.answer)+'. Введи его и проверь.</p></div>':'')+'<div id="step-feedback-'+i+'" class="feedback error" role="status"></div>')+'</div>';}
  if(s.step>=steps.length)html+='<p class="feedback">Все шаги готовы. Теперь ответь на вопрос исходной задачи.</p>';return html+'</section>';
 }
-function checkFinal(){const t=active.task,s=ts(t.id);if(s.correct||t.kind==='manual')return;if(!s.value.trim()){s.feedback=t.kind==='choice'?'Сначала выбери ответ.':'Сначала введи результат.';renderProblem();return;}s.attempts++;if(check(s.value,t)){s.correct=true;s.independent=!s.assisted&&!s.repeated&&s.attempts===1;s.completion={attempts:s.attempts,assisted:s.assisted,independent:s.independent};s.feedback='';}else{s.feedback='Пока не совпало. '+(t.kind==='choice'?'Проверь смысл каждого варианта.':'Проверь вычисление и требуемую запись ответа. Подсказка поможет выбрать следующий шаг.');}save();renderProblem();}
-function checkStep(i){const t=active.task,s=ts(t.id),q=t.steps[i];if(i!==s.step)return;const v=s.values[i]||'';if(!v.trim()){document.getElementById('step-feedback-'+i).textContent='Сначала введи результат этого шага.';return;}if(check(v,q)){s.step++;save();renderProblem();}else document.getElementById('step-feedback-'+i).textContent='Проверь вычисление в этом шаге. Можно открыть подсказку.';}
+function checkFinal(){const t=active.task,s=ts(t.id);if(s.correct||t.kind==='manual')return;if(!s.value.trim()){s.feedback=t.kind==='choice'?'Сначала выбери ответ.':'Сначала введи результат.';renderProblem();return;}if(invalidNumber(s.value,t)){s.feedback=FORMAT_FEEDBACK;save();renderProblem();return;}s.attempts++;if(check(s.value,t)){s.correct=true;s.independent=!BOARD&&!s.assisted&&!s.repeated&&s.attempts===1;s.completion={attempts:s.attempts,assisted:s.assisted,independent:s.independent};s.feedback='';}else{rememberFirstError(s,t,s.value);s.feedback='Пока не совпало. '+(t.kind==='choice'?'Проверь смысл каждого варианта.':'Проверь вычисление и требуемую запись ответа. Подсказка поможет выбрать следующий шаг.');}save();renderProblem();}
+function checkStep(i){const t=active.task,s=ts(t.id),q=t.steps[i];if(i!==s.step)return;const v=s.values[i]||'';if(!v.trim()){document.getElementById('step-feedback-'+i).textContent='Сначала введи результат этого шага.';return;}if(invalidNumber(v,q)){document.getElementById('step-feedback-'+i).textContent=FORMAT_FEEDBACK;return;}if(check(v,q)){s.step++;save();renderProblem();}else{rememberFirstError(s,q,v,i);save();document.getElementById('step-feedback-'+i).textContent='Проверь вычисление в этом шаге. Можно открыть подсказку.';}}
 function progress(){
+ if(BOARD){main.innerHTML='<p class="eyebrow">Совместный урок</p><h1>Работа на доске</h1><p class="lead">Обсуждайте ответы, шаги и модели вместе. Эта работа остаётся в комнате и не меняет личные результаты ученика.</p><a class="button" href="#home">К темам курса</a>';return;}
  const rows=D.lessons.map(l=>'<tr><td><a href="#lesson/'+l.id+'/0">Ч. '+l.part+'. '+e(l.title)+'</a></td><td>'+independent(l)+'</td><td>'+(count(l)-independent(l))+'</td><td>'+reviewed(l)+'</td></tr>').join(''),pr=Object.entries(state.tasks).filter(([id,s])=>id.startsWith('practice:')&&s.correct);
  main.innerHTML='<p class="eyebrow">Мои результаты</p><h1>Виден каждый шаг</h1><p class="lead">Самостоятельно — с первой попытки, без подсказок. Самопроверка рассуждения не является оценкой учителя.</p><div class="panel table-scroll" role="region" aria-label="Результаты по темам" tabindex="0"><table class="progress-table"><thead><tr><th>Тема</th><th>Сам</th><th>С помощью / после попыток</th><th>Самопроверка</th></tr></thead><tbody>'+rows+'</tbody></table></div><h2>Отдельная тренировка</h2><p>Решено '+pr.length+' примеров, из них '+pr.filter(([,s])=>s.independent).length+' самостоятельно.</p><div class="panel"><h2>Сохранить свою работу</h2><p>Ответы и записи находятся в этом браузере. Скачай сохранение, чтобы перенести их на другое устройство.</p><div class="row">'+button('Скачать сохранение','export')+'<label class="button quiet" for="import-file">Открыть сохранение<input class="sr-only" id="import-file" type="file" accept="application/json,.json"></label></div><p id="import-status" role="status" class="small"></p></div>';
  document.getElementById('import-file').onchange=importState;
+ window.PetersonWorkshop?.renderProgress(main);
 }
-function download(){const blob=new Blob([JSON.stringify({course:'peterson5',exportedAt:new Date().toISOString(),state},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Peterson5-progress.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-function hasRecordedWork(s){return !!s&&(!!s.value||!!s.note||s.step>0||s.revealed>0||s.attempts>0||s.correct||s.reviewed||s.assisted||s.guided||s.hint||(s.values||[]).some(Boolean)||Object.keys(s.stepHints||{}).length>0||Object.keys(s.reveals||{}).length>0||Object.keys(s.model||{}).length>0);}
-async function importState(ev){const file=ev.target.files[0],status=document.getElementById('import-status');if(!file)return;try{if(file.size>5000000)throw Error('Файл слишком большой.');const data=JSON.parse(await file.text());if(data.course!=='peterson5')throw Error('Это не сохранение данного курса.');const incoming=sanitizeState(data.state);for(const [id,s]of Object.entries(incoming.tasks)){const current=state.tasks[id];if(!hasRecordedWork(current))state.tasks[id]=s;}for(const [key,p]of Object.entries(incoming.practice))state.practice[key]={seed:Math.max(p.seed,state.practice[key]?.seed||1)};state=sanitizeState(state);save();progress();document.getElementById('import-status').textContent='Добавлены задания, к которым здесь ещё нет записей. Текущие ответы, шаги и черновики сохранены.';}catch(err){status.textContent='Не удалось открыть: '+err.message;}}
-function newPractice(){const used=new Set(Object.values(state.tasks).map(s=>s.signature).filter(Boolean));let seed=state.practice[active.key].seed;for(let i=0;i<1000&&seed<999999;i++){seed++;const t=M.generate(active.skill,seed,active.level);if(!used.has(taskSignature(t))){state.practice[active.key].seed=seed;save();practiceView(active.skill,active.level);return;}}ts(active.task.id).feedback='В этой подборке пока не нашёлся новый пример. Выбери другую сложность или навык.';renderProblem();}
-
+async function download(){if(BOARD)return;await window.PetersonWorkshop?.whenIdle();const blob=new Blob([JSON.stringify({course:'peterson5',exportedAt:new Date().toISOString(),state,...(window.PetersonWorkshop?{workshop:window.PetersonWorkshop.exportState()}:{} )},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Peterson5-progress.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function hasRecordedWork(s){return !!s&&(!!s.value||!!s.note||s.step>0||s.revealed>0||s.attempts>0||s.correct||s.reviewed||s.assisted||s.guided||s.hint||(s.values||[]).some(Boolean)||Object.keys(s.stepHints||{}).length>0||Object.keys(s.reveals||{}).length>0||Object.keys(s.model||{}).length>0||s.firstErrors?.final||Object.keys(s.firstErrors?.steps||{}).length>0);}
+async function importState(ev){if(BOARD)return;const file=ev.target.files[0],status=document.getElementById('import-status');if(!file)return;try{if(file.size>5000000)throw Error('Файл слишком большой.');const data=JSON.parse(await file.text());if(data.course!=='peterson5')throw Error('Это не сохранение данного курса.');const incoming=sanitizeState(data.state);let workshop;if(data.workshop){if(!window.PetersonWorkshop)throw Error('Обнови страницу, чтобы загрузить учебный маршрут.');workshop=window.PetersonWorkshop.validateState(data.workshop);}for(const [id,s]of Object.entries(incoming.tasks)){const current=state.tasks[id];if(!hasRecordedWork(current))state.tasks[id]=s;}for(const [key,p]of Object.entries(incoming.practice))state.practice[key]={seed:Math.max(p.seed,state.practice[key]?.seed||1)};state=sanitizeState(state);save();if(workshop)await window.PetersonWorkshop.importState(workshop);progress();document.getElementById('import-status').textContent='Добавлены задания, к которым здесь ещё нет записей. Текущие ответы, шаги и черновики сохранены.';}catch(err){status.textContent='Не удалось открыть: '+err.message;}}
+function nextPracticeSeed(id,level,source){
+ const used=new Set(Object.values(state.tasks).map(s=>s.signature).filter(Boolean));
+ if(source)used.add(taskSignature(source));
+ let seed=state.practice[id+':'+level]?.seed||0;
+ for(let i=0;i<1000&&seed<999999;i++){
+  const task=M.generate(id,++seed,level);
+  if(used.has(taskSignature(task)))continue;
+  // A different wording can still expose the same answer that was just shown in the source.
+  if(source?.transfer?.skill===id&&(task.answer===source.answer||M.equal(task.answer,source.answer)))continue;
+  return seed;
+ }
+ return null;
+}
+function newPractice(){
+ const [,lesson,index]=state.origin?.hash.split('/')||[];
+ const seed=nextPracticeSeed(active.skill,active.level,byId[lesson]?.tasks[index]);
+ if(seed){state.practice[active.key].seed=seed;save();practiceView(active.skill,active.level);return;}
+ ts(active.task.id).feedback='В этой подборке пока не нашёлся новый пример. Выбери другую сложность или навык.';renderProblem();
+}
 function independentCheck(){
  if(!active)return;if(active.practice){newPractice();return;}
- const id=(active.task.skills||[]).find(id=>skills[id]);if(!id)return;
- const key=id+':1',used=new Set(Object.values(state.tasks).map(s=>s.signature).filter(Boolean));used.add(taskSignature(active.task));let seed=state.practice[key]?.seed||0;
- for(let i=0;i<1000&&seed<999999;i++){seed++;const t=M.generate(id,seed,1);if(!used.has(taskSignature(t))){state.origin={hash:'#lesson/'+active.lesson.id+'/'+active.index,scroll:window.scrollY};state.practice[key]={seed};save();go('#practice/'+id+'/1');return;}}
+ const target=active.task.transfer,id=target?.skill||(active.task.skills||[]).find(id=>skills[id]);
+ if(!skills[id])return;
+ const level=target?.level||1,seed=nextPracticeSeed(id,level,active.task);
+ if(seed){
+  state.origin={hash:'#lesson/'+active.lesson.id+'/'+active.index,scroll:window.scrollY};
+  state.practice[id+':'+level]={seed};save();go('#practice/'+id+'/'+level);return;
+ }
  ts(active.task.id).feedback='Новый пример пока не найден. Выбери другой навык или сложность.';renderProblem();
 }
 
@@ -147,9 +250,39 @@ document.addEventListener('click',ev=>{
  save();renderProblem();
 });
 function route(){
+ window.Peterson5Media?.cleanup();
+ if(BOARD&&!window.Peterson5Board?.create({lessons:D.lessons,topics:window.PetersonWorkshopData.topics,math:M}).validRoute(location.hash))history.replaceState(null,'',location.pathname+location.search+'#home');
  if(typeof cleanup==='function')cleanup();cleanup=null;active=null;const parts=location.hash.replace(/^#/,'').split('/');document.querySelectorAll('nav a').forEach(a=>a.removeAttribute('aria-current'));
- try{if(parts[0]==='lesson')lessonView(parts[1],parts[2]);else if(parts[0]==='practice')practiceView(parts[1],parts[2]);else if(parts[0]==='skills')skillPage();else if(parts[0]==='progress')progress();else home();const nav=parts[0]==='practice'||parts[0]==='skills'?'skills':parts[0]==='progress'?'progress':'home';document.querySelector('nav a[href="#'+nav+'"]').setAttribute('aria-current','page');}catch(err){main.innerHTML='<h1>Не удалось открыть занятие</h1><p>Сохранённые ответы остаются в браузере. Обнови страницу или вернись к курсу.</p><a class="button" href="#home">К началу</a>';console.error(err);}window.scrollTo(0,0);
+ window.PetersonWorkshop?.visit(location.hash);
+ try{if(parts[0]==='topic'){if(window.PetersonWorkshop)cleanup=window.PetersonWorkshop.mount(main,parts[1],(parts[2]||'discover')+(parts[3]?'/'+parts[3]:''),{format:fmt});else main.innerHTML='<h1>Учебный маршрут не загрузился</h1><p>Обнови страницу, чтобы загрузить новые задания. Прежние задачи и записи доступны в курсе.</p><button type="button" onclick="location.reload()">Повторить загрузку</button><a class="button quiet" href="#home">К курсу</a>';}else if(parts[0]==='lesson')lessonView(parts[1],parts[2]);else if(parts[0]==='practice')practiceView(parts[1],parts[2]);else if(parts[0]==='skills')skillPage();else if(parts[0]==='progress')progress();else home();const nav=parts[0]==='practice'||parts[0]==='skills'?'skills':parts[0]==='progress'?'progress':'home';document.querySelector('nav a[href="#'+nav+'"]').setAttribute('aria-current','page');}catch(err){main.innerHTML='<h1>Не удалось открыть занятие</h1><p>Сохранённые ответы остаются в браузере. Обнови страницу или вернись к курсу.</p><a class="button" href="#home">К началу</a>';console.error(err);}window.scrollTo(0,0);const boardLink=document.querySelector('[data-p5-board-link]');if(boardLink)boardLink.href='/trainers/trainer-board.html?trainer='+encodeURIComponent('/trainers/peterson5.html'+(location.hash||'#home'));window.dispatchEvent(new CustomEvent('peterson5:route',{detail:location.hash||'#home'}));
 }
 window.addEventListener('hashchange',route);route();
-window.PetersonApp={getState:()=>JSON.parse(JSON.stringify(state)),format:fmt,route,validateState:sanitizeState,check,findNumber,storageKey:KEY};
+window.PetersonApp={boardMode:BOARD,replaceBoardState(raw){if(!BOARD)throw Error('Board wrapper required');state=sanitizeState(raw);},getState:()=>JSON.parse(JSON.stringify(state)),format:fmt,route,validateState:sanitizeState,check,findNumber,storageKey:KEY};
+}
+openCourse();
+})();
+
+// Give the existing site navigator a place in this course's menu. Its shadow
+// dialog and event handlers stay intact; only the closed launcher joins flow.
+(function () {
+ 'use strict';
+ const document=window.document;
+ let observer;
+ function placeNavigator(){
+  const host=document.getElementById('maxexam-public-assistant'),menu=document.querySelector('header.topbar nav');
+  if(!host?.shadowRoot||!menu)return;
+  if(!host.shadowRoot.querySelector('[data-course-navigator-flow="peterson5"]')){
+   const style=document.createElement('style');style.dataset.courseNavigatorFlow='peterson5';
+   style.textContent=':host{display:inline-flex!important;position:static!important;contain:none!important;min-height:0!important;min-width:0;max-width:100%;align-self:center}.launcher{position:static;inset:auto;z-index:auto;display:flex;width:auto;height:auto;min-height:44px;max-width:100%;padding:8px 12px;gap:8px;border-radius:12px;box-shadow:none}.launcher-mark{width:24px;height:24px;flex:0 0 24px;font-size:20px}.launcher-label{position:static;display:block;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal;line-height:1.3}.launcher-label strong{font-size:16px}.launcher-label>span{display:none}';
+   host.shadowRoot.append(style);
+  }
+  if(host.parentNode!==menu)menu.append(host);
+  observer?.disconnect();
+ }
+ function start(){
+  observer=new MutationObserver(placeNavigator);
+  observer.observe(document.body,{childList:true});
+  placeNavigator();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

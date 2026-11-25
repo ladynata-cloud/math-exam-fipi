@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "review": "ATANASYAN_VISIBILITY_COMPOSITION_20261118",
+  "reviewer": "Independent Codex agent /root/oge_finish",
+  "kind": "Independent internal technical review of the composition delta; no external provider audit",
+  "reviewedAt": "2026-11-18T10:52:13.760136+00:00",
+  "pullRequest": "https://github.com/ladynata-cloud/math-exam-fipi/pull/623",
+  "snapshot": {
+    "originalHarmonizationHead": "9adfdbef2a4c44034e281aefae3c17bf48fdf461",
+    "correctedGeometryParent": "809f7c461908bcaf29dfa7ec028a009a3097356d",
+    "scope": "The frozen working-tree file hashes below during ordinary merge resolution, before the final source checkpoint and navigator bindings. This is not a final remote-head or whole-repository release approval.",
+    "inspectedFilesSHA256": {
+      "docs/reviews/ATANASYAN_HARMONIZATION_COMPOSITION_20261118.json": "b396029cfafdc86a9eb1188cfc0ee214aa4bba09a0629ebbea6b6c9d4be36c30",
+      "docs/reviews/MERZLYAK_SECTIONS_VISIBILITY_COMPOSITION_20261118.json": "5aba6bfa3d96d91c1d1887c14279ef0e1191129b5976e248f7a549c3c1724a84",
+      "docs/reviews/SECTIONS_HIDDEN_STROKE_ORACLE_20261118.json": "5e3246f8dc73e49ebc5d7947fd9ffb756877849339749dd3b547d04a2e4e595e",
+      "stereo-course/assets/task-scene-viewer.js": "da984d3f7fc90c8fa8396dd12d0032cb350057772597b3e330d76bbfa57243ab",
+      "stereo-course/index.html": "3aea302930afc00aade07cfa6481a33a723d458668aead2e264826d4a952ed01",
+      "stereo-course/merzlyak-10-base/data/course.json": "c6ffcfa5105117706f5b1719817808245d15277fef455da59af36d9c5fba9238",
+      "stereo-course/merzlyak-10-base/index.html": "3c5c221992f5e4d8e4f34f26ebc165c18f25fa59c5afe7b4351f44496163db59",
+      "tools/atanasyan-harmonization/preservation-baseline.json": "ce5c9ad984f40f487fbf059282e0ffe453850ca6885176b016990ce2e814527f",
+      "tools/atanasyan-harmonization/preservation-supplement-658.json": "c1fa53b37dc80433680b0798e9c1b28503d87a07d02c5c1e946ef431ab4815f5",
+      "tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs": "94f3ba816b525638f917bd49b1ddcf3fd80a02de9efdff4e1c2dd0843160badf",
+      "tools/sections-harmonization.browser.cjs": "a9d2370c090c38e8a8fca3911073964aa5138ea4e2775c727a895abf805229ee",
+      "tools/stereo-textbook/additional396-baseline.json": "66fac52488d8cfdbdfd1eb71271cf5b411773df68fcce28ef42cbeec7d2f9338",
+      "tools/stereo-textbook/additional404-baseline.json": "13396599f04c7b1d5381cc99d69b00fe28d4d9c5c920e77a1fdeaeb59d8bf823",
+      "tools/stereo-textbook/harmonization-preview-migration.cjs": "1fa3bf3a805b6cde01355320fe99ca8b69989f09ab5be653d80f82c91d8edf54",
+      "tools/stereo-textbook/harmonization-preview-migration.test.cjs": "5bc18072377a37ed04e092160a48738a08d80ab01677c7aceb871317e3378fcf",
+      "tools/stereo-textbook/mobile-layout-migration.cjs": "e2d657e1c354e9c02fdb1bc3614ef41c49885deaa0a6368f930a9efbaa682e74",
+      "tools/stereo-textbook/mobile-layout-migration.json": "2d8991daecf4d6d76f210d7917ccd7d6e4fd582067629ba214abe34a8c055de4",
+      "tools/stereo-textbook/sphere-baseline.json": "e27a538c954374b8d8fb5858ee91d01e97fadff97b1f8c67948a1fb4d66508b9",
+      "tools/stereo-textbook/visibility-math.test.cjs": "83b5aecd69c786ef15dcef34609a5f5df13dab48eb8c9d20e38e70885a2a4def",
+      "tools/stereo-textbook/visibility-migration.cjs": "b4b27b0ded2b2217f53a6930c60d7d94008936f6a18c1631b170af37c45be224",
+      "tools/stereo-textbook/visibility-migration.json": "25ac1352722e33a862c24e647e67c4e31335fde2280d6c958784c95eac96412e",
+      "tools/stereo-textbook/visibility-profile-composition.cjs": "dbae242fea616f3ffa415d07e01b1f9944596088b1c042db73aaf67406a5cfab",
+      "tools/stereo-textbook/visibility-profile-composition.test.cjs": "7e0a51c324f8daea84fdb749fcb9c458c67b7df709e3fcf63841ec969a4fde0e",
+      "tools/stereo-textbook/visibility-profile-runtime-migration.cjs": "801d9e1b15fcf5ae84e521fc66d26ff4309dbd91f49938ddd46fcc91950a8c75",
+      "tools/stereo-textbook/visibility-profiles/merzlyak-sections-composition.json": "cbd45bd04121cba38c00f14a9e1fb68cc9ab2ed7b2f9f651f33d7ebe376f928d",
+      "tools/stereo-textbook/visibility-profiles/merzlyak.json": "10184ec658e1fec8e574c89cc898a58e118d99205ebdf367d324a64780639605",
+      "trainers/merzlyak-10-base.html": "ced7f72395c54da19377658a5498b0f54403a37ed54bdce52f50d7e66bc4f94d"
+    }
+  },
+  "verdict": "PASS_WITH_STATED_LIMITS",
+  "blockingFindings": [],
+  "findings": [
+    "The compact-preview inverse accepts exactly two full-byte variants: original 7681c481 to 91ef00cd, or composed da984d3f to da832009. It removes only the unique opt-in sizing amendment. The profile inverse then maps da832009 to the same historical 91ef00cd renderer and is byte-identical to corrected #658.",
+    "The composed renderer differs from the original #623 renderer by exactly one 2656-byte generated profile entry. Every other renderer byte, including compact-preview sizing, and all 245 historical profile entries remain intact.",
+    "The rebuilt stereo-course/index.html differs from original #623 by the same sole generated profile entry and embeds the exact current renderer. The two live Merzlyak consumers and strict wrapper expectation differ from corrected #658 only by their exact da984d3f cache token.",
+    "The reviewed #658 profile data, profile validation, independent world-space oracle, lesson bundle, hidden-stroke browser oracle and both #658 review records remain byte-identical. The original #623 review record was preserved as a historical snapshot.",
+    "All seven inspected historical inventories and manifests remain byte-identical to original #623, including the 878-file preservation baseline and ten-entry supplement. No broader file ignore, changed baseline or arbitrary profile acceptance was introduced.",
+    "Actual renderer preparation retains six occluding faces and seven authored view surfaces for research-sections-004, keeps six faces/four surfaces for cached old lesson data, preserves the other five cards own explicit surfaces, and rejects unknown geometry from inheriting the approved profile."
+  ],
+  "executedChecks": [
+    {
+      "check": "Independent whole-byte comparison against both Git parents, exact generated entry removal from renderer and embedded HTML, exact embed and three cache-token literals",
+      "result": "PASS",
+      "unchanged658Files": 9,
+      "unchangedHistoricalManifests": 7,
+      "profileAdditionBytes": 2656
+    },
+    {
+      "command": "NODE_PATH=<existing isolated test dependencies> node tools/stereo-textbook/visibility-profile-composition.test.cjs",
+      "result": "PASS",
+      "cards": 6,
+      "authoredViews": 51,
+      "rotatedViews": 86,
+      "worldSpaceRays": 35421,
+      "hiddenPaths": 519,
+      "compositionNegativeControls": 12,
+      "oracleNegativeControls": 4
+    },
+    {
+      "command": "node tools/stereo-textbook/harmonization-preview-migration.test.cjs",
+      "result": "PASS",
+      "previewNegativeControls": 10,
+      "historicalVisibilityNegativeControls": 21,
+      "laterFrozenConsumers": 3
+    },
+    {
+      "command": "node tools/stereo-textbook/build_visibility_profiles.cjs --check",
+      "result": "PASS",
+      "exactGeometrySignatures": 246
+    },
+    {
+      "command": "node tools/stereo-textbook/mobile-layout-migration.test.cjs",
+      "result": "PASS",
+      "negativeControls": 6
+    },
+    {
+      "command": "node tools/atanasyan-harmonization/preservation.test.cjs",
+      "result": "PASS",
+      "protectedFiles": 878,
+      "exactReviewedAmendments": 10,
+      "negativeControls": 12
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "environmentNotes": [
+    "The first focused-test attempt lacked jsdom module resolution. It was rerun successfully using the existing isolated test dependency directory; no repository code or dependency files were changed."
+  ],
+  "notPerformed": [
+    "Fresh native browser rendering, production or Pages verification, full download/package testing, or a full independent rerun of every repository gate.",
+    "Final navigator binding refresh, source-checkpoint/tree verification, final remote head/base verification and release authorization."
+  ],
+  "reviewBoundary": "No implementation files were edited by this reviewer. Only this distinct receipt was written. Historical review records retain their original hashes and scopes. Later changes to inspected files require relevant renewed review; final bindings and fresh native CI remain the release agent responsibility."
+}

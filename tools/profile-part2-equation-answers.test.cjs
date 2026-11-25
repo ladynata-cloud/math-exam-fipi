@@ -74,6 +74,20 @@ test('periodic unions handle equal refinements, flipped steps and isolated point
   check('∅', 'periodic-pi', { general: [] }, 'correct');
 });
 
+test('e and i need an explicit integer declaration to denote a family of roots', () => {
+  for (const name of ['e', 'i', 'E', 'I']) {
+    check('х=pi*' + name, 'periodic-pi', integers, 'format');
+    check('х=πn или Х=π' + name + ', n ∈ ℤ', 'periodic-pi', integers, 'format');
+    check('х=pi*' + name + ', ' + name + ' ∈ ℤ', 'periodic-pi', integers, 'correct');
+  }
+  check('х=2πe или Х=π+2πi, e,i∈Z', 'periodic-pi', integers, 'correct');
+  check('x=2πe, e∈Z; x=π+2πi, i∈Z', 'periodic-pi', integers, 'correct');
+  check('x=2πe; x=π+2πi, i∈Z', 'periodic-pi', integers, 'format');
+  check('х=(-1)^iπ/6+πi, i∈Z', 'periodic-pi', half, 'correct');
+  check('х=πa, a∈ℤ', 'periodic-pi', integers, 'correct');
+  check('х=πk', 'periodic-pi', integers, 'correct');
+});
+
 test('finite roots preserve exact signs, units, endpoints, domain and all diagnostics', () => {
   const circle = answerById.get('p14-circle-selection-8');
   const a = check('3π/4; π', 'finite-pi', circle, 'extra-outside-interval');
@@ -90,6 +104,25 @@ test('finite roots preserve exact signs, units, endpoints, domain and all diagno
     { unit: 'number', value: '0', reason: 'outside-domain' }]);
   check('3.141592653589', 'finite-pi', zero, 'missing-extra-not-root');
   check('−17/6*pi; -13/6*PI; -5/6π', 'finite-pi', answerById.get('p14-circle-selection-7'), 'correct');
+});
+
+test('integer parameters may be declared beside each factor branch', () => {
+  const spec = { general: [['0', '1'], ['1/3', '2'], ['-1/3', '2']] };
+  check('x=πn, n∈ℤ; x=±π/3+2πk, k∈ℤ', 'periodic-pi', spec, 'correct');
+  check('x=πn, n∈ℤ или x=±π/3+2πk, k∈ℤ', 'periodic-pi', spec, 'correct');
+  check('x=πn, k∈ℤ; x=±π/3+2πk, k∈ℤ', 'periodic-pi', spec, 'format');
+  check('x=πn, n∈R; x=±π/3+2πk, k∈ℤ', 'periodic-pi', spec, 'format');
+});
+
+test('division of the entire angle series scales both the offset and the period', () => {
+  const spec = { general: [['1/12', '1'], ['5/12', '1']] }; // sin(2x) = 1/2
+  check('x=(π/6+2πk)/2; x=(5π/6+2πn)/2', 'periodic-pi', spec, 'correct');
+  check('x=((-1)^nπ/6+πn)/2', 'periodic-pi', spec, 'correct');
+  check('x=(-π/6−2πk)/−2; x=(-5π/6−2πk)/−2', 'periodic-pi', spec, 'correct');
+  check('π/12+2πk; 5π/12+2πn', 'periodic-pi', spec, 'missing');
+  for (const invalid of ['(π/6+2πn)/0', '(π/6+2πn)/n', '(π/6+2πn)/2π']) {
+    check(invalid, 'periodic-pi', spec, 'format');
+  }
 });
 
 test('ambiguity, nonintegral declarations and unsupported form fail without a math verdict', () => {

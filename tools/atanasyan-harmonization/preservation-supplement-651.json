@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "sourceCommit": "64ce01049377b4289f46979c52f2c50daf84b92f",
+  "composedParent": "29ae6e0aba869ab3de0380c2a43af7a9fe86fda8",
+  "task": "FINAL651_APPROVED_COMPOSITION_20261118",
+  "boundary": "Four exact right-angle amendments already reviewed in #667 and in the approved #651 full tree. Two continue the exact #658 amendments, one extends the frozen schema and one is the reviewed renderer. No other protected path or byte is approved.",
+  "files": {
+    "ege-profil/atanasyan-10-11/lessons-a.js": {
+      "beforeSHA256": "2212a4a66d53034af140c7a9f723d3ea6243da7865d46e856113b0448dd5e6c6",
+      "afterSHA256": "a870370b3050a979f34fda59e636c0adbfa366fdaa266bcdb4fec13bca7d3554"
+    },
+    "ege-profil/atanasyan-10-11/model.js": {
+      "beforeSHA256": "69013fa9dd9cb2feebc8912e2c92aeee04b142d7c2ec2d0d89b5dc5ab99ef3d7",
+      "afterSHA256": "97f01b68064b317759b6814b3c9f4b2087aa89aad22eb3abece65b0feb8b063b"
+    },
+    "stereo-course/literacy/app.js": {
+      "beforeSHA256": "facfd8b46159c7a43abda61e7c013dbb51d47166258f3209769f2e428a231e64",
+      "afterSHA256": "f04dcf3d356ab9d570de1d29950e1e37978b360745af1acfb51bb2c1b0587d61"
+    },
+    "stereo-course/textbook/schema/lesson.schema.json": {
+      "beforeSHA256": "ddd88a2bd8aea068fbdb0331c5d436529ed0bf12483732fddd2fc1e6a83efee1",
+      "afterSHA256": "26c877296c167e4889a72ff67e569364cc03fc1912c3c6261b578c6d8887c2e0"
+    }
+  }
+}

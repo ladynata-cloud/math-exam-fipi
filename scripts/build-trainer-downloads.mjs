@@ -3,6 +3,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import navigatorPreservation from "../tools/public-navigator-preservation.cjs";
 import { exportStandalone } from "./trainer-download-offline.mjs";
+import { prepareGeometryFolder } from "./geometry-download-offline.mjs";
 import { adaptationIncludes, adaptationPanel, adaptationPrompt, downloadPaths, guideUrl, writeAdaptationFiles } from "./trainer-download-adaptation.mjs";
 
 const root = process.cwd();
@@ -403,6 +404,13 @@ function prepareTrainer(entry) {
   for (const asset of entry.assets || []) {
     copyAssetToPackage(asset, destDir, Boolean(entry.assetCopyRoot));
     copyAssetToPackage(asset, pkgDir, Boolean(entry.assetCopyRoot));
+  }
+
+  if (entry.slug === 'geometry-course' && entry.mode === 'folder') {
+    prepareGeometryFolder(root, repoPath(entry.sourceDir), pkgDir);
+    // The separately downloaded catalog has the same resource/link semantics
+    // as the catalog inside the complete archive.
+    fs.copyFileSync(path.join(pkgDir, htmlName), path.join(destDir, htmlName));
   }
 
   const promptName = `${entry.slug}-deepseek-prompt.md`;

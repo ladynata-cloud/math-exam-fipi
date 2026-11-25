@@ -25,14 +25,18 @@
   if(labels.h!==undefined)s+=label(43,189,F(labels.h),'height');
   return s;
  }
- function cylinder({radius='r',height,unknown=false,water=false,radiusSize=100}={}){
+ function cylinder({radius='r',height,waterDepth,radiusSize=100}={}){
   const left=210-radiusSize,right=210+radiusSize,rim=radiusSize*.26;
-  let s=water?path(`M${left+1} 135Q210 ${135+rim} ${right-1} 135V265Q210 ${265+rim} ${left+1} 265Z`,{fill:'#d9edf6',color:'#5e9db6',width:0}):'';
+  const water=waterDepth!==undefined,top=water?265-waterDepth:75;
+  let s=water?path(`M${left} ${top}H${right}V265A${radiusSize} ${rim} 0 0 1 ${left} 265Z`,{fill:'#d9edf6',width:0}):'';
   s+=path(`M${left} 75V265M${right} 75V265`)+ring(210,75,radiusSize,rim,{kind:'cylinder-top',backHidden:false})+ring(210,265,radiusSize,rim,{kind:'cylinder-base'});
-  if(water)s+=ring(210,135,radiusSize-1,rim,{kind:'water-level',color:'#5e9db6',width:2});
+  if(water)s+=ring(210,top,radiusSize,rim,{kind:'water-level',color:'#3b7891',fill:'#d9edf6',width:2});
   s+=line([210,75],[right,75],{color:'#b05d2d'})+label(210+radiusSize/2,38,radius,'radius');
-  if(height!==undefined)s+=line([right+26,water?135:75],[right+26,265],{color:'#b05d2d',dash:true})+label(right+59,178,F(height),'height');
-  if(unknown)s+=label(210,186,'h = ?');
+  if(water){
+   const x=right+17;
+   s+=`<g data-stereo-aux="water-depth">${line([x,top],[x,265],{color:'#b05d2d',width:2})}${path(`M${x-5} ${top}h10M${x-5} 265h10`,{color:'#b05d2d',width:2})}</g>`;
+   s+=label(x+43,(top+265)/2+7,height===undefined?'h = ?':F(height)+' см',height===undefined?undefined:'height');
+  }else if(height!==undefined)s+=line([right+26,top],[right+26,265],{color:'#b05d2d',dash:true})+label(right+59,178,F(height),'height');
   return s;
  }
  function cone({radius,height,slant,cut,smallVolume,wholeVolume,ratio,unitScale}={}){
@@ -94,7 +98,11 @@
    case 'pyramid':figures=[figure('Пирамида с квадратным основанием',pyramid(4,m.a,undefined,m.h))];break;
    case 'scale':figures=[figure('Сечение параллельно основанию',cone({cut:1/3,wholeVolume:27*(2+t.seed%7),ratio:3}))];note+=' h — высота малого конуса, H — высота большого. Измерять длины по экрану не нужно.';break;
    case 'practice-displacement':figures=[figure('До погружения',tank(p.litres,p.factor,false)),figure('После погружения',tank(p.litres,p.factor,true))];note+=' Схема вертикального сечения бака. Деталь целиком под водой; вода не вылилась.';break;
-   case 'practice-pour':figures=[figure('Первый цилиндр',cylinder({radius:'r',height:p.oldH,water:true,radiusSize:100/p.ratio})),figure('Второй цилиндр',cylinder({radius:F(p.ratio)+'r',unknown:true}))];note+=' Воду переливают полностью. Радиус второго основания указан относительно первого.';break;
+   case 'practice-pour':{
+    const firstDepth=130;
+    figures=[figure('Первый цилиндр',cylinder({radius:'r',height:p.oldH,waterDepth:firstDepth,radiusSize:100/p.ratio})),figure('Второй цилиндр',cylinder({radius:F(p.ratio)+'r',waterDepth:firstDepth/p.ratio**2}))];
+    note+=` Глубину измеряют от дна до поверхности воды. В первом цилиндре это ${F(p.oldH)} см. Во втором искомая глубина отмечена знаком вопроса.`;break;
+   }
    case 'practice-joined-surface':figures=[figure('Два куба, склеенные целыми гранями',box({a:p.a,b:p.a,h:p.a},true))];note+=' Рыжим отмечены внешние линии соединения кубов; общая грань находится внутри.';break;
    case 'practice-faces':figures=[figure(nName(p.n)+' и пирамида',composite(p.n))];note+=' Рыжим отмечены рёбра соединения. Сама общая грань находится внутри тела. Соседние внешние грани не лежат в одной плоскости.';break;
    case 'practice-cone-area':{const r2=p.r*p.ratio,l2=p.l*2,unitScale=Math.min(108/r2,228/Math.max(Math.sqrt(p.l*p.l-p.r*p.r),Math.sqrt(l2*l2-r2*r2)));figures=[figure('Первый конус',cone({radius:p.r,slant:p.l,unitScale})),figure('Второй конус',cone({radius:r2,slant:l2,unitScale}))];note+=' l — образующая конуса. Оба конуса показаны в одном масштабе.';break;}

@@ -22,9 +22,9 @@
       "href": "/trainers/ege-baza-13.html#map"
     },
     {
-      "title": "Виленкин · 5 класс · весь курс",
+      "title": "Виленкин · 5 класс · весь курс и общая доска",
       "group": "Виленкин · 5 класс",
-      "href": "/school/index.html?course=vilenkin5#course/vilenkin5"
+      "href": "/trainers/vilenkin5.html#course/vilenkin5"
     },
     {
       "title": "Пункт 1 · Находим нужную клетку таблицы",
@@ -2240,6 +2240,11 @@
       "title": "Атанасян 10–11",
       "href": "/stereo-course/",
       "group": "Курсы · Стереометрия"
+    },
+    {
+      "title": "Атанасян 10–11 · задачи по номерам",
+      "href": "/stereo-course/textbook/",
+      "group": "Стереометрия"
     },
     {
       "title": "Мерзляк 7–9",
@@ -7282,9 +7287,19 @@
       "href": "/trainers/atanasyan-7-9.html#atanasyan-7-9-main-92-part-1"
     },
     {
-      "title": "Петерсон · 6 класс · часть 1 — логика, обычные и десятичные дроби, проценты, движение и тренировка вычислений",
+      "title": "Петерсон · 6 класс · часть 1 · задачи № 1–497",
       "group": "Школа · математика · 6 класс",
-      "href": "/trainers/peterson6.html#home"
+      "href": "/trainers/peterson6-textbook.html#map"
+    },
+    {
+      "title": "Петерсон · 6 класс · часть 1 · тренажёры по 37 темам",
+      "group": "Школа · математика · 6 класс",
+      "href": "/trainers/peterson6-workshop.html#map"
+    },
+    {
+      "title": "Петерсон · 6 класс · части 1–3 — 58 тем: дроби, пропорции, рациональные числа, уравнения, геометрия и 43 тренировки",
+      "group": "Школа · математика · 6 класс",
+      "href": "/trainers/peterson6-complete.html#home"
     },
     {
       "title": "Мерзляк · геометрия 10 класс · базовый уровень · весь курс, задачи, теория, стереометрия",
@@ -7310,6 +7325,11 @@
       "title": "Колледж · Графики функций · 40 задач по шагам",
       "group": "Колледж / математика",
       "href": "/trainers/college-functions/index.html"
+    },
+    {
+      "title": "Атанасян · задачник 7–9 классов по номерам",
+      "group": "Геометрия / 7–9 классы",
+      "href": "/trainers/atanasyan-grade7.html?scope=book"
     },
     {
       "title": "Атанасян · 7 класс · главы I–IV и задачи повышенной трудности",
@@ -7687,6 +7707,31 @@
       "href": "/trainers/vilenkin6-percent/index.html"
     },
     {
+      "title": "Отношения и пропорции · 32 задачи на общей доске",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html"
+    },
+    {
+      "title": "Пункт 18 · Отношения · зеркальная доска",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?unit=18"
+    },
+    {
+      "title": "Пункт 19 · Пропорции · зеркальная доска",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?unit=19"
+    },
+    {
+      "title": "Пункт 20 · Прямая и обратная пропорциональность · зеркальная доска",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?unit=20"
+    },
+    {
+      "title": "Пункт 21 · Масштаб · зеркальная доска",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?unit=21"
+    },
+    {
       "title": "Логарифмы и тригонометрия · 9 тем ЕГЭ профиль",
       "group": "ЕГЭ профиль · логарифмы и тригонометрия",
       "href": "/trainers/ege-profile-log-trig.html#course"
@@ -7830,6 +7875,36 @@
       "title": "Линейный угол двугранного угла · Атанасян",
       "group": "Стереометрия / сечения",
       "href": "/trainers/stereo-literacy-atanasyan.html#theory-022"
+    },
+    {
+      "title": "Петерсон · 5 класс · две части — исследование, практика, проверка, модели и GIF",
+      "group": "Школа · математика · 5 класс",
+      "href": "/trainers/peterson5.html#home"
+    },
+    {
+      "title": "Итоговая работа школьной мастерской · 5–11 классы",
+      "group": "Школьная мастерская",
+      "href": "/trainers/school-workshop-check/index.html"
+    },
+    {
+      "title": "Тюрин · вероятность и статистика · 7–11 классы",
+      "group": "Школьная мастерская",
+      "href": "/trainers/tyurin-statistics/index.html"
+    },
+    {
+      "title": "Макарычев · 8 класс · Алгебра и квадратные корни",
+      "group": "Школа · алгебра · 8 класс",
+      "href": "/trainers/makarychev8.html#home"
+    },
+    {
+      "title": "Мерзляк · алгебра 9 · 2014 · все параграфы",
+      "group": "Школьная мастерская",
+      "href": "/trainers/merzlyak9-2014/index.html"
+    },
+    {
+      "title": "Макарычев · алгебра 9 · 2017 · 36 пунктов",
+      "group": "Школьная мастерская",
+      "href": "/trainers/makarychev9-2017/index.html"
     }
   ]
 }

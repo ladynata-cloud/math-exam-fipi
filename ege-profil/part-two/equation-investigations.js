@@ -534,3 +534,336 @@
   }
   return Object.freeze({ create });
 });
+
+// The school route uses the same exam page, task IDs and exact-answer checker as №13.
+(function (root) {
+  'use strict';
+  if (typeof document === 'undefined') return;
+
+  const route = '#fipi/2027/13/school';
+  const drafts = new Map();
+  const storagePrefix = 'mathexam.profilePartTwo.schoolRoute.v1.';
+  const formatHelp = {
+    'finite-rational': 'Введите число или обыкновенную дробь. Несколько значений разделите точкой с запятой.',
+    'finite-pi': 'Запишите точные углы через π или pi. Несколько углов разделите точкой с запятой.',
+    'periodic-pi': 'Используйте π или pi и целый параметр k. Разделите серии точкой с запятой. Подойдут и равносильные записи.'
+  };
+
+  function element(tag, text, className) {
+    const node = document.createElement(tag);
+    if (text !== undefined) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  }
+
+  function link(text, href, className) {
+    const node = element('a', text, className);
+    node.href = href;
+    return node;
+  }
+
+  // Session drafts survive reload and returning from a model in the same tab.
+  // They are separate from exam results and cannot overwrite another tab's work.
+  function readDraft(id) {
+    if (drafts.has(id)) return drafts.get(id);
+    let raw;
+    try { raw = JSON.parse(root.sessionStorage.getItem(storagePrefix + id)); } catch (_) {}
+    const draft = {
+      answer: typeof raw?.answer === 'string' ? raw.answer.slice(0, 500) : '',
+      checked: typeof raw?.checked === 'string' ? raw.checked.slice(0, 500) : null,
+      hints: Number.isInteger(raw?.hints) && raw.hints >= 0 ? raw.hints : 0
+    };
+    drafts.set(id, draft);
+    return draft;
+  }
+
+  function saveDraft(id, draft) {
+    try { root.sessionStorage.setItem(storagePrefix + id, JSON.stringify(draft)); } catch (_) {}
+  }
+
+  // Same signed-angle convention and projection geometry as the school's circle model.
+  // Fifteen-degree steps keep every displayed value exact, including the axes.
+  function schoolCircleModel(stageId) {
+    const box = element('section', undefined, 'school-circle');
+    const isTurns = stageId === 'turns';
+    const label = element('label', 'Угол поворота α');
+    const slider = element('input');
+    slider.type = 'range';
+    slider.id = 'school-circle-angle';
+    slider.min = '-720';
+    slider.max = '720';
+    slider.step = '15';
+    slider.value = isTurns ? '-210' : '30';
+    slider.style.width = '100%';
+    label.htmlFor = slider.id;
+
+    const ns = 'http://www.w3.org/2000/svg';
+    function shape(tag, attrs, text) {
+      const node = document.createElementNS(ns, tag);
+      for (const [name, value] of Object.entries(attrs)) node.setAttribute(name, value);
+      if (text) node.textContent = text;
+      return node;
+    }
+    const svg = shape('svg', {viewBox: '0 0 260 230', role: 'img', 'aria-label': 'Единичная окружность с точкой P и проекциями'});
+    svg.style.cssText = 'display:block;width:100%;max-width:340px;height:auto';
+    const axis = '#657372', xColor = '#175aa3', yColor = '#a04122', rayColor = '#185d50';
+    const x0 = 115, y0 = 112, radius = 81;
+    svg.append(shape('path', {d: 'M14 112H225 M115 12V211', stroke: axis}),
+      shape('circle', {cx: x0, cy: y0, r: radius, fill: 'none', stroke: axis, 'stroke-width': 1.5}),
+      shape('text', {x: 229, y: 117, fill: axis}, 'x'), shape('text', {x: 125, y: 17, fill: axis}, 'y'),
+      shape('text', {x: 198, y: 132, fill: axis}, '1'), shape('text', {x: 99, y: 132, fill: axis}, '0'));
+    function segment(color, width, dotted) {
+      const line = shape('line', {stroke: color, 'stroke-width': width, 'stroke-linecap': 'round'});
+      if (dotted) line.setAttribute('stroke-dasharray', '4 3');
+      svg.append(line);
+      return line;
+    }
+    const dropX = segment(xColor, 1.5, true), dropY = segment(yColor, 1.5, true);
+    const projX = segment(xColor, 4), projY = segment(yColor, 4), ray = segment(rayColor, 2);
+    const point = shape('circle', {r: 4.5, fill: rayColor});
+    const pointName = shape('text', {fill: rayColor, 'font-weight': 'bold'}, 'P');
+    svg.append(point, pointName);
+    const output = element('p');
+    output.dataset.schoolCircleValues = '';
+    const readout = element('p');
+    readout.dataset.schoolCircleAngle = '';
+
+    // Sine and tangent for 0°, 15°, …, 90°; symmetry supplies the other quadrants.
+    const sines = ['0', '(√6 − √2)/4', '1/2', '√2/2', '√3/2', '(√6 + √2)/4', '1'];
+    const tangents = ['0', '2 − √3', '√3/3', '1', '√3', '2 + √3'];
+    function signed(value, negative) {
+      if (!negative || value === '0') return value;
+      return value === '2 − √3' || value === '2 + √3' ? '−(' + value + ')' : '−' + value;
+    }
+    function radians(degrees) {
+      if (!degrees) return '0';
+      let a = Math.abs(degrees), b = 180;
+      while (b) [a, b] = [b, a % b];
+      const n = Math.abs(degrees) / a, d = 180 / a;
+      return (degrees < 0 ? '−' : '') + (n === 1 ? '' : n) + 'π' + (d === 1 ? '' : '/' + d);
+    }
+    function place(line, x1, y1, x2, y2) {
+      for (const [key, n] of Object.entries({x1, y1, x2, y2})) line.setAttribute(key, n);
+    }
+    function draw() {
+      const degrees = Number(slider.value);
+      const turn = ((degrees % 360) + 360) % 360;
+      const step = turn / 15;
+      const acute = Math.min(step % 12, 12 - step % 12);
+      const cos = signed(sines[6 - acute], turn > 90 && turn < 270);
+      const sin = signed(sines[acute], turn > 180);
+      const tan = acute === 6 ? 'не определён (cos α = 0)' : signed(tangents[acute], (turn > 90 && turn < 180) || turn > 270);
+      const angle = turn * Math.PI / 180;
+      const px = x0 + radius * Math.cos(angle), py = y0 - radius * Math.sin(angle);
+      place(dropX, px, py, px, y0);
+      place(dropY, px, py, x0, py);
+      place(projX, x0, y0, px, y0);
+      place(projY, x0, y0, x0, py);
+      place(ray, x0, y0, px, py);
+      point.setAttribute('cx', px);
+      point.setAttribute('cy', py);
+      pointName.setAttribute('x', px + (px < x0 ? -17 : 7));
+      pointName.setAttribute('y', py + (py > y0 ? 17 : -7));
+      slider.setAttribute('aria-valuetext', radians(degrees) + ' радиан, ' + degrees + ' градусов');
+      readout.textContent = 'Поворот α = ' + radians(degrees) + ' (' + degrees + '°). Угол той же точки на [0; 2π): ' + radians(turn) + '.';
+      output.textContent = 'P = (' + cos + '; ' + sin + '). Горизонтальная проекция cos α = ' + cos + ', вертикальная sin α = ' + sin + '. Тангенс ' + (acute === 6 ? tan : 'tg α = ' + tan) + '.';
+    }
+    box.append(element('h3', 'Исследуйте окружность'),
+      element('p', isTurns ? 'Передвиньте точку сначала на −210°, затем на 150°. Сравните координаты и числа, задающие поворот.' : 'Сначала предскажите знаки координат. Передвиньте точку во вторую четверть, а затем на вертикальную ось и проверьте тангенс.'),
+      svg, label, slider, readout, output);
+    slider.addEventListener('input', draw);
+    slider.addEventListener('change', draw);
+    draw();
+    return box;
+  }
+
+  function workedExample(worked, label) {
+    const details = element('details');
+    details.append(element('summary', label));
+    details.append(element('p', worked.prompt));
+    const list = element('ol', undefined, 'steps');
+    for (const step of worked.steps) list.append(element('li', step));
+    details.append(list);
+    return details;
+  }
+
+  function evaluate(lesson, answer) {
+    if (lesson.exact) {
+      if (!answer.trim()) return { text: 'Введите ответ, затем проверьте его.' };
+      const { type, spec, feedback, retry } = lesson.exact;
+      const result = root.ProfileEquationAnswers.compare(root.ProfileEquationAnswers.parse(answer, type), { ...spec, type });
+      if (!result.recognized) return { text: 'Проверьте запись. ' + formatHelp[type] };
+      if (result.correct) return { correct: true, text: 'Верно. ' + feedback };
+      const issue = result.missing.length && !result.extra.length ? 'Ответ неполный.'
+        : result.extra.length && !result.missing.length ? 'В ответе есть лишнее значение.' : 'Проверьте ответ ещё раз.';
+      return { correct: false, text: issue + ' ' + retry };
+    }
+    const choice = lesson.choices.find((_, i) => answer === String(i));
+    if (!choice) return { text: 'Выберите один вариант, затем проверьте его.' };
+    return { correct: !!choice.correct, text: (choice.correct ? 'Верно. ' : '') + choice.feedback };
+  }
+
+  function practice(lesson) {
+    const draft = readDraft(lesson.id);
+    const section = element('section');
+    const prompt = element('h4', lesson.question);
+    prompt.id = 'school-route-question';
+    section.append(prompt);
+    const form = element('form');
+    form.setAttribute('aria-labelledby', prompt.id);
+    const feedback = element('p');
+    feedback.dataset.schoolFeedback = '';
+    feedback.setAttribute('role', 'status');
+    function display(verdict) {
+      feedback.textContent = verdict.text;
+      feedback.className = verdict.correct === true ? 'feedback ok' : verdict.correct === false ? 'feedback error' : 'feedback';
+    }
+    function answerChanged(value) {
+      draft.answer = value;
+      draft.checked = null;
+      feedback.textContent = '';
+      feedback.className = '';
+      saveDraft(lesson.id, draft);
+    }
+    if (lesson.exact) {
+      const field = element('label', undefined, 'field');
+      const input = element('input');
+      input.type = 'text';
+      input.maxLength = 500;
+      input.autocomplete = 'off';
+      input.spellcheck = false;
+      input.dataset.schoolAnswer = '';
+      input.value = draft.answer;
+      input.addEventListener('input', () => answerChanged(input.value));
+      const help = element('p', formatHelp[lesson.exact.type], 'caption');
+      help.id = 'school-route-format';
+      input.setAttribute('aria-describedby', help.id);
+      field.append(element('span', 'Ваш ответ'), input);
+      form.append(field, help);
+    } else {
+      const group = element('div', undefined, 'checklist');
+      for (const [i, choice] of lesson.choices.entries()) {
+        const field = element('label');
+        const radio = element('input');
+        radio.type = 'radio';
+        radio.name = 'school-route-choice';
+        radio.value = String(i);
+        radio.dataset.schoolAnswer = '';
+        radio.checked = draft.answer === radio.value;
+        radio.addEventListener('change', () => answerChanged(radio.value));
+        field.append(radio, element('span', choice.label));
+        group.append(field);
+      }
+      group.setAttribute('role', 'radiogroup');
+      group.setAttribute('aria-labelledby', prompt.id);
+      form.append(group);
+    }
+    const check = element('button', 'Проверить');
+    check.type = 'submit';
+    check.dataset.schoolCheck = '';
+    form.append(check, feedback);
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const input = form.querySelector('input[type="text"], input:checked');
+      draft.answer = input?.value || '';
+      const verdict = evaluate(lesson, draft.answer);
+      draft.checked = draft.answer || null;
+      saveDraft(lesson.id, draft);
+      display(verdict);
+      if (!draft.answer) form.querySelector('input').focus();
+    });
+    if (draft.checked !== null && draft.checked === draft.answer) display(evaluate(lesson, draft.answer));
+    section.append(form);
+    if (lesson.hints?.length) {
+      const displayed = element('div');
+      displayed.setAttribute('aria-live', 'polite');
+      for (const hint of lesson.hints.slice(0, draft.hints)) displayed.append(element('p', hint, 'hint'));
+      const button = element('button', 'Открыть подсказку', 'quiet');
+      button.type = 'button';
+      button.dataset.schoolHint = '';
+      function refreshHintButton() {
+        button.disabled = draft.hints >= lesson.hints.length;
+        button.textContent = button.disabled ? 'Все подсказки открыты' : draft.hints ? 'Следующая подсказка' : 'Открыть подсказку';
+      }
+      button.addEventListener('click', () => {
+        if (draft.hints >= lesson.hints.length) return;
+        displayed.append(element('p', lesson.hints[draft.hints++], 'hint'));
+        saveDraft(lesson.id, draft);
+        refreshHintButton();
+      });
+      refreshHintButton();
+      section.append(displayed, button);
+    }
+    return section;
+  }
+
+  function mount(main, lessons) {
+    if (!lessons?.length) return;
+    const section = element('section', undefined, 'panel part2-lab');
+    section.id = 'school-route';
+    section.setAttribute('aria-labelledby', 'school-route-heading');
+    const title = element('h2', 'От тригонометрического круга к уравнению №13');
+    title.id = 'school-route-heading';
+    section.append(title);
+    const hash = root.location.hash;
+    const expanded = hash === route || hash.startsWith(route + '/');
+    const urlFor = lesson => route + '/' + lesson.id;
+    const selectLabel = element('label', 'Перейти к шагу');
+    const select = element('select');
+    select.dataset.schoolStep = '';
+    selectLabel.append(select);
+    select.addEventListener('change', () => { if (select.value) root.location.hash = route + '/' + select.value; });
+    if (!expanded) {
+      section.append(element('p', 'Начните со смысла синуса, косинуса и тангенса или выберите шаг, который хотите разобрать.'));
+      const start = link('Начать с первого шага', route, 'button');
+      start.dataset.schoolStart = '';
+      section.append(start);
+      const placeholder = element('option', 'Выберите тему');
+      placeholder.value = '';
+      select.append(placeholder);
+    }
+    const slug = expanded ? hash.slice((route + '/').length) : '';
+    const selected = Math.max(0, lessons.findIndex(lesson => lesson.id === slug));
+    for (const [i, lesson] of lessons.entries()) {
+      const option = element('option', (i + 1) + '. ' + lesson.title);
+      option.value = lesson.id;
+      option.selected = expanded && selected === i;
+      select.append(option);
+    }
+    section.append(selectLabel);
+    if (expanded) {
+      const lesson = lessons[selected];
+      const heading = element('h3', lesson.title);
+      heading.tabIndex = -1;
+      heading.dataset.schoolTitle = '';
+      section.append(heading, element('p', lesson.lead));
+      if (lesson.id === 'coordinates' || lesson.id === 'turns') section.append(schoolCircleModel(lesson.id));
+      if (lesson.links?.length) {
+        const activities = element('ul');
+        for (const item of lesson.links) {
+          const offsite = root.MathExamTrainerOffline && item.href.startsWith('/');
+          const href = offsite ? new URL(item.href, root.MathExamTrainerOffline.origin).href : item.href;
+          const li = element('li');
+          li.append(link(item.label + (offsite ? ' (на сайте)' : ''), href));
+          activities.append(li);
+        }
+        section.append(activities);
+      }
+      if (lesson.worked) section.append(workedExample(lesson.worked, lesson.id === 'exam' ? 'Как оформить письменное решение' : 'Разобрать пример'));
+      if (lesson.choices?.length || lesson.exact) section.append(practice(lesson));
+      const nav = element('nav', undefined, 'actions');
+      nav.setAttribute('aria-label', 'Шаги школьного маршрута');
+      if (selected > 0) nav.append(link('← Предыдущий шаг', urlFor(lessons[selected - 1]), 'button quiet'));
+      if (selected + 1 < lessons.length) {
+        const next = link('Следующий шаг →', urlFor(lessons[selected + 1]), 'button');
+        next.dataset.schoolNext = '';
+        nav.append(next);
+      } else nav.append(link('К темам №13', '#fipi/2027/13', 'button quiet'));
+      section.append(nav);
+      root.requestAnimationFrame(() => { if (heading.isConnected) heading.focus(); });
+    }
+    main.querySelector('.grid').before(section);
+  }
+
+  root.ProfileEquationSchoolWorkshop = Object.freeze({ mount });
+})(globalThis);

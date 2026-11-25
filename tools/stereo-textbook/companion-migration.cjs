@@ -31,6 +31,11 @@ function assertHistoricalFile(file, expected, read = name => fs.readFileSync(pat
     visibility.assertVisibilityMigration(file, expected, read);
     return;
   }
+  if (file === 'stereo-course/assets/math-text.js') {
+    const bytes = require('./mobile-layout-migration.cjs').historicalRead(file, read);
+    assert.equal(hash(bytes), expected, 'unchanged historical fraction renderer');
+    return;
+  }
   if (!Object.hasOwn(approved, file)) {
     assert.equal(hash(read(file)), expected, 'unchanged runtime/schema/builder: ' + file);
     return;

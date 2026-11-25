@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "sourceCommit": "78853df87a48dddd5a96bf5f2ad4947a9016225b",
+  "task": "FINAL651_LEGACY_VIEW_SEGMENTS_20261119",
+  "boundary": "Supply the current view’s authored segments and the viewer options used by the shared drawing block in the legacy Atanasyan viewer.",
+  "files": {
+    "ege-profil/atanasyan-10-11/model.js": {
+      "beforeSHA256": "0a9e2f188edf3b71252a708a801f292978944f8ca9a48d20aaba82220aaa66f1",
+      "afterSHA256": "6408d216e50d5cbc7f52f124324c0932b3721fb6a624fd94f17c0b10f052034b"
+    }
+  }
+}

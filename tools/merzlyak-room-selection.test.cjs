@@ -62,6 +62,7 @@ function parent(child, boardOrigin = origin) {
   vm.runInContext([
     productionPart('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),
     productionPart('function unsafePathText(', 'function trainerIdFromPayload('),
+    productionPart('function protectedPetersonId(', 'function trainerSelectionForRegistry('),
     productionPart('function addBoardSeedToTrainerUrl(', 'function compatLabel('),
     productionPart('async function createRoom(){', 'async function connectRoom(){')
   ].join('\n'), context);

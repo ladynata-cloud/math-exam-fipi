@@ -873,7 +873,8 @@
           "title": "Провешивание прямой на местности"
         }
       ],
-      "tid": "atlas-segments"
+      "tid": "atlas-segments",
+      "topicProof": "line-uniqueness"
     },
     {
       "id": "angles",
@@ -883,7 +884,7 @@
       ],
       "title": "Читаем угол и выбираем его вершину",
       "figure": "angle",
-      "goal": "bisector",
+      "goal": "explore",
       "calc": "angle",
       "proof": "angles",
       "idea": "У луча есть начало и одно направление. Угол образован двумя лучами с общим началом. В записи ∠ACB вершина C находится в середине; первую и последнюю буквы можно поменять местами.",
@@ -908,7 +909,8 @@
           "title": "Угол"
         }
       ],
-      "tid": "atlas-angles"
+      "tid": "atlas-angles",
+      "topicProof": "angle-name"
     },
     {
       "id": "equality",
@@ -944,7 +946,8 @@
           "title": "Сравнение отрезков и углов"
         }
       ],
-      "tid": "atlas-equality"
+      "tid": "atlas-equality",
+      "topicProof": "rigid-equality"
     },
     {
       "id": "length",
@@ -2248,7 +2251,8 @@
           "title": "Общие касательные к двум окружностям"
         }
       ],
-      "tid": "atlas-circle-position"
+      "tid": "atlas-circle-position",
+      "topicProof": "circles-intersection"
     },
     {
       "id": "inscribed",
@@ -2511,7 +2515,8 @@
           "title": "Координаты вектора"
         }
       ],
-      "tid": "atlas-vector-basis"
+      "tid": "atlas-vector-basis",
+      "topicProof": "basis-unique"
     },
     {
       "id": "coordinates",
@@ -2763,7 +2768,8 @@
           "title": "Измерительные работы на местности"
         }
       ],
-      "tid": "atlas-solve-triangle"
+      "tid": "atlas-solve-triangle",
+      "topicProof": "triangle-solvability"
     },
     {
       "id": "dot-product",
@@ -3085,7 +3091,8 @@
           "title": "Периметры и площади подобных многоугольников"
         }
       ],
-      "tid": "atlas-polygon-similarity"
+      "tid": "atlas-polygon-similarity",
+      "topicProof": "polygon-scale"
     },
     {
       "id": "homothety",

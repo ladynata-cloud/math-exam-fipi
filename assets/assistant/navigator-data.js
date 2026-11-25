@@ -106,6 +106,9 @@
     ['simple-equations', 'Простые уравнения', '/trainers/simple-equations-stepwise.html', 'Алгебра', ['простые уравнения', 'обратное действие']],
     ['linear-systems', 'Системы линейных уравнений', '/trainers/linear-systems-trainer.html', 'Алгебра', ['системы', 'подстановка', 'сложение']],
     ['division-stepwise', 'Деление столбиком (уголком) по шагам', '/trainers/long-division-stepwise.html', 'Письменные алгоритмы', ['деление уголком']],
+    ['division-two-digit', 'Деление на двузначное число', '/trainers/long-division-stepwise.html#twoDigit', 'Письменные алгоритмы', ['делить на двузначный делитель']],
+    ['division-remainder', 'Деление с остатком по шагам', '/trainers/long-division-stepwise.html#remainder', 'Письменные алгоритмы', ['делить с остатком']],
+    ['division-quotient-digit', 'Подобрать одну цифру частного по шагам', '/trainers/long-division-stepwise.html#quotientDigit', 'Письменные алгоритмы', ['цифра частного в тренажёре']],
     ['division-digit', 'Подобрать цифру частного', '/trainers/oge-basics/multiplication-division/course-digit-choice.html', 'Письменные алгоритмы', ['выбрать цифру частного при делении']],
     ['division-notebook', 'Деление столбиком (уголком): тетрадный тренажёр', '/trainers/trainers/long-division.html', 'Письменные алгоритмы', ['тетрадный формат', 'деление']],
     ['multiplication-notebook', 'Умножение столбиком', '/trainers/trainers/long-multiplication.html', 'Письменные алгоритмы', ['умножение столбиком']],
@@ -313,10 +316,20 @@
     var pupil = /(?:^|[^а-я])(пяти|шести|семи|восьми|девяти|десяти|одиннадцати)класс/.exec(text);
     return pupil ? ['пяти','шести','семи','восьми','девяти','десяти','одиннадцати'].indexOf(pupil[1]) + 5 : null;
   }
+  function assignedWork(text) {
+    var lookup = /(?:^|\s)(?:что|како[ей]|каки[ех]|какую|где|покаж[иь]|назови|найти|открыть|посмотреть)(?:\s|$)/.exec(text);
+    if (!lookup) return false;
+    // Only the retrieval request itself can indicate private assignments; the
+    // preceding context may merely say «нам задали» before asking for practice.
+    var request = text.slice(lookup.index);
+    return /(?:мне|нам)\s+(?:было\s+)?(?:на\s+\S+\s+)?(?:зада(?:но|ны|ли|л[аи]?)|назнач(?:ен[а-я]*|ил[аи]?))|(?:зада(?:ли|л[аи]?)|назначил[аи]?)\s+(?:лично\s+)?(?:мне|нам)(?:\s|$)/.test(request) ||
+      /(?:мои|мое|свои|личные|посмотреть|увидеть|открыть|найти)\s+назначени[а-я]*|назначенн[а-я]*\s+(?:упражнен|задани|работ)/.test(request) ||
+      /(?:моя|мою|мое|мои)\s+(?:домашн[а-я]*\s+(?:работ|задан)|упражнен[а-я]*\s+от\s+(?:учител|преподавател))/.test(request);
+  }
   function accessIntent(text) {
     // Match the noun's case forms, without confusing "входная диагностика"
     // with an account problem. These intents never count as learning failure.
-    return /кабинет|парол|логин|личн.{0,8}ссыл|авторизац|авторизова|войти|(?:^|[^a-zа-я])pin(?:$|[^a-zа-я])|(?:^|[^а-я])пин(?:[- ]?код)?(?:$|[^а-я])/.test(text)
+    return assignedWork(text) || /кабинет|парол|логин|личн.{0,8}ссыл|авторизац|авторизова|войти|(?:^|[^a-zа-я])pin(?:$|[^a-zа-я])|(?:^|[^а-я])пин(?:[- ]?код)?(?:$|[^а-я])/.test(text)
       || /(?:^|[^а-я])вход(?:а|е|у|ом)?(?:$|[^а-я])/.test(text);
   }
   function explicitDifficulty(text) {
@@ -630,10 +643,13 @@
     var positive = text.replace(/(?:^|[^а-я])(?:(?:не\s+(?:(?:к|для)\s+)?|без\s+|не\s+(?:хочу|хотим|нужен|нужна|нужно|нужны|готовлюсь|готовимся)\s+(?:готовиться\s+)?(?:(?:к|для)\s+)?)впр|впр\s+(?:мне\s+)?(?:пока\s+)?не\s+(?:нуж[а-я]*|интересу[а-я]*|сдаю))/g, ' ');
     return /(?:^|[^а-я])впр(?:$|[^а-я])|всероссийск[а-я]*\s+проверочн[а-я]*\s+работ/.test(positive);
   }
-  function vprDestination(text, state) {
+  function vprGrade(text) {
     var grade = classNumber(text);
     var shorthand = /(?:^|[^а-я])впр\s*(?:по математике\s*)?[:,·-]?\s*(5|6|7|8|10)(?!\d)/.exec(text);
-    if (grade === null && shorthand) grade = Number(shorthand[1]);
+    return grade === null && shorthand ? Number(shorthand[1]) : grade;
+  }
+  function vprDestination(text, state) {
+    var grade = vprGrade(text);
     var single = {5:'vpr-g5',6:'vpr-g6',10:'vpr-g10'};
     if (Object.hasOwn(single, grade)) return result('vpr', 'Откройте курс подготовки к ВПР: короткая теория, примеры, проверка шагов и самостоятельная практика. Прогресс сохраняется в этом браузере.', [single[grade], 'vpr'], state);
     if (grade === 7 || grade === 8) {
@@ -681,6 +697,9 @@
       return result('pricing', 'На сайте есть бесплатные тренажёры для самостоятельной работы. Условия и стоимость занятий с преподавателем указаны отдельно на странице занятий.', ['trainers', 'lessons'], state);
     }
     if (accessIntent(text)) {
+      if (assignedWork(text) || (/кабинет/.test(text) && /задани|упражнен|назначен/.test(text))) {
+        return result('cabinet', 'Я не вижу личных заданий ученика. Откройте свой кабинет по ссылке преподавателя. Если пришлёте сюда условие упражнения, я помогу с первым шагом. Пароль и код входа оставьте в кабинете.', ['cabinet'], state);
+      }
       return result('cabinet', 'Кабинет открывается отдельно. Используйте личную ссылку или данные входа, выданные преподавателем. Если ссылка не работает или код потерян, попросите преподавателя помочь со входом. В навигатор код или пароль вводить не нужно.', ['cabinet'], state);
     }
     if (vprRequested(text)) return vprDestination(text, state);
@@ -706,7 +725,7 @@
       return result('navigation-help', 'Попробуйте открыть нужный раздел через каталог. Если не работает именно вход в кабинет, обратитесь к преподавателю за помощью со входом. Личные ссылки и коды сюда вводить не нужно.', ['trainers', 'cabinet'], state);
     }
     if (/как ты работаешь|что ты умеешь|ты.{0,15}(?:учишься|запоминаешь|искусственный|ии|модель|бот)|сохраняешь.{0,15}(?:переписку|сообщения)|автоматическ.{0,10}обуч|нейросет|языков.{0,8}модел|chatgpt|openai|qwen/.test(text)) {
-      return result('about', 'Я навигатор: подбираю ссылки по теме и разделу сайта с помощью подготовленных правил. Внешняя ИИ-модель здесь не подключена; условие, рисунок и ваш ответ я не вижу и не проверяю. Подбор выполняется в браузере: сообщения не отправляются сервису модели, а переписка не сохраняется между посещениями. Для разбора шагов откройте подходящий тренажёр.', ['trainers', 'topics'], state);
+      return result('about', 'Я навигатор: подбираю ссылки по теме и разделу сайта с помощью подготовленных правил. Внешняя ИИ-модель здесь не подключена; условие, рисунок и ваш ответ я не вижу и не проверяю. Обычный поиск работает в браузере. Если доступен серверный режим, его можно включить отдельно. История видна на этой странице до её закрытия. Для разбора шагов откройте подходящий тренажёр.', ['trainers', 'topics'], state);
     }
     var oge = hasExam(text, 'огэ');
     var ege = hasExam(text, 'егэ');
@@ -903,6 +922,31 @@
     var word = /^(пят|шест|седьм|восьм|девят|десят|одиннадцат)(?:ый|ой|ом|ого|ому|ым)(?:\s+класс(?:а|е)?)?$/.exec(s);
     return word ? gradeNames.indexOf(word[1]) + 5 : null;
   }
+  // Topic keys and URLs are fixed here. Only the selected key survives a turn.
+  var divisionTopics = {
+    general: {id:'division-stepwise', help:'Откройте простой пример. Посмотрите на первую цифру делимого: она уже достаточно велика, чтобы из неё вычесть делитель?', prompt:'С чего начнём: с деления на двузначное число, с остатка или с подбора цифры частного?'},
+    twoDigit: {id:'division-two-digit', help:'Посмотрите на делитель. Теперь читайте делимое слева: возьмите первую цифру и сравните с делителем. Если мало, присоедините следующую цифру справа.', prompt:'В тренажёре откроется деление на двузначное число. Начните с первой группы цифр делимого, в которой помещается делитель.'},
+    remainder: {id:'division-remainder', help:'Когда цифры делимого закончились, посмотрите на результат последнего вычитания. Можно ли вычесть из него делитель ещё раз?', prompt:'В тренажёре откроется пример с остатком. После последнего вычитания сравните остаток с делителем.'},
+    quotientDigit: {id:'division-quotient-digit', help:'Выберите пробную цифру и умножьте на неё делитель. Если произведение больше числа перед вами, попробуйте цифру меньше.', prompt:'Попробуйте подобрать одну цифру частного. В тренажёре сравните произведение делителя и пробной цифры с числом перед вами.'}
+  };
+  var divisionChoices = [choice('На двузначное', 'Делить на двузначное число'), choice('С остатком', 'Деление с остатком'), choice('Подобрать цифру', 'Подобрать цифру в тренажёре деления')];
+  function divisionDetail(text) {
+    if (/(?:на (?:двух?значн|2[- ]?значн|две цифры)|(?:двух?значн|2[- ]?значн)[а-я-]* делител)/.test(text)) return 'twoDigit';
+    if (/с остатком/.test(text)) return 'remainder';
+    return '';
+  }
+  function asksNextDivisionStep(text) {
+    return /^(?:объясни(?:те)? проще|я не понял[а]?|(?:вот )?(?:здесь|тут) я и запутал(?:ся|ась)|как начать|а дальше|что дальше|где потренироваться)$/.test(text);
+  }
+  function divisionFollowup(text, topic) {
+    if (!Object.hasOwn(divisionTopics, topic)) return '';
+    var answer = shortReply(text).replace(/^(?:да[,.]?\s+)?(?:(?:именно|тогда|лучше|а)\s+)?/, '');
+    if (/^(?:(?:делить|деление)\s+)?на (?:двух?значн[а-я]*|2[- ]?значн[а-я]*|две цифры)(?: (?:число|делитель))?$/.test(answer)) return 'twoDigit';
+    if (/^(?:(?:делить|деление) )?с остатком$/.test(answer)) return 'remainder';
+    if (/^(?:подобрать цифру(?: частного| в тренажере деления)?|какую цифру (?:брать|пробовать)|подбор цифры)$/.test(answer)) return 'quotientDigit';
+    if (asksNextDivisionStep(answer)) return topic;
+    return '';
+  }
   function choiceForReply(text, choices) {
     var s = shortReply(text), g = gradeReply(s);
     var matches = choices.filter(function (a) {
@@ -918,6 +962,23 @@
     });
     return matches.length === 1 ? matches[0].text : text;
   }
+  function vprLevelAnswer(text) {
+    var answer = text.replace(/[.,!?…;]+/g, ' ').replace(/\s+/g, ' ').trim()
+      .replace(/(?:^| )(?:класс тот же|тот же класс|класс прежний|класс без изменений)(?= |$)/g, ' ').trim();
+    var uncertainty = /^(?:(?:я|мы) )?(?:пока )?не (?:знаю|знаем|уверен[аы]?)(?: |$)/;
+    var unsure = uncertainty.test(answer);
+    if (unsure) answer = answer.replace(uncertainty, '');
+    if ((!answer && unsure) || /^(?:оба(?: уровня)?|какая разница)$/.test(answer)) return '';
+    answer = answer.replace(/^(?:(?:мне|нам) (?:нужен|нужна|нужно|нужны)|(?:я |мы )?(?:хочу|хотим)) /, '');
+    var words = answer.split(/\s+/);
+    var level = /^(?:углубленн[а-я]*|базов[а-я]*|база|обычн[а-я]*|стандартн[а-я]*)$/;
+    // Treat only a reply about the offered levels as a continuation. A new
+    // subject, class or exam must still go through the usual navigator.
+    var filler = /^(?:у|нас|меня|в|школе|мы|я|учусь|учимся|занимаюсь|занимаемся|по|на|да|нет|не|без|а|или|и|тогда|лучше|выберу|выбираю|только|пожалуйста|программ[а-я]*|уров[а-я]*|курс[а-я]*)$/;
+    if (!words.some(word => level.test(word)) || !words.every(word => level.test(word) || filler.test(word))) return null;
+    if (unsure || words.includes('или')) return '';
+    return words.map(word => word === 'база' ? 'базовый' : word).join(' ').replace(/не по /g, 'не ');
+  }
   function turn(input) {
     if (!input || typeof input.text !== 'string' || !input.text.trim() || input.text.length > 1000 || looksPrivate(normalize(input.text))) return respond(input);
     var previous = input.dialog || {};
@@ -928,11 +989,17 @@
     var original = shortReply(input.text);
     var changedGoal = /(?:^|\s)(?:раньше|до этого|сначала)\s.+?[,;]\s*(?:но\s+|а\s+)?(?:сейчас|теперь)\s+(.+)$/.exec(original);
     if (changedGoal) original = changedGoal[1];
+    if (previous.vprLevelGrade === 7 || previous.vprLevelGrade === 8) {
+      var levelAnswer = vprLevelAnswer(original);
+      if (levelAnswer !== null) original = 'впр ' + previous.vprLevelGrade + ' класс ' + levelAnswer;
+    }
     // An explicit current VPR request selects a course after an OGE/EGE task.
     // Leave access and privacy decisions in the normal response path.
     if (vprRequested(normalize(original))) {
       var vprResponse = respond(Object.assign({}, input, {text:original,studyGoal:'school'}));
-      vprResponse.dialog = {goal:'school',grade:classNumber(normalize(original)),choices:vprResponse.kind === 'clarify' ? (vprResponse.actions || []).slice(0,3) : []};
+      var requestedGrade = vprGrade(original);
+      vprResponse.dialog = {goal:'school',grade:requestedGrade,choices:vprResponse.kind === 'clarify' ? (vprResponse.actions || []).slice(0,3) : []};
+      if (vprResponse.kind === 'clarify' && [7, 8].includes(requestedGrade)) vprResponse.dialog.vprLevelGrade = requestedGrade;
       return vprResponse;
     }
     // A bare number after an explicit exam goal is a task, not a new grade.
@@ -972,8 +1039,20 @@
     } else {
       response = respond(Object.assign({},input,state,{text:clean,pathname:path,studyGoal:goal}));
     }
+    // A fresh named topic, access request or different exam takes precedence.
+    var division = divisionFollowup(t, previous.divisionTopic);
+    if (!division && response.kind === 'division' && response.links[0]?.url === byId['division-stepwise'].url) {
+      division = divisionDetail(t) || 'general';
+    }
+    if (division) {
+      var selected = divisionTopics[division];
+      var guidance = asksNextDivisionStep(t) ? selected.help : selected.prompt;
+      if (division !== 'general' || asksNextDivisionStep(t)) guidance += ' В открытом примере можно нажать «Помочь с этим шагом».';
+      response = result('division', guidance, [selected.id], state, division === 'general' ? divisionChoices : []);
+    }
     if (response.kind === 'textbook' && !o && !e) goal = 'school';
     response.dialog = {goal:goal,grade:grade,choices:response.kind === 'clarify' ? (response.actions || []).slice(0,3) : []};
+    if (division) response.dialog.divisionTopic = division;
     return response;
   }
   return Object.freeze({ catalogue: catalogue, welcome: welcome, respond: turn });

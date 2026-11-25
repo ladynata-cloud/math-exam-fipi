@@ -61,6 +61,11 @@
               "label": "Подбор цифры по готовым кратным",
               "href": "/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
               "newTab": true
+            },
+            {
+              "label": "Оранжерея Арженикова · Подобрать цифру частного",
+              "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-bridge",
+              "newTab": true
             }
           ]
         },
@@ -76,6 +81,11 @@
               "label": "Подбор, умножение и проверка остатка",
               "href": "/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
               "newTab": true
+            },
+            {
+              "label": "Оранжерея Арженикова · Разобраться с остатком",
+              "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-remainder",
+              "newTab": true
             }
           ]
         },
@@ -84,13 +94,19 @@
           "label": "Исправляю цифру после прикидки",
           "requires": [
             "base-round-tens",
+            "base-round-hundreds",
             "base-quotient-check"
           ],
-          "evidence": "Использует округление только для пробной цифры; точной проверкой исправляет слишком большую или слишком маленькую цифру и не записывает 10 на месте одной цифры.",
+          "evidence": "Для пробной цифры округляет неполное делимое до десятков или сотен. Умножает исходный делитель на пробную цифру и проверяет, поместится ли ещё одна группа.",
           "supportLinks": [
             {
               "label": "Прикидка и точная проверка по шагам",
               "href": "/trainers/oge-basics/multiplication-division/quotient-estimate.html",
+              "newTab": true
+            },
+            {
+              "label": "Прикидка с округлением до сотен",
+              "href": "/trainers/oge-basics/multiplication-division/quotient-estimate.html?round=hundreds",
               "newTab": true
             }
           ]
@@ -483,6 +499,36 @@
         {
           "label": "Деление уголком: восемь ступеней и карта навыков",
           "href": "/trainers/oge-basics/multiplication-division/division-path.html#division-skill-map",
+          "newTab": true
+        },
+        {
+          "label": "Оранжерея Арженикова · Раздать семена поровну",
+          "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-share",
+          "newTab": true
+        },
+        {
+          "label": "Оранжерея Арженикова · Собрать полные пакеты",
+          "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-pack",
+          "newTab": true
+        },
+        {
+          "label": "Оранжерея Арженикова · Сохранить ноль в частном",
+          "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-zero",
+          "newTab": true
+        },
+        {
+          "label": "Оранжерея Арженикова · Проверить деление уголком",
+          "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-transfer",
+          "newTab": true
+        },
+        {
+          "label": "Оранжерея Арженикова · Счёт равными рядами",
+          "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-count",
+          "newTab": true
+        },
+        {
+          "label": "Оранжерея Арженикова · Восстановить множитель",
+          "href": "/trainers/oge-basics/multiplication-division/arzhenikov-map.html#garden-inverse",
           "newTab": true
         }
       ]

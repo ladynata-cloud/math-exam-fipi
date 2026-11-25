@@ -29,6 +29,7 @@ function fixture(id) {
   vm.runInContext([
     part('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),
     part('function unsafePathText(', 'function validateTrainerRegistryResponse('),
+    part('function protectedPetersonId(', 'function trainerSelectionForRegistry('),
     part('function mirrorEntryFromPayload(', 'function trustedTrainerOrigin('),
     part('function canWrite(){', 'function readonly(){'),
     part('function addBoardSeedToTrainerUrl(', 'function compatLabel('),

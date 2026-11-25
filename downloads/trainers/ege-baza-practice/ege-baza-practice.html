@@ -190,12 +190,28 @@ header .path-home:focus-visible{outline:3px solid #ad591d;outline-offset:3px}
 header nav>a.btn{min-height:44px;display:inline-flex;align-items:center}
 
 /* Guidance is offered after repeated difficulty without replacing the learner's work. */
-.task-first-course #repairStep[hidden]{display:none!important}
+.task-first-course #repairStep[hidden],.task-first-course #startSteps[hidden]{display:none!important}
 .task-first-course #repairStep{margin:.3rem 0;min-height:44px;text-align:left;white-space:normal}
 .task-first-course .task-first-variant:empty{display:none}
 .task-first-course .task-first-variant{padding:.65rem .8rem;border-left:3px solid #388567;background:#f4faf5;line-height:1.5}
 .task-first-start{padding:.7rem 0;line-height:1.6}
-.task-first-next #new.primary{order:-1;flex-basis:100%;text-align:left;white-space:normal}
+
+.plane-figure .plane-lines{fill:none;stroke:#24674e;stroke-width:2.5;stroke-linejoin:round}
+.plane-figure .outline{fill:#f0f7f2}
+.plane-figure .construction{stroke:#a74924}
+.plane-figure .plane-labels{fill:#20382c;font:16px system-ui,sans-serif;text-anchor:middle;paint-order:stroke;stroke:white;stroke-width:3px;stroke-linejoin:round}
+.plane-problem:has(#taskHelp[open] #taskSteps[open])>.task-support{display:none}
+.plane-work{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:1rem}
+.plane-work .task-figure{margin:0;max-height:285px}
+.plane-work h2,.plane-work .task-first-form label{margin-top:.25rem}
+.plane-history{margin-top:.75rem}
+@media(max-width:650px){.plane-work{grid-template-columns:minmax(0,1fr);gap:.4rem}.plane-work .task-figure{max-height:205px}}
+
+.plane-figure .active-plane{fill:#d4ebdc;stroke:none}.working-equation{font-size:1.12rem;font-weight:600;margin:.35rem 0}
+
+.plane-work #stepAnswerFormat{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.plane-step-title{font-size:1.2rem;margin:.5rem 0}
+#completionAction .primary{background:var(--green);color:white;white-space:normal;text-align:left}
+#completionAction .primary:hover{background:#12523f}
 
 </style><style data-inline-source="/ege-baza/path/geometry-journey.css">
 /* Scoped presentation for the existing grade-7 geometry model. */
@@ -302,8 +318,13 @@ header nav>a.btn{min-height:44px;display:inline-flex;align-items:center}
 <header><strong><a class="path-home" href="/" aria-label="Главная MathExam">MathExam</a> · ЕГЭ 2027 база</strong><nav aria-label="Учебная навигация"><a class="btn" href="../index.html">← Курс ЕГЭ база</a><a class="btn" href="#map">Темы 1–21</a><details class="path-extra-nav"><summary>Ещё</summary><div><a class="btn" href="#foundation">Дроби → проценты → пропорции</a><a class="btn" href="#diagnostic">Определить пробелы</a><a class="btn" href="#exam">Пробная работа</a><a class="btn" href="#report">Мой отчёт</a><a class="btn" href="../../trainers/trainer-board.html?trainer=%2Fege-baza%2Fpath%2Findex.html%23map">Открыть на доске</a></div></details></nav></header><div id="storage" class="notice" hidden role="status"></div><main id="main" tabindex="-1"></main><footer><label><input id="reduceMotion" type="checkbox"> Без анимации</label><p>Авторские учебные задачи. Ориентир — проект демоверсии базового ЕГЭ 2027, проверен 02.10.2026. Это не полная выгрузка банка ФИПИ и не обещание полного покрытия всех подтипов. <a href="../sources/index.html">Источники и границы покрытия</a>.</p><p>Результаты сохраняются в этом браузере. Экспорт позволяет передать их преподавателю; автоматической синхронизации группы здесь нет.</p></footer><script data-inline-source="/ege-baza/path/data.js">
 (function(root){'use strict';
 const F=n=>Number.isInteger(n)?String(n):String(+n.toFixed(6)).replace('.',','),S=(q,a,why)=>({q,a,why});
+const russianCounts=new Intl.PluralRules('ru');
+function counted(n,one,few,many){
+ const form=russianCounts.select(n);
+ return n+' '+(form==='one'?one:form==='few'?few:many);
+}
 const meta=[
-['round',1,'Покупка целых упаковок','Раздели нужное количество на вместимость. Если последняя упаковка заполнена не целиком, её всё равно нужно купить.','rounding'],
+['round',1,'Покупка целых упаковок','Раздели нужное число тетрадей на число тетрадей в упаковке. Если есть остаток, к целому частному прибавь одну упаковку.','rounding'],
 ['units',2,'Величины в реальном мире','Сначала назови величину: длина, площадь, объём или масса. У единиц площади и объёма другой коэффициент перевода, чем у длины.','units'],
 ['data',3,'Читать таблицу и диаграмму','Определи, что показывает одна отметка шкалы. Сравнивай одинаковые величины и считай только указанный промежуток.','add'],
 ['formulas',4,'Подстановка в формулу','Сначала приведи данные к единицам формулы. Возведи в степень всё указанное выражение, затем выполни умножение и деление.','order'],
@@ -332,9 +353,36 @@ const meta=[
 ['mixtures',20,'Растворы и сохранение вещества','Масса вещества равна массе раствора, умноженной на долю вещества. При добавлении воды масса вещества не меняется, а общая масса растёт.','percent'],
 ['reasoning',21,'Кольцо с неизвестной длиной','Между точками кольца две дуги. Данное кратчайшее расстояние может идти в любую сторону. Сначала восстанови взаимное положение точек; длину всего кольца нельзя назначать произвольно.','logic']
 ].map(([id,pos,title,idea,gap])=>({id,pos,title,idea,gap}));
+function notebookTask(seed,total,pack){
+ const quotient=Math.floor(total/pack),remainder=total%pack,answer=Math.ceil(total/pack);
+ const notebooks=n=>counted(n,'тетрадь','тетради','тетрадей');
+ const packs=n=>counted(n,'упаковку','упаковки','упаковок');
+ const supplied=quotient*pack;
+ return {
+  id:'round',seed,pos:1,model:{kind:'round',k:quotient},answer,params:{total,pack},
+  // This pair of givens was stored verbatim as a progress key before declension was fixed.
+  progressKey:`Для класса нужно ${total} тетрадей. В упаковке ${pack} тетрадей. Сколько упаковок нужно купить?`,
+  q:`Для класса нужно купить ${notebooks(total)}. В упаковке ${notebooks(pack)}. Сколько упаковок нужно купить?`,
+  steps:[
+   S(`Раздели ${total} на ${pack}. Какое целое частное получилось?`,quotient,`Найди наибольшее целое число, при умножении которого на ${pack} результат не превышает ${total}.`),
+   S(`Если купить ${packs(quotient)}, получится ${notebooks(supplied)}. Сколько тетрадей не хватает до ${total}?`,remainder,`Вычти ${supplied} из ${total}. Если числа равны, тетрадей уже достаточно.`),
+   S('Сколько упаковок нужно купить, чтобы тетрадей хватило для класса?',answer,
+    remainder
+     ? `Если купить ${packs(quotient)}, получится ${notebooks(supplied)}. Этого мало. Ещё одна упаковка даст в сумме ${notebooks(answer*pack)}. Теперь тетрадей хватит.`
+     : `${quotient} · ${pack} = ${total}. Тетрадей ровно столько, сколько нужно. Остаток равен нулю, поэтому добавлять упаковку не нужно.`)
+  ]
+ };
+}
+function roundPractice(seed=1){
+ const sizes=[6,8,9,10,12],pack=sizes[seed%sizes.length];
+ const answer=3+seed%7;
+ const remainder=[0,1,Math.floor(pack/2),pack-1][seed%4];
+ const quotient=remainder===0?answer:answer-1;
+ return notebookTask(seed,quotient*pack+remainder,pack);
+}
 function task(id,seed=1){let k=2+(seed%7),j=seed%3,t={id,seed,pos:meta.find(x=>x.id===id)?.pos,steps:[],model:{kind:id,k},answer:0};const set=(q,a,steps,model)=>Object.assign(t,{q,answer:a,steps,model:model||t.model});
 switch(id){
-case 'round':{let n=k*9+4,c=9;set(`Для класса нужно ${n} тетрадей. В упаковке ${c} тетрадей. Сколько упаковок нужно купить?`,k+1,[S(`Раздели ${n} на ${c} с остатком. Какое целое частное получилось?`,k,`Найди наибольшее целое число, при умножении которого на ${c} результат не превышает ${n}.`),S(`Если купить ${k} упаковок, получится ${k*c} тетрадей. Сколько тетрадей не хватает до ${n}?`,4,`Вычти ${k*c} из ${n}. Даже ради недостающих тетрадей придётся купить целую упаковку.`),S(`Сколько упаковок нужно купить, чтобы хватило ${n} тетрадей?`,k+1,`${k} упаковок — это ${k*c} тетрадей: мало. Ещё одна упаковка даст ${(k+1)*c} тетрадей: этого хватит.`)]);break;}
+case 'round':return notebookTask(seed,k*9+4,9);
 case 'units':set(`${k} л воды перелили в сосуд. Какой объём в см³ занимает вода?`,k*1000,[S('Сколько сантиметров в 1 дм?',10,'Литр — кубический дециметр.'),S('Сколько см³ в 1 дм³?',1000,'10·10·10, потому что измерений три.'),S('Каков весь объём?',k*1000,'Умножь количество литров на 1000.')]);break;
 case 'data':{let vs=[k,k+2,2*k,k+1];set(`Количество посетителей по дням: Пн ${vs[0]}, Вт ${vs[1]}, Ср ${vs[2]}, Чт ${vs[3]}. Сколько посетителей было во вторник и среду вместе?`,3*k+2,[S('Посетителей во вторник?',k+2,'Считай значение нужного столбца.'),S('Во вторник и среду вместе?',3*k+2,'Сложи значения, указанные в вопросе.')],{kind:'bars',values:vs});break;}
 case 'formulas':{let a=k,tim=3;set(`Путь при разгоне из покоя: s=at²/2. a=${a} м/с², t=${tim} с. Найдите s в метрах.`,a*4.5,[S('Чему равно t²?',9,'В квадрат возводится время.'),S('Чему равно at²?',a*9,'Теперь умножаем на ускорение.'),S('Чему равно s?',a*4.5,'Делим всё произведение на 2.')]);break;}
@@ -345,9 +393,9 @@ case 'logic':set('В группе все 12 участников изучают 
 case 'grid':set(`Катеты прямоугольного треугольника по линиям сетки равны ${k} и ${k+2} клеткам. Сторона клетки 1. Найдите площадь.`,k*(k+2)/2,[S('Площадь достроенного прямоугольника?',k*(k+2),'Произведение двух перпендикулярных сторон.'),S('Площадь треугольника?',k*(k+2)/2,'Диагональ делит прямоугольник на две равные части.')],{kind:'triangle',a:k,b:k+2});break;
 case 'practical':set(`Прямоугольный участок на плане ${k} см на 3 см. Масштаб 1:1000. Найдите площадь участка в м².`,k*300,[S('Сколько метров в 1 см плана?',10,'1000 см = 10 м.'),S(`Сторона длиной ${k} см на плане в метрах?`,k*10,'Умножь длину на плане на 10.'),S('Площадь в м²?',k*300,'Вторая сторона 30 м. Коэффициент к площади — 100.')],{kind:'rectangle',a:k,b:3});break;
 case 'box':{let a=k,b=k+1,c=3,area=j===1;set(`Размеры закрытой коробки ${a}×${b}×${c} см. Найдите ${area?'площадь всей поверхности в см²':'объём в см³'}.`,area?2*(a*b+a*c+b*c):a*b*c,[S('Площадь основания ab?',a*b,'Умножь две стороны основания.'),S(area?'Сумма площадей трёх разных граней?':'Объём?',area?a*b+a*c+b*c:a*b*c,area?'ab+ac+bc. Каждой грани соответствует равная противоположная.':'В каждом слое ab единичных кубиков, слоёв c.'),...(area?[S('Площадь всех шести граней?',2*(a*b+a*c+b*c),'Удваиваем сумму трёх площадей.')]:[])],{kind:'solid',body:'box',a,b,h:c});break;}
-case 'triangle':{let a=3*k,h=4*k,b=5*k;set(`Равнобедренный треугольник имеет боковую сторону ${b}, основание ${2*a}. Найдите площадь.`,a*h,[S('Половина основания?',a,'Высота к основанию равнобедренного треугольника является медианой.'),S('Квадрат высоты?',h*h,'Из квадрата боковой стороны вычти квадрат половины основания.'),S('Высота?',h,'Положительный квадратный корень.'),S('Площадь?',a*h,'Основание·высота/2.')],{kind:'iso',a,b,h});break;}
+case 'triangle':{let a=3*k,h=4*k,b=5*k;set(`В равнобедренном треугольнике ABC боковые стороны AB = BC = ${b}, основание AC = ${2*a}. Найдите площадь треугольника.`,a*h,[S('Чему равен AH?',a,`Высота BH к основанию равнобедренного треугольника служит и медианой. AH = HC = ${2*a}/2 = ${a}.`),S('Найди BH² в прямоугольном треугольнике ABH.',h*h,`AB — гипотенуза. BH² = AB² − AH² = ${b}² − ${a}² = ${h*h}.`),S('Какова длина высоты BH?',h,`BH = √${h*h} = ${h}.`),S('Чему равна площадь ABC с основанием AC?',a*h,`S = AC · BH / 2 = ${2*a} · ${h} / 2 = ${a*h}.`)],{kind:'iso',a,b,h});break;}
 case 'quadrilateral':set(`Основания трапеции ${k} и ${k+4}, высота 3. Найдите площадь.`,3*(k+2),[S('Средняя линия?',k+2,'Полусумма оснований.'),S('Площадь?',3*(k+2),'Умножь среднюю линию на высоту.')],{kind:'trapezoid',a:k,b:k+4,h:3});break;
-case 'circle':set(`Радиус окружности ${5*k}, расстояние от центра до хорды ${3*k}. Найдите длину хорды.`,8*k,[S('Квадрат половины хорды?',16*k*k,'Радиус — гипотенуза. Вычитаем квадрат расстояния от центра.'),S('Половина хорды?',4*k,'Извлекаем положительный корень.'),S('Вся хорда?',8*k,'Перпендикуляр из центра делит хорду пополам.')],{kind:'chord',r:5*k,d:3*k});break;
+case 'circle':set(`Радиус окружности с центром O равен ${5*k}. Расстояние от O до хорды AB равно ${3*k}. Найдите длину AB.`,8*k,[S('Найди AM² в прямоугольном треугольнике OMA.',16*k*k,`OA — гипотенуза. AM² = OA² − OM² = ${5*k}² − ${3*k}² = ${16*k*k}.`),S('Чему равна длина AM?',4*k,`AM = √${16*k*k} = ${4*k}.`),S('Чему равна вся хорда AB?',8*k,`M — середина AB, поэтому AB = 2 · AM = 2 · ${4*k} = ${8*k}.`)],{kind:'chord',r:5*k,d:3*k});break;
 case 'roundbody':{let body=['cylinder','cone','sphere'][j],a=body==='sphere'?4*k**3/3:body==='cone'?k*k:k*k*3;set(`У ${body==='sphere'?'шара':body==='cone'?'конуса':'цилиндра'} радиус ${k}${body==='sphere'?'':', высота 3'}. Найдите V/π.`,a,[S(body==='sphere'?'Чему равно r³?':'Чему равно r²?',body==='sphere'?k**3:k*k,'Сначала вычислим степень радиуса.'),S('Найдите V/π.',a,'Используй формулу выбранного тела; множитель π уже вынесен.')],{kind:'solid',body,a:k,b:k,h:3});break;}
 case 'pyramid':set(`Пирамида с квадратным основанием стороны ${k} и высотой 6. Найдите объём.`,2*k*k,[S('Площадь основания?',k*k,'Основание — квадрат.'),S('Объём призмы с теми же основанием и высотой?',6*k*k,'Площадь основания·высота.'),S('Объём пирамиды?',2*k*k,'Треть соответствующего объёма призмы.')],{kind:'solid',body:'pyramid',a:k,b:k,h:6});break;
 case 'scale':set(`Конус объёмом ${k*27} пересекли плоскостью, параллельной основанию, на трети высоты от вершины. Найдите объём малого конуса.`,k,[S('Во сколько раз высота большого конуса больше высоты малого?',3,'Расстояние отсчитывается от вершины.'),S('Во сколько раз объёмы отличаются?',27,'Куб коэффициента подобия.'),S('Объём малого конуса?',k,'Раздели большой объём на 27.')],{kind:'solid',body:'cone',a:3,b:3,h:6,section:true});break;
@@ -385,7 +433,7 @@ function answerText(item){
  }
  return String(value).replace('.',',');
 }
-const api={meta,task,parse,correct,digits22,F,answerText};root.PathData=api;if(typeof module!=='undefined')module.exports=api;
+const api={meta,task,parse,correct,digits22,F,answerText,counted,roundPractice};root.PathData=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);
 
 </script><script data-inline-source="/ege-baza/path/practice.js">
@@ -402,7 +450,13 @@ function make(q,answer,ss,ref,p,extra={}){return {q,answer,steps:ss,reference:re
 const table=(headers,rows)=>({kind:'table',headers,rows});
 const seq=(q,labels,choices,correct,why)=>({q,labels,choices,answerKind:'match',answer:correct,steps:labels.map((x,i)=>({q:`${x}: укажи номер подходящего варианта.`,a:Number(correct[i]),why:why[i]}))});
 
-add('change',1,'Покупка и сдача','Стоимость равна цене одной вещи, умноженной на количество. Сдача — то, что осталось от переданной суммы.','order',4,k=>{const n=3+k%8,price=25+5*(k%9),paid=1000;return make(`Купили ${n} тетрадей по ${price} рублей и отдали ${paid} рублей. Сколько рублей сдачи получат?`,paid-n*price,steps(['Стоимость всех тетрадей?',n*price,'Умножь цену одной тетради на количество.'],['Сдача?',paid-n*price,'Из переданных денег вычти стоимость.']),'change',{n,price,paid});});
+add('change',1,'Покупка и сдача','Стоимость равна цене одной вещи, умноженной на количество. Сдача — то, что осталось от переданной суммы.','order',4,k=>{
+ const n=3+k%8,price=25+5*(k%9),paid=1000;
+ const progressKey=`Купили ${n} тетрадей по ${price} рублей и отдали ${paid} рублей. Сколько рублей сдачи получат?`;
+ return make(`В чеке за тетради указаны цена за одну тетрадь (${price} рублей) и количество (${n}). Покупатель дал ${paid} рублей. Сколько рублей сдачи он получит?`,paid-n*price,
+  steps(['Стоимость всех тетрадей?',n*price,'Умножь цену одной тетради на количество.'],['Сдача?',paid-n*price,'Из переданных денег вычти стоимость.']),
+  'change',{n,price,paid},{progressKey});
+});
 add('afford',1,'На сколько покупок хватит денег','Частично купить билет нельзя. При ограниченном бюджете оставляем целое число покупок.','division',4,k=>{let n=4+k%12,price=35+5*(k%7),money=n*price+price-5;return make(`Билет стоит ${price} рублей. Сколько билетов можно купить на ${money} рублей?`,n,steps(['Сколько стоят '+n+' билетов?',n*price,'Проверяем целое количество.'],['Сколько останется рублей?',money-n*price,'Остатка не хватает на следующий билет.'],['Сколько билетов можно купить?',n,'Округление вниз: нельзя потратить больше имеющейся суммы.']),'afford',{money,price});});
 add('transport',1,'Места для всех пассажиров','При подсчёте транспорта учитывай всех людей. Неполный последний автобус всё равно нужен.','division',4,k=>{let seats=18+2*(k%7),adults=3+k%4,children=seats*(2+k%5)-adults+1;return make(`Нужно перевезти ${children} детей и ${adults} взрослых. В автобусе ${seats} пассажирских мест. Какое наименьшее число автобусов потребуется?`,Math.ceil((children+adults)/seats),steps(['Всего пассажиров?',children+adults,'Взрослые тоже занимают места.'],['Наименьшее число автобусов?',Math.ceil((children+adults)/seats),'Если после деления остался хотя бы один пассажир, нужен ещё автобус.']),'transport',{seats,adults,children});});
 
@@ -437,20 +491,56 @@ add('free-area',10,'Площадь участка без постройки','В
 add('fence',10,'Забор и проезд','Для забора нужен периметр. Из него вычитается только ширина незагороженного проезда.','units',12,k=>{let a=20+k%11,b=15+k%7,g=3+k%3;return make(`Прямоугольный участок ${a} м на ${b} м огораживают забором, оставив проезд ${g} м. Найди длину забора.`,2*(a+b)-g,steps(['Периметр участка?',2*(a+b),'Сумма всех четырёх сторон.'],['Длина забора?',2*(a+b)-g,'В проезде забора нет.']),'fence',{a,b,g});});
 add('spokes',10,'Равные углы вокруг точки','Полный оборот — 360°. Равные промежутки делят его на одинаковые углы.','division',12,k=>{let n=[12,15,18,20,24,30,36,40][k%8];return make(`В колесе ${n} равномерно расположенных спиц. Найди угол в градусах между соседними спицами.`,360/n,steps(['Сумма углов вокруг центра?',360,'Полный оборот.'],['Число одинаковых промежутков?',n,'Спицы расположены по замкнутому кругу.'],['Один угол?',360/n,'Раздели 360° на число промежутков.']),'spokes',{n});});
 
-add('displacement',11,'Объём погружённой детали','В призматическом сосуде объём под уровнем пропорционален высоте. Деталь вытесняет объём, на который поднялась вода.','proportion',12,k=>{let litres=4+k%13,factor=1+(1+k%7)/10;return make(`В прямоугольном баке ${litres} л воды. Полностью погружённая деталь повысила уровень в ${F(factor)} раза; вода не вылилась. Найди объём детали в см³.`,litres*(factor-1)*1000,steps(['Объём под новым уровнем, л?',litres*factor,'Площадь дна не изменилась.'],['Вытесненный объём, л?',litres*(factor-1),'Новый объём под уровнем минус исходный объём воды.'],['Объём детали, см³?',litres*(factor-1)*1000,'В 1 литре 1000 см³.']),'displacement',{litres,factor});});
-add('pour',11,'Переливание: радиус и уровень','Объём воды сохраняется. Площадь круглого дна зависит от квадрата радиуса.','proportion',12,k=>{let ratio=2+k%3,newH=3+k%9,oldH=newH*ratio**2;return make(`В цилиндре вода стоит на высоте ${oldH} см. Её перелили в цилиндр с радиусом в ${ratio} раза больше. На какой высоте будет вода?`,newH,steps(['Во сколько раз увеличилась площадь дна?',ratio**2,'Площадь круга пропорциональна r².'],['Новая высота воды, см?',newH,'Объём постоянен: делим старую высоту на отношение площадей.']),'pour',{ratio,oldH});});
+add('displacement',11,'Объём погружённой детали','В призматическом сосуде объём под уровнем пропорционален высоте. Деталь вытесняет объём, на который поднялась вода.','proportion',12,k=>{
+ const litres=4+k%13, factor=1+(1+k%7)/10, params={litres,factor};
+ return make(`В прямоугольном баке ${litres} л воды. В воду полностью погрузили деталь. Высота слоя воды увеличилась в ${F(factor)} раза. Вода из бака не вылилась. Найди объём детали в см³.`,litres*(factor-1)*1000,steps(
+  ['Какой объём в литрах занимают вода и погружённая деталь вместе?',litres*factor,`Площадь дна осталась той же. Высота слоя выросла в ${F(factor)} раза, поэтому умножь исходный объём ${litres} л на ${F(factor)}.`],
+  [`Вода и деталь вместе занимают ${F(litres*factor)} л, из них ${litres} л приходится на воду. Сколько литров занимает деталь?`,litres*(factor-1),`Под новым уровнем ${F(litres*factor)} л занимают вода и деталь вместе. Воды по-прежнему ${litres} л. Вычти ${litres} из ${F(litres*factor)}.`],
+  [`Объём детали равен ${F(litres*(factor-1))} л. Сколько это кубических сантиметров?`,litres*(factor-1)*1000,`Деталь вытеснила ${F(litres*(factor-1))} л воды. В каждом литре 1000 см³. Умножь ${F(litres*(factor-1))} на 1000.`]
+ ),'displacement',params);
+});
+add('pour',11,'Переливание: радиус и уровень','Объём воды сохраняется. Площадь круглого дна зависит от квадрата радиуса.','proportion',12,k=>{
+ const ratio=2+k%3, areaFactor=ratio**2, newH=3+k%9, oldH=newH*areaFactor;
+ const areaChange=areaFactor===4?'4 раза':areaFactor+' раз';
+ return make(`В первом цилиндре глубина воды ${oldH} см. Всю воду перелили во второй цилиндр. Радиус его дна в ${ratio} раза больше радиуса первого. Какова глубина воды во втором цилиндре? Ответ дай в сантиметрах.`,newH,steps(
+  ['Во сколько раз площадь дна второго цилиндра больше площади дна первого?',areaFactor,`Площадь дна равна πr². Радиус увеличился в ${ratio} раза, поэтому для сравнения площадей умножь ${ratio} на ${ratio}.`],
+  [`До переливания глубина была ${oldH} см. Площадь дна второго цилиндра в ${areaChange} больше. Какова теперь глубина воды в сантиметрах?`,newH,`Объём воды прежний. Слой воды толщиной 1 см во втором цилиндре вмещает столько же воды, сколько слой толщиной ${areaFactor} см в первом. Раздели ${oldH} см на ${areaFactor}.`]
+ ),'pour',{ratio,oldH});
+});
 add('joined-surface',11,'Поверхность склеенных тел','После склеивания две соприкасающиеся грани становятся внутренними и не входят во внешнюю поверхность.','units',12,k=>{let a=2+k%9;return make(`Два одинаковых куба с ребром ${a} см склеили целыми гранями. Найди площадь поверхности полученного тела в см².`,10*a*a,steps(['Площадь грани одного куба?',a*a,'Грань — квадрат.'],['Сколько квадратов от граней исходных кубов осталось снаружи?',10,'У двух кубов было 12 квадратов; два склеенных квадрата оказались внутри. У полученного параллелепипеда 6 граней, четыре из них состоят из двух таких квадратов.'],['Внешняя площадь?',10*a*a,'Сложи площади открытых частей поверхности.']),'joined-surface',{a},{model:{kind:'solid',body:'box',a:2*a,b:a,h:a}});});
 add('faces',11,'Считать внешние грани','Грань — плоская часть поверхности. Общую грань склеенных тел снаружи не видно.','logic',12,k=>{const cube=k%2===0,n=cube?4:3;return make(`К основанию ${cube?'прямоугольного параллелепипеда':'треугольной призмы'} приклеили ${cube?'четырёхугольную':'треугольную'} пирамиду; основания полностью совпали. Никакие соседние внешние грани не лежат в одной плоскости. Сколько внешних граней у тела?`,2*n+1,steps(['Граней у исходной призмы?',n+2,'Два основания и по одной боковой грани на сторону основания.'],['Граней у пирамиды?',n+1,'Одно основание и треугольные боковые грани.'],['Всего внешних граней после склеивания?',2*n+1,'Вычти две совпавшие внутренние грани.']),'faces',{n});});
 
-add('right-ratio',12,'Синус и косинус в прямоугольном треугольнике','Гипотенуза лежит против прямого угла. Косинус — прилежащий катет, делённый на гипотенузу.','fraction',13,k=>{let s=1+k%9,a=3*s,b=4*s,c=5*s,ask=k%2;return make(`В прямоугольном треугольнике ABC угол C прямой, AC=${a}, BC=${b}, AB=${c}. Найди ${ask?'sin A':'cos A'}.`,(ask?b:a)/c,steps(['Длина гипотенузы?',c,'Против прямого угла C лежит AB.'],[ask?'Противолежащий углу A катет?':'Прилежащий углу A катет?',ask?b:a,ask?'Против A лежит BC.':'С углом A граничит катет AC.'],['Нужное отношение?',(ask?b:a)/c,'Раздели выбранный катет на гипотенузу.']),'right-ratio',{a,b,c,ask},{display:{kind:'triangle-label',a,b,c},model:{kind:'triangle',a,b}});});
+add('right-ratio',12,'Синус и косинус в прямоугольном треугольнике','Гипотенуза лежит против прямого угла. Косинус — прилежащий катет, делённый на гипотенузу.','fraction',13,k=>{
+ const s=1+k%9, a=3*s, b=4*s, c=5*s, ask=k%2;
+ const fn=ask?'sin':'cos', leg=ask?'BC':'AC', length=ask?b:a;
+ return make(`В прямоугольном треугольнике ABC угол C прямой, AC=${a}, BC=${b}, AB=${c}. Найди ${fn} A.`,length/c,steps(
+  ['Чему равна длина гипотенузы?',c,'Гипотенуза лежит напротив прямого угла C. Найди на чертеже длину AB.'],
+  [ask?'Чему равна длина катета, лежащего напротив угла A?':'Чему равна длина катета, прилежащего к углу A?',length,ask?'Напротив угла A лежит BC. Введи длину BC.':'Угол A образуют AB и AC. Из них катет — AC. Введи его длину.'],
+  [`Чему равен ${fn} A?`,length/c,`${fn} A = ${leg}/AB. Раздели длину катета ${leg} (${length}) на длину гипотенузы AB (${c}).`]
+ ),'right-ratio',{a,b,c,ask},{display:{kind:'triangle-label',a,b,c},model:{kind:'triangle',a,b}});
+});
 add('triangle-angle',12,'Углы треугольника','Сумма внутренних углов треугольника равна 180°.','add',13,k=>{let a=30+5*(k%8),b=40+5*(k%6);return make(`Два угла треугольника равны ${a}° и ${b}°. Найди третий угол.`,180-a-b,steps(['Сумма известных углов?',a+b,'Складываем углы внутри треугольника.'],['Третий угол?',180-a-b,'Вычитаем из 180°.']),'triangle-angle',{a,b});});
 add('parallelogram',12,'Площадь через высоту','Высота должна быть проведена именно к выбранному основанию.','fraction',13,k=>{let a=5+k%9,h=3+k%7;return make(`Основание параллелограмма равно ${a}, высота к нему — ${h}. Найди площадь.`,a*h,steps(['Какая высота соответствует основанию?',h,'Берём указанную перпендикулярную высоту.'],['Площадь?',a*h,'S=a·h.']),'parallelogram',{a,h},{display:{kind:'polygon',points:[[0,0],[a,0],[a+2,h],[2,h]],grid:true},model:{kind:'polygon-build'}});});
-add('diameter-chord',12,'Треугольник на диаметре','Угол, опирающийся на диаметр, прямой. Поэтому диаметр становится гипотенузой.','powers',12,k=>{let s=1+k%9,r=5*s,chord=6*s;return make(`AB — диаметр окружности радиуса ${r}. Точка C на окружности, AC=${chord}. Найди BC.`,8*s,steps(['Длина AB?',2*r,'Диаметр вдвое больше радиуса.'],['Квадрат BC?',64*s*s,'Угол C прямой: BC²=AB²−AC².'],['Длина BC?',8*s,'Длина — положительный квадратный корень.']),'diameter-chord',{r,chord});});
+add('diameter-chord',12,'Треугольник на диаметре','Угол, опирающийся на диаметр, прямой. Поэтому диаметр становится гипотенузой.','powers',12,k=>{let s=1+k%9,r=5*s,chord=6*s;return make(`AB — диаметр окружности радиуса ${r}. Точка C на окружности, AC=${chord}. Найди BC.`,8*s,steps(['Чему равен диаметр AB?',2*r,`AB = 2 · ${r} = ${2*r}.`],['Найди BC² в треугольнике ABC.',64*s*s,`AB — гипотенуза. BC² = AB² − AC² = ${2*r}² − ${chord}² = ${64*s*s}.`],['Какова длина хорды BC?',8*s,`BC = √${64*s*s} = ${8*s}.`]),'diameter-chord',{r,chord});});
 
-add('cone-area',13,'Боковая поверхность конуса','Боковая площадь конуса равна πrl. Здесь нужна образующая l, а не вертикальная высота.','proportion',13,k=>{let r=2+k%6,l=3*r,ratio=2+k%3;return make(`У первого конуса радиус ${r} и образующая ${l}. У второго радиус ${r*ratio} и образующая ${l*2}. Во сколько раз боковая площадь второго больше первой?`,ratio*2,steps(['Произведение r·l для первого конуса?',r*l,'Площадь — πrl.'],['Произведение r·l для второго конуса?',r*ratio*l*2,'Число π в отношении сократится.'],['Отношение площадей?',ratio*2,'Раздели второе произведение на первое.']),'cone-area',{r,l,ratio});});
+add('cone-area',13,'Боковая поверхность конуса','Площадь боковой поверхности конуса равна πrl, где r — радиус основания, а l — образующая.','proportion',13,k=>{
+ const r=2+k%6, l=3*r, ratio=2+k%3, params={r,l,ratio};
+ return make(`У первого конуса радиус ${r} и образующая ${l}. У второго радиус ${r*ratio} и образующая ${l*2}. Во сколько раз площадь боковой поверхности второго конуса больше, чем у первого?`,ratio*2,steps(
+  ['Чему равно произведение радиуса и образующей первого конуса?',r*l,`Боковая поверхность конуса имеет площадь πrl. Для первого конуса умножь радиус ${r} на образующую ${l}.`],
+  ['Чему равно произведение радиуса и образующей второго конуса?',r*ratio*l*2,`Для второго конуса умножь его радиус ${r*ratio} на его образующую ${2*l}.`],
+  [`Площадь боковой поверхности первого конуса равна ${r*l}π, второго — ${r*ratio*l*2}π. Во сколько раз вторая площадь больше первой?`,ratio*2,`Площади боковых поверхностей равны ${r*ratio*2*l}π у второго конуса и ${r*l}π у первого. Общий множитель π сокращается. Раздели ${r*ratio*2*l} на ${r*l}.`]
+ ),'cone-area',params);
+});
 add('pyramid-lateral',13,'Боковая площадь правильной пирамиды','Боковая грань — равнобедренный треугольник. Сначала найди высоту грани, затем её площадь.','powers',13,k=>{let s=1+k%5,a=10*s,edge=13*s,h=12*s,n=k%2?4:6;return make(`Правильная ${n===4?'четырёхугольная':'шестиугольная'} пирамида имеет сторону основания ${a} и боковое ребро ${edge}. Найди площадь боковой поверхности.`,n*a*h/2,steps(['Половина стороны основания?',a/2,'Высота боковой грани делит основание пополам.'],['Высота боковой грани?',h,'По Пифагору: √(боковое ребро²−половина основания²).'],['Площадь одной боковой грани?',a*h/2,'Половина произведения основания на высоту грани.'],['Площадь всех боковых граней?',n*a*h/2,'Умножь на число сторон основания.']),'pyramid-lateral',{s,n});});
 add('box-diagonal',13,'Объём через диагональ грани','Диагональ грани и два её ребра образуют прямоугольный треугольник.','powers',13,k=>{let s=1+k%6,a=3*s,h=4*s,d=5*s,b=2+k%7;return make(`У прямоугольного параллелепипеда стороны основания ${a} и ${b}. Диагональ боковой грани, содержащей ребро ${a}, равна ${d}. Найди объём.`,a*b*h,steps(['Квадрат высоты?',h*h,'Из квадрата диагонали вычти квадрат ребра той же грани.'],['Высота?',h,'Выбираем положительный корень.'],['Объём?',a*b*h,'Площадь основания умножается на высоту.']),'box-diagonal',{a,b,d},{model:{kind:'solid',body:'box',a,b,h}});});
-add('similar-volume',13,'Подобие: восстановить объём','Отношение объёмов равно кубу отношения соответствующих длин.','powers',13,k=>{let factor=2+k%4,small=2+k%13;return make(`Параллельно основанию конуса провели сечение. Высота малого конуса в ${factor} раза меньше полной высоты. Объём малого конуса ${small}. Найди объём большого конуса.`,small*factor**3,steps(['Во сколько раз отличаются соответствующие длины?',factor,'Берём отношение большого к малому.'],['Во сколько раз отличаются объёмы?',factor**3,'Возводим отношение длин в куб.'],['Объём большого конуса?',small*factor**3,'Умножаем малый объём на найденное отношение.']),'similar-volume',{factor,small});});
+add('similar-volume',13,'Подобие: восстановить объём','Отношение объёмов подобных тел равно кубу отношения соответствующих длин.','powers',13,k=>{
+ const factor=2+k%4, small=2+k%13, params={factor,small}, heightChange=factor===5?'5 раз':factor+' раза';
+ return make(`Параллельно основанию конуса провели сечение. Полная высота конуса в ${heightChange} больше высоты отсечённого малого конуса. Объём малого конуса равен ${small}. Найди объём целого конуса.`,small*factor**3,steps(
+  ['Во сколько раз полная высота конуса больше высоты малого конуса?',factor,'Найди в условии, во сколько раз полная высота больше высоты малого конуса. Это и есть множитель для длин.'],
+  [`Полная высота в ${heightChange} больше. Во сколько раз объём целого конуса больше объёма малого?`,factor**3,`Радиус и высота подобных конусов увеличиваются в одно и то же число раз. В формуле V = πr²h/3 радиус входит в квадрате. Перемножь ${factor} · ${factor} · ${factor}.`],
+  [`Объём малого конуса равен ${small}, а объём целого в ${factor**3} раз больше. Чему равен объём целого конуса?`,small*factor**3,`Объём малого конуса равен ${small}. Объём целого в ${factor**3} раз больше. Умножь ${small} на ${factor**3}.`]
+ ),'similar-volume',params);
+});
 
 add('fraction-add',14,'Дроби: общий размер доли','Перед сложением доли должны иметь одинаковый размер. Числители и знаменатели одновременно умножают на одно число.','fractions',13,k=>{let a=1+k%5,b=1+k%3,den=12;return make(`Вычисли ${a}/6 + ${b}/4.`,a/6+b/4,steps(['Наименьший общий знаменатель?',den,'Ищем общее кратное 6 и 4.'],[`Новый числитель дроби ${a}/6?`,2*a,'Знаменатель увеличили в 2 раза, числитель тоже.'],[`Новый числитель дроби ${b}/4?`,3*b,'Знаменатель увеличили в 3 раза, числитель тоже.'],['Сумма дробей?',fraction(2*a+3*b,12),'Складываем числители; общий знаменатель сохраняем.']),'fraction-add',{a,b},{model:{kind:'fraction-bars',fractions:[[a,6],[b,4]]}});});
 add('fraction-divide',14,'Деление на дробь','Деление отвечает на вопрос: сколько таких долей помещается? При делении умножают на обратную ненулевую дробь.','fractions',13,k=>{let a=1+k%5,b=2+k%4,c=1+k%3,d=4+k%5;return make(`Вычисли (${a}/${b}) : (${c}/${d}).`,a*d/(b*c),steps(['Запиши дробь, обратную делителю.',fraction(d,c),'Числитель и знаменатель меняются местами.'],['Произведение первой дроби на обратную?',fraction(a*d,b*c),'Перемножаем числители и знаменатели, затем сокращаем.']),'fraction-divide',{a,b,c,d});});
@@ -2801,6 +2891,99 @@ function session(el,kind,options){
 }
 root.PathModels={mount,session,solidModel,discoveryMarkup,discovery};})(window);
 
+</script><script data-inline-source="/ege-baza/path/plane-practice-figures.js">
+(function (root) {
+  'use strict';
+
+  const ink = '#245b49', active = '#97451e', shade = '#cde6d7';
+  const n = x => Number(x.toFixed(2));
+  const point = (x, y) => n(x) + ' ' + n(y);
+  const line = (d, color = ink, width = 2, more = '') =>
+    `<path d="${d}" fill="none" stroke="${color}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round" ${more}/>`;
+  const label = (x, y, text) => `<text x="${n(x)}" y="${n(y)}" text-anchor="middle" fill="#20382c" font-family="system-ui,sans-serif" font-size="15" paint-order="stroke" stroke="white" stroke-width="3" stroke-linejoin="round">${text}</text>`;
+  const rect = (x, y, w, h) => `M${point(x, y)}h${n(w)}v${n(h)}h-${n(w)}Z`;
+
+  function freeArea({a, b, c}, step) {
+    const size = 146, x = 82, y = 21;
+    const w = size * b / a, h = size * c / a;
+    const left = x + (size - w) / 2, top = y + (size - h) / 2;
+    const plot = rect(x, y, size, size), house = rect(left, top, w, h);
+    const part = step === 0 ? 'plot' : step === 1 ? 'house' : 'free';
+    const colored = {plot, house, free: plot + ' ' + house};
+    const fill = step < 0 ? '' : `<path data-highlight="${part}" d="${colored[part]}" fill="${shade}" fill-rule="evenodd"/>`;
+    const svg = fill + line(plot) + line(house, step === 1 ? active : ink) +
+      label(x + size / 2, y + size + 20, a + ' м') +
+      label(left + w / 2, top - 7, b + ' м') + label(left + w + 22, top + h / 2 + 5, c + ' м');
+    const captions = ['Выделен весь квадратный участок.', 'Выделен прямоугольник дома.', 'Выделена земля вокруг дома.'];
+    return {svg, title: `Квадратный участок со стороной ${a} м. Внутри дом ${b} на ${c} м. ` + (captions[Math.min(step, 2)] || ''),
+      equation: [`S участка = ${a} · ${a}`, `S дома = ${b} · ${c}`, `S свободной части = ${a*a} − ${b*c}`][step]};
+  }
+
+  function fence({a, b, g}, step) {
+    const scale = Math.min(203 / a, 125 / b), w = a * scale, h = b * scale;
+    const x = 155 - w / 2, y = 36, bottom = y + h;
+    const left = 155 - g * scale / 2, right = 155 + g * scale / 2;
+    const sides = `M${point(left,bottom)}H${n(x)}V${y}H${n(x+w)}V${n(bottom)}H${n(right)}`;
+    const closure = step === 0 ? line(`M${point(left,bottom)}H${n(right)}`, active, 2.5, 'stroke-dasharray="4 4" data-highlight="perimeter"') : '';
+    const svg = line(sides, step >= 1 ? active : ink, 3, 'data-segment="fence"') + closure +
+      line(`M${point(left,bottom-4)}v8 M${point(right,bottom-4)}v8`) +
+      label(155, y-9, a + ' м') + label(x-25, y+h/2+5, b + ' м') +
+      label(155, bottom+21, 'проезд ' + g + ' м');
+    return {svg, title: `Участок ${a} на ${b} м с проездом ${g} м. ` +
+      (step === 0 ? 'Пунктир замыкает границу участка для подсчёта периметра.' : 'Между концами забора оставлен проезд.'),
+      equation: [`P = 2 · (${a} + ${b})`, `Длина забора = ${2*(a+b)} − ${g}`][step]};
+  }
+
+  function spokes({n: count}, step) {
+    const x = 155, y = 94, r = 72, turn = 2 * Math.PI / count;
+    const end = (i, radius) => point(x + radius * Math.cos(i*turn), y - radius * Math.sin(i*turn));
+    const center = point(x, y);
+    const spokes = Array.from({length: count}, (_, i) => line(`M${center}L${end(i,r)}`, '#628474', 1.3, 'data-spoke=""')).join('');
+    const sector = `M${center}L${end(0,r)}A${r} ${r} 0 0 0 ${end(1,r)}Z`;
+    const highlight = `<path data-highlight="sector" d="${sector}" fill="#f5d2aa"/>` + line(`M${end(0,r)}L${center}L${end(1,r)}`, active, 2.5) +
+      line(`M${end(0,55)}A55 55 0 0 0 ${end(1,55)}`, active, 2.5);
+    const full = step === 0;
+    const svg = spokes + (full ? '' : highlight) + `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${full ? active : ink}" stroke-width="${full ? 4 : 2}"/>` +
+      `<circle cx="${x}" cy="${y}" r="3" fill="${ink}"/>` + label(x, 192, 'Число спиц — ' + count);
+    return {svg, title: `Колесо с ${count} равномерно расположенными спицами. ` +
+      (full ? 'Выделен полный оборот.' : 'Выделен промежуток между двумя соседними спицами.'),
+      equation: ['Один полный оборот', '1 спица → 1 промежуток', `Угол между спицами = 360° / ${count}`][step]};
+  }
+
+  function triangleAngles({a, b}, step) {
+    const radians = angle => angle * Math.PI / 180;
+    const cotA = 1 / Math.tan(radians(a)), cotB = 1 / Math.tan(radians(b));
+    const h = Math.min(124, 207 / (cotA + cotB)), width = h * (cotA + cotB);
+    const A = [155-width/2, 165], B = [155+width/2, 165], C = [A[0]+h*cotA, 165-h], c = 180-a-b;
+    const unit = (v, p) => {const dx=p[0]-v[0], dy=p[1]-v[1], len=Math.hypot(dx,dy);return [dx/len,dy/len];};
+    function mark(v, p, q, r, right = false) {
+      const u = unit(v,p), w = unit(v,q);
+      const offset = (s,t) => point(v[0]+s*u[0]+t*w[0], v[1]+s*u[1]+t*w[1]);
+      if (right) return `M${offset(r,0)}L${offset(r,r)}L${offset(0,r)}`;
+      return `M${offset(r,0)}A${r} ${r} 0 0 ${u[0]*w[1]-u[1]*w[0]>0?1:0} ${offset(0,r)}`;
+    }
+    const triangle = `M${point(...A)}L${point(...B)}L${point(...C)}Z`;
+    const knownColor = step === 0 ? active : ink;
+    const svg = line(triangle) + line(mark(A,B,C,21), knownColor, 2.5) + line(mark(B,A,C,21), knownColor, 2.5) +
+      line(mark(C,A,B,step>=2 && c===90 ? 10 : 17, step>=2 && c===90), step>=1 ? active : ink, 2.5, 'data-angle="C"') +
+      label(A[0]-10,A[1]+17,'A') + label(B[0]+10,B[1]+17,'B') + label(C[0],C[1]-10,'C') +
+      label(A[0]+40,A[1]-6,a+'°') + label(B[0]-40,B[1]-6,b+'°') + label(C[0],C[1]+37,step>=2 ? c+'°' : '?');
+    return {svg, title: `Треугольник ABC. Угол A равен ${a}°, угол B равен ${b}°. ` + (step>=2 ? `Угол C равен ${c}°.` : 'Нужно найти угол C.'),
+      equation: [`∠A + ∠B = ${a}° + ${b}°`, `∠C = 180° − ${a+b}°`][step]};
+  }
+
+  const figures = new Map([
+    ['practice-free-area', freeArea], ['practice-fence', fence],
+    ['practice-spokes', spokes], ['practice-triangle-angle', triangleAngles]
+  ]);
+  function frame(task, step = -1) {
+    const drawing = figures.get(task.id)(task.params, step);
+    return {equation: drawing.equation, svg: `<svg xmlns="http://www.w3.org/2000/svg" class="task-figure plane-figure" data-plan="${task.id}" data-step="${step}" viewBox="0 0 310 204" role="img" aria-label="${drawing.title}"><title>${drawing.title}</title>${drawing.svg}</svg>`};
+  }
+  root.PathPlanePractice = {supports: task => figures.has(task.id), frame};
+})(globalThis);
+
+
 </script><script data-inline-source="/ege-baza/path/practice-view.js">
 (function(root){'use strict';
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2835,7 +3018,9 @@ function polygon(d,construction=false){
  return `<svg class="task-figure" viewBox="0 0 600 330" role="img" aria-label="Фигура на единичной сетке; координаты вершин приведены под рисунком"><g stroke="#c9d9ce" stroke-width="1">${grid}</g><polygon points="${d.points.map(([x,y])=>X(x)+','+Y(y)).join(' ')}" fill="#6caa8870" stroke="#185940" stroke-width="3"/>${construction?`<path d="M${X(0)} ${Y(0)}H${X(w)}V${Y(h)}H${X(0)}Z" fill="none" stroke="#a44629" stroke-width="3" stroke-dasharray="6"/>`:''}${d.points.map(([x,y],i)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="4" fill="#185940"/><text x="${X(x)+8}" y="${Y(y)-9}">${'ABCDEF'[i]}</text>`).join('')}<text x="60" y="318">Сторона клетки = 1</text></svg><details><summary>Координаты вершин по порядку</summary><p>${d.points.map(([x,y],i)=>`${'ABCDEF'[i]}(${x}; ${y})`).join(', ')}</p></details>`;
 }
 function numberline(d){const lo=Math.floor(Math.min(...d.values))-1,hi=Math.ceil(Math.max(...d.values))+1,X=v=>45+(v-lo)/(hi-lo)*510;let s='';for(let n=lo;n<=hi;n++)s+=`<path d="M${X(n)} 110v12" stroke="#617a6b"/><text x="${X(n)}" y="150" text-anchor="middle">${n}</text>`;return `<svg class="task-figure" viewBox="0 0 600 180" role="img" aria-label="Точки расположены слева направо; интервалы приведены ниже"><path d="M30 116H565" stroke="#617a6b"/>${s}${d.values.map((v,i)=>`<circle cx="${X(v)}" cy="116" r="5" fill="#a44629"/><text x="${X(v)}" y="88" text-anchor="middle">${E(d.names[i])}</text>`).join('')}</svg><p class="muted">${d.values.map((v,i)=>`${d.names[i]}: ${Number.isInteger(v)?'ровно '+v:'между '+Math.floor(v)+' и '+Math.ceil(v)}`).join('; ')}.</p>`;}
-function visual(t){if(t.model?.kind==='grade7-construction'&&root.PathGrade7Construction)return root.PathGrade7Construction.visual(t);if(t.model?.kind==='pre7-lab'&&root.PathPre7Models)return root.PathPre7Models.visual(t);if(t.model?.kind==='grade7-geometry'&&root.PathGrade7Geometry)return root.PathGrade7Geometry.visual(t);const d=t.display;if(!d)return '';if(d.kind==='table')return table(d.headers,d.rows);if(['bars','graph'].includes(d.kind))return chart(d);if(d.kind==='polygon')return polygon(d);if(d.kind==='numberline')return numberline(d);if(d.kind==='triangle-label')return `<svg class="task-figure" viewBox="0 0 600 320" role="img" aria-label="Прямоугольный треугольник ABC, прямой угол при C"><path d="M70 255H510L70 45Z" fill="#d5e9da" stroke="#216e56" stroke-width="3"/><path d="M70 235H90V255" fill="none" stroke="#216e56"/><text x="46" y="270">C</text><text x="517" y="265">A</text><text x="51" y="36">B</text><text x="270" y="285">${d.a}</text><text x="28" y="160">${d.b}</text><text x="300" y="140">${d.c}</text></svg><p class="muted">Чертёж схематический; размеры берём из условия.</p>`;return '';}
+function visual(t){
+ if(root.PathPlanePractice?.supports(t))return root.PathPlanePractice.frame(t).svg;
+ if(t.model?.kind==='grade7-construction'&&root.PathGrade7Construction)return root.PathGrade7Construction.visual(t);if(t.model?.kind==='pre7-lab'&&root.PathPre7Models)return root.PathPre7Models.visual(t);if(t.model?.kind==='grade7-geometry'&&root.PathGrade7Geometry)return root.PathGrade7Geometry.visual(t);const d=t.display;if(!d)return '';if(d.kind==='table')return table(d.headers,d.rows);if(['bars','graph'].includes(d.kind))return chart(d);if(d.kind==='polygon')return polygon(d);if(d.kind==='numberline')return numberline(d);if(d.kind==='triangle-label')return `<svg class="task-figure" viewBox="0 0 600 320" role="img" aria-label="Прямоугольный треугольник ABC, прямой угол при C"><path d="M70 255H510L70 45Z" fill="#d5e9da" stroke="#216e56" stroke-width="3"/><path d="M70 235H90V255" fill="none" stroke="#216e56"/><text x="46" y="270">C</text><text x="517" y="265">A</text><text x="51" y="36">B</text><text x="270" y="285">${d.a}</text><text x="28" y="160">${d.b}</text><text x="300" y="140">${d.c}</text></svg><p class="muted">Чертёж схематический; размеры берём из условия.</p>`;return '';}
 function answerChoices(item) {
  return Array.isArray(item?.choices) && item.choices.length && item.choices.every(choice => choice && typeof choice === 'object' && typeof choice.label === 'string' && typeof choice.value === 'string') ? item.choices : null;
 }
@@ -3460,35 +3645,161 @@ const skills={
  proportion:{title:'Пропорции и связь величин',path:'/trainers/oge-basics/percentages/proportion.html'},
  equations:{title:'Простые уравнения по шагам',path:'/trainers/simple-equations-stepwise.html'},
  powers:{title:'Степени и корни',path:'/trainers/oge-task8-powers-roots.html'},
- line:{title:'Отрицательные числа на прямой',path:'/trainers/oge-basics/negative-number-line.html'}
+ line:{title:'Отрицательные числа на прямой',path:'/trainers/oge-basics/negative-number-line.html'},
+ decimalMultiply:{title:'Умножение десятичных дробей',path:'/trainers/arifmetika.html?level=n5c'},
+ decimalDivide:{title:'Деление на десятичную дробь',path:'/trainers/oge-basics/multiplication-division/decimal-divisor-shift.html'},
+ decimalAdd:{title:'Сложение десятичных дробей по разрядам',path:'/trainers/oge-basics/decimal-add-subtract.html'},
+ area:{title:'Единицы площади',path:'/trainers/oge-basics/units-area.html'},
+ lengthTime:{title:'Единицы длины и времени',path:'/trainers/oge-basics/units-length-time.html'},
+ height:{title:'Основание и высота параллелограмма',path:'/geometry-course/atlas/area-parallelogram.html'}
 };
+const nextStep=(why,key=null)=>({why,key});
+const targeted={
+ choice: nextStep('Запиши полную стоимость для одного магазина: цена набора × количество + доставка. После этого сравни магазины.'),
+ units: nextStep('Нарисуй куб со стороной 1 дм. Сколько сантиметров по одному ребру? Почему для объёма нужно умножить это число на себя три раза?'),
+ 'practice-delivery': nextStep('Сначала посчитай стоимость товаров в одном магазине. Сравни её с порогом: при точном равенстве доставка остаётся платной.'),
+ 'practice-luggage': nextStep('Возьми одну сумку и проверь её размеры и массу по очереди. Одного нарушения достаточно, чтобы исключить сумку.'),
+ 'practice-rental': nextStep('Сколько стокилометровых отрезков в маршруте? Используй это число, чтобы найти расход на всю поездку, а затем прибавь к цене топлива аренду.'),
+ 'practice-grid-parallelogram': nextStep('Выбери горизонтальное основание. Отметь перпендикуляр к нему и посчитай его длину в клетках.', 'height'),
+ 'practice-parallelogram': nextStep('Найди высоту к указанному основанию. Подставь длины основания и перпендикулярной к нему высоты в формулу площади.', 'height'),
+ 'practice-grid-cut': nextStep('Дострой фигуру до прямоугольника. Найди его площадь и вычти площадь выреза.'),
+ 'practice-decimals': ({stepIndex,value,task})=>{
+  const foundProduct=stepIndex===undefined&&numeric(value)===task?.steps?.[0]?.a;
+  return stepIndex===1||foundProduct
+   ?nextStep('Поставь запятые двух слагаемых друг под другом и сложи одинаковые разряды.', 'decimalAdd')
+   :nextStep('Проверь произведение первых двух чисел отдельно. Посчитай знаки после запятой в обоих множителях и оцени, где должна стоять запятая в произведении.', 'decimalMultiply');
+ },
+ 'practice-decimal-division': ({stepIndex})=>stepIndex===2
+   ?nextStep('Раздели целые числа, которые уже получил.')
+   :nextStep('Во сколько раз надо увеличить делитель, чтобы он стал целым? Увеличь делимое во столько же раз.', 'decimalDivide'),
+ 'practice-area-units': ({stepIndex})=>stepIndex===0
+   ?nextStep('Сначала переведи один метр в сантиметры.', 'lengthTime')
+   :nextStep('Представь квадрат 1 м × 1 м. Сколько квадратов 1 см × 1 см в одном ряду? Сколько таких рядов?', 'area'),
+ 'practice-time': nextStep('Переведи целые часы в минуты и только затем прибавь оставшиеся минуты.', 'lengthTime'),
+ 'practice-units-match': nextStep('Представь размер каждого предмета. Если сравнение трудно, переведи близкие варианты в одинаковые единицы длины.', 'lengthTime'),
+ 'practice-trig-angle': nextStep('Один полный оборот — 360°. Убери полные обороты, затем найди на окружности синус оставшегося угла.'),
+ 'practice-temperature': ({stepIndex,task})=>stepIndex===1&&task?.params?.c<0
+   ?nextStep('Прибавь 32 к уже найденному отрицательному слагаемому.', 'signs')
+   :null,
+ 'practice-fraction-expression': ({stepIndex})=>stepIndex===1
+   ?nextStep('После деления приведи слагаемые к общему знаменателю.', 'fractions')
+   :null,
+ 'practice-fraction-divide': nextStep('Запиши дробь, на которую делишь. Поменяй в ней местами числитель и знаменатель и замени деление умножением.'),
+ 'practice-fraction-percent': nextStep('Прими целое за 100%. Сначала запиши данную долю десятичной дробью, затем умножь её на 100.', 'percent'),
+ 'practice-percent-change': nextStep('Сначала найди процент от исходной цены. Затем по условию прибавь его денежное значение или вычти.', 'change'),
+ 'practice-percent-reverse': nextStep('Прими прежнюю цену за 100%. Сколько процентов старой цены осталось после скидки?', 'change')
+};
+// These external trainers rehearse the operation actually required by the
+// family. Mixed tasks use the authored in-place step instead of a category tag.
+const examSkills={
+ 'practice-fraction-add':'fractions',
+ percent:'change',
+ 'practice-percent-part':'percent',
+ 'practice-percent-whole':'percent',
+ 'practice-percent-rate':'percent',
+ 'practice-percent-chain':'change',
+ 'practice-direct-proportion':'proportion',
+ 'practice-inverse-proportion':'proportion',
+ powers:'powers',
+ 'practice-root-product':'powers',
+ 'practice-power-rules':'powers',
+ 'equations-linear':'equations',
+ 'equations-signs':'equations',
+ 'equations-fractions':'equations',
+ 'equations-brackets':'equations'
+};
+const gapRoutes={fractions:'fractions',fraction:'share',percent:'choice',change:'percent',proportion:'ratio',division:'ratio',equations:'equations',powers:'powers',signs:'numberline'};
+function specificRoute(id,context){
+ const route=Object.hasOwn(targeted,id)?targeted[id]:null;
+ return typeof route==='function'?route(context):route;
+}
 function numeric(s){const m=String(s).trim().replace('−','-').replace(',','.').match(/^([+-]?[\d.]+)(?:\s*\/\s*([+-]?[\d.]+))?$/);if(!m||m[2]!==undefined&&+m[2]===0)return null;const n=+m[1]/(m[2]===undefined?1:+m[2]);return Number.isFinite(n)?n:null;}
-function recommend({id,value,expected}){
- const n=numeric(value);let key,why;
- if(Number.isFinite(expected)&&expected!==0&&n!==null&&Math.abs(n+expected)<1e-7){key='signs';why='Получился ответ с противоположным знаком. Возможно, стоит проверить действие со знаками.';}
- else if(/\/\s*[+-]?0(?:[.,]0*)?\s*$/.test(String(value))){key='part';why='У дроби не может быть нулевого знаменателя. Вспомним, что означает деление целого на части.';}
- else if(id==='percent'){key='change';why='На этом шаге важно, от какого числа считаются проценты: после изменения база может стать другой.';}
- else if(id==='choice'||id==='mixtures'){key='percent';why='Здесь помогает связь процента, части и целого. Проверь, какая величина принята за 100%.';}
- else if(['fractions','share','gardens'].includes(id)){key='fractions';why='Для этого шага нужны доли одного целого и действия с дробями. Можно отдельно потренировать общий знаменатель.';}
- else if(['joint','reverse','delay','leave'].includes(id)){key='part';why='Время на всю работу и доля работы за час — разные величины. Вспомним смысл единичной дроби.';}
- else if(['crew','minimum','ratio','motion','practical','scale'].includes(id)){key='proportion';why='Сначала установи, как связаны величины: увеличение одной не всегда увеличивает другую.';}
- else if(id==='equations'||id==='expressions'){key='equations';why='Если трудно выполнить преобразование, можно вернуться к простому уравнению и действию с обеими частями.';}
- else if(['powers','functions','triangle','circle','roundbody','pyramid'].includes(id)){key='powers';why='В этом шаге используются степени или корни. Проверь базовое действие отдельно от всей задачи.';}
- else if(id==='numberline'){key='line';why='Вспомним порядок чисел на прямой и положение отрицательных чисел.';}
+function examRoute(id,task,stepIndex){
+ if(!task?.steps?.length)return null;
+ const linearVariant=id==='equations'&&task.model?.kind==='equation';
+ const familySkill=Object.hasOwn(examSkills,id)?examSkills[id]:null;
+ const key=linearVariant?'equations':familySkill;
+ if(!key&&stepIndex!==undefined)return null;
+ const index=stepIndex??0;
+ const why=root.PathTaskHints?.hint(task,index)||task.steps[index]?.q;
+ if(!why)return null;
+ return key?{key,why,...skills[key]}:nextStep(why);
+}
+function recommend(context){
+ const {id,value,expected,meta,task,stepIndex}=context;
+ // Concrete input errors take precedence over the broad exam task family.
+ const n=numeric(value);
+ if(/\/\s*[+-]?0(?:[.,]0*)?\s*$/.test(String(value)))return {key:'part',...skills.part,why:'У дроби не может быть нулевого знаменателя. Вспомним, что означает деление целого на части.'};
+ if(Number.isFinite(expected)&&expected!==0&&n!==null&&Math.abs(n+expected)<1e-7)return {key:'signs',...skills.signs,why:'Получился ответ с противоположным знаком. Возможно, стоит проверить действие со знаками.'};
+ const routine=specificRoute(id,context);
+ if(routine){
+  if(routine.key)return {...routine,...skills[routine.key]};
+  return stepIndex===undefined?routine:null;
+ }
+ if(meta?.pos&&!meta.grade7&&!meta.pre7)return examRoute(id,task,stepIndex);
+ const family=meta?.expanded?gapRoutes[meta.gap]||id:id;
+ let key,why;
+ if(family==='percent'){key='change';why='На этом шаге важно, от какого числа считаются проценты: после изменения база может стать другой.';}
+ else if(family==='choice'||family==='mixtures'){key='percent';why='Здесь помогает связь процента, части и целого. Проверь, какая величина принята за 100%.';}
+ else if(['fractions','share','gardens'].includes(family)){key='fractions';why='Для этого шага нужны доли одного целого и действия с дробями. Можно отдельно потренировать общий знаменатель.';}
+ else if(['joint','reverse','delay','leave'].includes(family)){key='part';why='Время на всю работу и доля работы за час — разные величины. Вспомним смысл единичной дроби.';}
+ else if(['crew','minimum','ratio','motion','practical','scale'].includes(family)){key='proportion';why='Сначала установи, как связаны величины: увеличение одной не всегда увеличивает другую.';}
+ else if(family==='equations'||family==='expressions'){key='equations';why='Если трудно выполнить преобразование, можно вернуться к простому уравнению и действию с обеими частями.';}
+ else if(['powers','functions','triangle','circle','roundbody','pyramid'].includes(family)){key='powers';why='В этом шаге используются степени или корни. Проверь базовое действие отдельно от всей задачи.';}
+ else if(family==='numberline'){key='line';why='Вспомним порядок чисел на прямой и положение отрицательных чисел.';}
  if(!key)return null;return {key,...skills[key],why};
 }
-function show(context){const hint=recommend(context);document.getElementById('ege-remediation')?.remove();if(!hint)return;
- const feedback=document.getElementById('feedback');if(!feedback)return;
- const box=document.createElement('aside');box.id='ege-remediation';box.className='callout';box.setAttribute('aria-label','Вспомнить нужный навык');
- const title=document.createElement('strong');title.textContent='Можно вернуться к основе';
- const text=document.createElement('p');text.textContent=hint.why;
- const link=document.createElement('a');link.className='btn';link.textContent=hint.title+' →';
- const origin=location.protocol==='file:'?'https://mathexam.space':location.origin;
- const url=new URL(hint.path,origin);url.searchParams.set('returnTo',location.protocol==='file:'?'/ege-baza/path/index.html#map':location.pathname+location.hash);link.href=url.href;
- const note=document.createElement('p');note.className='muted';note.textContent='Текущий шаг и ответ сохранены. В тренажёре есть кнопка возврата к этой задаче. Рекомендация — предположение о трудности, а не оценка твоих способностей.';
- box.append(title,text,link,note);feedback.after(box);
+function clear(){document.getElementById('ege-remediation')?.remove();}
+function show(context){
+ const hint=recommend(context);
+ clear();
+ if(!hint)return;
+ const feedback=context.feedback||document.getElementById('feedback');
+ if(!feedback)return;
+ const box=document.createElement('aside');
+ box.id='ege-remediation';
+ box.className='callout';
+ box.setAttribute('aria-label','Вспомнить нужный навык');
+ const title=document.createElement('strong');
+ title.textContent=hint.path?'Можно потренировать этот навык':'Проверь следующий шаг';
+ const text=document.createElement('p');
+ text.textContent=hint.why;
+ box.append(title,text);
+ if(hint.path){
+  const link=document.createElement('a');
+  link.className='btn';
+  link.textContent=hint.title+' →';
+  const offline=location.protocol==='file:';
+  const storageNotice=document.getElementById('storage');
+  const keepTab=offline||Boolean(storageNotice&&!storageNotice.hidden);
+  const url=new URL(hint.path,offline?'https://mathexam.space':location.origin);
+  if(!keepTab){
+   // The separate practice has its own storage key. Returning without this
+   // exact mode would open course progress instead of the saved attempt.
+   const separate=location.pathname==='/ege-baza/path/index.html'&&new URLSearchParams(location.search).get('practice')==='recovery';
+   url.searchParams.set('returnTo',location.pathname+(separate?'?practice=recovery':'')+location.hash);
+  }
+  link.href=url.href;
+  const note=document.createElement('p');
+  note.className='muted';
+  if(keepTab){
+   link.target='_blank';
+   link.rel='noopener';
+   note.textContent='Тренажёр откроется в новой вкладке. Текущая работа останется здесь.';
+  }else{
+   note.textContent='Вернись кнопкой в тренажёре. Твоя запись останется в задаче.';
+  }
+  box.append(link,note);
+ }else if(context.openSteps){
+  const button=document.createElement('button');
+  button.type='button';
+  button.textContent='Открыть разбор этой задачи';
+  button.onclick=context.openSteps;
+  box.append(button);
+ }
+ feedback.after(box);
 }
-const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof module!=='undefined')module.exports=api;
+const api={skills,recommend,numeric,show,clear};root.EgeRemediation=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);
 
 </script><script data-inline-source="/ege-baza/path/exam-pool.js">
@@ -3629,14 +3940,18 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
   if(labels.h!==undefined)s+=label(43,189,F(labels.h),'height');
   return s;
  }
- function cylinder({radius='r',height,unknown=false,water=false,radiusSize=100}={}){
+ function cylinder({radius='r',height,waterDepth,radiusSize=100}={}){
   const left=210-radiusSize,right=210+radiusSize,rim=radiusSize*.26;
-  let s=water?path(`M${left+1} 135Q210 ${135+rim} ${right-1} 135V265Q210 ${265+rim} ${left+1} 265Z`,{fill:'#d9edf6',color:'#5e9db6',width:0}):'';
+  const water=waterDepth!==undefined,top=water?265-waterDepth:75;
+  let s=water?path(`M${left} ${top}H${right}V265A${radiusSize} ${rim} 0 0 1 ${left} 265Z`,{fill:'#d9edf6',width:0}):'';
   s+=path(`M${left} 75V265M${right} 75V265`)+ring(210,75,radiusSize,rim,{kind:'cylinder-top',backHidden:false})+ring(210,265,radiusSize,rim,{kind:'cylinder-base'});
-  if(water)s+=ring(210,135,radiusSize-1,rim,{kind:'water-level',color:'#5e9db6',width:2});
+  if(water)s+=ring(210,top,radiusSize,rim,{kind:'water-level',color:'#3b7891',fill:'#d9edf6',width:2});
   s+=line([210,75],[right,75],{color:'#b05d2d'})+label(210+radiusSize/2,38,radius,'radius');
-  if(height!==undefined)s+=line([right+26,water?135:75],[right+26,265],{color:'#b05d2d',dash:true})+label(right+59,178,F(height),'height');
-  if(unknown)s+=label(210,186,'h = ?');
+  if(water){
+   const x=right+17;
+   s+=`<g data-stereo-aux="water-depth">${line([x,top],[x,265],{color:'#b05d2d',width:2})}${path(`M${x-5} ${top}h10M${x-5} 265h10`,{color:'#b05d2d',width:2})}</g>`;
+   s+=label(x+43,(top+265)/2+7,height===undefined?'h = ?':F(height)+' см',height===undefined?undefined:'height');
+  }else if(height!==undefined)s+=line([right+26,top],[right+26,265],{color:'#b05d2d',dash:true})+label(right+59,178,F(height),'height');
   return s;
  }
  function cone({radius,height,slant,cut,smallVolume,wholeVolume,ratio,unitScale}={}){
@@ -3698,7 +4013,11 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
    case 'pyramid':figures=[figure('Пирамида с квадратным основанием',pyramid(4,m.a,undefined,m.h))];break;
    case 'scale':figures=[figure('Сечение параллельно основанию',cone({cut:1/3,wholeVolume:27*(2+t.seed%7),ratio:3}))];note+=' h — высота малого конуса, H — высота большого. Измерять длины по экрану не нужно.';break;
    case 'practice-displacement':figures=[figure('До погружения',tank(p.litres,p.factor,false)),figure('После погружения',tank(p.litres,p.factor,true))];note+=' Схема вертикального сечения бака. Деталь целиком под водой; вода не вылилась.';break;
-   case 'practice-pour':figures=[figure('Первый цилиндр',cylinder({radius:'r',height:p.oldH,water:true,radiusSize:100/p.ratio})),figure('Второй цилиндр',cylinder({radius:F(p.ratio)+'r',unknown:true}))];note+=' Воду переливают полностью. Радиус второго основания указан относительно первого.';break;
+   case 'practice-pour':{
+    const firstDepth=130;
+    figures=[figure('Первый цилиндр',cylinder({radius:'r',height:p.oldH,waterDepth:firstDepth,radiusSize:100/p.ratio})),figure('Второй цилиндр',cylinder({radius:F(p.ratio)+'r',waterDepth:firstDepth/p.ratio**2}))];
+    note+=` Глубину измеряют от дна до поверхности воды. В первом цилиндре это ${F(p.oldH)} см. Во втором искомая глубина отмечена знаком вопроса.`;break;
+   }
    case 'practice-joined-surface':figures=[figure('Два куба, склеенные целыми гранями',box({a:p.a,b:p.a,h:p.a},true))];note+=' Рыжим отмечены внешние линии соединения кубов; общая грань находится внутри.';break;
    case 'practice-faces':figures=[figure(nName(p.n)+' и пирамида',composite(p.n))];note+=' Рыжим отмечены рёбра соединения. Сама общая грань находится внутри тела. Соседние внешние грани не лежат в одной плоскости.';break;
    case 'practice-cone-area':{const r2=p.r*p.ratio,l2=p.l*2,unitScale=Math.min(108/r2,228/Math.max(Math.sqrt(p.l*p.l-p.r*p.r),Math.sqrt(l2*l2-r2*r2)));figures=[figure('Первый конус',cone({radius:p.r,slant:p.l,unitScale})),figure('Второй конус',cone({radius:r2,slant:l2,unitScale}))];note+=' l — образующая конуса. Оба конуса показаны в одном масштабе.';break;}
@@ -4188,14 +4507,15 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
       ['', 'good', 'bad'].includes(value.feedbackKind) && ['helpOpen', 'modelOpen', 'stepsOpen', 'whyOpen', 'noteOpen'].every(key => typeof value[key] === 'boolean') &&
       (value.model === null || plain(value.model) && JSON.stringify(value.model).length <= 16000);
   }
+  const roundVersionValid = (value, id) => value.roundVersion === undefined || id === 'round' && value.roundVersion === 2;
   function lessonValid(value, id) {
-    if (!plain(value) || !integer(value.seed) || !integer(value.stage, 4) || !integer(value.step, 20) || !integer(value.independent) || !integer(value.guided) ||
+    if (!plain(value) || !roundVersionValid(value, id) || !integer(value.seed) || !integer(value.stage, 4) || !integer(value.step, 20) || !integer(value.independent) || !integer(value.guided) ||
       !string(value.note) || !string(value.draft) || typeof value.help !== 'boolean' || typeof value.attempted !== 'boolean' ||
       !Array.isArray(value.checks) || value.checks.length > 100 || value.done !== undefined && typeof value.done !== 'boolean' || !taskFirstValid(value.taskFirst)) return false;
     try {
       // The writer keeps done/checks when a pupil edits the input after success.
       // This editable draft is not the historical answer that earned the count.
-      const task = root.PathData.task(id, value.seed);
+      const task = value.roundVersion === 2 ? root.PathData.roundPractice(value.seed) : root.PathData.task(id, value.seed);
       return value.step <= task.steps.length;
     } catch (error) { return false; }
   }
@@ -4221,14 +4541,14 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     const known = id => { if (!knownIds.has(id)) unverified = true; return typeof id === 'string'; };
     // path/app.js loads the complete document or rejects it. A readable EGE
     // row alone cannot promise resume if a sibling would make that loader fail.
-    const lessonShape = row => plain(row) && integer(row.seed) && integer(row.stage, 4) && integer(row.step, 20) &&
+    const lessonShape = (row, id) => plain(row) && roundVersionValid(row, id) && integer(row.seed) && integer(row.stage, 4) && integer(row.step, 20) &&
       integer(row.independent) && integer(row.guided) && string(row.note) && string(row.draft) && typeof row.help === 'boolean' &&
       typeof row.attempted === 'boolean' && Array.isArray(row.checks) && taskFirstValid(row.taskFirst);
     const runShape = run => plain(run) && ['exam', 'diagnostic'].includes(run.kind) && Array.isArray(run.ids) && run.ids.length === 21 &&
       run.ids.every(known) && Array.isArray(run.answers) && run.answers.length <= 21 && run.answers.every(answer => plain(answer) &&
         known(answer.id) && integer(answer.seed) && typeof answer.value === 'string' && answer.value.length < 10000 && typeof answer.correct === 'boolean') &&
       integer(run.seed) && integer(run.i, 21) && Number.isFinite(run.start) && (run.draft === undefined || string(run.draft));
-    if (!Object.entries(value.lessons).every(([id, row]) => known(id) && lessonShape(row)) || !value.runs.every(runShape) || value.active && !runShape(value.active)) return 'rejected';
+    if (!Object.entries(value.lessons).every(([id, row]) => known(id) && lessonShape(row, id)) || !value.runs.every(runShape) || value.active && !runShape(value.active)) return 'rejected';
     // The lightweight home catalog intentionally excludes other school courses.
     // Their readable records remain visible through EGE projection, but without
     // the full catalog we cannot establish that every foreign ID is supported.
@@ -4330,19 +4650,32 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     Object.assign(exam, counts(checkItems), { items: checkItems, groups: [], status: checksUnknown ? 'unreadable' : path.status,
       completed: checksUnknown ? null : checkItems.filter(item => item.completed).length, completionTotal: 2 });
     const canResume = compatibility === 'compatible' && ['saved', 'empty'].includes(path.status);
-    const recovery = line => ({ href: line.href, label: 'Посмотреть доступные результаты', title: line.title,
-      reason: 'Часть сохранения недоступна для проверки. Точное продолжение сейчас не гарантировано; читаемые результаты остаются на карте.', kind: 'recovery' });
-    if (!canResume) for (const line of lines) for (const item of line.items) if (item.source === 'path') item.resume = false;
+    function recovery(line) {
+      const lessons = line.id === 'm07' ? [] : line.groups[0].items;
+      const known = lessons.find(item => item.resume) || lessons.find(item => item.started === true);
+      const item = known || lessons[0];
+      if (!item) return { href: '/ege-baza/index.html#map', label: 'Выбрать задание', title: line.title,
+        reason: 'Выбери номер ЕГЭ для тренировки.', kind: 'recovery', resultsHref: line.href };
+      const previous = known ? rows[item.id].seed : null;
+      return { title: item.title, href: '/ege-baza/path/index.html?practice=recovery#practice=' + item.id +
+          (integer(previous) ? '&previous=' + previous : ''), label: 'Открыть отдельный пример',
+        reason: known ? 'Тема известна, но точный шаг восстановить не удалось. Можно решить другой пример по этой теме.' :
+          'Выбери эту задачу для тренировки или открой все номера ЕГЭ.',
+        resultsHref: line.href, kind: 'recovery' };
+    }
+    // Use only the lesson identity from a readable row. Its old draft is never presented as resumable.
+    const unfinishedLine = !canResume && lines.slice(0, 6).find(line => line.groups[0].items.some(item => item.resume));
     for (const line of lines) {
+      const alternative = !canResume && recovery(line);
+      if (!canResume) for (const item of line.items) if (item.source === 'path') item.resume = false;
       const legacyCheck = legacy[line.id]?.checks[0];
       const pending = line.items.find(item => item.resume), review = line.items.find(item => item.status === 'need-review');
       const untouched = line.items.find(item => item.source === 'path' && item.status === 'unstarted');
       const practice = line.items.find(item => item.source === 'path' && item.independent === false && item.status !== 'unknown');
       line.next = legacyCheck || (pending ? action(pending, 'resume', 'Сохранены незавершённая работа или ответы. Продолжение сохранит текущее условие.') :
         review ? action(review, 'review', 'В повторной проверке возникли затруднения. Вернитесь к этому навыку.', 'Повторить навык') :
-        !canResume ? recovery(line) :
-        untouched || practice ? action(untouched || practice, 'learn', 'Следующая доступная тема этой учебной линии.') :
-        { href: line.href, label: 'Выбрать тему', title: line.title, reason: 'Выберите тему для нового самостоятельного решения.', kind: 'choose' });
+        alternative || (untouched || practice ? action(untouched || practice, 'learn', 'Следующая доступная тема этой учебной линии.') :
+        { href: line.href, label: 'Выбрать тему', title: line.title, reason: 'Выберите тему для нового самостоятельного решения.', kind: 'choose' }));
     }
     const activeCheck = active && !checksUnknown && canResume ? { href: checkHref(active.kind), label: 'Продолжить проверку',
       title: active.kind === 'exam' ? 'Пробная работа' : 'Стартовая диагностика', reason: 'Сохранена незавершённая проверка: ' + active.i + ' из 21 ответов.', kind: 'resume-check' } : null;
@@ -4350,8 +4683,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     const pendingLine = lines.find(line => line.next.kind === 'resume');
     const reviewLine = lines.find(line => line.next.kind === 'review');
     const learnedLine = lines.slice(0, 6).find(line => line.items.some(item => item.started === true));
-    const recommendation = activeCheck || oldCheck || pendingLine?.next || reviewLine?.next || learnedLine?.next ||
-      (!canResume ? recovery(lines[0]) : lines[0].next);
+    const recommendation = activeCheck || oldCheck || pendingLine?.next || reviewLine?.next || unfinishedLine?.next || learnedLine?.next || lines[0].next;
     return { status: sourceStatus(Object.values(sources).map(value => value.status)), lines, recommendation,
       sources: Object.fromEntries(Object.entries(sources).map(([key, value]) => [key, { status: value.status,
         ...(key === 'path' ? { resumeCompatible: canResume, resumeStatus: compatibility === 'compatible' && !canResume ? 'unverified' : compatibility } : {}) }])),
@@ -4558,11 +4890,11 @@ const linear=[
 
 add('round',(t,i)=>{
  // Match only this family's visible wording; the generator's model.k is not a given.
- const m=String(t.q).match(/нужно (\d+) тетрадей\. В упаковке (\d+) тетрадей/);
+ const m=String(t.q).match(/нужно (?:купить )?(\d+) тетрад(?:ь|и|ей)\. В упаковке (\d+) тетрад(?:ь|и|ей)/);
  return at([
-  m?`Раздели ${m[1]} на ${m[2]} с остатком. При ненулевом остатке нужно купить на одну упаковку больше целой части частного.`:'Раздели нужное число тетрадей на число тетрадей в упаковке. При ненулевом остатке нужна ещё одна упаковка.',
+  m?`Раздели ${m[1]} на ${m[2]} с остатком. Остаток может быть нулём. Реши, нужно ли купить ещё одну упаковку.`:'Раздели нужное число тетрадей на число тетрадей в упаковке. Проверь, нужно ли купить ещё одну упаковку.',
   'Умножь число целых упаковок на число тетрадей в каждой. Вычти результат из нужного количества тетрадей.',
-  'Посмотри на остаток от деления. Если он ненулевой, к целой части частного прибавь одну упаковку.'
+  'Проверь остаток. Если он равен нулю, хватает целого частного. Если остались тетради, которые ещё нужно купить, прибавь одну упаковку.'
  ],i);
 });
 add('units',[
@@ -4585,7 +4917,7 @@ add('box',(t,i)=>at([
 ],i));
 add('triangle',['Проведи высоту к основанию. Она делит основание равнобедренного треугольника пополам.','Примени теорему Пифагора к половине треугольника: из квадрата боковой стороны вычти квадрат половины основания.','Из найденного квадрата высоты извлеки положительный квадратный корень.','Умножь всё основание на высоту и раздели на 2.']);
 add('quadrilateral',(t,i)=>i===0?`Сложи основания ${F(t.model.a)} и ${F(t.model.b)}, затем раздели сумму пополам.`:'Умножь среднюю линию трапеции на её высоту.');
-add('circle',(t,i)=>at([`Радиус — гипотенуза. Для квадрата половины хорды вычисли ${F(t.model.r)}² − ${F(t.model.d)}².`,'Из полученной разности извлеки положительный квадратный корень.','Перпендикуляр из центра делит хорду пополам. Удвой найденную половину хорды.'],i));
+add('circle',(t,i)=>at([`Соедини O с A и опусти OM на AB. Перпендикуляр из центра делит хорду пополам. Как найти AM по катету OM и гипотенузе OA?`,'Из полученной разности извлеки положительный квадратный корень.','Перпендикуляр из центра делит хорду пополам. Удвой найденную половину хорды.'],i));
 add('roundbody',(t,i)=>{
  const body=t.model.body;
  if(i===0)return `Возведи радиус ${F(t.model.a)} ${body==='sphere'?'в куб':'в квадрат'}.`;
@@ -4616,7 +4948,7 @@ add('motion',journey);
 add('mixtures',['Найди 18% от исходной массы раствора. Это масса вещества, которое остаётся после добавления воды.','Сложи исходную массу раствора и массу добавленной воды.','Раздели массу вещества на новую массу раствора и умножь на 100%.']);
 add('reasoning',ring);
 
-practice('change',(t,i)=>i===0?`Умножь ${F(t.params.price)} рублей на ${F(t.params.n)} тетрадей.`:`Из ${F(t.params.paid)} рублей вычти стоимость всех тетрадей.`);
+practice('change',(t,i)=>i===0?`Умножь цену одной тетради (${F(t.params.price)} рублей) на количество тетрадей (${F(t.params.n)}).`:`Из ${F(t.params.paid)} рублей вычти стоимость всех тетрадей.`);
 practice('afford',(t,i)=>{
  return at([
   `Умножь выбранное число билетов на цену ${F(t.params.price)} рублей за билет. Получится стоимость покупки.`,
@@ -4653,18 +4985,50 @@ practice('grid-parallelogram',['Посчитай единичные отрезк
 practice('free-area',(t,i)=>at([`Площадь квадратного участка: ${F(t.params.a)} · ${F(t.params.a)}.`,`Площадь дома: ${F(t.params.b)} · ${F(t.params.c)}.`,'Из площади участка вычти площадь дома.'],i));
 practice('fence',(t,i)=>i===0?`Сложи стороны ${F(t.params.a)} и ${F(t.params.b)}, затем удвой сумму.`:`Из периметра вычти ${F(t.params.g)} м незагороженного проезда.`);
 practice('spokes',['Вспомни, сколько градусов содержит полный оборот вокруг центра колеса.','Каждая спица начинает один промежуток до следующей. Учти также промежуток между последней и первой.','Раздели полный угол вокруг точки на число одинаковых промежутков.']);
-practice('displacement',(t,i)=>at([`Умножь ${F(t.params.litres)} л на ${F(t.params.factor)}: площадь дна не менялась.`,'Из объёма под новым уровнем вычти исходный объём воды.','Переведи вытесненный объём из литров в см³, умножив на 1000.'],i));
-practice('pour',(t,i)=>i===0?`Радиус увеличился в ${F(t.params.ratio)} раза. Возведи этот коэффициент в квадрат, чтобы сравнить площади дна.`:`Раздели исходную высоту ${F(t.params.oldH)} см на найденное отношение площадей: объём воды сохранился.`);
+practice('displacement',(t,i)=>{
+ const {litres,factor}=t.params;
+ const tenths=Math.round(10*factor);
+ const total=F(litres*tenths/10), displaced=F(litres*(tenths-10)/10);
+ return at([
+  `При той же площади дна занятый объём увеличивается во столько же раз, что и высота. Умножь ${litres} л на ${F(factor)}.`,
+  `Вода и деталь занимают ${total} л, сама вода — ${litres} л. Вычти ${litres} из ${total}.`,
+  `Деталь вытеснила ${displaced} л. В одном литре 1000 см³. Умножь ${displaced} на 1000.`
+ ],i);
+});
+practice('pour',(t,i)=>{
+ const {ratio,oldH}=t.params;
+ if(i===0)return `Радиус второго дна в ${ratio} раза больше радиуса первого. В формуле площади круга радиус входит в квадрате. Умножь ${ratio} на ${ratio}.`;
+ return `Воды столько же. На каждый сантиметр глубины во втором цилиндре приходится столько воды, сколько на ${ratio**2} см в первом. Раздели глубину из условия (${oldH} см) на ${ratio**2}.`;
+});
 practice('joined-surface',['Грань куба — квадрат. Умножь ребро само на себя.','У двух отдельных кубов по шесть квадратных граней. Вычти две грани, которые соприкоснулись при склеивании.','Умножь площадь одной квадратной грани на число таких квадратов, оставшихся снаружи.']);
 practice('faces',['У призмы два основания. Добавь по одной боковой грани на каждую сторону основания.','У пирамиды одно основание. Добавь по одной треугольной грани на каждую сторону основания.','Сложи число граней обоих тел и вычти две совпавшие грани: после склеивания они внутри.']);
-practice('right-ratio',(t,i)=>at(['Найди сторону напротив прямого угла C. Именно она является гипотенузой.',t.params.ask?'Найди катет, который не граничит с углом A: он противолежащий.':'Найди катет, который граничит с углом A: он прилежащий.',`Для ${t.params.ask?'sin':'cos'} A раздели ${t.params.ask?'противолежащий':'прилежащий'} катет на гипотенузу.`],i));
+practice('right-ratio',(t,i)=>{
+ const {a,b,c,ask}=t.params;
+ return at(['Найди сторону напротив прямого угла C. Введи её длину.',
+  ask?'Посмотри, какая сторона лежит напротив вершины A. Введи её длину.':'Найди катет, который образует угол A вместе с гипотенузой. Введи его длину.',
+  `Для ${ask?'sin':'cos'} A раздели длину ${ask?'BC':'AC'} (${ask?b:a}) на длину AB (${c}).`],i);
+});
 practice('triangle-angle',(t,i)=>i===0?`Сложи известные углы ${F(t.params.a)}° и ${F(t.params.b)}°.`:'Из 180° вычти сумму двух известных углов.');
 practice('parallelogram',['Выбери высоту, проведённую перпендикулярно именно к указанному основанию.','Площадь параллелограмма равна основанию, умноженному на соответствующую высоту.']);
 practice('diameter-chord',(t,i)=>at([`AB — диаметр, поэтому удвой радиус ${F(t.params.r)}.`,'Угол C опирается на диаметр и равен 90°. По Пифагору вычисли BC²=AB²−AC².','Из найденного квадрата длины извлеки положительный квадратный корень.'],i));
-practice('cone-area',['Для первого конуса умножь радиус на образующую. Множитель π пока можно не записывать.','Для второго конуса также умножь его радиус на его образующую.','Раздели второе произведение на первое. Общий множитель π сократится.']);
+practice('cone-area',(t,i)=>{
+ const {r,l,ratio}=t.params, first=r*l, second=(r*ratio)*(2*l);
+ return at([
+  `Для первого конуса умножь радиус ${r} на образующую ${l}. Так найдёшь множитель перед π в площади боковой поверхности.`,
+  `Для второго конуса умножь его радиус ${r*ratio} на его образующую ${2*l}.`,
+  `В числителе стоит боковая площадь второго конуса (${second}π), в знаменателе — первого (${first}π). Сократи π. Раздели ${second} на ${first}.`
+ ],i);
+});
 practice('pyramid-lateral',['Высота боковой грани делит её основание пополам. Найди половину стороны основания пирамиды.','В боковой грани примени теорему Пифагора: из квадрата ребра вычти квадрат половины основания и извлеки корень.','Площадь треугольной грани — половина произведения её основания на найденную высоту.','Умножь площадь одной боковой грани на число сторон основания пирамиды.']);
 practice('box-diagonal',(t,i)=>at([`Диагональ грани — гипотенуза. Для квадрата высоты вычисли ${F(t.params.d)}² − ${F(t.params.a)}².`,'Из полученной разности извлеки положительный квадратный корень.','Перемножь обе стороны основания и найденную высоту.'],i));
-practice('similar-volume',['Сравни высоты большого и малого конусов. Это также отношение всех соответствующих длин.','Возведи отношение длин в куб, чтобы получить отношение объёмов.','Умножь объём малого конуса на найденное отношение объёмов.']);
+practice('similar-volume',(t,i)=>{
+ const {factor,small}=t.params;
+ return at([
+  'Найди в условии, во сколько раз полная высота больше высоты малого конуса. Радиусы относятся так же.',
+  `Объём пропорционален квадрату радиуса и высоте. Оба размера изменились в одном отношении. Для объёма перемножь ${factor} · ${factor} · ${factor}.`,
+  `Из малого конуса с объёмом ${small} переходим к целому. Множитель для объёма равен ${factor**3}. Умножь ${small} на ${factor**3}.`
+ ],i);
+});
 practice('fraction-add',['Найди наименьшее число, которое делится и на 6, и на 4. Это общий знаменатель.','Во сколько раз увеличился знаменатель первой дроби? На столько же умножь её числитель.','Во сколько раз увеличился знаменатель второй дроби? На столько же умножь её числитель.','Сложи новые числители. Общий знаменатель оставь прежним и сократи результат, если возможно.']);
 practice('fraction-divide',(t,i)=>i===0?`У делителя ${F(t.params.c)}/${F(t.params.d)} поменяй местами числитель и знаменатель.`:'Умножь первую дробь на обратную вторую. Перемножь числители и знаменатели, затем сократи.');
 practice('fraction-expression',['Сначала выполни деление: вместо деления на 2/3 умножь вторую дробь на 3/2.','Приведи полученную дробь и первое слагаемое к общему знаменателю. Сложи числители.']);
@@ -6771,6 +7135,16 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "href": "/trainers/oge-basics/rounding.html",
     "reason": "Чтобы понимать приближение и разряды."
   },
+  "roundingTens": {
+    "title": "Округление до десятков",
+    "href": "/trainers/rounding-stepwise.html?place=1&from=division",
+    "reason": "Посмотри на единицы, чтобы прикинуть цифру частного."
+  },
+  "roundingHundreds": {
+    "title": "Округление до сотен",
+    "href": "/trainers/rounding-stepwise.html?place=2&from=division",
+    "reason": "Посмотри на десятки. После прикидки проверь цифру по исходным числам."
+  },
   "signs": {
     "title": "Действия с отрицательными числами",
     "href": "/trainers/oge-basics/negative-add-subtract.html",
@@ -7929,7 +8303,9 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     ],
     "prerequisites": [
       "decimalDivision",
-      "arithmetic"
+      "arithmetic",
+      "roundingTens",
+      "roundingHundreds"
     ],
     "goal": "Превратить делитель в целое число, не изменив частное.",
     "pos": 14,
@@ -8929,7 +9305,9 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     ],
     "prerequisites": [
       "decimalDivision",
-      "arithmetic"
+      "arithmetic",
+      "roundingTens",
+      "roundingHundreds"
     ],
     "nextIds": [
       "practice-decimal-division",
@@ -9797,7 +10175,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    ['helpOpen','modelOpen','stepsOpen','whyOpen','noteOpen'].every(k=>typeof value[k]==='boolean')&&
    (value.model===null||plain(value.model)&&JSON.stringify(value.model).length<=16000)&&
    (value.mistakes===undefined||Number.isInteger(value.mistakes)&&value.mistakes>=0&&value.mistakes<=1000)&&
-   ['ideaOpen','repeatedVariant'].every(k=>value[k]===undefined||typeof value[k]==='boolean');
+   ['constructionDone','ideaOpen','repeatedVariant'].every(k=>value[k]===undefined||typeof value[k]==='boolean');
  }
  function question(task) {
   // The final input label comes only from the condition. A worked step may ask
@@ -9814,14 +10192,18 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
  function learningFeedback(task,value) {
   const D=root.PathData,kind=task.answerKind;
   if(task.id==='round') {
-   const given=String(task.q).match(/нужно (\d+) тетрадей\. В упаковке (\d+) тетрадей/),count=D.parse(String(value));
-   if(given&&Number.isFinite(count)) {
-    const total=Number(given[1]),pack=Number(given[2]);
-    if(count===total)return `Это ${total} тетрадей. В ответе нужно количество упаковок по ${pack} тетрадей.`;
+   const count=D.parse(String(value));
+   if(task.params && Number.isFinite(count)) {
+    const {total, pack}=task.params;
+    const notebooks=n=>D.counted(n,'тетрадь','тетради','тетрадей');
+    if(count===total)return `Это число тетрадей. Сколько нужно упаковок, если в каждой по ${pack}?`;
     if(count<0)return 'Количество упаковок не может быть отрицательным.';
     if(!Number.isInteger(count))return 'Упаковки продают целиком. Проверь, хватит ли тетрадей, если взять только целую часть этого числа упаковок.';
-    if(count<=1000000&&count*pack<total)return `В ${count} упаковках ${count*pack} тетрадей, а нужно ${total}. Не хватает ${total-count*pack}. Увеличь число упаковок и проверь ещё раз.`;
-    if(count<=1000000&&count>D.parse(String(task.answer)))return `В ${count} упаковках ${count*pack} тетрадей — хватит. Но нужно наименьшее количество упаковок. Проверь, хватит ли ${count-1}.`;
+    if(count<=1000000) {
+     const supplied=count*pack, result=`В ${D.counted(count,'упаковке','упаковках','упаковках')} ${notebooks(supplied)}`;
+     if(supplied<total)return `${result}, а нужно ${total}. Не хватает ${total-supplied}. Увеличь число упаковок и проверь ещё раз.`;
+     if(count>task.answer)return `${result} — хватит. Проверь, хватило бы тетрадей, если бы упаковок было на одну меньше.`;
+    }
    }
   }
   if(!['match','multi','solutions'].includes(kind)&&!task.rule&&!root.PathPracticeView.answerChoices(task)) {
@@ -9834,21 +10216,80 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   if(kind==='multi')return 'Проверь каждое утверждение по условию. В ответ запиши только номера подходящих утверждений.';
   return 'Пока не получилось. Начни с вопроса: '+(task.steps[0]?.q||question(task))+' Сохрани свой ответ и проверь этот шаг.';
  }
+ // One coordinate system per family. Only constructions reached by the learner
+ // appear in the guided sketch. Lengths come from the current variant.
+ const constructions={
+  triangle:{at:0,action:'Провести высоту BH к основанию AC',reason:'BH ⟂ AC. Высота к основанию равнобедренного треугольника делит AC пополам, поэтому AH = HC.'},
+  circle:{at:0,action:'Провести радиус OA и опустить OM на хорду AB',reason:'OM ⟂ AB. Перпендикуляр из центра делит хорду пополам, значит AM = MB.'},
+  'practice-diameter-chord':{at:1,action:'Почему угол ACB прямой?',reason:'Вписанный угол ACB опирается на диаметр AB, поэтому ∠ACB = 90°.'}
+ };
+ function planeFigure(t,stage=-1,built=false) {
+  const m=t.model, stroke=(d,extra='')=>`<path d="${d}" ${extra}/>`;
+  const label=(x,y,text)=>`<text x="${x}" y="${y}">${E(text)}</text>`;
+  const ring=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" class="outline"/>`;
+  const dot=(x,y)=>`<circle cx="${x}" cy="${y}" r="2.7" fill="currentColor"/>`;
+  let drawing,marks='',labels,caption;
+  if(t.id==='triangle'){
+   drawing=stroke('M64 182L154 62L244 182Z','class="outline"');
+   labels=label(51,186,'A')+label(154,49,'B')+label(258,186,'C')+label(93,116,m.b)+label(216,116,m.b)+label(154,216,'AC = '+2*m.a);
+   caption=`Треугольник ABC, AB = BC = ${m.b}, AC = ${2*m.a}.`;
+   if(built){
+    if(stage===1||stage===2)drawing+=stroke('M64 182L154 62V182Z','class="active-plane"');
+    marks=stroke('M154 62V182 M154 171H165V182 M107 178l4 8 M197 178l4 8','class="construction"')+dot(154,182);
+    labels+=label(154,200,'H');
+    if(stage>=1)labels+=label(112,173,m.a)+label(201,173,m.a);
+    if(stage>=3)labels+=label(168,127,m.h);
+   }
+  } else if(t.id==='circle'){
+   drawing=ring(153,113,85)+stroke('M85 164H221')+dot(153,113);
+   labels=label(153,104,'O')+label(70,172,'A')+label(234,172,'B');
+   caption=`Окружность с центром O и хордой AB. Радиус ${m.r}, расстояние до хорды ${m.d}.`;
+   if(built){
+    if(stage>=0&&stage<=1)drawing+=stroke('M85 164L153 113V164Z','class="active-plane"');
+    marks=stroke('M85 164L153 113V164 M153 154H163V164 M117 160l4 8 M186 160l4 8','class="construction"');
+    labels+=label(153,185,'M')+label(113,131,m.r)+label(168,142,m.d);
+    if(stage>=2)labels+=label(122,157,t.answer/2);
+   }
+  } else {
+   const {r,chord}=t.params;
+   drawing=ring(155,120,90)+stroke('M65 120H245L129.8 33.6Z')+dot(155,120);
+   labels=label(52,125,'A')+label(258,125,'B')+label(129,22,'C')+label(155,140,'O')+label(84,73,chord)+label(111,139,r);
+   caption=`Треугольник ABC вписан в окружность с диаметром AB. AO = ${r}, AC = ${chord}.`;
+   if(stage>=1)labels+=label(155,183,'AB = '+2*r);
+   if(built)marks=stroke('M123.8 41.6l8 6 6-8','class="construction"');
+  }
+  if(built)caption+=' '+constructions[t.id].reason;
+  return `<svg class="task-figure plane-figure" viewBox="0 0 310 225" role="img" aria-label="${E(caption)}"><title>${E(caption)}</title><g class="plane-lines">${drawing}${marks}</g><g class="plane-labels">${labels}</g></svg>`;
+ }
+ function workingEquation(t,step){
+  if(t.id==='triangle'){
+   const {a,b,h}=t.model;
+   return [`AH = AC / 2 = ${2*a} / 2`,`BH² = AB² − AH² = ${b}² − ${a}²`,`BH = √${h*h}`,`S = AC · BH / 2 = ${2*a} · ${h} / 2`][step];
+  }
+  if(t.id==='circle'){
+   const {r,d}=t.model,m=t.answer/2;
+   return [`AM² = OA² − OM² = ${r}² − ${d}²`,`AM = √${m*m}`,`AB = 2 · AM = 2 · ${m}`][step];
+  }
+  const {r,chord}=t.params;
+  return [`AB = 2 · AO = 2 · ${r}`,`BC² = AB² − AC² = ${2*r}² − ${chord}²`,`BC = √${t.answer*t.answer}`][step];
+ }
  function primaryVisual(task) {
+  if(constructions[task.id])return planeFigure(task);
   if(root.PathStereoFigures?.supports(task))return root.PathStereoFigures.visual(task);
   if(task.display)return '';
   const m=task.model, line=(d)=>`<path d="${d}" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>`,label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${E(text)}</text>`;
   let picture='';
   if(task.id==='grid')picture=line('M70 250H470L70 50Z')+line('M70 230h20v20')+label(270,284,m.a)+label(42,150,m.b);
   if(task.id==='practical')picture=line('M100 60H460V240H100Z')+label(280,278,m.a+' см')+label(64,155,'3 см');
-  if(task.id==='triangle')picture=line('M70 250H490L280 45Z')+label(280,286,2*m.a)+label(158,132,m.b)+label(402,132,m.b);
   if(task.id==='quadrilateral')picture=line('M55 250H505L405 65H155Z')+label(280,42,m.a)+label(280,286,m.b)+`<path d="M155 65V250m0-20h20v20" fill="none" stroke="#a64f2e" stroke-width="2" stroke-dasharray="5"/>`+label(132,163,'h = '+m.h);
-  if(task.id==='circle')picture=`<circle cx="280" cy="150" r="120" fill="#edf6f0" stroke="#216e56" stroke-width="3"/><path d="M184 222H376L280 150V222m0-16h16v16" fill="none" stroke="#a64f2e" stroke-width="3"/>`+label(330,176,'R = '+m.r)+label(245,194,m.d)+label(280,132,'O');
   return picture?`<svg class="task-figure" viewBox="0 0 560 310" role="img" aria-label="Чертёж к условию задачи; заданные длины подписаны">${picture}</svg><p class="muted">Чертёж схематический. Значения берём из условия.</p>`:'';
  }
  function mount(host,context) {
-  const {meta,task:t,lesson:l,save,seen,expose,fresh,remediationId}=context,D=root.PathData,M=root.PathPracticeView.math;
+  const {meta,task:t,lesson:l,save,seen,expose,fresh}=context,D=root.PathData,M=root.PathPracticeView.math;
   const learningCycle=context.learningCycle===true;
+  const construction=constructions[t.id];
+  const practiceFigure=root.PathPlanePractice?.supports(t);
+  const besideFigure=Boolean(construction||practiceFigure);
   let skillMap=null;
   let u=l.taskFirst;
   if(!valid(u)||!u||u.seed!==l.seed) {
@@ -9864,11 +10305,14 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   const currentIndex=D.meta.filter(m=>!m.grade7&&!m.pre7&&m.pos===meta.pos);
   const journey=context.journey?.line?context.journey:null;
   const lineNav=journey?`<nav class="journey-lesson-nav" aria-label="${journey.line.pos?'Задание ЕГЭ':'Учебная линия'}"><a class="back" href="${E(journey.line.href)}">← ${E(journey.line.title)}</a><a class="back" href="#map">Все задания</a></nav>`:'<a class="back" href="#map">← Все задания</a>';
-  const nextLink=journey?`<a class="btn primary" data-journey-next href="${E(journey.next?.href||journey.line.href)}" ${l.done?'':'hidden'}>${journey.next?'Дальше: '+E(journey.next.title):journey.line.pos?'К темам задания №'+journey.line.pos:'К результатам линии'}</a>`:'';
+  const nextLink=journey?`<a class="btn" data-journey-next href="${E(journey.next?.href||journey.line.href)}" ${l.done?'':'hidden'}>${journey.next?'Дальше: '+E(journey.next.title):journey.line.pos?'К темам задания №'+journey.line.pos:'К результатам линии'}</a>`:'';
   const hintText=()=>l.step>=t.steps.length?'Все шаги пройдены. Запиши ответ на вопрос задачи.':root.PathTaskHints?.hint(t,l.step)||t.steps[l.step].q;
   const idea=`<p id="taskHint" class="task-first-start" aria-live="polite">${M(hintText())}</p>`+(learningCycle?`<details id="taskIdea"><summary>Короткое правило</summary><p class="task-first-idea">${M(meta.idea)}</p></details>`:'');
   const learningActions=learningCycle?'<button id="repairStep" type="button" hidden>Разобрать первый трудный шаг</button><p id="variantStatus" class="task-first-variant muted" role="status"></p>':'';
-  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><div class="task-first-skill-map"></div><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
+  const statement=`<p class="task">${M(t.q)}</p>`;
+  const support=`<div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>`;
+  const opening=practiceFigure ? support+statement : statement+support;
+  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem${besideFigure?' plane-problem':''}" aria-label="Условие и ответ">${opening}${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningCycle?'<div id="completionAction" hidden></div>':''}${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><div class="task-first-skill-map"></div><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
   const $=selector=>host.querySelector(selector),help=$('#taskHelp'),model=$('#taskModel'),steps=$('#taskSteps'),note=$('#taskNote');
   const answer=$('#answer');answer.value=u.finalDraft;
   if(learningCycle && root.self===root.top && new URLSearchParams(root.location.search).get('learning')!=='1') root.MathExamCourseExamples?.mount(host.querySelector('.task-first-problem'),'ege-baza',meta.id,markHelp);
@@ -9876,11 +10320,43 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    if(!learningCycle)return;
    $('#repairStep').hidden=l.done||u.mistakes<2;
    $('#repairStep').textContent=l.step>=t.steps.length?'Вернуться к разобранным шагам':l.step?'Продолжить с шага '+(l.step+1):'Разобрать первый трудный шаг';
-   const lastCheck=(l.checks||[]).findLast(c=>c&&c.seed===l.seed),assisted=l.done&&lastCheck?.independent!==true;
-   $('#new').textContent=u.repeatedVariant?'Повторить задачу этого типа':'Ещё задача этого типа';
-   $('#startSteps').hidden=!$('#repairStep').hidden;
-   $('#new').classList.toggle('primary',assisted);
-   $('#variantStatus').textContent=assisted?'Ответ найден после помощи, повторного показа или исправления. Следующий шаг — похожее условие без открытых подсказок. Повтор будет отмечен.':u.repeatedVariant?'Сейчас доступен знакомый вариант. Повтор полезен, но не добавит новое самостоятельное решение.':'';
+   const retry=$('#new'), next=$('[data-journey-next]');
+   const repeatNotice=$('#variantStatus');
+   repeatNotice.textContent=!l.done && u.repeatedVariant?'Сейчас доступен знакомый вариант. Повтор полезен, но не добавит новое самостоятельное решение.':'';
+   repeatNotice.hidden=!repeatNotice.textContent;
+   retry.textContent=u.repeatedVariant?'Повторить задачу этого типа':'Ещё задача этого типа';
+   $('#startSteps').hidden=l.done || !$('#repairStep').hidden;
+   if(!l.done)return;
+   const check=(l.checks||[]).findLast(c=>c && c.seed===l.seed && c.correct);
+   const independent=check?.independent===true;
+   const action=independent && next?next:retry;
+   if(!independent && !u.repeatedVariant)retry.textContent='Решить похожую без подсказки';
+   $('#answerForm').hidden=true;
+   for(const control of $('#answerForm').elements)control.disabled=true;
+   if(next)next.hidden=false;
+   const slot=$('#completionAction');
+   slot.hidden=false;
+   slot.append(action);
+   action.classList.add('primary');
+   action.setAttribute('aria-describedby','feedback');
+   $('#returnToAnswer').textContent='К результату задачи';
+   const prompt=$('#guidedFinalPrompt');if(prompt)prompt.hidden=true;
+   // Recreate the result for older completed lessons too. A saved draft may
+   // belong to a much earlier renderer, so only echo a mathematically valid one.
+   const lead=independent?'Верно с первой попытки.':'Верно.';
+   if(t.id==='round' && t.params){
+    const packs=D.counted(t.answer,'упаковке','упаковках','упаковках');
+    const amount=D.counted(t.answer*t.params.pack,'тетрадь','тетради','тетрадей');
+    u.feedback=`${lead} В ${packs} ${amount} — этого хватит.`;
+   }else{
+    const draft=u.finalDraft.trim();
+    const accepted=root.PathPracticeView.answerChoices(t)?.find(choice=>choice.value===draft)?.label
+     || (draft.length<=80 && D.correct(t,draft)?draft:root.PathPracticeView.answerText(t));
+    u.feedback=`${lead} Ответ: ${accepted}.`;
+   }
+   u.feedbackKind='good';
+   $('#feedback').innerHTML=M(u.feedback);
+   $('#feedback').className='feedback good';
   }
   const feedback=(text,bad=false)=>{u.feedback=text;u.feedbackKind=bad?'bad':'good';$('#feedback').innerHTML=M(text);$('#feedback').className='feedback '+u.feedbackKind;refreshLearning();save();skillMap?.refresh();};
   $('#feedback').innerHTML=M(u.feedback);$('#feedback').className='feedback '+u.feedbackKind;
@@ -9889,16 +10365,28 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    const redraw=()=>buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.getAttribute('data-'+prefix+'-choice')===input.value)));
    buttons.forEach(b=>b.onclick=()=>{input.value=b.getAttribute('data-'+prefix+'-choice');change(input.value);redraw();});redraw();
   }
-  const writeFinal=value=>{u.finalDraft=value.slice(0,10000);l.draft=u.finalDraft;save();};
+  const writeFinal=value=>{if(learningCycle && l.done)return;u.finalDraft=value.slice(0,10000);l.draft=u.finalDraft;save();};
   answer.oninput=()=>writeFinal(answer.value);bindChoices('answer',writeFinal);
   $('#answerForm').onsubmit=event=>{
    event.preventDefault();const value=answer.value;
+   if(learningCycle && l.done)return;
    if(!value.trim())return feedback('Сначала запиши ответ на вопрос задачи.',true);
    if(l.done)return feedback('Этот вариант уже проверен. Нажми «Ещё задача этого типа».');
    const ok=D.correct(t,value),independent=!l.attempted&&!l.help&&!seen(t);
    l.attempted=true;expose(t);
-   if(ok){l.done=true;const next=$('[data-journey-next]');if(next)next.hidden=false;if(independent)l.independent++;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent}).slice(-100);feedback(independent?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}
-   else{l.help=true;if(learningCycle)u.mistakes=Math.min(1000,u.mistakes+1);feedback(root.PathPracticeView.wrongFeedback(t,value,learningCycle?learningFeedback(t,value):'Пока неверно. Проверь, что нужно найти, знак и единицы. Если трудно, открой подсказку.'),true);root.EgeRemediation.show({id:remediationId(meta),value,expected:t.answer});}
+   if(ok){
+    root.EgeRemediation.clear?.();l.done=true;
+    if(independent)l.independent++;
+    l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent}).slice(-100);
+    if(learningCycle){
+     refreshLearning();
+     skillMap?.refresh();
+     $('#completionAction .primary').focus();
+    }else{
+     feedback(independent?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');
+    }
+   }
+   else{l.help=true;if(learningCycle)u.mistakes=Math.min(1000,u.mistakes+1);feedback(root.PathPracticeView.wrongFeedback(t,value,learningCycle?learningFeedback(t,value):'Пока неверно. Проверь, что нужно найти, знак и единицы. Если трудно, открой подсказку.'),true);root.EgeRemediation.show({id:meta.id,meta,task:t,value,expected:t.answer,openSteps});}
    save();
   };
   let mountedModel=false;
@@ -9938,13 +10426,28 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   function renderSteps(){
    const step=t.steps[l.step],body=$('#taskStepsBody');
    $('#taskHint').innerHTML=M(hintText());
-   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
+   const history=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>`;
+   const current=`${step?`${besideFigure?'':`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>`}${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':besideFigure?'Введи число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:`<h2>Разбор завершён</h2><p id="guidedFinalPrompt" ${learningCycle&&l.done?'hidden':''}>Запиши ответ в поле задачи выше.</p>`}`;
+   if(besideFigure){
+    const built=construction && (l.step>construction.at || (l.step===construction.at&&u.constructionDone===true));
+    const waiting=construction && l.step===construction.at&&!built;
+    const frame=practiceFigure ? root.PathPlanePractice.frame(t,l.step) : {svg:planeFigure(t,l.step,built),equation:step?workingEquation(t,l.step):''};
+    const theorem=t.id==='practice-diameter-chord';
+    const build=waiting?(theorem?`<p>${construction.action}</p><div class="actions"><button type="button" data-construct="yes">Он опирается на диаметр AB</button><button type="button" data-construct="no">Хорды AC и BC равны</button></div><p id="angleFeedback" role="status"></p>`:`<button type="button" data-construct="yes">${construction.action}</button>`):'';
+    const previous=l.step?`<details class="plane-history"${step?'':' open'}><summary>Решение в тетради</summary>${built?`<p>${construction.reason}</p>`:''}${history}</details>`:'';
+    body.innerHTML=`${step?`<h2 class="plane-step-title">Шаг ${l.step+1} из ${t.steps.length}</h2>`:''}${built&&l.step===construction.at?`<p>${construction.reason}</p>`:''}<div class="plane-work"><div>${frame.svg}</div><div>${build}${!waiting&&step?`<p class="working-equation">${M(frame.equation)}</p>`:''}${waiting?'':current}</div></div>${previous}`;
+    if(waiting){
+     body.querySelector('[data-construct="yes"]').onclick=()=>{markHelp();u.constructionDone=true;save();renderSteps();$('#stepAnswer')?.focus({preventScroll:true});};
+     const other=body.querySelector('[data-construct="no"]');
+     if(other)other.onclick=()=>{body.querySelector('#angleFeedback').textContent='Сравни стороны по условию. На какой отрезок опирается угол ACB?';};
+    }
+   } else body.innerHTML=history+current;
    refreshReasoningMap();
    skillMap?.refresh();
-   if(!step)return;
+   if(!step||!$('#stepAnswer'))return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
    const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
-   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:remediationId(meta),value,expected:step.a});save();}};
+   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){root.EgeRemediation.clear?.();u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:meta.id,meta,task:t,stepIndex:l.step,value,expected:step.a,feedback:$('#stepFeedback')});save();}};
    const why=$('#stepWhy');why.open=u.whyOpen;why.querySelector('summary').addEventListener('click',()=>{if(!why.open)markHelp();});why.ontoggle=()=>{if(!root.document||!why.isConnected)return;u.whyOpen=why.open;if(why.open)markHelp();else save();};
   }
   renderSteps();
@@ -9955,7 +10458,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    if(element.open)onOpen?.();
   };
   bindDisclosure(help,'helpOpen');bindDisclosure(model,'modelOpen',mountModel);bindDisclosure(steps,'stepsOpen');
-  const openSteps=()=>{help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
+  const openSteps=()=>{root.EgeRemediation.clear?.();help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer')||$('#taskStepsBody [data-construct]'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
   $('#startSteps').onclick=openSteps;
   // The route describes the guided steps of this variant. Exam and board modes
   // keep using their existing renderer and progress rules.
@@ -9984,10 +10487,20 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   }
   if(learningCycle){bindDisclosure($('#taskIdea'),'ideaOpen');$('#repairStep').onclick=openSteps;refreshLearning();}
   help.querySelector('summary').textContent=help.open?'Скрыть подсказку':'Подсказка к задаче';
-  $('#returnToAnswer').onclick=()=>{help.open=false;u.helpOpen=false;save();answer.focus({preventScroll:true});answer.scrollIntoView?.({block:'center',behavior:'smooth'});};
+  $('#returnToAnswer').onclick=()=>{
+   help.open=false;u.helpOpen=false;save();
+   const target=$('#completionAction .primary')||$('[data-answer-choice]')||answer;
+   target.focus();
+  };
   note.open=u.noteOpen;note.ontoggle=()=>{if(!root.document||!note.isConnected)return;u.noteOpen=note.open;save();};$('#note').value=l.note;$('#note').oninput=event=>{l.note=event.target.value.slice(0,10000);save();};
   $('#typeSelect').onchange=event=>context.setHash('lesson='+event.target.value);
-  $('#new').onclick=()=>fresh(meta.id);
+  $('#new').onclick=()=>{
+   fresh(meta.id);
+   if(learningCycle) {
+    const heading=host.querySelector('.task-first-problem>.task');
+    if(heading){heading.tabIndex=-1;heading.focus();}
+   }
+  };
   if($('#moreGuided'))$('#moreGuided').onclick=()=>{const target=meta.id==='equations'?'equations-linear':meta.id;context.setHash('lesson='+target);fresh(target);host.querySelector('#taskHelp>summary')?.click();host.querySelector('#taskSteps>summary')?.click();};
   if(root.EgeReferenceUI){
    const ids=root.EgeReferenceData.sheetsForTask?.(t)||root.EgeReferenceUI.forLesson(meta.id);
@@ -10009,37 +10522,66 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
 })(window);
 
 </script><script data-inline-source="/ege-baza/path/app.js">
-(function(){'use strict';if(new URLSearchParams(location.search).get('learning')==='1')return;const D=PathData,$=s=>document.querySelector(s),root=$('#main'),KEY='mathexam.ege-baza.path.v1',E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let writable=true,state={version:1,serial:11,lessons:{},seen:{},runs:[],active:null};
+(function(){'use strict';if(new URLSearchParams(location.search).get('learning')==='1')return;const D=PathData,$=s=>document.querySelector(s),root=$('#main'),E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let writable=true,state={version:1,serial:11,lessons:{},seen:{},runs:[],active:null};
+const separatePractice=new URLSearchParams(location.search).get('practice')==='recovery';
+const courseKey='mathexam.ege-baza.path.v1';
+const KEY=separatePractice?courseKey+'.separate':courseKey;
+let lastSeparateSave=null;
 const M=text=>PathPracticeView.math(text);
 const integer=(n,max=1e9)=>Number.isSafeInteger(n)&&n>=0&&n<=max;
 const answerOK=a=>a&&D.meta.some(m=>m.id===a.id)&&integer(a.seed)&&typeof a.value==='string'&&a.value.length<10000&&typeof a.correct==='boolean';
 const runOK=r=>r&&['exam','diagnostic'].includes(r.kind)&&Array.isArray(r.ids)&&r.ids.length===21&&r.ids.every(id=>D.meta.some(l=>l.id===id))&&Array.isArray(r.answers)&&r.answers.length<=21&&r.answers.every(answerOK)&&integer(r.seed)&&integer(r.i,21)&&Number.isFinite(r.start)&&(r.draft===undefined||typeof r.draft==='string'&&r.draft.length<=10000);
-function valid(x){return x&&x.version===1&&integer(x.serial)&&x.lessons&&typeof x.lessons==='object'&&!Array.isArray(x.lessons)&&x.seen&&typeof x.seen==='object'&&!Array.isArray(x.seen)&&Object.keys(x.seen).length<20000&&Object.values(x.seen).every(v=>v===true)&&Array.isArray(x.runs)&&x.runs.length<=200&&x.runs.every(runOK)&&Object.entries(x.lessons).every(([k,l])=>D.meta.some(m=>m.id===k)&&l&&integer(l.seed)&&integer(l.stage,4)&&integer(l.step,20)&&integer(l.independent)&&integer(l.guided)&&typeof l.note==='string'&&l.note.length<=10000&&typeof l.draft==='string'&&l.draft.length<=10000&&typeof l.help==='boolean'&&typeof l.attempted==='boolean'&&Array.isArray(l.checks)&&(!window.PathTaskFirst||PathTaskFirst.valid(l.taskFirst)))&&(!x.active||runOK(x.active));}
+function valid(x){return x&&x.version===1&&integer(x.serial)&&x.lessons&&typeof x.lessons==='object'&&!Array.isArray(x.lessons)&&x.seen&&typeof x.seen==='object'&&!Array.isArray(x.seen)&&Object.keys(x.seen).length<20000&&Object.values(x.seen).every(v=>v===true)&&Array.isArray(x.runs)&&x.runs.length<=200&&x.runs.every(runOK)&&Object.entries(x.lessons).every(([k,l])=>D.meta.some(m=>m.id===k)&&l&&integer(l.seed)&&(l.roundVersion===undefined||k==='round'&&l.roundVersion===2)&&integer(l.stage,4)&&integer(l.step,20)&&integer(l.independent)&&integer(l.guided)&&typeof l.note==='string'&&l.note.length<=10000&&typeof l.draft==='string'&&l.draft.length<=10000&&typeof l.help==='boolean'&&typeof l.attempted==='boolean'&&Array.isArray(l.checks)&&(!window.PathTaskFirst||PathTaskFirst.valid(l.taskFirst)))&&(!x.active||runOK(x.active));}
 
 function readProgress(raw){const value=JSON.parse(raw);return D.practice?.expandTask21Progress?.(value)??value;}
 function writeProgress(value){return D.practice?.packTask21Progress?.(value)??value;}
-try{let raw=localStorage.getItem(KEY);if(raw){let x=readProgress(raw);if(!valid(x))throw Error();state=x;}}catch(e){writable=false;notice('Сохранение недоступно или повреждено. Исходные данные оставлены без изменений. Текущую работу можно скачать.');}
+try{let raw=localStorage.getItem(KEY);if(separatePractice)lastSeparateSave=raw;if(raw){let x=readProgress(raw);if(!valid(x))throw Error();state=x;}}catch(e){writable=false;notice('Сохранение недоступно или повреждено. Исходные данные оставлены без изменений. Текущую работу можно скачать.');}
 function notice(t){$('#storage').hidden=false;$('#storage').textContent=t;}
-function save(){if(!writable)return;try{localStorage.setItem(KEY,JSON.stringify(writeProgress(state)));}catch(e){writable=false;notice('Не удалось сохранить работу в браузере. Скачайте отчёт и резервную копию.');}}
+if(separatePractice){
+ const banner=document.createElement('p');
+ banner.className='notice';
+ banner.innerHTML='Отдельная тренировка. Прежние решения остаются в курсе. <a href="#report">Результаты тренировки</a> · <a href="../index.html#today">Вернуться к курсу</a>';
+ $('#storage').before(banner);
+}
+function save(){
+ if(!writable)return;
+ try{
+  if(separatePractice&&localStorage.getItem(KEY)!==lastSeparateSave){
+   writable=false;notice('Эту тренировку изменили в другой вкладке. Текущие ответы можно скачать в отчёте.');return;
+  }
+  const raw=JSON.stringify(writeProgress(state));
+  localStorage.setItem(KEY,raw);
+  if(separatePractice)lastSeparateSave=raw;
+ }catch(e){writable=false;notice('Не удалось сохранить работу в браузере. Скачайте отчёт и резервную копию.');}
+}
 function lesson(id){return state.lessons[id]||(state.lessons[id]={seed:id==='equations'?10:state.serial++,stage:0,step:0,help:false,attempted:false,independent:0,guided:0,note:'',draft:'',checks:[]});}
 function setHash(s){location.hash=s;}
 function feedback(s,bad=false){let f=$('#feedback');if(f){f.innerHTML=M(s);f.className='feedback '+(bad?'bad':'good');}}
-function taskKey(t){if(t.geometryRebuild===true)return JSON.stringify([t.q,t.model?.diagram||null,(t.choices||[]).map(choice=>choice.label).sort()]);return !t.display&&!t.choices?t.q:JSON.stringify([t.q,t.display||null,(t.labels||[]).slice().sort(),(t.choices||[]).slice().sort()]);}
+function taskKey(t){if(t.progressKey)return t.progressKey;if(t.geometryRebuild===true)return JSON.stringify([t.q,t.model?.diagram||null,(t.choices||[]).map(choice=>choice.label).sort()]);return !t.display&&!t.choices?t.q:JSON.stringify([t.q,t.display||null,(t.labels||[]).slice().sort(),(t.choices||[]).slice().sort()]);}
 function seen(t){return !!state.seen[t.q]||!!state.seen[taskKey(t)];}function expose(t){state.seen[taskKey(t)]=true;}
 const initialHeader=document.querySelector('header').innerHTML,initialFooter=document.querySelector('footer').innerHTML;
 const grade7Subjects={algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'};
 function courseChrome(meta){const grade7=!!meta?.grade7,header=document.querySelector('header'),footer=document.querySelector('footer');if(grade7){header.innerHTML='<strong>MathExam · 7 класс</strong><nav aria-label="Учебная навигация"><a class="btn" href="../../grade7/">Мой курс · 7 класс</a><a class="btn" href="#grade7">Все тренажёры курса</a><a class="btn" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Мой кабинет</a><a class="btn" href="#report">Работа в этом браузере</a></nav>';footer.innerHTML='<p>Авторские задания для 7 класса и повторения основ. Для общей истории и сдачи преподавателю открывай задания в своём кабинете. На этой отдельной странице результаты сохраняются только в текущем браузере.</p>';if(meta.geometryRebuild){header.querySelector('nav').insertAdjacentHTML('afterbegin','<a class="btn" href="../../grade7/geometry-rebuild/">Сначала понятно · все темы</a>');}}else if(header.innerHTML!==initialHeader){header.innerHTML=initialHeader;footer.innerHTML=initialFooter;}}
 function grade7Map(){courseChrome({grade7:true});document.title='7 класс и основы · MathExam';const subjects=[...Object.entries(grade7Subjects),['pre7','Основы до 7 класса']];root.innerHTML='<p class="eyebrow">МОЖНО ИДТИ В СВОЁМ ТЕМПЕ</p><h1>Алгебра, геометрия и основы</h1><p class="lead">Выбирай любую тему. Посмотри модель, пройди шаги и проверь себя на новом примере.</p><p><a class="btn primary" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Заниматься с сохранением в кабинете →</a> <a class="btn" href="../../grade7/">Курс, шпаргалки и видео →</a></p><div class="cards">'+subjects.map(([subject,title])=>'<section class="card"><h2>'+title+'</h2><ul class="trainer-list">'+D.meta.filter(m=>m.grade7&&(subject==='pre7'?m.pre7:!m.pre7&&m.subject===subject)).map(m=>'<li><a href="#lesson='+m.id+'">'+E(m.title)+'</a></li>').join('')+'</ul></section>').join('')+'</div>'; }
 const stageLabels=['Понять','Исследовать','Решить по шагам','Самостоятельно','Объяснить'];
+// Older personal drafts, exams and shared lessons keep the numbers they opened with.
+function personalTask(id,row){
+ return id==='round' && row.roundVersion===2 ? D.roundPractice(row.seed) : D.task(id,row.seed);
+}
 function fresh(id,stage=3){
- const l=lesson(id),meta=D.meta.find(m=>m.id===id),ege=meta&&!meta.grade7&&!meta.pre7,previous=ege?D.task(id,l.seed):null;
+ const l=lesson(id),meta=D.meta.find(m=>m.id===id),ege=meta&&!meta.grade7&&!meta.pre7,previous=ege?personalTask(id,l):null;
  const takeSeed=()=>{if(!ege)return state.serial++;const seed=state.serial;state.serial=seed>=1e9?11:seed+1;return seed;};
+ if(id==='round'&&typeof D.roundPractice==='function')l.roundVersion=2;
  l.seed=takeSeed();
  if(ege){
   const limit=D.equationPractice?.has(id)?D.equationPractice.count:256;
-  for(let n=1;n<limit&&(seen(D.task(id,l.seed))||taskKey(D.task(id,l.seed))===taskKey(previous));n++)l.seed=takeSeed();
+  let candidate=personalTask(id,l);
+  for(let n=1;n<limit&&(seen(candidate)||taskKey(candidate)===taskKey(previous));n++){
+   l.seed=takeSeed();
+   candidate=personalTask(id,l);
+  }
   // Finite banks may only offer the same condition. A changed seed alone is not a new task.
-  if(taskKey(D.task(id,l.seed))===taskKey(previous))expose(D.task(id,l.seed));
+  if(taskKey(candidate)===taskKey(previous))expose(candidate);
  }
  if(ege)delete l.taskFirst; // A fresh attempt resets its UI even when the bounded serial reuses the same seed.
  l.stage=stage;l.step=0;l.help=false;l.attempted=false;l.draft='';l.done=false;save();render();
@@ -10053,17 +10595,28 @@ function foundation(){
  root.innerHTML='<a href="#map">← Все тренажёры</a><p class="eyebrow">Общий маршрут для школьной математики и ЕГЭ</p><h1>Дроби. Проценты. Пропорции.</h1><p class="lead">Начни с первого непонятного шага. Если умеешь решать без подсказок, переходи дальше. Завершение разбора — подготовка, самостоятельное новое решение — отдельный результат.</p><ol class="foundation-route">'+D.practice.foundation.map(id=>{let m=D.meta.find(x=>x.id===id),l=state.lessons[id];return `<li><h2><a href="#lesson=${id}">${E(m.title)}</a></h2><p>${E(m.idea)}</p><span>${l?`Самостоятельно: ${l.independent||0}. Разборов: ${l.guided||0}.`:'Ещё не открывали.'}</span></li>`;}).join('')+'</ol><div class="actions"><a class="btn" href="../algebra/index.html#base">Базовые действия</a><a class="btn" href="../percent/index.html">Лаборатория процентов</a><a class="btn primary" href="#report">Мои результаты</a></div>';
 }
 function support(t,omitVisual=false){return window.PathPracticeView?PathPracticeView.markup(t,omitVisual):'';}
-function remediationId(meta){if(!meta.expanded)return meta.id;return ({fractions:'fractions',fraction:'share',decimals:'fractions',percent:'choice',change:'percent',proportion:'ratio',division:'ratio',equations:'equations',powers:'powers',signs:'numberline'})[meta.gap]||meta.id;}
 function equationPracticeLinks(id){if(id!=='equations'&&!D.equationPractice?.has(id))return '';return `<section class="panel equation-practice-menu"><h2>Потренироваться на похожих уравнениях</h2><p>Четыре набора по 240 разных условий. Выбери один тип: новые варианты останутся линейными уравнениями этого типа.</p><div class="actions">${D.equationPractice.families.map(m=>`<a class="btn ${id===m.id?'primary':''}" href="#lesson=${m.id}" ${id===m.id?'aria-current="page"':''}>${E(m.title)}</a>`).join('')}</div>${D.equationPractice.has(id)?'<p>Кнопки «Ещё по шагам» и «Ещё задача этого типа» дают новое условие выбранного типа. После 240 показанных условий начнутся повторы; они не добавляют новых самостоятельных успехов.</p>':''}</section>`;}
 function fractionPracticeLink(id){return ['fractions','practice-fraction-expression'].includes(id)?'<section class="panel fraction-extra-practice"><h2>Ещё выражения с дробями</h2><p>Скобки и порядок действий: решай новые примеры по одному шагу.</p><a class="btn" href="https://mathexam.space/school/index.html?course=vilenkin6#lesson/v6f-fraction-order" target="_blank" rel="noopener">Открыть тренировку →</a><p>Она откроется в другой вкладке. Эта работа останется здесь.</p></section>':'';}
-function showLesson(id){const meta=D.meta.find(m=>m.id===id);if(!meta)return map();courseChrome(meta);let l=lesson(id),t=D.task(id,l.seed);if(l.step>t.steps.length)l.step=0;document.title=meta.title+(meta.grade7?' · 7 класс':' · ЕГЭ база');if(!meta.grade7&&!meta.pre7&&window.PathTaskFirst){PathTaskFirst.mount(root,{meta,task:t,lesson:l,save,seen,expose,fresh,setHash,remediationId,equationPracticeLinks,fractionPracticeLink,learningCycle:true,journey:window.EgeBazaExamMap?{line:EgeBazaExamMap.forLesson(id),next:EgeBazaExamMap.nextLesson(id)}:window.EgeBazaJourney?{line:EgeBazaJourney.lineForLesson(id),next:EgeBazaJourney.nextLesson(id)}:null});return;}if(PathPracticeView.photoProof?.supports(t)){showPhotoProof(id,t,l);return;}const source=meta.grade7?'<p class="source">Авторская практика для 7 класса: свои условия, пошаговый разбор и новые варианты. <a href="../../grade7/">Вернуться к курсу</a>.</p>':`<p class="source">Связь: базовый ЕГЭ, позиция ${meta.pos}. Задача авторская. <a href="../sources/index.html#p${meta.pos}">Что сверено с ФИПИ</a>.</p>`;
+function keepSeparateLessonLinks(){
+ // Course maps use absolute public URLs. A lesson-to-lesson move in this practice
+ // must keep this document and its storage scope, including when opened in a new tab.
+ for(const link of root.querySelectorAll('a[href^="/ege-baza/path/index.html#lesson="]')){
+  link.setAttribute('href',link.hash);
+ }
+}
+function showLesson(id){const meta=D.meta.find(m=>m.id===id);if(!meta)return map();courseChrome(meta);const l=lesson(id);
+ if(l.roundVersion===2 && typeof D.roundPractice!=='function'){
+  root.innerHTML='<p>Чтобы открыть сохранённый пример с теми же числами, обнови страницу.</p><a href="#map">Все задания</a>';
+  return;
+ }
+ const t=personalTask(id,l);if(l.step>t.steps.length)l.step=0;document.title=meta.title+(meta.grade7?' · 7 класс':' · ЕГЭ база');if(!meta.grade7&&!meta.pre7&&window.PathTaskFirst){PathTaskFirst.mount(root,{meta,task:t,lesson:l,save,seen,expose,fresh,setHash,equationPracticeLinks,fractionPracticeLink,learningCycle:true,journey:window.EgeBazaExamMap?{line:EgeBazaExamMap.forLesson(id),next:EgeBazaExamMap.nextLesson(id)}:window.EgeBazaJourney?{line:EgeBazaJourney.lineForLesson(id),next:EgeBazaJourney.nextLesson(id)}:null});if(separatePractice)keepSeparateLessonLinks();return;}if(PathPracticeView.photoProof?.supports(t)){showPhotoProof(id,t,l);return;}const source=meta.grade7?'<p class="source">Авторская практика для 7 класса: свои условия, пошаговый разбор и новые варианты. <a href="../../grade7/">Вернуться к курсу</a>.</p>':`<p class="source">Связь: базовый ЕГЭ, позиция ${meta.pos}. Задача авторская. <a href="../sources/index.html#p${meta.pos}">Что сверено с ФИПИ</a>.</p>`;
 root.innerHTML=`<a href="${meta.grade7?'#grade7':'#map'}">← Все темы</a><p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+grade7Subjects[meta.subject]:'Задание '+meta.pos}</p><h1>${E(meta.title)}</h1><label>${meta.grade7?'Тема для тренировки':'Тип задачи в этой позиции'} <select id="typeSelect">${D.meta.filter(m=>meta.grade7?m.grade7&&!!m.pre7===!!meta.pre7&&m.subject===meta.subject:m.pos===meta.pos).map(m=>`<option value="${m.id}" ${m.id===id?'selected':''}>${E(m.title)}</option>`).join('')}</select></label><nav class="stage-nav" aria-label="Шаги урока">${(meta.geometryRebuild?['Главная идея','Мастерская','По шагам','Мой ответ','Объясняю']:stageLabels).map((s,i)=>`<button data-stage="${i}" ${i===l.stage?'aria-current="step"':''}>${i+1}. ${s}</button>`).join('')}</nav>${meta.geometryRebuild&&[2,3].includes(l.stage)?'<aside class="geometry-entry" aria-label="Как пройти задание"><strong>Одна задача — маленькая миссия</strong><p>Впервые здесь? Найди элементы на рисунке и собери рассуждение. Ошибки можно исправлять, подсказки — брать без штрафа.</p><button type="button" class="primary" data-geometry-explore>Сначала в мастерскую</button></aside>':''}<div id="lesson"></div>${equationPracticeLinks(id)}${fractionPracticeLink(id)}${id==='motion'?'<p class="callout">Ещё один вид текстовых задач: <a href="../work-rate/index.html">землекопы и совместная работа без уравнений</a>.</p>':''}${source}`;
 $('#typeSelect').onchange=e=>setHash('lesson='+e.target.value);root.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{let n=+b.dataset.stage;if(n===3&&l.stage!==3){fresh(id,3);return;}l.stage=n;if(n<3){l.help=true;expose(t);}save();render();});let box=$('#lesson');
 if(meta.geometryRebuild&&$('[data-geometry-explore]'))$('[data-geometry-explore]').onclick=()=>{l.stage=1;l.help=true;save();render();};
 if(l.stage===0){expose(t);box.innerHTML=`<section class="panel"><h2>Главная идея</h2><p class="lead">${M(meta.idea)}</p><div class="callout"><b>Перед вычислением спроси себя</b><p>${(id==='equations'||D.equationPractice?.has(id))?'Что именно я переношу: слагаемое или множитель? Почему равенство останется верным?':'Что дано, что неизвестно и какая связь между ними? Какие единицы нужны в ответе?'}</p></div><p class="task">${M(t.q)}</p>${support(t)}<button class="primary" id="next">Исследовать модель →</button></section>`;$('#next').onclick=()=>{l.stage=1;save();render();};}
 if(l.stage===1){expose(t);l.help=true;box.innerHTML=`<section class="panel"><p class="task">${M(t.q)}</p>${support(t,['polygon-build','pre7-lab','grade7-construction'].includes(t.model.kind))}${t.model.expansion?`<p class="callout">${M(t.model.expansion)}</p>`:''}<div id="model"></div><button id="next" class="primary">Перейти к решению →</button></section>`;PathModels.mount($('#model'),t);$('#next').onclick=()=>{l.stage=2;save();render();};}
-if(l.stage===2){expose(t);box.innerHTML=`<section class="panel"><p class="task">${M(t.q)}</p>${support(t)}<ol class="steps">${t.steps.slice(0,l.step).map(s=>`<li>${M(s.q)} <b>${M(s.a===undefined?'Условия выполнены':PathPracticeView.answerText(s))}</b><br>${M(s.why)}</li>`).join('')}</ol>${l.step<t.steps.length?`<div class="callout"><b>Шаг ${l.step+1}/${t.steps.length}</b><p>${M(t.steps[l.step].q)}</p></div>${answerForm(t.steps[l.step])}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`:'<h2>Разбор завершён</h2><p>Теперь реши новый вариант, выбрав способ самостоятельно.</p><button id="new" class="primary">Новый самостоятельный вариант</button>'}${(id==='equations'||D.equationPractice?.has(id))?'<button id="moreGuided">Ещё по шагам: похожее уравнение</button>':''}<p id="feedback" class="feedback" role="status"></p><details id="gap"><summary>Мешает пробел в основе?</summary><p>Откройте нужный навык; эта вкладка сохраняет текущий шаг. После тренировки вернитесь сюда.</p><a class="btn" href="#foundation">Маршрут: дроби, проценты, пропорции</a><a class="btn" target="_blank" rel="noopener" href="../algebra/index.html">Знаки, дроби и действия</a> <a class="btn" target="_blank" rel="noopener" href="../percent/index.html">Проценты и пропорции</a></details></section>`;if($('#answerForm')){$('#answer').value=l.draft||'';PathPracticeView.bindChoices(root,value=>{l.draft=value;save();});$('#answer').oninput=e=>{l.draft=e.target.value.slice(0,10000);save();};$('#answerForm').onsubmit=e=>{e.preventDefault();if(!$('#answer').value.trim())return feedback('Сначала введи ответ.',true);let s=t.steps[l.step];if(D.correct(s,$('#answer').value)){l.step++;l.draft='';if(l.step===t.steps.length)l.guided=(l.guided||0)+1;save();render();$('#answer')?.focus();}else{l.help=true;save();feedback(PathPracticeView.wrongFeedback(s,$('#answer').value,'Проверь именно этот шаг. '+s.why),true);EgeRemediation.show({id:remediationId(meta),value:$('#answer').value,expected:s.a});}};$('#hint').onclick=()=>{l.help=true;$('#hintText').innerHTML=M(t.steps[l.step].why);save();};}else $('#new').onclick=()=>fresh(id);if($('#moreGuided'))$('#moreGuided').onclick=()=>{const target=id==='equations'?'equations-linear':id;if(target!==id)setHash('lesson='+target);fresh(target,2);};$('#gap').ontoggle=()=>{if($('#gap').open){l.help=true;save();}};}
-if(l.stage===3){box.innerHTML=`<section class="panel"><span class="badge">${t.geometryRebuild ? (id.startsWith('grade7-r-photo-proof-') ? 'Мой ответ по рисунку' : 'Мой ответ') : 'Новый вариант · без открытого разбора'}</span><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" class="feedback" role="status"></p><div class="actions"><button id="explain">Разобрать этот вариант</button><button id="new">Другие числа</button><button id="next">Объяснить своими словами →</button></div><p class="muted">Засчитывается первая верная попытка без подсказки на ранее не показанном условии. Повтор и исправление полезны, но отмечаются отдельно.</p></section>`;$('#answer').value=l.draft||'';PathPracticeView.bindChoices(root,value=>{l.draft=value;save();});$('#answer').oninput=e=>{l.draft=e.target.value.slice(0,10000);save();};$('#answerForm').onsubmit=e=>{e.preventDefault();const v=$('#answer').value;if(!v.trim())return feedback('Сначала введи ответ.',true);if(l.done)return feedback('Этот вариант уже проверен. Возьми другие числа.');const ok=D.correct(t,v),clean=!l.attempted&&!l.help&&!seen(t);l.attempted=true;expose(t);if(ok){l.done=true;if(clean)l.independent=(l.independent||0)+1;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent:clean}).slice(-100);feedback(clean?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}else{l.help=true;feedback(PathPracticeView.wrongFeedback(t,v,'Пока неверно. Проверь знак, единицы и то, что спрашивается. Можно разобрать этот вариант по шагам.'),true);EgeRemediation.show({id:remediationId(meta),value:v,expected:t.answer});}save();};$('#explain').onclick=()=>{l.help=true;l.stage=2;expose(t);save();render();};$('#new').onclick=()=>fresh(id);$('#next').onclick=()=>{l.stage=4;save();render();};}
+if(l.stage===2){expose(t);box.innerHTML=`<section class="panel"><p class="task">${M(t.q)}</p>${support(t)}<ol class="steps">${t.steps.slice(0,l.step).map(s=>`<li>${M(s.q)} <b>${M(s.a===undefined?'Условия выполнены':PathPracticeView.answerText(s))}</b><br>${M(s.why)}</li>`).join('')}</ol>${l.step<t.steps.length?`<div class="callout"><b>Шаг ${l.step+1}/${t.steps.length}</b><p>${M(t.steps[l.step].q)}</p></div>${answerForm(t.steps[l.step])}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`:'<h2>Разбор завершён</h2><p>Теперь реши новый вариант, выбрав способ самостоятельно.</p><button id="new" class="primary">Новый самостоятельный вариант</button>'}${(id==='equations'||D.equationPractice?.has(id))?'<button id="moreGuided">Ещё по шагам: похожее уравнение</button>':''}<p id="feedback" class="feedback" role="status"></p><details id="gap"><summary>Мешает пробел в основе?</summary><p>Откройте нужный навык; эта вкладка сохраняет текущий шаг. После тренировки вернитесь сюда.</p><a class="btn" href="#foundation">Маршрут: дроби, проценты, пропорции</a><a class="btn" target="_blank" rel="noopener" href="../algebra/index.html">Знаки, дроби и действия</a> <a class="btn" target="_blank" rel="noopener" href="../percent/index.html">Проценты и пропорции</a></details></section>`;if($('#answerForm')){$('#answer').value=l.draft||'';PathPracticeView.bindChoices(root,value=>{l.draft=value;save();});$('#answer').oninput=e=>{l.draft=e.target.value.slice(0,10000);save();};$('#answerForm').onsubmit=e=>{e.preventDefault();if(!$('#answer').value.trim())return feedback('Сначала введи ответ.',true);let s=t.steps[l.step];if(D.correct(s,$('#answer').value)){l.step++;l.draft='';if(l.step===t.steps.length)l.guided=(l.guided||0)+1;save();render();$('#answer')?.focus();}else{l.help=true;save();feedback(PathPracticeView.wrongFeedback(s,$('#answer').value,'Проверь именно этот шаг. '+s.why),true);EgeRemediation.show({id,meta,task:t,stepIndex:l.step,value:$('#answer').value,expected:s.a});}};$('#hint').onclick=()=>{l.help=true;$('#hintText').innerHTML=M(t.steps[l.step].why);save();};}else $('#new').onclick=()=>fresh(id);if($('#moreGuided'))$('#moreGuided').onclick=()=>{const target=id==='equations'?'equations-linear':id;if(target!==id)setHash('lesson='+target);fresh(target,2);};$('#gap').ontoggle=()=>{if($('#gap').open){l.help=true;save();}};}
+if(l.stage===3){box.innerHTML=`<section class="panel"><span class="badge">${t.geometryRebuild ? (id.startsWith('grade7-r-photo-proof-') ? 'Мой ответ по рисунку' : 'Мой ответ') : 'Новый вариант · без открытого разбора'}</span><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" class="feedback" role="status"></p><div class="actions"><button id="explain">Разобрать этот вариант</button><button id="new">Другие числа</button><button id="next">Объяснить своими словами →</button></div><p class="muted">Засчитывается первая верная попытка без подсказки на ранее не показанном условии. Повтор и исправление полезны, но отмечаются отдельно.</p></section>`;$('#answer').value=l.draft||'';PathPracticeView.bindChoices(root,value=>{l.draft=value;save();});$('#answer').oninput=e=>{l.draft=e.target.value.slice(0,10000);save();};$('#answerForm').onsubmit=e=>{e.preventDefault();const v=$('#answer').value;if(!v.trim())return feedback('Сначала введи ответ.',true);if(l.done)return feedback('Этот вариант уже проверен. Возьми другие числа.');const ok=D.correct(t,v),clean=!l.attempted&&!l.help&&!seen(t);l.attempted=true;expose(t);if(ok){EgeRemediation.clear();l.done=true;if(clean)l.independent=(l.independent||0)+1;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent:clean}).slice(-100);feedback(clean?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}else{l.help=true;feedback(PathPracticeView.wrongFeedback(t,v,'Пока неверно. Проверь знак, единицы и то, что спрашивается. Можно разобрать этот вариант по шагам.'),true);EgeRemediation.show({id,meta,task:t,value:v,expected:t.answer,openSteps:()=>$('#explain').click()});}save();};$('#explain').onclick=()=>{l.help=true;l.stage=2;expose(t);save();render();};$('#new').onclick=()=>fresh(id);$('#next').onclick=()=>{l.stage=4;save();render();};}
 if(l.stage===4){box.innerHTML=`<section class="panel"><h2>Объясни ход мысли</h2><p>Какую связь ты использовал? Почему действие допустимо? Как можно проверить ответ другим способом?</p><textarea id="note" placeholder="Я выбрал(а)… потому что… Проверил(а)…">${E(l.note||'')}</textarea><p class="muted">Текст сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает качество объяснения.</p><div class="actions"><a class="btn" href="#report">Мой отчёт</a>${nextLesson(id)?`<a class="btn primary" href="#lesson=${nextLesson(id)}">Следующая тема →</a>`:`<a class="btn primary" href="../../grade7/geometry-rebuild/">Конец списка · выбрать, что повторить</a>`}</div></section>`;$('#note').oninput=e=>{l.note=e.target.value.slice(0,10000);save();};}if(id.startsWith('grade7-r-photo-proof-')){if($('#new'))$('#new').textContent='Повторить этот рисунок';const note=document.createElement('p');note.className='muted';note.textContent='Этот рисунок повторяется. Для нового условия выбери похожий урок в маршруте; полноту доказательства проверит преподаватель.';box.append(note);if(l.stage===2&&l.step===t.steps.length)box.querySelector('h2 + p').textContent='Теперь объясни доказательство своими словами.';}save();}
 function showPhotoProof(id,t,l){
  const P=PathPracticeView.photoProof,data=P.lesson(t);
@@ -10092,9 +10645,45 @@ function answerForm(t){return PathPracticeView.answerForm(t,10000);}
 function examPool(pos){return PathExamPool.select(D.meta,pos);}
 function startRun(kind){if(state.active&&state.active.kind!==kind){root.innerHTML='<h1>Есть незавершённая проверка</h1><p>Сначала завершите её или сохраните как прерванную.</p><button id="resume">Продолжить</button> <button id="finish">Завершить с текущими ответами</button>';$('#resume').onclick=()=>setHash(state.active.kind);$('#finish').onclick=()=>finishRun(true);return;}if(!state.active){root.innerHTML=`<h1>${kind==='exam'?'Пробная работа':'Найдём точку старта'}</h1><p>21 авторская задача, по одной на позицию. Можно пропускать. Ответы и разбор появятся после завершения. Эта выборка не охватывает все подтипы экзамена.</p><p>${kind==='exam'?'Ориентир — 180 минут. Часы не отправляют работу автоматически.':'Время не ограничено. Диагностика нужна для выбора темы, а не для отметки.'}</p><button id="start" class="primary">Начать</button>`;$('#start').onclick=()=>{state.active={kind,seed:state.serial++,ids:Array.from({length:21},(_,i)=>examPool(i+1)[state.serial%examPool(i+1).length].id),i:0,answers:[],start:Date.now(),assisted:false};save();render();};return;}const r=state.active;if(r.i>=21)return finishRun(false);let id=r.ids[r.i],t=D.task(id,r.seed+r.i);root.innerHTML=`<p class="eyebrow">${r.kind==='exam'?'Пробная работа':'Диагностика'} · ${r.i+1}/21</p><div class="meter"><span style="width:${r.i/21*100}%"></span></div><section class="panel"><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" role="status"></p><div class="actions"><button id="skip">Пока не знаю</button><button id="finish">Завершить сейчас</button></div><p class="muted">Прошло ${Math.floor((Date.now()-r.start)/60000)} мин. Открытие обучения во время проверки будет отмечено как помощь.</p></section>`;$('#answer').value=r.draft||'';$('#answer').oninput=e=>{r.draft=e.target.value.slice(0,10000);save();};const next=skip=>{let v=skip?'':$('#answer').value;if(!skip&&!v.trim())return feedback('Введите ответ или выберите «Пока не знаю».',true);r.answers.push({id,seed:r.seed+r.i,value:v,correct:!skip&&D.correct(t,v),previouslySeen:seen(t)});expose(t);r.draft='';r.i++;save();render();};$('#answerForm').onsubmit=e=>{e.preventDefault();next(false);};$('#skip').onclick=()=>next(true);$('#finish').onclick=()=>finishRun(true);}
 function finishRun(interrupted){let r=state.active;if(!r)return;while(r.answers.length<21){let i=r.answers.length;r.answers.push({id:r.ids[i],seed:r.seed+i,value:'',correct:false,skipped:true});}r.finished=Date.now();r.interrupted=interrupted;state.runs.push(r);state.runs=state.runs.slice(-200);state.active=null;save();setHash('report');}
-function report(){let latest=state.runs.at(-1),wrong=latest?.answers.filter(x=>!x.correct)||[];root.innerHTML=`<h1>Что уже получается</h1><p>Подсказки, исправления и ранее показанные условия учитываются отдельно. Отчёт не означает полного освоения позиции экзамена.</p>${latest?`<section class="panel"><h2>Последняя ${latest.kind==='exam'?'пробная работа':'диагностика'}: ${latest.answers.filter(x=>x.correct).length}/21</h2><p>${latest.interrupted?'Завершена досрочно. ':''}${latest.assisted?'С обращением к обучению. ':''}${latest.answers.some(x=>x.previouslySeen)?'Часть условий была показана раньше.':''}</p>${wrong.length?`<div class="callout"><b>Следующий шаг</b><p>Начни с темы «${E(D.meta.find(m=>m.id===wrong[0].id).title)}».</p><a class="btn primary" href="#lesson=${wrong[0].id}">Разобраться в первой трудности</a></div>`:'<p>Эта выборка решена. Попробуй новые варианты и вернись к темам через день.</p>'}<details><summary>Ответы и объяснения</summary><ol>${latest.answers.map(a=>{let t=D.task(a.id,a.seed),last=t.steps.at(-1);return `<li><b>${a.correct?'Верно':'Повторить'} · ${E(D.meta.find(m=>m.id===a.id).title)}</b><p>${M(t.q)}</p><p>Ваш ответ: ${M(a.value||'пропуск')}. ${t.rule||t.answerKind==='solutions'?'Возможны разные ответы; проверяются все условия.':'Ответ: '+M(D.answerText(t))+'.'} ${M(last.why)}</p><a href="#lesson=${a.id}">Урок</a></li>`;}).join('')}</ol></details></section>`:''}<div class="scroll"><table><thead><tr><th>Тема</th><th>Разборов</th><th>Новых самостоятельных</th></tr></thead><tbody>${D.meta.map(m=>{let l=state.lessons[m.id]||{};return `<tr><td><a href="#lesson=${m.id}">${m.grade7?'7 класс':m.pos+'.'} ${E(m.title)}</a></td><td>${l.guided||0}</td><td>${l.independent||0}</td></tr>`;}).join('')}</tbody></table></div><div class="actions"><button id="export">Скачать работу и резервную копию</button><label>Восстановить свою копию <input type="file" id="import" accept="application/json"></label></div><p id="feedback" role="status"></p><p class="muted">Восстановление заменяет только данные этого нового маршрута. Старые модули, тренажёры и их ключи не затрагиваются.</p>`;$('#export').onclick=()=>download(state);$('#import').onchange=async e=>{try{let f=e.target.files[0];if(!f||f.size>2000000)throw Error();let x=readProgress(await f.text());if(!valid(x))throw Error();download(state,'before-import.json');state=x;writable=true;save();report();feedback('Копия восстановлена; предыдущая работа выгружена отдельным файлом.');}catch(e){feedback('Файл не подходит. Текущая работа не изменена.',true);}};}
+function checkReport(run){
+ if(!run)return '';
+ const diagnostic=run.kind==='diagnostic';
+ // Older saves use skipped:true only for slots filled in when finishing early.
+ // A deliberate «Пока не знаю» was recorded as an empty submitted answer.
+ const checked=diagnostic?run.answers.filter(answer=>!answer.skipped):run.answers;
+ const unchecked=run.ids.length-checked.length;
+ const correct=checked.filter(answer=>answer.correct).length;
+ const difficulty=checked.find(answer=>!answer.correct);
+ const topic=answer=>D.meta.find(m=>m.id===answer.id).title;
+ const next=difficulty?`<div class="callout"><b>Следующий шаг</b><p>Начни с темы «${E(topic(difficulty))}».</p><a class="btn primary" href="#lesson=${difficulty.id}">Разобраться в первой трудности</a></div>`:
+  unchecked?`<p>${checked.length?'В проверенных заданиях все ответы верны.':'Диагностика завершилась до первого ответа.'}</p><a class="btn" href="#diagnostic">Начать диагностику</a>`:'<p>Эта выборка решена. Попробуй новые варианты и вернись к темам через день.</p>';
+ const review=run.answers.map(answer=>{
+  const title=E(topic(answer));
+  if(diagnostic&&answer.skipped)return `<li><b>Не проверено · ${title}</b></li>`;
+  const task=D.task(answer.id,answer.seed),last=task.steps.at(-1);
+  const status=answer.correct?'Верно':diagnostic?(answer.value?'Ошибка':'Пока не знаю'):'Повторить';
+  const solution=task.rule||task.answerKind==='solutions'?'Возможны разные ответы; проверяются все условия.':'Ответ: '+M(D.answerText(task))+'.';
+  return `<li><b>${status} · ${title}</b><p>${M(task.q)}</p><p>Ваш ответ: ${M(answer.value||'пропуск')}. ${solution} ${M(last.why)}</p><a href="#lesson=${answer.id}">Урок</a></li>`;
+ }).join('');
+ return `<section class="panel"><h2>Последняя ${diagnostic?'диагностика':'пробная работа'}${unchecked?'':': '+correct+'/'+run.ids.length}</h2>${unchecked?`<p>Верно ${correct} из ${checked.length} проверенных. Ещё не проверено: ${unchecked} из ${run.ids.length}.</p>`:''}<p>${run.interrupted?'Завершена досрочно. ':''}${run.assisted?'С обращением к обучению. ':''}${run.answers.some(answer=>answer.previouslySeen)?'Часть условий была показана раньше.':''}</p>${next}<details><summary>Ответы и объяснения</summary><ol>${review}</ol></details></section>`;
+}
+function report(){root.innerHTML=`<h1>Что уже получается</h1><p>Подсказки, исправления и ранее показанные условия учитываются отдельно. Отчёт не означает полного освоения позиции экзамена.</p>${checkReport(state.runs.at(-1))}<div class="scroll"><table><thead><tr><th>Тема</th><th>Разборов</th><th>Новых самостоятельных</th></tr></thead><tbody>${D.meta.map(m=>{let l=state.lessons[m.id]||{};return `<tr><td><a href="#lesson=${m.id}">${m.grade7?'7 класс':m.pos+'.'} ${E(m.title)}</a></td><td>${l.guided||0}</td><td>${l.independent||0}</td></tr>`;}).join('')}</tbody></table></div><div class="actions"><button id="export">Скачать работу и резервную копию</button><label>Восстановить свою копию <input type="file" id="import" accept="application/json"></label></div><p id="feedback" role="status"></p><p class="muted">Восстановление заменяет только данные этого нового маршрута. Старые модули, тренажёры и их ключи не затрагиваются.</p>`;$('#export').onclick=()=>download(state);$('#import').onchange=async e=>{try{let f=e.target.files[0];if(!f||f.size>2000000)throw Error();let x=readProgress(await f.text());if(!valid(x))throw Error();download(state,'before-import.json');state=x;writable=true;save();report();feedback('Копия восстановлена; предыдущая работа выгружена отдельным файлом.');}catch(e){feedback('Файл не подходит. Текущая работа не изменена.',true);}};}
 function download(x,name='EGE_baza_work.json'){let u=URL.createObjectURL(new Blob([JSON.stringify(writeProgress(x),null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-function render(){let h=location.hash.slice(1)||'map';if(!h.startsWith('lesson=')&&h!=='grade7')courseChrome(null);if(state.active&&!['exam','diagnostic','report'].includes(h)){state.active.assisted=true;save();}if(h.startsWith('lesson='))showLesson(h.slice(7));else if(h==='diagnostic'||h==='exam')startRun(h);else if(h==='report')report();else if(h==='foundation')foundation();else if(h==='grade7')grade7Map();else map();}
+function openSeparateLesson(hash){
+ const params=new URLSearchParams(hash),id=params.get('practice');
+ if(!separatePractice||!D.meta.some(meta=>meta.id===id&&!meta.grade7&&!meta.pre7))return map();
+ const row=state.lessons[id];
+ const previous=params.get('previous');
+ if(previous!==null&&/^\d{1,10}$/.test(previous)&&integer(Number(previous))){
+  expose(D.task(id,Number(previous)));
+  if(id==='round'&&D.roundPractice)expose(D.roundPractice(Number(previous)));
+ }
+ // Drop the entry action from the URL so reload restores the new problem/draft.
+ history.replaceState(null,'','#lesson='+id);
+ if(row&&(!row.done||row.roundVersion===2&&typeof D.roundPractice!=='function')){render();return;}
+ fresh(id);
+}
+function render(){let h=location.hash.slice(1)||'map';if(h.startsWith('practice='))return openSeparateLesson(h);if(!h.startsWith('lesson=')&&h!=='grade7')courseChrome(null);if(state.active&&!['exam','diagnostic','report'].includes(h)){state.active.assisted=true;save();}if(h.startsWith('lesson='))showLesson(h.slice(7));else if(h==='diagnostic'||h==='exam')startRun(h);else if(h==='report')report();else if(h==='foundation')foundation();else if(h==='grade7')grade7Map();else map();}
 window.addEventListener('hashchange',()=>{render();root.focus({preventScroll:true});});window.addEventListener('pagehide',save);window.PathCourse={state:()=>state,valid,KEY};render();})();
 
 </script>

@@ -157,10 +157,7 @@
       coefficient: sign === '-' ? negate(coefficient) : coefficient };
   }
 
-  function family(source) {
-    let text = compact(source).replace(/^[xXхХ]=/u, '');
-    requireForm(!text.includes('~'));
-    text = text.replace(/\(-1\)\^([a-wy-zA-WY-Z])/g, '~$1');
+  function linearFamily(text) {
     const match = /^([+\-±]?)([^+\-±]+)(?:([+\-±])([^+\-±]+))?$/u.exec(text);
     requireForm(match);
     const terms = [periodTerm(match[1], match[2])];
@@ -178,6 +175,19 @@
     const a = offset ? offset.coefficient : zero;
     const b = step ? step.coefficient : zero;
     return { name: step ? step.name : '', families: offset && offset.plusMinus ? [[a, b], [negate(a), b]] : [[a, b]] };
+  }
+
+  function family(source) {
+    let text = compact(source).replace(/^[xXхХ]=/u, '');
+    requireForm(!text.includes('~'));
+    text = text.replace(/\(-1\)\^([a-wy-zA-WY-Z])/g, '~$1');
+    // Solving for x after solving for 2x or 3x may leave a whole series over a divisor.
+    const grouped = /^\(([^()]+)\)\/([+-]?)([^()]+)$/.exec(text);
+    if (!grouped) return linearFamily(text);
+    const divisor = decimal(grouped[3]);
+    const signedDivisor = grouped[2] === '-' ? negate(divisor) : divisor;
+    const { name, families } = linearFamily(grouped[1]);
+    return { name, families: families.map(pair => pair.map(term => quotient(term, signedDivisor))) };
   }
 
   function normalizeFamily([offset, step]) {
@@ -202,15 +212,28 @@
     const formula = suffix ? text.slice(0, suffix.index) : text;
     const pieces = formula.split(/;|∪|или/iu);
     requireForm(pieces.length <= limits.families, 'complexity');
-    const parsed = pieces.map(family);
-    if (suffix) {
-      const names = new Set(parsed.map(item => item.name));
-      const mentioned = suffix[1].replace(/∈\s*[ℤZz]/gu, '').match(/[a-wy-zA-WY-Z]/g) || [];
-      requireForm(mentioned.every(name => names.has(name)));
+    const parsed = pieces.map(piece => {
+      const local = declarations.exec(piece.trimEnd());
+      if (!local) return family(piece);
+      const item = family(piece.slice(0, local.index));
+      validateDeclarations(local[1], new Set([item.name]));
+      return { ...item, locallyDeclared: true };
+    });
+    const names = new Set(parsed.map(item => item.name));
+    const globalNames = suffix ? validateDeclarations(suffix[1], names) : [];
+    for (const item of parsed) {
+      // Euler's number and the imaginary unit are not arbitrary integers.
+      requireForm(!/^[ei]$/i.test(item.name) || item.locallyDeclared || globalNames.includes(item.name));
     }
     const expanded = parsed.flatMap(item => item.families);
     requireForm(expanded.length <= limits.expandedFamilies, 'complexity');
     return { families: distinctFamilies(expanded) };
+  }
+
+  function validateDeclarations(text, names) {
+    const mentioned = text.replace(/∈\s*[ℤZz]/gu, '').match(/[a-wy-zA-WY-Z]/g) || [];
+    requireForm(mentioned.every(name => names.has(name)));
+    return mentioned;
   }
 
   function failed(type, reason) {

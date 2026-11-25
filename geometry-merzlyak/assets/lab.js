@@ -1,21 +1,33 @@
 (function(root){'use strict';const G=root.GeoMath;
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function perpendicularReadout(board,a,b,c){
+ if(G.dist(a,b)<G.EPS)return ['A и B совпали. Раздвинь точки, чтобы задать прямую AB.'];
+ const line=board.perpendicularThrough('C','A','B');
+ if(!line)return ['Построй перпендикуляр: выбери C, затем A и B.'];
+ const along=G.sub(b,a),normal=G.sub(line.q,line.p);
+ const cosine=Math.abs(G.dot(along,normal))/(G.norm(along)*G.norm(normal));
+ const angle=Math.acos(Math.min(1,cosine))*180/Math.PI;
+ return ['Угол между прямой AB и построенной прямой через C = '+angle.toLocaleString('ru-RU',{maximumFractionDigits:2})+'°'];
+}
 function mount(el,spec,onChange){
+ if(spec.figure==='vector-grid')return root.GeoVectorComponents.mount(el,spec,onChange);
  const board=new G.Board(spec.scene||G.scene(spec.figure||'triangle'));let tool='move',selected=[],selectedPoint='A',active=null,highlight=[],moved=false;
- el.innerHTML='<div class="canvas-wrap"><canvas tabindex="0" aria-label="Интерактивный чертёж. Стрелки двигают выбранную точку; Shift увеличивает шаг." width="640" height="420"></canvas></div><div class="lab-readout" aria-live="polite"></div><div class="tools"><button data-tool="move" class="on">Двигать</button><button data-tool="point">Точка</button><button data-tool="segment">Отрезок</button><button data-tool="line">Прямая</button><button data-tool="circle">Окружность</button><button data-tool="intersection">Пересечение</button><button data-tool="midpoint">Середина</button><button data-tool="perpendicular">Перпендикуляр</button><button data-tool="parallel">Параллельная</button><button data-tool="bisector">Биссектриса</button><button data-tool="reflection">Отражение</button></div><p class="tool-instruction"></p><div class="keyboard-panel"><label>Точка <select class="point-select"></select></label><label>x <input class="point-x" type="number" min="25" max="615" step="5"></label><label>y <input class="point-y" type="number" min="30" max="385" step="5"></label><button data-act="move">Передвинуть точку</button><button data-act="select">Выбрать для построения</button></div><div class="object-panel" hidden><label>Объект <select class="object-select"></select></label><button data-act="object">Выбрать объект</button></div><div class="row"><button data-act="undo">Отменить построение / движение</button><button data-act="reset">Начать чертёж заново</button><button data-act="goal" class="primary">Проверить построение</button></div><p class="lab-feedback" role="status"></p><details><summary>Как пользоваться чертежом</summary><p>Синие точки двигаются мышью, пальцем, стрелками или полями координат. Зелёные зависят от построения и пересчитываются вместе с исходными. Пересечения относятся к полным прямым и окружностям, даже если показаны отрезки. Координаты экрана — техническая помощь; длины подписаны в условных единицах.</p><p>Выбор инструмента ещё ничего не строит: укажи точки по порядку. Можно выбрать их и кнопкой под чертежом. Геометрическая проверка подтверждает построение на модели; общее утверждение требует доказательства.</p></details>';
+ el.innerHTML='<div class="canvas-wrap"><canvas tabindex="0" aria-label="Интерактивный чертёж. Стрелки двигают выбранную точку; Shift увеличивает шаг." width="640" height="420"></canvas></div><div class="lab-readout" aria-live="polite"></div><div class="tools"><button data-tool="move" class="on">Двигать</button><button data-tool="point">Точка</button><button data-tool="segment">Отрезок</button><button data-tool="line">Прямая</button><button data-tool="circle">Окружность</button><button data-tool="intersection">Пересечение</button><button data-tool="midpoint">Середина</button><button data-tool="perpendicular">Перпендикуляр</button><button data-tool="parallel">Параллельная</button><button data-tool="bisector">Биссектриса</button><button data-tool="reflection">Отражение</button></div><p class="tool-instruction"></p><div class="keyboard-panel"><label>Точка <select class="point-select"></select></label><label>x <input class="point-x" type="number" min="25" max="615" step="5"></label><label>y <input class="point-y" type="number" min="30" max="385" step="5"></label><button data-act="move">Передвинуть точку</button><button data-act="select">Выбрать для построения</button></div><div class="object-panel" hidden><label>Объект <select class="object-select"></select></label><button data-act="object">Выбрать объект</button></div><div class="row"><button data-act="undo">Отменить построение / движение</button><button data-act="reset">Начать чертёж заново</button><button data-act="goal" class="primary">Проверить построение</button></div><p class="lab-feedback" role="status"></p><details><summary>Как пользоваться чертежом</summary><p>Синие точки двигаются мышью, пальцем, стрелками или полями координат. Зелёные зависят от построения и пересчитываются вместе с исходными. «Пересечение» находит общие точки выбранных объектов. Если нужно пересечь продолжения, построй через концы каждого отрезка прямую. Координаты экрана — техническая помощь; длины подписаны в условных единицах.</p><p>Выбор инструмента ещё ничего не строит: укажи точки по порядку. Можно выбрать их и кнопкой под чертежом. Геометрическая проверка подтверждает построение на модели; общее утверждение требует доказательства.</p></details>';
  const cv=el.querySelector('canvas'),ctx=cv.getContext('2d'),dpr=Math.min(devicePixelRatio||1,2);cv.width=640*dpr;cv.height=420*dpr;ctx.scale(dpr,dpr);const readout=el.querySelector('.lab-readout'),feedback=el.querySelector('.lab-feedback');
  const need={move:1,point:0,segment:2,line:2,circle:2,intersection:2,midpoint:2,perpendicular:3,parallel:3,bisector:3,reflection:3};
  const instructions={move:'Потяни синюю точку. Выбранную точку также можно двигать стрелками.',point:'Нажми на свободное место; для точного ввода укажи x и y и нажми «Передвинуть точку».',segment:'Выбери два конца отрезка.',line:'Выбери две точки прямой.',circle:'Сначала центр, затем точку окружности.',intersection:'Выбери два объекта в списке или нажатием на линию/окружность.',midpoint:'Выбери концы отрезка: середина будет зависеть от них.',perpendicular:'Сначала точку, через которую провести перпендикуляр, затем две точки исходной прямой.',parallel:'Сначала точку новой прямой, затем две точки исходной прямой.',bisector:'Выбери точку первого луча, вершину угла и точку второго луча.',reflection:'Выбери отражаемую точку, затем две точки оси.'};
+ if(spec.goal==='line-ab')instructions.move+=' Пока AB горизонтальна, выбери C, задай ей такое же y, как у A, и нажми «Передвинуть точку». Затем измени y ещё раз.';
+ if(spec.goal==='congruence-median')instructions.move+=' Пока AB горизонтальна, выбери C и задай ей такое же x, как у построенной середины. Нажми «Передвинуть точку» и сравни углы. Затем измени x.';
  const movable=p=>(!p.kind||p.kind==='free'||p.draggable)&&p.valid!==false;
  function notify(type){if(onChange)onChange({type,board,moved});}
  function fail(msg){feedback.textContent=msg;feedback.className='lab-feedback error';}
- function options(){let old=selectedPoint;el.querySelector('.point-select').innerHTML=board.points.map(p=>'<option value="'+E(p.id)+'">'+E(p.id)+(movable(p)?' — подвижная':' — построенная')+'</option>').join('');if(board.point(old)){el.querySelector('.point-select').value=old;}else selectedPoint=board.points[0].id;el.querySelector('.object-select').innerHTML=board.objects.map(o=>'<option value="'+E(o.id)+'">'+E(o.id)+' · '+(o.type==='circle'?'окружность с центром '+E(o.a):E(o.a)+E(o.b))+'</option>').join('');syncFields();}
+ function options(){let old=selectedPoint;el.querySelector('.point-select').innerHTML=board.points.map(p=>'<option value="'+E(p.id)+'">'+E(p.id)+(movable(p)?' — подвижная':' — построенная')+'</option>').join('');if(board.point(old)){el.querySelector('.point-select').value=old;}else selectedPoint=board.points[0].id;el.querySelector('.object-select').innerHTML=board.objects.map(o=>'<option value="'+E(o.id)+'">'+E(o.id)+' · '+(o.type==='circle'?'окружность с центром '+E(o.a):(o.extent==='segment'?'отрезок ':o.extent==='ray'?'луч ':'прямая ')+E(o.a)+E(o.b))+'</option>').join('');syncFields();}
  function syncFields(){const p=board.point(selectedPoint);if(!p)return;el.querySelector('.point-x').value=Math.round(p.x);el.querySelector('.point-y').value=Math.round(p.y);}
  function instruction(){el.querySelector('.tool-instruction').textContent=instructions[tool]+(selected.length?' Выбрано: '+selected.join(', ')+'.':'');el.querySelector('.object-panel').hidden=tool!=='intersection';el.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===tool));}
  function pick(id){selected.push(id);instruction();if(selected.length<need[tool])return;try{board.make(tool,selected);moved=true;feedback.className='lab-feedback';feedback.textContent='Построено. Передвинь исходные точки: связь должна сохраниться.';selected=[];options();draw();notify('construction');}catch(e){selected=[];fail(e.message);}instruction();}
  function screen(e){const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*640/r.width,y:(e.clientY-r.top)*420/r.height};}
  function nearest(q){const tol=24*640/cv.getBoundingClientRect().width;return board.points.filter(p=>p.valid!==false).sort((a,b)=>G.dist(a,q)-G.dist(b,q)).find(p=>G.dist(p,q)<tol);}
- function hit(q){const tol=14*640/cv.getBoundingClientRect().width;let result=null,best=tol;board.objects.forEach(o=>{const g=board.geometry(o);if(!g)return;let d;if(g.type==='circle')d=Math.abs(G.dist(q,g.o)-g.r);else{const h=G.foot(q,g.p,g.q);d=h?G.dist(h,q):Infinity;}if(d<best){best=d;result=o;}});return result;}
+ function hit(q){const tol=14*640/cv.getBoundingClientRect().width;let result=null,best=tol;board.objects.forEach(o=>{const g=board.geometry(o);if(!g)return;let d;if(g.type==='circle')d=Math.abs(G.dist(q,g.o)-g.r);else{const h=G.nearestOnObject(q,g);d=h?G.dist(h,q):Infinity;}if(d<best){best=d;result=o;}});return result;}
  function move(id,q){if(board.move(id,q.x,q.y)){moved=true;draw();syncFields();notify('move');}}
  cv.addEventListener('pointerdown',e=>{const q=screen(e),p=nearest(q);if(tool==='point'){board.addPoint(q.x,q.y);moved=true;options();draw();notify('construction');return;}if(tool==='intersection'){const o=hit(q);if(o)pick(o.id);else fail('Выбери линию или окружность; можно воспользоваться списком объектов.');return;}if(!p){fail('Нажми ближе к отмеченной точке или выбери её в списке.');return;}selectedPoint=p.id;el.querySelector('.point-select').value=p.id;syncFields();if(tool==='move'){if(!movable(p)){fail('Эта точка построена. Двигай исходные точки, от которых она зависит.');return;}active={id:p.id,dx:p.x-q.x,dy:p.y-q.y};board.remember();try{cv.setPointerCapture(e.pointerId);}catch(_){} }else pick(p.id);draw();});
  cv.addEventListener('pointermove',e=>{if(active){const q=screen(e);move(active.id,{x:q.x+active.dx,y:q.y+active.dy});}});
@@ -31,16 +43,100 @@ function mount(el,spec,onChange){
  });
  el.querySelector('.point-select').addEventListener('change',e=>{selectedPoint=e.target.value;syncFields();draw();});
  function text(p,t){ctx.font='600 16px system-ui';ctx.lineWidth=5;ctx.strokeStyle='#fffdf7';ctx.strokeText(t,p.x,p.y);ctx.fillStyle='#17233c';ctx.fillText(t,p.x,p.y);}
+ // A square belongs to a named construction or given figure. Its sides
+ // follow the current rays after a point is dragged or the view is fitted.
+ function drawRightAngles() {
+  const drawn = new Set();
+  function square(vertex, a, b) {
+   if (![vertex, a, b].every(p => p && p.valid !== false)) return;
+   const va = G.sub(a, vertex), vb = G.sub(b, vertex);
+   const la = G.norm(va), lb = G.norm(vb);
+   if (Math.min(la, lb) < 1 || Math.abs(G.dot(va, vb)) > 1e-7 * la * lb) return;
+   const size = Math.min(13, la / 4, lb / 4);
+   const u = G.mul(va, size / la), v = G.mul(vb, size / lb);
+   ctx.beginPath();
+   ctx.moveTo(vertex.x + u.x, vertex.y + u.y);
+   ctx.lineTo(vertex.x + u.x + v.x, vertex.y + u.y + v.y);
+   ctx.lineTo(vertex.x + v.x, vertex.y + v.y);
+   ctx.strokeStyle = '#196a56';
+   ctx.lineWidth = 2;
+   ctx.stroke();
+   if (a.id && b.id) drawn.add([vertex.id, ...[a.id, b.id].sort()].join(' '));
+  }
+  const point = id => board.point(id);
+  const shape = spec.scene?.type || spec.figure;
+  if (shape === 'right') square(point('C'), point('A'), point('B'));
+  if (shape === 'square' || shape === 'rectangle') {
+   const corners = ['A', 'B', 'C', 'D'];
+   corners.forEach((v, i) => square(point(v), point(corners[(i + 3) % 4]), point(corners[(i + 1) % 4])));
+  }
+  for (const construction of board.objects) {
+   const end = point(construction.b);
+   if (construction.construction !== 'perpendicular' || !end || !board.geometry(construction)) continue;
+   const source = point(end.a), a = point(end.b), b = point(end.c);
+   if (![source, a, b].every(p => p && p.valid !== false)) continue;
+   const foot = G.foot(source, a, b);
+   if (!foot) continue;
+   const base = board.objects.find(o => o.type === 'line' &&
+    ((o.a === a.id && o.b === b.id) || (o.a === b.id && o.b === a.id)));
+   if (!base) continue;
+   const toward = G.dist(source, foot) > 1 ? source : G.add(foot, G.rot(G.sub(b, a)));
+   const farther = G.dist(foot, a) > G.dist(foot, b) ? a : b;
+   // Extend a finite base up to an exterior foot, as in an obtuse triangle.
+   const start = point(base.a), finish = point(base.b), direction = G.sub(finish, start);
+   const t = G.dot(G.sub(foot, start), direction) / G.dot(direction, direction);
+   if (base.extent !== 'line' && (t < 0 || (base.extent === 'segment' && t > 1))) {
+    const nearest = t < 0 ? start : finish;
+    ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = '#58706b'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(nearest.x, nearest.y); ctx.lineTo(foot.x, foot.y); ctx.stroke(); ctx.restore();
+   }
+   square(foot, toward, farther);
+  }
+  return drawn;
+ }
  function draw(){board.update();ctx.clearRect(0,0,640,420);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,640,420);ctx.fillStyle='#e3e4df';for(let x=15;x<640;x+=25)for(let y=15;y<420;y+=25){ctx.beginPath();ctx.arc(x,y,1,0,7);ctx.fill();}
   ctx.save();ctx.beginPath();ctx.rect(3,3,634,414);ctx.clip();
-  const poly=['A','B','C','D'].map(id=>board.point(id)).filter(Boolean);if(poly.length>=3&&spec.figure!=='angle'&&spec.figure!=='segment'){ctx.beginPath();poly.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle='#2d70b317';ctx.fill();}
+  const poly=['A','B','C','D'].map(id=>board.point(id)).filter(Boolean);if(poly.length>=3&&spec.figure!=='angle'&&spec.figure!=='segment'&&spec.figure!=='perpendicular-base'){ctx.beginPath();poly.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle='#2d70b317';ctx.fill();}
   for(const o of board.objects){const g=board.geometry(o);if(!g)continue;ctx.strokeStyle=highlight.includes(o.a+o.b)||highlight.includes(o.b+o.a)?'#ca6224':o.added?'#118469':'#294564';ctx.lineWidth=highlight.includes(o.a+o.b)?5:o.added?2.6:2.3;ctx.setLineDash(o.added?[7,4]:[]);ctx.beginPath();if(g.type==='circle')ctx.arc(g.o.x,g.o.y,g.r,0,Math.PI*2);else{let p=g.p,q=g.q;if(o.extent!=='segment'){const u=G.unit(G.sub(q,p));q=G.add(p,G.mul(u,1800));if(o.extent==='line')p=G.add(p,G.mul(u,-1800));}ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);}ctx.stroke();}
   ctx.setLineDash([]);
+  const rightAngles = drawRightAngles();
   const a=board.point('A'),b=board.point('B'),c=board.point('C');let report=[];
   if(a&&b){report.push('AB = '+(G.dist(a,b)/50).toFixed(2));}
-  if(a&&b&&c){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
+  if(spec.figure==='perpendicular-base'){
+   report=perpendicularReadout(board,a,b,c);
+  }else if(a&&b&&c){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null&&!rightAngles.has('C A B')){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
   ctx.restore();
   for(const p of board.points){if(p.valid===false)continue;ctx.beginPath();ctx.arc(p.x,p.y,selectedPoint===p.id?7:5,0,7);ctx.fillStyle=movable(p)?'#2d70b3':'#118469';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();text({x:Math.max(8,Math.min(603,p.x+10)),y:Math.max(19,Math.min(405,p.y-10))},p.id);}
+  if(spec.goal==='line-ab') {
+   report=[];
+   if(G.dist(a,b)<G.EPS)report.push('A и B совпали. Чтобы задать прямую, нужны две разные точки.');
+   else if(board.goal(spec.goal).ok){
+    const height=G.dist(c,G.foot(c,a,b));
+    report.push(height<G.EPS?'Точка C лежит на прямой AB.':'Точка C находится вне прямой AB.');
+   }
+  }
+  if(spec.goal==='congruence-median'){
+   report=[];
+   const m=board.points.find(p=>p.valid!==false&&p.kind==='midpoint'&&
+    ((p.a==='A'&&p.b==='B')||(p.a==='B'&&p.b==='A')));
+   if(m){
+    const left=G.angle(a,m,c),right=G.angle(b,m,c);
+    report.push('A'+m.id+' = '+(G.dist(a,m)/50).toFixed(2),'B'+m.id+' = '+(G.dist(b,m)/50).toFixed(2));
+    if(left!==null&&right!==null)report.push('∠A'+m.id+'C = '+left.toFixed(1)+'°','∠B'+m.id+'C = '+right.toFixed(1)+'°');
+   }
+  }
+  if(spec.goal==='sss-reflection'){
+   const side=(p,q)=>p.id+q.id+' = '+(G.dist(p,q)/50).toFixed(2);
+   report=[side(a,b),side(a,c),side(b,c)];
+   const other=board.points.find(p=>p.kind==='intersection'&&p.valid!==false&&G.dist(p,c)>G.EPS&&
+    ['A','B'].every(center=>[p.o1,p.o2].some(id=>{
+     const o=board.object(id);return o?.type==='circle'&&o.a===center&&o.b==='C';
+    })));
+   if(other)report.push(side(a,other),side(b,other));
+  }
+  if(board.points.some(p=>p.kind==='intersection'&&!p.bounded)){
+   report.push('На прежнем чертеже точки пересечения относятся к продолжениям исходных линий.');
+  }
   readout.textContent=report.join(' · ')+(board.points.some(p=>p.valid===false)?' · Некоторые построения сейчас не существуют.':'');
  }
  options();instruction();draw();return {board,highlight(ids){highlight=ids||[];draw();},redraw(){options();draw();},destroy(){active=null;}};

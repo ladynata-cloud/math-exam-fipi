@@ -102,7 +102,7 @@
   function details(label, children, onOpen, open) {
     const d = el('details'); if (open) d.open = true;
     // A queued toggle from a replaced card must not update the new scene.
-    if (board) d.addEventListener('toggle', event => { if (!d.isConnected) event.stopImmediatePropagation(); }, true);
+    d.addEventListener('toggle', event => { if (!d.isConnected) event.stopImmediatePropagation(); }, true);
     d.append(el('summary', {}, label));
     for (const child of children) d.append(child);
     if (onOpen) d.addEventListener('toggle', () => { if (d.open && !boardApplying) onOpen(); });
@@ -156,6 +156,221 @@
     const pieces = raw.split('/');
     if (pieces.length === 2 && pieces.every(x => simple.test(x)) && Number(pieces[1]) !== 0) return Number(pieces[0]) / Number(pieces[1]);
     return NaN;
+  }
+
+  // This bounded personal activity never changes the shared-board work schema.
+  // Its actions are separate from the retained guided steps and their evidence.
+  const constructionIds = new Set(['starter', 'bridge'].flatMap(prefix =>
+    [3, 6, 9, 12, 15, 18, 19, 20, 21, 22, 23, 24].map(n => prefix + '-' + String(n).padStart(2, '0'))));
+  const supportsConstruction = id => !board && constructionIds.has(id) && lessonMap.has(id);
+  function constructionTolerance(lesson) {
+    return Math.max(1, ...Object.values(lesson.model.points).map(norm)) * 1e-7;
+  }
+  function nearPoint(a, b, eps) { return !!a && !!b && norm(sub(a, b)) <= eps; }
+  function lineParameter(point, a, b, eps) {
+    const direction = sub(b, a), length = norm(direction);
+    if (length <= eps || norm(cross(sub(point, a), direction)) > eps * length) return null;
+    return dot(sub(point, a), direction) / dot(direction, direction);
+  }
+  function planeNormal(lesson, plane) {
+    const points = (plane?.vertices || []).map(n => lesson.model.points[n]).filter(Boolean);
+    for (let i = 1; i + 1 < points.length; i++) {
+      const normal = cross(sub(points[i], points[0]), sub(points[i + 1], points[0]));
+      if (norm(normal) > constructionTolerance(lesson)) return { origin: points[0], normal: unit(normal) };
+    }
+    return null;
+  }
+  function inConstructionPlane(lesson, name, plane) {
+    const p = lesson.model.points[name], basis = planeNormal(lesson, plane);
+    return !!p && !!basis && Math.abs(dot(sub(p, basis.origin), basis.normal)) <= constructionTolerance(lesson);
+  }
+  function insideConstructionBody(lesson, point) {
+    const center = mean([...new Set(lesson.model.edges.flat())].map(n => lesson.model.points[n]));
+    return (lesson.model.faces || []).every(face => {
+      const basis = planeNormal(lesson, Array.isArray(face) ? {vertices:face} : face);
+      if (!basis) return false;
+      const outward = dot(sub(center, basis.origin), basis.normal) > 0 ? mul(basis.normal, -1) : basis.normal;
+      return dot(sub(point, basis.origin), outward) <= constructionTolerance(lesson);
+    });
+  }
+  function intersectConstructionLines(a, b, c, d, eps) {
+    const u = sub(b, a), v = sub(d, c), w = sub(c, a), normal = cross(u, v);
+    if (norm(u) <= eps || norm(v) <= eps) return {code:'same-point'};
+    if (norm(normal) <= eps * Math.max(norm(u), norm(v))) return {code:'parallel'};
+    if (Math.abs(dot(w, unit(normal))) > eps) return {code:'skew'};
+    const t = dot(cross(w, v), normal) / dot(normal, normal);
+    return {point:add(a, mul(u, t))};
+  }
+  function constructionPlan(lesson) {
+    if (!lesson || !constructionIds.has(lesson.id)) return [];
+    const n = Number(lesson.id.split('-')[1]), starter = lesson.id.startsWith('starter-');
+    return lesson.steps.map((step, index) => {
+      const plan = {step:index, plane:step.plane};
+      const segments = step.segments || [], target = (step.points || [])[0];
+      if (!starter && [3,19].includes(n) && index === 1) return {...plan,kind:'parallel',target,
+        trace:segments.find(line=>line.a===target||line.b===target),
+        direction:lesson.steps.slice(0,index).reverse().flatMap(previous=>previous.segments||[]).find(line=>line.kind==='section'),
+        prompt:'Выбери известную точку, направление параллельного следа и ребро, на котором появится новая вершина.'};
+      if (target) {
+        const referenceEdge = lesson.model.edges.find(([a,b]) => lineParameter(lesson.model.points[target], lesson.model.points[a], lesson.model.points[b], constructionTolerance(lesson)) !== null);
+        return {...plan,kind:'intersection',target,referenceEdge:referenceEdge || null,
+          prompt:'Выбери две прямые по двум известным точкам на каждой. Их общая точка должна выполнить цель этого шага.'};
+      }
+      if (!segments.length) {
+        if (starter && [3,19].includes(n)) return {...plan,kind:'point',target:'M',prompt:'Выбери рабочую грань и отмеченную точку, которую нужно найти по условию.'};
+        if (starter && [12,22].includes(n)) return {...plan,kind:'edge-point',target:'X',prompt:'Выбери соседнюю грань, общую точку и ребро, через которое переходим в эту грань.'};
+        if (!starter && [9,21].includes(n)) return {...plan,kind:'plane',prompt:'Задай рабочую плоскость тремя уже известными точками. Они не должны лежать на одной прямой.'};
+        const previous = lesson.steps.slice(0,index).reverse().flatMap(s => s.segments || []).find(s => s.kind === 'section');
+        return {...plan,kind:'segment',segment:previous,line:false,prompt:'Выдели отрезок следа, лежащий внутри грани, и назови его роль.'};
+      }
+      return {...plan,kind:'segment',segment:segments[0],line:/прямую/.test(step.action || ''),
+        prompt:starter && [9,21].includes(n) ? 'Построй ' + (index === 0 ? 'первую' : 'вторую') + ' диагональ, названную в условии: выбери два конца.' :
+          'Выполни следующий шаг: выбери рабочую плоскость, две известные точки и роль линии.'};
+    }).map(plan=>{
+      const title={point:'Находим точку в грани','edge-point':'Переходим в соседнюю грань',plane:'Задаём рабочую плоскость',segment:'Выбираем линию и её роль',intersection:'Находим пересечение прямых',parallel:'Переносим параллельный след'}[plan.kind];
+      let prompt=plan.prompt;
+      // The short route specifies a geometric goal, so learners need not guess
+      // an author's ordering. It does not supply endpoint names or line roles.
+      if(plan.kind==='segment') {
+        if(starter&&[15,23].includes(n))prompt=[
+          'Начни обход с отмеченной точки на боковом ребре. Первую линию проведи в грани, содержащей ребро AB.',
+          'Продолжи обход по основанию, не возвращаясь к начальной точке.',
+          'Замкни обход через оставшуюся грань.'
+        ][plan.step]+' Выбери плоскость, концы и роль линии.';
+        if(starter&&[18,24].includes(n))prompt=(plan.step===0?'Начни обход с отмеченной точки на ребре AE и двигайся сначала к ребру BF.':plan.step===3?'Замкни обход через последнюю боковую грань.':'Продолжи обход по боковым граням в том же направлении, не возвращаясь по уже проведённой линии.')+' Выбери плоскость, концы и роль линии.';
+        if(!starter&&[3,19].includes(n))prompt='Сначала проведи линию в боковой грани, содержащей рёбра BF и CG. Выбери плоскость, концы и роль линии.';
+        if(!starter&&[9,21].includes(n)&&plan.step===0)prompt='Начни с диагонали основания, лежащей в плоскости, названной в условии. Выбери плоскость, концы и роль линии.';
+        if(!starter&&[12,22].includes(n))prompt=(plan.step===0?'Сначала проведи опорную прямую из условия, на которой лежит внутренняя точка.':'Теперь проведи прямую, пересечение которой с ребром требуется найти.')+' Выбери плоскость, концы и роль линии.';
+        if(!starter&&[15,23].includes(n))prompt=[
+          'Сначала соедини заданные проекции в основании.',
+          'В заданной рабочей плоскости соедини первую внутреннюю точку с её проекцией.',
+          'Покажи связь второй внутренней точки с её проекцией.',
+          'Соедини внутренние точки, принадлежность которых рабочей плоскости уже установлена.'
+        ][plan.step]+' Выбери плоскость, концы и роль линии.';
+        if(!starter&&[18,24].includes(n)&&plan.step>=3)prompt=(plan.step===3?'От новой точки на ребре основания перейди по соседней боковой грани к уже известной точке среза.':'Замкни оставшуюся часть обхода.')+' Выбери плоскость, концы и роль линии.';
+      }
+      return {...plan,title,prompt};
+    });
+  }
+  function constructionFields(plan) {
+    if (plan.kind === 'point') return ['point'];
+    if (plan.kind === 'edge-point') return ['point','edgeA','edgeB'];
+    if (plan.kind === 'plane') return ['a','b','c'];
+    if (plan.kind === 'parallel') return ['point','directionA','directionB','edgeA','edgeB'];
+    if (plan.kind === 'intersection') return ['firstA','firstB','secondA','secondB'];
+    return ['a','b'];
+  }
+  function validateConstructionAction(lesson, index, selection) {
+    const plan = constructionPlan(lesson)[index], fail = (code,message) => ({correct:false,code,message});
+    if (!plan || !selection || typeof selection !== 'object') return fail('missing','Выбери элементы текущего действия.');
+    const known = knownNames(lesson,index), points = lesson.model.points, eps = constructionTolerance(lesson), fields = constructionFields(plan);
+    if (!selection.plane || fields.some(key => !known.has(selection[key]))) return fail('missing','Выбери рабочую плоскость и заполни каждый выбор известными точками. Новую точку сначала нужно построить.');
+    const planes = planesFor(lesson), plane = planes.get(selection.plane);
+    if (!plane || !plane.vertices.every(name => known.has(name)) || !samePlane(lesson,plane,planes.get(plan.plane)))
+      return fail('plane','Эта плоскость не выполняет цель текущего шага. Проверь нужные точки и переход на соседнюю грань; совпадение линий на экране недостаточно.');
+    const inPlane = names => names.every(name => inConstructionPlane(lesson,name,plane));
+    const bodyEdge = (a,b) => lesson.model.edges.some(([x,y]) => (nearPoint(points[a],points[x],eps) && nearPoint(points[b],points[y],eps)) || (nearPoint(points[a],points[y],eps) && nearPoint(points[b],points[x],eps)));
+    const wrongPlane = () => fail('different-plane','Выбранные точки не лежат в одной рабочей плоскости. Проверь их принадлежность грани, а не только расположение на картинке.');
+    if (plan.kind === 'point' || plan.kind === 'edge-point') {
+      if (!inPlane(fields.map(k=>selection[k]))) return wrongPlane();
+      if (!nearPoint(points[selection.point],points[plan.target],eps)) return fail('point','Это другая точка. Найди точку, о которой говорится в текущем действии.');
+      if (plan.kind === 'edge-point') {
+        if (!bodyEdge(selection.edgeA,selection.edgeB)) return fail('edge','Это не ребро тела. Общее ребро соседних граней выбирается по двум его вершинам.');
+        const t=lineParameter(points[selection.point],points[selection.edgeA],points[selection.edgeB],eps);
+        if (t === null || t < -eps || t > 1+eps) return fail('finite-edge','Точка не принадлежит выбранному конечному ребру. Продолжение ребра и само ребро нужно различать.');
+      }
+    } else if (plan.kind === 'plane') {
+      if (!inPlane(fields.map(k=>selection[k]))) return wrongPlane();
+      if (norm(cross(sub(points[selection.b],points[selection.a]),sub(points[selection.c],points[selection.a]))) <= eps)
+        return fail('collinear','Три точки на одной прямой не задают единственную плоскость. Нужна третья точка вне этой прямой.');
+    } else if (plan.kind === 'segment') {
+      const a=points[selection.a],b=points[selection.b],target=plan.segment;
+      if (nearPoint(a,b,eps)) return fail('same-point','Для линии нужны две различные точки.');
+      if (!inPlane([selection.a,selection.b])) return wrongPlane();
+      if (!['helper','section'].includes(selection.role)) return fail('role','Укажи роль: вспомогательная линия или сторона сечения.');
+      if (selection.role === 'section' && (!insideConstructionBody(lesson,a) || !insideConstructionBody(lesson,b)))
+        return fail('outside-body','Внешняя точка может помогать построению, но не входит в сторону сечения внутри тела. Отдели след от его части в грани.');
+      if (selection.role !== (target.kind || 'section')) return fail('role',target.kind === 'helper' ? 'Эта линия нужна для построения. Она не является стороной полного сечения.' : 'Здесь строится часть границы сечения. Вспомогательные линии выделяются отдельно.');
+      const ta=points[target.a],tb=points[target.b];
+      const equivalent=plan.line ? lineParameter(ta,a,b,eps)!==null && lineParameter(tb,a,b,eps)!==null :
+        (nearPoint(a,ta,eps)&&nearPoint(b,tb,eps))||(nearPoint(a,tb,eps)&&nearPoint(b,ta,eps));
+      if (!equivalent) return fail('goal','В этой плоскости такую линию провести можно, но она не выполняет текущую цель. Сверь нужные концы с условием и уже найденными точками.');
+    } else {
+      let intersection;
+      if (plan.kind === 'parallel') {
+        const origin=points[selection.point],direction=sub(points[selection.directionB],points[selection.directionA]);
+        if (!bodyEdge(selection.edgeA,selection.edgeB)) return fail('edge','Выбери именно ребро тела по его двум вершинам.');
+        if (!inPlane([selection.point,selection.edgeA,selection.edgeB])) return wrongPlane();
+        const basis=planeNormal(lesson,plane);
+        if (norm(direction)<=eps) return fail('same-point','Направление задаётся двумя различными точками.');
+        if (Math.abs(dot(direction,basis.normal))>eps) return fail('parallel-plane','Это направление выходит из выбранной плоскости. Для переноса параллельного следа нужно обосновать параллельность граней.');
+        if (!plan.trace || lineParameter(origin,points[plan.trace.a],points[plan.trace.b],eps)===null)
+          return fail('parallel-origin','Через эту точку нельзя перенести нужный след: она не принадлежит секущей в выбранной грани. Найди уже известную общую точку этих плоскостей.');
+        const reference=plan.direction&&sub(points[plan.direction.b],points[plan.direction.a]);
+        if (!reference || norm(cross(unit(direction),unit(reference)))>1e-7)
+          return fail('parallel-direction','Выбранное направление не параллельно уже построенному следу в противоположной грани. Совпадение точки встречи само по себе не обосновывает перенос.');
+        intersection=intersectConstructionLines(origin,add(origin,direction),points[selection.edgeA],points[selection.edgeB],eps);
+        if (intersection.point) {
+          const t=lineParameter(intersection.point,points[selection.edgeA],points[selection.edgeB],eps);
+          if(t===null || t < -eps || t > 1+eps)return fail('finite-edge','Прямая встретила продолжение, а требуется точка на конечном ребре. Проверь направление и выбранное ребро.');
+        }
+      } else {
+        intersection=intersectConstructionLines(points[selection.firstA],points[selection.firstB],points[selection.secondA],points[selection.secondB],eps);
+        if (intersection.code==='skew') return fail('skew','Прямые скрещиваются: их изображения могут пересекаться на экране, но общей пространственной точки нет.');
+        if (!inPlane(fields.map(k=>selection[k]))) return wrongPlane();
+      }
+      if(intersection.code==='same-point')return fail('same-point','Каждая прямая задаётся двумя различными точками.');
+      if(intersection.code==='parallel')return fail('parallel','Параллельные или совпадающие прямые не дают единственной общей точки. Выбери две пересекающиеся прямые.');
+      if(intersection.code==='skew')return fail('skew','Выбранные прямые скрещиваются и не имеют общей точки.');
+      if(!nearPoint(intersection.point,points[plan.target],eps))return fail('intersection','Общая точка этих прямых не выполняет цель шага. Проверь, какие объекты связывают данные точки с нужной гранью или ребром.');
+      if(plan.referenceEdge) {
+        const [a,b]=plan.referenceEdge,t=lineParameter(intersection.point,points[a],points[b],eps),location=t>=-eps&&t<=1+eps?'edge':'extension';
+        if(!['edge','extension'].includes(selection.location))return fail('location','Укажи, находится новая точка на ребре или на его продолжении.');
+        if(selection.location!==location)return fail('finite-edge',location==='extension'?'Точка находится за концом ребра. Она принадлежит его прямой, но не конечному ребру.':'Точка лежит между концами ребра, включая его концы. Здесь продолжать ребро за вершину не требуется.');
+      }
+    }
+    return {correct:true,code:'accepted',message:'Действие проверено по пространственным координатам. Теперь объясни, почему оно допустимо.'};
+  }
+  function constructionDrawingStep(lesson,action) {
+    const plan=constructionPlan(lesson)[action.step],selection=action.selection,points=lesson.model.points;
+    const drawing={plane:selection.plane,points:[],segments:[]};
+    if(plan.kind==='segment')drawing.segments.push({a:selection.a,b:selection.b,kind:selection.role});
+    else if(plan.kind==='parallel') {
+      drawing.points.push(plan.target);drawing.segments.push({a:selection.point,b:plan.target,kind:'section'});
+    } else if(plan.kind==='intersection') {
+      drawing.points.push(plan.target);
+      for(const [a,b] of [[selection.firstA,selection.firstB],[selection.secondA,selection.secondB]]) {
+        // Draw the chosen line only as an auxiliary construction. Its finite
+        // section part requires a separate accepted endpoint/role choice.
+        const names=[a,b,plan.target],direction=sub(points[b],points[a]);
+        names.sort((x,y)=>dot(sub(points[x],points[a]),direction)-dot(sub(points[y],points[a]),direction));
+        drawing.segments.push({a:names[0],b:names[names.length-1],kind:'helper'});
+      }
+    }
+    return drawing;
+  }
+  function constructionActionText(lesson,action) {
+    const plan=constructionPlan(lesson)[action.step],s=action.selection,name=displayName,pair=(a,b)=>name(s[a])+name(s[b]);
+    if(plan.kind==='point')return 'Отмечена точка '+name(s.point)+' в выбранной грани.';
+    if(plan.kind==='edge-point')return 'Точка '+name(s.point)+' принадлежит ребру '+pair('edgeA','edgeB')+' выбранной грани.';
+    if(plan.kind==='plane')return 'Рабочая плоскость задана неколлинеарными точками '+[s.a,s.b,s.c].map(name).join(', ')+'.';
+    if(plan.kind==='segment')return 'Построена '+(s.role==='section'?'сторона сечения ':'вспомогательная линия ')+pair('a','b')+'.';
+    if(plan.kind==='parallel')return 'Через '+name(s.point)+' проведена прямая, параллельная '+pair('directionA','directionB')+'. Её пересечение с ребром '+pair('edgeA','edgeB')+' обозначено '+name(plan.target)+'.';
+    return 'Найдена точка '+name(plan.target)+' пересечения выбранных прямых '+pair('firstA','firstB')+' и '+pair('secondA','secondB')+'.'+(s.location==='extension'?' Она лежит на продолжении ребра.':s.location==='edge'?' Она лежит на конечном ребре.':'');
+  }
+  function validateConstructionBoundary(lesson,names) {
+    if(!lesson)return {correct:false,code:'unknown',message:'Карточка для проверки не найдена.'};
+    const expected=lesson.result?.polygon,fail=(code,message)=>({correct:false,code,message}),eps=constructionTolerance(lesson);
+    if(!expected?.length)return {correct:true,code:'not-required'};
+    if(!Array.isArray(names)||names.length<3)return fail('incomplete','Граница пока не замкнута: нужны все её вершины в последовательном порядке.');
+    if(new Set(names).size!==names.length||names.some(n=>!lesson.model.points[n]))return fail('duplicate','Вершину отмечаем один раз; последняя сторона замыкается к первой автоматически.');
+    if(names.some(n=>!insideConstructionBody(lesson,lesson.model.points[n])))return fail('outside-body','Внешняя вспомогательная точка не входит в границу сечения.');
+    if(names.length!==expected.length||names.some(n=>!expected.some(e=>nearPoint(lesson.model.points[n],lesson.model.points[e],eps))))
+      return fail('incomplete','Граница неполна или содержит лишнюю точку. Проследи переход между соседними гранями.');
+    const same=(a,b)=>nearPoint(lesson.model.points[a],lesson.model.points[b],eps),start=expected.findIndex(e=>same(e,names[0]));
+    if(![1,-1].some(direction=>names.every((n,i)=>same(n,expected[(start+direction*i+expected.length)%expected.length]))))
+      return fail('order','Такой порядок соединяет несоседние вершины. Обойди границу по сторонам, не пересекая внутренность сечения.');
+    return {correct:true,code:'closed',message:'Граница замкнута; лишних или пропущенных вершин нет. Обход в обратную сторону также допустим.'};
   }
 
   let stored = {};
@@ -224,7 +439,52 @@
     s.planeView = !!s.planeView;
     const initial = lesson.model.initialCamera || { yaw: -.65, pitch: .46 };
     s.camera = s.camera && Number.isFinite(s.camera.yaw) && Number.isFinite(s.camera.pitch) ? { yaw: board ? wrapYaw(s.camera.yaw) : s.camera.yaw, pitch: clamp(s.camera.pitch, -1.45, 1.45) } : { ...initial };
+    if (!board && supportsConstruction(lesson.id) && s.construction) constructionState(lesson,s);
     return s;
+  }
+  function constructionState(lesson,s,create=false) {
+    if (!supportsConstruction(lesson.id)) return null;
+    let work=s.construction;
+    if (!work || typeof work!=='object' || Array.isArray(work) || work.version!==1) {
+      if(!create)return null;
+      work=s.construction={version:1,active:false,actions:[],selection:{},mistakes:0,history:[],boundarySelection:[],selectedCheck:-1};
+    }
+    const plan=constructionPlan(lesson),actions=[];
+    for(const old of (Array.isArray(work.actions)?work.actions:[]).slice(0,plan.length)) {
+      const index=actions.length;
+      if(!old || old.step!==index || !validateConstructionAction(lesson,index,old.selection).correct)break;
+      const keys=['plane',...constructionFields(plan[index]),'role','location'],selection={};
+      keys.forEach(key=>{if(typeof old.selection[key]==='string')selection[key]=old.selection[key];});
+      actions.push({step:index,selection});
+    }
+    work.actions=actions;work.active=work.active===true;
+    work.selection=work.selection && typeof work.selection==='object' && !Array.isArray(work.selection)?Object.fromEntries(Object.entries(work.selection).filter(([key,value])=>['plane','point','a','b','c','firstA','firstB','secondA','secondB','directionA','directionB','edgeA','edgeB','role','location'].includes(key)&&typeof value==='string'&&value.length<80)):{};
+    work.mistakes=Number.isSafeInteger(work.mistakes)?clamp(work.mistakes,0,1000000):0;
+    work.helpUsed=!!work.helpUsed || s.helpUsed || s.workedSeen || s.resultSeen || s.calculationSeen || s.revealed>0 || s.approved>=0 || s.questionApproved>=0;
+    work.history=Array.isArray(work.history)?work.history.slice(-50):[];
+    work.boundarySelection=Array.isArray(work.boundarySelection)?work.boundarySelection.filter(name=>typeof name==='string'&&knownNames(lesson,actions.length).has(name)).slice(0,30):[];
+    work.boundaryConfirmed=work.boundaryConfirmed===true && actions.length===plan.length && validateConstructionBoundary(lesson,work.boundarySelection).correct;
+    work.selectedCheck=Number.isInteger(work.selectedCheck)&&work.selectedCheck>=0&&work.selectedCheck<(lesson.check?.options.length||0)?work.selectedCheck:-1;
+    work.justBuilt=!!work.justBuilt && actions.length>0 && actions.length<plan.length;
+    work.feedback=work.feedback && typeof work.feedback.message==='string'?{correct:work.feedback.correct===true,code:String(work.feedback.code||'').slice(0,40),message:work.feedback.message.slice(0,600)}:null;
+    if(!['first','corrected'].includes(work.evidence)||!Number.isSafeInteger(work.evidenceAt)||work.evidenceAt<=0){delete work.evidence;delete work.evidenceAt;}
+    work.completed=actions.length===plan.length && (!lesson.result?.polygon?.length || work.boundaryConfirmed) && (!lesson.check || work.selectedCheck===lesson.check.correct);
+    return work;
+  }
+  function startConstruction(id=state.current) {
+    if(!supportsConstruction(id))return false;
+    if(state.current!==id)switchLesson(id,false);
+    const lesson=lessonMap.get(id),s=taskState(lesson),work=constructionState(lesson,s,true);
+    if (s.recall) s.recall.open=false;
+    work.active=true;save();renderLesson();return true;
+  }
+  function undoConstruction(lesson,s) {
+    const work=constructionState(lesson,s);
+    if(!work?.actions.length)return;
+    const action=work.actions.pop();
+    work.history.push({kind:'undo',action,at:Date.now()});
+    work.selection={};work.justBuilt=false;work.boundarySelection=[];work.boundaryConfirmed=false;work.selectedCheck=-1;work.feedback=null;
+    save();renderLesson();announce('Последнее самостоятельное действие отменено. Прежний результат и отметки помощи сохранены.');
   }
   function save(recordCompletion = false) {
     // Keep an earned result when the learner later compares it with a worked
@@ -232,7 +492,11 @@
     // in this version can earn it; proof and freehand work remain separate.
     if (!board) {
       const lesson = lessonMap.get(state.current), s = state.tasks[state.current];
-      if (lesson && s && s.attemptEvidenceVersion === 1 && !s.choiceEvidence && s.mode === 'practice' &&
+      const construction=lesson && s ? constructionState(lesson,s) : null;
+      if(construction?.completed && !construction.helpUsed && !construction.evidence) {
+        construction.evidence=construction.mistakes?'corrected':'first';construction.evidenceAt=Date.now();
+      }
+      if (lesson && s && !construction?.active && s.attemptEvidenceVersion === 1 && !s.choiceEvidence && s.mode === 'practice' &&
           guidanceFor(lesson)?.phase !== 'guided' && s.revealed === lesson.steps.length &&
           s.independentSteps === lesson.steps.length && !s.helpUsed && !s.workedSeen && !s.resultSeen &&
           !s.calculationSeen && !s.calculationRevealed &&
@@ -352,6 +616,16 @@
         face.vertices.forEach((v, i) => { const key = edgeKey(v, face.vertices[(i + 1) % face.vertices.length]); if (!this.adjacency.has(key)) this.adjacency.set(key, []); this.adjacency.get(key).push(index); });
         return { ...face, normal: outward, center };
       });
+      // For convex solids, two endpoints on a finite face determine a side on it.
+      // A point on an extension can satisfy its plane equation outside the solid.
+      this.pointFaces = new Map();
+      const epsilon = this.bodyRadius * 1e-7;
+      for (const [name, point] of Object.entries(this.data.points)) {
+        const distances = this.faceInfo.map(face => dot(face.normal, sub(point, face.center)));
+        const faces = distances.some(d => d > epsilon) ? [] :
+          this.faceInfo.filter((face, i) => Math.abs(distances[i]) <= epsilon);
+        this.pointFaces.set(name, faces);
+      }
       this.svg = svgEl('svg', { class: 'model-svg', viewBox: '0 0 600 420', tabindex: 0, role: 'img', 'aria-label': 'Пространственная модель. Стрелки поворачивают, Home возвращает исходный вид.' });
       container.append(this.svg);
       this.width = 600; this.height = 420; this.current = null; this.drag = null; this.raf = null; this.labelMetrics = new Map();
@@ -419,7 +693,7 @@
     }
     draw() {
       if (!this.current) return;
-      const c = this.current, points = this.data.points;
+      const c = this.current, points = this.data.points, steps = c.construction ? c.constructionSteps || [] : this.lesson.steps;
       const plane = c.planeId ? this.planes.get(c.planeId) : null;
       const planePts = plane ? plane.vertices.map(n => points[n]).filter(Boolean) : [];
       const nPlane = planePts.length > 2 ? this.normal(planePts) : null;
@@ -429,9 +703,16 @@
       let known = new Set([...this.bodyNames, ...(this.data.given || [])]);
       let segments = [];
       for (let i = 0; i < c.viewCount; i++) {
-        const step = this.lesson.steps[i];
+        const step = steps[i];
         (step.points || []).forEach(p => known.add(p));
         for (const seg of step.segments || []) { known.add(seg.a); known.add(seg.b); segments.push({ ...seg, step: i, plane: step.plane }); }
+      }
+      if(c.construction&&c.constructionBoundary?.length) {
+        const boundary=c.constructionBoundary;
+        boundary.forEach((a,index)=>{
+          const b=boundary[(index+1)%boundary.length];known.add(a);known.add(b);
+          if(!segments.some(s=>s.kind==='section'&&edgeKey(s.a,s.b)===edgeKey(a,b)))segments.push({a,b,kind:'section',step:c.viewCount-1});
+        });
       }
       known = new Set([...known].filter(name => points[name] && (!flat || inPlane(points[name]))));
       segments = segments.filter(s => (!flat || (inPlane(points[s.a]) && inPlane(points[s.b]))) && ((c.showHelpers && !c.cleanView) || s.kind !== 'helper' || s.step === c.viewCount - 1));
@@ -439,9 +720,9 @@
         const useful = new Set(this.bodyNames.concat(this.data.given || [], segments.flatMap(s => [s.a, s.b]), plane ? plane.vertices : []));
         known = new Set([...known].filter(n => useful.has(n)));
       }
-      const priority = new Set((c.viewCount ? this.lesson.steps[c.viewCount - 1].points || [] : []).concat(c.viewCount ? (this.lesson.steps[c.viewCount - 1].segments || []).flatMap(s => [s.a, s.b]) : this.data.given || []));
+      const priority = new Set((c.viewCount ? steps[c.viewCount - 1].points || [] : []).concat(c.viewCount ? (steps[c.viewCount - 1].segments || []).flatMap(s => [s.a, s.b]) : this.data.given || []));
       let labelNames = c.cleanView ? new Set([...(this.data.given || []), ...segments.flatMap(s => [s.a, s.b]), ...(plane?.vertices || []), ...priority]) : known;
-      if (guidanceFor(this.lesson) && Array.isArray(guidanceNames(this.lesson))) {
+      if (!c.construction && guidanceFor(this.lesson) && Array.isArray(guidanceNames(this.lesson))) {
         const relevant = new Set(guidanceNames(this.lesson));
         this.lesson.steps.slice(0, c.viewCount).forEach(step => {
           (step.points || []).forEach(name => relevant.add(name));
@@ -468,7 +749,26 @@
       const center = [(xmin + xmax) / 2, (ymin + ymax) / 2];
       const project = p => { const r = raw(p); return [this.width / 2 + (r[0] - center[0]) * scale, this.height / 2 - (r[1] - center[1]) * scale, r[2]]; };
       const path = names => names.map((name, i) => { const p = project(points[name]); return `${i ? 'L' : 'M'}${p[0].toFixed(3)} ${p[1].toFixed(3)}`; }).join(' ');
-      const line = (a, b, cls, attrs) => { const pa = project(points[a]), pb = project(points[b]); return svgEl('line', { x1: pa[0], y1: pa[1], x2: pb[0], y2: pb[1], class: cls, ...(attrs || {}) }); };
+      const line = (a, b, cls, attrs) => {
+        const pa = project(points[a]), pb = project(points[b]);
+        const geometry = {x1:pa[0], y1:pa[1], x2:pb[0], y2:pb[1]};
+        if (attrs['data-hidden']) {
+          // Align the 6-on, 5-off pattern on coincident edges, including partial
+          // segments authored from a different endpoint or in reverse.
+          const dx = pb[0] - pa[0], dy = pb[1] - pa[1], length = Math.hypot(dx, dy);
+          if (length > 1e-8) {
+            const forward = Math.abs(dx) > 1e-8 * length ? dx > 0 : dy > 0;
+            const along = (pa[0] * dx + pa[1] * dy) / length;
+            geometry['stroke-dashoffset'] = (forward ? along : 6 + along) % 11;
+          }
+        }
+        return svgEl('line', {...geometry, class:cls, ...attrs});
+      };
+      const hiddenSide = (a, b) => {
+        if (flat) return false;
+        const faces = this.pointFaces.get(a).filter(face => this.pointFaces.get(b).includes(face));
+        return faces.length > 0 && faces.every(face => rotate(face.normal)[2] < -1e-8);
+      };
       const title = svgEl('title', {}, this.lesson.title);
       const desc = svgEl('desc', {}, (plane ? 'Работаем в плоскости ' + plane.label + '. ' : '') + 'Показано шагов: ' + c.viewCount + ' из ' + this.lesson.steps.length + '. ' + (flat ? 'Плоский вид этой плоскости.' : 'Точная пространственная конфигурация, которую можно вращать.'));
       const g = svgEl('g', { 'aria-hidden': 'true' });
@@ -481,13 +781,26 @@
       if (planePts.length >= 3) g.append(svgEl('path', { d: path(plane.vertices) + ' Z', class: 'model-plane', 'data-active-plane': plane.id }));
       if (c.showResult && this.lesson.result?.polygon?.length >= 3) {
         const poly = this.lesson.result.polygon;
-        if (!flat || poly.every(name => inPlane(points[name]))) g.append(svgEl('path', { d: path(poly) + ' Z', class: 'model-final', 'data-section-polygon': poly.join('-') }));
+        if (!flat || poly.every(name => inPlane(points[name]))) {
+          g.append(svgEl('path', { d: path(poly) + ' Z', class: 'model-final', 'data-section-polygon': poly.join('-') }));
+          const builtSides = new Set(segments.filter(s => s.kind === 'section').map(s => edgeKey(s.a, s.b)));
+          poly.forEach((a, i) => {
+            const b = poly[(i + 1) % poly.length];
+            if (builtSides.has(edgeKey(a, b))) return;
+            const hidden = hiddenSide(a, b);
+            g.append(line(a, b, 'model-final-side' + (hidden ? ' occluded' : ''), {'data-final-side': a + '-' + b, 'data-hidden': hidden}));
+          });
+        }
       }
       for (const [a, b] of this.data.edges || []) {
         if (flat && !(inPlane(points[a]) && inPlane(points[b]))) continue;
         const adjacent = this.adjacency.get(edgeKey(a, b)) || [];
         const hidden = !flat && adjacent.length === 2 && adjacent.every(i => rotate(this.faceInfo[i].normal)[2] < -1e-8);
         g.append(line(a, b, 'model-edge' + (hidden ? ' hidden' : ''), { 'data-edge': a + '-' + b, 'data-hidden': hidden }));
+      }
+      for(const [a,b] of c.previewSegments || []) {
+        if(known.has(a)&&known.has(b)&&(!flat || (inPlane(points[a])&&inPlane(points[b]))))
+          g.append(line(a,b,'model-segment helper construction-preview',{'data-construction-preview':a+'-'+b}));
       }
       // Repeated construction of an already visible segment changes its focus, not its geometry.
       const visibleSegments = new Map();
@@ -497,7 +810,11 @@
         // into a dashed helper. Preserve its section role and latest focus.
         visibleSegments.set(key, old?.kind === 'section' && s.kind === 'helper' ? { ...s, kind: 'section' } : s);
       });
-      for (const s of visibleSegments.values()) g.append(line(s.a, s.b, 'model-segment' + (s.kind === 'helper' ? ' helper' : '') + (s.step === c.viewCount - 1 ? ' current' : ''), { 'data-segment': s.a + '-' + s.b, 'data-kind': s.kind || 'section', 'data-step': s.step + 1 }));
+      for (const s of visibleSegments.values()) {
+        const helper = s.kind === 'helper', hidden = !helper && hiddenSide(s.a, s.b);
+        const cls = 'model-segment' + (helper ? ' helper' : '') + (hidden ? ' occluded' : '') + (s.step === c.viewCount - 1 ? ' current' : '');
+        g.append(line(s.a, s.b, cls, { 'data-segment': s.a + '-' + s.b, 'data-kind': s.kind || 'section', 'data-step': s.step + 1, 'data-hidden': hidden }));
+      }
       const allProjected = [...known].map(name => ({ name, p: project(points[name]), focused: priority.has(name) }));
       const projected = allProjected.filter(p => labelNames.has(p.name));
       const textGroup = svgEl('g');
@@ -537,6 +854,23 @@
         let best=item,bestCost=item.cost(item,others);
         for(const candidate of item.candidates){const cst=item.cost(candidate,others);if(cst<bestCost-.01){best=candidate;bestCost=cst;}}
         if(best!==item)Object.assign(item,best);
+      }
+      // A dense final drawing can exhaust the candidates around one point.
+      // Keep its label and font size, then use free space elsewhere in the
+      // frame. The existing leader connects a displaced label to its point.
+      for(const item of placements) {
+        const others=placements.filter(other=>other!==item);
+        const blocked=box=>others.some(other=>overlap(box,other.box)>.01)||pointBoxes.some(point=>overlap(box,point)>.01);
+        if(!blocked(item.box))continue;
+        const w=item.box[2]-item.box[0],h=item.box[3]-item.box[1];
+        let best=null,bestCost=Infinity;
+        for(let top=7;top<=this.height-7-h;top+=6)for(let left=7;left<=this.width-7-w;left+=6) {
+          const box=[left,top,left+w,top+h];if(blocked(box))continue;
+          const candidate={box,x:left+3.5-item.metric.x,y:top+3.5-item.metric.y,
+            distance:Math.hypot(left+w/2-item.p[0],top+h/2-item.p[1]),anglePenalty:1};
+          const value=item.cost(candidate,others);if(value<bestCost){best=candidate;bestCost=value;}
+        }
+        if(best)Object.assign(item,best);
       }
       for(const {name,p,focused,label,x,y,box,distance} of placements) {
         const endX=clamp(p[0],box[0],box[2]),endY=clamp(p[1],box[1],box[3]);
@@ -612,7 +946,76 @@
     catalogList.replaceChildren(frag);
   }
 
+  // A short decision on the same cube. Keep its progress separate from the four
+  // formal construction steps and keep an earlier lesson attempt available.
+  function recallVisible(lesson, s) {
+    return lesson.id === 'starter-18' && (s.recall?.open ||
+      (s.mode === 'choose' && !s.construction?.active && !s.recall));
+  }
+  function defaultRecall(variant = 0) {
+    return {open:true, variant, point:'', face:'', hint:false};
+  }
+  function recallGeometry(r) {
+    return r.variant === 0
+      ? {from:'N', faces:{P:'BFGC'}, points:['M','P','Q']}
+      : {from:'M', faces:{N:'AEFB', Q:'DHEA'}, points:['N','P','Q']};
+  }
+  function renderRecall(panel, lesson, s, planes) {
+    const r = s.recall || defaultRecall();
+    const {from, faces, points} = recallGeometry(r);
+    const correctFace = faces[r.point];
+    const solved = !!correctFace && r.face === correctFace;
+    const box = el('section',{class:'step-card', 'data-section-recall':''});
+    const change = (patch) => { s.recall = {...r, ...patch}; save(); renderLesson(); };
+    box.append(el('h3',{}, r.variant ? 'Разминка · первый отрезок' : 'Продолжи сечение от точки N'),
+      para(r.variant ? 'Проведи любую сторону сечения из M. Выбери вторую точку.'
+        : 'Отрезок MN уже проведён. В какую точку пойдёшь из N, чтобы продолжить границу?'));
+    const choices = el('div',{class:'plane-choice',role:'group','aria-label':'Вторая точка'});
+    points.forEach(point => choices.append(button(point,()=>change({point,face:''}),'',{
+      'data-recall-point':point,'aria-pressed':point===r.point})));
+    box.append(choices);
+    if (r.point && !correctFace) {
+      box.append(para(r.point === 'M' ? 'Так ты вернёшься по уже проведённому отрезку. Куда можно пойти дальше?'
+        : 'Поверни куб. Есть ли грань, в которой целиком лежит твой отрезок?', 'feedback retry'));
+    }
+    if (correctFace) {
+      box.append(para('Покажи, в какой грани лежит отрезок '+from+r.point+'.'));
+      const choices = el('div',{class:'plane-choice',role:'group','aria-label':'Общая грань'});
+      for (const id of ['AEFB','BFGC','CGHD','DHEA']) {
+        choices.append(button(planes.get(id).label,()=>{
+          change({face:id});
+        },'',{'data-recall-face':id,'aria-pressed':r.face===id}));
+      }
+      box.append(choices);
+      if (r.face) box.append(para(solved ? 'Верно. Обе точки лежат в выбранной грани и в плоскости сечения.'
+        : 'Найди на кубе оба ребра с отмеченными точками. Выбранная грань содержит их оба?',
+        solved?'feedback good':'feedback retry'));
+    }
+    if (!solved) {
+      box.append(button('Покажи один шаг',()=>{
+        markHelp(lesson.id,'Подсказка к короткой разминке'); change({hint:true});
+      },'ghost',{'data-recall-hint':''}));
+      if (r.hint) box.append(para(r.variant
+        ? 'Точка M лежит на ребре AE. Проверь обе боковые грани с этим ребром.'
+        : 'Найди ребро BF с точкой N. По одной из двух его граней ты уже пришёл из M. Посмотри на другую.'));
+    } else {
+      box.append(button('Первый отрезок с другого ракурса',()=>{
+        s.camera.yaw=wrapYaw(s.camera.yaw+Math.PI/2);
+        s.recall=defaultRecall(1); save(); renderLesson();
+      },'ghost',{'data-recall-repeat':''}));
+    }
+    box.append(button(s.mode==='choose' && !s.construction?.active?'К полному построению':'Вернуться к моему построению',
+      ()=>change({open:false}),'ghost',{'data-recall-close':''}));
+    panel.append(box);
+  }
+
   function activePlane(lesson, s) {
+    if (recallVisible(lesson,s)) return s.recall?.face || null;
+    const manual=constructionState(lesson,s);
+    if(manual?.active) {
+      const count=manual.actions.length;
+      return manual.justBuilt?lesson.steps[count-1]?.plane:manual.selection.plane || (count===lesson.steps.length?lesson.steps[count-1]?.plane:null);
+    }
     if (s.mode === 'choose') return null;
     if (s.viewCount < s.revealed) return s.viewCount ? lesson.steps[s.viewCount - 1].plane : null;
     if (s.justBuilt && s.revealed) return lesson.steps[s.revealed - 1].plane;
@@ -622,6 +1025,31 @@
     return null;
   }
   function updateScene(lesson, s, caption) {
+    if (recallVisible(lesson,s)) {
+      const r=s.recall || defaultRecall(), {from}=recallGeometry(r);
+      caption.textContent=r.face?'Выбранная грань: '+r.face:'Поверни куб, чтобы рассмотреть грани';
+      renderer?.update({viewCount:r.variant?0:1,planeId:r.face || null,planeView:!!r.face && s.planeView,
+        camera:{...s.camera},showHelpers:true,cleanView:false,showResult:false,
+        focusNames:['A','B','C','D','E','F','G','H','M','N','P','Q'],
+        previewSegments:r.point?[[from,r.point]]:[]});
+      return;
+    }
+    const construction=constructionState(lesson,s);
+    if(construction?.active) {
+      const count=construction.actions.length,selected=construction.selection,plan=constructionPlan(lesson)[count];
+      const planeId=construction.justBuilt?lesson.steps[count-1]?.plane:selected.plane || (count===lesson.steps.length?lesson.steps[count-1]?.plane:null);
+      const plane=planesFor(lesson).get(planeId),known=knownNames(lesson,count),preview=[];
+      const pair=(a,b)=>{if(known.has(selected[a])&&known.has(selected[b])&&selected[a]!==selected[b])preview.push([selected[a],selected[b]]);};
+      if(plan?.kind==='segment')pair('a','b');
+      if(plan?.kind==='intersection'){pair('firstA','firstB');pair('secondA','secondB');}
+      if(plan?.kind==='parallel'){pair('directionA','directionB');pair('edgeA','edgeB');}
+      if(plan?.kind==='edge-point')pair('edgeA','edgeB');
+      caption.textContent=plane?'Выбранная плоскость: '+plane.label:'Выбери рабочую плоскость для своего действия';
+      renderer?.update({viewCount:count,planeId:plane?.id,planeView:s.planeView&&!!plane,camera:{...s.camera},showHelpers:s.showHelpers,cleanView:s.cleanView,
+        showResult:construction.boundaryConfirmed,focusNames:Object.values(selected).filter(value=>known.has(value)),previewSegments:preview,construction:true,
+        constructionSteps:construction.actions.map(action=>constructionDrawingStep(lesson,action)),constructionBoundary:construction.boundaryConfirmed?construction.boundarySelection:[]});
+      return;
+    }
     const id = activePlane(lesson, s), p = planesFor(lesson).get(id);
     caption.textContent = p ? (s.planeView ? 'Плоский вид: ' : 'Плоскость шага: ') + p.label : 'Исходная фигура';
     const focusStep=s.viewCount<s.revealed?(s.viewCount?lesson.steps[s.viewCount-1]:lesson.steps[0]):s.justBuilt?lesson.steps[s.revealed-1]:lesson.steps[Math.min(s.revealed,lesson.steps.length-1)];
@@ -629,6 +1057,7 @@
   }
   function renderLesson() {
     const lesson = lessonMap.get(state.current), s = taskState(lesson), planes = planesFor(lesson);
+    const manual=!!constructionState(lesson,s)?.active;
     const starter = guidanceFor(lesson);
     document.querySelector('.layout')?.classList.toggle('starter-layout', !!starter);
     currentMain.classList.toggle('starter-lesson', !!starter);
@@ -649,7 +1078,7 @@
     if (lesson.source && !starter) metadata.push(para(sourceLabel(lesson,false), 'source-line'));
     if (board) header.append(...metadata);
     if (starter) {
-      header.prepend(para(({model:'Смотрим вместе',guided:'Пробуем с опорой',transfer:'Новый пример: пробую сам'})[starter.phase] || (lesson.scaffold?'Новый приём':'Первые шаги'),'starter-phase'));
+      header.prepend(para((lesson.id==='starter-18' && !manual && !recallVisible(lesson,s) && s.mode==='study' ? 'Разбор по шагам' : '') || ({model:'Смотрим вместе',guided:'Пробуем с опорой',transfer:'Новый пример: пробую сам'})[starter.phase] || (lesson.scaffold?'Новый приём':'Первые шаги'),'starter-phase'));
       if (starter.glossary?.length) {
         const words=el('div',{class:'starter-glossary'});
         starter.glossary.forEach(item=>{const row=para('');row.append(el('strong',{},item.term+' — '),math(item.text));words.append(row);});
@@ -673,15 +1102,21 @@
     helperLabel.append(helperCheck, document.createTextNode('Вспомогательные линии')); extras.append(helperLabel); if (!starter) modelPanel.append(extras);
     extras.append(button('Чистый вид',()=>{s.cleanView=!s.cleanView;save();renderLesson();},'clean-view',{ 'aria-pressed':s.cleanView,'data-action':'clean-view',title:'Оставить подписи и линии, нужные для текущего построения'}));
     const legend = el('div', { class: 'legend', 'aria-label': 'Обозначения на модели' });
-    [['plane', 'Плоскость'], ['current', 'Текущий шаг'], ['', 'Построено'], ['aux', 'Помощь']].forEach(([cls, text]) => legend.append(el('span', { class: cls }, text)));
+    [['plane', 'Плоскость'], ['current', 'Текущий шаг'], ['', 'Построено'], ['aux', 'Вспомогательная линия']].forEach(([cls, text]) => legend.append(el('span', { class: cls }, text)));
     modelPanel.append(legend);
-    if (!starter) modelPanel.append(para('Штрихи на рёбрах обозначают невидимую часть фигуры. Чертёж помогает рассуждать; совпадение линий на экране не доказывает их пересечение.', 'model-note'));
+    if (!starter) modelPanel.append(para('Невидимые рёбра и стороны сечения показаны штрихами. Совпадение линий на экране само по себе не доказывает их пересечение.', 'model-note'));
     if ((lesson.theory || []).length) {
       const theory = details('Нужная теория', lesson.theory.map(t => para(t)), () => { s.helpUsed = true; s.theoryOpen = true; save(); refreshStatus(lesson, s); }, s.theoryOpen);
       theory.addEventListener('toggle', () => { s.theoryOpen = theory.open; save(); }); theory.classList.add('theory-details'); modelPanel.append(theory);
     }
     const stepPanel = el('div', { class: 'step-panel' });
-    renderStepPanel(stepPanel, lesson, s, planes);
+    const recall = recallVisible(lesson,s);
+    if (recall) renderRecall(stepPanel,lesson,s,planes);
+    if (!recall || (s.mode==='choose' && !manual)) renderStepPanel(stepPanel, lesson, s, planes);
+    if (!recall && lesson.id==='starter-18') stepPanel.append(button('Разминка на две минуты',()=>{
+      s.recall=defaultRecall(1); s.camera.yaw=wrapYaw(s.camera.yaw+Math.PI/2);
+      save(); renderLesson();
+    },'ghost',{'data-recall-start':''}));
     if(lesson.practiceTopic && !starter && !board)stepPanel.append(button('Потренировать этот шаг',()=>{
       save(); window.dispatchEvent(new CustomEvent('sections:practice',{detail:{topic:lesson.practiceTopic,lessonId:lesson.id,step:s.revealed}}));
     },'practice-step ghost',{'data-action':'practice-step'}));
@@ -696,9 +1131,9 @@
       notes.addEventListener('toggle', () => { s.notesOpen = notes.open; save(); });
       fragment.append(notes);
     }
-    if (!starter || s.revealed) fragment.append(renderHistory(lesson, s, planes));
-    if(s.revealed===lesson.steps.length && s.revealed>0 && lesson.calculationSteps?.length)fragment.append(renderCalculations(lesson,s));
-    const bottom = renderBottom(lesson, s); if (bottom.childNodes.length) fragment.append(bottom);
+    if (!recall && !manual && (!starter || s.revealed)) fragment.append(renderHistory(lesson, s, planes));
+    if(!manual && s.revealed===lesson.steps.length && s.revealed>0 && lesson.calculationSteps?.length)fragment.append(renderCalculations(lesson,s));
+    const bottom = manual && !recall ? renderConstructionDraft(s) : renderBottom(lesson, s); if (bottom.childNodes.length) fragment.append(bottom);
     if (starter && lesson.source) { const metadata=details('Сведения о карточке',[para(sourceLabel(lesson,false),'source-line')]);metadata.classList.add('starter-metadata');fragment.append(metadata); }
     const navigation = el('nav', { class: 'lesson-navigation', 'aria-label': 'Переход между заданиями' });
     const i = C.lessons.indexOf(lesson);
@@ -720,15 +1155,121 @@
     window.dispatchEvent(new CustomEvent('sections:lesson',{detail:{id:lesson.id,lessonId:lesson.id}}));
   }
 
+  function renderConstructionDraft(s) {
+    const box=el('section',{class:'construction-draft'});
+    box.append(el('h3',{},'Моё объяснение'),el('label',{for:'proof-draft'},'Почему выбранные точки и линии принадлежат нужным плоскостям?'));
+    const area=el('textarea',{id:'proof-draft',maxlength:30000,'data-construction-draft':'',placeholder:'Работаю в плоскости … . Это допустимо, потому что … .'});area.value=s.draft;
+    area.addEventListener('input',()=>{s.draft=area.value.slice(0,30000);save();});
+    box.append(area,para('Запись сохраняется. Автоматически проверяются выбранные геометрические действия; полное доказательство обсуждаем с преподавателем.','teacher-note'));
+    return box;
+  }
+  function renderConstructionPanel(panel,lesson,s,planes) {
+    const work=constructionState(lesson,s,true),plans=constructionPlan(lesson),index=work.actions.length,plan=plans[index];
+    const header=el('section',{class:'construction-heading'});
+    header.append(el('h3',{},'Строю сам'),para('Проверено действий: '+index+' из '+plans.length,'construction-status'));
+    if(work.evidence)header.append(para((work.completed&&!work.helpUsed?'':'Ранее ')+(work.evidence==='first'?'выбраны все элементы без подсказок.':'выбраны все элементы после своих исправлений.'),'construction-evidence'));
+    if(work.helpUsed)header.append(para('В этой карточке уже открывалась помощь. Она сохранена в истории; новое нажатие или отмена её не стирает.','small'));
+    panel.append(header);
+    const feedbackNode=()=>{
+      if(work.feedback)panel.append(para(work.feedback.message,'feedback '+(work.feedback.correct?'good':'retry')));
+    };
+    if(work.justBuilt && plan) {
+      const done=work.actions[index-1],box=el('section',{class:'step-card construction-action'});
+      box.append(el('h4',{},'Действие выполнено'),para(constructionActionText(lesson,done)),para('Проверь своё объяснение выполненного действия, затем выбери элементы следующего.','small'),button('Следующее самостоятельное действие',()=>{work.justBuilt=false;work.feedback=null;save();renderLesson();},'primary',{'data-action':'construction-next'}));
+      panel.append(box);
+    } else if(plan) {
+      const box=el('section',{class:'step-card construction-action','data-construction-step':index});
+      box.append(el('h4',{},(index+1)+'. '+plan.title),para(plan.prompt));
+      const group=el('div',{class:'plane-choice','aria-label':'Рабочая плоскость самостоятельного действия'});
+      choicePlanes(lesson,lesson.steps[index],planes,index).forEach(plane=>{
+        group.append(button(plane.label,()=>{work.selection.plane=plane.id;work.feedback=null;save();renderLesson();},work.selection.plane===plane.id?'selected':'',{'data-construction-plane':plane.id,'aria-pressed':work.selection.plane===plane.id}));
+      });
+      box.append(el('p',{},'1. В какой плоскости работаешь?'),group,el('p',{},'2. Выбери элементы действия'));
+      const names=[...knownNames(lesson,index)].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+      const labels={point:'Точка',a:'Первая точка',b:'Вторая точка',c:'Третья точка',firstA:'Первая прямая: точка 1',firstB:'Первая прямая: точка 2',secondA:'Вторая прямая: точка 1',secondB:'Вторая прямая: точка 2',directionA:'Направление: точка 1',directionB:'Направление: точка 2',edgeA:'Ребро: первая вершина',edgeB:'Ребро: вторая вершина'};
+      const fields=el('div',{class:'construction-fields'});
+      function selectField(key,label,options) {
+        const id='construction-'+key,row=el('div',{class:'construction-field'}),select=el('select',{id,'data-construction-input':key});
+        select.append(el('option',{value:''},'Выбери…'));options.forEach(([value,text])=>select.append(el('option',{value},text)));
+        select.value=work.selection[key]||'';
+        select.addEventListener('change',()=>{work.selection[key]=select.value;work.feedback=null;save();renderLesson();document.getElementById(id)?.focus({preventScroll:true});});
+        row.append(el('label',{for:id},label),select);fields.append(row);
+      }
+      constructionFields(plan).forEach(key=>selectField(key,labels[key],names.map(name=>[name,displayName(name)])));
+      if(plan.kind==='segment')selectField('role','Какую роль играет линия?',[['helper','Вспомогательная линия'],['section','Сторона сечения']]);
+      if(plan.referenceEdge)selectField('location','Новая точка лежит на конечном ребре или на его продолжении?',[['edge','На конечном ребре'],['extension','На продолжении за вершиной']]);
+      box.append(fields,para('Выбранные пары точек показаны на модели как пробные линии. Они станут построением после проверки.','small'));
+      box.append(button('Проверить и выполнить действие',()=>{
+        const selection={...work.selection},result=validateConstructionAction(lesson,index,selection);
+        work.feedback=result;
+        if(result.correct) {
+          work.actions.push({step:index,selection});work.selection={};work.justBuilt=work.actions.length<plans.length;
+          work.boundarySelection=[];work.boundaryConfirmed=false;work.selectedCheck=-1;
+        } else {
+          if(result.code!=='missing'&&result.code!=='location'&&result.code!=='role')work.mistakes++;
+          else if(result.code==='role'&&selection.role)work.mistakes++;
+          work.history.push({kind:'attempt',step:index,selection,code:result.code,at:Date.now()});
+        }
+        save(true);renderLesson();announce(result.message);
+      },'primary',{'data-action':'construction-submit'}));
+      const hint=details('Подсказка к действию',[para(lesson.steps[index].hint || lesson.steps[index].reason),para('Открытие этой подсказки сохраняется как помощь к карточке.','teacher-note')],()=>{
+        if(!hint.isConnected)return;
+        work.hintStep=index;work.helpUsed=true;markHelp(lesson.id,'Подсказка самостоятельного построения: шаг '+(index+1));
+      },work.hintStep===index);
+      hint.addEventListener('toggle',()=>{if(hint.isConnected&&!hint.open&&work.hintStep===index){work.hintStep=-1;save();}});
+      box.append(hint);panel.append(box);feedbackNode();
+    } else {
+      const finish=el('section',{class:'step-card construction-finish'});
+      finish.append(el('h4',{},work.completed?(work.helpUsed?'Построение проверено после помощи':'Самостоятельные действия проверены'):'Все действия выполнены. Проверь результат.'));
+      if(lesson.result?.polygon?.length) {
+        finish.append(para('Выбери вершины границы по порядку обхода. Начать можно с любой вершины и идти в любую сторону. Последняя сторона вернётся к первой автоматически.'));
+        const vertices=el('div',{class:'construction-boundary-options','aria-label':'Вершины границы по порядку'});
+        [...knownNames(lesson,index)].sort().forEach(name=>vertices.append(button(displayName(name),()=>{
+          const at=work.boundarySelection.indexOf(name);if(at<0)work.boundarySelection.push(name);else work.boundarySelection.splice(at,1);
+          work.boundaryConfirmed=false;work.feedback=null;save();renderLesson();
+        },work.boundarySelection.includes(name)?'selected':'',{'data-construction-vertex':name,'aria-pressed':work.boundarySelection.includes(name)})));
+        finish.append(vertices,para(work.boundarySelection.length?work.boundarySelection.map(displayName).join(' → ')+' → '+displayName(work.boundarySelection[0]):'Граница ещё не выбрана.','construction-boundary-order'));
+        finish.append(button('Проверить замкнутую границу',()=>{
+          const result=validateConstructionBoundary(lesson,work.boundarySelection);work.feedback=result;work.boundaryConfirmed=result.correct;
+          if(!result.correct)work.mistakes++;
+          save(true);renderLesson();announce(result.message);
+        },'primary',{'data-action':'construction-boundary-submit'}));
+        if(work.boundaryConfirmed)finish.append(para('Граница проверена.','feedback good'));
+      }
+      if(lesson.check) {
+        finish.append(el('h4',{},'Почему это работает?'),para(lesson.check.question));
+        const choices=el('div',{class:'check-options'});
+        lesson.check.options.forEach((text,i)=>choices.append(button(text,()=>{
+          work.selectedCheck=i;
+          if(i!==lesson.check.correct){work.mistakes++;work.feedback={correct:false,code:'reason',message:'Это объяснение не подтверждает построение. Проверь принадлежность точек и роль вспомогательных линий.'};}
+          else work.feedback={correct:true,code:'reason',message:lesson.check.explanation};
+          save(true);renderLesson();
+        },work.selectedCheck===i?'selected':'',{'data-construction-check':i,'aria-pressed':work.selectedCheck===i})));
+        finish.append(choices);
+      }
+      if(work.completed)finish.append(para(work.helpUsed?'Геометрические действия и итоговые выборы проверены после помощи.':'Геометрические действия и итоговые выборы проверены.','feedback good'),para('Обоснуй своими словами рабочую плоскость каждого действия. Полное доказательство автоматически не оценивается.','teacher-note'));
+      panel.append(finish);feedbackNode();
+    }
+    const controls=el('div',{class:'construction-controls'});
+    if(work.actions.length)controls.append(button('Отменить последнее действие',()=>undoConstruction(lesson,s),'ghost',{'data-action':'construction-undo'}));
+    controls.append(button('Вернуться к выбору плоскости и разбору',()=>{work.active=false;save();renderLesson();},'ghost',{'data-action':'construction-leave'}));panel.append(controls);
+    if(work.actions.length) {
+      const history=el('ol');work.actions.forEach(action=>{const item=el('li');item.append(para(constructionActionText(lesson,action)),para('Плоскость: '+(planes.get(action.selection.plane)?.label || action.selection.plane),'small'));history.append(item);});
+      panel.append(details('Мои принятые действия',[history]));
+    }
+  }
+
   function renderStepPanel(panel, lesson, s, planes) {
+    if(constructionState(lesson,s)?.active){renderConstructionPanel(panel,lesson,s,planes);return;}
     if (s.mode === 'choose') {
       const choice = el('div', { class: 'mode-choice' });
-      const startStudy=()=>{beginAttempt(s);s.mode='study';s.workedSeen=true;save();renderLesson();renderCatalog();};
-      const startPractice=()=>{beginAttempt(s);s.mode='practice';if(guidanceFor(lesson)?.phase==='guided')markHelp(lesson.id,'Учебная попытка с опорой');save();renderLesson();};
+      const startStudy=()=>{if(s.recall)s.recall.open=false;beginAttempt(s);s.mode='study';s.workedSeen=true;save();renderLesson();renderCatalog();};
+      const startPractice=()=>{if(s.recall)s.recall.open=false;beginAttempt(s);s.mode='practice';if(guidanceFor(lesson)?.phase==='guided')markHelp(lesson.id,'Учебная попытка с опорой');save();renderLesson();};
       if (guidanceFor(lesson)) {
         const phase=guidanceFor(lesson).phase,model=phase==='model';
         choice.append(el('h3',{},model?(lesson.scaffold?'Разберём новый приём':'Посмотрим одно действие'):phase==='guided'?'Теперь попробуем с опорой':'Теперь новый пример'),para(guidanceFor(lesson).intro || (lesson.scaffold?'Назовём рабочую плоскость. Затем обоснуем каждую новую линию.':'Сначала назовём плоскость. Потом выполним одно действие.')));
-        choice.append(button(model?'Сделаем вместе':phase==='guided'?'Попробую с опорой':'Попробую сам',model?startStudy:startPractice,'primary',{'data-action':model?'start-study':'start-practice'}));
+        if(supportsConstruction(lesson.id))choice.append(button('Построить самостоятельно',()=>startConstruction(lesson.id),'primary',{'data-action':'start-construction'}),para('Сам выбери точки, линии и их роль. Действия проверяются; прежний разбор и результаты сохраняются отдельно.','small'));
+        choice.append(button(model?'Сделаем вместе':phase==='guided'?'Попробую с опорой':supportsConstruction(lesson.id)?'Потренировать выбор плоскости':'Попробую сам',model?startStudy:startPractice,supportsConstruction(lesson.id)?'ghost':'primary',{'data-action':model?'start-study':'start-practice'}));
         const other=details('Другой способ работы',[button(model?'Попробую сам':'Посмотреть разбор',model?startPractice:startStudy,'ghost',{'data-action':model?'start-practice':'start-study'})]);other.classList.add('starter-other-mode');choice.append(other);
       } else {
         choice.append(el('h3', {}, 'Как будем строить?'), para('В обоих режимах сначала определяем плоскость. Новые линии появляются только после твоего действия.'));
@@ -738,6 +1279,7 @@
       if (s.workedSeen || s.helpUsed || s.resultSeen) choice.append(para('Разбор или подсказки этой задачи уже открывались. Новая попытка сохранит эту отметку.', 'small muted'));
       panel.append(choice); return;
     }
+    if(supportsConstruction(lesson.id))panel.append(button('Открыть самостоятельное построение',()=>startConstruction(lesson.id),'ghost',{'data-action':'start-construction'}));
     const meter = el('div', { class: 'step-meter' });
     meter.append(el('span', {}, (guidanceFor(lesson)?'Сделано: ':'Построено: ') + s.revealed + ' из ' + lesson.steps.length), el('span', { class: 'learning-status' }, statusText(s, lesson)));
     const progress = el('div', { class: 'step-progress', role: 'progressbar', 'aria-valuenow': s.revealed, 'aria-valuemin': 0, 'aria-valuemax': lesson.steps.length, 'aria-label': 'Выполненные шаги' }); const fill = el('span'); fill.style.width = (100 * s.revealed / Math.max(1, lesson.steps.length)) + '%'; progress.append(fill);
@@ -900,7 +1442,7 @@
 
   function renderBottom(lesson, s) {
     const bottom = el('div', { class: 'task-bottom' });
-    const ready = s.revealed === lesson.steps.length && s.revealed > 0;
+    const ready = !recallVisible(lesson,s) && s.revealed === lesson.steps.length && s.revealed > 0;
     const calculationsReady=s.calculationRevealed===(lesson.calculationSteps || []).length;
     if (ready) {
       const result = el('section'); result.append(el('h3', {}, guidanceFor(lesson)?'Что получилось':'Проверка результата'));
@@ -1028,11 +1570,23 @@
   }
 
   try {
+    if (!board && current==='starter-18' && new URLSearchParams(location.search).get('warmup')==='1') {
+      const s=taskState(lessonMap.get(current));
+      s.recall=defaultRecall(1); s.camera.yaw=wrapYaw(s.camera.yaw+Math.PI/2);
+      const url=new URL(location.href); url.searchParams.delete('warmup');
+      history.replaceState(null,'',url.href);
+      save();
+    }
     renderShell();
     const publicLessons=frozenCopy(C.lessons),publicLessonMap=new Map(publicLessons.map(lesson=>[lesson.id,lesson]));
     window.SECTIONS_APP = Object.freeze({
       getState: () => JSON.parse(JSON.stringify(state)),
       selectLesson: id => switchLesson(id, false),
+      supportsConstruction,
+      startConstruction,
+      getConstructionPlan:id=>frozenCopy(constructionPlan(lessonMap.get(id))),
+      checkConstructionAction:(id,index,selection)=>frozenCopy(validateConstructionAction(lessonMap.get(id),index,selection)),
+      checkConstructionBoundary:(id,names)=>frozenCopy(validateConstructionBoundary(lessonMap.get(id),names)),
       lessons:publicLessons,
       getCurrentLesson:()=>publicLessonMap.get(state.current),
       createScene:(container,lesson,onCamera)=>new Scene(container,lesson,onCamera),
@@ -1212,7 +1766,43 @@
     {id:'research',title:'Контроль 3 · Особые случаи и доказательства',description:'Проверяем границы применимости метода и полноту аргумента.',topics:['topology','proof','projection','coordinates','strategy'],proof:'Предскажи изменение числа сторон в одной лаборатории. Отдельно запиши наблюдение и доказательство критических значений.'},
     {id:'final',title:'Итоговая работа',description:'Пять автоматически проверяемых заданий и отдельное построение с доказательством для преподавателя.',topics:['incidence','trace','similarity','area','proof'],proof:'Построй новую задачу из главы «Выбор метода» или «Сложные построения». Назови плоскость каждой линии, обоснуй границу, вычисли указанную величину и проверь результат другим способом.'}
   ];
-  function makeExam(id,run=0){const spec=assessments.find(x=>x.id===id)||assessments[0];return{...spec,run,questions:spec.topics.map((t,i)=>makeDrill(t,41+run*131+i*17))};}
+  function writtenConstruction(id, run) {
+    if (id === 'entry') return null;
+    const model = solid(id === 'basic' || id === 'final' ? 'tetra' : 'cube');
+    const mark = (name, a, b, portion) => {
+      model.points[name] = add(model.points[a], mul(sub(model.points[b], model.points[a]), portion));
+      model.given.push(name);
+    };
+    let prompt, solution;
+    if (id === 'basic') {
+      const denominator = 2 + run % 3;
+      for (const [name, endpoint] of [['M', 'A'], ['N', 'B'], ['K', 'C']]) mark(name, 'S', endpoint, 1 / denominator);
+      prompt = 'В тетраэдре SABC точки M, N и K лежат на рёбрах SA, SB и SC. На каждом ребре расстояние от S до отмеченной точки равно 1/' + denominator + ' длины этого ребра. Построй сечение плоскостью MNK. Назови грань для каждой стороны. На грани SAB покажи сторону сечения и отдельно назови прямую пересечения плоскостей MNK и SAB.';
+      solution = 'В грани SAB получаем отрезок MN, в SBC — NK, в SCA — KM. Их концы лежат на рёбрах, а отрезки целиком лежат на соответствующих гранях. MN ∥ AB и MK ∥ AC по пропорциональности отрезков, поэтому плоскость сечения параллельна основанию ABC. Других сторон нет. След на плоскости SAB — вся прямая MN. Сторона на самой грани — только отрезок MN.';
+    } else if (id === 'metric') {
+      const half = 2 + run % 5;
+      for (const [name, endpoint] of [['M', 'B'], ['N', 'D'], ['K', 'A1']]) mark(name, 'A', endpoint, .5);
+      prompt = 'Ребро куба ABCDA₁B₁C₁D₁ равно ' + (2 * half) + '. Точки M, N и K — середины рёбер AB, AD и AA₁. Построй сечение плоскостью MNK. Докажи форму сечения и найди его площадь.';
+      solution = 'Каждая пара точек лежит на одной из трёх граней при A. Плоскость отсекает угол при A: в осях вдоль AB, AD и AA₁ она имеет уравнение x+y+z=' + half + '. На остальных трёх гранях одна координата уже больше ' + half + '. Все стороны сечения равны ' + half + '√2 по теореме Пифагора. Площадь равностороннего треугольника равна (' + half + '√2)²·√3/4 = ' + (half * half) + '√3/2.';
+    } else if (id === 'research') {
+      const height = 3 + run % 5;
+      prompt = 'Куб с ребром ' + height + ' стоит на грани ABCD. Горизонтальная плоскость расположена на уровне t, отсчитанном от ABCD вверх. Для каждого положения опиши общую часть плоскости и куба и укажи, когда плоскость пересекает внутренность куба. Разбери t < 0, t = 0, 0 < t < ' + height + ', t = ' + height + ' и t > ' + height + '. Нарисуй по одному примеру внутреннего и граничного положения.';
+      solution = 'У всех точек куба высота от 0 до ' + height + '. Вне этого промежутка общих точек нет. На концах плоскость содержит целую нижнюю или верхнюю грань. При 0 < t < ' + height + ' на каждом вертикальном ребре есть ровно одна точка высоты t. Соединяя соседние точки по боковым граням, получаем квадрат со стороной ' + height + '. Только между крайними уровнями плоскость проходит через внутренность куба.';
+    } else if (id === 'final') {
+      const ab = 4 + run % 5, unit = 1 + run % 3, sc = 5 * unit;
+      Object.assign(model.points, {A:[0,0,0], B:[ab,0,0], C:[.75*ab,3*unit,0], S:[.75*ab-3*unit,3*unit,4*unit]});
+      mark('M', 'S', 'A', .5); mark('N', 'S', 'B', .5); mark('K', 'A', 'C', .5);
+      prompt = 'В тетраэдре SABC даны AB = ' + ab + ', SC = ' + sc + '. Точки M, N и K — середины SA, SB и AC. Построй сечение плоскостью MNK. Укажи, на каком ребре лежит четвёртая вершина и как её построить. Обоснуй каждую сторону сечения и найди периметр.';
+      solution = 'MN — средняя линия треугольника SAB, MK — средняя линия SAC. Через N в грани SBC проведи NR ∥ SC до ребра BC. Поскольку MK ∥ SC, прямая NR лежит и в секущей плоскости. По теореме о средней линии R — середина BC. В основании ABC отрезок RK параллелен AB. Граница проходит по четырём граням в порядке M–N–R–K. Две стороны равны AB/2 и две равны SC/2, поэтому периметр равен AB + SC = ' + (ab + sc) + '.';
+    }
+    return {prompt, solution, scene:{title:'Исходный чертёж письменной задачи', model, steps:[]}};
+  }
+  function makeExam(id, run=0, writtenVersion=1) {
+    const spec = assessments.find(x => x.id === id) || assessments[0];
+    const written = writtenVersion === 1 ? writtenConstruction(spec.id, run) : null;
+    return {...spec, run, proof:written?.prompt || spec.proof, written,
+      questions:spec.topics.map((t,i) => makeDrill(t, 41 + run * 131 + i * 17))};
+  }
   const api={topics,makeDrill,labFamilies,labBounds,makeLab,assessments,makeExam,solid,formatNumber:f};
   root.SECTION_ACTIVITIES=api;
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
@@ -1224,10 +1814,12 @@
   const C=window.COURSE,api=window.SECTIONS_APP,A=window.SECTION_ACTIVITIES;
   if(!C||!api||!A)return;
   const KEY='mathexam.sections.master.activities.v1',layout=document.querySelector('.layout'),host=document.getElementById('sections-app');
-  const defaults={view:'map',route:'full',path:{stageId:'begin-01',readiness:{},reviews:{}},practice:{topic:'incidence',topics:{},returnTo:null,reviewStage:null},labs:{family:'cube-sum',states:{}},exams:{},examId:'entry'};
+  const defaults={view:'map',route:'full',path:{stageId:'begin-01',readiness:{},reviews:{}},practice:{topic:'incidence',topics:{},returnTo:null,reviewStage:null},labs:{family:'cube-sum',states:{}},research:{states:{}},exams:{},examId:'entry'};
   let state;try{state={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')};}catch(_){state={...defaults};}
   state.practice={...defaults.practice,...state.practice};state.labs={...defaults.labs,...state.labs};state.exams=state.exams||{};state.path={...defaults.path,...state.path};state.path.readiness=state.path.readiness||{};
-  let visual=null,nav,portal,storageOK=true;
+  state.research=state.research&&typeof state.research==='object'&&!Array.isArray(state.research)?state.research:{states:{}};
+  if(!state.research.states||typeof state.research.states!=='object'||Array.isArray(state.research.states))state.research.states={};
+  let visual=null,proofVisual=null,nav,portal,storageOK=true;
   const lessonById=new Map(C.lessons.map(x=>[x.id,x])),moduleById=new Map(C.modules.map(x=>[x.id,x]));
   const stageById = new Map((C.learningPath || []).map(stage => [stage.id, stage]));
   const REVIEW_DELAY = 24 * 60 * 60 * 1000;
@@ -1257,11 +1849,12 @@
   function show(view,focus=true){
     if(view==='control')markExamHelp('Во время работы открыт другой набор.',state.examId);else markExamHelp('Во время работы открыты учебные материалы или другой раздел.');
     if(visual){visual.destroy();visual=null;}
+    if(proofVisual){proofVisual.destroy();proofVisual=null;}
     state.view=view;document.documentElement.dataset.sectionsView=view;save();document.querySelector('.skip-link')?.setAttribute('href',view==='lessons'?'#lesson-title':'#master-portal');layout.hidden=view!=='lessons';portal.hidden=view==='lessons';
-    nav.querySelectorAll('button').forEach(b=>{const yes=b.dataset.view===view;b.classList.toggle('active',yes);b.setAttribute('aria-selected',String(yes));});
+    nav.querySelectorAll('button').forEach(b=>{const yes=b.dataset.view===(view==='research'?'map':view);b.classList.toggle('active',yes);b.setAttribute('aria-selected',String(yes));});
     if(view!=='lessons'){
       portal.replaceChildren();
-      ({map:renderMap,practice:renderPractice,labs:renderLabs,control:renderControl,teacher:renderTeacher}[view]||renderMap)();
+      ({map:renderMap,research:renderResearch,practice:renderPractice,labs:renderLabs,control:renderControl,teacher:renderTeacher}[view]||renderMap)();
       if(!storageOK)portal.prepend(p('Браузер не разрешил постоянное сохранение. Пока вкладка открыта, работа остаётся здесь.','storage-alert'));
       if(focus)portal.querySelector('h2')?.focus({preventScroll:true});
     }
@@ -1272,31 +1865,146 @@
   function openPractice(topic,context=null){state.practice.reviewStage=null;state.practice.topic=A.topics.some(x=>x.id===topic)?topic:'incidence';state.practice.returnTo=context;if(context?.lessonId)api.markHelp(context.lessonId,'Отдельная тренировка умения: '+state.practice.topic);show('practice');}
   function openLab(id){state.labs.family=id;show('labs');}
   function openExam(id){state.examId=id;show('control');}
-  function stageStats(){const tasks=api.getState().tasks||{},started=C.lessons.filter(l=>(tasks[l.id]?.revealed||0)>0),built=started.filter(l=>tasks[l.id].revealed===l.steps.length),help=started.filter(l=>tasks[l.id].helpUsed||tasks[l.id].workedSeen||tasks[l.id].resultSeen);return{started:started.length,built:built.length,help:help.length};}
+  function openPathLesson(id){
+    const existing=api.getState().tasks[id],progress=lessonProgress(id,{[id]:existing});
+    openLesson(id);
+    // Preserve started legacy work. A fresh transfer or a saved manual draft
+    // without a competing legacy attempt opens the personal construction.
+    if(api.supportsConstruction?.(id)&&(progress.manual&&!existing?.construction?.active||!progress.started&&!existing?.construction))api.startConstruction(id);
+  }
+  function researchState(stage){
+    const spec=stage.research,ids=new Set(spec.actions.map(action=>action.id));
+    let s=state.research.states[stage.id];
+    if(!s||typeof s!=='object'||Array.isArray(s)||s.version!==1)s=state.research.states[stage.id]={version:1};
+    s.prediction=typeof s.prediction==='string'&&(s.prediction==='unknown'||spec.predictions.some((_,i)=>String(i)===s.prediction))?s.prediction:'';
+    s.observed=Array.isArray(s.observed)?[...new Set(s.observed.filter(id=>ids.has(id)))]:[];
+    s.lastAction=ids.has(s.lastAction)&&s.observed.includes(s.lastAction)?s.lastAction:'';
+    s.locked=!!s.prediction&&(!!s.locked||s.observed.length>0);
+    // A corrupt/old empty forecast must never silently become a recorded one.
+    if(!s.prediction){s.observed=[];s.lastAction='';s.locked=false;}
+    s.notes=typeof s.notes==='string'?s.notes.slice(0,6000):'';
+    s.completed=!!s.completed&&s.locked&&spec.actions.every(a=>s.observed.includes(a.id))&&!!s.notes.trim();
+    s.nextLesson=typeof s.nextLesson==='string'&&(stage.lessons.includes(s.nextLesson)||s.nextLesson===stage.reserveLesson)?s.nextLesson:stage.lessons[0];
+    s.history=Array.isArray(s.history)?s.history.filter(x=>x&&typeof x==='object'&&typeof x.prediction==='string').slice(-40):[];
+    if(!s.camera||!Number.isFinite(s.camera.yaw)||!Number.isFinite(s.camera.pitch))s.camera={yaw:-.65,pitch:.46};
+    s.camera={yaw:s.camera.yaw,pitch:Math.max(-1.45,Math.min(1.45,s.camera.pitch))};
+    return s;
+  }
+  function openResearch(stageId,nextLesson){
+    const stage=stageById.get(stageId);if(!stage?.research)return;
+    state.path.stageId=stageId;
+    const s=researchState(stage);
+    if(typeof nextLesson==='string'&&(stage.lessons.includes(nextLesson)||nextLesson===stage.reserveLesson))s.nextLesson=nextLesson;
+    try{history.replaceState(null,'',location.pathname+location.search);}catch(_){}
+    show('research');
+  }
+  function startStage(stage,id){
+    if(!stage.research||lessonProgress(id,api.getState().tasks).started||researchState(stage).completed)openPathLesson(id);
+    else openResearch(stage.id,id);
+  }
+  function renderResearch(){
+    const stage=stageById.get(state.path.stageId);
+    if(!stage?.research){renderMap();return;}
+    const spec=stage.research,s=researchState(stage),action=spec.actions.find(a=>a.id===s.lastAction);
+    const allObserved=spec.actions.every(a=>s.observed.includes(a.id));
+    const card=el('section',{class:'master-panel research-card','data-research-stage':stage.id});
+    card.append(title(stage.title,'ИССЛЕДОВАНИЕ ПЕРЕД ЗАДАЧЕЙ',spec.question));
+    card.append(p('1. Предположи → 2. Проверь на модели → 3. Запиши вывод','research-steps'));
+    const prediction=el('select',{id:'research-prediction','aria-label':'Мой прогноз',disabled:s.locked});
+    prediction.append(el('option',{value:''},'Выбери предположение'));
+    spec.predictions.forEach((text,i)=>prediction.append(el('option',{value:i},text)));
+    prediction.append(el('option',{value:'unknown'},'Пока не могу предположить'));prediction.value=s.prediction;
+    prediction.addEventListener('change',()=>{if(s.locked)return;s.prediction=prediction.value;save();show('research',false);});
+    card.append(el('label',{'for':'research-prediction'},s.locked?'Первоначальный прогноз сохранён':'Что ты предполагаешь?'),prediction,
+      p('Можно ошибиться или выбрать «пока не могу предположить». Прогноз не оценивается как решение задачи.','small muted'));
+    const controls=el('div',{class:'research-actions','aria-label':'Действия с моделью'});
+    spec.actions.forEach(a=>controls.append(btn(a.label,()=>{
+      if(!s.prediction)return;
+      if(!s.observed.length&&spec.source==='lesson')api.markHelp(spec.lessonId,'Исследование на модели этой карточки');
+      s.locked=true;s.lastAction=a.id;if(!s.observed.includes(a.id))s.observed.push(a.id);
+      if(a.camera)s.camera={...a.camera};
+      save();show('research',false);
+    },s.lastAction===a.id?'primary':'ghost',{'data-action':'research-observe','data-experiment':a.id,disabled:!s.prediction,'aria-pressed':s.lastAction===a.id})));
+    card.append(controls);
+    if(!s.prediction)card.append(p('Сейчас запиши свой прогноз, затем выбери действие с моделью.','research-current'));
+    else if(!allObserved)card.append(p('Проверь все положения: '+s.observed.length+' из '+spec.actions.length+'. Модель можно поворачивать.','research-current'));
+    const position=action||spec.actions[0];
+    const model=spec.source==='lab'?A.makeLab(spec.family,position.level,position.height||1):lessonById.get(spec.lessonId);
+    const count=action?(spec.source==='lab'?model.steps.length:action.count):0;
+    const frame=el('div',{class:'model-frame research-model'});
+    frame.append(el('div',{class:'model-caption'},action?action.label:'Исходная модель · результат ещё не открыт'));
+    card.append(frame);portal.append(card);
+    visual=api.createScene(frame,model,camera=>{s.camera=camera;save();});
+    visual.update({viewCount:count,planeId:action?.planeId||null,planeView:!!action?.flat,camera:{...s.camera},showHelpers:true,showResult:!!action&&count===model.steps.length,cleanView:false});
+    if(action){
+      const observed=el('section',{class:'research-observation','aria-live':'polite'});
+      observed.append(el('h3',{},'Что видно в этом опыте'),p(action.observation));
+      if(spec.source==='lab'){
+        observed.append(p(model.classification+(model.dimension===2?' · площадь ≈ '+A.formatNumber(model.area):''),'research-result'));
+        if(spec.family==='oblique-normal')observed.append(p(model.normalInfo.full?'Все боковые рёбра пересечены.':'Не все боковые рёбра пересечены.'),p('Допустимый общий уровень: от '+A.formatNumber(model.normalInfo.low)+' до '+A.formatNumber(model.normalInfo.high)+'.'+(model.normalInfo.exists?'':' Нижняя граница больше верхней: общего интервала нет.')));
+        if(stage.id==='main-10'){
+          const table=el('table',{class:'master-table'}),head=el('tr');['Ребро','Параметр u','На самом ребре?'].forEach(t=>head.append(el('th',{},t)));table.append(head);
+          model.edgeRows.forEach(row=>{const tr=el('tr');[row.edge,row.parameter===null?(row.coplanar?'всё ребро':'параллельно'):A.formatNumber(row.parameter),row.coplanar||row.parameter!==null&&row.parameter>=-1e-8&&row.parameter<=1+1e-8?'да':'нет'].forEach(t=>tr.append(el('td',{},t)));table.append(tr);});
+          observed.append(disclosure('Проверить параметры рёбер',[elWrap(table,'table-scroll')]));
+        }
+      }
+      card.append(observed);
+    }
+    if(allObserved){
+      const label=el('label',{'for':'research-note'},'Что ты заметил? Запиши своими словами.');
+      const note=el('textarea',{id:'research-note',rows:3,maxlength:6000,placeholder:'Я заметил… Это верно, если…'});note.value=s.notes;
+      const finish=btn(s.completed?'Вывод сохранён':'Сравнить вывод с объяснением',()=>{if(!s.notes.trim())return;s.completed=true;save();show('research',false);},'primary',{'data-action':'research-finish',disabled:!s.notes.trim()||s.completed});
+      note.addEventListener('input',()=>{s.notes=note.value.slice(0,6000);s.completed=false;card.querySelector('.research-conclusion')?.remove();finish.disabled=!s.notes.trim();finish.textContent='Сравнить вывод с объяснением';save();});
+      card.append(label,note,p('Твой вывод сохраняется для обсуждения. Текст доказательства автоматически не оценивается.','small muted'),finish);
+    }
+    if(s.completed){
+      const result=el('section',{class:'research-conclusion'});
+      const predictionText=s.prediction==='unknown'?'Ты сначала отметил, что пока не можешь предположить.':spec.predictions[Number(s.prediction)];
+      result.append(el('h3',{},'Сопоставь с объяснением'),p(spec.conclusion),p('Граница применимости: '+spec.boundary),p('Твой первоначальный прогноз: '+predictionText,'small'),
+        p(s.prediction==='unknown'?'Теперь сформулируй предположение для нового примера.':Number(s.prediction)===spec.answer?'Прогноз согласуется с наблюдением. Для общего вывода нужны указанные основания.':'Наблюдение уточняет первоначальный прогноз. Он сохранён, чтобы видеть изменение мысли.','small'),
+        p(spec.transfer,'research-transfer'),btn('Перейти к задаче',()=>{if(s.completed&&s.notes.trim())openPathLesson(s.nextLesson);},'primary',{'data-action':'research-to-lesson'}));
+      card.append(result);
+    }
+    const returnRow=el('div',{class:'master-actions'});
+    returnRow.append(btn('← К этапу курса',()=>show('map'),'ghost',{'data-action':'research-back'}));
+    if(s.prediction||s.observed.length)returnRow.append(btn('Повторить опыт с новым прогнозом',()=>{
+      s.history.push({prediction:s.prediction,observed:[...s.observed],lastAction:s.lastAction,notes:s.notes,completed:s.completed});
+      s.history=s.history.slice(-40);Object.assign(s,{prediction:'',observed:[],lastAction:'',locked:false,notes:'',completed:false});save();show('research',false);
+    },'ghost',{'data-action':'research-restart'}));
+    card.append(returnRow);
+    if(s.history.length){const history=el('div');s.history.slice().reverse().forEach(h=>history.append(p('Прогноз: '+(h.prediction==='unknown'?'Пока не могу предположить':spec.predictions[Number(h.prediction)]||'не записан')+'. Вывод: '+(h.notes||'ещё не записан'))));card.append(disclosure('Предыдущие опыты ('+s.history.length+')',[history]));}
+  }
+  function stageStats(){const tasks=api.getState().tasks||{},records=C.lessons.map(l=>lessonProgress(l.id,tasks));return{started:records.filter(r=>r.started).length,built:records.filter(r=>r.built).length,help:records.filter(r=>r.started&&r.help).length};}
   function lessonProgress(id,tasks){
     const lesson=lessonById.get(id),s=tasks[id];
     if(!lesson)return{started:false,built:false,finished:false,checked:false,help:false,label:'Нет задания'};
-    const evidence=s?.attemptEvidenceVersion===1&&['first','corrected'].includes(s.choiceEvidence)?s.choiceEvidence:null;
-    const started=!!s&&(s.mode==='study'||s.mode==='practice'||s.revealed>0||!!s.draft||s.answerChecked||s.selectedCheck>=0||!!evidence);
-    const built=started&&s.revealed===lesson.steps.length;
-    const finished=built&&(!lesson.check||(s.checkCorrect===true&&s.selectedCheck===lesson.check.correct))&&(!lesson.result?.numeric||(s.answerChecked===true&&s.correctAnswer===true));
-    const help=!!s&&(s.helpUsed||s.workedSeen||s.resultSeen||s.calculationSeen||(s.calculationRevealed||0)>0);
+    const construction=s?.construction?.version===1&&api.supportsConstruction?.(id)?s.construction:null;
+    const manual=!!construction&&(construction.active===true||s.mode==='choose'&&!s.revealed&&s.selectedCheck<0&&!s.answerChecked);
+    const oldEvidence=s?.attemptEvidenceVersion===1&&['first','corrected'].includes(s.choiceEvidence)?s.choiceEvidence:null;
+    const manualEvidence=['first','corrected'].includes(construction?.evidence)&&Number.isSafeInteger(construction.evidenceAt)&&construction.evidenceAt>0?construction.evidence:null;
+    const evidence=manualEvidence||oldEvidence;
+    const started=!!s&&(!!construction||s.mode==='study'||s.mode==='practice'||s.revealed>0||!!s.draft||s.answerChecked||s.selectedCheck>=0||!!evidence);
+    const actionCount=manual?(construction.actions||[]).length:s?.revealed||0;
+    const actionTotal=manual?api.getConstructionPlan(id).length:lesson.steps.length;
+    const built=started&&actionCount===actionTotal;
+    const finished=manual?construction.completed===true:built&&(!lesson.check||(s.checkCorrect===true&&s.selectedCheck===lesson.check.correct))&&(!lesson.result?.numeric||(s.answerChecked===true&&s.correctAnswer===true));
+    const help=!!s&&(s.helpUsed||s.workedSeen||s.resultSeen||s.calculationSeen||(s.calculationRevealed||0)>0||manual&&construction.helpUsed);
     // Old records cannot establish how an attempt was made. A manual readiness
     // checkbox and a revealed diagram never certify an independent construction.
-    const currentChecked=finished&&s.attemptEvidenceVersion===1&&s.mode==='practice'&&!help&&
-      (lesson.starter||lesson.scaffold)?.phase!=='guided'&&s.independentSteps===lesson.steps.length;
+    const currentChecked=finished&&!help&&(manual?construction.helpUsed===false:s.attemptEvidenceVersion===1&&s.mode==='practice'&&
+      (lesson.starter||lesson.scaffold)?.phase!=='guided'&&s.independentSteps===lesson.steps.length);
     // An explanation opened after a successful attempt must not erase it.
     // The engine records this evidence only when the independent attempt ends.
-    const checked=!!evidence||currentChecked,corrected=evidence?evidence==='corrected':(s?.mistakes||0)>0;
+    const checked=!!evidence||currentChecked,corrected=evidence?evidence==='corrected':(manual?construction.mistakes:s?.mistakes||0)>0;
     const historical=!!evidence&&!currentChecked;
     let label='Ещё не выполняли';
     if(started){
       if(checked)label=historical?(corrected?'Ранее сам исправил; выборы без подсказки':'Ранее проверены выборы без подсказки'):(corrected?'Сам исправил; выборы без подсказки':'Выборы проверены без подсказки');
       else if(help)label=built?'Построено с разбором или помощью':'В работе с разбором или помощью';
       else if(built)label=finished?'Построено; способ работы не подтверждён':'Построено; ответ ещё не проверен';
-      else label='В работе: '+(s.revealed||0)+' из '+lesson.steps.length+' действий';
+      else label='В работе: '+actionCount+' из '+actionTotal+' действий';
     }
-    return{started,built,finished,checked,help,corrected,historical,label};
+    return{started,built,finished,checked,help,corrected,historical,label,manual};
   }
   function stageChecks(stage) {
     const transfer = stage.lessons.filter(id => (lessonById.get(id).starter || lessonById.get(id).scaffold)?.phase === 'transfer');
@@ -1307,8 +2015,11 @@
     const records=ids.map(id=>({id,...lessonProgress(id,tasks)}));
     const checks=stageChecks(stage);
     const verified=records.find(r=>checks.has(r.id)&&r.checked);
-    const started=records.some(r=>r.started),help=records.some(r=>r.help);
+    const taskStarted=records.some(r=>r.started),research=stage.research&&state.research.states[stage.id];
+    const exploring=research?.version===1&&(!!research.prediction||!!research.observed?.length||!!research.history?.length);
+    const started=taskStarted||exploring,help=records.some(r=>r.help);
     if(verified)return{kind:'checked',label:verified.historical?(verified.corrected?'Ранее сам исправил; без подсказки':'Ранее проверены выборы без подсказки'):(verified.corrected?'Сам исправил; без подсказки':'Выборы без подсказки'),started,verified:verified.id};
+    if(exploring&&!taskStarted)return{kind:'started',label:research.completed?'Исследование завершено; впереди задача':'Исследование в работе',started:true,verified:null};
     if(help)return{kind:'help',label:'Есть работа с помощью',started,verified:null};
     if(records.some(r=>r.built))return{kind:'built',label:'Построено; нужна проверка',started,verified:null};
     return{kind:started?'started':'new',label:started?'В работе':'Ещё не начато',started,verified:null};
@@ -1325,9 +2036,14 @@
     return{id:stage.lessons[stage.lessons.length-1],label:'Открыть своё построение',note:'Построения сохранены. Теперь объясни каждую линию на бумаге или доске.'};
   }
   function reviewDueAt(stage, tasks) {
-    const recorded = [...stageChecks(stage)].map(id => tasks[id]).filter(task => task?.attemptEvidenceVersion === 1 &&
-      ['first', 'corrected'].includes(task.choiceEvidence) && Number.isSafeInteger(task.choiceEvidenceAt) && task.choiceEvidenceAt > 0);
-    return recorded.length ? Math.min(...recorded.map(task => task.choiceEvidenceAt)) + REVIEW_DELAY : null;
+    const recorded = [...stageChecks(stage)].flatMap(id => {
+      const task=tasks[id],times=[];
+      if(task?.attemptEvidenceVersion===1&&['first','corrected'].includes(task.choiceEvidence)&&Number.isSafeInteger(task.choiceEvidenceAt)&&task.choiceEvidenceAt>0)times.push(task.choiceEvidenceAt);
+      const work=task?.construction;
+      if(api.supportsConstruction?.(id)&&work?.version===1&&['first','corrected'].includes(work.evidence)&&Number.isSafeInteger(work.evidenceAt)&&work.evidenceAt>0)times.push(work.evidenceAt);
+      return times;
+    });
+    return recorded.length ? Math.min(...recorded) + REVIEW_DELAY : null;
   }
   function reviewIndex(topic) {
     const practice = state.practice.topics[topic];
@@ -1388,10 +2104,11 @@
     const stage=path[index],work=api.getState(),tasks=work.tasks||{},manual=state.path.readiness[stage.id]||(state.path.readiness[stage.id]=[]);
     const summaries=path.map(item=>stageProgress(item,tasks)),started=summaries.filter(x=>x.started).length,verified=summaries.filter(x=>x.verified).length;
     const saved=lessonById.get(work.current),resume=saved&&lessonProgress(saved.id,tasks).started;
-    portal.append(title('Мой путь',null,'Сначала вместе, затем с опорой и на новом примере самостоятельно.'));
+    portal.append(title('Мой путь',null,'Сначала исследуем вопрос на модели, затем разбираем задачу и строим на новом примере самостоятельно.'));
     const overview=el('section',{class:'path-summary','aria-label':'Ход работы по курсу'});
     overview.append(p('Начато этапов: '+started+' из '+path.length,'path-summary-count'),p('Проверены выборы на новом примере: '+verified+' из '+path.length,'path-summary-count'),p('Чертёж и доказательство проверяем отдельно.','small muted'));
-    if(resume)overview.append(btn('Продолжить: '+saved.title,()=>openLesson(saved.id),'primary',{'data-action':'path-resume'}));
+    if(resume)overview.append(btn('Продолжить: '+saved.title,()=>openPathLesson(saved.id),'primary',{'data-action':'path-resume'}));
+    if(stage.research&&researchState(stage).prediction&&!researchState(stage).completed)overview.append(btn('Продолжить исследование: '+stage.title,()=>openResearch(stage.id),'primary',{'data-action':'research-resume'}));
     const tours=el('div',{class:'sections-tour-links'});
     [['start','Как начать'],['resume','Как продолжить'],['construct','Как получается сечение']].forEach(([kind,label])=>{
       const trigger=btn('▶ '+label,()=>window.SECTIONS_TOUR?.open(kind,trigger),'ghost',{'data-tour-open':kind});
@@ -1403,10 +2120,11 @@
     const kindStages=path.filter(s=>s.kind===stage.kind),kindIndex=kindStages.findIndex(s=>s.id===stage.id)+1,kindLabel=stage.kind==='starter'?'Начальная ступень':stage.kind==='bridge'?'Подготовка к методу':'Основной этап';
     box.append(p('Этап '+(index+1)+' из '+path.length+' · '+kindLabel+' '+kindIndex+' из '+kindStages.length,'eyebrow'),el('h3',{id:'path-stage-title',tabindex:'-1'},stage.title),p(stage.newIdea,'gentle-new-idea'));
     const recommendation=stageRecommendation(stage,tasks,work.current);
-    box.append(btn(recommendation.label,()=>openLesson(recommendation.id),'primary gentle-start',{'data-action':'path-start','data-next-lesson':recommendation.id}),p(lessonById.get(recommendation.id).title,'small next-lesson-label'),p(recommendation.note,'small muted'));
+    box.append(btn(recommendation.label,()=>startStage(stage,recommendation.id),'primary gentle-start',{'data-action':'path-start','data-next-lesson':recommendation.id}),p(lessonById.get(recommendation.id).title,'small next-lesson-label'),p(recommendation.note,'small muted'));
+    if(stage.research)box.append(p(stage.research.question,'research-entry-question'),btn(researchState(stage).completed?'Вернуться к исследованию':'Сначала исследовать вопрос',()=>openResearch(stage.id,recommendation.id),'ghost',{'data-action':'stage-research'}));
     const rows=el('ol',{class:'gentle-lesson-list'});
-    stage.lessons.forEach((id,i)=>{const l=lessonById.get(id),row=el('li'),guidance=l.starter||l.scaffold,role=guidance?({model:'Сделаем вместе',guided:'Попробуем с опорой',transfer:'Новый пример самостоятельно'})[guidance.phase]:'Задание '+(i+1);row.append(btn(role+' · '+l.title,()=>openLesson(id),'ghost',{'data-path-lesson':id}),p(lessonProgress(id,tasks).label,'small muted'));rows.append(row);});box.append(disclosure('Примеры этого этапа',[rows],'stage-examples'));
-    if(stage.reserveLesson){const reserve=stage.reserveLesson,extra=disclosure('Если понадобилась помощь',[p('Сначала разберись в трудном действии. Для следующей самостоятельной попытки есть отдельный пример с другими точками или гранью. Повтор открытого разбора сохраняется как работа после помощи.'),btn('Новый пример без прежнего разбора',()=>openLesson(reserve),'ghost',{'data-action':'path-reserve'}),p(lessonProgress(reserve,tasks).label,'small muted')]);box.append(extra);}
+    stage.lessons.forEach((id,i)=>{const l=lessonById.get(id),row=el('li'),guidance=l.starter||l.scaffold,role=guidance?({model:'Сделаем вместе',guided:'Попробуем с опорой',transfer:'Новый пример самостоятельно'})[guidance.phase]:'Задание '+(i+1);row.append(btn(role+' · '+l.title,()=>openPathLesson(id),'ghost',{'data-path-lesson':id}),p(lessonProgress(id,tasks).label,'small muted'));rows.append(row);});box.append(disclosure('Примеры этого этапа',[rows],'stage-examples'));
+    if(stage.reserveLesson){const reserve=stage.reserveLesson,extra=disclosure('Если понадобилась помощь',[p('Сначала разберись в трудном действии. Для следующей самостоятельной попытки есть отдельный пример с другими точками или гранью. Повтор открытого разбора сохраняется как работа после помощи.'),btn('Новый пример без прежнего разбора',()=>openPathLesson(reserve),'ghost',{'data-action':'path-reserve'}),p(lessonProgress(reserve,tasks).label,'small muted')]);box.append(extra);}
     else box.append(disclosure('Опора перед этим этапом',[p(stage.entrySupport),btn('Потренировать нужное умение',()=>openPractice(stage.practice),'ghost')]));
     const review = renderReview(stage, tasks);
     if (review) box.append(review);
@@ -1439,7 +2157,7 @@
     const routeGrid=el('div',{class:'master-grid'});for(const route of C.routes||[]){const card=el('section',{class:'master-card'});card.append(p(route.level,'eyebrow'),el('h3',{},route.title),p(route.description),p(route.lessons.length+' опорных карточек. Остальной банк доступен в «Задачах».','small muted'),btn('Открыть маршрут',()=>{state.route=route.id;save();renderRoute();document.getElementById('route-detail')?.scrollIntoView({block:'start'});},'ghost',{'data-route':route.id}));routeGrid.append(card);}portal.append(routeGrid);
     const routeBox=el('section',{id:'route-detail',class:'master-panel'});portal.append(routeBox);renderRoute();
     portal.append(el('h3',{class:'master-divider-title'},'Все главы'));
-    const grid=el('div',{class:'master-grid chapter-grid'});for(const m of C.modules){const card=el('section',{class:'master-card',id:'chapter-'+m.id});card.append(p('Уровень '+m.level+' · '+C.lessons.filter(l=>l.module===m.id).length+' карточек','eyebrow'),el('h3',{},m.title),p(m.description),list((m.outcomes||[]).slice(0,3)));const more=disclosure('Идея главы и выходная проверка',[p(m.intro),list(m.rules||[]),p('Типичная ошибка: '+m.error),p('Выход из главы: '+m.exit)],'chapter-detail');card.append(more,btn('К задачам главы',()=>openModule(m.id),'primary'),btn('Тренировка умения',()=>openPractice(m.practice),'ghost'));grid.append(card);}portal.append(grid);
+    const grid=el('div',{class:'master-grid chapter-grid'});for(const m of C.modules){const card=el('section',{class:'master-card',id:'chapter-'+m.id});card.append(p('Уровень '+m.level+' · '+C.lessons.filter(l=>l.module===m.id).length+' карточек','eyebrow'),el('h3',{},m.title),p(m.description),list((m.outcomes||[]).slice(0,3)));const more=disclosure('Идея главы и выходная проверка',[p(m.intro),list(m.rules||[]),p('Типичная ошибка: '+m.error),p('Выход из главы: '+m.exit)],'chapter-detail');card.append(more);if(m.lab)card.append(btn('Исследовать на модели',()=>openLab(m.lab),'primary',{'data-module-lab':m.lab}));card.append(btn('К задачам главы',()=>openModule(m.id),'ghost'),btn('Тренировка умения',()=>openPractice(m.practice),'ghost'));grid.append(card);}portal.append(grid);
     const progress=stageStats();portal.append(p('В этом браузере: начато '+progress.started+', построения завершены в '+progress.built+' карточках, разбор или помощь использованы в '+progress.help+'. Это история работы, а не автоматическая оценка доказательств.','master-footnote'));
   }
   function renderRoute(){const box=document.getElementById('route-detail');if(!box)return;const route=(C.routes||[]).find(r=>r.id===state.route)||(C.routes||[])[0];if(!route)return;box.replaceChildren(el('h3',{},route.title),p(route.guidance||route.description));const links=el('div',{class:'route-links'});route.lessons.forEach((id,i)=>{const l=lessonById.get(id);if(l)links.append(btn((i+1)+'. '+l.title,()=>openLesson(id),'route-link'));});box.append(disclosure('Показать последовательность карточек', [links]),btn('Начать маршрут',()=>openLesson(route.lessons[0]),'primary'));}
@@ -1524,7 +2242,7 @@
   function archiveLab(s,model){if(s.revealed||s.prediction||s.notes)s.history.push({level:s.level,height:s.height,revealed:s.revealed,justBuilt:s.justBuilt,prediction:s.prediction,predictionLocked:!!s.predictionLocked,notes:s.notes,result:s.revealed===model.steps.length?model.classification:'Не завершено',area:s.revealed===model.steps.length?model.area:null});}
   function changeLab(s,model,updates){archiveLab(s,model);Object.assign(s,updates,{revealed:0,justBuilt:false,prediction:'',predictionLocked:false,notes:''});save();show('labs',false);}
   function predictionKey(model){return model.dimension<0?'empty':model.dimension===0?'point':model.dimension===1?'segment':String(model.polygon.length);}
-  function predictionLabel(value){return({'empty':'пусто','point':'точка','segment':'отрезок','3':'треугольник','4':'четырёхугольник','5':'пятиугольник','6':'шестиугольник'})[value]||'не записан';}
+  function predictionLabel(value){return({'unknown':'пока не могу предположить','empty':'пусто','point':'точка','segment':'отрезок','3':'треугольник','4':'четырёхугольник','5':'пятиугольник','6':'шестиугольник'})[value]||'не записан';}
   function renderLabs(){
     const id=state.labs.family,s=labState(id),model=A.makeLab(id,s.level,s.height),spec=model.spec,bounds=A.labBounds(id,s.height);s.revealed=Math.max(0,Math.min(s.revealed,model.steps.length));
     portal.append(title('Изменяй условие, проверяй гипотезу','ЛАБОРАТОРИИ','Сначала прогноз, затем построение по граням, затем вывод. Наблюдение помогает открыть закономерность; доказательство записывается отдельно.'));
@@ -1534,14 +2252,14 @@
     range.addEventListener('input',()=>{value.textContent='Новый уровень '+A.formatNumber(Number(range.value))+' — отпусти ползунок, чтобы начать новый опыт.';});range.addEventListener('change',()=>changeLab(s,model,{level:Number(range.value)}));
     const exact=el('div',{class:'critical-levels'});exact.append(p('Критические уровни в вершинах:','small'));bounds.critical.forEach(t=>exact.append(btn(A.formatNumber(t),()=>changeLab(s,model,{level:t}),'ghost',{'data-critical':t})));controls.append(exact);
     if(spec.height){const h=el('input',{id:'lab-height',type:'range',min:.2,max:1.5,step:.05,value:s.height}),out=el('output',{'for':'lab-height'},'h='+A.formatNumber(s.height));controls.append(el('label',{'for':'lab-height'},'Высота косой призмы'),h,out);h.addEventListener('input',()=>out.textContent='h='+A.formatNumber(Number(h.value)));h.addEventListener('change',()=>{const height=Number(h.value),b=A.labBounds(id,height);changeLab(s,model,{height,level:Math.max(b.min,Math.min(b.max,s.level))});});}
-    const prediction=el('select',{'aria-label':'Прогноз пересечения',disabled:s.predictionLocked});[['','Сначала мой прогноз…'],['empty','Пересечение пусто'],['point','Только точка'],['segment','Только отрезок'],['3','Треугольник'],['4','Четырёхугольник'],['5','Пятиугольник'],['6','Шестиугольник']].forEach(([v,t])=>prediction.append(el('option',{value:v},t)));prediction.value=s.prediction;prediction.addEventListener('change',()=>{if(s.predictionLocked)return;s.prediction=prediction.value;save();});controls.append(el('label',{},'Какое пересечение ожидаешь?'),prediction);if(s.predictionLocked)controls.append(p('Прогноз зафиксирован при начале построения. Для новой гипотезы начни опыт с другими данными; первоначальный прогноз останется в журнале.','small'));portal.append(controls);
+    const prediction=el('select',{'aria-label':'Прогноз пересечения',disabled:s.predictionLocked});[['','Сначала мой прогноз…'],['unknown','Пока не могу предположить'],['empty','Пересечение пусто'],['point','Только точка'],['segment','Только отрезок'],['3','Треугольник'],['4','Четырёхугольник'],['5','Пятиугольник'],['6','Шестиугольник']].forEach(([v,t])=>prediction.append(el('option',{value:v},t)));prediction.value=s.prediction;prediction.addEventListener('change',()=>{if(s.predictionLocked)return;s.prediction=prediction.value;save();show('labs',false);});controls.append(el('label',{},'Какое пересечение ожидаешь?'),prediction);if(s.predictionLocked)controls.append(p(s.prediction?'Прогноз зафиксирован при начале построения. Для новой гипотезы начни опыт с другими данными; первоначальный прогноз останется в журнале.':'Этот прежний опыт начат без прогноза. Продолжение сохранено; в новом опыте сначала запиши предположение.','small'));portal.append(controls);
     const work=el('section',{class:'lab-workbench'}),modelPanel=el('div',{class:'master-panel lab-model-panel'}),frame=el('div',{class:'model-frame'}),stepIndex=s.justBuilt&&s.revealed?s.revealed-1:Math.min(s.revealed,model.steps.length-1),step=model.steps[stepIndex],plane=model.model.planes.find(p=>p.id===step.plane);
     frame.append(el('div',{class:'model-caption'},'Рабочая плоскость: '+plane.label));modelPanel.append(frame,p('Вращение меняет только вид. Новые отрезки появляются после отдельного действия в указанной плоскости.','model-help'));visual=api.createScene(frame,model,camera=>{s.camera=camera;save();});
     visual.update({viewCount:s.revealed,planeId:step.plane,planeView:s.flat,camera:s.camera,showHelpers:true,showResult:s.revealed===model.steps.length});
     const modelControls=el('div',{class:'model-controls'});modelControls.append(btn(s.flat?'Объёмная модель':'В этой плоскости',()=>{s.flat=!s.flat;save();show('labs',false);},'plane-toggle',{'data-action':'lab-flat'}),btn('Исходный вид',()=>{s.camera={yaw:-.65,pitch:.46};save();show('labs',false);},'reset-camera'));modelPanel.append(modelControls);
     const panel=el('div',{class:'master-panel lab-step-panel'});panel.append(p('Рассмотрено граней: '+s.revealed+' из '+model.steps.length,'eyebrow'));
-    if(s.justBuilt&&s.revealed<model.steps.length){panel.append(el('h3',{},'Действие выполнено в '+plane.label),p(step.action),p('Новая линия остаётся в своей рабочей плоскости. Перейди к следующей грани отдельным действием.','small'),btn('К следующей грани',()=>{s.justBuilt=false;save();show('labs',false);},'primary',{'data-action':'lab-advance'}));}else if(s.revealed<model.steps.length){panel.append(el('h3',{},step.title),p(plane.description,'plane-tag'),p(step.reason),p(step.action,'step-note'),btn('Выполнить действие в этой плоскости',()=>{s.revealed++;s.justBuilt=true;s.predictionLocked=true;save();show('labs',false);},'primary',{'data-action':'lab-next'}));}else{
-      panel.append(el('h3',{},model.classification));if(s.prediction)panel.append(p(s.prediction===predictionKey(model)?'Прогноз совпал. Теперь объясни, почему.':'Результат отличается от прогноза. Найди, где изменились пересечения рёбер.','feedback '+(s.prediction===predictionKey(model)?'good':'retry')));
+    if(!s.prediction&&s.revealed===0){panel.append(el('h3',{},'Сначала твой прогноз'),p('Предположи форму пересечения или выбери «Пока не могу предположить». После этого можно проверить каждую грань.'),btn('Выполнить действие в этой плоскости',()=>{},'primary',{'data-action':'lab-next',disabled:true}));}else if(s.justBuilt&&s.revealed<model.steps.length){panel.append(el('h3',{},'Действие выполнено в '+plane.label),p(step.action),p('Новая линия остаётся в своей рабочей плоскости. Перейди к следующей грани отдельным действием.','small'),btn('К следующей грани',()=>{s.justBuilt=false;save();show('labs',false);},'primary',{'data-action':'lab-advance'}));}else if(s.revealed<model.steps.length){panel.append(el('h3',{},step.title),p(plane.description,'plane-tag'),p(step.reason),p(step.action,'step-note'),btn('Выполнить действие в этой плоскости',()=>{if(!s.prediction&&s.revealed===0)return;s.revealed++;s.justBuilt=true;s.predictionLocked=true;save();show('labs',false);},'primary',{'data-action':'lab-next'}));}else{
+      panel.append(el('h3',{},model.classification));if(s.prediction)panel.append(p(s.prediction==='unknown'?'Теперь сравни наблюдение с новым предположением для соседнего положения.':s.prediction===predictionKey(model)?'Прогноз совпал. Теперь объясни, почему.':'Результат отличается от прогноза. Найди, где изменились пересечения рёбер.','feedback '+(s.prediction==='unknown'?'':s.prediction===predictionKey(model)?'good':'retry')));
       if(model.dimension===2)panel.append(p('Площадь: '+A.formatNumber(model.area)+' · периметр: '+A.formatNumber(model.perimeter),'lab-measures'),p('Числа вычислены по пространственным координатам. Они служат проверкой, а не доказательством общей формулы.','teacher-note'));
       for(const row of model.extra)panel.append(p(row.label+': '+A.formatNumber(row.value)));
       if(model.normalInfo){const n=model.normalInfo;panel.append(p(n.full?'Сечение пересекает все четыре боковых ребра.':'Не все боковые рёбра пересечены: это не полное нормальное сечение для формулы боковой поверхности.','step-note'),p('Для пересечения всех боковых рёбер требуется '+A.formatNumber(n.low)+' ≤ уровень ≤ '+A.formatNumber(n.high)+'. '+(!n.exists?'Нижняя граница больше верхней: при этой высоте полного нормального сечения внутри данной призмы нет.':'')))}
@@ -1557,18 +2275,31 @@
   function renderControl(){
     portal.append(title('Проверяем на новом наборе','САМОСТОЯТЕЛЬНАЯ РАБОТА','Пять заданий без сообщения о верности по ходу. После завершения — результат, объяснения и подходящие тренировки. Письменное доказательство проверяется отдельно.'));
     const select=el('select',{'aria-label':'Самостоятельная работа'});A.assessments.forEach(x=>select.append(el('option',{value:x.id},x.title)));select.value=state.examId;select.addEventListener('change',()=>{state.examId=select.value;save();show('control',false);});portal.append(select);
-    const id=state.examId,s=state.exams[id]||(state.exams[id]={run:0,started:false,finished:false,answers:{},proof:'',assisted:false,history:[]}),exam=A.makeExam(id,s.run);
-    if(!s.started){const box=el('section',{class:'master-panel'});box.append(el('h3',{},exam.title),p(exam.description),p('Таймера нет. Ответы можно менять до отправки. Если во время работы открыть материалы курса, это сохранится как помощь.'),btn('Начать пять заданий',()=>{s.started=true;s.position=0;save();show('control',false);},'primary',{'data-action':'exam-start'}));portal.append(box);return;}
+    const id=state.examId,s=state.exams[id]||(state.exams[id]={run:0,started:false,finished:false,answers:{},proof:'',assisted:false,history:[]}),exam=A.makeExam(id,s.run,s.started ? s.writtenVersion || 0 : 1);
+    if(!s.started){const box=el('section',{class:'master-panel'});box.append(el('h3',{},exam.title),p(exam.description),p('Таймера нет. Ответы можно менять до отправки. Если во время работы открыть материалы курса, это сохранится как помощь.'),btn('Начать пять заданий',()=>{s.writtenVersion=1;s.started=true;s.position=0;save();show('control',false);},'primary',{'data-action':'exam-start'}));portal.append(box);return;}
     if(s.finished){const score=exam.questions.reduce((n,q,i)=>n+Number(correct(q,s.answers[i])),0),box=el('section',{class:'master-panel'});box.append(el('h3',{},'Автоматическая часть: '+score+' из '+exam.questions.length),p(s.assisted?'Во время этой попытки открывались другие материалы. Результат сохранён как работа с помощью.':'В этой попытке переходы к помощи не зафиксированы. Это результат короткой автоматической части, а не оценка полного доказательства.'),p('Самостоятельная работа завершена. Для следующей проверки будет подготовлен новый набор.','teacher-note'));
       exam.questions.forEach((q,i)=>{const good=correct(q,s.answers[i]),row=el('article',{class:'exam-review '+(good?'correct':'needs-work')});row.append(el('h4',{},(i+1)+'. '+(good?'Ответ совпал':'Нужно разобрать')),p(q.prompt),p('Твой ответ: '+(q.kind==='choice'?q.options[Number(s.answers[i])]:s.answers[i])),p('Верный ответ: '+answerText(q)),p(q.rule));if(!good)row.append(btn('Потренировать это умение',()=>openPractice(q.topic),'ghost'));box.append(row);});
-      box.append(el('h3',{},'Письменная часть для преподавателя'),p(exam.proof),p(s.proof||'Текст доказательства пока не записан.','proof-record'),p('Автоматическая оценка доказательства не выставляется. Обсудите плоскость каждого действия, перенос принадлежности, полноту границы и вычисления.','teacher-note'),btn('Новая попытка с новым набором',()=>{s.history.push({run:s.run,score,assisted:s.assisted,answers:s.answers,proof:s.proof});Object.assign(s,{run:s.run+1,started:false,finished:false,answers:{},proof:'',assisted:false,helpReason:'',position:0});save();show('control',false);},'primary',{'data-action':'exam-new'}));portal.append(box);return;
+      box.append(el('h3',{},'Письменная часть для преподавателя'),p(exam.proof),p(s.proof||'Текст доказательства пока не записан.','proof-record'),...(exam.written ? [disclosure('Сверить построение и обоснование', [p(exam.written.solution)])] : []),p('Автоматическая оценка доказательства не выставляется. Обсудите плоскость каждого действия, перенос принадлежности, полноту границы и вычисления.','teacher-note'),btn('Новая попытка с новым набором',()=>{s.history.push({run:s.run,score,assisted:s.assisted,answers:s.answers,proof:s.proof,writtenVersion:s.writtenVersion || 0});Object.assign(s,{run:s.run+1,started:false,finished:false,answers:{},proof:'',assisted:false,helpReason:'',position:0});save();show('control',false);},'primary',{'data-action':'exam-new'}));portal.append(box);return;
     }
     s.position=Math.max(0,Math.min(s.position||0,exam.questions.length-1));const i=s.position,q=exam.questions[i],card=el('section',{class:'master-panel exam-question'});card.append(p('Задание '+(i+1)+' из '+exam.questions.length+' · сохранено ответов '+Object.keys(s.answers).filter(k=>String(s.answers[k]).trim()!=='').length,'eyebrow'),p(q.prompt,'drill-prompt'));
     if(q.scene){const frame=el('div',{class:'model-frame drill-model'});frame.append(el('div',{class:'model-caption'},'Исходная фигура'));card.append(frame);visual=api.createScene(frame,q.scene,()=>{});visual.update({viewCount:0,planeId:null,planeView:false,camera:{yaw:-.65,pitch:.46},showHelpers:true,showResult:false});}
     if(q.kind==='choice'){const choices=el('div',{class:'check-options'});q.options.forEach((answer,index)=>{const b=btn('',()=>{s.answers[i]=index;save();show('control',false);},s.answers[i]!==undefined&&Number(s.answers[i])===index?'selected':'',{'data-exam-option':index});b.append(math(answer));choices.append(b);});card.append(choices);}else{const input=el('input',{id:'exam-answer',type:'text',inputmode:'decimal',autocomplete:'off',value:s.answers[i]??''});card.append(el('label',{'for':'exam-answer'},'Ответ'+(q.unit?' ('+q.unit+')':'')),input,p('Можно вводить десятичное число или дробь 4/3.','small muted'));input.addEventListener('input',()=>{s.answers[i]=input.value;save();});}
     card.append(p('Ответ сохраняется. Верность будет показана только после отправки всех пяти заданий.','teacher-note'));
     const navigation=el('div',{class:'master-actions'});navigation.append(btn('← Предыдущее',()=>{s.position--;save();show('control',false);},'ghost',{disabled:i===0}),btn('Следующее →',()=>{s.position++;save();show('control',false);},'primary',{disabled:i===exam.questions.length-1}));card.append(navigation);portal.append(card);
-    const proof=el('section',{class:'master-panel'});proof.append(el('h3',{},'Отдельное построение и доказательство'),p(exam.proof));const draft=el('textarea',{id:'exam-proof',placeholder:'Дано и цель…\nРабочие плоскости и основания…\nГраница сечения…\nВычисления и проверка…'});draft.value=s.proof;draft.addEventListener('input',()=>{s.proof=draft.value;save();});proof.append(draft,p('Эта часть не входит в автоматический счёт 0–5 и проверяется преподавателем.','teacher-note'));portal.append(proof);
+    const proof = el('section', {class:'master-panel'});
+    proof.append(el('h3', {}, 'Отдельное построение и доказательство'), p(exam.proof));
+    portal.append(proof);
+    if (exam.written) {
+      const frame = el('div', {class:'model-frame drill-model'});
+      frame.append(el('div', {class:'model-caption'}, 'Исходный чертёж. Выполни построение на бумаге.'));
+      proof.append(frame);
+      proofVisual = api.createScene(frame, exam.written.scene, () => {});
+      proofVisual.update({viewCount:0, planeId:null, planeView:false, camera:{yaw:-.65,pitch:.46}, showHelpers:false, showResult:false});
+    }
+    const draft = el('textarea', {id:'exam-proof', placeholder:'Укажи плоскость каждого построения и объясни вывод.'});
+    draft.value = s.proof;
+    draft.addEventListener('input', () => {s.proof=draft.value; save();});
+    proof.append(el('label', {for:'exam-proof'}, 'Моё обоснование'), draft, p('Письменную работу проверяет преподаватель. Баллы за пять коротких вопросов считаются отдельно.', 'teacher-note'));
     const notice=el('p',{class:'feedback',role:'status'}),finish=btn('Отправить все пять ответов',()=>{const missing=exam.questions.findIndex((x,j)=>s.answers[j]===undefined||String(s.answers[j]).trim()===''||(x.kind==='number'&&!Number.isFinite(parse(s.answers[j]))));if(missing>=0){notice.className='feedback retry';notice.textContent='Заполни ответ к заданию '+(missing+1)+' в допустимом формате. Верность пока не оценивается.';return;}s.finished=true;save();show('control',false);},'primary',{'data-action':'exam-finish'});portal.append(finish,notice);
   }
   function renderTeacher(){
@@ -1593,7 +2324,7 @@
     show('map');
     window.scrollTo({top: 0, behavior: 'auto'});
   });
-  window.SECTIONS_MASTER=Object.freeze({getState:()=>JSON.parse(JSON.stringify(state)),show,openLesson,openPractice,openLab,openExam});
+  window.SECTIONS_MASTER=Object.freeze({getState:()=>JSON.parse(JSON.stringify(state)),show,openLesson,openPractice,openLab,openExam,openResearch});
   // A shared exercise link must open that exercise, not hide it behind the map.
   let linkedLesson=null;
   try { linkedLesson=lessonById.get(decodeURIComponent(location.hash.slice(1))) || null; } catch (_) {}
@@ -1602,7 +2333,7 @@
     if(linkedLesson.pathStageId)state.path.stageId=linkedLesson.pathStageId;
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   }
-  show(['map','lessons','practice','labs','control','teacher'].includes(state.view)?state.view:'map',false);
+  show(['map','research','lessons','practice','labs','control','teacher'].includes(state.view)?state.view:'map',false);
   if (linkedLesson) window.requestAnimationFrame(() => {
     if (state.view === 'lessons' && api.getState().current === linkedLesson.id) {
       document.getElementById('lesson-title')?.scrollIntoView({block:'start', behavior:'auto'});
@@ -1666,7 +2397,7 @@
     }
     return [
       { title: 'Открой «Мой путь»', text: 'Начало курса — одна грань и одна точка. Весь маршрут можно посмотреть на карте этапов.', view: 'navigation', active: 'map' },
-      { title: 'Начни с первой грани', text: 'В первом этапе нажми «Начать с первой грани». Откроется короткий пример «Находим одну грань».', view: 'start' },
+      { title: 'Начни с первой грани', text: 'В первом этапе нажми «Начать с первой грани». Сначала сделай прогноз, проверь модель и запиши вывод. Затем перейди к примеру «Находим одну грань».', view: 'start' },
       { title: 'Выбери «Сделаем вместе»', text: 'Первый пример показывает одно действие. После него будут похожий пример с опорой и новый пример для твоей попытки.', view: 'mode' },
       { title: 'Выполни один шаг', text: 'Прочитай, в какой плоскости работаем. Нажми «Выполнить этот шаг» и посмотри, что выделилось на модели.', view: 'step' },
       { title: 'Перейди к следующему примеру', text: 'Ответь на короткий вопрос. Затем нажми «Следующий пример →». Свой ход работы можно продолжить позже.', view: 'next' }
