@@ -2,24 +2,46 @@
 (function(root){
 'use strict';
 const data=root.NotebookMathData,models=root.NotebookModels;
-const normalize=s=>String(s??'').trim().toLowerCase().replace(/ё/g,'е').replace(/[−–—]/g,'-').replace(/\s+/g,'').replace(/\+∞/g,'∞').replace(/²/g,'^2').replace(/³/g,'^3').replace(/₁/g,'1').replace(/π/g,'pi').replace(/\*/g,'').replace(/,/g,'.');
-function number(s){
- if(!/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:\/[+-]?\d+(?:\.\d+)?)?$/.test(s))return null;
- const parts=s.split('/').map(Number),v=parts.length===1?parts[0]:parts[1]!==0?parts[0]/parts[1]:NaN;
- return Number.isFinite(v)?v:null;
+const normalize=s=>String(s??'').trim().toLowerCase().replace(/ё/g,'е').replace(/[−–—]/g,'-').replace(/\s+/g,' ').replace(/\s*([;()[\]{}∪/])\s*/g,'$1').replace(/\+∞/g,'∞').replace(/²/g,'^2').replace(/³/g,'^3').replace(/₁/g,'1').replace(/π/g,'pi').replace(/(\d)\s*\*\s*pi/g,'$1pi').replace(/,/g,'.');
+function decimalParts(s){
+ const [whole,frac='']=s.replace(/^[+-]/,'').split('.');
+ return [BigInt((whole||'0')+frac)*(s.startsWith('-')?-1n:1n),10n**BigInt(frac.length)];
+}
+function rational(s){
+ if(s.length>220||!/^[-+]?(?:\d+(?:\.\d+)?|\.\d+)(?:\/[-+]?(?:\d+(?:\.\d+)?|\.\d+))?$/.test(s))return null;
+ const [top,bottom='1']=s.split('/'),[a,b]=decimalParts(top),[c,d]=decimalParts(bottom);
+ return c===0n?null:[a*d,b*c];
 }
 function equivalent(a,b){
- const x=normalize(a),y=normalize(b);if(!x||!y)return false;if(x===y)return true;
- const p=number(x),q=number(y);
- return p!==null&&q!==null&&Math.abs(p-q)<=1e-10*Math.max(1,Math.abs(q));
+ if(a===b)return true;
+ const p=rational(a),q=rational(b);
+ return !!(p&&q&&p[0]*q[1]===q[0]*p[1]);
 }
 function matches(value,expected,question=''){
- if(!String(value??'').trim())return false;
- return String(expected).split('|').some(v=>{
-  if(equivalent(value,v))return true;
-  const a=String(value).trim().replace(/^\{|\}$/g,'').split(';'),b=v.trim().replace(/^\{|\}$/g,'').split(';');
-  if(a.length>1&&a.length===b.length&&a.every(s=>number(normalize(s))!==null)&&b.every(s=>number(normalize(s))!==null)){const unordered=/корни через|элементы через|найди (?:a∩b|b∖a|u∖a)/i.test(question)&&! /(?:по|в порядке) возрастания/i.test(question);return unordered?a.map(s=>number(normalize(s))).sort((p,q)=>p-q).every((s,i)=>equivalent(s,b.map(t=>number(normalize(t))).sort((p,q)=>p-q)[i])):a.every((s,i)=>equivalent(s,b[i]));}
-  return false;
+ const answer=normalize(value);
+ if(!answer||answer.length>220)return false;
+ if(/^Сократи /i.test(question)){
+  if(!/^[+-]?\d+\/[1-9]\d*$/.test(answer))return false;
+  let [a,b]=answer.replace(/^[+-]/,'').split('/').map(BigInt);
+  while(b!==0n)[a,b]=[b,a%b];
+  if(a!==1n)return false;
+ }
+ if(/десятичной дробью/i.test(question)&&!/^[-+]?\d+\.\d+$/.test(answer))return false;
+ const unordered=/(?:корни через|элементы через|запрещённые x через|найди (?:a∩b|b∖a|u∖a))/i.test(question)&&!/возрастани/i.test(question);
+ const setQuestion=/элементы через|найди (?:a∩b|b∖a|u∖a)/i.test(question);
+ const values=s=>(setQuestion?s.replace(/^\{(.*)\}$/,'$1'):s).split(';');
+ return String(expected).split('|').some(key=>{
+  const target=normalize(key);
+  if(equivalent(answer,target))return true;
+  const items=values(answer),remaining=values(target);
+  if(items.length<2||items.length!==remaining.length||!items.every(rational)||!remaining.every(rational))return false;
+  if(!unordered)return items.every((item,i)=>equivalent(item,remaining[i]));
+  return items.every(item=>{
+   const index=remaining.findIndex(other=>equivalent(item,other));
+   if(index<0)return false;
+   remaining.splice(index,1);
+   return true;
+  });
  });
 }
 function lessonIndex(id){const i=data.findIndex(l=>l[0]===id);return i<0?0:i;}
@@ -48,20 +70,25 @@ function notify(){bridge?.notifyStateChanged();}
 function progress(){
  if(framed){$('progressText').textContent='Общая доска: личный прогресс не изменяется.';return;}
  const total=data.reduce((s,l)=>s+l[6].length,0),done=data.reduce((s,l)=>s+l[6].filter((_,i)=>personal[taskKey(l,i)]===true).length,0);
- $('progressText').textContent='Освоено '+data.filter(mastered).length+' из '+data.length+' тем · '+done+' из '+total+' заданий';
+ $('progressText').textContent='Завершено '+data.filter(mastered).length+' из '+data.length+' тем · '+done+' из '+total+' заданий';
  $('progressBar').style.width=(100*done/total)+'%';
  $('map').querySelectorAll('button[data-lesson]').forEach(b=>b.classList.toggle('complete',mastered(data[lessonIndex(b.dataset.lesson)])));
 }
 function buildMap(){
  const box=$('map');box.replaceChildren();const groups=new Map();for(const l of data){if(!groups.has(l[1]))groups.set(l[1],[]);groups.get(l[1]).push(l);}
  for(const [name,ls] of groups){const d=el('details',undefined,'map-group'),summary=el('summary',name+' · '+ls.length);d.append(summary);d.open=ls.some(l=>l[0]===state.lesson);
-  for(const l of ls){const b=el('button',String(lessonIndex(l[0])+1).padStart(2,'0')+' · '+l[2]);b.type='button';b.dataset.lesson=l[0];b.onclick=()=>{selectLesson(lessonIndex(l[0]));toggleMap(false);};d.append(b);}box.append(d);}
+  for(const l of ls){const b=el('button',String(lessonIndex(l[0])+1).padStart(2,'0')+' · '+l[2]);b.type='button';b.dataset.lesson=l[0];b.onclick=()=>{selectLesson(lessonIndex(l[0]));toggleMap(false);$('lessonTitle').focus();};d.append(b);}box.append(d);}
  updateMap();progress();
 }
 function updateMap(){
  $('map').querySelectorAll('button[data-lesson]').forEach(b=>{const yes=b.dataset.lesson===state.lesson;b.classList.toggle('active',yes);if(yes){b.setAttribute('aria-current','step');b.closest('details').open=true;}else b.removeAttribute('aria-current');});
 }
-function toggleMap(force){const open=typeof force==='boolean'?force:!$('sidebar').classList.contains('open');$('sidebar').classList.toggle('open',open);$('mapToggle').setAttribute('aria-expanded',String(open));}
+function toggleMap(force){
+ const open=typeof force==='boolean'?force:!$('sidebar').classList.contains('open');
+ $('sidebar').classList.toggle('open',open);
+ for(const id of ['mapToggle','mapOpen'])$(id).setAttribute('aria-expanded',String(open));
+ if(open)$('map').querySelector('[aria-current="step"]').focus();
+}
 function selectLesson(i){if(i<0||i>=data.length)return;state=makeState(i);render(true);notify();}
 function renderSteps(){
  const l=current(),box=$('steps');box.replaceChildren();for(let i=0;i<state.step;i++){const s=el('div',undefined,'step');s.append(el('strong','Шаг '+(i+1)+'. '),document.createTextNode(l[5][i]));box.append(s);}
@@ -100,7 +127,7 @@ function renderMode(){
 function renderModel(force){
  const l=current();$('modelPanel').hidden=!l[7];
  if(!l[7]){$('model').replaceChildren();lastModelKey=null;return;}
- if(force||lastModelKey!==l[0]){lastModelKey=l[0];models.mount($('model'),l[7],state.model,m=>{state.model=models.normalize(l[7],m);notify();});}
+ if(force||lastModelKey!==l[0]){lastModelKey=l[0];models.mount($('model'),l[7],state.model,m=>{state.model=models.normalize(l[7],m);notify();},l[0]);}
 }
 function render(forceModel=false){
  const i=lessonIndex(state.lesson),l=current();
@@ -131,5 +158,5 @@ $('homework').onclick=()=>{const l=current();$('homeworkText').value=l[2]+'\n\n'
 $('closeHomework').onclick=()=>$('homeworkDialog').close();
 $('copyHomework').onclick=async()=>{try{await navigator.clipboard.writeText($('homeworkText').value);$('copyStatus').textContent='Скопировано.';}catch(_){$('homeworkText').focus();$('homeworkText').select();$('copyStatus').textContent='Текст выделен. Нажмите Ctrl+C для копирования.';}};
 buildMap();render(true);
-if(root.MathExamBoard){bridge=root.MathExamBoard.register({id:'notebook-math',version:'1.0.0',stateSchemaVersion:1,parentOrigin:location.origin,getState:()=>cleanState(state),applyState:incoming=>{state=cleanState(incoming);render(true);}});}
+if(root.MathExamBoard){bridge=root.MathExamBoard.register({id:'notebook-math',version:'1.0.0',stateSchemaVersion:1,parentOrigin:location.origin,getState:()=>cleanState(state),applyState:incoming=>{const next=cleanState(incoming);const modelChanged=state.lesson!==next.lesson||JSON.stringify(state.model)!==JSON.stringify(next.model);state=next;render(modelChanged);}});}
 })(globalThis);

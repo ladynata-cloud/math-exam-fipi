@@ -53,3 +53,21 @@ test('Existing board registry and reachable picker declare exact bridge contract
  assert(html.includes('trainer-board.html?trainer=%2Ftrainers%2Fnotebook-math.html'));
  assert(html.includes('board-bridge.js'));assert(app.includes("id:'notebook-math',version:'1.0.0',stateSchemaVersion:1,parentOrigin:location.origin"));assert(app.includes('if(!framed&&state.feedback'));
 });
+
+test('All 142 independent solutions satisfy their own task and format',()=>{
+ const solutions=require('./notebook-math-answers.cjs');
+ assert.equal(Object.keys(solutions).length,D.length);
+ for(const [id,,,,,,tasks] of D){
+  assert.equal(solutions[id].length,tasks.length,id);
+  tasks.forEach(([question,key],i)=>assert(C.matches(solutions[id][i],key,question),id+' '+question));
+ }
+ for(const [id,index,wrong] of [
+  ['fractions',0,'18/27'],['fractions',1,'7/8'],['fractions',2,'1*2'],
+  ['fractions',2,'1 2'],['discriminant',2,'0.33333333333'],
+  ['incomplete',0,'4;0'],['gauss',0,'3;2;1'],['setops',0,'6;6'],
+  ['rational-ineq',0,'(-∞;-1]∪[4;∞)'],['domain',2,'[3;∞)']
+ ]){
+  const [q,key]=D.find(l=>l[0]===id)[6][index];
+  assert.equal(C.matches(wrong,key,q),false,id+' accepted '+wrong);
+ }
+});

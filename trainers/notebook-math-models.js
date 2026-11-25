@@ -50,10 +50,18 @@ const circle=(x,y,r,fill='#125b8f',stroke='#125b8f')=>'<circle cx="'+x+'" cy="'+
 const poly=(p,fill,stroke='#125b8f',dash='')=>'<polygon points="'+p.map(a=>a.join(',')).join(' ')+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2" '+(dash?'stroke-dasharray="'+dash+'"':'')+'/>';
 const path=(d,stroke='#125b8f',width=3,fill='none')=>'<path d="'+d+'" stroke="'+stroke+'" stroke-width="'+width+'" fill="'+fill+'" stroke-linecap="round" stroke-linejoin="round"/>';
 const fmt=v=>Math.abs(v)<1e-10?'0':Number(v.toFixed(3)).toString().replace('.',',');
-function mount(host,type,initial,onChange){
+function mount(host,type,initial,onChange,lessonId){
  let m=normalize(type,initial);host.replaceChildren();
  const controls=E('div',undefined,'controls'),view=E('div'),status=E('p',undefined,'sub');host.append(controls,view,status);
- function change(p,rebuild=false){m=normalize(type,{...m,...p});onChange({...m});if(rebuild){build();}paint();}
+ function change(p,rebuild=false){
+  const selector='button,select,input';
+  const focusIndex=Array.from(host.querySelectorAll(selector)).indexOf(document.activeElement);
+  m=normalize(type,{...m,...p});
+  onChange({...m});
+  if(rebuild)build();
+  paint();
+  if(focusIndex>=0&&!host.contains(document.activeElement))host.querySelectorAll(selector)[focusIndex]?.focus({preventScroll:true});
+ }
  function button(text,fn,pressed){const b=E('button',text);b.type='button';if(pressed!==undefined)b.setAttribute('aria-pressed',String(pressed));b.addEventListener('click',fn);controls.append(b);return b;}
  function range(title,key,min,max,step=1){const w=E('label',title+' '),input=E('input'),out=E('output',String(m[key]));input.type='range';input.min=min;input.max=max;input.step=step;input.value=m[key];input.setAttribute('aria-label',title);input.addEventListener('input',()=>{out.textContent=input.value;change({[key]:Number(input.value)});});w.append(input,out);controls.append(w);}
  function select(title,key,values){const w=E('label',title+' '),s=E('select');for(const [value,t] of values){const o=E('option',t);o.value=value;s.append(o);}s.value=m[key];s.onchange=()=>change({[key]:Number(s.value),...(type==='dice'?{cells:[],checked:false}:type==='venn'?{mask:0,checked:false}:{})},type==='dice'||type==='venn');w.append(s);controls.append(w);}
@@ -141,15 +149,29 @@ function mount(host,type,initial,onChange){
  }
  if(type==='cube'||type==='section'){
   const yaw=m.angle*Math.PI/180,el=.48,pr=p=>{const a=p[0]*Math.cos(yaw)-p[1]*Math.sin(yaw),b=p[0]*Math.sin(yaw)+p[1]*Math.cos(yaw);return [230+92*a,146-92*(p[2]*Math.cos(el)-b*Math.sin(el)),b*Math.cos(el)+p[2]*Math.sin(el)];};
-  const pp=vertices.map(pr);let s='';for(const [i,j] of edges){const a=pp[i],b=pp[j];s+=line(a[0],a[1],b[0],b[1],'#5a7285',2,(a[2]+b[2]<-1)?'5 4':'');}
-  if(type==='section'){const p=planes[m.plane],q=sectionPoints(p.n,p.d).map(pr);if(m.stage===2&&q.length>=3)s+=poly(q.map(a=>a.slice(0,2)),'#53adbd65','#167b8a');const count=m.stage===0?Math.min(3,q.length):q.length;for(let i=0;i<count;i++)s+=circle(q[i][0],q[i][1],5,'#ad3970','#ad3970')+label(q[i][0]+9,q[i][1]-7,String(i+1),'#8b2e5e');status.textContent=m.stage===2?'Сечение: '+q.length+' сторон. Каждая сторона принадлежит одной грани куба.':'Точки секущей плоскости на рёбрах. Поверни куб, затем найди остальные вершины.';}else status.textContent='Вращай куб; сравни рёбра и грани, которые лежат в одной плоскости, параллельны или пересекаются.';
+  const towardViewer=[Math.sin(yaw)*Math.cos(el),Math.cos(yaw)*Math.cos(el),Math.sin(el)];
+  const visibleSide=(a,b)=>a.some((v,k)=>Math.abs(Math.abs(v)-1)<1e-7&&Math.abs(v-b[k])<1e-7&&v*towardViewer[k]>1e-8);
+  const pp=vertices.map(pr);let s='';
+  for(const [i,j] of edges){const a=pp[i],b=pp[j];s+=line(a[0],a[1],b[0],b[1],'#5a7285',2,visibleSide(vertices[i],vertices[j])?'':'5 4');}
+  function rightAngle(first,corner,last){
+   const origin=vertices[corner],u=vec(vertices[first],origin),v=vec(vertices[last],origin);
+   const points=[u,u.map((n,i)=>n+v[i]),v].map(w=>origin.map((n,i)=>n+.10*w[i]));
+   points.slice(1).forEach((q,i)=>{const a=pr(points[i]),b=pr(q);s+=line(a[0],a[1],b[0],b[1],'#294c65',1.5,visibleSide(points[i],q)?'':'3 2');});
+  }
+  if(lessonId==='parallel-perp'){rightAngle(4,0,1);rightAngle(4,0,3);}
+  if(lessonId==='positions')rightAngle(0,1,5);
+  if(type==='section'){const p=planes[m.plane],points=sectionPoints(p.n,p.d),q=points.map(pr);
+   if(m.stage===2&&q.length>=3){
+    s+=poly(q.map(a=>a.slice(0,2)),'#53adbd65','none');
+    q.forEach((a,i)=>{const j=(i+1)%q.length,b=q[j];s+=line(a[0],a[1],b[0],b[1],'#167b8a',2,visibleSide(points[i],points[j])?'':'5 4');});
+   }const count=m.stage===0?Math.min(3,q.length):q.length;for(let i=0;i<count;i++)s+=circle(q[i][0],q[i][1],5,'#ad3970','#ad3970')+label(q[i][0]+9,q[i][1]-7,String(i+1),'#8b2e5e');status.textContent=m.stage===2?'Сечение: '+q.length+(q.length<5?' стороны.':' сторон.')+' Каждая сторона принадлежит одной грани куба.':'Точки секущей плоскости на рёбрах. Поверни куб, затем найди остальные вершины.';}else status.textContent='Вращай куб; сравни рёбра и грани, которые лежат в одной плоскости, параллельны или пересекаются.';
   pp.forEach((a,i)=>{s+=circle(a[0],a[1],3,'#5a7285','#5a7285')+label(a[0]+(a[0]<230?-12:12),a[1]+(a[1]<146?-7:15),names[i]);});show(s,'0 -22 460 344');return;
  }
  if(type==='triangle'){
   const A=[45,245],B=[415,245],b=m.b*Math.PI/180,L=B[0]-A[0],C=[B[0]-L*Math.cos(b)**2,B[1]-L*Math.cos(b)*Math.sin(b)],M=[230,245],H=[C[0],245];const ca=norm(vec(C,A)),cb=norm(vec(C,B)),D=[(A[0]*cb+B[0]*ca)/(ca+cb),245];
   let s=poly([A,B,C],'#edf4f8','#294c65');const u=scale(vec(A,C),1/ca),v=scale(vec(B,C),1/cb),a=C.map((x,i)=>x+13*u[i]),bb=C.map((x,i)=>x+13*(u[i]+v[i])),c=C.map((x,i)=>x+13*v[i]);s+=path('M'+a.join(' ')+' L'+bb.join(' ')+' L'+c.join(' '),'#294c65',1.5);
   const seg=(q,col,n)=>line(C[0],C[1],q[0],q[1],col,2.5)+circle(q[0],q[1],4,col,col)+label(q[0],267,n,col);
-  if(m.kind!==1)s+=seg(M,'#125b8f','M');if(m.kind!==2)s+=seg(D,'#9b3c76','D');if(m.kind!==0)s+=seg(H,'#17755c','H')+path('M'+(H[0]+10)+' '+H[1]+' v-10 h-10','#17755c',1.5);
+  if(m.b===45)s+=seg(M,'#125b8f',['M=D','H=D','H=M'][m.kind]);else {if(m.kind!==1)s+=seg(M,'#125b8f','M');if(m.kind!==2)s+=seg(D,'#9b3c76','D');if(m.kind!==0)s+=seg(H,'#17755c','H');}if(m.kind!==0)s+=path('M'+(H[0]+10)+' '+H[1]+' v-10 h-10','#17755c',1.5);
   s+=label(A[0]-7,261,'A')+label(B[0]+9,261,'B')+label(C[0],C[1]-10,'C')+label(B[0]-25,237,m.b+'°');show(s,'0 0 460 285');
   status.textContent='∠B='+m.b+'°. '+(m.kind===0?'Угол между медианой и биссектрисой: '+Math.abs(45-m.b)+'°.':m.kind===1?'Угол между высотой и биссектрисой: '+Math.abs(45-m.b)+'°.':'Угол между высотой и медианой: '+Math.abs(90-2*m.b)+'°.');return;
  }
@@ -158,7 +180,15 @@ function mount(host,type,initial,onChange){
  }
  if(type==='projection'){
   const O=[170,205],A=[170,205-m.h*10],B=[170+m.p*13,205],C=[B[0]+35,177],D=[B[0]-35,233];let s=poly([[40,244],[352,244],[440,155],[128,155]],'#dcecf380','#8aa2b3')+line(O[0],O[1],A[0],A[1],'#9b3c76',3)+line(A[0],A[1],B[0],B[1],'#125b8f',3)+line(O[0],O[1],B[0],B[1],'#17755c',3)+path('M180 205 v-10 h-10','#294c65',1.7);
-  if(m.show)s+=line(C[0],C[1],D[0],D[1],'#b25c36',2)+label(C[0]+5,C[1]-9,'C','#b25c36')+path('M'+(B[0]-10)+' '+B[1]+' l8 -6 l10 0','#b25c36',1.5);
+  if(m.show){
+   // Project the two right-angle squares onto the same rays as their segments.
+   const side=Math.min(.8,m.p/3),length=Math.hypot(m.p,m.h);
+   const alongOB=[-13*side,0],alongAB=[-13*m.p/length*side,-10*m.h/length*side];
+   const alongBC=[8*side,-6.4*side];
+   const mark=(u,v)=>path('M'+[B[0]+u[0],B[1]+u[1]].join(' ')+' l'+v.join(' ')+' l'+[-u[0],-u[1]].join(' '),'#b25c36',1.5);
+   s+=line(C[0],C[1],D[0],D[1],'#b25c36',2)+label(C[0]+5,C[1]-9,'C','#b25c36');
+   s+=mark(alongOB,scale(alongBC,-1))+mark(alongAB,alongBC);
+  }
   s+=label(A[0]-10,A[1]-5,'A')+label(O[0]-12,O[1]+16,'O')+label(B[0]+10,B[1]+16,'B')+label(75,232,'α')+label(152,(O[1]+A[1])/2,String(m.h),'#9b3c76')+label((O[0]+B[0])/2,224,String(m.p),'#17755c');show(s);
   status.textContent='AB² = '+m.h+'² + '+m.p+'² = '+(m.h*m.h+m.p*m.p)+'; AB ≈ '+fmt(Math.hypot(m.h,m.p))+'. '+(m.show?'BC ⟂ OB ⇒ BC ⟂ AB.':'');return;
  }
