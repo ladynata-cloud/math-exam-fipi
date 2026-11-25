@@ -6,6 +6,8 @@
   const by=id=>document.getElementById(id);
   const key='mathExam.schoolJourney.selection.v1';
   let choice=m.selection(null),saved=true,probeChecked=false;
+  // Exposure is only a transient tab-local UI fact, never mastery or a stored attempt.
+  const exposed=new Set();
   try{choice=m.selection(JSON.parse(localStorage.getItem(key)||'null'));}catch(_){saved=false;}
   const goal=by('sj-goal'),topic=by('sj-topic'),map=by('sj-map'),details=by('sj-details'),form=by('sj-probe'),result=by('sj-result'),note=by('sj-storage');
   const element=(tag,txt)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;return e;};
@@ -37,7 +39,8 @@
     n.before.forEach(id=>{const li=element('li');li.append(button(m.find(id).title,()=>setNode(id)));by('sj-before').append(li);});
     by('sj-before-wrap').hidden=!n.before.length;
     probeChecked=false;form.replaceChildren();result.replaceChildren();result.hidden=true;
-    by('sj-probe-note').textContent=n.questions.length?'Две короткие пробы для выбора занятия, а не оценка освоения. Если вы уже видели разбор, считайте эти задачи повторением.':'Для этой темы общая входная проверка ещё не разработана. Можно сразу открыть курс; уровень знаний не определён.';
+    const repeated=exposed.has(n.id);
+    by('sj-probe-note').textContent=n.questions.length?(repeated?'Вы уже видели разбор этих задач в текущей вкладке. Сейчас это повторение, а не новая самостоятельная проверка.':'Две короткие пробы для выбора занятия, а не оценка освоения. Если вы уже видели разбор, считайте эти задачи повторением.'):'Для этой темы общая входная проверка ещё не разработана. Можно сразу открыть курс; уровень знаний не определён.';
     form.hidden=!n.questions.length;
     n.questions.forEach((q,i)=>{
       const field=element('fieldset'),legend=element('legend',(i+1)+'. '+q.prompt);
@@ -47,7 +50,7 @@
         label.append(input,element('span',s));field.append(label);
       });form.append(field);
     });
-    if(n.questions.length){const submit=element('button','Проверить две задачи');submit.type='submit';form.append(submit);}
+    if(n.questions.length){const submit=element('button',repeated?'Проверить повторение':'Проверить две задачи');submit.type='submit';form.append(submit);}
   }
   form.addEventListener('submit',event=>{
     event.preventDefault();
@@ -57,11 +60,13 @@
     result.hidden=false;result.replaceChildren();
     if(r.kind==='incomplete'){result.append(element('p','Выберите ответ или «Пока не знаю» в каждой задаче.'));return;}
     if(r.kind==='not-tested')return;
+    const repeated=exposed.has(n.id);
+    exposed.add(n.id);
     probeChecked=true;
     for(const control of form.querySelectorAll('input,button[type="submit"]'))control.disabled=true;
     const title=r.kind==='two-correct'?'Обе пробы верны':r.kind==='check-again'?'Одна проба верна — нужна ещё проверка':'Стоит повторить эту тему';
-    result.append(element('strong',title));
-    result.append(element('p',r.kind==='two-correct'?'Это ещё не подтверждение освоения. Решите новые задачи самостоятельно.':'По двум задачам нельзя определить точную причину ошибки. Начните с разбора текущей темы; при необходимости проверьте её основы.'));
+    result.append(element('strong',repeated?'Повторение после разбора: '+title.toLowerCase():title));
+    result.append(element('p',repeated?'Вы уже видели разбор этой пары в текущей вкладке. Это упражнение для повторения, а не новая самостоятельная проверка.':r.kind==='two-correct'?'Это ещё не подтверждение освоения. Решите новые задачи самостоятельно.':'По двум задачам нельзя определить точную причину ошибки. Начните с разбора текущей темы; при необходимости проверьте её основы.'));
     const ul=element('ul');n.questions.forEach((q,i)=>ul.append(element('li',(answers[i]===q.answer?'Верно. ':'Разбор. ')+q.explain)));result.append(ul);
     result.append(element('p','Разбор уже показан. Повтор этих же задач не является новой самостоятельной проверкой.'));
     if(r.kind==='two-correct'){const next=m.next(choice.goal,n.id);if(next)result.append(button('Посмотреть следующий шаг: '+next.title,()=>setNode(next.id)));}
