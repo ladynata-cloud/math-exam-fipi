@@ -403,7 +403,11 @@
       if(!['(','['].includes(left)||![')',']'].includes(right))return null;
       const pieces=part.slice(1,-1).split(';');if(pieces.length!==2)return null;
       const a=endpoint(pieces[0]),b=endpoint(pieces[1]);
-      if(!a||!b||a.inf===1||b.inf===-1||compareEndpoints(a,b)>=0)return null;
+      if(!a||!b||a.inf===1||b.inf===-1)return null;
+      const order=compareEndpoints(a,b);
+      // A closed degenerate segment [a;a] is the singleton {a}; it can
+      // legitimately close a neighbouring open endpoint in a union.
+      if(order>0||(order===0&&(a.inf||b.inf||left!=='['||right!==']')))return null;
       if((a.inf&&left!=='(')||(b.inf&&right!==')'))return null;
       parsed.push({a,b,lc:left==='[',rc:right===']'});
     }

@@ -79,6 +79,16 @@ test('exact roots and equivalence; extraneous roots rejected; signs and open hol
   change('applications','rational-sign',5,'(-∞;-1]∪[2;+∞)','intervals');
   change('applications','rational-sign',5,'(-∞;-1)∪(2;+∞)','intervals');
   check('applications','rational-sign',['-1','2','+','−','+','[2;+inf) U (-inf;-1)'],'correct');
+  check('applications','rational-sign',['-1','2','+','-','+','(-∞;-1)∪[2;2]∪(2;+∞)'],'correct');
+  check('applications','rational-sign',['-1','2','+','-','+','(2;+∞)∪(-∞;-1)∪[4/2;2,0]'],'correct');
+  change('applications','rational-sign',5,'(-∞;-1)∪[-1;-1]∪[2;+∞)','intervals');
+  change('applications','rational-sign',5,'(-∞;-1)∪(2;2)∪(2;+∞)','intervals');
+  change('applications','rational-sign',5,'(-∞;-1)∪[2;2)∪(2;+∞)','intervals');
+  change('applications','rational-sign',5,'(-∞;-1)∪[2;+∞)∪[0;0]','intervals');
+  change('applications','rational-sign',5,'(-∞;-1)∪[3;2]∪[2;+∞)','intervals');
+  change('applications','rational-sign',5,'(-∞;-1)∪[2;+∞)∪[+∞;+∞]','intervals');
+  change('applications','independent-inequality',5,'(-3;2)∪[2;2]','intervals');
+  change('applications','independent-identity-domain',2,'(-∞;-3)∪[-3;-3]∪(-3;+∞)','intervals');
   change('applications','independent-inequality',5,'[-3;2)','intervals');
   change('applications','independent-identity-domain',2,'(-∞;+∞)','intervals');
   change('applications','independent-identity-domain',2,'(-∞;-3]∪(-3;+∞)','intervals');
