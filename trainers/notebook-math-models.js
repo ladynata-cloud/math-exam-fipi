@@ -52,7 +52,7 @@ const path=(d,stroke='#125b8f',width=3,fill='none')=>'<path d="'+d+'" stroke="'+
 const fmt=v=>Math.abs(v)<1e-10?'0':Number(v.toFixed(3)).toString().replace('.',',');
 function mount(host,type,initial,onChange,lessonId){
  let m=normalize(type,initial);host.replaceChildren();
- const controls=E('div',undefined,'controls'),view=E('div'),status=E('p',undefined,'sub');host.append(controls,view,status);
+ const controls=E('div',undefined,'controls'),view=E('div',undefined,'model-view'),status=E('p',undefined,'sub');host.append(controls,view,status);
  function change(p,rebuild=false){
   const selector='button,select,input';
   const focusIndex=Array.from(host.querySelectorAll(selector)).indexOf(document.activeElement);

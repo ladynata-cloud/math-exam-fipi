@@ -74,6 +74,15 @@ async function waitText(locator,expected){await locator.evaluate((e,t)=>{if(!e.t
    }
    await waitText(model,result);
   }
+  if(id==='sections'){
+   const zoom=standalone.locator('#modelZoom'),view=model.locator('.model-view');
+   await zoom.tap();
+   assert(await view.evaluate(e=>e.scrollWidth>=580&&e.clientWidth<320&&e.scrollLeft>0));
+   assert(await view.evaluate(e=>e===document.activeElement));
+   await view.evaluate(e=>e.scrollTo(e.scrollWidth,0));
+   await zoom.tap();
+   assert.equal(await view.evaluate(e=>e.scrollLeft),0);
+  }
   const clipped=await standalone.evaluate(()=>[...document.querySelectorAll('#model input,#model select,#model button')].some(e=>{
    const box=e.getBoundingClientRect();return box.width>0&&(box.left<0||box.right>innerWidth+1);
   })||document.documentElement.scrollWidth>innerWidth+1);

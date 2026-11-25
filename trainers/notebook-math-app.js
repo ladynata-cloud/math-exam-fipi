@@ -124,10 +124,33 @@ function renderPractice(){
 function renderMode(){
  const learning=state.mode==='learn';$('learn').setAttribute('aria-pressed',String(learning));$('practice').setAttribute('aria-pressed',String(!learning));$('learnPanel').hidden=!learning;
 }
+function setModelZoom(enlarged,scrollLeft){
+ const host=$('model'),view=host.querySelector('.model-view');
+ host.classList.toggle('zoomed',enlarged);
+ $('modelZoom').textContent=enlarged?'Показать рисунок целиком':'Увеличить рисунок';
+ if(!view)return;
+ if(enlarged){
+  view.tabIndex=0;
+  view.setAttribute('role','region');
+  view.setAttribute('aria-label','Увеличенный рисунок, прокрутка по горизонтали');
+  view.scrollLeft=scrollLeft??(view.scrollWidth-view.clientWidth)/2;
+ }else{
+  view.removeAttribute('tabindex');view.removeAttribute('role');view.removeAttribute('aria-label');
+  view.scrollLeft=0;
+ }
+}
 function renderModel(force){
- const l=current();$('modelPanel').hidden=!l[7];
- if(!l[7]){$('model').replaceChildren();lastModelKey=null;return;}
- if(force||lastModelKey!==l[0]){lastModelKey=l[0];models.mount($('model'),l[7],state.model,m=>{state.model=models.normalize(l[7],m);notify();},l[0]);}
+ const l=current(),host=$('model'),zoom=$('modelZoom');
+ $('modelPanel').hidden=!l[7];
+ if(!l[7]){host.replaceChildren();zoom.hidden=true;lastModelKey=null;return;}
+ if(force||lastModelKey!==l[0]){
+  const enlarged=lastModelKey===l[0]&&host.classList.contains('zoomed');
+  const scroll=host.querySelector('.model-view')?.scrollLeft;
+  lastModelKey=l[0];
+  models.mount(host,l[7],state.model,m=>{state.model=models.normalize(l[7],m);notify();},l[0]);
+  zoom.hidden=!host.querySelector('svg');
+  setModelZoom(enlarged,scroll);
+ }
 }
 function render(forceModel=false){
  const i=lessonIndex(state.lesson),l=current();
@@ -153,6 +176,11 @@ $('hideSteps').onclick=()=>{state.step=0;renderSteps();notify();};
 $('previous').onclick=()=>selectLesson(lessonIndex(state.lesson)-1);$('next').onclick=()=>selectLesson(lessonIndex(state.lesson)+1);
 $('learn').onclick=()=>{state.mode='learn';renderMode();notify();};$('practice').onclick=()=>{state.mode='practice';renderMode();notify();};
 $('mapToggle').onclick=()=>toggleMap();$('mapOpen').onclick=()=>toggleMap(true);
+$('modelZoom').onclick=()=>{
+ const enlarged=!$('model').classList.contains('zoomed');
+ setModelZoom(enlarged);
+ if(enlarged)$('model').querySelector('.model-view').focus({preventScroll:true});
+};
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch(_){}};
 $('homework').onclick=()=>{const l=current();$('homeworkText').value=l[2]+'\n\n'+l[6].map((t,i)=>(i+1)+'. '+t[0]+(Array.isArray(t[4])?'\nВарианты: '+t[4].join(' / '):'')).join('\n\n');$('copyStatus').textContent='';$('homeworkDialog').showModal();};
 $('closeHomework').onclick=()=>$('homeworkDialog').close();
