@@ -37,6 +37,7 @@ jobs:
           node --test tools/like-terms-factory.test.cjs
           node --test tools/like-terms-factory-polynomials.test.cjs
           node --test tools/like-terms-factory-grouping.test.cjs
+          node --test tools/like-terms-factory-algebra-finish.test.cjs
           git diff --check
       - name: Install isolated Python browser tools
         run: |
@@ -52,3 +53,6 @@ jobs:
       - name: Grouping and first identities, preserved polynomial progress
         run: |
           "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory-grouping.browser.py
+      - name: Complete identities, rational expressions and equation applications
+        run: |
+          "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory-algebra-finish.browser.py
