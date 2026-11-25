@@ -17,6 +17,9 @@ const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b
 // The fraction controls were reviewed on this immutable published source. Keep
 // the complete inline engine and static controls comparison, including fixes.
 taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
+// Exact reviewed source for the number-line class serialization fix. Preserve
+// the complete inline engine and controls; this is not a generic exemption.
+taskSources['trainers/negative-numbers-line.html']='c2ac7dc3dcb1c903658f8dc39d8a61005e9d18ab';
 // PR #539/#548 behavior plus the reviewed explanation-only accuracy correction.
 // Exact source: 679421ce3057ffbcdab89b80fcd591337f67f9e8.
 // Evidence: docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md and its report.
