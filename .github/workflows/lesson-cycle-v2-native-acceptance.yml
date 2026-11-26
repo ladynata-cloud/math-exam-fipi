@@ -46,10 +46,15 @@ jobs:
         if: github.event.pull_request.number == 768
         env:
           BRIDGE_RELEASE: 0dc629ff055f99fa0409b363ecbc24148807a05f
+          FRACTION_RELEASE: b876a19a78910663aa6a976b4b3b781d7987a6d8
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
           LESSON_HEAD: 546d27c444571293b68d54ab98cdf10a7e56364b
           ORIGINAL_BASE: cdcd6d0e86ddbd457dfd89b0a2aeef1b2a9ab3d3
         run: |
           candidate="$(git rev-parse HEAD)"
+          test "$PR_BASE" = "$FRACTION_RELEASE"
+          test "$(git merge-base "$candidate" "$FRACTION_RELEASE")" = "$FRACTION_RELEASE"
+          test "$(git merge-base "$FRACTION_RELEASE" "$BRIDGE_RELEASE")" = "$BRIDGE_RELEASE"
           test "$(git merge-base "$candidate" "$BRIDGE_RELEASE")" = "$BRIDGE_RELEASE"
           test "$(git merge-base "$candidate" "$LESSON_HEAD")" = "$LESSON_HEAD"
           test "$(git merge-base "$LESSON_HEAD" "$BRIDGE_RELEASE")" = "$ORIGINAL_BASE"
@@ -58,7 +63,7 @@ jobs:
           python3 - <<'PY'
           import os, subprocess
           from pathlib import Path
-          a,b,l,base = (os.environ[k] for k in ("CANDIDATE","BRIDGE_RELEASE","LESSON_HEAD","ORIGINAL_BASE"))
+          a,b,l,base,c = (os.environ[k] for k in ("CANDIDATE","BRIDGE_RELEASE","LESSON_HEAD","ORIGINAL_BASE","FRACTION_RELEASE"))
           shared = "trainers/tyurin-statistics/condition-lab.js"
           workflow = ".github/workflows/lesson-cycle-v2-native-acceptance.yml"
           expected = {shared, "trainers/tyurin-statistics/discrete-lab.html", "trainers/tyurin-statistics/sum-dependence-lab.html", "tools/tyurin-probability-bridges.test.cjs", "docs/tasks/TYURIN_PROBABILITY_BRIDGES_20261126.md", "assets/assistant/page-rollout.json", "assets/assistant/pages.json", "sitemap.xml", "tools/seo-public-pages.json"}
@@ -68,7 +73,11 @@ jobs:
           assert paths(base,b) == expected
           lesson_paths = paths(base,l)
           assert len(lesson_paths) == 18 and lesson_paths & expected == {shared}
-          assert paths(b,a) == lesson_paths, "unexpected candidate delta"
+          fraction_paths = {".github/workflows/linear-learning-pilot.yml", "assets/assistant/page-rollout.json", "docs/tasks/LINEAR_FRACTION_BRIDGE_20261124.md", "equations/linear-pilot/fraction-bridge-core.js", "equations/linear-pilot/fraction-bridge.css", "equations/linear-pilot/fraction-bridge.js", "equations/linear-pilot/index.html", "tools/equations/linear-pilot-fraction-bridge.browser.cjs", "tools/equations/linear-pilot-fraction-bridge.test.cjs"}
+          assert paths(b,c) == fraction_paths and not (fraction_paths & lesson_paths), "unexpected released fraction delta"
+          assert paths(c,a) == lesson_paths, "unexpected candidate delta"
+          assert paths(b,a) == lesson_paths | fraction_paths, "unexpected combined delta"
+          for p in fraction_paths: assert blob(a,p) == blob(c,p), p
           original, bridge, own = blob(base,shared),blob(b,shared),blob(l,shared)
           assert bridge.startswith(original), "bridge prefix changed"
           suffix = bridge[len(original):]
@@ -76,8 +85,8 @@ jobs:
           assert blob(a,shared) == own + suffix, "both implementations must be preserved exactly"
           for p in expected - {shared}: assert blob(a,p) == blob(b,p), p
           for p in lesson_paths - {shared,workflow}: assert blob(a,p) == blob(l,p), p
-          for p in expected | lesson_paths: assert Path(p).read_bytes() == blob(a,p), p
-          print("PASS exact published composition: 9 bridge files, 18 lesson paths, both implementations and PDF blobs preserved")
+          for p in expected | lesson_paths | fraction_paths: assert Path(p).read_bytes() == blob(a,p), p
+          print("PASS exact published composition: 9 probability bridge files, 9 fraction paths, 18 lesson paths, both implementations and PDF blobs preserved")
           PY
           node tools/lesson-cycle/hooks.test.cjs
           node tools/lesson-cycle/entry.test.cjs
