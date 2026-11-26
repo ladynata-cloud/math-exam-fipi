@@ -62,3 +62,62 @@ test('two existing lessons link back to course and to one another, paper fallbac
     assert.equal([...file.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/g)].length,2,'two inline scripts: mathematics and learner UI');
   }
 });
+
+function attemptRegression(html, execute, assert, oldExpected=false) {
+ const scripts=[...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
+ assert.equal(scripts.length,2);
+ function fixture(){
+  let ids=new Map();
+  class E {
+   constructor(tag){this.tagName=tag;this.children=[];this.events={};this.attrs={};this.value='';this.textContent='';this.disabled=false;this.hidden=false;this.style={};}
+   append(...children){this.children.push(...children);}
+   replaceChildren(...children){this.children=children;}
+   setAttribute(name,value){this.attrs[name]=String(value);}
+   addEventListener(name,cb){this.events[name]=cb;}
+   focus(){this.focused=true;}
+   fire(name){this.events[name]({preventDefault(){}});}
+  }
+  const document={createElement:tag=>new E(tag),getElementById:id=>{if(!ids.has(id))ids.set(id,new E('static'));return ids.get(id)}};
+  document.getElementById('coupling').value='2';
+  function Option(label,value){this.textContent=label;this.value=value;}
+  execute(scripts,document,Option);
+  const block=document.getElementById('tasks').children[0];
+  const form=block.children.find(x=>x.tagName==='form');
+  const fields=form.children.filter(x=>x.tagName==='label').map(x=>x.children[0]);
+  const controls=form.children.find(x=>x.className==='controls');
+  const hint=controls.children.find(x=>x.type==='button');
+  const msg=form.children.find(x=>x.className==='feedback');
+  return {fields,form,hint,msg,summary:()=>document.getElementById('summary').textContent};
+ }
+ const right=['1/8','3/4','1/8','1','1/4','нет'];
+ function set(f,values){f.fields.forEach((x,i)=>{x.value=values[i]});}
+ function solve(f){set(f,right);f.form.fire('submit');}
+ if(oldExpected){
+  const f=fixture();f.form.fire('submit');solve(f);
+  assert.equal(f.summary().includes('Самостоятельно с первой попытки: 0'),true);
+  assert.equal(f.summary().includes('после исправления: 1'),true);
+  return;
+ }
+ for(const [label,index,value] of [['empty field',0,''],['zero denominator',1,'1/0'],['invalid text',2,'abc'],['missing option',5,''],['unlisted option',5,'maybe']]){
+  const f=fixture();set(f,right);f.fields[index].value=value;f.form.fire('submit');
+  assert.equal(f.msg.textContent.includes('Попытка не засчитана'),true,label);
+  assert.equal(f.fields[index].attrs['aria-invalid'],'true',label);
+  assert.equal(f.fields[index].focused,true,label);
+  assert.equal(f.summary().includes('Выполнено 0 из 6'),true,label);
+  assert.equal(f.fields.some(x=>x.disabled),false,label);
+  solve(f);assert.equal(f.summary().includes('Самостоятельно с первой попытки: 1'),true,label);
+  assert.equal(f.summary().includes('после исправления: 0'),true,label);
+ }
+ {const f=fixture();set(f,right);f.fields[0].value='0';f.form.fire('submit');solve(f);
+ assert.equal(f.summary().includes('Самостоятельно с первой попытки: 0'),true);
+ assert.equal(f.summary().includes('после исправления: 1'),true);}
+ {const f=fixture();f.hint.fire('click');f.form.fire('submit');solve(f);
+ assert.equal(f.summary().includes('с подсказкой: 1'),true);
+ assert.equal(f.summary().includes('Самостоятельно с первой попытки: 0'),true);}
+ {const f=fixture();set(f,['0,125','0.75','1/8','1.0','2/8','нет']);f.form.fire('submit');
+ assert.equal(f.summary().includes('Самостоятельно с первой попытки: 1'),true);const summary=f.summary();f.form.fire('submit');assert.equal(f.summary(),summary);}
+}
+test('sum dependence: only complete parseable submissions consume the first attempt',()=>{
+  const file=fs.readFileSync(path.join(dir,'sum-dependence-lab.html'),'utf8');
+  attemptRegression(file,(scripts,document,Option)=>{const context=vm.createContext({document,Option});for(const script of scripts)vm.runInContext(script,context);},assert);
+});
