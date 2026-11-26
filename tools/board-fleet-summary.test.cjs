@@ -1,0 +1,12 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict');
+const {combine}=require('./board-fleet-summary.cjs');
+const expected=['a','b','c'],commit='c'.repeat(40),base='b'.repeat(40),mode='changed-mirrors';
+const row=id=>({trainerId:id,status:'PASS',stage:'complete'});
+const report=(i,ids)=>({schemaVersion:1,commit,base,mode,selected:3,shard:i,shards:2,plannedIds:ids,rows:ids.map(row)});
+const pair=()=>[report(0,['a','c']),report(1,['b'])];
+const check=r=>combine(r,expected,commit,base,2,mode);
+test('complete shards aggregate exactly once',()=>{const r=check(pair());assert.equal(r.checked,3);assert.equal(r.passed,3);assert.deepEqual(r.failures,[]);});
+test('missing shard or truncated rows cannot pass',()=>{assert.ok(check([pair()[0],null]).failures.length);const r=pair();r[0].rows.pop();assert.ok(check(r).failures.some(s=>s.includes('Not checked: c')));});
+test('stale candidate, repeated trainer and wrong shard are detected',()=>{const r=pair();r[1].commit='old';r[1].rows.push(row('a'));assert.ok(check(r).failures.some(s=>s.includes('Wrong candidate')));assert.ok(check(r).failures.some(s=>s.includes('Duplicate trainer')));assert.ok(check(r).failures.some(s=>s.includes('Unexpected trainer')));});
+test('adapter failure and infrastructure error remain failed',()=>{const r=pair();r[0].rows[0].status='FAIL';r[1].infrastructureError='TimeoutError';const out=check(r);assert.equal(out.failed,1);assert.ok(out.failures.some(s=>s.includes('Trainer failed')));assert.ok(out.failures.some(s=>s.includes('Infrastructure error')));});
