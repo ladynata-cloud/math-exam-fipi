@@ -35,3 +35,8 @@ New controls are isolated from answer form handlers; no storage writes, auto-cor
 - Room: four proportionally sized walls, sequential reveal, selectable wall and actual door dimensions; right-angle mark on arc.
 - Tires: proportional wheel geometry and aligned tracks, marked circumference, one-wheel focus and two-wheel comparison, reversible 0–360° scrubber, pause and reset, compact same-scale overview. Reduced-motion support.
 - Preserve readable labels at minimum widths and no response leakage. All actual rendering, mobile/touch and offline acceptance remain required.
+
+- Added interactive isolation of actual arc parts and room surfaces; paper labels retained at readable sizes; wall animation no longer overrides selected-wall opacity.
+
+## Offline artifact checkpoint
+Targeted rebuild preserves all unchanged compressed entries, replaces the six changed runtime members and preserves the original offline HTML shell. ZIP local/central headers and CRC32 verified for all 39 members before and after. New entries use ZIP store compression; canonical Python/Node builder and offline browser suite are still required for release evidence.

@@ -54,6 +54,9 @@ body.pv-exam{margin:0;background:#f5f7f4;color:#202d25;font:19px/1.75 system-ui,
 .pv-primary-visual .pv-tariff-diagram{cursor:crosshair}
 .pv-cut-new{animation:pv-cut-reveal .42s ease-out}
 @keyframes pv-cut-reveal{from{opacity:.25}to{opacity:1}}
-.pv-wall-panel{animation:pv-wall-reveal .42s ease-out both;animation-delay:var(--wall-delay,0ms);transform-box:fill-box;transform-origin:left center}
+.pv-wall-panel{animation:pv-wall-reveal .42s ease-out backwards;animation-delay:var(--wall-delay,0ms);transform-box:fill-box;transform-origin:left center}
 @keyframes pv-wall-reveal{from{opacity:.2;transform:scaleX(.18)}to{opacity:1;transform:scaleX(1)}}
 @media(prefers-reduced-motion:reduce){.pv-cut-new,.pv-wall-panel{animation:none!important}}
+
+.pv-part-controls{margin:14px 0}.pv-part-controls p{font-size:18px;margin:8px 0}.pv-part-controls button[aria-pressed=true]{background:#176747;color:white}
+.pv-part-muted{opacity:.22}.pv-part-active[data-pv-arc-part]{stroke:#b45309!important;stroke-width:4!important}.pv-part-active[data-pv-room-face]{stroke:#b45309!important;stroke-width:3.5!important}

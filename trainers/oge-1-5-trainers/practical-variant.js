@@ -24,6 +24,7 @@ function question(options){
  const card=el('article',null,'pv-question');card.id='pv-question-'+String(options.id||++serial).replace(/[^\w-]/g,'-');card.dataset.question=String(options.number);card.dataset.taskId=String(options.id||'');
  const heading=el('h2',String(options.number)+'. '+(options.title||'Задание'));card.append(heading);
  const condition=el('div',null,'pv-question-condition');append(condition,options.condition);card.append(condition);prepareFigures(condition);
+ if(!global.OgeCourseSharedMode&&options.page==='stoves')enhanceQuestionDiagram(condition);
  const form=el('form',null,'pv-answer-form'),fields=new Map(),requiredFields=new Set();
  for(const spec of options.fields||[]){const label=el('label',null,'pv-field');label.append(el('span',spec.label||'Запиши ответ.'));let input;
   if(spec.options){input=el('select');for(const entry of spec.options){const option=el('option',Array.isArray(entry)?entry[1]:typeof entry==='object'?entry.label:entry);option.value=String(Array.isArray(entry)?entry[0]:typeof entry==='object'?entry.value:entry);input.append(option);}}
@@ -82,6 +83,19 @@ function prepareFigures(host){
 
 // Neutral drawing tools: never select the correct answer, evaluate an
 // exercise, or change the help/progress/board protocol. Standalone only.
+
+function enhanceQuestionDiagram(host){
+ const svg=host.querySelector('svg.pv-arc-diagram,svg.pv-room-diagram');if(!svg||svg.dataset.pvPartsReady)return;
+ const arc=svg.classList.contains('pv-arc-diagram'),attr=arc?'data-pv-arc-part':'data-pv-room-face';
+ const parts=Array.from(svg.querySelectorAll('['+attr+']'));if(!parts.length)return;
+ const wrap=el('div',null,'pv-part-controls');wrap.setAttribute('aria-label',arc?'Рассмотри элементы арки':'Рассмотри части помещения');
+ wrap.append(el('p',arc?'Рассмотри отдельно хорду, высоту и радиусы.':'Рассмотри отдельно пол и стены.'));
+ const buttons=el('div',null,'pv-explore-controls');const options=arc?[['all','Весь рисунок'],['chord','Хорда'],['height','Высота'],['radius','Радиус']]:[['all','Всё помещение'],['floor','Пол'],['wall','Стены']];
+ const controls=options.map(([value,label])=>{const b=el('button',label);b.type='button';b.setAttribute('aria-pressed',String(value==='all'));
+  b.addEventListener('click',()=>{parts.forEach(part=>{const yes=value==='all'||part.getAttribute(attr).split(' ').includes(value);part.classList.toggle('pv-part-muted',!yes);part.classList.toggle('pv-part-active',value!=='all'&&yes);});controls.forEach(btn=>btn.setAttribute('aria-pressed',String(btn===b)));});buttons.append(b);return b;});
+ wrap.append(buttons);host.append(wrap);svg.dataset.pvPartsReady='1';
+}
+
 function enhancePrimaryVisual(host,page){
  const svg=host.querySelector('svg');if(!svg||host.dataset.pvExploreReady)return;
  const ns='http://www.w3.org/2000/svg';
@@ -132,12 +146,13 @@ function enhancePrimaryVisual(host,page){
   const detail=el('figure',null,'pv-paper-detail'),caption=el('figcaption','Увеличенный фрагмент · отдельный масштаб'),inset=S('svg',{viewBox:'0 0 320 200',role:'img','aria-label':'Увеличенный лист и две равные половины'});
   detail.append(caption,inset);panel.append(detail);
   const sheet=(target,r,fill,stroke,extra={})=>target.append(S('rect',{x:r.x,y:r.y,width:r.w,height:r.h,fill,stroke,'stroke-width':2,...extra}));
+  const sheetLabel=(r,n)=>{if(r.w>=42&&r.h>=32)overlay.append(S('text',{x:r.x+r.w/2,y:r.y+r.h/2+7,'text-anchor':'middle','font-size':22,'font-weight':650,fill:'#173c2d'},'А'+n));};
   function halves(r){const v=r.w>=r.h;return v?[{...r,w:r.w/2},{...r,x:r.x+r.w/2,w:r.w/2}]:[{...r,h:r.h/2},{...r,y:r.y+r.h/2,h:r.h/2}];}
   function cutLine(target,r,animate=false){const v=r.w>=r.h,attrs=v?{x1:r.x+r.w/2,x2:r.x+r.w/2,y1:r.y,y2:r.y+r.h}:{x1:r.x,x2:r.x+r.w,y1:r.y+r.h/2,y2:r.y+r.h/2};target.append(S('line',{...attrs,stroke:'#b45309','stroke-width':2,'stroke-dasharray':'6 4',...(animate?{'class':'pv-cut-new'}:{})}));}
   function draw(animate){overlay.replaceChildren();overlay.append(S('rect',{x:x0-4,y:y0-4,width:w0+8,height:h0+8,fill:'white'}));
    let current={x:x0,y:y0,w:w0,h:h0},previous=current;
-   for(let i=1;i<=stage;i++){previous=current;const [left,right]=halves(current);sheet(overlay,left,'#d9eade','#365d48');current=right;}
-   sheet(overlay,current,'#f9dfad','#b45309',animate?{'class':'pv-cut-new'}:{});if(stage<6)cutLine(overlay,current);
+   for(let i=1;i<=stage;i++){previous=current;const [left,right]=halves(current);sheet(overlay,left,'#d9eade','#365d48');sheetLabel(left,i);current=right;}
+   sheet(overlay,current,'#f9dfad','#b45309',animate?{'class':'pv-cut-new'}:{});if(stage<6)cutLine(overlay,current);sheetLabel(current,stage);
    // At small scales A5/A6 are hard to see. A separately labelled magnifier
    // shows the last division at a readable size, never as the main scale.
    inset.replaceChildren();const source=stage?previous:current,k=Math.min(270/source.w,160/source.h),r={x:(320-source.w*k)/2,y:(200-source.h*k)/2,w:source.w*k,h:source.h*k};
@@ -148,6 +163,7 @@ function enhancePrimaryVisual(host,page){
  }else if(page==='stoves'){
   note.textContent='Посмотри, как четыре стены превращаются в развёртку. Дверь остаётся проёмом, а пол и потолок в развёртку стен не входят.';
   const a=Number(svg.dataset.roomA),b=Number(svg.dataset.roomB),h=Number(svg.dataset.roomH);if(![a,b,h].every(v=>Number.isFinite(v)&&v>0)){overlay.remove();return;}
+  enhanceQuestionDiagram(host);
   const netFigure=el('figure',null,'pv-wall-net');netFigure.hidden=true;const net=S('svg',{viewBox:'0 0 420 160',role:'img','aria-label':'Четыре стены парной, разложенные в одну полосу'});net.setAttribute('hidden','');net.hidden=true;
   const key=el('figcaption','Стены чередуются: длина, ширина, длина, ширина. Белый проём — дверь. Масштаб развёртки отдельный.');
   netFigure.append(net,key);
@@ -185,6 +201,6 @@ function mount(options){
 }
 function register(page,init){providers.set(page,init);}
 function start(){const init=providers.get(doc.body.dataset.practicalPage);if(doc.body.dataset.practicalVariant==='1'&&init)init(global.PracticalVariant);}
-global.PracticalVariant={el,html,clone,help,question,mount,register,prepareFigures,enhancePrimaryVisual};
+global.PracticalVariant={el,html,clone,help,question,mount,register,prepareFigures,enhancePrimaryVisual,enhanceQuestionDiagram};
 if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',start);else global.setTimeout(start,0);
 })(window);
