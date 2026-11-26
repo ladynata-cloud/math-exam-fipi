@@ -660,7 +660,7 @@
       if(!currentEntry){if(bridgeSession||readyCandidate){bridgeReloadNeeded=true;invalidateTrainerBridge()}setMirrorStatus('unsupported-trainer');return}
       if(bridgeReloadNeeded&&frameLoaded){reloadTrainerFrameForBridge();return}
       if(readyCandidate)promoteReadyCandidate();
-      if(bridgeSession){if(bridgeSession.hydrated){setMirrorStatus('connected');if(canWrite()&&roomStateReceived)requestTrainerState();else if(latestTrainerState)postBridgeTrainerState(latestTrainerState)}else maybeHydrateTrainer()}
+      if(bridgeSession){if(bridgeSession.hydrated){setMirrorStatus('connected');if(latestTrainerState&&roomStateReceived)postBridgeTrainerState(latestTrainerState);else if(canWrite()&&roomStateReceived)requestTrainerState()}else maybeHydrateTrainer()}
       else if(frameLoaded)scheduleLegacyTrainerRequest();
       if(latestTrainerState&&!canWrite())applyTrainerStateToFrame(latestTrainerState)
     }
@@ -910,7 +910,9 @@
           const isMine=canWrite();
           imageImportEpoch++;cancelGesture(false);clearPendingHistory();pruneSharedRedo();
           if(wasMine&&!isMine){closeTextEditor();if(shared.role==='student')setStatus('Учитель забрал ход','wait')}
-          if(!wasMine&&isMine)requestTrainerState();
+          if(!wasMine&&isMine){
+            if(!latestTrainerState||postBridgeTrainerState(latestTrainerState))requestTrainerState();
+          }
           updateControlUi();setTool(tool)
         });
         onRoomEvent('board:snapshot',payload=>{if(!(payload?.state?.controlVersion<shared.controlVersion))applySnapshot(payload?.state)});

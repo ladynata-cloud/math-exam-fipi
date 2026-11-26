@@ -21,6 +21,7 @@ import argparse
 import asyncio
 import functools
 import json
+import mimetypes
 import os
 import socket
 import subprocess
@@ -40,6 +41,26 @@ class Quiet(SimpleHTTPRequestHandler):
 
     def log_message(self, *args):
         pass
+
+class HistoricalSite(Quiet):
+    def __init__(self, *args, root, ref, **kwargs):
+        self.root, self.ref = root, ref
+        super().__init__(*args, **kwargs)
+
+    def do_GET(self):
+        resource = urlsplit(self.path).path.lstrip("/")
+        result = subprocess.run(["git", "-C", str(self.root), "show", self.ref + ":" + resource],
+                                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        if result.returncode:
+            self.send_error(404)
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", mimetypes.guess_type(resource)[0] or "application/octet-stream")
+        self.send_header("Content-Length", str(len(result.stdout)))
+        self.end_headers()
+        with suppress(BrokenPipeError, ConnectionResetError):
+            self.wfile.write(result.stdout)
+
 
 class LocalLink:
     """A separate TCP path to the same test server for each participant."""
@@ -101,14 +122,16 @@ class Client:
     def __init__(self):
         self.link = None
 
-    async def install(self, browser, site, api):
+    async def install(self, browser, site, api, legacy=None):
         self.link = LocalLink(urlsplit(api).port)
         proxy = await self.link.start()
         self.context = await browser.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')
-        allowed = {urlsplit(site).netloc, urlsplit(proxy).netloc}
+        self.site = legacy or site
+        allowed = {urlsplit(self.site).netloc, urlsplit(proxy).netloc}
 
         async def http(route):
-            if urlsplit(route.request.url).netloc in allowed:
+            url = urlsplit(route.request.url)
+            if url.netloc in allowed:
                 await route.continue_()
             else:
                 await route.abort()
@@ -130,7 +153,7 @@ class Client:
         await self.p.wait_for_function("!roomReady() && !canWrite() && document.querySelector('#trainerFrame').inert")
 
     async def ready(self, writer):
-        await self.p.wait_for_function("w=>roomReady() && bridgeSession?.hydrated && canWrite()===w && document.querySelector('#mirrorStatus').dataset.mirrorStatus==='connected' && document.querySelector('#trainerFrame').inert===!w", arg=writer)
+        await self.p.wait_for_function("w=>shared.connected && roomStateReceived && shared.socket?.connected && bridgeSession?.hydrated && canWrite()===w && document.querySelector('#mirrorStatus').dataset.mirrorStatus==='connected' && document.querySelector('#trainerFrame').inert===!w", arg=writer)
         await self.p.wait_for_function("shared.socket.io.engine.transport.name==='websocket'")
 
     async def snapshot(self):
@@ -163,7 +186,7 @@ class Client:
 
 async def open_room(teacher, pupil, site, trainer):
     query = urlencode({"server": teacher.link.origin, "trainer": f"/trainers/{trainer}.html"})
-    await teacher.p.goto(f"{site}/trainers/trainer-board.html?{query}")
+    await teacher.p.goto(f"{teacher.site}/trainers/trainer-board.html?{query}")
     await teacher.p.wait_for_function(
         "id => trainerRegistry.status === 'ready' && state.trainerUrl.includes(id)", arg=trainer
     )
@@ -171,13 +194,13 @@ async def open_room(teacher, pupil, site, trainer):
     await teacher.p.locator("#createRoom").click()
     await teacher.p.wait_for_function("document.querySelector('#studentLink').value.includes('room=')")
     parts = urlsplit(await teacher.p.locator("#studentLink").input_value())
-    assert (parts.scheme, parts.netloc) == ("http", urlsplit(site).netloc), "Invitation must be local"
+    assert (parts.scheme, parts.netloc) == ("http", urlsplit(teacher.site).netloc), "Invitation must be local"
     params = dict(parse_qsl(parts.query))
     assert params["server"] == teacher.link.origin
     # Both loopback links forward to the same server and room. Each can fail independently.
     params["server"] = pupil.link.origin
     await teacher.p.keyboard.press("Escape")
-    await pupil.p.goto(urlunsplit(parts._replace(query=urlencode(params))))
+    await pupil.p.goto(urlunsplit(parts._replace(netloc=urlsplit(pupil.site).netloc, query=urlencode(params))))
     await asyncio.gather(teacher.ready(True), pupil.ready(False))
 
 
@@ -196,7 +219,7 @@ async def point_setup(teacher, pupil):
     return old
 
 
-async def reconnect_both(teacher, pupil, pupil_first):
+async def reconnect_both(teacher, pupil, pupil_first, delayed_registry=False):
     await teacher.cut()
     await teacher.locked()
     await pupil.p.wait_for_function("roomReady() && canWrite() && knownRoleOffline('teacher')")
@@ -211,6 +234,13 @@ async def reconnect_both(teacher, pupil, pupil_first):
     await pupil.cut()
     await pupil.locked()
 
+    delayed = asyncio.Event()
+    if delayed_registry:
+        async def hold_registry(route):
+            await asyncio.sleep(.45)
+            delayed.set()
+            await route.fallback()
+        await teacher.context.route("**/api/trainer-registry", hold_registry)
     order = [(teacher, True), (pupil, False)]
     for client, writer in (reversed(order) if pupil_first else order):
         client.link.blocked = False
@@ -219,6 +249,8 @@ async def reconnect_both(teacher, pupil, pupil_first):
         assert await client.snapshot() == acknowledged, "Authoritative state changed after reconnect"
         page_bytes = await client.p.evaluate("JSON.stringify(publicSnapshot().pages)")
         assert page_bytes == acknowledged["pageBytes"], "Client ink differs from acknowledged bytes"
+    if delayed_registry:
+        assert delayed.is_set(), "Teacher must restore with a delayed registry"
 
 
 async def reconnect_pupil(teacher, pupil, old, wait_for_delivery):
@@ -378,17 +410,37 @@ async def change_rooms(browser, site, api, teacher, pupil):
 
 
 CASES = {
-    "reconnect": ["immediate", "confirmed", "both-teacher-first", "both-pupil-first"],
+    "reconnect": ["immediate", "confirmed", "both-teacher-first", "both-pupil-first", "both-teacher-delayed", "both-pupil-delayed"],
     "handoff": ["teacher-grants", "pupil-releases", "revoke-fast"],
     "rooms": ["repeat-turns", "change-rooms"],
     "hint": ["hint-expires", "hint-handoff"],
 }
 
 
-async def run_case(browser, site, api, case):
+async def run_case(browser, site, api, case, legacy=None):
     teacher, pupil = Client(), Client()
     try:
-        await asyncio.gather(teacher.install(browser, site, api), pupil.install(browser, site, api))
+        historical = case in ("mixed-clients", "legacy-pair")
+        await asyncio.gather(teacher.install(browser, site, api, legacy if case == "legacy-pair" else None),
+                             pupil.install(browser, site, api, legacy if historical else None))
+        if historical:
+            await open_room(teacher, pupil, site, "negative-numbers-line")
+            await teacher.draw()
+            await pupil.p.wait_for_function("state.pages[0].strokes.length === 1")
+            before = await teacher.snapshot()
+            if case == "legacy-pair":
+                await pupil_turn(teacher, pupil)
+                await pupil.draw()
+                await teacher.p.wait_for_function("state.pages[0].strokes.length === 2")
+                assert len((await teacher.snapshot())["pages"][0]["strokes"]) == 2
+            else:
+                await teacher.p.locator("#boardControlToggle").click()
+                await teacher.p.wait_for_function("document.querySelector('#shareStatus').textContent.includes('обновите доску')")
+                await asyncio.gather(teacher.ready(True), pupil.ready(False))
+                assert (await teacher.snapshot())["pages"] == before["pages"]
+                await teacher.draw()
+                await pupil.p.wait_for_function("state.pages[0].strokes.length === 2")
+            return
         trainer = "negative-numbers-line" if case in CASES["hint"] else "inequalities-number-line"
         await open_room(teacher, pupil, site, trainer)
         if case == "repeat-turns":
@@ -404,7 +456,7 @@ async def run_case(browser, site, api, case):
         else:
             previous = await point_setup(teacher, pupil)
             if case.startswith("both-"):
-                await reconnect_both(teacher, pupil, pupil_first=(case == "both-pupil-first"))
+                await reconnect_both(teacher, pupil, pupil_first=case.startswith("both-pupil"), delayed_registry=case.endswith("-delayed"))
             else:
                 await reconnect_pupil(teacher, pupil, previous, wait_for_delivery=(case == "confirmed"))
     except Exception:
@@ -413,7 +465,7 @@ async def run_case(browser, site, api, case):
             if hasattr(client, "p"):
                 with suppress(Exception):
                     info = await client.p.evaluate("""()=>({
-                        ready:typeof roomReady==="function" && roomReady(),
+                        ready:typeof shared!=="undefined" && shared.connected && roomStateReceived,
                         writer:typeof canWrite==="function" && canWrite(),
                         transport:typeof shared!=="undefined" && !!shared.socket?.connected,
                         mirror:document.querySelector("#mirrorStatus")?.dataset.mirrorStatus
@@ -446,6 +498,19 @@ async def run(args):
     server = None
     failed = 0
     cases = [c for group in CASES.values() for c in group] if args.suite == "all" else CASES[args.suite]
+    legacy = None
+    previous_web = None
+    if args.legacy_ref:
+        ref = subprocess.check_output(["git", "-C", str(root), "rev-parse", "--verify", "--end-of-options",
+                                       args.legacy_ref + "^{commit}"], text=True).strip()
+        previous_web = ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(HistoricalSite, root=root, ref=ref))
+        threading.Thread(target=previous_web.serve_forever, daemon=True).start()
+        legacy = f"http://127.0.0.1:{previous_web.server_port}"
+        print("Previous client " + ref, flush=True)
+        if args.suite == "all":
+            cases += ["mixed-clients", "legacy-pair"]
+    if args.case in ("mixed-clients", "legacy-pair") and not legacy:
+        raise SystemExit("Historical browser cases require --legacy-ref")
     if args.case is not None:
         cases = [args.case]
     try:
@@ -468,7 +533,7 @@ async def run(args):
             try:
                 for case in cases:
                     try:
-                        await asyncio.wait_for(run_case(browser, site, api, case), timeout=100)
+                        await asyncio.wait_for(run_case(browser, site, api, case, legacy), timeout=100)
                     except AssertionError as error:
                         failed += 1
                         print(f"FAIL {case}: {error}", flush=True)
@@ -488,6 +553,9 @@ async def run(args):
         if server is not None and server.poll() is None:
             server.terminate()
             server.wait(timeout=5)
+        if previous_web:
+            previous_web.shutdown()
+            previous_web.server_close()
         web.shutdown()
         web.server_close()
     print(f"TOTAL {len(cases)}, PASSED {len(cases)-failed}, FAILED {failed}", flush=True)
@@ -499,7 +567,8 @@ if __name__ == "__main__":
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--chromium", help="Optional path to an installed Chromium executable")
     parser.add_argument("--suite", choices=["all", *CASES], default="all")
-    parser.add_argument("--case", choices=[case for group in CASES.values() for case in group], help="Run one case")
+    parser.add_argument("--legacy-ref", help="Also test two previously published clients and a mixed-version pair from this git commit")
+    parser.add_argument("--case", choices=[case for group in CASES.values() for case in group]+["mixed-clients", "legacy-pair"], help="Run one case")
     if not __debug__:
         sys.exit("Run without python -O; acceptance assertions must be enabled")
     sys.exit(asyncio.run(run(parser.parse_args())))
