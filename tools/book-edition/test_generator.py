@@ -348,6 +348,43 @@ class GeneratorTests(unittest.TestCase):
         self.assertFalse(any(asset in record["dependencies"] for record in manifest["sourceFiles"]))
         self.assertNotIn(asset.encode(), output[edition.prefix + route])
 
+    def test_live_school_journey_is_excluded_from_fixed_book_home(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        raw = (ROOT / "index.html").read_text(encoding="utf-8")
+        for fragment in (builder.PUBLIC_SCHOOL_HOME_INCLUDES,
+                         builder.PUBLIC_SCHOOL_HOME_SECTION,
+                         builder.PUBLIC_SCHOOL_HOME_CTA):
+            self.assertEqual(raw.count(fragment), 1)
+        stripped = builder.strip_public_school_home(raw)
+        self.assertEqual(builder.strip_public_school_home(stripped), stripped)
+        self.assertIn(builder.BOOK_HOME_CTA, stripped)
+        self.assertIn('href="/foundations/">Начать с основ', stripped)
+        self.assertIn('id="where-to-start"', stripped)
+        self.assertNotIn("learning-journey", stripped)
+        for broken in (
+            raw.replace(builder.PUBLIC_SCHOOL_HOME_INCLUDES, "", 1),
+            raw.replace(builder.PUBLIC_SCHOOL_HOME_SECTION, "", 1),
+            raw.replace(builder.PUBLIC_SCHOOL_HOME_CTA, "", 1),
+            raw.replace(builder.PUBLIC_SCHOOL_HOME_CTA, builder.PUBLIC_SCHOOL_HOME_CTA * 2, 1),
+            raw + '<script src="/learning/school-journey.js"></script>',
+        ):
+            with self.subTest(broken=broken[-100:]), self.assertRaisesRegex(
+                    ValueError, "Public school journey"):
+                builder.strip_public_school_home(broken)
+        output, manifest = builder.build(edition)
+        paths = {record["path"] for record in manifest["sourceFiles"]}
+        dependencies = {path for record in manifest["sourceFiles"] for path in record["dependencies"]}
+        self.assertFalse(builder.PUBLIC_SCHOOL_HOME_ASSETS & paths)
+        self.assertFalse(builder.PUBLIC_SCHOOL_HOME_ASSETS & dependencies)
+        for asset in builder.PUBLIC_SCHOOL_HOME_ASSETS:
+            self.assertNotIn(edition.prefix + asset, output)
+        page = output[edition.prefix + "index.html"]
+        self.assertNotIn(b"learning-journey", page)
+        self.assertNotIn(b"school-journey-home", page)
+        self.assertIn(b'where-to-start', page)
+        self.assertEqual(len(output), 240)
+        self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
+
     def test_no_implicit_write_base(self):
         with self.assertRaisesRegex(ValueError, "explicit full --base"):
             builder.ensure_writable(builder.Edition("v2", builder.PUBLISHED_V1), None)

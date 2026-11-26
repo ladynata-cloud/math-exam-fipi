@@ -108,7 +108,42 @@ def local_path(source, reference):
     return file_path(target.path)
 
 
+# The school-journey pilot belongs to the live site, not the fixed-edition
+# entry. Restore exactly the reviewed predecessor; fail on partial or
+# unexpected live-pilot markup instead of silently stripping other lessons.
+PUBLIC_SCHOOL_HOME_INCLUDES = "<link rel=\"stylesheet\" href=\"/assets/school-journey-home.css\">\n<script defer src=\"/learning/division-course-map.js?v=multiplication-complete-20261019\"></script>\n<script defer src=\"/learning/preparation-map.js?v=multiplication-complete-20261019\"></script>\n<script defer src=\"/learning/school-journey.js?v=20261124-pilot3\"></script>\n<script defer src=\"/assets/school-journey-home.js?v=20261125-pilot4\"></script>\n"
+PUBLIC_SCHOOL_HOME_SECTION = "<section class=\"section sj\" id=\"learning-journey\" aria-labelledby=\"sj-heading\"><div class=\"container\">\n  <p class=\"kicker\">Бесплатно · Без обязательной регистрации</p>\n  <h2 id=\"sj-heading\">Мой маршрут по математике</h2>\n  <p>Выберите цель и текущую тему. Можно начинать с любой точки, возвращаться к основам и продолжать работу в знакомом курсе.</p>\n  <p class=\"sj-note\">Первая версия общей карты. Короткие пробы помогают выбрать занятие; они не заменяют полную диагностику. Старшие темы пока соединены ссылками на действующие курсы.</p>\n  <div id=\"sj-fallback\" role=\"navigation\" aria-label=\"Быстрые переходы к учебным курсам\"><p><strong>Быстрые переходы:</strong> <a href=\"/foundations/\">Основы</a> · <a href=\"/equations/linear-pilot/\">Уравнения</a> · <a href=\"/geometry-course/\">Геометрия</a> · <a href=\"/courses/\">Курсы по классам</a> · <a href=\"/oge/\">ОГЭ</a> · <a href=\"/ege-baza/\">ЕГЭ база</a> · <a href=\"/ege-profil/\">ЕГЭ профиль</a></p></div>\n  <div id=\"sj-details\" hidden>\n    <div class=\"sj-controls\">\n      <label>Моя цель<select id=\"sj-goal\"></select></label>\n      <label>Тема, с которой хочу начать<select id=\"sj-topic\"></select></label>\n    </div>\n    <div class=\"sj-columns\">\n      <div class=\"sj-card\">\n        <h3 id=\"sj-title\"></h3><p>Открыть действующие учебные материалы:</p><ul id=\"sj-resources\"></ul>\n        <div id=\"sj-before-wrap\"><p>Если здесь трудно, можно проверить:</p><ul id=\"sj-before\"></ul></div>\n        <p id=\"sj-probe-note\"></p><form id=\"sj-probe\" novalidate></form>\n        <div id=\"sj-result\" role=\"status\" aria-live=\"polite\" hidden></div>\n      </div>\n      <div class=\"sj-card\">\n        <h3>Рекомендуемая последовательность</h3><p>Это не обязательные ступени. Можно выбрать любую тему и сразу перейти к экзамену или учебнику.</p>\n        <details><summary>Показать карту тем для моей цели</summary><ol id=\"sj-map\"></ol></details>\n        <p id=\"sj-target\"></p><p id=\"sj-storage\" class=\"sj-note\"></p>\n        <p><a href=\"/trainers/oge-basics/multiplication-division/arzhenikov-map.html#journey\">Открыть пространственную карту Арженикова</a></p>\n      </div>\n    </div>\n  </div>\n</div></section>\n"
+PUBLIC_SCHOOL_HOME_CTA = "<a class=\"btn\" href=\"#learning-journey\">Найти свой учебный маршрут</a><a class=\"btn secondary\" href=\"/trainers/\">Выбрать тренажёр</a>"
+BOOK_HOME_CTA = "<a class=\"btn\" href=\"/trainers/\">Выбрать тренажёр</a>"
+PUBLIC_SCHOOL_HOME_ASSETS = {
+    "assets/school-journey-home.css",
+    "assets/school-journey-home.js",
+    "learning/division-course-map.js",
+    "learning/preparation-map.js",
+    "learning/school-journey.js",
+}
+
+
+def strip_public_school_home(text):
+    markers = ('id="learning-journey"', 'href="#learning-journey"',
+               "assets/school-journey-home.", "learning/school-journey.js",
+               "learning/preparation-map.js", "learning/division-course-map.js")
+    if not any(marker in text for marker in markers):
+        return text
+    for block in (PUBLIC_SCHOOL_HOME_INCLUDES, PUBLIC_SCHOOL_HOME_SECTION, PUBLIC_SCHOOL_HOME_CTA):
+        if text.count(block) != 1:
+            raise ValueError("Public school journey changed; review the fixed-book boundary")
+    text = text.replace(PUBLIC_SCHOOL_HOME_INCLUDES, "", 1)
+    text = text.replace(PUBLIC_SCHOOL_HOME_SECTION, "", 1)
+    text = text.replace(PUBLIC_SCHOOL_HOME_CTA, BOOK_HOME_CTA, 1)
+    if any(marker in text for marker in markers):
+        raise ValueError("Public school journey has additional references; review before packaging")
+    return text
+
+
 def sanitize(source, text, edition):
+    if source == "index.html":
+        text = strip_public_school_home(text)
     # External font services are decoration, not a learning dependency. Existing
     # system font fallbacks remain in each stylesheet.
     def script(match):
