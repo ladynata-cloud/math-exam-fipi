@@ -1,0 +1,42 @@
+name: Lesson cycle v2 - native acceptance
+on:
+  pull_request:
+    paths:
+      - 'trainers/lesson-cycle/**'
+      - 'tools/lesson-cycle/**'
+      - 'trainers/oge-written-practice.html'
+      - 'trainers/tyurin-statistics/**'
+      - 'trainers/college-functions/**'
+      - 'trainers/motion-grade6/**'
+      - '.github/workflows/lesson-cycle-v2-native-acceptance.yml'
+permissions:
+  contents: read
+jobs:
+  native-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Candidate identity and isolated regressions
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git rev-parse HEAD
+          git diff --check "$BASE_SHA" HEAD
+          node tools/lesson-cycle/entry.test.cjs
+          node tools/lesson-cycle/hooks.test.cjs
+          node tools/lesson-cycle/race.test.cjs
+      - name: Install pinned browser test dependency
+        run: |
+          python3 -m venv "$RUNNER_TEMP/lesson-cycle-venv"
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" -m pip install --disable-pip-version-check playwright==1.57.0
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" -m playwright install --with-deps chromium
+      - name: Complete lesson routes and recovery
+        run: |
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" tools/lesson-cycle/cycle.py
+      - name: Actual origin, persistent profile, home and file navigation, four host integrations
+        run: |
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" tools/lesson-cycle/native.py

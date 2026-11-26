@@ -45,6 +45,8 @@ try:
     assert winner.evaluate('(key)=>JSON.parse(localStorage.getItem(key)).drafts["0:0"]',KEY)==winner_text
     winner.get_by_role('button',name='Зафиксировать первую запись').click();drain(winner);c.close()
     c=context(); p=c.new_page();p.goto(url);p.wait_for_selector('#screen h2');assert p.locator('#screen h2').inner_text()=='Объяснение';assert downloaded(p)['backupState']['locked']['0'][0]==winner_text
+    home=p.locator('[data-mathexam-home-link]');assert home.count()==1 and home.get_attribute('href')=='/' and home.get_attribute('target')=='_self'
+    home.click();p.wait_for_url(origin+'/');assert len(c.pages)==1
     # Verify actual host integration in the exact checkout, not just snippets.
     p.goto(origin+'/trainers/oge-written-practice.html#area-workshop');area=p.locator('[data-mathexam-lesson-cycle="area"]');area.wait_for(state='visible');p.locator('#area-transfer-open').click();area.wait_for(state='hidden')
     p.goto(origin+'/trainers/oge-written-practice.html#area-transfer');p.locator('#area-step-title').wait_for();assert not p.locator('[data-mathexam-lesson-cycle="area"]:visible').count()
@@ -53,6 +55,15 @@ try:
     p.goto(origin+'/trainers/college-functions/?board=1');p.locator('#open-rate-lab').wait_for(state='attached');assert not p.locator('[data-mathexam-lesson-cycle="rate"]:visible').count()
     p.goto(origin+'/trainers/motion-grade6/#model');motion=p.locator('[data-mathexam-lesson-cycle="motion"]');motion.wait_for(state='attached');assert motion.locator('a').get_attribute('href')==origin+'/trainers/lesson-cycle/START.html?topic=motion'
     c.close()
-    print('PASS native HTTP: true concurrent Web Locks, backup of losing draft, persistent browser restart, actual four host entries')
+    # Local file version must not navigate to the filesystem root. It is tested
+    # independently of the origin's persistence; no network is required.
+    browser=pw.chromium.launch(**{k:v for k,v in opts.items() if k in ('headless','executable_path')})
+    offline=browser.new_context(offline=True);p=offline.new_page()
+    p.goto((ROOT/'trainers/lesson-cycle/START.html').as_uri());p.wait_for_selector('#screen h2')
+    home=p.locator('[data-mathexam-home-link]');assert home.get_attribute('href')=='https://mathexam.space/' and home.get_attribute('target')=='_self'
+    assert p.locator('#screen h2').inner_text()=='Вход А'
+    assert p.evaluate('document.documentElement.scrollWidth <= innerWidth')
+    offline.close();browser.close()
+    print('PASS native HTTP/file: true concurrent Web Locks, losing draft backup, persistent restart, same-tab home, actual four host entries, local file fallback')
 finally:
  server.shutdown();server.server_close()
