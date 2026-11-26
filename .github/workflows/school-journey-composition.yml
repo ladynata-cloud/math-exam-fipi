@@ -28,8 +28,8 @@ jobs:
         env:
           SCHOOL_HEAD: ${{ github.event.pull_request.head.sha }}
           MAIN_SHA: ${{ github.event.pull_request.base.sha }}
-          BRIDGE_HEAD: ef842b0e227235a04e1551a25db0e474201a8f12
-          BRIDGE_BASE: db4557f8dac2b93e11d6089d73101f084969ef41
+          BRIDGE_HEAD: 23cd22f61291674e283ce00c4edc786bd646440a
+          BRIDGE_BASE: 0dc629ff055f99fa0409b363ecbc24148807a05f
         run: |
           set -eu
           candidate="$(git rev-parse HEAD)"
