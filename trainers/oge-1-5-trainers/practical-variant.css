@@ -44,3 +44,16 @@ body.pv-exam{margin:0;background:#f5f7f4;color:#202d25;font:19px/1.75 system-ui,
 .pv-primary-visual [data-pv-explore-choice]:focus-visible{stroke:#377ec3;stroke-opacity:.45;outline:none}
 .pv-primary-visual[data-pv-explore-ready] :is(svg[data-pv-apartment-plan],svg[data-pv-plot-plan]){cursor:crosshair}
 .pv-explore svg[hidden]{display:none!important}
+
+/* One colour links an action with its trace. Neutral view; no scoring. */
+.pv-explore button[data-pv-pencil="0"][aria-pressed=true]{background:#a34c08;color:white;border-color:#a34c08}
+.pv-explore button[data-pv-pencil="1"][aria-pressed=true]{background:#1d4ed8;color:white;border-color:#1d4ed8}
+.pv-explore figure{margin:12px 0}.pv-explore figure svg{display:block;width:100%;height:auto;min-width:0;background:#fbfdfb;border:1px solid #d4dfd6;border-radius:10px}
+.pv-explore figure[hidden],.pv-explore svg[hidden]{display:none!important}
+.pv-explore .pv-paper-detail figcaption,.pv-explore .pv-wall-net figcaption{margin:8px 0;font-size:18px}
+.pv-primary-visual .pv-tariff-diagram{cursor:crosshair}
+.pv-cut-new{animation:pv-cut-reveal .42s ease-out}
+@keyframes pv-cut-reveal{from{opacity:.25}to{opacity:1}}
+.pv-wall-panel{animation:pv-wall-reveal .42s ease-out both;animation-delay:var(--wall-delay,0ms);transform-box:fill-box;transform-origin:left center}
+@keyframes pv-wall-reveal{from{opacity:.2;transform:scaleX(.18)}to{opacity:1;transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){.pv-cut-new,.pv-wall-panel{animation:none!important}}

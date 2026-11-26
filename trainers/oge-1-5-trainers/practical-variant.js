@@ -96,45 +96,71 @@ function enhancePrimaryVisual(host,page){
   const lines=Array.from(svg.querySelectorAll('line[stroke-linecap="round"]')).filter(n=>Number(n.getAttribute('stroke-width'))>=3);
   for(const [i,line] of lines.entries()){
    const hit=line.cloneNode(false);hit.removeAttribute('stroke-dasharray');hit.setAttribute('stroke','transparent');hit.setAttribute('stroke-width','20');hit.setAttribute('role','button');hit.setAttribute('tabindex','0');hit.setAttribute('aria-label','Участок дороги '+(i+1));hit.setAttribute('aria-pressed','false');hit.setAttribute('data-pv-explore-choice',String(i));line.after(hit);
-   const toggle=()=>{const prev=overlay.querySelector('[data-pv-explore-mark="'+i+'"]');if(prev){prev.remove();hit.setAttribute('aria-pressed','false');}else{const mark=line.cloneNode(false);mark.setAttribute('stroke','#b45309');mark.setAttribute('stroke-width','8');mark.setAttribute('data-pv-explore-mark',String(i));overlay.append(mark);hit.setAttribute('aria-pressed','true');}status.textContent='Маршрут отмечен тобой, без проверки.';};
+   const toggle=()=>{const prev=overlay.querySelector('[data-pv-explore-mark="'+i+'"]');if(prev){prev.remove();hit.setAttribute('aria-pressed','false');}else{const mark=line.cloneNode(false);mark.setAttribute('stroke','#b45309');mark.setAttribute('stroke-width','7');mark.setAttribute('stroke-opacity','.9');mark.setAttribute('data-pv-explore-mark',String(i));overlay.append(mark);hit.setAttribute('aria-pressed','true');}status.textContent='Маршрут отмечен тобой, без проверки.';};
    hit.addEventListener('click',toggle);hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
   }
   if(!lines.length){overlay.remove();return;}svg.setAttribute('role','group');
+  // Keep the number badges and the right-angle mark above the coloured route.
+  const foreground=Array.from(svg.children).find(n=>n.matches('path,g[data-pv-town],circle,text'));if(foreground)svg.insertBefore(overlay,foreground);
   button('Очистить маршрут',()=>{clear();status.textContent='Отметки сняты.';});
  }else if(page==='apartments'||page==='land-plots'){
   const apt=page==='apartments',step=apt?24:28,ox=apt?54:14,oy=apt?32:14;
   const rooms=apt?Array.from(svg.querySelectorAll(':scope>rect')).map(n=>({x:+n.getAttribute('x'),y:+n.getAttribute('y'),w:+n.getAttribute('width'),h:+n.getAttribute('height')})).filter(r=>r.w>0&&r.h>0):[];
-  note.textContent='Отмечай клетки на плане, как цветным карандашом. Повторное нажатие убирает отметку. Считай и записывай результат самостоятельно.';
+  note.textContent='Отмечай клетки на плане двумя цветными карандашами: например, два разных помещения или части одной фигуры. Повторное нажатие того же цвета убирает отметку.';
+  const palette=[['Янтарный','#f59e0b','#b45309'],['Синий','#60a5fa','#1d4ed8']];let activeColor=0;
+  const pencils=palette.map(([name],i)=>{const b=button(name+' карандаш',()=>{activeColor=i;pencils.forEach((p,j)=>p.setAttribute('aria-pressed',String(i===j)));});b.dataset.pvPencil=String(i);b.setAttribute('aria-pressed',String(i===0));return b;});
   const cells=new Map(),inside=(x,y)=>apt?rooms.some(r=>x>=r.x&&y>=r.y&&x<r.x+r.w&&y<r.y+r.h):x>=14&&x<434&&y>=14&&y<294;
-  const toggleCell=(x,y)=>{const X=ox+Math.floor((x-ox)/step)*step,Y=oy+Math.floor((y-oy)/step)*step;if(!inside(X+step/2,Y+step/2))return;const key=X+','+Y;if(cells.has(key)){cells.get(key).remove();cells.delete(key);}else{const mark=S('rect',{x:X+1,y:Y+1,width:step-2,height:step-2,fill:'#f59e0b','fill-opacity':'.34',stroke:'#b45309','stroke-width':'1.7','data-pv-explore-mark':key});overlay.append(mark);cells.set(key,mark);}status.textContent='Клетки отмечены вручную.';};
+  const toggleCell=(x,y)=>{const X=ox+Math.floor((x-ox)/step)*step,Y=oy+Math.floor((y-oy)/step)*step;if(!inside(X+step/2,Y+step/2)){status.textContent='Эта клетка находится вне плана.';return;}const key=X+','+Y;const previous=cells.get(key);if(previous){previous.remove();cells.delete(key);}if(!previous||previous.dataset.pvColor!==String(activeColor)){const [,fill,stroke]=palette[activeColor],mark=S('rect',{x:X+1,y:Y+1,width:step-2,height:step-2,fill,'fill-opacity':'.28',stroke,'stroke-width':'1.7','data-pv-explore-mark':key,'data-pv-color':activeColor});overlay.append(mark);cells.set(key,mark);}status.textContent='Клетки отмечены вручную.';};
   svg.addEventListener('click',e=>{if(typeof svg.createSVGPoint!=='function'||!svg.getScreenCTM())return;const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const pos=p.matrixTransform(svg.getScreenCTM().inverse());toggleCell(pos.x,pos.y);});
   // Keyboard alternative: select the cell by row and column, not by its answer.
   const choices=el('div',null,'pv-explore-coordinates');const labels=['Строка клетки','Столбец клетки'];const fields=labels.map((label,i)=>{const wrap=el('label',label);const input=el('select');input.setAttribute('aria-label',label);const max=apt?Math.ceil((Number(svg.getAttribute('viewBox').split(/\s+/)[i===0?3:2])-(i===0?oy:ox)*2)/step):i===0?10:15;for(let n=1;n<=Math.max(1,max);n++){const opt=el('option',String(n));opt.value=String(n);input.append(opt);}wrap.append(input);choices.append(wrap);return input;});controls.append(choices);
   button('Отметить клетку',()=>toggleCell(ox+(+fields[1].value-.5)*step,oy+(+fields[0].value-.5)*step));
   button('Очистить отметки',()=>{clear();cells.clear();status.textContent='Отметки сняты.';});
  }else if(page==='tariffs'){
-  note.textContent='Выбирай месяц. Вертикальная линия помогает проследить обе величины по их собственным шкалам. Значения считывай самостоятельно.';
+  note.textContent='Выбирай месяц. Вертикальная линия отмечает месяц. Синяя сплошная направляющая ведёт к шкале минут слева; фиолетовая пунктирная — к шкале гигабайтов справа. Значения считывай самостоятельно.';
   const points=Array.from(svg.querySelectorAll('polyline')).slice(0,2).map(n=>(n.getAttribute('points')||'').trim().split(/\s+/).map(p=>p.split(',').map(Number)));
   if(points.length!==2||points.some(p=>p.length!==12||p.some(q=>q.length!==2||q.some(v=>!Number.isFinite(v))))){overlay.remove();return;}
   const label=el('label','Месяц');const sel=el('select');sel.setAttribute('aria-label','Месяц для чтения графика');
   for(let i=1;i<=12;i++){const opt=el('option',String(i));opt.value=String(i);sel.append(opt);}label.append(sel);controls.append(label);
-  function draw(){clear();const i=+sel.value-1;const x=points[0][i][0];overlay.append(S('line',{x1:x,x2:x,y1:18,y2:300,stroke:'#b45309','stroke-width':2,'stroke-dasharray':'5 4','data-pv-explore-mark':'month'}));points.forEach((p,j)=>{const [cx,cy]=p[i];overlay.append(S('circle',{cx,cy,r:7,fill:'none',stroke:j?'#7e22ce':'#1d4ed8','stroke-width':3,'data-pv-explore-mark':String(j)}));});status.textContent='Выбран месяц '+sel.value+'.';}
-  sel.addEventListener('change',draw);button('Показать месяц',draw);button('Убрать линию',()=>{clear();status.textContent='Линия убрана.';});
+  function draw(){clear();const i=+sel.value-1;const x=points[0][i][0];overlay.append(S('line',{x1:x,x2:x,y1:18,y2:300,stroke:'#b45309','stroke-width':2,'stroke-dasharray':'5 4','data-pv-explore-mark':'month'}));points.forEach((p,j)=>{const [cx,cy]=p[i],color=j?'#7e22ce':'#1d4ed8';const attrs={x1:cx,x2:j?628:54,y1:cy,y2:cy,stroke:color,'stroke-width':2.5,'data-pv-explore-mark':'guide-'+j};if(j)attrs['stroke-dasharray']='6 4';overlay.append(S('line',attrs),S('circle',{cx,cy,r:7,fill:'white',stroke:color,'stroke-width':3,'data-pv-explore-mark':String(j)}));});status.textContent='Выбран месяц '+sel.value+'.';}
+  sel.addEventListener('change',draw);button('Показать месяц',draw);svg.addEventListener('click',e=>{if(typeof svg.createSVGPoint!=='function'||!svg.getScreenCTM())return;const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const pos=p.matrixTransform(svg.getScreenCTM().inverse());if(pos.x<54||pos.x>628||pos.y<18||pos.y>320)return;sel.value=String(1+Math.round((pos.x-54)*11/(628-54)));draw();});button('Убрать линию',()=>{clear();status.textContent='Линия убрана.';});
  }else if(page==='paper-sheets'){
   note.textContent='Разрезай один лист пополам параллельно короткой стороне. Одна половина остаётся на месте, другая становится новым листом. Размеры и площадь находи сам.';
   const pieces=Array.from(svg.querySelectorAll('rect[data-paper-format]'));if(!pieces.length){overlay.remove();return;}
   const x0=Math.min(...pieces.map(n=>+n.getAttribute('x'))),y0=Math.min(...pieces.map(n=>+n.getAttribute('y'))),w0=Math.max(...pieces.map(n=>+n.getAttribute('x')+ +n.getAttribute('width')))-x0,h0=Math.max(...pieces.map(n=>+n.getAttribute('y')+ +n.getAttribute('height')))-y0;
-  let stage=0;const cut=button('Разрезать пополам',()=>{if(stage<6)stage++;draw();});button('На шаг назад',()=>{if(stage>0)stage--;draw();});button('Сначала',()=>{stage=0;draw();});
-  function draw(){overlay.replaceChildren();overlay.append(S('rect',{x:x0-4,y:y0-4,width:w0+8,height:h0+8,fill:'white'}));let x=x0,y=y0,w=w0,h=h0;for(let i=1;i<=stage;i++){const horizontal=w>=h;const a=horizontal?w/2:w,b=horizontal?h:h/2;overlay.append(S('rect',{x,y,width:a,height:b,fill:'#e0eee5',stroke:'#365d48','stroke-width':2}));if(horizontal){x+=a;w=a;}else{y+=b;h=b;}}
-   overlay.append(S('rect',{x,y,width:w,height:h,fill:'#f9dfad',stroke:'#b45309','stroke-width':3}));if(w>=h)overlay.append(S('line',{x1:x+w/2,x2:x+w/2,y1:y,y2:y+h,stroke:'#b45309','stroke-width':2,'stroke-dasharray':'7 5'}));else overlay.append(S('line',{x1:x,x2:x+w,y1:y+h/2,y2:y+h/2,stroke:'#b45309','stroke-width':2,'stroke-dasharray':'7 5'}));status.textContent='Текущий лист: А'+stage+'. Пунктир — следующий разрез.';cut.disabled=stage===6;
-  }draw();
+  let stage=0;const cut=button('Разрезать пополам',()=>{if(stage<6)stage++;draw(true);});const back=button('На шаг назад',()=>{if(stage>0)stage--;draw(false);});button('Сначала',()=>{stage=0;draw(false);});
+  const detail=el('figure',null,'pv-paper-detail'),caption=el('figcaption','Увеличенный фрагмент · отдельный масштаб'),inset=S('svg',{viewBox:'0 0 320 200',role:'img','aria-label':'Увеличенный лист и две равные половины'});
+  detail.append(caption,inset);panel.append(detail);
+  const sheet=(target,r,fill,stroke,extra={})=>target.append(S('rect',{x:r.x,y:r.y,width:r.w,height:r.h,fill,stroke,'stroke-width':2,...extra}));
+  function halves(r){const v=r.w>=r.h;return v?[{...r,w:r.w/2},{...r,x:r.x+r.w/2,w:r.w/2}]:[{...r,h:r.h/2},{...r,y:r.y+r.h/2,h:r.h/2}];}
+  function cutLine(target,r,animate=false){const v=r.w>=r.h,attrs=v?{x1:r.x+r.w/2,x2:r.x+r.w/2,y1:r.y,y2:r.y+r.h}:{x1:r.x,x2:r.x+r.w,y1:r.y+r.h/2,y2:r.y+r.h/2};target.append(S('line',{...attrs,stroke:'#b45309','stroke-width':2,'stroke-dasharray':'6 4',...(animate?{'class':'pv-cut-new'}:{})}));}
+  function draw(animate){overlay.replaceChildren();overlay.append(S('rect',{x:x0-4,y:y0-4,width:w0+8,height:h0+8,fill:'white'}));
+   let current={x:x0,y:y0,w:w0,h:h0},previous=current;
+   for(let i=1;i<=stage;i++){previous=current;const [left,right]=halves(current);sheet(overlay,left,'#d9eade','#365d48');current=right;}
+   sheet(overlay,current,'#f9dfad','#b45309',animate?{'class':'pv-cut-new'}:{});if(stage<6)cutLine(overlay,current);
+   // At small scales A5/A6 are hard to see. A separately labelled magnifier
+   // shows the last division at a readable size, never as the main scale.
+   inset.replaceChildren();const source=stage?previous:current,k=Math.min(270/source.w,160/source.h),r={x:(320-source.w*k)/2,y:(200-source.h*k)/2,w:source.w*k,h:source.h*k};
+   if(stage){const [left,right]=halves(r);sheet(inset,left,'#d9eade','#365d48');sheet(inset,right,'#f9dfad','#b45309',animate?{'class':'pv-cut-new'}:{});cutLine(inset,r,animate);}else{sheet(inset,r,'#f9dfad','#b45309');cutLine(inset,r);}
+   caption.textContent=stage?'А'+(stage-1)+' → две равные половины А'+stage+' (увеличено)':'Лист А0 и линия первого разреза (увеличено)';
+   status.textContent='Текущий лист: А'+stage+'. '+(stage<6?'Пунктир — следующий разрез.':'Последовательность завершена.');cut.disabled=stage===6;back.disabled=stage===0;
+  }draw(false);
  }else if(page==='stoves'){
   note.textContent='Посмотри, как четыре стены превращаются в развёртку. Дверь остаётся проёмом, а пол и потолок в развёртку стен не входят.';
   const a=Number(svg.dataset.roomA),b=Number(svg.dataset.roomB),h=Number(svg.dataset.roomH);if(![a,b,h].every(v=>Number.isFinite(v)&&v>0)){overlay.remove();return;}
-  const net=S('svg',{viewBox:'0 0 420 150',role:'img','aria-label':'Развёртка четырёх стен с дверным проёмом'});net.style.width='100%';net.style.height='auto';net.hidden=true;
-  const scale=Math.min(390/(2*(a+b)),100/h),widths=[a,b,a,b],top=15;let x=15;
-  widths.forEach((width,i)=>{const w=width*scale,H=h*scale;net.append(S('rect',{x,y:top,width:w,height:H,fill:i%2?'#d4e8da':'#c0dfca',stroke:'#29483c','stroke-width':2}));if(i===0){const dw=.7*scale,dh=1.8*scale;net.append(S('rect',{x:x+w*.18,y:top+H-dh,width:dw,height:dh,fill:'white',stroke:'#29483c','stroke-width':2}));}net.append(S('text',{x:x+w/2,y:top+H+18,'text-anchor':'middle','font-size':13,fill:'#29483c'},(i%2?'Ширина':'Длина')));x+=w;});
-  const toggle=button('Развернуть стены',()=>{const show=net.hidden;net.hidden=!show;toggle.setAttribute('aria-pressed',String(show));toggle.textContent=show?'Свернуть развёртку':'Развернуть стены';status.textContent=show?'Четыре стены лежат в одной плоскости.':'Развёртка свёрнута.';});toggle.setAttribute('aria-pressed','false');panel.append(net);
+  const netFigure=el('figure',null,'pv-wall-net');netFigure.hidden=true;const net=S('svg',{viewBox:'0 0 420 160',role:'img','aria-label':'Четыре стены парной, разложенные в одну полосу'});net.setAttribute('hidden','');net.hidden=true;
+  const key=el('figcaption','Стены чередуются: длина, ширина, длина, ширина. Белый проём — дверь. Масштаб развёртки отдельный.');
+  netFigure.append(net,key);
+  const scale=Math.min(390/(2*(a+b)),130/h),widths=[a,b,a,b],top=15;let x=15;
+  const dw=Number(svg.dataset.roomDoorW||.7),dh=Number(svg.dataset.roomDoorH||1.8);
+  const walls=widths.map((width,i)=>{const w=width*scale,H=h*scale;const wall=S('g',{'data-pv-wall':i,'class':'pv-wall-panel','style':'--wall-delay:'+i*110+'ms'});
+   wall.append(S('rect',{x,y:top,width:w,height:H,fill:i%2?'#dce7f5':'#c0dfca',stroke:'#29483c','stroke-width':2}));
+   if(i===0&&dw>0&&dh>0&&dw<=width&&dh<=h)wall.append(S('rect',{x:x+Math.min(w*.18,w-dw*scale),y:top+H-dh*scale,width:dw*scale,height:dh*scale,fill:'white',stroke:'#29483c','stroke-width':2,'data-pv-door':'1'}));
+   net.append(wall);x+=w;return wall;});
+  const focus=el('div',null,'pv-wall-focus');const focusLabel=el('label','Рассмотреть стену');const select=el('select');select.setAttribute('aria-label','Выбрать стену развёртки');
+  for(const [value,label] of [['all','Все четыре стены'],['0','1 — длинная, с дверью'],['1','2 — короткая'],['2','3 — длинная'],['3','4 — короткая']]){const opt=el('option',label);opt.value=value;select.append(opt);}focusLabel.append(select);focus.append(focusLabel);netFigure.append(focus);
+  select.addEventListener('change',()=>{walls.forEach((wall,i)=>wall.setAttribute('opacity',select.value==='all'||select.value===String(i)?'1':'.23'));status.textContent=select.value==='all'?'Видны все четыре стены.':'Выделена стена '+(Number(select.value)+1)+'.';});
+  const toggle=button('Развернуть стены',()=>{const show=netFigure.hidden;netFigure.hidden=!show;net.hidden=!show;net.toggleAttribute('hidden',!show);toggle.setAttribute('aria-pressed',String(show));toggle.textContent=show?'Свернуть развёртку':'Развернуть стены';status.textContent=show?'Четыре стены лежат в одной плоскости.':'Развёртка свёрнута.';});toggle.setAttribute('aria-pressed','false');panel.append(netFigure);
  }else{overlay.remove();return;}
  host.dataset.pvExploreReady='1';panel.prepend(title,note,controls);panel.append(status);host.append(panel);
 }

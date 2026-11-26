@@ -28,3 +28,10 @@ Separate neutral exploration of givens from task-specific numerical hints. Keep 
 
 ## Risk / rollback
 New controls are isolated from answer form handlers; no storage writes, auto-correct or new API calls. Existing board protocol is unchanged. Revert this scoped PR if needed. 
+
+## Visual refinement (owner's follow-up request)
+- Two-colour cell annotations, route highlights underneath labels, dual directional tariff guides with click/select.
+- Paper: proportional main diagram, progressive cut, enlarged last-cut view at explicitly separate scale, back/reset.
+- Room: four proportionally sized walls, sequential reveal, selectable wall and actual door dimensions; right-angle mark on arc.
+- Tires: proportional wheel geometry and aligned tracks, marked circumference, one-wheel focus and two-wheel comparison, reversible 0–360° scrubber, pause and reset, compact same-scale overview. Reduced-motion support.
+- Preserve readable labels at minimum widths and no response leakage. All actual rendering, mobile/touch and offline acceptance remain required.
