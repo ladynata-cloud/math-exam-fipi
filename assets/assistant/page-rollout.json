@@ -39,7 +39,9 @@
     "trainers/oge-basics/multiplication-division/division-path.html",
     "trainers/school-workshop-check/index.html",
     "trainers/tyurin-statistics/index.html",
-    "trainers/makarychev9-2017/index.html"
+    "trainers/makarychev9-2017/index.html",
+    "trainers/tyurin-statistics/discrete-lab.html",
+    "trainers/tyurin-statistics/sum-dependence-lab.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -228,9 +230,10 @@
       "sourceSha": "229f3617a44c093618626efc74fa01db4a4472af"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
-      "beforeSha256": "1e5749f8ed7c3a4f90b6d3aa37881ba8bc8620c4d6be4ca175addab0c81d1f28",
-      "afterSha256": "6c8532d2b624fd069df626a228d7805773ba2f0b589deac6ea45140ffa64a3b8",
-      "placement": "before-head-close"
+      "beforeSha256": "b56c7c95c71c8275c86047c8999529069a93c281ba204c1d9433e2f1c8714b67",
+      "afterSha256": "21b8954a025263c2aea47732e6bb14f2f27b2ab30aea26fe6eef866f74e630d4",
+      "placement": "before-head-close",
+      "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "credit-payment-table-trainer.html": {
       "beforeSha256": "84b0292aa95afb32b5e4416a9a0b0e5d65a18301d0721414a7f8147d3a8910a8",
@@ -342,19 +345,22 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "0dba595cec179134a5aa4f484d4cf882f4f7877ab9612beacbdaa217a4da1004",
-      "afterSha256": "e9be0fcebe951cdecf124749abc8f1b366b65da011f66a86cf020527f6e5e178",
-      "placement": "before-head-close"
+      "beforeSha256": "127634d83653c65cffa10a5c831125e0b3924e8bd222fcf54799f7b608b8ce2e",
+      "afterSha256": "052f7a0e4d8ea586a3122132beb097c0c7dc28d40aac7fef9543c2f944430302",
+      "placement": "before-head-close",
+      "sourceSha": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21"
     },
     "ege-profil/review.html": {
-      "beforeSha256": "c4d660bb546fc299e2432d9a0a4c0d2c129bd01a4fc1d379fdfb087b1d769f50",
-      "afterSha256": "8cc94d362b9ac0632dacbd9512ea8b91e33f6790b31388b6a6ac88f0c2533be2",
-      "placement": "before-head-close"
+      "beforeSha256": "5effe8293bf705faef8f72b5f9d1c780cb5eaea3fde3bd7d052c6688ea9ee411",
+      "afterSha256": "1f954f635a1f960d5bb0fb765d2362c44753067272f047cb8a89a496d3cf8420",
+      "placement": "before-head-close",
+      "sourceSha": "71a20459a6b1c8535c2f2ccdcbab873947f8042e"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "c3e17d6c76e1b276009af94ba6ee7f6066bc9024b21a9aba4c7ebc2861ece7a5",
-      "afterSha256": "55be214709d06c3b625ffeda50f7fe559bcd0bf69fa7c5a3a0f78ab71bd99de9",
-      "placement": "before-head-close"
+      "beforeSha256": "d8e806dd065c9a75930b8119a95e353093a73484fb5c28889bd5cc4a9183f157",
+      "afterSha256": "33d0d9c7f3794873f51f62f3a1290f2351c009ce33bb606f09854d2d164b19f7",
+      "placement": "before-head-close",
+      "sourceSha": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21"
     },
     "ege-profil/trainers/applied-t910.html": {
       "beforeSha256": "b149755312de601e6e46def156145df0081a5f86d566925fd1c4b8ff504aeb85",
@@ -2175,9 +2181,10 @@
       "placement": "before-head-close"
     },
     "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html": {
-      "beforeSha256": "06466c5a7f2055606c8877d782166c663914e4965a080d3d11ea3562b1814246",
-      "afterSha256": "e922eecfa78425e634c029fd2b88a39a4bd57a2fef5ffee1c2bf23df83540492",
-      "placement": "before-head-close"
+      "beforeSha256": "b07023f71986397b103ef8e101ac01836def7c62ae4e336eab689bdcfb1332d7",
+      "afterSha256": "61730b920e807e35f91d36e2203a840964a894b09b8538b40655ec700bd6e8d2",
+      "placement": "before-head-close",
+      "sourceSha": "90e5f6f1694f79e45ada502beb2e8add015b90dc"
     },
     "pedagogam/materialy/diagnostika-vychisleniy/index.html": {
       "beforeSha256": "8a31aa8c60822cd340f52a129996f8917c019565e5d898bcd3de02ba6c90997b",
@@ -2327,15 +2334,16 @@
       "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
     },
     "topics/index.html": {
-      "beforeSha256": "890c01aef8be1912978b5d7d44f049e55c55f31ea36652ee2d8fb00e69c616ba",
-      "afterSha256": "89b4678acb27832d5a57e880c2ee66b59d54a72c780e00e5d325ced9b75361c4",
+      "beforeSha256": "300977027f7e20324abf2f0b40db0af2815ef712a6cd724fc08e7b3f798756b7",
+      "afterSha256": "d459ed54a81deeffae9d4fa33a83a51c88a97433c3f951fc54d54877c189d48f",
       "placement": "before-head-close",
-      "sourceSha": "dad2377d9d0249c74a31c504c7d6dd1f6d515151"
+      "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "topics/lineynye-uravneniya/index.html": {
-      "beforeSha256": "76b27dd9d6b8a2df1029cdbda0b519f4cd9285f596b7a2239791bf2cf75d00b6",
-      "afterSha256": "3f20ecdfee0908071bf6185a49f05552bb068041af9c1fbd44ef0a5658a5b3db",
-      "placement": "before-head-close"
+      "beforeSha256": "3430e71bc56c8869d0c3489a330d115e47dd35466de9b5a2cb86e65d156f858e",
+      "afterSha256": "881b5640470d6c2b8b027f8fc44da63713220756eb39b7c0eb35a632aac129ec",
+      "placement": "before-head-close",
+      "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "topics/obyknovennye-drobi/index.html": {
       "beforeSha256": "f5b297836f05c71e7534afe84550957256559801a4a0a285163046c90635e879",
@@ -2400,9 +2408,10 @@
       "placement": "before-head-close"
     },
     "trainers/desyatichnye-drobi-level-1.html": {
-      "beforeSha256": "2db67207c0b5a239fa1816f6a62c726c18f4389eb3973455cd01f83b2cb0e548",
-      "afterSha256": "2fa9f3f8a4659b20f0fb96616f558d1a71f3f9e67e7759900cbb799c48c36df2",
-      "placement": "before-main-open"
+      "beforeSha256": "22b96799ddfe0e7f8989eb07462c80bad0c836cb7dc0b231d90d0878ad201251",
+      "afterSha256": "07f0c8afbb63b0677b9f02ca342074ad62c77d693412ae8ee7e8cd7d6bb43a17",
+      "placement": "before-main-open",
+      "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "trainers/drobi-oge-trainer.html": {
       "beforeSha256": "b0a75e84e58034d21afc2e8726e079b98e63af25a4181df91269f20d60a67602",
@@ -2551,9 +2560,10 @@
       "placement": "before-head-close"
     },
     "trainers/like-terms-factory.html": {
-      "beforeSha256": "c5577223269e588ca6fce53982a09638439e7d0ef75aa616c801ab0fecb152c6",
-      "afterSha256": "f182dfd4c9b57943940eb2ff77377a840fbc9a5f4a1e1950cd704aa55f1c6421",
-      "placement": "before-head-close"
+      "beforeSha256": "3018ec08ea486932f7abcfc0b65e265ad73fc2db3b37527745419b0447505ae2",
+      "afterSha256": "e62e710691a2b342de5df067781b17a13fdf4caf7124e55fff31067d2dcc1daa",
+      "placement": "before-head-close",
+      "sourceSha": "72b8c03dcdd824979500c02ed662344394e8ee65"
     },
     "trainers/like-terms-lab.html": {
       "beforeSha256": "55169ed27f752261292ec325c2474eec994dee7653e5bf371a50cacb8cfe4da9",
@@ -3301,10 +3311,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "equations/linear-pilot/index.html": {
-      "beforeSha256": "d8247809882d295e0508701503a44c0058be7157aaf2897ab82713f00583c52e",
-      "afterSha256": "917c652fd1ad612588e1bc9c12dd25ec5ea578ce0463743f68ec16807f309c47",
+      "beforeSha256": "47522fbf405730000dafa80e960dfc96ea2f8fb38157eaabec04cc847f15258c",
+      "afterSha256": "0f060f7572c3301f90247d5db61fe29593c2719c6e9fa505227a09af5b10ed05",
       "placement": "before-head-close",
-      "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
+      "sourceSha": "ee164aa1bcdbb1421510da73239db5e8af992115"
     },
     "stereo-course/literacy/index.html": {
       "beforeSha256": "8f2cc6c0a23dc3990847e586ed02af1af76d91fdbe3fb9dda37a6f99f4ea1268",
@@ -4047,7 +4057,9 @@
     "trainers/merzlyak9-2014/index.html": "school/index.html",
     "trainers/makarychev9-2017/index.html": "school/index.html",
     "trainers/college-stereometry/polyhedra-sections/index.html": "trainers/college-stereometry/index.html",
-    "topics/metod-arzhenikova/index.html": "sitemap"
+    "topics/metod-arzhenikova/index.html": "sitemap",
+    "trainers/tyurin-statistics/discrete-lab.html": "sitemap; trainers/tyurin-statistics/condition-lab.js (WORK-12 / PROB-08; exact source bd39c901)",
+    "trainers/tyurin-statistics/sum-dependence-lab.html": "sitemap; trainers/tyurin-statistics/condition-lab.js (WORK-12 / PROB-08; exact source bd39c901)"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6879,6 +6891,96 @@
       ],
       "reason": "Bind the single additive written-reasoning workshop entrance; existing OGE material, shared navigator pair and all other bindings unchanged.",
       "bindingScope": "Exact per-page sourceSha; global base unchanged."
+    },
+    {
+      "sourceBaseSha": "957e99846672835c9df8b507c1d2c16136cfa8e6",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/LIKE_TERMS_TO_BRACKETS.md",
+      "changedPaths": [
+        "trainers/like-terms-factory.html"
+      ],
+      "reason": "Bind the reviewed algebra route to its exact source including the original navigator pair. Preserve all prior receipts and other bindings.",
+      "bindingScope": "Per-page sourceSha; global base and shared runtime unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "72b8c03dcdd824979500c02ed662344394e8ee65",
+      "previousSourceSha": "957e99846672835c9df8b507c1d2c16136cfa8e6",
+      "task": "docs/tasks/LIKE_TERMS_TO_BRACKETS.md",
+      "changedPaths": [
+        "trainers/like-terms-factory.html"
+      ],
+      "reason": "Bind the seven-step polynomial continuation to its exact source; the prior algebra source and receipt remain in history.",
+      "bindingScope": "One per-page sourceSha; shared navigator pair, global base and other bindings unchanged.",
+      "boundary": "Committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/PROFILE_EQUATIONS_ROOT_SELECTION_20261115.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "reason": "Bind the two reviewed profile START and part-two pages to their exact committed sources; preserve the global base and every prior binding.",
+      "bindingScope": "Two per-page sourceSha bindings only; existing exact navigator pair, all other pages and receipts unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "sourceBaseSha": "85310a0bfbf82425ce945856381f19f1d6bd9776",
+      "previousSourceShas": {
+        "courses/vilenkin-6-part-1/textbook.html": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+        "topics/index.html": "dad2377d9d0249c74a31c504c7d6dd1f6d515151",
+        "topics/lineynye-uravneniya/index.html": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+        "trainers/desyatichnye-drobi-level-1.html": "2a5b85523dc89e734f77443685b7a3f0a530fab4"
+      },
+      "task": "docs/tasks/SEO_FIRST_LEARNING_ENTRIES_20261125.md",
+      "changedPaths": [
+        "courses/vilenkin-6-part-1/textbook.html",
+        "topics/index.html",
+        "topics/lineynye-uravneniya/index.html",
+        "trainers/desyatichnye-drobi-level-1.html"
+      ],
+      "reason": "Bind the four reviewed learning entry pages to their exact source commit. Each page retains the exact navigator includes.",
+      "bindingScope": "Per-page sourceSha only; the global base and every other page binding retain their original values."
+    },
+    {
+      "sourceBaseSha": "90e5f6f1694f79e45ada502beb2e8add015b90dc",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/SEO_OFFLINE_ENTRANCE_20261126.md",
+      "changedPaths": [
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
+      ],
+      "reason": "Bind the three reviewed offline download entrances on the existing teacher guide; retain all existing public content and the exact navigator pair.",
+      "bindingScope": "One per-page sourceSha; global base and all other bindings unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "sourceBaseSha": "71a20459a6b1c8535c2f2ccdcbab873947f8042e",
+      "task": "docs/tasks/PROFILE_PART_TWO_ERROR_JOURNAL_20261117.md",
+      "changedPaths": [
+        "ege-profil/review.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ee3504b8ace6a4e910027058248bb138dee65ccf",
+      "sourceBaseSha": "b2f9142c327a77cc528669409526b520d954855f",
+      "task": "docs/tasks/PROFILE_PART_TWO_ERROR_JOURNAL_20261117.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "sourceBaseSha": "71a20459a6b1c8535c2f2ccdcbab873947f8042e",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/PROFILE_PART_TWO_ERROR_JOURNAL_20261117.md",
+      "changedPaths": [
+        "ege-profil/review.html"
+      ],
+      "reason": "Preserve both historical journal source receipts and bind the exact reviewed HTML to its existing source commit on the current composition.",
+      "bindingScope": "One per-page sourceSha; global base and all other bindings unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -7027,6 +7129,15 @@
         "topics/metod-arzhenikova/index.html"
       ],
       "reason": "Add the sourced Arzhenikov method guide with the existing public navigator; one new canonical sitemap entrance."
+    },
+    {
+      "sourceBaseSha": "bd39c9019170f25ed176390d4e4d47750e6ce9ba",
+      "task": "docs/tasks/TYURIN_PROBABILITY_BRIDGES_20261126.md",
+      "addedPages": [
+        "trainers/tyurin-statistics/discrete-lab.html",
+        "trainers/tyurin-statistics/sum-dependence-lab.html"
+      ],
+      "reason": "Two author-written canonical Tyurin learning laboratories; each already carries the exact existing public navigator pair. Add explicit browser inventory and sitemap coverage; preserve all prior bindings."
     }
   ]
 }

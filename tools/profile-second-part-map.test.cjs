@@ -10,7 +10,9 @@ test('approved 2027 map has seven official second-part routes and extra optimiza
  assert.deepEqual(M.items.map(x=>x.legacyPartTwo),[14,15,16,null,18,19,20]);
  for(const item of M.items){
   assert.equal(item.href,'/ege-profil/'+(item.number===16?'start':'part-two')+'/#fipi/2027/'+item.number);
-  assert.match(item.coverage,item.number===16?/16 тем.*96 подготовительных числовых задач/:/6 учебных тем.*36 задач/);
+  if(item.number===16)assert.match(item.coverage,/16 тем.*96 подготовительных числовых задач/);
+  else if(item.number===13)assert.match(item.coverage,/6 учебных тем.*48 задач/);
+  else assert.match(item.coverage,/6 учебных тем.*36 задач/);
   assert.ok(item.resources.length>=1);assert.ok(item.title&&item.goal&&item.coverage);
  }
  assert.deepEqual(M.extras.map(x=>x.id),['optimization']);

@@ -25,11 +25,12 @@ const copy = value => JSON.parse(JSON.stringify(value));
 // rendering, HTTP, Socket.IO and the child frame's wire protocol are fixtures;
 // no parent room/bridge handler is copied or replaced here.
 async function createBoardFixture({ role = 'student', sourceOverride, trainer = TRAINER,
-  trainerUrl = TRAINER_URL, registry = REGISTRY, querySuffix = '' } = {}) {
+  trainerUrl = TRAINER_URL, registry = REGISTRY, querySuffix = '', inviteToken = 'fixture-token' } = {}) {
   const errors = [], sockets = [], requests = [], registryRequests = [], timers = new Map();
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', error => errors.push(error.message));
-  const query = role === 'teacher' ? '' : `?role=${role === 'student' ? 'student' : 'teacher'}&room=fixture-room&token=fixture-token&server=${encodeURIComponent(SERVER)}`;
+  const tokenQuery = inviteToken === null ? '' : `&token=${encodeURIComponent(inviteToken)}`;
+  const query = role === 'teacher' ? '' : `?role=${role === 'student' ? 'student' : 'teacher'}&room=fixture-room${tokenQuery}&server=${encodeURIComponent(SERVER)}`;
   const html = sourceOverride ?? fs.readFileSync(path.join(ROOT, 'trainers/trainer-board.html'), 'utf8');
   const suffix = querySuffix ? `${query ? '&' : '?'}${querySuffix}` : '';
   const dom = new JSDOM(html, { url: `${ORIGIN}/trainers/trainer-board.html${query}${suffix}`, runScripts: 'outside-only', virtualConsole });
@@ -60,13 +61,27 @@ async function createBoardFixture({ role = 'student', sourceOverride, trainer = 
     studentToken: 'fixture-student-token', server: SERVER
   }));
 
-  class FakeSocket {
-    constructor() { this.listeners = new Map(); this.sent = []; this.disconnected = false; this.connected = false; }
+  class FixtureEvents {
+    constructor() { this.listeners = new Map(); }
     on(name, fn) { if (!this.listeners.has(name)) this.listeners.set(name, new Set()); this.listeners.get(name).add(fn); return this; }
     off(name, fn) { if (fn) this.listeners.get(name)?.delete(fn); else this.listeners.delete(name); return this; }
     removeAllListeners() { this.listeners.clear(); return this; }
+    deliver(name, payload) { for (const fn of [...(this.listeners.get(name) || [])]) fn(payload === undefined ? undefined : inRealm(payload)); }
+  }
+  class FakeSocket extends FixtureEvents {
+    constructor() {
+      super();
+      this.io = new FixtureEvents();
+      this.sent = [];
+      this.disconnected = false;
+      this.connected = false;
+    }
     emit(name, payload) { this.sent.push({ name, payload: payload === undefined ? undefined : copy(payload) }); return this; }
-    deliver(name, payload) { if(name==='connect')this.connected=true;if(name==='disconnect')this.connected=false;for (const fn of [...(this.listeners.get(name) || [])]) fn(payload === undefined ? undefined : inRealm(payload)); }
+    deliver(name, payload) {
+      if (name === 'connect') this.connected = true;
+      if (name === 'disconnect') this.connected = false;
+      super.deliver(name, payload);
+    }
     disconnect() { this.disconnected = true; this.deliver('disconnect'); return this; }
   }
   w.io = (_server, options) => {
@@ -187,6 +202,65 @@ const SECTIONS_REGISTRY = {
   trainers: [{ ...REGISTRY.trainers[0], trainerId: 'sections-from-zero', file: SECTIONS_WRAPPER.slice(1) }]
 };
 
+for (const [label, inviteToken] of [['missing', null], ['empty', ''], ['whitespace', ' \t\n ']]) {
+  test(`incomplete student invitation with ${label} token explains recovery and stays read-only`, async () => {
+    const f = await createBoardFixture({ inviteToken });
+    try {
+      const doc = f.w.document;
+      const hint = doc.getElementById('guestRoomHint');
+      const status = doc.getElementById('shareStatus');
+      const retry = doc.getElementById('guestRoomRetry');
+      function checkExplanation() {
+        assert.match(hint.textContent, /ссылка.*неполн/i);
+        assert.match(hint.textContent, /учител.*целиком/i);
+        assert.match(status.textContent, /ссылка.*неполн/i);
+        assert.ok(status.classList.contains('bad'));
+        assert.equal(retry.hidden, true, 'retrying the same incomplete link cannot repair it');
+        assert.ok(doc.body.classList.contains('awaiting-room'), 'unrelated trainer remains hidden');
+        assert.equal(f.w.getComputedStyle(doc.getElementById('guestEntry')).display, 'grid');
+        assert.equal(f.w.getComputedStyle(f.frame).visibility, 'hidden');
+        assert.ok(doc.body.classList.contains('student-mode'));
+        assert.equal(f.evaluate('canWrite()'), false);
+        assert.equal(f.frame.inert, true);
+        assert.equal(f.frame.tabIndex, -1);
+        assert.equal(doc.getElementById('controlToggle').disabled, true);
+        assert.equal(doc.getElementById('releaseControl').disabled, true);
+        assert.equal(f.sockets.length, 0, 'no socket or room join for the incomplete invitation');
+        assert.equal(f.requests.some(row => row.method !== 'GET' && row.method !== 'HEAD'), false, 'no new room or other mutation');
+      }
+      checkExplanation();
+      const before = f.snapshot();
+      // Exercise the real listeners too: an old/replayed connection action
+      // must not replace the explanation with an indefinite waiting message.
+      retry.click();
+      doc.getElementById('connectRoom').click();
+      await tick();
+      checkExplanation();
+      assert.deepEqual(f.snapshot(), before);
+    } finally { f.close(); }
+  });
+}
+
+test('complete student invitation retains its token and waits for room authority', async () => {
+  const inviteToken = 'fixture-CaseSensitive_token';
+  const f = await createBoardFixture({ inviteToken });
+  try {
+    const socket = f.socket();
+    assert.ok(socket, 'the normal invitation starts its transport');
+    assert.equal(f.evaluate('canWrite()'), false);
+    assert.equal(f.frame.inert, true);
+    socket.deliver('connect');
+    const joins = socket.sent.filter(row => row.name === 'room:join');
+    assert.equal(joins.length, 1);
+    assert.deepEqual(joins[0].payload, { roomId: 'fixture-room', role: 'student', token: inviteToken, proto: 2 });
+    assert.equal(f.evaluate('canWrite()'), false, 'transport connection alone grants no writing');
+    f.accept(socket);
+    assert.equal(f.w.document.body.classList.contains('awaiting-room'), false);
+    assert.equal(f.w.document.getElementById('shareStatus').textContent, 'подключено');
+    assert.equal(f.evaluate('canWrite()'), true, 'only the accepted room state grants its fixture pupil the turn');
+  } finally { f.close(); }
+});
+
 test('the invited pupil can retry the same room without seeing an unrelated exercise', async () => {
   const f = await createBoardFixture({role:'student'});
   try {
@@ -204,8 +278,14 @@ test('the invited pupil can retry the same room without seeing an unrelated exer
     const next = f.socket();
     assert.notEqual(next, first);
     assert.equal(first.disconnected, true);
+    const shareStatus = doc.getElementById('shareStatus');
+    next.io.deliver('reconnect_attempt', 1);
+    assert.equal(shareStatus.textContent, 'переподключение');
     next.deliver('connect');
     f.accept(next);
+    assert.equal(first.io.listeners.get('reconnect_attempt')?.size, 0);
+    first.io.deliver('reconnect_attempt', 2);
+    assert.equal(shareStatus.textContent, 'подключено', 'replaced Manager cannot overwrite the new room status');
     assert.equal(doc.body.classList.contains('awaiting-room'), false);
     assert.equal(doc.getElementById('shareStatus').textContent, 'подключено');
   } finally { f.close(); }
