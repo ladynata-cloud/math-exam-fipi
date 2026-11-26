@@ -74,6 +74,7 @@
     $('open-rate-lab').parentElement.hidden = BOARD && mode === 'test';
     const sameExample = rateExampleUnderTest();
     $('open-rate-lab').disabled = sameExample;
+    syncLessonCycleEntry();
     $('rate-entry-note').textContent = sameExample ? ' Завершите самостоятельную задачу C3 или выберите «Учимся», чтобы открыть исследование той же параболы.' : '';
     if(BOARD){$('mode-note').textContent=mode==='learn'?'Совместная работа на доске. Задание, ответы и подсказки видны обоим участникам.':'Совместная проверка без подсказок. Личные результаты за эту работу не начисляются.';$('test-mode').textContent='Без подсказок';}
     if(mode==='test')$('course-cheatsheet').open=false;
@@ -183,6 +184,13 @@
   rateEntry.className = 'rate-entry';
   rateEntry.innerHTML = '<button class="secondary" type="button" id="open-rate-lab">От графика к скорости изменения</button><span id="rate-entry-note"></span>';
   document.querySelector('.heading').after(rateEntry);
+  const lessonCycleHost = BOARD ? null : document.createElement('div');
+  if (lessonCycleHost) rateEntry.after(lessonCycleHost);
+  function syncLessonCycleEntry() {
+    if (lessonCycleHost) window.MathExamLessonCycleEntry?.mount(lessonCycleHost, 'rate', {
+      visible: mode === 'learn' && !rateExampleUnderTest()
+    });
+  }
   let rateLoading = null;
   let rateMounted = false;
 
@@ -303,6 +311,13 @@
   // Test/read-only inspection surface; state mutations remain normal UI actions.
   window.CollegeFunctionsApp={snapshot:()=>JSON.parse(JSON.stringify({taskId:task.id,mode,attempt:attempt(),store,storageOK})),version:1};
   selectTask(task.id,mode);
+  if (!BOARD && window.top === window && /^https?:$/.test(location.protocol) && !['board','learning'].some(key => new URLSearchParams(location.search).get(key) === '1')) {
+    const cycleScript = document.createElement('script');
+    cycleScript.src = '../lesson-cycle/entry.js';
+    cycleScript.onload = syncLessonCycleEntry;
+    cycleScript.onerror = () => cycleScript.remove();
+    document.head.append(cycleScript);
+  }
   if (!BOARD && window.location.hash === '#rate-lab') openRateLab();
   if(BOARD){
     document.documentElement.classList.add('college-board-mode');

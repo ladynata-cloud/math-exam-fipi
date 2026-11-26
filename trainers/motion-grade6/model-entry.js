@@ -58,6 +58,17 @@
   </details>
 </details>`);
 
+  function syncLessonCycleEntry() {
+    window.MathExamLessonCycleEntry?.mount(document.getElementById('motion-model-route'), 'motion');
+  }
+  if (window.top === window && /^https?:$/.test(location.protocol) && !['board','learning'].some(key => new URLSearchParams(location.search).get(key) === '1')) {
+    const cycleScript = document.createElement('script');
+    cycleScript.src = '../lesson-cycle/entry.js';
+    cycleScript.onload = syncLessonCycleEntry;
+    cycleScript.onerror = () => cycleScript.remove();
+    document.head.append(cycleScript);
+  }
+
   // Classic scripts retain their evaluation order and also work from a local file.
   for (const source of ['model-data.js', 'model-builder.js', 'model-lab.js']) {
     const script = document.createElement('script');
