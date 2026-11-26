@@ -221,6 +221,7 @@
   function render(focus) {
     work.innerHTML = '<section class="condition-step" data-stage="' + state.stage + '">' +
       renderStage[state.stage]() + '</section><p class="condition-storage" role="status">' + esc(storageNotice) + '</p>';
+    syncLessonCycleEntry();
     if (focus === 'heading') work.querySelector('h3').focus();
     else if (focus) work.querySelector(focus)?.focus();
   }
@@ -230,10 +231,16 @@
     save();
     render('heading');
   }
+  function syncLessonCycleEntry() {
+    window.MathExamLessonCycleEntry?.mount(lab, 'prob', {
+      visible: !lab.hidden && lab.open && state.stage !== 'transfer'
+    });
+  }
   function sync() {
     const show = eligible.includes(lesson.value);
     lab.hidden = !show;
     if (entry) entry.hidden = lesson.value !== lesson.options[0]?.value;
+    syncLessonCycleEntry();
     if (show) {
       if (lab.open) render();
     }
@@ -337,4 +344,11 @@
   });
   if (eligible.includes(lesson.value) && new URLSearchParams(location.search).get('lab') === 'condition') lab.open = true;
   sync();
+  if (window.top === window && /^https?:$/.test(location.protocol) && !['board','learning'].some(key => new URLSearchParams(location.search).get(key) === '1')) {
+    const cycleScript = document.createElement('script');
+    cycleScript.src = '../lesson-cycle/entry.js';
+    cycleScript.onload = syncLessonCycleEntry;
+    cycleScript.onerror = () => cycleScript.remove();
+    document.head.append(cycleScript);
+  }
 })();

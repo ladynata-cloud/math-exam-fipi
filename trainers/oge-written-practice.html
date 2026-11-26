@@ -338,6 +338,7 @@ function createAreaWorkshop() {
     $('area-next').disabled = !readyForNext();
     $('area-prev').disabled = current === 0;
     $('area-transfer-open').hidden = transfer();
+    syncLessonCycleEntry();
   }
   function report(text) {
     step().feedback = text;
@@ -488,6 +489,11 @@ function createAreaWorkshop() {
   $('area-model').addEventListener('click', () => openSupport('model'));
   $('area-next').addEventListener('click', () => { if (!transfer() && readyForNext()) go(current + 1); });
   $('area-prev').addEventListener('click', () => { if (current > 0) go(current - 1); });
+  function syncLessonCycleEntry() {
+    window.MathExamLessonCycleEntry?.mount($('area-workshop'), 'area', {
+      visible: location.hash === '#area-workshop' && !transfer()
+    });
+  }
   function setMode(focus) {
     const active = ['#area-workshop', '#area-transfer'].includes(location.hash);
     for (const panel of classicPanels) panel.hidden = active;
@@ -512,6 +518,13 @@ function createAreaWorkshop() {
   });
   window.addEventListener('hashchange', () => setMode(true));
   setMode(false);
+  if (window.top === window && /^https?:$/.test(location.protocol) && !['board','learning'].some(key => new URLSearchParams(location.search).get(key) === '1')) {
+    const cycleScript = document.createElement('script');
+    cycleScript.src = './lesson-cycle/entry.js';
+    cycleScript.onload = syncLessonCycleEntry;
+    cycleScript.onerror = () => cycleScript.remove();
+    document.head.append(cycleScript);
+  }
   return {id: 'written-area-proofs-v1', steps, drawings};
 }
 
