@@ -33,10 +33,12 @@ jobs:
           BRIDGE_BASE: 0dc629ff055f99fa0409b363ecbc24148807a05f
           BRIDGE_RELEASE: b876a19a78910663aa6a976b4b3b781d7987a6d8
           ACCEPTED_MAIN: c811c4c8ee87845a25598d958321d23feb83b43d
+          FRESH_MAIN: dc084cbc111f4bade3aa9d28648995c6af6484c2
+          SCHOOL_TESTED: 4d9f4ee00346abeb8884a749ed6c23d1755f0f66
         run: |
           set -eu
           candidate="$(git rev-parse HEAD)"
-          test "$MAIN_SHA" = "$ACCEPTED_MAIN"
+          test "$MAIN_SHA" = "$FRESH_MAIN"
           test "$(git rev-parse "$ACCEPTED_MAIN^1")" = "$BRIDGE_RELEASE"
           test "$(git rev-parse HEAD^1)" = "$MAIN_SHA"
           test "$(git rev-parse HEAD^2)" = "$SCHOOL_HEAD"
@@ -56,7 +58,8 @@ jobs:
               return git("show", ref + ":" + p)
           def changed(a,b):
               return set(filter(None, git("diff","--name-only","-z",a,b).decode().split("\0")))
-          candidate, bridge, base, released, school, accepted = (os.environ[k] for k in ("CANDIDATE","BRIDGE_HEAD","BRIDGE_BASE","BRIDGE_RELEASE","SCHOOL_PRIOR","ACCEPTED_MAIN"))
+          live, main, candidate = (os.environ[k] for k in ("CANDIDATE","FRESH_MAIN","SCHOOL_TESTED"))
+          bridge, base, released, school, accepted = (os.environ[k] for k in ("BRIDGE_HEAD","BRIDGE_BASE","BRIDGE_RELEASE","SCHOOL_PRIOR","ACCEPTED_MAIN"))
           lesson_paths = {".github/workflows/lesson-cycle-v2-native-acceptance.yml","docs/tasks/LESSON_CYCLE_PILOT_V2_20261126.md","tools/lesson-cycle/cycle.py","tools/lesson-cycle/entry.test.cjs","tools/lesson-cycle/hooks.test.cjs","tools/lesson-cycle/native.py","tools/lesson-cycle/race.test.cjs","trainers/college-functions/app.js","trainers/lesson-cycle/README.txt","trainers/lesson-cycle/START.html","trainers/lesson-cycle/entry.js","trainers/lesson-cycle/materials/01_area_proofs_homework.pdf","trainers/lesson-cycle/materials/02_conditional_probability_homework.pdf","trainers/lesson-cycle/materials/03_rate_of_change_homework.pdf","trainers/lesson-cycle/materials/04_motion_modeling_homework.pdf","trainers/motion-grade6/model-entry.js","trainers/oge-written-practice.html","trainers/tyurin-statistics/condition-lab.js"}
           expected = {".github/workflows/linear-learning-pilot.yml", "assets/assistant/page-rollout.json", "docs/tasks/LINEAR_FRACTION_BRIDGE_20261124.md", "equations/linear-pilot/fraction-bridge-core.js", "equations/linear-pilot/fraction-bridge.css", "equations/linear-pilot/fraction-bridge.js", "equations/linear-pilot/index.html", "tools/equations/linear-pilot-fraction-bridge.browser.cjs", "tools/equations/linear-pilot-fraction-bridge.test.cjs"}
           school_paths = {".github/workflows/school-journey-composition.yml", ".github/workflows/school-journey.yml", "assets/assistant/page-rollout.json", "assets/school-journey-home.css", "assets/school-journey-home.js", "docs/ROADMAP.md", "docs/adr/0015-school-journey.md", "docs/tasks/UNIFIED_SCHOOL_JOURNEY_20261124.md", "index.html", "learning/school-journey.js", "scripts/build-oge-book-edition.py", "tools/book-edition/test_generator.py", "tools/school-journey-composition.browser.cjs", "tools/school-journey.browser.cjs", "tools/school-journey.test.cjs", "trainers/oge-basics/fraction-meaning.html"}
@@ -105,11 +108,50 @@ jobs:
               assert blob(candidate,p)==blob(released,p)==blob(bridge,p), p
           for p in school_paths-{shared,workflow}:
               assert blob(candidate,p)==blob(school,p), p
-          for p in expected | school_paths:
+          for p in (expected | school_paths)-{shared,workflow}:
               assert Path(p).read_bytes()==blob(candidate,p), p
           assert current["sourceBindingUpdates"]==prior["sourceBindingUpdates"]
-          composed=git("rev-parse",candidate+"^{tree}").decode().strip()
-          print("SCHOOL_COMPOSITION_TREE_OK",candidate,bridge,composed,"9 published bridge paths; 18 published lesson paths; 16 school paths; both page bindings and all history retained")
+          # Preserve the entire historical gate above, then verify the four exact published increments.
+          releases = [
+              ("c811c4c8ee87845a25598d958321d23feb83b43d", "92b404e98828868277c9f34600133333b8744186", {"assets/assistant/page-rollout.json", "courses/vilenkin-6-part-1/textbook.html", "docs/tasks/SEO_FIRST_LEARNING_ENTRIES_20261125.md", "tools/seo-entrypoints.browser.cjs", "topics/index.html", "topics/lineynye-uravneniya/index.html", "trainers/desyatichnye-drobi-level-1.html"}),
+              ("92b404e98828868277c9f34600133333b8744186", "33ff2a8eca1f1e3d89e2041d3be6351539c46366", {".github/workflows/trainer-download-stage2.yml", "assets/assistant/page-rollout.json", "docs/tasks/SEO_OFFLINE_ENTRANCE_20261126.md", "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html", "tools/offline-entrance.browser.cjs"}),
+              ("33ff2a8eca1f1e3d89e2041d3be6351539c46366", "dbd912649b6c76ed9fcc59985c01e11f8971c845", {"assets/assistant/navigator-data.js", "docs/PROJECT_STATUS.md", "docs/tasks/GUEST_NAVIGATOR_INFORMATICS_FOLLOWUP_20261124.md", "tools/public-navigator-regression.cjs"}),
+              ("dbd912649b6c76ed9fcc59985c01e11f8971c845", "dc084cbc111f4bade3aa9d28648995c6af6484c2", {"assets/assistant/page-rollout.json", "docs/tasks/PROFILE_PART_TWO_ERROR_JOURNAL_20261117.md", "ege-profil/review-part-two.js", "ege-profil/review-probe-2027.js", "ege-profil/review.html", "tools/profile-part2-review.test.cjs"}),
+          ]
+          assert git("rev-list","--first-parent","--reverse",accepted+".."+main).decode().split()==[r[1] for r in releases]
+          drift=set()
+          for parent, revision, paths in releases:
+              assert git("rev-parse",revision+"^1").decode().strip()==parent
+              assert changed(parent,revision)==paths, revision
+              drift |= paths
+          assert len(drift)==20 and changed(accepted,main)==drift
+          assert drift & school_paths=={shared}
+          assert changed(main,live)==school_paths
+          assert changed(candidate,live)==drift | {workflow}
+          for p in drift-{shared}:
+              assert blob(live,p)==blob(main,p)==Path(p).read_bytes(), p
+          for p in school_paths-{shared,workflow}:
+              assert blob(live,p)==blob(candidate,p)==Path(p).read_bytes(), p
+          fresh=json.loads(blob(main,shared))
+          assert fresh["addedPages"][fraction]==json.loads(blob(accepted,shared))["addedPages"][fraction]
+          assert len(fresh["sourceBindingUpdates"])==220
+          assert fresh["sourceBindingUpdates"][:215]==json.loads(blob(accepted,shared))["sourceBindingUpdates"]
+          fresh["addedPages"][fraction]=current["addedPages"][fraction]
+          fresh["sourceBindingUpdates"].append(current["sourceBindingUpdates"][-1])
+          assert len(fresh["sourceBindingUpdates"])==221
+          live_manifest=json.loads(blob(live,shared))
+          assert fresh==live_manifest and Path(shared).read_bytes()==blob(live,shared)
+          for p in (page,fraction):
+              source=blob(live,p)
+              row=live_manifest["addedPages"][p]
+              assert source.count(snippet)==1
+              assert sha(source)==row["afterSha256"]
+              assert sha(source.replace(snippet,b"",1))==row["beforeSha256"]
+              assert source.replace(snippet,b"",1)==blob(row.get("sourceSha") or live_manifest["baseSha"],p).replace(snippet,b"",1)
+          for p in expected | school_paths:
+              assert Path(p).read_bytes()==blob(live,p), p
+          composed=git("rev-parse",live+"^{tree}").decode().strip()
+          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 20 later published paths; 16 school paths; both page bindings and all 221 history receipts retained")
           PY
       - name: Existing mathematical and route assertions on the composition
         run: |

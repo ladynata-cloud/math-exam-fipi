@@ -949,12 +949,17 @@
   }
   function choiceForReply(text, choices) {
     var s = shortReply(text), g = gradeReply(s);
+    // Only an exam selection may reuse a prepared choice. Named subjects,
+    // topics and task numbers must reach the normal responder unchanged.
+    var examAnswer = s.replace(/^(?:(?:мне|нам) )?(?:нужен|нужна|нужно|хочу|хотим|выбираю|выберу) /, '').replace(/,? пожалуйста$/, '');
+    var levelAnswer = examAnswer.replace(/ (?:уровень|уровня)$/, '')
+      .replace(/^(базов(?:ый|ая|ого)|профильн(?:ый|ая|ого)) егэ$/, 'егэ $1');
     var matches = choices.filter(function (a) {
       var label = shortReply(a.label);
       if (s === label) return true;
-      if (label === 'огэ' && hasExam(s,'огэ') && !hasExam(s,'егэ')) return true;
-      if (label === 'егэ база' && hasExam(s,'егэ') && /баз/.test(s) && !/профил/.test(s)) return true;
-      if (label === 'егэ профиль' && hasExam(s,'егэ') && /профил/.test(s) && !/баз/.test(s)) return true;
+      if (/^(?:огэ|егэ)$/.test(examAnswer) && (label === examAnswer || label === examAnswer + ' по информатике')) return true;
+      if (label === 'егэ база' && /^егэ (?:база|базов(?:ый|ая|ого))$/.test(levelAnswer)) return true;
+      if (label === 'егэ профиль' && /^егэ (?:профиль|профильн(?:ый|ая|ого))$/.test(levelAnswer)) return true;
       if (/^(?:виленкин|петерсон|макарычев|атанасян|мерзляк)$/.test(s)) return label.startsWith(s + ' ');
       if (/^(?:база|базов(?:ый|ая|ого))$/.test(s)) return label === 'егэ база';
       if (/^(?:профиль|профильн(?:ый|ая|ого))$/.test(s)) return label === 'егэ профиль';
