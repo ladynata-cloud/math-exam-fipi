@@ -2714,9 +2714,10 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/fraction-meaning.html": {
-      "beforeSha256": "8c9d8c6fe7734e25566c913944829bef08dd62617f70fbfb6f6f9ae4096e8040",
-      "afterSha256": "aecd20992589f388cf11c163d590dff8e6eb7dd06302eab3e0424769c39b6f8e",
-      "placement": "before-head-close"
+      "beforeSha256": "309793ce6a4bf6a3a87c9077251347b3a548f888f2207baedc77eb94905d6423",
+      "afterSha256": "af88c50e37b03cd5956b01160721146b96fc2201395de14c9a9d1aaefc081e61",
+      "placement": "before-head-close",
+      "sourceSha": "3d1fb25cc9d367f8ac8e2f629acd6d0c2369b166"
     },
     "trainers/oge-basics/index.html": {
       "beforeSha256": "ea88fae8bb68fb1cb7c5f7465b9e3d13933fac7372cc198e39f41db4aa46ecb6",
@@ -6902,6 +6903,17 @@
       "reason": "Bind the seven-step polynomial continuation to its exact source; the prior algebra source and receipt remain in history.",
       "bindingScope": "One per-page sourceSha; shared navigator pair, global base and other bindings unchanged.",
       "boundary": "Committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "3d1fb25cc9d367f8ac8e2f629acd6d0c2369b166",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/UNIFIED_SCHOOL_JOURNEY_20261124.md",
+      "changedPaths": [
+        "trainers/oge-basics/fraction-meaning.html"
+      ],
+      "reason": "Bind the exact reviewed noscript paper prerequisite, leaving the interactive lesson and navigator scripts unchanged.",
+      "bindingScope": "Per-page sourceSha; global base and shared runtime unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
     }
   ],
   "coverageUpdates": [
