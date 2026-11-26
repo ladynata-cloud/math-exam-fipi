@@ -61,7 +61,7 @@ jobs:
           git diff --check "$BRIDGE_RELEASE" "$candidate"
           export CANDIDATE="$candidate"
           python3 - <<'PY'
-          import os, subprocess
+          import json, os, subprocess
           from pathlib import Path
           a,b,l,base,c = (os.environ[k] for k in ("CANDIDATE","BRIDGE_RELEASE","LESSON_HEAD","ORIGINAL_BASE","FRACTION_RELEASE"))
           shared = "trainers/tyurin-statistics/condition-lab.js"
@@ -83,7 +83,18 @@ jobs:
           suffix = bridge[len(original):]
           assert suffix and b"WORK-12" in suffix
           assert blob(a,shared) == own + suffix, "both implementations must be preserved exactly"
-          for p in expected - {shared}: assert blob(a,p) == blob(b,p), p
+          rollout = "assets/assistant/page-rollout.json"
+          binding = "equations/linear-pilot/index.html"
+          assert expected & fraction_paths == {rollout}
+          assert blob(a,rollout) == blob(c,rollout)
+          before = json.loads(blob(b,rollout))
+          after = json.loads(blob(c,rollout))
+          assert before["addedPages"][binding] != after["addedPages"][binding]
+          # Exactly the already released fraction binding may differ.
+          # Restore it to prove every probability binding and receipt survived.
+          after["addedPages"][binding] = before["addedPages"][binding]
+          assert after == before, "unexpected shared manifest drift"
+          for p in expected - {shared,rollout}: assert blob(a,p) == blob(b,p), p
           for p in lesson_paths - {shared,workflow}: assert blob(a,p) == blob(l,p), p
           for p in expected | lesson_paths | fraction_paths: assert Path(p).read_bytes() == blob(a,p), p
           print("PASS exact published composition: 9 probability bridge files, 9 fraction paths, 18 lesson paths, both implementations and PDF blobs preserved")
