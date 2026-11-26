@@ -232,7 +232,7 @@
         && data.bridgeInstanceId === registration.bridgeInstanceId;
     }
 
-    function currentState(force) {
+    function currentState(force, handoffId) {
       if (!registration.hydrated || registration.timedOut || registration.destroyed) return;
       let state;
       try {
@@ -248,7 +248,7 @@
       }
       if (!force && validation.serialized === registration.lastSerializedState) return;
       registration.lastSerializedState = validation.serialized;
-      post('mathexam:trainer-state', { state });
+      post('mathexam:trainer-state', handoffId ? { state, handoffId } : { state });
     }
 
     function applyRemoteState(state, initial) {
@@ -305,7 +305,7 @@
         return;
       }
       if (data.type === 'mathexam:request-trainer-state') {
-        currentState(true);
+        currentState(true, data.handoffId);
         return;
       }
       applyRemoteState(data.state, false);
@@ -359,6 +359,12 @@
     PROTOCOL_VERSION,
     DEFAULT_HYDRATION_TIMEOUT_MS,
     validateState,
+    captureDraft(instanceId) {
+      const active = activeRegistration;
+      if (!active?.hydrated || active.destroyed || active.bridgeInstanceId !== instanceId) return null;
+      const checked = validateState(active.config.getState());
+      return checked.ok ? checked.serialized : null;
+    },
     register
   });
 })(window);

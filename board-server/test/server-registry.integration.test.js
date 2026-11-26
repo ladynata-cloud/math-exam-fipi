@@ -126,9 +126,10 @@ function expectNoSocketEvent(socket, event, action, timeoutMs = 250) {
   });
 }
 
-async function connectParticipant(baseUrl, room, role) {
+async function connectParticipant(baseUrl, room, role, auth = {}) {
   const token = role === 'teacher' ? room.teacherToken : room.studentToken;
   const socket = createSocketClient(baseUrl, {
+    auth,
     autoConnect: false,
     forceNew: true,
     reconnection: false,
@@ -795,4 +796,69 @@ test('Peterson roll-out preserves a v1 room under either manifest and isolates t
       } finally { for (const socket of clients) socket.disconnect();await server.stop(); }
     });
   }
+});
+
+
+test('turns wait for the outgoing snapshot, ignore a prior turn, and preserve legacy viewers', async t => {
+  const server = await startServer();
+  t.after(() => server.stop());
+  const room = await createRoom(server.baseUrl);
+  const modern = { boardHandoff: 1 };
+  const teacher = await connectParticipant(server.baseUrl, room, 'teacher', modern);
+  const pupil = await connectParticipant(server.baseUrl, room, 'student', modern);
+  t.after(() => { teacher.socket.disconnect(); pupil.socket.disconnect(); });
+  const seeded = waitForSocketEvent(pupil.socket, 'board:snapshot');
+  teacher.socket.emit('board:snapshot', authPayload(room, teacher, {
+    controlVersion: 0, state: { pages: [{ id: 'fixture-sheet', bg: 'grid', strokes: [] }],
+      currentPage: 0, trainerUrl: 'negative-numbers-line.html' }
+  }));
+  await seeded;
+  const snapshot = (who, value) => bridgeState(room, who, 'negative-numbers-line', { answer: value });
+  let epoch = 0;
+  async function handover(requester, writer, event, value) {
+    const changed = waitForSocketEvent(requester.socket, 'control:changed');
+    writer.socket.once('control:prepare', (message, acknowledge) => {
+      assert.equal(message.controlVersion, epoch);
+      setTimeout(() => acknowledge({ ok: true, trainerState: snapshot(writer, value) }), 80);
+    });
+    requester.socket.emit(event, authPayload(room, requester, { controlVersion: epoch }));
+    assert.equal((await changed).controlVersion, ++epoch);
+  }
+  await handover(teacher, teacher, 'control:grant', 'A');
+  const delayedState = { ...snapshot(pupil, 'old'), controlVersion: epoch };
+  await handover(teacher, pupil, 'control:revoke', 'B');
+  await handover(teacher, teacher, 'control:grant', 'C');
+  pupil.socket.emit('board:trainer-state-change', delayedState);
+  const authority = waitForSocketEvent(pupil.socket, 'room:state');
+  pupil.socket.emit('room:state');
+  assert.equal((await authority).state.latestTrainerState.state.answer, 'C');
+
+  const viewer = await connectParticipant(server.baseUrl, room, 'teacher');
+  t.after(() => viewer.socket.disconnect());
+  assert.equal(viewer.state.state.latestTrainerState.state.answer, 'C');
+  const refusal = waitForSocketEvent(viewer.socket, 'room:error');
+  viewer.socket.emit('control:revoke', authPayload(room, viewer));
+  assert.match((await refusal).message, /обновите/);
+  const state = waitForSocketEvent(viewer.socket, 'room:state');
+  viewer.socket.emit('room:state');
+  assert.equal((await state).state.controlVersion, epoch);
+});
+
+test('moving the same connection between existing rooms detaches it from the first room', async t => {
+  const server = await startServer();
+  t.after(() => server.stop());
+  const first = await createRoom(server.baseUrl);
+  const second = await createRoom(server.baseUrl);
+  const host = await connectParticipant(server.baseUrl, first, 'teacher');
+  const pupil = await connectParticipant(server.baseUrl, first, 'student');
+  t.after(() => { host.socket.disconnect(); pupil.socket.disconnect(); });
+  const joined = waitForSocketEvent(pupil.socket, 'room:state');
+  const left = waitForSocketEvent(host.socket, 'participants:state', payload =>
+    payload.participants.find(person => person.role === 'student')?.onlineCount === 0);
+  pupil.socket.emit('room:join', {roomId: second.roomId, role: 'student', token: second.studentToken, proto: 2});
+  const [newRoom] = await Promise.all([joined, left]);
+  assert.equal(newRoom.state.roomId, second.roomId);
+  await expectNoSocketEvent(pupil.socket, 'board:trainer-state-change', () => {
+    host.socket.emit('board:trainer-state-change', bridgeState(first, host, 'negative-numbers-line', {answer: 7}));
+  });
 });

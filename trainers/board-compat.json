@@ -54,11 +54,15 @@
       "trainerId": "inequalities-number-line",
       "file": "trainers/inequalities-number-line.html",
       "title": "Неравенства на числовой прямой",
-      "boardCompatibility": "opens-in-board",
+      "boardCompatibility": "board-mirror",
       "supportsSeed": false,
-      "supportsBoardMirror": false,
-      "notes": "Открывается в iframe доски; mirror не подключён.",
-      "group": "Отрицательные числа"
+      "supportsBoardMirror": true,
+      "notes": "Структурированное состояние общей числовой прямой: знак, граница, точка, подсказка и счётчик занятия; без персонального прогресса.",
+      "group": "Отрицательные числа",
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false
     },
     {
       "trainerId": "linear-inequalities-basic",

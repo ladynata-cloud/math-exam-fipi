@@ -650,7 +650,8 @@ function requireTeacherAccess(socket, payload = {}) {
 }
 
 function requireAuthenticatedParticipant(socket, payload = {}) {
-  const roomId = payload.roomId || socket.data.roomId;
+  if (payload.roomId && payload.roomId !== socket.data.roomId) return null;
+  const roomId = socket.data.roomId;
   const token = payload.token || socket.data.token;
   const role = socket.data.role;
   const auth = authenticate(roomId, role, token);
@@ -670,11 +671,15 @@ function requireWriter(socket, payload = {}) {
   const access = requireAuthenticatedParticipant(socket, payload);
   if (!access) return null;
   if (!canWrite(access.room, access.participant)) return null;
+  if (socket.handshake.auth?.boardHandoff === 1 && payload.controlVersion !== access.room.controlVersion) return null;
   return access.room;
 }
 
 function requireStructure(socket, payload = {}) {
-  return requireTeacherAccess(socket, payload);
+  if (payload.roomId && payload.roomId !== socket.data.roomId) return null;
+  const room = requireTeacherAccess(socket, payload);
+  if (room && socket.handshake.auth?.boardHandoff === 1 && payload.controlVersion !== room.controlVersion) return null;
+  return room;
 }
 
 function returnControlToTeacher(room) {
@@ -684,6 +689,74 @@ function returnControlToTeacher(room) {
 
 function emitControlChanged(room) {
   io.to(room.roomId).emit('control:changed', controlState(room));
+}
+
+function leaveIndividualRoom(socket) {
+  const room = markParticipantDisconnected(socket);
+  if (room) {
+    const participant = findParticipantById(room, socket.data.participantId);
+    io.to(room.roomId).emit('participants:state', participantsState(room));
+    if (
+      participant
+      && room.control === participant.id
+      && Number(participant.onlineCount || 0) === 0
+      && !participant.caps?.moderate
+      && returnControlToTeacher(room)
+    ) {
+      emitControlChanged(room);
+    }
+  }
+  if (socket.data.roomId) socket.leave(socket.data.roomId);
+  socket.data.participantId = null;
+  socket.data.roomId = null;
+}
+
+// Serialize a turn change with the outgoing writer's last rendered trainer state.
+const pendingHandoffs = new WeakMap();
+async function transferControl(requester, room, target, payload) {
+  if (!target || target.id === room.control) return;
+  const epoch = room.controlVersion;
+  const members = [...(io.sockets.adapter.rooms.get(room.roomId) || [])]
+    .map(id => io.sockets.sockets.get(id)).filter(Boolean);
+  const upgraded = socket => socket.handshake.auth?.boardHandoff === 1;
+  if (!members.some(upgraded)) {
+    if (setRoomControl(room, target)) emitControlChanged(room);
+    return;
+  }
+  if (upgraded(requester) && payload.controlVersion !== epoch) return;
+  if (pendingHandoffs.has(room)) return;
+  const writers = members.filter(member => member.data.participantId === room.control);
+  if (writers.length !== 1 || members.some(member => !upgraded(member))) {
+    emitBoardError(requester, 'Для передачи хода обновите доску у обоих участников и оставьте одну вкладку пишущего.');
+    return;
+  }
+  const writer = writers[0], trainerUrl = room.trainerUrl;
+  const handoffId = crypto.randomUUID();
+  pendingHandoffs.set(room, handoffId);
+  try {
+    const reply = await writer.timeout(4000).emitWithAck('control:prepare', {
+      roomId: room.roomId, controlVersion: epoch, handoffId
+    });
+    if (!reply?.ok || room.controlVersion !== epoch || room.trainerUrl !== trainerUrl ||
+        !requester.connected || requester.data.roomId !== room.roomId ||
+        !writer.connected || writer.data.roomId !== room.roomId) throw new Error('handoff changed');
+    const currentMembers = [...(io.sockets.adapter.rooms.get(room.roomId) || [])]
+      .map(id => io.sockets.sockets.get(id)).filter(Boolean);
+    if (currentMembers.some(member => !upgraded(member) ||
+        (member.data.participantId === room.control && member !== writer))) throw new Error('membership changed');
+    const state = reply.trainerState ? normalizeTrainerState(room, reply.trainerState) : null;
+    if ((trainerIdFromUrl(trainerUrl) || reply.trainerState) && !state) throw new Error('snapshot unavailable');
+    if (state) {
+      room.latestTrainerState = state;
+      io.to(room.roomId).emit('board:trainer-state-change', state);
+    }
+    if (setRoomControl(room, target)) emitControlChanged(room);
+  } catch {
+    emitBoardError(requester, 'Передача хода не подтверждена. Проверьте связь с комнатой и повторите.');
+  } finally {
+    pendingHandoffs.delete(room);
+    writer.emit('control:finished', { handoffId });
+  }
 }
 
 app.get('/health', (_req, res) => {
@@ -823,6 +896,9 @@ io.on('connection', socket => {
       socket.emit('room:error', { message: auth.error });
       return;
     }
+    if (socket.data.roomId && (socket.data.roomId !== auth.room.roomId || socket.data.role !== role)) {
+      leaveIndividualRoom(socket);
+    }
     socket.data.roomId = auth.room.roomId;
     socket.data.role = role;
     socket.data.token = payload.token;
@@ -832,6 +908,7 @@ io.on('connection', socket => {
     const participant = findParticipant(auth.room, role);
     socket.join(auth.room.roomId);
     socket.emit('room:state', {
+      handoffVersion: 1,
       role,
       state: role === 'student' || auth.room.initialized ? publicState(auth.room) : null,
       you: publicYou(participant, role),
@@ -840,28 +917,14 @@ io.on('connection', socket => {
     io.to(auth.room.roomId).emit('participants:state', participantsState(auth.room));
   });
 
-  socket.on('disconnect', () => {
-    const room = markParticipantDisconnected(socket);
-    if (room) {
-      const participant = findParticipantById(room, socket.data.participantId);
-      io.to(room.roomId).emit('participants:state', participantsState(room));
-      if (
-        participant
-        && room.control === participant.id
-        && Number(participant.onlineCount || 0) === 0
-        && !participant.caps?.moderate
-        && returnControlToTeacher(room)
-      ) {
-        emitControlChanged(room);
-      }
-    }
-  });
+  socket.on('disconnect', () => leaveIndividualRoom(socket));
 
   socket.on('room:state', () => {
     const room = rooms.get(socket.data.roomId);
     if (room) {
       const role = socket.data.role;
       socket.emit('room:state', {
+      handoffVersion: 1,
         role,
         state: publicState(room),
         you: publicYou(socketParticipant(room, socket), role),
@@ -882,7 +945,7 @@ io.on('connection', socket => {
       emitBoardError(socket, 'Ученик не найден');
       return;
     }
-    if (setRoomControl(access.room, student)) emitControlChanged(access.room);
+    transferControl(socket, access.room, student, payload);
   });
 
   socket.on('control:revoke', payload => {
@@ -892,7 +955,7 @@ io.on('connection', socket => {
       emitBoardError(socket, 'Нет прав на передачу хода');
       return;
     }
-    if (returnControlToTeacher(access.room)) emitControlChanged(access.room);
+    transferControl(socket, access.room, findParticipant(access.room, 'teacher'), payload);
   });
 
   socket.on('control:release', payload => {
@@ -905,7 +968,7 @@ io.on('connection', socket => {
       emitBoardError(socket, 'Нет прав на передачу хода');
       return;
     }
-    if (returnControlToTeacher(access.room)) emitControlChanged(access.room);
+    transferControl(socket, access.room, findParticipant(access.room, 'teacher'), payload);
   });
 
   socket.on('board:stroke-start', payload => {
