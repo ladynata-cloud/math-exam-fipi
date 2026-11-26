@@ -1,0 +1,116 @@
+name: School journey - exact composition
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'learning/school-journey.js'
+      - 'learning/preparation-map.js'
+      - 'learning/division-course-map.js'
+      - 'assets/school-journey-home.*'
+      - 'tools/school-journey-composition.browser.cjs'
+      - '.github/workflows/school-journey-composition.yml'
+permissions:
+  contents: read
+jobs:
+  composition:
+    if: github.event.pull_request.number == 749
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Build only the reviewed two-draft composition in the disposable checkout
+        env:
+          SCHOOL_HEAD: ${{ github.event.pull_request.head.sha }}
+          MAIN_SHA: ${{ github.event.pull_request.base.sha }}
+          BRIDGE_HEAD: d29f0f82eea1da433ea551f425c6099d88c18e1a
+          BRIDGE_BASE: 85f4aa28803bc0203cccf3a1b5ad5d64d6d05d14
+        run: |
+          set -eu
+          candidate="$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD^1)" = "$MAIN_SHA"
+          test "$(git rev-parse HEAD^2)" = "$SCHOOL_HEAD"
+          git diff --check "$MAIN_SHA" "$candidate"
+          git fetch --no-tags origin refs/pull/750/head
+          test "$(git rev-parse FETCH_HEAD)" = "$BRIDGE_HEAD"
+          test "$(git merge-base "$candidate" "$BRIDGE_HEAD")" = "$BRIDGE_BASE"
+          export CANDIDATE="$candidate"
+          python3 - <<'PY'
+          import copy, hashlib, json, os, subprocess
+          from pathlib import Path
+          def git(*args):
+              return subprocess.check_output(["git", *args])
+          def blob(ref, p):
+              return git("show", ref + ":" + p)
+          def changed(a,b):
+              return set(filter(None, git("diff","--name-only","-z",a,b).decode().split("\0")))
+          candidate=os.environ["CANDIDATE"]
+          bridge=os.environ["BRIDGE_HEAD"]
+          base=os.environ["BRIDGE_BASE"]
+          expected={
+              ".github/workflows/linear-learning-pilot.yml",
+              "assets/assistant/page-rollout.json",
+              "docs/tasks/LINEAR_FRACTION_BRIDGE_20261124.md",
+              "equations/linear-pilot/fraction-bridge-core.js",
+              "equations/linear-pilot/fraction-bridge.css",
+              "equations/linear-pilot/fraction-bridge.js",
+              "equations/linear-pilot/index.html",
+              "tools/equations/linear-pilot-fraction-bridge.browser.cjs",
+              "tools/equations/linear-pilot-fraction-bridge.test.cjs"
+          }
+          shared="assets/assistant/page-rollout.json"
+          page="equations/linear-pilot/index.html"
+          assert changed(base,bridge)==expected, "fraction bridge scope drift"
+          assert changed(base,candidate)&expected=={shared}, "overlap other than reviewed per-page binding"
+          old=json.loads(blob(base,shared))
+          incoming=json.loads(blob(bridge,shared))
+          current=json.loads(blob(candidate,shared))
+          assert page in old["addedPages"] and page in incoming["addedPages"]
+          assert current["addedPages"][page]==old["addedPages"][page], "linear binding concurrently changed"
+          approved=copy.deepcopy(old)
+          approved["addedPages"][page]=incoming["addedPages"][page]
+          assert approved==incoming, "incoming manifest contains unrelated changes"
+          expected_manifest=copy.deepcopy(current)
+          expected_manifest["addedPages"][page]=incoming["addedPages"][page]
+          assert incoming["snippet"]==current["snippet"]
+          snippet=incoming["snippet"].encode()
+          source=blob(bridge,page)
+          row=incoming["addedPages"][page]
+          sha=lambda raw: hashlib.sha256(raw).hexdigest()
+          assert source.count(snippet)==1
+          assert sha(source)==row["afterSha256"]
+          assert sha(source.replace(snippet,b"",1))==row["beforeSha256"]
+          source_commit=blob(row.get("sourceSha") or incoming["baseSha"],page)
+          assert source.replace(snippet,b"",1)==source_commit.replace(snippet,b"",1)
+          for p in expected-{shared}:
+              path=Path(p)
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_bytes(blob(bridge,p))
+          Path(shared).write_text(json.dumps(expected_manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          git("add","--",*sorted(expected))
+          composed=git("write-tree").decode().strip()
+          assert changed(candidate,composed)==expected
+          for p in expected-{shared}:
+              assert blob(composed,p)==blob(bridge,p), p
+          assert json.loads(blob(composed,shared))==expected_manifest
+          assert expected_manifest["sourceBindingUpdates"]==current["sourceBindingUpdates"]
+          assert expected_manifest["baseSha"]==current["baseSha"]
+          git("diff","--check",candidate,composed)
+          print("SCHOOL_COMPOSITION_TREE_OK",candidate,bridge,composed,"9 scoped paths; both page bindings and all history retained")
+          PY
+      - name: Existing mathematical and route assertions on the composition
+        run: |
+          node --test tools/school-journey.test.cjs tools/equations/linear-pilot-fraction-bridge.test.cjs
+          node --check tools/school-journey-composition.browser.cjs
+      - name: Install pinned Chromium test environment
+        run: |
+          npm install --prefix "$RUNNER_TEMP/school-composition" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/school-composition/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Home to course to prerequisite and back, actual browser and no-JS
+        run: |
+          NODE_PATH="$RUNNER_TEMP/school-composition/node_modules" node tools/school-journey-composition.browser.cjs

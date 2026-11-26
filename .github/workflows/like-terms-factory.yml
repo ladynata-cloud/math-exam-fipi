@@ -1,0 +1,58 @@
+name: Algebra factory — mathematics and browser regression
+on:
+  pull_request:
+    paths:
+      - 'trainers/like-terms-factory.html'
+      - 'trainers/like-terms-factory-*.js'
+      - 'tools/like-terms-factory.*'
+      - 'tools/like-terms-factory-*.*'
+      - '.github/workflows/like-terms-factory.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/like-terms-factory.html'
+      - 'trainers/like-terms-factory-*.js'
+      - 'tools/like-terms-factory.*'
+      - 'tools/like-terms-factory-*.*'
+      - '.github/workflows/like-terms-factory.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  factory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Exact polynomial checks and syntax
+        run: |
+          node --check trainers/like-terms-factory-math.js
+          node --check trainers/like-terms-factory-bridge.js
+          node --check trainers/like-terms-factory-polynomials.js
+          node --test tools/like-terms-factory.test.cjs
+          node --test tools/like-terms-factory-polynomials.test.cjs
+          node --test tools/like-terms-factory-grouping.test.cjs
+          node --test tools/like-terms-factory-algebra-finish.test.cjs
+          git diff --check
+      - name: Install isolated Python browser tools
+        run: |
+          python3 -m venv "$RUNNER_TEMP/factory-venv"
+          "$RUNNER_TEMP/factory-venv/bin/python" -m pip install playwright==1.62.0
+          "$RUNNER_TEMP/factory-venv/bin/python" -m playwright install --with-deps chromium
+      - name: Legacy modes, written lesson, offline and two-tab progress
+        run: |
+          "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory.browser.py
+      - name: Polynomial continuation and preserved brackets progress
+        run: |
+          "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory-polynomials.browser.py
+      - name: Grouping and first identities, preserved polynomial progress
+        run: |
+          "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory-grouping.browser.py
+      - name: Complete identities, rational expressions and equation applications
+        run: |
+          "$RUNNER_TEMP/factory-venv/bin/python" tools/like-terms-factory-algebra-finish.browser.py
