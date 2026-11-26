@@ -36,7 +36,7 @@
 Инвентаризация мелких навыков и сопоставление с общими существующими ID; пилот дроби → уравнения с возвращением из упражнения к причине; нормализация свидетельств без миграции старых данных; интеграция курсов 5–11 и экзаменационных ветвей; педагогический диспетчер и помощник по Accepted ADR 0011; офлайн-экспорт и апробация. Систему считать единой только после проверенного непрерывного маршрута в обе стороны.
 
 ## Permissions
-START — явное поручение владельца в текущем разговоре. Draft PR yes; merge/deploy **NO** в этой стадии. 
+START — явное поручение владельца в текущем разговоре. Draft PR yes; merge/deploy **NO** в этой стадии.
 
 ## CI finding and correction (24 November)
 - Initial exact-head `8c69f9fd292ee8ddd3cdbd4c33785770b1e3a209`: 16/17 workflows success, including [route prototype](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/45306168541), [SEO](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/45306168512) and [public navigator](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/45306168547). [Public lesson showcase](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/45306168450) failed in homepageEntry: first `/geometry-course/` link was the hidden static fallback after JS initialization. The old card itself was not removed.
