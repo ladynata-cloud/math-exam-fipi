@@ -39,6 +39,20 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 @media(max-width:850px){.hero,.learn-layout,.task-layout{grid-template-columns:1fr}.hero-art{min-height:230px}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{grid-template-columns:1fr}.route-grid{grid-template-columns:1fr}.route p{min-height:0}.stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.wrap{padding:22px 12px 62px}.topbar-in{padding:8px 11px}.brand-copy{display:none}.hero-copy,.lesson,.task-card,.check-card,.result{padding:19px}.hero{gap:13px}.hero-art{min-height:190px}.big-symbol{width:145px;height:145px;font-size:58px}.side{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.stats,.status-row,.result-grid{grid-template-columns:1fr}.dashboard-main{align-items:flex-start}.ring{width:90px;height:90px}.task-prompt{font-size:18px}.head{align-items:flex-start;flex-direction:column}.practice-head{align-items:flex-start;flex-direction:column}.meter{width:100%}.number-line{min-width:410px}.route-grid{gap:10px}}
 </style>
+<noscript><style>
+  .nav-scroll,#view-home,#view-learn,#view-practice,#view-check{display:none!important}
+  #fraction-paper-lesson{padding:clamp(16px,4vw,28px);max-width:780px;margin:auto}
+  #fraction-paper-lesson h1{font-size:clamp(25px,5vw,40px);line-height:1.15;margin:10px 0}
+  #fraction-paper-lesson h2{font-size:clamp(21px,4vw,27px);margin:20px 0 8px}
+  #fraction-paper-lesson p{margin:8px 0}
+  #fraction-paper-lesson ol,#fraction-paper-lesson ul{padding-left:24px;margin:10px 0}
+  #fraction-paper-lesson li{margin:5px 0}
+  #fraction-paper-lesson .bar{margin:12px 0}
+  #fraction-paper-lesson .bar span{min-width:0;display:grid;place-items:center;height:42px;color:var(--ink);font-weight:800}
+  #fraction-paper-lesson .bar span.on{color:#fff}
+  #fraction-paper-lesson summary,#fraction-paper-lesson a{min-height:44px;padding:10px 0;cursor:pointer}
+  #fraction-paper-lesson a{display:inline-flex;align-items:center}
+</style></noscript>
 <script src="learning-loader.js?v=base-checkpoints-20261118"></script><link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">
 <script defer src="/assets/oge-wayfinding.js"></script>
 <script defer src="/assets/oge-fractions-return.js?v=20261118-drafts"></script>
@@ -51,6 +65,42 @@ button,input{font:inherit}button{touch-action:manipulation}a{color:inherit}[hidd
 
 <header class="topbar"><div class="topbar-in"><a class="brand" id="mapBack"><span class="mark">∑</span><span class="brand-copy"><b>MathExam</b><span>математический ликбез</span></span></a><div class="nav-scroll"><nav class="nav"><button data-route="home">Старт</button><button data-route="learn">Разобраться</button><button data-route="practice">Практика</button><button data-route="check">Проверка</button></nav></div></div></header>
 <main class="wrap">
+<noscript>
+<section class="card" id="fraction-paper-lesson" aria-labelledby="fraction-paper-title">
+  <p class="eyebrow">Бумажный вариант занятия</p>
+  <h1 id="fraction-paper-title">Дробь: часть, целое и равные записи</h1>
+  <p>Интерактивные задания требуют JavaScript. Но смысл дроби можно разобрать и проверить на бумаге. Автоматическая проверка и запись прогресса в этом режиме не работают.</p>
+  <h2>1. Что означает дробь</h2>
+  <p>Разделим целое на пять равных частей. Возьмём одну из них. Это 1/5 целого: знаменатель 5 показывает число равных частей, а числитель 1 — сколько частей взяли.</p>
+  <div class="bar" role="img" aria-label="Полоса разделена на пять равных частей. Одна часть выделена и имеет длину 6 см.">
+    <span class="on" aria-hidden="true">6</span><span aria-hidden="true">?</span><span aria-hidden="true">?</span><span aria-hidden="true">?</span><span aria-hidden="true">?</span>
+  </div>
+  <h2>2. Как восстановить целое</h2>
+  <div class="example" id="fraction-paper-example">
+    <p><strong>Пример.</strong> Пятая часть ленты равна 6 см. Найди длину всей ленты.</p>
+    <p>Каждая из пяти равных частей имеет длину 6 см. Поэтому длина целого: 6 × 5 = 30 см.</p>
+    <p>Проверка: 30 : 5 = 6 см. Мы вернулись к данной части.</p>
+  </div>
+  <p>Если известна целая величина, для нахождения одной доли делим её на знаменатель. Если известна одна доля, для восстановления целого умножаем на знаменатель. Чтобы найти несколько долей, умножаем длину одной доли на числитель.</p>
+  <p>Равные дроби обозначают одну и ту же долю целого: 2/5 = 4/10. Если каждую пятую часть разделить пополам, две пятые станут четырьмя десятыми. Количество выбранной величины не изменится.</p>
+  <h2>3. Реши самостоятельно</h2>
+  <ol id="fraction-paper-tasks">
+    <li>Треть полосы равна 8 см. Какова длина всей полосы? Проверь ответ делением.</li>
+    <li>Длина ленты 20 см. Найди 3/4 её длины. Сначала найди одну четверть.</li>
+    <li>Равны ли 2/6 и 1/3? Объясни на рисунке или равными долями.</li>
+  </ol>
+  <details id="fraction-paper-check">
+    <summary>Сверить ответы после самостоятельного решения</summary>
+    <ol>
+      <li>24 см, поскольку 8 × 3 = 24 и 24 : 3 = 8.</li>
+      <li>15 см: 20 : 4 = 5, затем 5 × 3 = 15.</li>
+      <li>Да: две шестые образуют одну треть (2/6 = 1/3).</li>
+    </ol>
+    <p>Если результат не совпал, проверь, какая величина — часть, а какая — целое. Это самопроверка, а не подтверждение освоения.</p>
+  </details>
+  <p><a class="link" id="fraction-paper-return" href="/equations/linear-pilot/">Вернуться к курсу линейных уравнений</a></p>
+</section>
+</noscript>
 <section class="view" id="view-home">
   <div class="hero"><div class="card hero-copy"><span class="eyebrow" id="topicEyebrow"></span><h1 id="pageTitle"></h1><p class="lead" id="pageLead"></p><div class="actions"><button class="btn primary" data-route="learn">Начать с объяснения</button><button class="btn secondary" data-route="check">Сразу проверить себя</button></div></div><div class="card hero-art"><div class="big-symbol"><span id="heroSymbol"></span><small id="heroSmall"></small></div></div></div>
   <div class="route-grid"><button class="route learn" data-route="learn"><span class="route-icon">🧭</span><h3>Разобраться</h3><p>Короткие шаги, один пример вместе и первая самостоятельная попытка.</p><div class="route-meta"><span id="routeLearnMeta"></span><span>→</span></div></button><button class="route practice" data-route="practice"><span class="route-icon">✍️</span><h3>Потренироваться</h3><p>Новые примеры, две мягкие подсказки и честный зачёт самостоятельных решений.</p><div class="route-meta"><span id="routePracticeMeta"></span><span>→</span></div></button><button class="route check" data-route="check"><span class="route-icon">🎯</span><h3>Проверить себя</h3><p>Пять коротких заданий без подсказок и понятная рекомендация по результату.</p><div class="route-meta"><span id="routeCheckMeta"></span><span>→</span></div></button></div>

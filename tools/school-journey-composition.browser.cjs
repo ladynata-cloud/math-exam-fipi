@@ -126,6 +126,20 @@ async function noJS(browser,origin){
     assert(await page.locator('#fraction-bridge-app').isHidden());
     await Promise.all([page.waitForURL(origin+'/trainers/oge-basics/fraction-meaning.html'),keyboard(page.locator('#fraction-bridge-fallback a[href="/trainers/oge-basics/fraction-meaning.html"]'))]);
     assert.match(await page.locator('body').innerText(),/дроб/i);
+    const paper=page.locator('#fraction-paper-lesson');
+    assert(await paper.isVisible(),'real paper prerequisite with JS disabled');
+    assert.match(await paper.locator('h1').innerText(),/Дробь: часть, целое/);
+    assert.match(await paper.locator('#fraction-paper-example').innerText(),/6 × 5 = 30 см/);
+    assert.equal(await paper.locator('#fraction-paper-tasks li').count(),3);
+    const selfCheck=paper.locator('#fraction-paper-check');
+    assert.equal(await selfCheck.getAttribute('open'),null,'self-check answers initially closed');
+    await keyboard(selfCheck.locator('summary'));
+    assert.equal(await selfCheck.getAttribute('open'),'');
+    assert.match(await selfCheck.innerText(),/24 см/);
+    assert.match(await selfCheck.innerText(),/15 см/);
+    assert(!(await page.locator('#view-home').isVisible()),'inactive JS controls hidden');
+    assert(await paper.evaluate(e=>e.scrollWidth<=e.clientWidth+2),'paper lesson overflow');
+    await Promise.all([page.waitForURL(origin+pilot),keyboard(paper.locator('#fraction-paper-return'))]);
     console.log('SCHOOL_COMPOSITION_NO_JS_OK');
   }finally{await context.close();}
 }
