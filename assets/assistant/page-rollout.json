@@ -2175,9 +2175,10 @@
       "placement": "before-head-close"
     },
     "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html": {
-      "beforeSha256": "06466c5a7f2055606c8877d782166c663914e4965a080d3d11ea3562b1814246",
-      "afterSha256": "e922eecfa78425e634c029fd2b88a39a4bd57a2fef5ffee1c2bf23df83540492",
-      "placement": "before-head-close"
+      "beforeSha256": "b07023f71986397b103ef8e101ac01836def7c62ae4e336eab689bdcfb1332d7",
+      "afterSha256": "61730b920e807e35f91d36e2203a840964a894b09b8538b40655ec700bd6e8d2",
+      "placement": "before-head-close",
+      "sourceSha": "90e5f6f1694f79e45ada502beb2e8add015b90dc"
     },
     "pedagogam/materialy/diagnostika-vychisleniy/index.html": {
       "beforeSha256": "8a31aa8c60822cd340f52a129996f8917c019565e5d898bcd3de02ba6c90997b",
@@ -6902,6 +6903,17 @@
       "reason": "Bind the seven-step polynomial continuation to its exact source; the prior algebra source and receipt remain in history.",
       "bindingScope": "One per-page sourceSha; shared navigator pair, global base and other bindings unchanged.",
       "boundary": "Committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "90e5f6f1694f79e45ada502beb2e8add015b90dc",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/SEO_OFFLINE_ENTRANCE_20261126.md",
+      "changedPaths": [
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
+      ],
+      "reason": "Bind the three reviewed offline download entrances on the existing teacher guide; retain all existing public content and the exact navigator pair.",
+      "bindingScope": "One per-page sourceSha; global base and all other bindings unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
     }
   ],
   "coverageUpdates": [
