@@ -39,7 +39,9 @@
     "trainers/oge-basics/multiplication-division/division-path.html",
     "trainers/school-workshop-check/index.html",
     "trainers/tyurin-statistics/index.html",
-    "trainers/makarychev9-2017/index.html"
+    "trainers/makarychev9-2017/index.html",
+    "trainers/tyurin-statistics/discrete-lab.html",
+    "trainers/tyurin-statistics/sum-dependence-lab.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -4050,7 +4052,9 @@
     "trainers/merzlyak9-2014/index.html": "school/index.html",
     "trainers/makarychev9-2017/index.html": "school/index.html",
     "trainers/college-stereometry/polyhedra-sections/index.html": "trainers/college-stereometry/index.html",
-    "topics/metod-arzhenikova/index.html": "sitemap"
+    "topics/metod-arzhenikova/index.html": "sitemap",
+    "trainers/tyurin-statistics/discrete-lab.html": "sitemap; trainers/tyurin-statistics/condition-lab.js (WORK-12 / PROB-08; exact source bd39c901)",
+    "trainers/tyurin-statistics/sum-dependence-lab.html": "sitemap; trainers/tyurin-statistics/condition-lab.js (WORK-12 / PROB-08; exact source bd39c901)"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -7064,6 +7068,15 @@
         "topics/metod-arzhenikova/index.html"
       ],
       "reason": "Add the sourced Arzhenikov method guide with the existing public navigator; one new canonical sitemap entrance."
+    },
+    {
+      "sourceBaseSha": "bd39c9019170f25ed176390d4e4d47750e6ce9ba",
+      "task": "docs/tasks/TYURIN_PROBABILITY_BRIDGES_20261126.md",
+      "addedPages": [
+        "trainers/tyurin-statistics/discrete-lab.html",
+        "trainers/tyurin-statistics/sum-dependence-lab.html"
+      ],
+      "reason": "Two author-written canonical Tyurin learning laboratories; each already carries the exact existing public navigator pair. Add explicit browser inventory and sitemap coverage; preserve all prior bindings."
     }
   ]
 }
