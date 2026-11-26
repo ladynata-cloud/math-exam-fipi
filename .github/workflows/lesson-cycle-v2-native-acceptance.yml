@@ -40,3 +40,61 @@ jobs:
       - name: Actual origin, persistent profile, home and file navigation, four host integrations
         run: |
           "$RUNNER_TEMP/lesson-cycle-venv/bin/python" tools/lesson-cycle/native.py
+      # One-time release evidence for the only overlapping task, PR #767.
+      # Only the disposable CI checkout is changed. Neither branch is updated.
+      - name: Verify and materialize the exact virtual composition with probability bridges
+        if: github.event.pull_request.number == 768
+        env:
+          BRIDGE_HEAD: bd39c9019170f25ed176390d4e4d47750e6ce9ba
+          ORIGINAL_BASE: ecf4cd2078c2c67da38f0c5fd1de3ebc41f257b0
+        run: |
+          candidate="$(git rev-parse HEAD)"
+          test "$(git rev-parse "$BRIDGE_HEAD^{commit}")" = "$BRIDGE_HEAD"
+          test "$(git merge-base "$candidate" "$BRIDGE_HEAD")" = "$ORIGINAL_BASE"
+          composed="$(git merge-tree --write-tree "$candidate" "$BRIDGE_HEAD")"
+          test "$(git cat-file -t "$composed")" = tree
+          echo "Candidate: $candidate; probability bridges: $BRIDGE_HEAD; composition tree: $composed"
+          git diff --check "$candidate" "$composed"
+          export CANDIDATE="$candidate" COMPOSED="$composed"
+          python3 - <<'PY'
+          import os, subprocess
+          from pathlib import Path
+          a,b,c,base = (os.environ[k] for k in ("CANDIDATE","BRIDGE_HEAD","COMPOSED","ORIGINAL_BASE"))
+          shared = "trainers/tyurin-statistics/condition-lab.js"
+          expected = {shared, "trainers/tyurin-statistics/discrete-lab.html", "trainers/tyurin-statistics/sum-dependence-lab.html", "tools/tyurin-probability-bridges.test.cjs", "docs/tasks/TYURIN_PROBABILITY_BRIDGES_20261126.md"}
+          def git(*args): return subprocess.check_output(["git", *args])
+          def blob(ref,p): return git("show", f"{ref}:{p}")
+          paths = set(filter(None,git("diff","--name-only","-z",a,c).decode().split("\0")))
+          assert paths == expected, (paths,expected)
+          original, bridge, own = blob(base,shared),blob(b,shared),blob(a,shared)
+          assert bridge.startswith(original), "bridge prefix changed"
+          suffix = bridge[len(original):]
+          assert suffix and b"WORK-12" in suffix
+          assert blob(c,shared) == own + suffix, "shared script must preserve both implementations exactly"
+          for p in expected:
+              data = blob(c,p)
+              if p != shared: assert data == blob(b,p), p
+              path = Path(p)
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_bytes(data)
+              assert path.read_bytes() == data
+          print("PASS exact composition: 5 scoped files, unchanged bridge tail and lesson-cycle implementation")
+          PY
+          node tools/lesson-cycle/hooks.test.cjs
+          node tools/lesson-cycle/entry.test.cjs
+          node tools/tyurin-probability-bridges.test.cjs
+          node tools/tyurin-condition.test.cjs
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" tools/lesson-cycle/native.py
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        if: github.event.pull_request.number == 768
+        with:
+          node-version: '24.21.0'
+      - name: Existing Tyurin course and shared board on the isolated composition
+        if: github.event.pull_request.number == 768
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/lesson-cycle-tyurin" --no-save --no-package-lock --ignore-scripts playwright@1.57.0 jsdom@26.1.0
+          export NODE_PATH="$RUNNER_TEMP/lesson-cycle-tyurin/node_modules"
+          node tools/tyurin-statistics.test.cjs
+          node tools/tyurin-condition.browser.cjs
+          node tools/tyurin-statistics.board.browser.cjs
