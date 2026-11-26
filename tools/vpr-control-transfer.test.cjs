@@ -49,8 +49,10 @@ function fixture(role = 'teacher') {
       bridgeInstanceId: 'actual-synthetic-bridge', generation: 4, source: child, origin: ORIGIN, canonicalFile: FILE, hydrated: true, timedOut: false },
     document: { activeElement: null, body: { classList: { toggle() {} } } },
     controlBadge: {}, controlToggle: {}, releaseControl: {},
-    $: id => elements[id], buttons() {}, setMirrorStatus() {}, handleTrainerReady() {},
+    $: id => elements[id], buttons() {}, refreshRoomNotice() {}, setMirrorStatus() {}, handleTrainerReady() {},
     boardMessage: value => notices.push(value),
+    // This trainer-state harness has no active handwriting/text editor.
+    finishText() {}, cancelGesture() {},
     addEventListener: (name, fn) => { assert.equal(name, 'message'); listeners.add(fn); },
     removeEventListener: (name, fn) => { assert.equal(name, 'message'); listeners.delete(fn); },
     setTimeout: (fn, ms) => { const id = ++timerId; timers.set(id, { fn, ms }); return id; },
@@ -61,12 +63,13 @@ function fixture(role = 'teacher') {
   vm.runInContext('window=globalThis', context);
   vm.runInContext(read('trainers/board-picker.js'), context);
   vm.runInContext(read('trainers/board-bridge.js'), context);
+  vm.runInContext(read('trainers/board-delivery-ui.js'), context);
   context.normalizeTrainer = context.BoardPicker.normalize;
   vm.runInContext([
     part('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),
     part('function unsafePathText(', 'function validateTrainerRegistryResponse('),
     part('function mirrorEntryFromPayload(', 'function clearBridgeTimers('),
-    part('function canWrite(){', 'function readonly(){'),
+    part('function roomReady(){', 'let roomConnectGeneration=0;'),
     part('function prepareProfileTrainerForRoom(', 'function takePreparedProfileTrainer('),
     part('function postTrainerMessage(', 'function plainTextFromHtml('),
     part('function bridgeStateFromPayload(', 'function requestTrainerState('),

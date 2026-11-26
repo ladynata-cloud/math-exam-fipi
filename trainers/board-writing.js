@@ -175,7 +175,7 @@ function screenPoint(event) {
 function point(event) { return BoardInk.screenToWorld(screenPoint(event), camera); }
 
 function fitCamera() {
-  camera = BoardInk.fitToBounds(BoardInk.drawingBounds(page().strokes, inkContext),
+  camera = BoardInk.fitToBounds(BoardInk.drawingBounds(strokesWithPendingInk(page()), inkContext),
     { width: view.w, height: view.h }, { padding: 32, minScale: 0.02, maxScale: 1 });
 }
 
@@ -234,9 +234,10 @@ function render() {
   if (fitViewport && !drawing && !current) fitCamera();
   background(page().bg);
   ctx.setTransform(dpr * camera.scale, 0, 0, dpr * camera.scale, dpr * camera.x, dpr * camera.y);
-  BoardImages.drawImages(ctx, page().strokes, scheduleRender);
+  const visibleStrokes = strokesWithPendingInk(page());
+  BoardImages.drawImages(ctx, visibleStrokes, scheduleRender);
   inkContext.setTransform(dpr * camera.scale, 0, 0, dpr * camera.scale, dpr * camera.x, dpr * camera.y);
-  BoardInk.renderLayer(inkContext, page().strokes, current);
+  BoardInk.renderLayer(inkContext, visibleStrokes, current);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.drawImage(inkCanvas, 0, 0);
   $('zoomReset').textContent = `${Math.round(camera.scale * 100)}%`;
@@ -244,6 +245,7 @@ function render() {
   $('zoomIn').disabled = camera.scale >= BoardInk.MAX_SCALE;
   $('zoomOut').disabled = camera.scale <= BoardInk.MIN_SCALE;
   buttons();
+  updateInkDeliveryStatus();
 }
 
 function scheduleRender() {
@@ -260,9 +262,10 @@ function changeView(action) {
   render();
 }
 
-function addStroke(stroke, remote = false, pageIndex = state.current) {
+function addStroke(stroke, remote = false, pageIndex = state.current, inkContext = deliveryContext()) {
   const sheet = state.pages[pageIndex];
   if (!stroke || !sheet || (!remote && pendingHistory)) return;
+  if (!remote && inkContext && queueCompletedInk(stroke, inkContext)) { render(); return; }
   // Reconnection/snapshot delivery must not duplicate a completed object.
   if (!stroke.objectId || !sheet.strokes.some(item => item.objectId === stroke.objectId)) sheet.strokes.push(stroke);
   sheet.redo = [];
@@ -290,6 +293,7 @@ function down(event) {
     return;
   }
   drawing = true;
+  gestureInkContext = deliveryContext();
   gesturePageId = page().id;
   gestureStart = point(event);
   const common = { ...newObjectMeta(), color: color.value, size: +size.value };
@@ -335,7 +339,8 @@ function move(event, final = false) {
 function cancelGesture(commit = false) {
   const wasPan = !!panOrigin;
   const remotePreview = wasPan && !drawing ? current : null;
-  const pointerId = activePointerId, done = drawing && canWrite() && commit ? current : null;
+  const pointerId = activePointerId, done = drawing && (canWrite() || gestureInkContext) && commit ? current : null;
+  const inkContext = gestureInkContext; gestureInkContext = null;
   const pageIndex = state.pages.findIndex(sheet => sheet.id === gesturePageId);
   activePointerId = null; drawing = false; current = null;
   gestureStart = null; gestureTool = null; gesturePageId = null; panOrigin = null;
@@ -343,7 +348,7 @@ function cancelGesture(commit = false) {
   if (pointerId !== null) { try { canvas.releasePointerCapture(pointerId); } catch (_) {} }
   canvas.style.cursor = tool === 'hand' ? 'grab' : readonly() ? 'default'
     : tool === 'text' ? 'text' : tool === 'eraser' ? 'cell' : 'crosshair';
-  if (done && pageIndex >= 0) addStroke(done, false, pageIndex); else render();
+  if (done && pageIndex >= 0) addStroke(done, false, pageIndex, inkContext); else render();
 }
 
 function up(event) {
@@ -356,6 +361,7 @@ function openText(position) {
   const wr = wrap.getBoundingClientRect(), cr = canvas.getBoundingClientRect();
   const screen = BoardInk.worldToScreen(position, camera);
   textPoint = position;
+  textInkContext = deliveryContext();
   textStyle = { color: color.value, size: +size.value };
   editor.value = '';
   editor.style.left = `${cr.left - wr.left + Math.max(0, Math.min(screen.x, view.w - 180))}px`;
@@ -369,16 +375,19 @@ function openText(position) {
 
 function finishText() {
   if (editor.classList.contains('hidden')) return;
-  if (!canWrite() || pendingHistory) { closeTextEditor(); return; }
+  if ((!canWrite() && !textInkContext) || pendingHistory) { closeTextEditor(); return; }
   const value = editor.value.trim();
   if (value && textPoint) addStroke({ ...newObjectMeta(), kind: 'text', tool: 'text',
-    x: textPoint.x, y: textPoint.y, text: value, ...textStyle });
+    x: textPoint.x, y: textPoint.y, text: value, ...textStyle }, false, state.current, textInkContext);
+  textInkContext = null;
   closeTextEditor();
 }
 
 function undo() {
+  if (!deliveryAllowsHistory()) return;
   if (!canWrite() || activePointerId !== null || pendingHistory) return;
   finishText();
+  if (!deliveryAllowsHistory()) return;
   const index = ownUndoIndex();
   if (index < 0) return;
   if (shared.connected) {
@@ -392,8 +401,10 @@ function undo() {
 }
 
 function redo() {
+  if (!deliveryAllowsHistory()) return;
   if (!canWrite() || activePointerId !== null || pendingHistory) return;
   finishText();
+  if (!deliveryAllowsHistory()) return;
   if (shared.connected) {
     pruneSharedRedo();
     const entry = sharedRedo.at(-1);
@@ -405,13 +416,16 @@ function redo() {
 }
 
 function clearPage() {
+  if (!deliveryAllowsHistory()) return;
   if (!canWrite() || pendingHistory || activePointerId !== null) return;
   finishText();
+  if (!deliveryAllowsHistory()) return;
   if (!page().strokes.length || confirm('Очистить текущий лист?')) {
     imageImportEpoch++;
     forgetPageRedo(page().id);
     clearPendingHistory();
     page().strokes = []; page().redo = [];
+    if (inkDeliveryCapability) page().pageEpoch = (page().pageEpoch || 0) + 1;
     render(); save();
     emitWriter('board:clear-page', { pageIndex: state.current });
   }
@@ -441,8 +455,10 @@ function sync(doSave = true) {
 }
 
 function addSheet() {
+  if (!deliveryAllowsHistory()) return;
   if (shared.role !== 'teacher' || !canWrite() || pendingHistory || activePointerId !== null) return;
   finishText();
+  if (!deliveryAllowsHistory()) return;
   imageImportEpoch++;
   cancelGesture(false);
   const next = blank(); ensurePageId(next);
@@ -452,8 +468,10 @@ function addSheet() {
 }
 
 function delSheet() {
+  if (!deliveryAllowsHistory()) return;
   if (shared.role !== 'teacher' || !canWrite() || pendingHistory || activePointerId !== null) return;
   finishText();
+  if (!deliveryAllowsHistory()) return;
   if (!confirm('Удалить текущий лист и все записи на нём?')) return;
   imageImportEpoch++;
   cancelGesture(false);
@@ -466,8 +484,10 @@ function delSheet() {
 }
 
 function switchSheet(delta) {
+  if (!deliveryAllowsHistory()) return;
   if (shared.role !== 'teacher' || !canWrite() || pendingHistory || activePointerId !== null) return;
   finishText();
+  if (!deliveryAllowsHistory()) return;
   const index = state.current + delta;
   if (index < 0 || index >= state.pages.length) return;
   imageImportEpoch++;
@@ -479,16 +499,17 @@ function switchSheet(delta) {
 function buttons() {
   syncHistoryIdentity();
   const writable = canWrite() && !pendingHistory;
+  const historyWritable = writable && !deliveryPending();
   sheetCount.textContent = `Лист ${state.current + 1} из ${state.pages.length}`;
-  $('prevSheet').disabled = !writable || state.current === 0;
-  $('nextSheet').disabled = !writable || state.current === state.pages.length - 1;
-  $('addSheet').disabled = $('deleteSheet').disabled = bg.disabled = !writable;
+  $('prevSheet').disabled = !historyWritable || state.current === 0;
+  $('nextSheet').disabled = !historyWritable || state.current === state.pages.length - 1;
+  $('addSheet').disabled = $('deleteSheet').disabled = bg.disabled = !historyWritable;
   document.querySelectorAll('[data-tool]').forEach(button => { button.disabled = button.dataset.tool !== 'hand' && !writable; });
   document.querySelectorAll('[data-pen-color],[data-pen-size]').forEach(button => { button.disabled = !writable; });
   color.disabled = size.disabled = !writable;
-  $('undo').disabled = !writable || !!pendingHistory || ownUndoIndex() < 0;
-  $('redo').disabled = !writable || !!pendingHistory || (shared.connected ? sharedRedo.length === 0 : page().redo.length === 0);
-  $('clear').disabled = !writable;
+  $('undo').disabled = !historyWritable || !!pendingHistory || ownUndoIndex() < 0;
+  $('redo').disabled = !historyWritable || !!pendingHistory || (shared.connected ? sharedRedo.length === 0 : page().redo.length === 0);
+  $('clear').disabled = !historyWritable;
   $('addBoardImage').disabled = !writable || importingImage;
 }
 

@@ -17,6 +17,8 @@ try{
  await page.goto(board+'?trainer='+encodeURIComponent('/trainers/negative-numbers.html'));await page.waitForFunction(()=>document.querySelector('#trainerFrame').getAttribute('src')==='/trainers/negative-numbers.html');assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam.trainerBoard.v1')).pages[0].strokes),strokes);assert.ok(await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam.trainerBoard.recent.v1')).includes('/trainers/ege-baza/course/#learn-decimal')));assert.ok(await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam.trainerBoard.recent.v1')).includes('/picker-slow.html')));
 
  // The default workspace prioritizes the task and canvas. Settings remain reachable.
+ assert.match(await page.locator('#shareStatus').textContent(),/Локально — ученик не видит/);
+ assert.equal(await page.locator('#roomNotice').isVisible(),false,'ordinary local work has no extra warning row');
  for(const width of [1440,1280,768,360]){
    await page.setViewportSize({width,height:900});await page.waitForTimeout(100);
    const f=await page.locator('#trainerFrame').boundingBox(),c=await page.locator('#canvas').boundingBox();

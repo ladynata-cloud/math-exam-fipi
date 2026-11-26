@@ -19,19 +19,21 @@ function fixture(id) {
   const entry = {trainerId:id,file,trainerVersion:'1.0.0',protocolVersion:1,stateSchemaVersion:1,allowLegacyHtml:false};
   const p = vm.createContext({window:{},location:new URL(origin + '/trainers/trainer-board.html'),URL,TextEncoder,
     frame:{contentWindow:child},state:{trainerUrl:'/' + file + '?from=cabinet&note=%2B+%26#lesson/old'},
-    shared:{role:'teacher',roomId:'new-room',connected:true,control:'teacher',me:{participantId:'teacher'}},
+    roomStateReceived:true,
+    shared:{role:'teacher',roomId:'new-room',connected:true,control:'teacher',me:{participantId:'teacher'},socket:{connected:true}},
     trainerRegistry:{status:'ready',server:'https://room.example',byId:new Map([[id,entry]]),byFile:new Map([[file,entry]])},
     setMirrorStatus(){}
   });
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'trainers/board-picker.js'), 'utf8'),p);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'trainers/board-bridge.js'), 'utf8'),p);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'trainers/board-delivery-ui.js'), 'utf8'),p);
   p.MathExamBoard=p.window.MathExamBoard;p.normalizeTrainer=p.window.BoardPicker.normalize;
   vm.runInContext([
     part('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),
     part('function unsafePathText(', 'function validateTrainerRegistryResponse('),
     part('function protectedPetersonId(', 'function trainerSelectionForRegistry('),
     part('function mirrorEntryFromPayload(', 'function trustedTrainerOrigin('),
-    part('function canWrite(){', 'function readonly(){'),
+    part('function roomReady(){', 'let roomConnectGeneration=0;'),
     part('function addBoardSeedToTrainerUrl(', 'function compatLabel('),
     part('function bridgeStateFromPayload(', 'function requestTrainerState('),
     part('async function createRoom(){','async function connectRoom(){')
@@ -96,6 +98,8 @@ for (const id of ['ege-profile-log-trig','ege-profile-circle']) {
     selected.progress.draft='later local mutation';assert.equal(prepared.payload.state.progress.draft,'private synthetic draft','detached captured state');
     assert.equal(navigations[0].includes('private'),false);assert.equal(navigations[0].includes('child-only'),false);
     assert.deepEqual(settings,[['server','https://room.example']]);
+    // Model the actual room:state acceptance before the prepared-state handoff.
+    p.shared.connected=true;p.roomStateReceived=true;p.shared.socket.connected=true;
     assert.equal(p.takePreparedProfileTrainer(null),prepared.payload,'first authenticated empty join may seed');
     assert.equal(p.takePreparedProfileTrainer(null),null,'second join cannot reuse old work');
   });
