@@ -45,8 +45,8 @@ jobs:
       - name: Verify and materialize the exact virtual composition with probability bridges
         if: github.event.pull_request.number == 768
         env:
-          BRIDGE_HEAD: 265e7b526cbb4c80eb1aadf910f72e4ceae54d6a
-          ORIGINAL_BASE: db4557f8dac2b93e11d6089d73101f084969ef41
+          BRIDGE_HEAD: 319ff831a8aaac3ad83c6e11cce07891863ba6e8
+          ORIGINAL_BASE: cdcd6d0e86ddbd457dfd89b0a2aeef1b2a9ab3d3
         run: |
           candidate="$(git rev-parse HEAD)"
           git fetch --no-tags origin refs/pull/767/head
