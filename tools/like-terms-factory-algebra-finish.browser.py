@@ -180,6 +180,13 @@ def run(browser,url,width,offline=False):
                     assert_rejected(page,answers,1,'x³+6x²+12x+8','промежуточная сумма')
                 if step=='cancel-two-denominator':
                     assert_rejected(page,answers,0,'-3','исходные знаменатели')
+                if step=='different-denominators':
+                    expect(page.locator('#bridgeContent .bridge-prompt')).to_contain_text('старшим коэффициентом 1 или −1')
+                    if width != 1280 or offline:
+                        answers=['-2;2','-x-2','-x+2','-4x+4','-x²+4']
+                    assert_rejected(page,answers,0,'2','исходные знаменатели')
+                    opposite='x²-4' if answers[4]=='-x²+4' else '-x²+4'
+                    assert_rejected(page,answers,4,opposite,'Проверь знак')
                 if step=='divide-fractions':
                     assert_rejected(page,answers,0,'-2','исходные знаменатели')
                 if step=='excluded-root':
@@ -192,6 +199,14 @@ def run(browser,url,width,offline=False):
                 if step.startswith('independent-'):
                     expect(page.get_by_role('button',name='Подсказка',exact=True)).to_have_count(0)
                 poly.fill(page,answers); expect(page.locator('#poly-next')).to_be_visible()
+                if step=='different-denominators':
+                    assert state(page,stage)['records'][step]['drafts']==answers
+                    page.reload(); reach_after_reload(page,stage_index)
+                    expect(page.locator('#bridgeContent')).to_have_attribute('data-step',stage['prefix']+step)
+                    for field_index,value in enumerate(answers):
+                        expect(page.locator('#poly-answer-'+str(field_index))).to_have_value(value)
+                    expect(page.locator('#poly-next')).to_be_visible()
+                    assert state(page,stage)['records'][step]['done']
                 page.locator('#poly-next').click()
             expect(page.locator('#bridgeContent')).to_have_attribute('data-step',stage['name'])
             expect(page.locator('#bridgeContent a[href$="'+stage['link']+'"]')).to_be_visible()

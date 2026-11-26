@@ -130,3 +130,33 @@ test('spaces between tokens are allowed, spaces within digit strings are never s
   check('applications','negative-inequality',['-2x+6','2','( -∞ ; -1 ]'],'correct');
   check('applications','rational-sign',['-1','2','+','−','+','(-∞; -1) U [2; +∞)'],'correct');
 });
+
+test('either sign of the least-degree common denominator, consistently throughout',()=>{
+  const id='different-denominators', k='rational';
+  const alt=['-2;2','-x-2','-x+2','-4x+4','-x²+4'];
+  check(k,id,alt,'correct');
+  check(k,id,['{2;-2}','−х−2','2−х','4−4х','4−х2'],'correct');
+  const w=all[k], item=step(k,id);
+  for(const [i,bad] of [[0,'2'],[0,'-2;2;0'],[1,'x+2'],[2,'x-2'],[3,'4x-4'],[4,'x²-4'],[4,'(2-x)(x+2)']]){
+    const v=alt.slice();v[i]=bad;
+    assert.equal(w.grade(item,v).done,false);
+  }
+  assert.equal(w.grade(item,['-2;2','2x+4','2x-4','8x-8','2x²-8']).done,false);
+});
+test('alternate common denominator preserves previous history and reloads without false completion',()=>{
+  const w=all.rational, id='different-denominators';
+  const alt=['-2;2','-x-2','-x+2','-4x+4','-x²+4'];
+  const canonical=answer('rational',id);
+  const map=new Map([['likeTermsFactory.brackets.v1','previous']]);
+  const storage={getItem:k=>map.get(k)??null,setItem:(k,v)=>map.set(k,v)};
+  const a=w.createStore(storage);
+  const old={drafts:canonical,done:true,first:'wrong',attempts:2,hints:1};
+  a.update(p=>{p.current=id;Object.assign(p.records[id],old)});
+  assert.deepEqual(w.createStore(storage).read().records[id],old);
+  const alternate={...old,drafts:alt};
+  a.update(p=>Object.assign(p.records[id],alternate));
+  assert.deepEqual(w.createStore(storage).read().records[id],alternate);
+  const wrong=alt.slice();wrong[0]='2';
+  assert.equal(w.cleanProgress({records:{[id]:{...alternate,drafts:wrong}}}).records[id].done,false);
+  assert.equal(map.get('likeTermsFactory.brackets.v1'),'previous');
+});
