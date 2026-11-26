@@ -31,3 +31,11 @@ Risk: the added links are JavaScript-rendered, no new mirroring capability; exis
 ## Permissions / handoff
 
 Owner's 26.11 WORK-12 and continuation authorize a scoped Draft PR only. Later task-specific hold overrides standing release authorization: no merge, deployment, shared file edits, paid API or nested tasks. Full gate and independent review pending; no claim of whole-course completeness. Base and head recorded in PR; fresh main guard before any later release decision.
+
+## PROB-08 — public route gate correction
+
+On head `8e5d113ea1f02092dcb7f8d01ab9b2c323201837`, GitHub Actions exposed real publication requirements: the two new HTML pages lacked the standard home-return mechanism and sitemap entries (SEO run 45728651639; navigator run 45728651664, all four shards). Board manifest preflight passed. This branch adds the exact existing deferred public navigator pair and distinct self-canonical/description to each lab; the original static relative course/home navigation, no-JS paper tasks and complete inline mathematical and learner UI scripts remain byte-identical. The optional site navigation is not required for mathematical use offline.
+
+Local exact-blob checks: updated Node test 4/4 groups; discrete mathematics 86/86 and sum/dependence mathematics 21,886/21,886; offline Chromium 84/84 and 147/147 on the two updated HTML pages at 320/390/1280 px. Offline set_content, not full site navigation. Actual home-bundle predicate evaluated on both files with a same-origin URL adapter. No shared scripts, gates, sitemap or manifest edited here.
+
+Coordinator request: reserve the two exact routes in `tools/seo-public-pages.json` (seed_paths), regenerate `sitemap.xml` using `python3 tools/build-sitemap.py` on the composed candidate, and review explicit public navigator inventory/provenance for browser coverage. Never add noindex, alias canonicals or gate exclusions to hide new learner pages. Full CI, browser/board regression and HIGH review remain required; merge/publication remain prohibited.

@@ -49,6 +49,16 @@ test('two existing lessons link back to course and to one another, paper fallbac
     assert.match(file,/href="\.\/index\.html(?:#lesson\/\d+-\d+)?"/);
     assert(file.includes('href="'+links[1-i]+'"'));
     assert.match(file,/<noscript>[\s\S]*?<li>/);
-    assert(!/<script[^>]+src=/.test(file));
+    const canonical = 'https://mathexam.space/trainers/tyurin-statistics/' + link.slice(2);
+    assert.equal((file.match(/<link rel="canonical" href="[^"]+">/g)||[]).length,1);
+    assert(file.includes('<link rel="canonical" href="'+canonical+'">'));
+    assert.match(file,/<meta name="description" content="[^"]+">/);
+    const pair = '\n<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>\n<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>\n';
+    assert.equal(file.split(pair).length,2,'standard public navigation exactly once');
+    assert.deepEqual([...file.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)].map(x=>x[1]),[
+      '/assets/assistant/navigator-data.js?v=20261105-site1',
+      '/assets/assistant/navigator-widget.js?v=20261105-site1'
+    ],'only optional site navigation; the mathematical runtime stays inline');
+    assert.equal([...file.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/g)].length,2,'two inline scripts: mathematics and learner UI');
   }
 });
