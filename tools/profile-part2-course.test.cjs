@@ -11,11 +11,16 @@ test('all seven legacy topic groups retain six real method lessons with separate
  const ids=new Set();
  for(let n=14;n<=20;n++)assert.equal(lessons.filter(l=>l.exam===n).length,6,'section '+n);
  for(const l of lessons){
-  assert.ok(l.title&&l.goal&&l.theory.length>=2,l.id);assert.equal(l.tasks.length,6,l.id);
-  assert.equal(new Set(l.tasks.map(t=>t.prompt)).size,6,'six distinct conditions '+l.id);
-  for(const t of l.tasks){assert.ok(!ids.has(t.id),t.id);ids.add(t.id);assert.ok(t.steps.length>=2&&t.final.length&&t.solution.length>=2,t.id);assert.ok(t.proof?.prompt&&t.proof.criteria.length>=2,t.id);}
+  assert.ok(l.title&&l.goal&&l.theory.length>=2,l.id);assert.equal(l.tasks.length,l.exam===14?8:6,l.id);
+  assert.equal(new Set(l.tasks.map(t=>t.prompt)).size,l.tasks.length,'distinct conditions '+l.id);
+  for(const t of l.tasks){
+   assert.ok(!ids.has(t.id),t.id);ids.add(t.id);
+   assert.ok(t.proof?.prompt&&t.proof.criteria.length>=2&&t.solution.length>=2,t.id);
+   if(t.equationAnswer){assert.equal(t.hints.length,2,t.id);assert.equal(t.steps.length+t.final.length,0,t.id);}
+   else assert.ok(t.steps.length>=2&&t.final.length,t.id);
+  }
  }
- assert.equal(ids.size,252);
+ assert.equal(ids.size,264);
 });
 
 test('all actual answer aliases can be entered, empty answers cannot pass',()=>{
@@ -90,7 +95,7 @@ test('second-part home links written finance and keeps numerical preparation and
  domFinance.window.close();
  assert.ok(d.querySelector('a[href="#topic/optimization"]'));
  assert.equal(d.querySelectorAll('.grid .card').length,8);
- assert.match(d.querySelector('#main').textContent,/36 тем и 216 условий/);
+ assert.match(d.querySelector('#main').textContent,/36 тем и 228 условий/);
  dom.window.close();
 });
 
@@ -105,7 +110,7 @@ test('written finance progress leaves the original 42 lessons and their results 
   await save(written[0],'guided');
   await w.ProfilePartTwoApp.render();
   const originalStats=d.querySelector('#main > .stats');
-  assert.match(originalStats.textContent,/252 условий/);
+  assert.match(originalStats.textContent,/264 условий/);
   assert.match(originalStats.textContent,/Самостоятельные ответы: 1/);
   assert.match(originalStats.textContent,/С опорой: 0/);
   assert.equal(d.querySelectorAll('.table-wrap tbody tr').length,42);

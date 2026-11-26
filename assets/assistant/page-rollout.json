@@ -39,7 +39,9 @@
     "trainers/oge-basics/multiplication-division/division-path.html",
     "trainers/school-workshop-check/index.html",
     "trainers/tyurin-statistics/index.html",
-    "trainers/makarychev9-2017/index.html"
+    "trainers/makarychev9-2017/index.html",
+    "trainers/tyurin-statistics/discrete-lab.html",
+    "trainers/tyurin-statistics/sum-dependence-lab.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -343,9 +345,10 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "0dba595cec179134a5aa4f484d4cf882f4f7877ab9612beacbdaa217a4da1004",
-      "afterSha256": "e9be0fcebe951cdecf124749abc8f1b366b65da011f66a86cf020527f6e5e178",
-      "placement": "before-head-close"
+      "beforeSha256": "127634d83653c65cffa10a5c831125e0b3924e8bd222fcf54799f7b608b8ce2e",
+      "afterSha256": "052f7a0e4d8ea586a3122132beb097c0c7dc28d40aac7fef9543c2f944430302",
+      "placement": "before-head-close",
+      "sourceSha": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21"
     },
     "ege-profil/review.html": {
       "beforeSha256": "c4d660bb546fc299e2432d9a0a4c0d2c129bd01a4fc1d379fdfb087b1d769f50",
@@ -353,9 +356,10 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "c3e17d6c76e1b276009af94ba6ee7f6066bc9024b21a9aba4c7ebc2861ece7a5",
-      "afterSha256": "55be214709d06c3b625ffeda50f7fe559bcd0bf69fa7c5a3a0f78ab71bd99de9",
-      "placement": "before-head-close"
+      "beforeSha256": "d8e806dd065c9a75930b8119a95e353093a73484fb5c28889bd5cc4a9183f157",
+      "afterSha256": "33d0d9c7f3794873f51f62f3a1290f2351c009ce33bb606f09854d2d164b19f7",
+      "placement": "before-head-close",
+      "sourceSha": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21"
     },
     "ege-profil/trainers/applied-t910.html": {
       "beforeSha256": "b149755312de601e6e46def156145df0081a5f86d566925fd1c4b8ff504aeb85",
@@ -3305,10 +3309,10 @@
       "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
     },
     "equations/linear-pilot/index.html": {
-      "beforeSha256": "d8247809882d295e0508701503a44c0058be7157aaf2897ab82713f00583c52e",
-      "afterSha256": "917c652fd1ad612588e1bc9c12dd25ec5ea578ce0463743f68ec16807f309c47",
+      "beforeSha256": "47522fbf405730000dafa80e960dfc96ea2f8fb38157eaabec04cc847f15258c",
+      "afterSha256": "0f060f7572c3301f90247d5db61fe29593c2719c6e9fa505227a09af5b10ed05",
       "placement": "before-head-close",
-      "sourceSha": "6faf3cf3c16347b299327563a46356d5d8390f15"
+      "sourceSha": "ee164aa1bcdbb1421510da73239db5e8af992115"
     },
     "stereo-course/literacy/index.html": {
       "beforeSha256": "8f2cc6c0a23dc3990847e586ed02af1af76d91fdbe3fb9dda37a6f99f4ea1268",
@@ -4051,7 +4055,9 @@
     "trainers/merzlyak9-2014/index.html": "school/index.html",
     "trainers/makarychev9-2017/index.html": "school/index.html",
     "trainers/college-stereometry/polyhedra-sections/index.html": "trainers/college-stereometry/index.html",
-    "topics/metod-arzhenikova/index.html": "sitemap"
+    "topics/metod-arzhenikova/index.html": "sitemap",
+    "trainers/tyurin-statistics/discrete-lab.html": "sitemap; trainers/tyurin-statistics/condition-lab.js (WORK-12 / PROB-08; exact source bd39c901)",
+    "trainers/tyurin-statistics/sum-dependence-lab.html": "sitemap; trainers/tyurin-statistics/condition-lab.js (WORK-12 / PROB-08; exact source bd39c901)"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -6907,6 +6913,18 @@
       "boundary": "Committed source identity only; not mathematical or publication approval."
     },
     {
+      "sourceBaseSha": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/PROFILE_EQUATIONS_ROOT_SELECTION_20261115.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "reason": "Bind the two reviewed profile START and part-two pages to their exact committed sources; preserve the global base and every prior binding.",
+      "bindingScope": "Two per-page sourceSha bindings only; existing exact navigator pair, all other pages and receipts unchanged.",
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
       "sourceBaseSha": "85310a0bfbf82425ce945856381f19f1d6bd9776",
       "previousSourceShas": {
         "courses/vilenkin-6-part-1/textbook.html": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
@@ -7071,6 +7089,15 @@
         "topics/metod-arzhenikova/index.html"
       ],
       "reason": "Add the sourced Arzhenikov method guide with the existing public navigator; one new canonical sitemap entrance."
+    },
+    {
+      "sourceBaseSha": "bd39c9019170f25ed176390d4e4d47750e6ce9ba",
+      "task": "docs/tasks/TYURIN_PROBABILITY_BRIDGES_20261126.md",
+      "addedPages": [
+        "trainers/tyurin-statistics/discrete-lab.html",
+        "trainers/tyurin-statistics/sum-dependence-lab.html"
+      ],
+      "reason": "Two author-written canonical Tyurin learning laboratories; each already carries the exact existing public navigator pair. Add explicit browser inventory and sitemap coverage; preserve all prior bindings."
     }
   ]
 }
