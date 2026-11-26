@@ -52,7 +52,7 @@ test('picker and exact registry agree without widening the canonical file bounda
 
 test('grade 7 course, native activities and both managed families open their bounded wrappers',()=>{
  const {normalize}=picker();
- for(const hash of ['', '#atanasyan-7-9-main-92-part-2','#atanasyan-7-9-main-161-part-1'])assert.equal(normalize('/geometry-course/textbook/'+hash),'/trainers/atanasyan-grade7.html'+hash);
+ for(const hash of ['', '#atanasyan-7-9-main-92-part-2','#atanasyan-7-9-main-161-part-1'])assert.equal(normalize('/geometry-course/textbook/'+hash),'/trainers/atanasyan-grade7.html?scope=book'+hash);
  assert.equal(normalize('/geometry-course/first-steps/'),'/trainers/atanasyan-grade7.html');
  assert.equal(normalize('/geometry-course/trainers/ch2-p4-t2-proof-sss.html'),'/trainers/geometry7-practice.html?activity=ch2-p4-t2-proof-sss');
  for(const id of ['grade7-r-point-on-line-segment','grade7-g-core-sas'])assert.equal(normalize('/ege-baza/path/#lesson='+id),'/trainers/geometry7-rebuild.html#lesson='+id);

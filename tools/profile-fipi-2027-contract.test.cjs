@@ -185,13 +185,54 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
   assert.equal(start.length, 90);
   assert.equal(start.reduce((count, lesson) => count + lesson.tasks.length, 0), 540);
   assert.equal(partTwo.length, 42);
-  assert.equal(partTwo.reduce((count, lesson) => count + lesson.tasks.length, 0), 252);
-  assert.equal(digest(start), 'c60b1e343d35b0039601e5e41d8a3862537807adb0d1c64c6cc671a2f5211d9b');
+  assert.equal(partTwo.reduce((count, lesson) => count + lesson.tasks.length, 0), 264);
+  for (const lesson of partTwo) {
+    assert.deepEqual(lesson.tasks.slice(6).map(task => task.id),
+      lesson.exam === 14 ? [`${lesson.id}-7`, `${lesson.id}-8`] : []);
+  }
+  const preservedPartTwo = partTwo.map(lesson => ({ ...lesson, tasks: lesson.tasks.slice(0, 6) }));
+  // №13 corrects one theory paragraph: cancellation requires a nonzero divisor.
+  // Check the new wording, then reconstruct the exact earlier bank for the two historical digests.
+  const factors = preservedPartTwo.find(lesson => lesson.id === 'p14-trig-factors');
+  assert.equal(factors.theory[1], 'Произведение равно нулю, когда хотя бы один множитель равен нулю. Делить на sin x можно лишь при sin x ≠ 0. Отдельно рассмотрите случай sin x = 0, затем объедините решения.');
+  factors.theory = factors.theory.slice();
+  factors.theory[1] = 'Произведение равно нулю, когда хотя бы один множитель равен нулю. Деление на sin x потеряло бы все корни sin x = 0.';
+  // PR 664 clarifies only 20 prompt/hint/why strings in similar-triangle and
+  // cube-edge steps. Seal the reviewed copy and independently restore the H02
+  // bank: IDs, numerical answers, task ordering and every other field stay exact.
+  assert.equal(digest(start), '1a346b954dc06d67ccbf2b8bdf206d5aeb575f42dd4e1e1f94f3cc44971fd1b6');
+  const restoredModules = {};
+  const inverse = require('./fixtures/profile-reviewed-ratio-copy.json');
+  assert.equal(inverse.length, 20);
+  for (const entry of inverse) {
+    assert(['ege-profil/start/geometry-data.js', 'ege-profil/start/stereo-data.js'].includes(entry.file));
+    assert(['prompt', 'hint', 'why'].includes(entry.path.at(-1)));
+    const rows = restoredModules[entry.file] ||= plain(require('../' + entry.file));
+    const parent = entry.path.slice(0, -1).reduce((value, key) => value[key], rows);
+    const key = entry.path.at(-1);
+    assert.equal(parent[key], entry.after, entry.file + ':' + entry.path.join('.'));
+    parent[key] = entry.before;
+  }
+  const beforeRatioCopy = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness', 'vector-basics']
+    .flatMap(name => restoredModules['ege-profil/start/' + name + '-data.js'] || require('../ege-profil/start/' + name + '-data.js'));
+  // PR 655 revises only the six explanatory fields of the earlier vector lesson.
+  // Restore them after the ratio inverse, so both reviews share the original seal.
+  const earlierStart = plain(beforeRatioCopy);
+  const opposites = earlierStart.find(lesson => lesson.id === 'vec-basics-equality');
+  opposites.title = 'Направление, равенство и перенос';
+  opposites.summary = 'Сравни стрелки и отложи равный вектор от новой точки.';
+  opposites.intro = '<p>Ненулевые векторы коллинеарны, если лежат на одной прямой или на параллельных прямых. Коллинеарные ненулевые векторы могут быть сонаправлены или противоположно направлены. Равные ненулевые векторы сонаправлены и имеют одинаковую длину. Все нулевые векторы равны.</p>';
+  opposites.prereq.text = '<p>Сравни поворот и длину двух стрелок. При переносе повтори от новой точки тот же ход по клеткам.</p>';
+  const example = opposites.tasks.find(task => task.id === 'vec-basics-parallel-opposite');
+  example.explanation = 'Стрелки лежат на параллельных прямых, но направлены в противоположные стороны.';
+  example.steps.at(-1).why = example.explanation;
+  assert.equal(digest(earlierStart), 'c60b1e343d35b0039601e5e41d8a3862537807adb0d1c64c6cc671a2f5211d9b');
+
   // Accepted H04 adds explicit answerFormat descriptors without changing the
   // mathematical bank. Preserve its full snapshot from main 1469ad50 as well
   // as the original H02 snapshot with only that metadata removed.
-  assert.equal(digest(partTwo), '1e81234793712d0c5f61ce416b62a6044aada8598b0ee4766aa81f1fb59cfbdd');
-  const beforeAnswerFormat = JSON.parse(JSON.stringify(partTwo, (key, value) => key === 'answerFormat' ? undefined : value));
+  assert.equal(digest(preservedPartTwo), '1e81234793712d0c5f61ce416b62a6044aada8598b0ee4766aa81f1fb59cfbdd');
+  const beforeAnswerFormat = JSON.parse(JSON.stringify(preservedPartTwo, (key, value) => key === 'answerFormat' ? undefined : value));
   assert.equal(digest(beforeAnswerFormat), '826602f90743e1e0fe8d4e0f825441eb8fa090a63575f1fa6dc99d9a1bdd74e7');
   const skills = require('../ege-profil/skill-map-data.js');
   assert.equal(digest(Object.entries(skills.maps).map(([key, value]) => [key, value.challenges])), '99ecc0b2b022473b160f41537a346022e162973ed8350ad67e500fb85ca5b37a');

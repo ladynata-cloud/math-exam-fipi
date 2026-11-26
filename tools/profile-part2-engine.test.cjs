@@ -4,6 +4,14 @@ const {JSDOM}=require('jsdom');
 const api=require('../ege-profil/part-two/state.js'),checker=require('../ege-profil/start/checks.js');
 const root=path.resolve(__dirname,'..'),folder=path.join(root,'ege-profil/part-two');
 const bank=['algebra','geometry','models'].flatMap(name=>require(path.join(folder,'content-'+name+'.js')));
+const equationFields=require('../ege-profil/part-two/equation-fields.js');
+function exactValues(lesson,task){
+ const exact=equationFields.forTask(lesson,task,'independent',lesson.tasks.indexOf(task)>=3);
+ if(!exact)return task.final.map(field=>field.answers[0]);
+ const {answer}=exact,unit=answer.type==='finite-pi'?'π':'';
+ const finite=answer.finite.map(value=>value+unit).join(';')||'∅';
+ return answer.general?[answer.general.map(([a,b])=>`${a}π+${b}πn`).join(';'),finite]:[finite];
+}
 const pause=()=>new Promise(r=>setImmediate(r));
 async function settle(w){await w.ProfilePartTwoApp.store.flush();await pause();await w.ProfilePartTwoApp.store.flush();await pause();}
 async function boot(hash='map',entries=[]){
@@ -34,7 +42,7 @@ test('numeric matching rejects invalid intermediate domains, including inside un
 });
 
 test('actual final form never completes a task for an invalid expression that formerly matched its numeric answer',async()=>{
- const lesson=bank.find(l=>l.id==='p14-circle-selection'),task=lesson.tasks[3],hash='task/'+task.id+'/independent';
+ const lesson=bank.find(l=>l.id==='p2-15-section-volume'),task=lesson.tasks[3],hash='task/'+task.id+'/independent';
  for(const [expression,oldValue] of [['sqrt(-4)^2',4],['(sqrt(-4))^0',1],['(1/0)^0',1]]){
   let dom=await boot(hash),w=dom.window;
   try {
@@ -86,12 +94,12 @@ test('independent open answer keeps prior fields, distinguishes format from atte
   assert.equal(d.querySelectorAll('[data-final]').length,1);
   assert.doesNotMatch(d.querySelector('.condition').textContent,/количество корней/);
   assert.equal(d.querySelector('#final-0').value,'');
-  assert.match(d.querySelector('.earlier-final').textContent,/-6/);
+  assert.match(d.querySelector('.earlier-equation').textContent,/-6/);
   input(w,'final-0','-6;');await submit(w,'final-form');
   assert.equal(read().attemptCount,0);
   assert.match(d.querySelector('#feedback').textContent,/формат/);
   input(w,'final-0','-6; 2; 7');await submit(w,'final-form');
-  assert.match(d.querySelector('#feedback').textContent,/знаменатель/);
+  assert.match(d.querySelector('#equation-result-0').textContent,/область определения/);
   input(w,'final-0','2; -6');await submit(w,'final-form');
   await submit(w,'final-form');
   assert(read().completed);assert(read().independent);
@@ -102,7 +110,7 @@ test('independent open answer keeps prior fields, distinguishes format from atte
   assert.equal(next.window.document.querySelector('#final-0').value,'2; -6');
   assert.equal(next.window.document.querySelector('#proof-draft').value,'Мой черновик');
   input(next.window,'final-0','-6; 2; 7');await submit(next.window,'final-form');
-  assert.match(next.window.document.querySelector('#feedback').textContent,/знаменатель/);
+  assert.match(next.window.document.querySelector('#equation-result-0').textContent,/область определения/);
   const repeated=next.window.ProfilePartTwoApp.store.read(task.id);
   assert(repeated.completed);assert(repeated.independent);assert.equal(repeated.attemptCount,3);
   next.window.close();
@@ -132,18 +140,18 @@ test('malformed saves are preserved and a failed save keeps current working memo
 test('all seven sections and every lesson/task render with the authored answer fields',async()=>{
  const dom=await boot(),w=dom.window,d=w.document;
  assert.equal(d.querySelectorAll('.grid .card').length,8,'seven official entries, including finance, plus optimization');
- for(const lesson of bank){await go(w,'lesson/'+lesson.id);assert.equal(d.querySelectorAll('.task-link').length,6);assert(d.querySelector('a[href="'+w.ProfileExamMap.hash(w.ProfileExamMap.fromLegacyPartTwo(lesson.exam))+'"]'));}
- for(const lesson of bank)for(const [index,task] of lesson.tasks.entries()){await go(w,'task/'+task.id+'/independent');assert.equal(d.querySelectorAll('[data-final]').length,index>=3&&task.independentFinal?1:task.final.length,task.id);assert(d.querySelector('#proof-draft'),task.id+' proof');assert.match(d.querySelector('.proof-status').textContent,/требует проверки/);}
+ for(const lesson of bank){await go(w,'lesson/'+lesson.id);assert.equal(d.querySelectorAll('.task-link').length,lesson.tasks.length);assert(d.querySelector('a[href="'+w.ProfileExamMap.hash(w.ProfileExamMap.fromLegacyPartTwo(lesson.exam))+'"]'));}
+ for(const lesson of bank)for(const [index,task] of lesson.tasks.entries()){await go(w,'task/'+task.id+'/independent');assert.equal(d.querySelectorAll('[data-final]').length,equationFields.forTask(lesson,task,'independent',index>=3)?.fields.length??(index>=3&&task.independentFinal?1:task.final.length),task.id);assert(d.querySelector('#proof-draft'),task.id+' proof');assert.match(d.querySelector('.proof-status').textContent,/требует проверки/);}
  w.close();
 });
 
 test('empty, wrong, hinted and correct answers preserve drafts and truthfully separate assistance after reload',async()=>{
  const lesson=bank[0],task=lesson.tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
  await submit(w,'final-form');assert.equal(w.ProfilePartTwoApp.store.read(task.id).attemptCount,0);
- task.final.forEach((_,i)=>input(w,'final-'+i,'99999'));await submit(w,'final-form');assert.equal(w.ProfilePartTwoApp.store.read(task.id).attempts[0].correct,false);
+ exactValues(lesson,task).forEach((value,i)=>input(w,'final-'+i,i===0?'πn':value));await submit(w,'final-form');assert.equal(w.ProfilePartTwoApp.store.read(task.id).attempts[0].correct,false);
  input(w,'proof-draft','Моё обоснование и ограничения');w.document.getElementById('request-help').click();await settle(w);
- task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));await submit(w,'final-form');
- const r=w.ProfilePartTwoApp.store.read(task.id);assert(r.completed);assert(!r.independent);assert.equal(r.attempts[0].answers[0],'99999');assert.equal(w.document.getElementById('proof-draft').value,'Моё обоснование и ограничения');assert(w.document.querySelector('#completion a'));
+ exactValues(lesson,task).forEach((value,i)=>input(w,'final-'+i,value));await submit(w,'final-form');
+ const r=w.ProfilePartTwoApp.store.read(task.id);assert(r.completed);assert(!r.independent);assert.equal(r.attempts[0].answers[0],'πn');assert.equal(w.document.getElementById('proof-draft').value,'Моё обоснование и ограничения');assert(w.document.querySelector('#completion a'));
  const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);w.close();const next=await boot('task/'+task.id+'/independent',entries);assert(next.window.document.getElementById('completion'));assert.match(next.window.document.querySelector('.proof-status').textContent,/требует проверки/);next.window.close();
 });
 
@@ -166,7 +174,7 @@ test('same-task stale step never grades a different prompt and current-mode clic
 test('a pending help or correct submit cannot replace a newer route',async()=>{
  const task=bank[0].tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
  w.document.getElementById('request-help').click();w.location.hash='progress';await w.ProfilePartTwoApp.render();await settle(w);assert.equal(w.document.querySelector('h1').textContent,'Мой прогресс');
- await go(w,'task/'+bank[1].tasks[3].id+'/independent');const freshTask=bank[1].tasks[3];freshTask.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));w.document.getElementById('final-form').dispatchEvent(new w.Event('submit',{cancelable:true}));w.location.hash='exam/19';await w.ProfilePartTwoApp.render();await settle(w);assert.equal(w.document.querySelector('h1').textContent,'Задачи с параметром');w.close();
+ await go(w,'task/'+bank[1].tasks[3].id+'/independent');const freshTask=bank[1].tasks[3];exactValues(bank[1],freshTask).forEach((value,i)=>input(w,'final-'+i,value));w.document.getElementById('final-form').dispatchEvent(new w.Event('submit',{cancelable:true}));w.location.hash='exam/19';await w.ProfilePartTwoApp.render();await settle(w);assert.equal(w.document.querySelector('h1').textContent,'Задачи с параметром');w.close();
 });
 
 test('task-bound invalid solved-prefix is preserved without crashing its page',async()=>{
@@ -200,7 +208,7 @@ test('native Chromium H01 numeric-domain forms at 320, 390 and 1280 pixels',{
  const shots='/tmp/profile-part2-shots/h01-numeric-domain',realRoot=fs.realpathSync(root);
  const widths=[320,390,1280],token='20261114-numeric-domain';
  const cases=[['sqrt(-4)^2',4,'sqrt((-4)^2)-4'],['(sqrt(-4))^0',1,'sqrt(4)^2-4'],['(1/0)^0',1,'2^-3-1/8']];
- const task=bank.find(l=>l.id==='p14-circle-selection').tasks[3];
+ const task=bank.find(l=>l.id==='p2-15-section-volume').tasks[3];
  const routes={start:'#practice/vec-coordinates/independent',circle:'#task/m4-1-am/independent','part-two':'#task/'+task.id+'/independent'};
  const report={kind:'native Chromium',jsdom:false,widths,height:900,plannedCases:27,parserToken:token,cases:[]};
  const mime={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.json':'application/json','.png':'image/png','.ico':'image/x-icon','.woff2':'font/woff2'};

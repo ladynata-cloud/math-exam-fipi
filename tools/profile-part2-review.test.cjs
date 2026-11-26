@@ -8,6 +8,8 @@ const test = require('node:test');
 const { collectErrors } = require('../ege-profil/review-part-two.js');
 const { latestAttempt } = require('../ege-profil/review-probe-2027.js');
 const state = require('../ege-profil/part-two/state.js');
+const equationFields = require('../ege-profil/part-two/equation-fields.js');
+const equationAnswers = require('../ege-profil/part-two/equation-answers.js');
 const map = require('../ege-profil/exam-map.js');
 const lessons = ['algebra', 'geometry', 'models'].flatMap(name =>
   require('../ege-profil/part-two/content-' + name + '.js'));
@@ -36,7 +38,7 @@ function records() {
   }
   function readOnly() {
     const writes = [];
-    const rows = collectErrors({ getItem: storage.getItem, setItem: key => writes.push(key) }, catalog, state);
+    const rows = collectErrors({ getItem: storage.getItem, setItem: key => writes.push(key) }, catalog, state, equationFields);
     assert.deepEqual(writes, []);
     return rows;
   }
@@ -99,6 +101,51 @@ test('the written finance bank and older inequalities have different official nu
   const rows = readOnly();
   assert.deepEqual(rows.map(row => row.label), ['№ 16', '№ 15']);
   assert.equal(rows[0].href, 'part-two/#task/' + finance.id + '/independent');
+});
+
+
+test('equation journal recognises actual assessed fields, legacy and new, without rewriting storage', async () => {
+  const { writer, saved, readOnly } = records();
+  const pi = value => value === '0' ? '0' : value + 'π';
+  const series = ([a, b]) => a + 'π' + (b.startsWith('-') ? '' : '+') + b + 'πn';
+  const exact = (field, model) => field.type === 'periodic-pi'
+    ? (model.answer.general.map(series).join(';') || '∅')
+    : (model.answer.finite.map(value => field.type === 'finite-pi' ? pi(value) : value).join(';') || '∅');
+  let count = 0;
+  for (const { lesson } of catalog) for (const [index, task] of lesson.tasks.entries()) {
+    const model = equationFields.forTask(lesson, task, 'independent', index >= 3);
+    if (!model) continue;
+    count++;
+    const expected = Object.fromEntries(model.fields.map(field => [field.key, exact(field, model)]));
+    const wrong = Object.fromEntries(model.fields.map(field => [field.key, field.type === 'finite-rational' ? '99' : '99π']));
+    // These malformed/incomplete records are never assessed.
+    await writer.attempt(task.id, { kind: 'final', answers: [], correct: false, mode: 'independent' });
+    await writer.attempt(task.id, { kind: 'final', answers: model.fields.map(() => ' '), correct: false, mode: 'independent' });
+    const apply = async (visible, previous, verdict) => writer.patch(task.id, record => {
+      assert.equal(state.updateEquationDraft(record, previous, visible), 'updated');
+      const results = model.fields.map(field => equationAnswers.compare(equationAnswers.parse(visible[field.key], field.type), model.answer));
+      assert(results.every(result => result.recognized));
+      assert.equal(results.every(result => result.correct), verdict === 'correct');
+      const statuses = Object.fromEntries(model.fields.map((field, i) => [field.key, results[i].status]));
+      assert.equal(writer.finishEquation(record, visible, statuses, { mode: 'independent', independentEligible: index >= 3 }), verdict);
+    });
+    await apply(wrong, Object.fromEntries(model.fields.map(field => [field.key, ''])), 'wrong');
+    const href = 'part-two/#task/' + task.id + '/independent';
+    let before = [...saved];
+    let rows = readOnly().filter(row => row.href === href);
+    assert.equal(rows.length, 1, task.id);
+    assert.equal(rows[0].mistakes, 1, task.id);
+    assert.equal(rows[0].corrected, false, task.id);
+    assert.deepEqual([...saved], before);
+    await apply(expected, wrong, 'correct');
+    before = [...saved];
+    rows = readOnly().filter(row => row.href === href);
+    assert.equal(rows.length, 1, task.id);
+    assert.equal(rows[0].mistakes, 1, task.id);
+    assert.equal(rows[0].corrected, true, task.id);
+    assert.deepEqual([...saved], before);
+  }
+  assert(count >= 31, 'covers every currently published equation form');
 });
 
 const browserEnabled = Boolean(process.env.CI || process.env.H02_NATIVE_BROWSER);
@@ -306,6 +353,34 @@ test('Chromium: course and 2027 probe journal, correction and preserved storage 
         await corrected.locator('a[href="' + financePath + '"]').waitFor({ state: 'attached' });
         assert.equal(await financeLink.count(), 0);
         await stable(financeSolved, 'finance correction preserves probe and original conditions');
+
+        // Actual new equation UI: a valid wrong selection, not a malformed draft,
+        // must appear in the journal and link back to the original saved condition.
+        const equationId = 'p14-circle-selection-7';
+        const equationPath = 'part-two/#task/' + equationId + '/independent';
+        const equationKey = state.PREFIX + equationId;
+        await learner.goto(base + equationPath);
+        await learner.locator('#final-0').fill('11π/6+2πn; 7π/6+2πn');
+        await learner.locator('#final-1').fill('−π/6');
+        await learner.locator('#final-form button[type=submit]').press('Enter');
+        await learner.waitForFunction(key => JSON.parse(localStorage.getItem(key) || '{}').wrong === 1, equationKey);
+        const equationWrong = await snapshot(learner);
+        const equationLink = remaining.locator('a[href="' + equationPath + '"]');
+        await equationLink.waitFor();
+        await stable(equationWrong, 'equation error journal preserves all records');
+        await equationLink.press('Enter');
+        await journal.locator('#final-1').waitFor();
+        assert.equal(await journal.locator('#final-1').inputValue(), '−π/6');
+        await journal.locator('#final-1').fill('−5π/6; −13π/6; −17π/6');
+        await journal.locator('#final-form button[type=submit]').press('Enter');
+        await journal.locator('#completion').waitFor();
+        const equationSolved = await snapshot(journal);
+        await journal.goBack();
+        const solvedEquation = corrected.locator('a[href="' + equationPath + '"]');
+        await solvedEquation.waitFor({ state: 'attached' });
+        if (await corrected.getAttribute('open') === null) await corrected.locator('summary').press('Enter');
+        await solvedEquation.waitFor();
+        await stable(equationSolved, 'equation correction preserves all records');
         await context.close();
       }
     } finally {

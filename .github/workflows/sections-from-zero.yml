@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'stereo-course/sections/**'
+      - 'stereo-course/merzlyak-10-base/lessons/research-sections-*.json'
       - 'trainers/sections-from-zero.html'
       - 'trainers/sections-course-navigation.*'
       - 'trainers/board-*'
@@ -12,6 +13,7 @@ on:
       - 'tools/sections-*'
       - 'tools/merzlyak-cabinet.test.cjs'
       - 'tools/merzlyak-board-picker.test.cjs'
+      - 'tools/merzlyak-10-base/sections-harmonization.test.cjs'
       - 'tools/trainer-registry-client-cutover-smoke.cjs'
       - '.github/workflows/sections-from-zero.yml'
   push:
@@ -21,6 +23,7 @@ on:
     branches: [main, task/sections-from-zero]
     paths:
       - 'stereo-course/sections/**'
+      - 'stereo-course/merzlyak-10-base/lessons/research-sections-*.json'
       - 'trainers/sections-from-zero.html'
       - 'trainers/sections-course-navigation.*'
       - 'trainers/board-*'
@@ -30,6 +33,7 @@ on:
       - 'tools/sections-*'
       - 'tools/merzlyak-cabinet.test.cjs'
       - 'tools/merzlyak-board-picker.test.cjs'
+      - 'tools/merzlyak-10-base/sections-harmonization.test.cjs'
       - 'tools/trainer-registry-client-cutover-smoke.cjs'
       - '.github/workflows/sections-from-zero.yml'
 permissions:
@@ -70,6 +74,7 @@ jobs:
       - name: Course state, cabinet entry, selection and existing room boundaries
         run: |
           node --test tools/sections-*.test.cjs
+          node --test tools/merzlyak-10-base/sections-harmonization.test.cjs
           node --test tools/merzlyak-cabinet.test.cjs tools/merzlyak-board-picker.test.cjs tools/merzlyak-room-selection.test.cjs tools/merzlyak-board.test.cjs tools/board-room-error.test.cjs tools/learning-public-return.dom.cjs tools/board-ink.test.cjs tools/board-images.test.cjs
           npm test --prefix board-server
       - name: Real two-participant sections lesson and responsive cabinet return
@@ -87,6 +92,37 @@ jobs:
         with:
           name: sections-from-zero-journeys
           path: artifacts/sections-from-zero
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check
+
+  # The exhaustive real-SVG matrix has its own budget, so it cannot crowd out
+  # the existing two-participant/shared-room acceptance above.
+  harmonization-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned SVG acceptance browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/sections-visual" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/sections-visual/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/sections-visual/node_modules" >> "$GITHUB_ENV"
+      - name: All card labels and edges, research and manual construction
+        env:
+          SECTIONS_HARMONIZATION_SHOTS: ${{ runner.temp }}/sections-harmonization
+        run: node tools/sections-harmonization.browser.cjs
+      - name: Preserve actual SVG measurements and screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sections-harmonization-visual
+          path: ${{ runner.temp }}/sections-harmonization
           if-no-files-found: warn
           retention-days: 7
       - run: git diff --check
@@ -239,10 +275,22 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
-      - name: Fetch the exact recorded navigator source
+      - name: Fetch the recorded navigator sources
         run: |
-          navigator_source_sha="$(node -e 'const value=require("./assets/assistant/page-rollout.json").baseSha;if(!/^[a-f0-9]{40}$/.test(value))process.exit(1);process.stdout.write(value)')"
-          git fetch --no-tags --depth=1 origin "$navigator_source_sha"
+          node <<'NODE'
+          const { execFileSync } = require('node:child_process');
+          const { baseSha, addedPages } = require('./assets/assistant/page-rollout.json');
+          const sources = new Set([baseSha]);
+          for (const page of Object.values(addedPages)) {
+            sources.add(page.sourceSha ?? baseSha);
+          }
+          for (const sha of sources) {
+            if (typeof sha !== 'string' || !/^[0-9a-f]{40}$/.test(sha)) {
+              throw new Error('Invalid navigator source commit');
+            }
+          }
+          execFileSync('git', ['fetch', '--no-tags', '--depth=1', 'origin', ...sources], { stdio: 'inherit' });
+          NODE
       - name: Install pinned public-page test tools
         run: |
           npm install --prefix "$RUNNER_TEMP/sections-public-discovery" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0

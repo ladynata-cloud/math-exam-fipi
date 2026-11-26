@@ -20,7 +20,8 @@ test('every inventoried public page has one exact existing navigator pair; all a
     const row=rollout.addedPages[name],original=restorePublicNavigator(name,raw);
     assert.equal(hash(raw),row.afterSha256,name+' current exact payload');
     assert.equal(hash(original),row.beforeSha256,name+' complete original payload');
-    const committed=execFileSync('git',['show',rollout.baseSha+':'+name],{cwd:root,maxBuffer:16e6});
+    const sourceSha=row.sourceSha||rollout.baseSha;
+    const committed=execFileSync('git',['show',sourceSha+':'+name],{cwd:root,maxBuffer:16e6});
     // A later explicitly reviewed source commit may already include this same
     // exact pair. Its complete payload must still match the current binding.
     const source=restorePublicNavigator(name,committed);
@@ -43,12 +44,37 @@ test('normalization cannot hide altered tags, missing or duplicate scripts, extr
     assert.deepEqual(restorePublicNavigator('unrelated.html',raw),raw,'wrong route cannot normalize');
   }
 });
-test('sitemap coverage is complete except the existing dedicated Peterson helper',()=>{
+test('sitemap coverage is complete with two dedicated learning interfaces',()=>{
   const xml=fs.readFileSync(path.join(root,'sitemap.xml'),'utf8'),urls=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(x=>new URL(x[1]).pathname);
-  assert.equal(urls.length,rollout.sitemap.total);
+  assert.ok(urls.length>0,'public sitemap is not empty');
+  assert.equal(new Set(urls).size,urls.length,'public sitemap paths are unique');
+  assert.deepEqual(Object.keys(rollout.sitemap.excluded).sort(),['/oge/skills/','/school/peterson6/']);
+  const offline=fs.readFileSync(path.join(root,'oge/skills/index.html'),'utf8');
+  assert.doesNotMatch(offline,/<script\b[^>]*\bsrc\s*=/i,'The standalone skills course must run offline');
+  for(const action of ['course','trainer','cabinet'])assert.ok(offline.includes('data-skill-link="'+action+'"'),'Built-in skills navigation: '+action);
+  assert.ok(offline.includes('data-mathexam-home-link'),'The offline course keeps its home link');
+  // The rollout receipt is historical; the live sitemap grows. Preserve all
+  // historical hash/provenance checks above and validate every new public page.
+  const exclusions=Object.keys(rollout.sitemap.excluded);
+  for(const url of exclusions) assert.ok(urls.includes(url),'Dedicated route remains public: '+url);
+  const [tag1,tag2]=snippet.trim().split('\n');
   let covered=0;
-  for(const url of urls){const file=url.slice(1)+(url.endsWith('/')?'index.html':'');if(pages.includes(file)){covered++;continue;}assert.equal(rollout.sitemap.excluded[url],'Existing dedicated task-aware helper; no competing launcher.',url);}
-  assert.equal(covered,rollout.sitemap.covered);
+  for(const url of urls){
+    if(exclusions.includes(url)){
+      assert.equal(rollout.sitemap.excluded[url],'Existing dedicated task-aware helper; no competing launcher.',url);
+      continue;
+    }
+    const file=url.slice(1)+(url.endsWith('/')?'index.html':'');
+    assert(!/^(?:book|b|learning|downloads|docs|tools)\//.test(file),file);
+    assert(!Object.hasOwn(rollout.excluded,file),'Previously excluded route requires review: '+file);
+    const text=fs.readFileSync(path.join(root,file),'utf8');
+    assert.equal(text.split(tag1).length,2,file+' exact data include');
+    assert.equal(text.split(tag2).length,2,file+' exact widget include');
+    assert.equal((text.match(/navigator-data\.js/g)||[]).length,1,file+' no competing data tag');
+    assert.equal((text.match(/navigator-widget\.js/g)||[]).length,1,file+' no competing widget tag');
+    covered++;
+  }
+  assert.equal(covered,urls.length-exclusions.length);
 });
 
 test('course DOM mirrors resolve public and page-relative scripts only inside the repository', t => {

@@ -48,5 +48,22 @@ class Entrances(unittest.TestCase):
     for i in range(5):
      im.seek(i);self.assertEqual(im.info['duration'],2200)
      with Image.open(p.with_name(f'{t["id"]}-{i}.png')) as still:self.assertEqual(still.size,im.size)
+ def test_skill_search_entries(self):
+  routes={
+   'topics/obyknovennye-drobi/index.html':('/school/peterson5/#topic/p28/discover','/school/peterson5/#topic/p37/discover','/trainers/oge-basics/multiplication-division/arzhenikov-map.html'),
+   'topics/procenty/index.html':('/school/peterson6/topics/zadachi-na-procenty/','/ege-baza/topics/izmenenie-tseny-procenty/'),
+   'courses/vilenkin-5/index.html':('/courses/vilenkin-5-part-1/#lesson/19/theory','/topics/delenie-ugolkom/','/topics/obyknovennye-drobi/','/trainers/oge-basics/multiplication-division/arzhenikov-map.html'),
+   'school/peterson5/index.html':('/topics/obyknovennye-drobi/','/topics/delenie-ugolkom/','/trainers/oge-basics/multiplication-division/arzhenikov-map.html'),
+  }
+  for name, destinations in routes.items():
+   page=Page((R/name).read_text());self.assertEqual(page.h1,1,name)
+   for href in destinations:
+    self.assertIn(href,page.links,name)
+    u=urlsplit(href);target=R/u.path.lstrip('/')
+    if u.path.endswith('/'):target=target/'index.html'
+    self.assertTrue(target.is_file(),href)
+    if u.fragment:self.assertIn('id="'+u.fragment+'"',target.read_text(),href)
+  self.assertEqual([F(2,3)+F(1,4),F(7,8)-F(1,6),F(3,5)*F(10,9),F(3,4)/F(9,10)],[F(11,12),F(17,24),F(2,3),F(5,6)])
+  self.assertEqual(1200*F(85,100)*F(115,100),1173)
  def test_generator(self):subprocess.run(['python3',str(R/'tools/build-course-entrances.py'),'--check'],check=True,cwd=R,stdout=subprocess.PIPE)
 if __name__=='__main__':unittest.main()

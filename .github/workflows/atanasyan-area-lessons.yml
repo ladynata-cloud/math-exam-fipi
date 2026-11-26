@@ -1,0 +1,43 @@
+name: Atanasyan 7–9 numbered area lessons
+on:
+  pull_request:
+    paths:
+      - 'content-drafts/atanasyan-grade8-area-842-844/**'
+      - 'geometry-course/textbook/assets/additional-lessons.js'
+      - 'geometry-course/textbook/data/area*lessons.json'
+      - 'geometry-course/textbook/index.html'
+      - 'tools/geometry-textbook/*area*'
+      - 'tools/geometry-textbook/similarity_proofs.py'
+      - 'tools/geometry-textbook/*midpoint*'
+      - 'tools/geometry-textbook/construction_followup.py'
+      - 'tools/geometry-textbook/menelaus_ceva_lessons.py'
+      - 'tools/geometry-textbook/concurrency_lessons.py'
+      - 'geometry-course/textbook/data/midpoint-lessons.json'
+      - 'geometry-course/textbook/data/circle-lessons.json'
+      - 'tools/geometry-textbook/*circle*'
+      - 'tools/geometry-textbook/chord_followup.py'
+      - '.github/workflows/atanasyan-area-lessons.yml'
+permissions:
+  contents: read
+jobs:
+  practice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 && npx playwright install --with-deps chromium
+      - run: python3 content-drafts/atanasyan-grade8-area-842-844/verify_areas.py && python3 tools/geometry-textbook/build_area_lessons.py --check && python3 tools/geometry-textbook/build_area_similarity.py --check && python3 tools/geometry-textbook/check_area_supplement.py && python3 tools/geometry-textbook/check_area_similarity.py && python3 tools/geometry-textbook/build_midpoint_lessons.py --check && python3 tools/geometry-textbook/check_midpoint_lessons.py
+      - run: python3 tools/geometry-textbook/build_circle_lessons.py --check && python3 tools/geometry-textbook/check_circle_lessons.py
+      - run: node tools/geometry-textbook/area-lessons.browser.cjs
+        env:
+          AREA_SCREENSHOTS: artifacts/numbered-area-lessons
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: numbered-area-lessons
+          path: artifacts/numbered-area-lessons

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "reviewedParent": "9fc82862879614d3364e089cd54a7dbeaabe4c0e",
+  "task": "ATANASYAN_INCIDENT_EDGE_VISIBILITY",
+  "boundary": "The shared line drawing is generated into the legacy viewer. A polygon cannot occlude its own boundary. Other surfaces retain their occlusion tests.",
+  "files": {
+    "ege-profil/atanasyan-10-11/model.js": {
+      "beforeSHA256": "6408d216e50d5cbc7f52f124324c0932b3721fb6a624fd94f17c0b10f052034b",
+      "afterSHA256": "63e52c73a420f6350cc430be0f62ada5b0d502b0edf80e0bd19ceba0e1810128"
+    }
+  }
+}

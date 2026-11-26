@@ -11,7 +11,7 @@ const rect=(x,y,w,h,fill=C.light,stroke=C.line,sw=1)=>'<rect x="'+x+'" y="'+y+'"
 const line=(x,y,x2,y2,color=C.line,sw=2,dash='')=>'<line x1="'+x+'" y1="'+y+'" x2="'+x2+'" y2="'+y2+'" stroke="'+color+'" stroke-width="'+sw+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>';
 const circle=(x,y,r,fill=C.green)=>'<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+fill+'"/>';
 const poly=(ps,fill=C.light,color=C.green)=>'<polygon points="'+ps.map(p=>p.join(',')).join(' ')+'" fill="'+fill+'" stroke="'+color+'" stroke-width="2"/>';
-const svg=(body,label,h=260)=>'<svg class="g5-lab-svg" viewBox="0 0 520 '+h+'" role="img" aria-label="'+esc(label)+'">'+body+'</svg>';
+const svg=(body,label,h=260,w=520)=>'<svg class="g5-lab-svg" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+esc(label)+'">'+body+'</svg>';
 const range=(k,label,min,max,def,step=1)=>({k,label,min,max,def,step});
 const select=(k,label,values,def)=>({k,label,values,def});
 const choices=(k,label,vs,def)=>select(k,label,vs.map(v=>[v,String(v)]),def);
@@ -50,6 +50,73 @@ all.timetable={title:'Сколько времени между событиям�
 all.packages={title:'Последняя упаковка может быть неполной',question:'Сколько полных упаковок получится? Сколько упаковок нужно для всех вещей?',controls:[range('a','Всего вещей',1,40,26),range('b','Вместимость упаковки',2,8,6)],draw:s=>{const q=Math.floor(s.a/s.b),r=s.a%s.b,boxes=Math.ceil(s.a/s.b);let body='';for(let i=0;i<boxes;i++){const x=25+(i%5)*98,y=20+Math.floor(i/5)*80,n=Math.min(s.b,s.a-i*s.b);body+=rect(x,y,84,60,i===boxes-1&&r?C.warm:C.light,i===boxes-1&&r?C.orange:C.green,2)+txt(x+42,y+39,n+' / '+s.b,C.ink,21);}return svg(body,'Количество вещей в каждой упаковке',40+Math.ceil(boxes/5)*80)+eq('Нужно упаковок: '+boxes)+note(s.a+' : '+s.b+' = '+q+' (ост. '+r+'). '+(r?'Для оставшихся '+r+' вещей нужна ещё одна упаковка.':'Остатка нет — дополнительная упаковка не нужна.'));}};
 all.garden={title:'Дорожка разделяет участок на две части',question:'Почему площадь дорожки нужно вычесть, а её длину — нельзя?',controls:[range('a','Длина участка, м',8,16,12),range('b','Ширина участка, м',4,8,6),range('p','Ширина дорожки, м',1,3,2)],draw:s=>{const c=Math.min(27,440/s.a);let body=grid(s.a,s.b,c,40,35,(x)=>x<s.p?C.warm:C.light)+txt(40+s.a*c/2,25,s.a+' м',C.green,22)+txt(18,45+s.b*c/2,s.b,C.green,20);return svg(body,'Прямоугольный участок с дорожкой вдоль всей ширины',290)+eq('Площадь грядок: '+s.a*s.b+' − '+s.p*s.b+' = '+(s.a-s.p)*s.b+' м²')+note('Весь участок: '+s.a+' × '+s.b+' = '+s.a*s.b+' м². Дорожка: '+s.p+' × '+s.b+' = '+s.p*s.b+' м². Вычитаем площади, записанные в одинаковых единицах.');}};
 
+const floorProject = {
+ title:'Сколько упаковок нужно для пола с вырезом?',
+ question:'В углу комнаты стоит квадратная печь. Под ней пол уже отделан. Одна упаковка покрытия рассчитана на 2,5 м². Материал можно раскраивать без потерь.',
+ controls:[range('a','Длина комнаты, м',8,16,12),range('b','Ширина комнаты, м',4,8,6),range('p','Сторона квадратной печи, м',1,3,2)],
+ draw(s){
+  const cell=Math.min(28,420/s.a),x=40,y=35;
+  const plan=grid(s.a,s.b,cell,x,y,(i,j)=>i>=s.a-s.p&&j<s.p?C.warm:C.light);
+  const cutX=x+(s.a-s.p)*cell,right=x+s.a*cell,bottom=y+s.p*cell;
+  const marks=line(cutX,y,right,bottom,C.orange,3)+line(right,y,cutX,bottom,C.orange,3);
+  const legend='Комната '+s.a+' × '+s.b+' м. Клетка — 1 м². Квадрат с крестом — печь '+s.p+' × '+s.p+' м.';
+  return svg(plan+marks+txt(x+s.a*cell/2,y-8,s.a+' м',C.ink,26)+txt(x-3,y+s.b*cell/2,s.b+' м',C.ink,22,'end'),'План комнаты '+s.a+' на '+s.b+' м. В углу квадратная печь '+s.p+' на '+s.p+' м.',y+s.b*cell+9,right+8)+note(legend);
+ }
+};
+function floorInquiry(s){
+ const outer=s.a*s.b,cut=s.p*s.p,area=outer-cut,packs=Math.ceil(2*area/5);
+ const why='Пол занимает '+outer+' − '+cut+' = '+area+' м². '+(packs-1)+' уп. покрывают '+num((packs-1)*2.5)+' м². '+packs+' уп. покрывают '+num(packs*2.5)+' м².';
+ return {
+  question:'Сколько целых упаковок по 2,5 м² понадобится для открытой части пола? Укажи наименьшее количество.',
+  answer:packs,why,showPlan:true,retry:true,
+  wrong(value){
+   const equals=n=>window.CourseMath.equivalent(value,String(n));
+   if(equals(Math.ceil(2*outer/5)))return 'Ты посчитал покрытие под печью. Вычти площадь квадрата из площади всей комнаты.';
+   if(equals(packs-1))return 'Этих упаковок не хватит. Умножь их число на 2,5 и сравни с площадью открытого пола.';
+   if(equals(2*area/5))return 'Ты нашёл точное частное. В магазине продают целые упаковки.';
+   if(equals(area))return 'Это площадь пола в квадратных метрах. Теперь найди количество упаковок.';
+   return 'Сначала проверь площадь комнаты и площадь печи. Затем проверь покрытие купленных упаковок.';
+  }
+ };
+}
+
+const capacityLab = {
+ title:'Сколько литров в баке?',
+ question:'Считай по внутренним размерам. Один литр занимает столько же места, сколько куб с ребром 10 см.',
+ controls:[range('a','Длина дна, отрезков по 10 см',1,8,5),range('b','Ширина дна, отрезков по 10 см',1,6,3),range('h','Высота, слоёв по 5 см',1,5,4)],
+ draw(s){
+  const cell=Math.min(32,235/s.a),x=40,y=30,w=s.a*cell,width=Math.max(235,x+w+9);
+  const base=grid(s.a,s.b,cell,x,y,C.light);
+  let front='';
+  for(let row=0;row<s.h;row++){
+   for(let col=0;col<s.a;col++)front+=rect(x+col*cell,y+row*cell/2,cell,cell/2,row%2?C.pale:C.light);
+  }
+  const topLabel='Вид сверху. Дно '+s.a*10+' × '+s.b*10+' см. Клетка — квадрат 10 × 10 см.';
+  const sideLabel='Вид спереди. Высота '+s.h*5+' см. Высота каждого слоя — 5 см.';
+  return note(topLabel)+svg(base,topLabel,y+s.b*cell+8,width)+note(sideLabel)+svg(front,sideLabel,y+s.h*cell/2+8,width);
+ }
+};
+function capacityInquiry(s){
+ const cubic=s.a*10*s.b*10*s.h*5,litres=cubic/1000;
+ const why='Объём бака '+s.a*10+' · '+s.b*10+' · '+s.h*5+' = '+num(cubic)+' см³. В литре 1000 см³, поэтому вместимость равна '+num(litres)+' л.';
+ return {
+  question:'Сколько литров воды войдёт в полный бак? Запиши число литров.',
+  answer:litres,why,showPlan:true,retry:true,
+  wrong(value){
+   const equals=n=>window.CourseMath.equivalent(value,String(n));
+   if(equals(cubic))return 'Объём в кубических сантиметрах у тебя уже есть. Сколько полных тысяч таких кубиков получилось? Учти и часть литра.';
+   if(equals(2*litres))return 'Проверь высоту слоя. Она 5 см, а ребро литрового куба равно 10 см. Два слоя вместе дают 10 см.';
+   if(equals(cubic/100))return 'В одном слое литрового куба 100 кубиков по 1 см³. Для целого литра нужны десять таких слоёв.';
+   if(s.h>1&&equals(litres/s.h))return 'Такова вместимость одного слоя. Посчитай, сколько слоёв на виде спереди.';
+   return 'Найди площадь дна в см² и умножь её на высоту в см. Затем переведи полученные кубические сантиметры в литры.';
+  }
+ };
+}
+const labVariants = {
+ 'garden:floor':{config:floorProject,inquiry:floorInquiry},
+ 'volume:capacity':{config:capacityLab,inquiry:capacityInquiry}
+};
+
 const inquiries={
  place:s=>({question:'Какое число составляют '+s.h+' сотен, '+s.t+' десятков и '+s.u+' единиц?',answer:100*s.h+10*s.t+s.u,why:'Цифра и её значение — не одно и то же: один десяток даёт 10 единиц, одна сотня — 100.'}),
  scale:s=>({question:'До A '+s.at+' промежутков по '+s.step+'. Какова координата A?',answer:s.at*s.step,why:'Считаем равные промежутки от нуля, а не штрихи.'}),
@@ -69,33 +136,68 @@ function attachInquiry(wrap,visual,state,given,makeQuestion,persist,isAlive,pref
  box.append(label,row,feedback);visual.before(box);
  const controls=()=>JSON.stringify(Object.fromEntries(Object.entries(state).filter(([key])=>!key.startsWith('inquiry'))));
  const bounded=v=>typeof v==='string'?v.slice(0,90):'';
- state.inquiryDraft=bounded(given.inquiryDraft);state.inquiryFirst=bounded(given.inquiryFirst);
+ state.inquiryDraft=bounded(given.inquiryDraft);
+ // Existing rooms accept these four fields. A leading ! marks an explicit reveal after a numeric attempt.
+ const helpMark='!';
+ state.inquiryFirst=typeof given.inquiryFirst==='string'&&given.inquiryFirst.startsWith(helpMark)?helpMark+bounded(given.inquiryFirst.slice(1)):bounded(given.inquiryFirst);
+ let lastRejected='';
  state.inquirySeen=given.inquirySeen===1?1:0;state.inquiryContext=typeof given.inquiryContext==='string'?given.inquiryContext:'';
  function redraw(){
   const item=makeQuestion(state),context=controls();
-  if(state.inquiryContext!==context){state.inquiryDraft='';state.inquiryFirst='';state.inquirySeen=0;state.inquiryContext=context;}
+  if(state.inquiryContext!==context){state.inquiryDraft='';state.inquiryFirst='';state.inquirySeen=0;state.inquiryContext=context;lastRejected='';}
   box.hidden=!item;
   if(!item){visual.hidden=false;return;}
   question.textContent='Сначала предположи: '+item.question;
   input.value=state.inquiryDraft;input.disabled=state.inquirySeen===1;submit.hidden=reveal.hidden=state.inquirySeen===1;
-  visual.hidden=state.inquirySeen!==1;
+  visual.hidden=state.inquirySeen!==1&&!item.showPlan;
+  const sameAnswer=value=>value!==''&&window.CourseMath.equivalent(value,String(item.answer));
+  if(item.retry&&state.inquiryFirst){
+   const first=state.inquiryFirst;
+   if(!state.inquirySeen){
+    const draft=state.inquiryDraft;
+    const mistaken=lastRejected||(window.CourseMath.parse(draft)&&!sameAnswer(draft)?draft:first);
+    feedback.textContent=item.wrong(mistaken)+' Исправь прогноз для этих же размеров.';
+    return;
+   }
+   if(first.startsWith(helpMark)){
+    feedback.textContent='Объяснение открыто по твоему запросу. '+item.why;
+    return;
+   }
+   if(!sameAnswer(first)){
+    // An older client closed the model after any answer. Keep its already-open explanation.
+    feedback.textContent=(sameAnswer(state.inquiryDraft)?'Ты сам исправил прогноз. ':'В этой сохранённой попытке объяснение уже открыто. ')+item.why;
+    return;
+   }
+  }
   if(!state.inquirySeen){feedback.textContent='Введи число или точную дробь. Это учебный прогноз: он не меняет результаты упражнений.';return;}
   const correct=state.inquiryFirst!==''&&window.CourseMath.equivalent(state.inquiryFirst,String(item.answer));
-  feedback.textContent=state.inquiryFirst?(correct?'Прогноз подтвердился. ':'Прогноз '+state.inquiryFirst+' не совпал с результатом. ')+item.why:'Объяснение открыто без прогноза. '+item.why;
+  const response=correct?'Прогноз подтвердился. ':item.wrong?item.wrong(state.inquiryFirst)+' ':'Прогноз '+state.inquiryFirst+' не совпал с результатом. ';
+  feedback.textContent=state.inquiryFirst?response+item.why:'Объяснение открыто без прогноза. '+item.why;
  }
  const onInput=()=>{if(!isAlive()||state.inquirySeen)return;state.inquiryDraft=input.value.slice(0,90);persist();};
- const onSubmit=event=>{event.preventDefault();if(!isAlive()||state.inquirySeen||!makeQuestion(state))return;const value=input.value.slice(0,90);state.inquiryDraft=value;
-  if(!value.trim()){feedback.textContent='Сначала запиши прогноз. Пустое поле не считается попыткой.';input.focus();return;}
-  if(!window.CourseMath.parse(value)){feedback.textContent='Запиши число или точную дробь с ненулевым знаменателем. Прогноз ещё не проверен.';input.focus();return;}
-  state.inquiryFirst=value;state.inquirySeen=1;redraw();persist();
+ const onSubmit=event=>{event.preventDefault();if(!isAlive()||state.inquirySeen||!makeQuestion(state))return;const value=input.value.slice(0,90),draftChanged=value!==state.inquiryDraft;state.inquiryDraft=value;
+  if(!value.trim()){feedback.textContent='Сначала запиши прогноз. Пустое поле не считается попыткой.';input.focus();if(draftChanged)persist();return;}
+  if(!window.CourseMath.parse(value)){feedback.textContent='Запиши число или точную дробь с ненулевым знаменателем. Прогноз ещё не проверен.';input.focus();if(draftChanged)persist();return;}
+  const item=makeQuestion(state);
+  if(item.retry){
+   if(!state.inquiryFirst)state.inquiryFirst=value;
+   const correct=window.CourseMath.equivalent(value,String(item.answer));
+   lastRejected=correct?'':value;state.inquirySeen=correct?1:0;
+  }else{state.inquiryFirst=value;state.inquirySeen=1;}
+  redraw();persist();
  };
- const onReveal=()=>{if(!isAlive()||state.inquirySeen||!makeQuestion(state))return;state.inquirySeen=1;redraw();persist();};
+ const onReveal=()=>{
+  if(!isAlive()||state.inquirySeen)return;
+  const item=makeQuestion(state);if(!item)return;
+  if(item.retry&&state.inquiryFirst)state.inquiryFirst=helpMark+state.inquiryFirst;
+  state.inquirySeen=1;redraw();persist();
+ };
  input.addEventListener('input',onInput);box.addEventListener('submit',onSubmit);reveal.addEventListener('click',onReveal);
  redraw();return{redraw,destroy(){input.removeEventListener('input',onInput);box.removeEventListener('submit',onSubmit);reveal.removeEventListener('click',onReveal);}};
 }
 
 function styles(){if(document.getElementById('vilenkin5-lab-styles'))return;const el=document.createElement('style');el.id='vilenkin5-lab-styles';el.textContent=`.g5-lab{min-width:0;border:1px solid #cbded0;background:#fbfdfb;border-radius:18px;padding:20px;color:#23382c}.g5-lab [hidden]{display:none!important}.g5-lab h3{font-size:23px;margin:0 0 12px;line-height:1.45}.g5-lab-question{font-size:18px;line-height:1.6;margin:0 0 20px}.g5-lab-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:20px;margin:20px 0}.g5-lab-control{display:flex;flex-direction:column;gap:10px;font-size:16px;min-width:0}.g5-lab-control>span{display:flex;justify-content:space-between;gap:10px;line-height:1.5}.g5-lab-control output{font-weight:bold;color:#176b49}.g5-lab input[type=range]{width:100%;margin:0;min-height:38px;accent-color:#176b49}.g5-lab select{font:inherit;padding:10px 6px;border:1px solid #a9c4b2;border-radius:8px;background:white;color:#23382c;min-height:46px;min-width:0;max-width:100%}.g5-lab input:focus-visible,.g5-lab select:focus-visible{outline:3px solid #176b49;outline-offset:3px}.g5-lab-svg{display:block;width:100%;max-width:600px;height:auto;margin:auto}.g5-lab-equation{font-size:clamp(20px,3vw,29px);font-weight:650;line-height:1.8;color:#175b3c;text-align:center;overflow-wrap:anywhere;padding:16px 0}.g5-lab-explanation{font-size:18px;line-height:1.8;margin:14px 0 0}.g5-lab-small{font-size:14px;line-height:1.6;color:#617667;margin-top:20px}.g5-lab-place-row{display:flex;justify-content:center;gap:12px}.g5-lab-place-row>div{padding:14px;min-width:70px;text-align:center;background:#dceee3;border-radius:10px}.g5-lab-place-row small,.g5-lab-place-row b{display:block}.g5-lab-place-row b{font-size:38px;margin-top:10px}.g5-lab-table-wrap{overflow-x:auto}.g5-lab-table{border-collapse:collapse;width:100%;font-size:17px}.g5-lab-table td,.g5-lab-table th{padding:13px 9px;border:1px solid #bdcfc2;text-align:center;font-weight:normal}.g5-lab-table thead th{background:#e9f1eb;font-weight:bold}.g5-lab-selected{background:#dceee3;border:2px solid #176b49;border-radius:5px;padding:4px 9px;color:#175b3c;display:inline-block}.g5-lab-column{display:flex;justify-content:center}.g5-lab-column table{font-family:monospace;font-size:36px;border-collapse:collapse}.g5-lab-column td{min-width:1.05em;padding:3px 7px;text-align:center}.g5-lab-column th{font-weight:normal;padding:4px 10px}.g5-lab-column tr.answer{border-top:2px solid #23382c;color:#176b49}.g5-lab-steps{font-size:18px;line-height:1.8;padding-left:28px}.g5-lab-steps li{margin:15px 0;padding-left:5px}.g5-lab-action{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;align-items:center;font-size:25px;line-height:1.7;padding:20px 0}.g5-lab-action>span{padding:12px 16px;border:1px solid #bdd1c3;border-radius:10px}.g5-lab-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:16px 0}.g5-lab-chips>span{padding:9px 14px;border:1px solid #bdcfc2;border-radius:8px;font-size:20px}.g5-lab-chips>.marked{background:#dceee3;border:2px solid #176b49;font-weight:bold}@media(max-width:600px){.g5-lab{padding:14px 10px}.g5-lab-controls{grid-template-columns:1fr}.g5-lab [hidden]{display:none!important}.g5-lab h3{font-size:21px}.g5-lab-question,.g5-lab-explanation{font-size:17px}.g5-lab-table{font-size:15px}.g5-lab-table td,.g5-lab-table th{padding:10px 7px}.g5-lab-place-row{gap:7px}.g5-lab-place-row>div{padding:12px 7px}.g5-lab-action{font-size:21px}.g5-lab-column table{font-size:32px}}.g5-lab-inquiry{border-left:4px solid #176b49;padding:12px;background:#edf5ef;margin:12px 0}.g5-lab-inquiry label{display:flex;flex-direction:column;gap:10px;font-weight:600}.g5-lab-inquiry input{box-sizing:border-box;width:100%;min-width:0;min-height:44px;font:inherit;padding:9px}.g5-lab-inquiry button{font:inherit;min-height:44px;margin:8px 8px 0 0;padding:8px;max-width:100%}.g5-lab-inquiry p{line-height:1.5}.g5-lab-inquiry input:focus-visible,.g5-lab-inquiry button:focus-visible{outline:3px solid #297e55;outline-offset:3px}@media(prefers-reduced-motion:reduce){.g5-lab *{animation:none!important;transition:none!important}}`;document.head.append(el);}
 function normalize(c,v){if(c.values){const match=c.values.find(([x])=>String(x)===String(v));return match?match[0]:c.def;}if(v===null||v===undefined||v===''||typeof v==='boolean')return c.def;const n=Number(v);return Number.isFinite(n)?Math.max(c.min,Math.min(c.max,c.min+Math.round((n-c.min)/c.step)*c.step)):c.def;}
-window.mountLab=function(host,key,options={}){host.replaceChildren();const config=all[key];if(!config){const p=document.createElement('p');p.textContent='Эта модель пока недоступна. Правила и задания можно изучать ниже.';host.append(p);return()=>{};}styles();const wrap=document.createElement('section');wrap.className='g5-lab';const h=document.createElement('h3');h.textContent=config.title;const q=document.createElement('p');q.className='g5-lab-question';q.textContent=config.question;const controls=document.createElement('div');controls.className='g5-lab-controls';const visual=document.createElement('div');visual.className='g5-lab-visual';visual.setAttribute('aria-live','polite');const state={},given=options.state&&typeof options.state==='object'?options.state:{},listeners=[],controlNodes=[];let alive=true,inquiry=null;const redraw=()=>{if(alive){controlNodes.forEach(({c,label})=>{label.hidden=!!c.show&&!c.show(state)});visual.innerHTML=config.draw(state);if(inquiry)inquiry.redraw();}};config.controls.forEach((c,i)=>{const label=document.createElement('label');label.className='g5-lab-control';const top=document.createElement('span'),title=document.createElement('span');title.textContent=c.label;top.append(title);state[c.k]=normalize(c,given[c.k]);let input,output;if(c.values){input=document.createElement('select');c.values.forEach(([v,t])=>{const o=document.createElement('option');o.value=String(v);o.textContent=t;input.append(o);});}else{input=document.createElement('input');input.type='range';input.min=c.min;input.max=c.max;input.step=c.step;output=document.createElement('output');output.textContent=num(state[c.k]);top.append(output);}input.id='g5-lab-'+key+'-'+i;input.value=String(state[c.k]);label.htmlFor=input.id;if(output)output.htmlFor=input.id;label.append(top,input);controls.append(label);controlNodes.push({c,label});const listener=()=>{state[c.k]=normalize(c,input.value);input.value=String(state[c.k]);if(output)output.textContent=num(state[c.k]);redraw();if(typeof options.onChange==='function')options.onChange({...state});};input.addEventListener('input',listener);listeners.push([input,listener]);});const small=document.createElement('p');small.className='g5-lab-small';small.textContent='Это исследование правила. Оно не меняет числа и ответ в твоём упражнении.';wrap.append(h,q,controls,visual,small);host.append(wrap);if(inquiries[key])inquiry=attachInquiry(wrap,visual,state,given,inquiries[key],()=>{if(typeof options.onChange==='function')options.onChange({...state});},()=>alive,'g5-lab');redraw();return()=>{alive=false;if(inquiry)inquiry.destroy();listeners.forEach(([input,listener])=>input.removeEventListener('input',listener));};};
+window.mountLab=function(host,key,options={}){host.replaceChildren();const variant=labVariants[key+':'+options.variant];const config=variant?.config||all[key];const makeQuestion=variant?.inquiry||inquiries[key];if(!config){const p=document.createElement('p');p.textContent='Эта модель пока недоступна. Правила и задания можно изучать ниже.';host.append(p);return()=>{};}styles();const wrap=document.createElement('section');wrap.className='g5-lab';const h=document.createElement('h3');h.textContent=config.title;const q=document.createElement('p');q.className='g5-lab-question';q.textContent=config.question;const controls=document.createElement('div');controls.className='g5-lab-controls';const visual=document.createElement('div');visual.className='g5-lab-visual';visual.setAttribute('aria-live','polite');const state={},given=options.state&&typeof options.state==='object'?options.state:{},listeners=[],controlNodes=[];let alive=true,inquiry=null;const redraw=()=>{if(alive){controlNodes.forEach(({c,label})=>{label.hidden=!!c.show&&!c.show(state)});visual.innerHTML=config.draw(state);if(inquiry)inquiry.redraw();}};config.controls.forEach((c,i)=>{const label=document.createElement('label');label.className='g5-lab-control';const top=document.createElement('span'),title=document.createElement('span');title.textContent=c.label;top.append(title);state[c.k]=normalize(c,given[c.k]);let input,output;if(c.values){input=document.createElement('select');c.values.forEach(([v,t])=>{const o=document.createElement('option');o.value=String(v);o.textContent=t;input.append(o);});}else{input=document.createElement('input');input.type='range';input.min=c.min;input.max=c.max;input.step=c.step;output=document.createElement('output');output.textContent=num(state[c.k]);top.append(output);}input.id='g5-lab-'+key+'-'+i;input.value=String(state[c.k]);label.htmlFor=input.id;if(output)output.htmlFor=input.id;label.append(top,input);controls.append(label);controlNodes.push({c,label});const listener=()=>{state[c.k]=normalize(c,input.value);input.value=String(state[c.k]);if(output)output.textContent=num(state[c.k]);redraw();if(typeof options.onChange==='function')options.onChange({...state});};input.addEventListener('input',listener);listeners.push([input,listener]);});const small=document.createElement('p');small.className='g5-lab-small';small.textContent='Это исследование правила. Оно не меняет числа и ответ в твоём упражнении.';wrap.append(h,q,controls,visual,small);host.append(wrap);if(makeQuestion)inquiry=attachInquiry(wrap,visual,state,given,makeQuestion,()=>{if(typeof options.onChange==='function')options.onChange({...state});},()=>alive,'g5-lab');redraw();return()=>{alive=false;if(inquiry)inquiry.destroy();listeners.forEach(([input,listener])=>input.removeEventListener('input',listener));};};
 window.VILENKIN_LAB_KEYS=Object.freeze(Object.keys(all));window.VILENKIN_LABS=Object.freeze(all);
 })();

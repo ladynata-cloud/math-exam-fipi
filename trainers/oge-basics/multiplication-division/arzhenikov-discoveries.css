@@ -1,0 +1,111 @@
+/* Scoped to the new investigations; all quantities remain real DOM objects. */
+#discoveries { margin: 0 0 1.1rem; }
+#discoveries-play { min-width: 0; color: #304d47; }
+#discoveries-play [hidden] { display: none !important; }
+#discoveries-play *, #discoveries-play *::before, #discoveries-play *::after { box-sizing: border-box; }
+#discoveries-play .dc-board {
+  min-width: 0; padding: clamp(15px, 3vw, 29px); border: 1px solid #d1e1d5;
+  border-top: 5px solid #77a692; border-radius: 20px; background: #fffdf7;
+  box-shadow: 0 5px 0 #e1eadd, 0 15px 30px #365b7410;
+}
+#discoveries-play .dc-topline { margin: 0 0 .45rem; color: #596e62; font-size: .86rem; line-height: 1.4; font-weight: 650; }
+#discoveries-play .dc-title {
+  margin: .35rem 0 .65rem; color: #345d4a; font: 800 clamp(1.45rem, 3.2vw, 2.15rem)/1.15 var(--adv-rounded, system-ui, sans-serif);
+  letter-spacing: -.025em; overflow-wrap: break-word; scroll-margin-top: 1rem;
+}
+#discoveries-play .dc-story, #discoveries-play .dc-action-instruction, #discoveries-play .dc-conclusion {
+  max-width: 72ch; margin: .65rem 0; font-size: 1rem; line-height: 1.5; color: #3e574b;
+}
+#discoveries-play .dc-steps {
+  display: flex; flex-wrap: wrap; gap: .3rem .6rem; padding: 0; margin: .9rem 0;
+  list-style-position: inside; color: #6b7668; font-size: .78rem; line-height: 1.4;
+}
+#discoveries-play .dc-steps li { padding: .28rem .5rem; background: #eff2e8; border: 1px solid #e0e7d8; border-radius: 8px; }
+#discoveries-play .dc-steps li[aria-current] { color: #255f49; background: #e1f2e5; border-color: #97b89d; font-weight: 750; }
+#discoveries-play .dc-options { min-width: 0; padding: 0; margin: .8rem 0; border: 0; }
+#discoveries-play .dc-options legend { padding: 0; margin-bottom: .55rem; color: #365f4d; font-size: 1rem; line-height: 1.4; font-weight: 750; }
+#discoveries-play .dc-option {
+  display: flex; align-items: flex-start; gap: .65rem; min-width: 0; min-height: 48px;
+  margin: .45rem 0; padding: .7rem .8rem; background: #fff; border: 1.5px solid #d0dfd1;
+  border-radius: 10px; color: #425b50; font-size: .96rem; line-height: 1.45; cursor: pointer;
+}
+#discoveries-play .dc-option:hover { background: #f1f8ef; border-color: #8caf92; }
+#discoveries-play .dc-option:has(input:checked) { background: #eaf5e8; border-color: #689a78; }
+#discoveries-play .dc-option input[type="radio"] {
+  display: block; flex: 0 0 20px; width: 20px; min-width: 20px; height: 20px; min-height: 20px;
+  margin: .15rem 0 0; padding: 0; accent-color: #397557; cursor: pointer;
+}
+#discoveries-play .dc-option span { min-width: 0; overflow-wrap: break-word; }
+#discoveries-play .dc-actions, #discoveries-play .dc-adjustment { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: .85rem 0 .25rem; }
+#discoveries-play button, #discoveries-play .dc-primary {
+  max-width: 100%; min-height: 46px; margin: 0; padding: .6rem .85rem;
+  color: #37634e; background: #f0f6ed; border: 1px solid #b9ceb9; border-radius: 10px;
+  font: 650 .93rem/1.35 system-ui, sans-serif; overflow-wrap: break-word; cursor: pointer;
+}
+#discoveries-play button:enabled:hover { background: #e3efe0; border-color: #86ad8d; }
+#discoveries-play button:disabled { cursor: default; color: #708073; background: #f3f5ef; opacity: .72; }
+#discoveries-play button.dc-primary, #discoveries-play a.dc-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #377352; color: #fff; border-color: #28613f; box-shadow: 0 3px 0 #205d3e;
+  font-weight: 750; text-decoration: none;
+}
+#discoveries-play button.dc-primary:enabled:hover, #discoveries-play a.dc-primary:hover { background: #2c6647; color: #fff; text-decoration: none; }
+#discoveries-play :focus-visible { outline: 3px solid #ba8439; outline-offset: 3px; }
+#discoveries-play .dc-feedback { margin: .4rem 0 0; color: #75532e; font-size: .94rem; line-height: 1.5; }
+#discoveries-play .dc-feedback:not(:empty) { padding: .7rem .8rem; background: #fff3d9; border-left: 4px solid #c99547; border-radius: 3px 10px 10px 3px; }
+#discoveries-play .dc-hint { margin: .7rem 0 0; padding: .7rem .85rem; color: #465c70; background: #edf3fa; border: 1px solid #cddde9; border-radius: 10px; font-size: .96rem; line-height: 1.5; }
+#discoveries-play .dc-forecast { margin: .7rem 0; padding: .55rem .7rem; color: #62715f; background: #f2f3e8; border: 1px solid #e2e4d2; border-radius: 8px; font-size: .85rem; line-height: 1.45; }
+#discoveries-play .dc-stock { min-width: 0; display: grid; gap: .4rem; margin: .75rem 0; padding: .7rem .85rem; background: #edf5e6; border: 1px solid #c7d9b7; border-bottom: 4px solid #b9cda6; border-radius: 12px; }
+#discoveries-play .dc-stock-label { color: #426145; font-size: .96rem; line-height: 1.4; font-weight: 750; }
+#discoveries-play .dc-stock-note { color: #61735b; font-size: .87rem; line-height: 1.4; }
+#discoveries-play .dc-targets { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: .65rem; align-items: stretch; margin: .85rem 0; }
+#discoveries-play .dc-target { display: flex; flex-direction: column; min-width: 0; padding: .4rem; gap: .3rem; background: #f1e9dc; border: 1px solid #d8c5aa; border-bottom: 4px solid #cbb697; border-radius: 14px; }
+#discoveries-play button.dc-place { display: flex; flex: 1; flex-direction: column; align-items: stretch; gap: .3rem; width: 100%; min-height: 100px; padding: .55rem; text-align: left; background: #fffdf8; border: 1px dashed #ccbda5; color: #5d644b; border-radius: 8px; }
+#discoveries-play button.dc-place:enabled:hover { background: #f5f9ec; border-color: #91ac71; }
+#discoveries-play button.dc-place:disabled { opacity: 1; background: #faf8f2; }
+#discoveries-play .dc-target-label { color: #5a5e47; font-size: .95rem; line-height: 1.35; font-weight: 750; }
+#discoveries-play .dc-capacity, #discoveries-play .dc-amount { font-size: .78rem; line-height: 1.4; font-weight: 600; color: #74745d; }
+#discoveries-play .dc-capacity { font-weight: 500; }
+#discoveries-play .dc-tokens { display: flex; flex-wrap: wrap; align-items: center; gap: 3px; min-height: 29px; }
+#discoveries-play .dc-token { display: inline-grid; place-items: center; flex: 0 0 27px; width: 27px; min-height: 29px; font: 1.4rem/1 "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+#discoveries-play button.dc-take { min-height: 44px; padding: .3rem; width: 100%; border: 0; background: transparent; color: #6b6c55; font-size: .86rem; }
+#discoveries-play button.dc-take:enabled:hover { background: #fff9ea; }
+#discoveries-play .dc-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: .9rem; align-items: start; margin: 1rem 0; }
+#discoveries-play .dc-field { display: grid; align-items: start; gap: .35rem; min-width: 0; color: #3e634d; font-size: 1rem; line-height: 1.4; font-weight: 700; }
+#discoveries-play .dc-input {
+  display: block; width: 7rem; max-width: 100%; min-height: 48px; padding: .45rem .65rem;
+  color: #315d46; background: #fff; border: 1.5px solid #99b99b; border-radius: 9px;
+  font: 750 1.3rem/1.25 system-ui, sans-serif;
+}
+#discoveries-play .dc-input[aria-invalid="true"] { background: #fff7e8; border: 2px solid #b7773c; }
+#discoveries-play .dc-input[readonly] { background: #eaf6e8; border-color: #78a47b; }
+#discoveries-play .dc-accepted { color: #527752; font-size: .8rem; line-height: 1.3; font-weight: 600; }
+#discoveries-play .dc-saved-model { margin: .8rem 0; padding: .6rem .75rem; background: #f6f6ed; border: 1px solid #d4ddc8; border-radius: 10px; }
+#discoveries-play .dc-saved-model summary { padding: .2rem 0; color: #577146; font-size: .95rem; line-height: 1.4; min-height: 34px; cursor: pointer; }
+#discoveries-play .dc-snapshot .dc-target { padding: .65rem; }
+#discoveries-play .dc-result { margin: 1rem 0; padding: 1rem; border: 1px solid #b6d4b5; border-radius: 13px; background: #eaf6e6; color: #446c45; }
+#discoveries-play .dc-result h3 { margin: 0 0 .4rem; color: #38623c; font-size: 1.25rem; line-height: 1.3; }
+#discoveries-play .dc-result p { margin: .4rem 0 0; font-size: .95rem; line-height: 1.5; }
+#discoveries-play .dc-equation { margin: .6rem 0; color: #3b6750; font: 750 clamp(1.2rem, 3vw, 1.75rem)/1.4 ui-monospace, monospace; overflow-wrap: break-word; font-variant-numeric: tabular-nums; }
+#discoveries-play .dc-progress { color: #5f7562; margin: 1rem .2rem .65rem; font-size: .86rem; line-height: 1.5; }
+#discoveries-play .dc-chooser, #discoveries-play .dc-note { margin: .65rem 0; background: #fff; border: 1px solid #d4e1cf; border-radius: 12px; overflow: clip; }
+#discoveries-play .dc-chooser > summary, #discoveries-play .dc-note > summary { min-height: 48px; padding: .75rem .85rem; color: #4c6e4e; font-size: .94rem; line-height: 1.4; cursor: pointer; }
+#discoveries-play .dc-routes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); max-width: none; min-height: 0; padding: .8rem; margin: 0; gap: 1rem; }
+#discoveries-play .dc-route-line { min-width: 0; }
+#discoveries-play .dc-route-line h3 { margin: .2rem 0 .55rem; color: #46634d; font-size: 1rem; line-height: 1.4; }
+#discoveries-play .dc-route { display: grid; gap: .2rem; min-height: 48px; padding: .6rem .7rem; margin: .4rem 0; color: #436a4c; background: #f4f9f0; border: 1px solid #d6e4ce; border-radius: 8px; font-size: .92rem; line-height: 1.4; text-decoration: none; }
+#discoveries-play .dc-route small { font-size: .76rem; line-height: 1.4; font-weight: 500; color: #6d7e66; }
+#discoveries-play .dc-route[aria-current] { border: 2px solid #77a07b; background: #eaf4e6; }
+#discoveries-play .dc-route:hover { background: #e7f2e0; text-decoration: underline; }
+#discoveries-play .dc-note p { margin: .2rem .85rem .85rem; font-size: .9rem; line-height: 1.5; color: #66745f; }
+#discoveries-play .dc-storage { color: #795a36; font-size: .9rem; line-height: 1.5; margin: .8rem .2rem; }
+@media (max-width: 380px) {
+  #discoveries-play .dc-targets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem; }
+  #discoveries-play .dc-target { padding: .3rem; }
+  #discoveries-play button.dc-place { padding: .4rem; }
+  #discoveries-play .dc-token { flex-basis: 25px; width: 25px; min-height: 27px; }
+  #discoveries-play .dc-actions > .dc-primary { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #discoveries-play *, #discoveries-play *::before, #discoveries-play *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

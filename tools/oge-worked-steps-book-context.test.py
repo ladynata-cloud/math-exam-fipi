@@ -7,7 +7,7 @@ import subprocess
 import unittest
 from unittest.mock import patch
 from oge_worked_steps_book_context import ROOT, PINS, OLD_HELP, NEW_HELP, PAN, matches_worked_steps_ui
-from oge_video_models_book_context import without_download_controls
+from oge_video_models_book_context import without_download_controls, restore_quadrilateral_angles, QUADRILATERAL_ANGLES
 
 spec = importlib.util.spec_from_file_location('book_math', ROOT / 'tools/oge-book-exam-math.py')
 math = importlib.util.module_from_spec(spec)
@@ -38,7 +38,14 @@ class WorkedStepContext(unittest.TestCase):
             committed = subprocess.check_output(['git', 'show', PINS['sourceCommit'] + ':' + route[1:]], cwd=ROOT)
             self.assertEqual(hashlib.sha256(committed).hexdigest(), expected)
             raw = (ROOT / route[1:]).read_bytes()
-            self.assertEqual(without_download_controls(route[1:], raw), committed)
+            restored = without_download_controls(route[1:], raw)
+            self.assertEqual(restore_quadrilateral_angles(route[1:], restored), committed)
+            if route[1:] == QUADRILATERAL_ANGLES['file']:
+                for frag in QUADRILATERAL_ANGLES['fragments']:
+                    changed = restored.replace(frag['after'].encode(), frag['before'].encode(), 1)
+                    self.assertNotEqual(changed, restored)
+                    self.assertEqual(restore_quadrilateral_angles(route[1:], changed), changed)
+                    self.assertNotEqual(changed, committed)
 
     def test_receipt_requires_served_bytes_and_original_exercise(self):
         record, text, original, _ = case('59', 320)

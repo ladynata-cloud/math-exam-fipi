@@ -225,3 +225,57 @@ test('check mode still has no helper and opening it does not start a percentage 
   if(file.includes('percentages/')){assert.equal(f.d.getElementById('check-run').hidden,true);assert.equal(f.d.getElementById('check-intro').hidden,false);}
  }
 });
+
+test('the public quotient ruler fits whole divisors and records division with remainder',async t=>{
+ const f=await mount(t,'multiplication-division/long-division-quotient-digit.html');
+ const {d,w}=f, get=id=>d.getElementById(id), state=w.__trainerDebug.state();
+ const ticks=()=>[...get('multiples').querySelectorAll('button')];
+ const enter=value=>{
+  get('answerArea').querySelector('input').value=String(value);
+  get('answerArea').querySelector('button').click();
+ };
+ assert.equal(get('dividendDisplay').textContent,'88');
+ assert.equal(get('partialValue').style.getPropertyValue('--position'),(88/150*100)+'%');
+ assert.deepEqual(ticks().map(b=>Number(b.querySelector('b').textContent)),[0,15,30,45,60,75,90,105,120,135]);
+ assert.equal(get('multiples').querySelector('.ruler-end b').textContent,'150');
+ assert.equal(get('quotientDisplay').textContent,'?');
+ ticks()[4].click();
+ assert.match(get('feedback').textContent,/ещё 15/);
+ ticks()[6].click();
+ assert.match(get('feedback').textContent,/90 больше 88/);
+ assert.equal(state.quotient,'');
+ ticks()[5].click();
+ assert.equal(get('quotientDisplay').textContent,'5');
+ assert(get('writtenProduct').hidden);
+ enter(75);
+ assert.equal(get('writtenProduct').textContent,'− 75');
+ assert(!get('writtenProduct').hidden);
+ enter(13);
+ assert.equal(get('writtenRemainder').textContent,'13');
+ assert(!get('writtenRemainder').hidden);
+ assert.match(get('feedback').textContent,/Цифра частного — 5, остаток — 13/);
+ assert.equal(state.supported,1);
+
+ // Use the normal new-example button with predictable random draws for boundary cases.
+ for(const [digit,remainder] of [[1,0],[5,0],[9,0],[9,14]]){
+  const draws=[13.5/38,(digit-.5)/9,(remainder+.5)/15];
+  w.Math.random=()=>draws.shift();
+  get('nextBtn').click();
+  const partial=15*digit+remainder;
+  assert.equal(get('partialValue').textContent,String(partial));
+  assert.equal(get('partialValue').style.getPropertyValue('--position'),(partial/150*100)+'%');
+  assert.equal(get('dividendDisplay').textContent,String(partial));
+  ticks()[digit].click();enter(15*digit);enter(remainder);
+  assert.equal(get('quotientDisplay').textContent,String(digit));
+  assert.equal(get('writtenRemainder').textContent,String(remainder));
+ }
+ assert.equal(state.independent,4);
+ w.Math.random=()=>0.4;
+ get('nextBtn').click();
+ get('solution').click();
+ assert.equal(state.reviewed,1);
+ assert.equal(state.phase,'done');
+ assert(get('multiplesWrap').hidden);
+ assert(get('feedback').querySelector('.solution'));
+ assert(!get('writtenRemainder').hidden);
+});

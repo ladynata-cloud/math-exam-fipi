@@ -1,17 +1,18 @@
 (function (root) {
   'use strict';
 
-  function assessed(attempt, task) {
-    if (attempt.answers.some(answer => !answer.trim())) return false;
+  function assessed(attempt, task, equation) {
+    if (!attempt.answers.length || attempt.answers.some(answer => !answer.trim())) return false;
     if (attempt.kind === 'final') {
       return attempt.answers.length === task.final.length ||
-        (Boolean(task.independentFinal) && attempt.answers.length === 1);
+        (Boolean(task.independentFinal) && attempt.answers.length === 1) ||
+        (Boolean(equation) && attempt.answers.length === equation.fields.length);
     }
     const step = /^step-(0|[1-9]\d*)$/.exec(attempt.kind);
     return Boolean(step) && Number(step[1]) < task.steps.length && attempt.answers.length === 1;
   }
 
-  function collectErrors(storage, catalog, state) {
+  function collectErrors(storage, catalog, state, equationFields) {
     const items = [];
     for (const { lesson, label } of catalog) {
       for (const [index, task] of lesson.tasks.entries()) {
@@ -21,11 +22,12 @@
               record.drafts.steps.length > task.steps.length || record.drafts.final.length > task.final.length ||
               record.solutionSteps > task.solution.length) continue;
 
+          const equation = equationFields?.forTask(lesson, task, 'independent', index >= 3);
           const pending = new Map();
           let mistakes = 0;
           let lastWrong;
           for (const attempt of record.attempts) {
-            if (!assessed(attempt, task)) continue;
+            if (!assessed(attempt, task, equation)) continue;
             if (!attempt.correct) {
               mistakes++;
               lastWrong = attempt;
@@ -109,6 +111,7 @@
       import('./part-two/content-geometry.js'),
       import('./part-two/content-models.js'),
       import('./part-two/content-finance.js'),
+      import('./part-two/equation-fields.js'),
     ]).then(() => {
       const map = root.ProfileExamMap;
       const practice = root.ProfilePartTwoLessons.flatMap(lesson => {
@@ -131,7 +134,7 @@
       for (let i = 0; i < storage.length && !hasPartTwo; i++) {
         hasPartTwo = storage.key(i)?.startsWith(state.PREFIX);
       }
-      const items = hasPartTwo ? collectErrors(storage, await getCatalog(), state) : [];
+      const items = hasPartTwo ? collectErrors(storage, await getCatalog(), state, root.ProfileEquationFields) : [];
       if (version !== refreshVersion) return;
       const remaining = items.filter(item => !item.corrected);
       const corrected = items.filter(item => item.corrected);

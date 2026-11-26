@@ -12,9 +12,13 @@ on:
       - 'trainers/board-picker.js'
       - 'trainers/board-picker.css'
       - 'trainers/board-bridge.js'
+      - 'trainers/vendor/socket.io*'
       - 'board-server/**'
       - 'tools/board-writing.browser.cjs'
       - 'tools/board-room-error.test.cjs'
+      - 'tools/article-demo-links.test.cjs'
+      - 'trainers/percent-part-whole-trainer.html'
+      - 'ege-profil/trainers/trigonometry.html'
       - 'tools/trainer-registry-client-cutover-smoke.cjs'
       - 'tools/board-ink.test.cjs'
       - 'tools/board-images.test.cjs'
@@ -33,9 +37,13 @@ on:
       - 'trainers/board-picker.js'
       - 'trainers/board-picker.css'
       - 'trainers/board-bridge.js'
+      - 'trainers/vendor/socket.io*'
       - 'board-server/**'
       - 'tools/board-writing.browser.cjs'
       - 'tools/board-room-error.test.cjs'
+      - 'tools/article-demo-links.test.cjs'
+      - 'trainers/percent-part-whole-trainer.html'
+      - 'ege-profil/trainers/trigonometry.html'
       - 'tools/trainer-registry-client-cutover-smoke.cjs'
       - 'tools/board-ink.test.cjs'
       - 'tools/board-images.test.cjs'
@@ -70,7 +78,7 @@ jobs:
       - name: Coordinates, compatible shapes and bounded image imports
         run: node --test tools/board-ink.test.cjs tools/board-images.test.cjs
       - name: Terminal room rejection and local recovery
-        run: node --test tools/board-room-error.test.cjs
+        run: node --test tools/board-room-error.test.cjs tools/article-demo-links.test.cjs
       - name: Individual writing and real local collaboration
         env:
           BOARD_WRITING_ARTIFACTS: ${{ runner.temp }}/board-writing-artifacts
