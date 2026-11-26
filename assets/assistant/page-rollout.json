@@ -2553,9 +2553,10 @@
       "placement": "before-head-close"
     },
     "trainers/like-terms-factory.html": {
-      "beforeSha256": "c5577223269e588ca6fce53982a09638439e7d0ef75aa616c801ab0fecb152c6",
-      "afterSha256": "f182dfd4c9b57943940eb2ff77377a840fbc9a5f4a1e1950cd704aa55f1c6421",
-      "placement": "before-head-close"
+      "beforeSha256": "3018ec08ea486932f7abcfc0b65e265ad73fc2db3b37527745419b0447505ae2",
+      "afterSha256": "e62e710691a2b342de5df067781b17a13fdf4caf7124e55fff31067d2dcc1daa",
+      "placement": "before-head-close",
+      "sourceSha": "72b8c03dcdd824979500c02ed662344394e8ee65"
     },
     "trainers/like-terms-lab.html": {
       "beforeSha256": "55169ed27f752261292ec325c2474eec994dee7653e5bf371a50cacb8cfe4da9",
@@ -6881,6 +6882,28 @@
       ],
       "reason": "Bind the single additive written-reasoning workshop entrance; existing OGE material, shared navigator pair and all other bindings unchanged.",
       "bindingScope": "Exact per-page sourceSha; global base unchanged."
+    },
+    {
+      "sourceBaseSha": "957e99846672835c9df8b507c1d2c16136cfa8e6",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/LIKE_TERMS_TO_BRACKETS.md",
+      "changedPaths": [
+        "trainers/like-terms-factory.html"
+      ],
+      "reason": "Bind the reviewed algebra route to its exact source including the original navigator pair. Preserve all prior receipts and other bindings.",
+      "bindingScope": "Per-page sourceSha; global base and shared runtime unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "72b8c03dcdd824979500c02ed662344394e8ee65",
+      "previousSourceSha": "957e99846672835c9df8b507c1d2c16136cfa8e6",
+      "task": "docs/tasks/LIKE_TERMS_TO_BRACKETS.md",
+      "changedPaths": [
+        "trainers/like-terms-factory.html"
+      ],
+      "reason": "Bind the seven-step polynomial continuation to its exact source; the prior algebra source and receipt remain in history.",
+      "bindingScope": "One per-page sourceSha; shared navigator pair, global base and other bindings unchanged.",
+      "boundary": "Committed source identity only; not mathematical or publication approval."
     },
     {
       "sourceBaseSha": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21",
