@@ -5,8 +5,8 @@ function part(start,end){const a=source.indexOf(start),b=source.indexOf(end,a+st
 function fixture(){
   const task={a:-3,b:5,op:'+',res:2,label:'-3 + 5'};
   const fields={instr:{className:'instr ',textContent:'Шаг 1'},feedback:{className:'feedback ',textContent:''},ans:{value:'',disabled:true},check:{disabled:true},hintBox:{textContent:'',classList:{contains:()=>false,toggle(){}}}};
-  const c=vm.createContext({SEED:'fixture',mode:'add',level:'easy',task,phase:'start',hintCount:0,taskNo:1,visual:{start:null,end:null,traveler:null,arc:null,wrong:null},GROUP_LESSON_MODE:false,el:id=>fields[id],renderExpr(){},clsClear(){},setSeg(){},mark(){},traveler(){},arc(){},points:{},setTimeout(){}});
-  vm.runInContext([part('function copyTask(', 'function setSeg('),part('function getBoardTrainerState(', 'function sendBoardTrainerState('),part('function applyBoardTrainerState(', 'window.getBoardTrainerState='),part('function instr(', 'function newTask(')].join('\n'),c);
+  const c=vm.createContext({SEED:'fixture',mode:'add',level:'easy',task,phase:'start',hintCount:0,taskNo:1,visual:{start:null,end:null,traveler:null,arc:null,wrong:null},GROUP_LESSON_MODE:false,el:id=>fields[id],renderExpr(){},clsClear(){},setSeg(){},mark(){},traveler(){},arc(){},points:{},setTimeout(){},clearTimeout(){}});
+  vm.runInContext([part('let hintTimer=', 'const KEY='),part('function copyTask(', 'function setSeg('),part('function getBoardTrainerState(', 'function sendBoardTrainerState('),part('function applyBoardTrainerState(', 'window.getBoardTrainerState='),part('function instr(', 'function newTask(')].join('\n'),c);
   return {fields,c,read:()=>JSON.parse(JSON.stringify(c.getBoardTrainerState()))};
 }
 test('initial class bytes are canonical and survive actual adapter roundtrip',()=>{
