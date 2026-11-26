@@ -52,6 +52,42 @@ async function exercise(browser,base,width){
   assert.deepEqual(errors,[]);
  }finally{await context.close();}
 }
+async function draftHelpRegression(browser,base,width){
+ const context=await browser.newContext({viewport:{width,height:900}});
+ await context.route('**/*',r=>r.request().url().startsWith(base+'/')?r.continue():r.abort());
+ const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const app=page.locator('#fraction-bridge-app'),answer=page.locator('#fb-answer'),external=page.locator('#fb-external');
+ const read=()=>page.evaluate(()=>JSON.parse(sessionStorage.getItem('mathExam.linearFractionBridge.session.v1')));
+ try{
+  await page.goto(base+anchor);await app.waitFor({state:'visible'});
+  for(const [phase,valid,invalid,key] of [['original','20','x=20','bridge-01:original'],['transfer','21','x=21','bridge-01:transfer']]){
+   assert.equal(await app.getAttribute('data-phase'),phase);
+   await answer.fill('19');const before=await read();
+   await answer.fill(invalid);await external.check();
+   assert.match(await app.locator('[data-fb-message]').innerText(),/отметка помощи сохранится/);
+   const after=await read();assert.deepEqual(after.drafts[key],{value:'',external:true});
+   assert.deepEqual(after.events,before.events);assert(!JSON.stringify(after).includes(invalid));
+   await external.uncheck();assert.deepEqual((await read()).drafts[key],{value:'',external:false});
+   await external.check();await page.reload();await app.waitFor({state:'visible'});
+   assert.equal(await answer.inputValue(),'');assert(await external.isChecked());
+   await answer.fill(valid);assert.deepEqual((await read()).drafts[key],{value:valid,external:true});
+   await click(page,'Проверить ответ');assert.match(await app.innerText(),/помощь или знакомый разбор отмечены/);
+   if(phase==='original')await click(page,'Новая текстовая задача на перенос');
+  }
+  await click(page,'Перейти к другой паре');await click(page,'Пока не знаю');
+  await click(page,'Восстановить целое по одной доле');
+  assert.equal(await app.getAttribute('data-phase'),'probe');assert.equal(await external.count(),0);
+  await answer.fill('12');const before=await read();
+  await answer.fill('x=12');const after=await read();
+  assert.match(await app.locator('[data-fb-message]').innerText(),/поле будет пустым/);
+  assert(!((await app.locator('[data-fb-message]').innerText()).includes('отметка помощи')));
+  assert.deepEqual(after.drafts['bridge-02:probe:whole'],{value:'',external:false});
+  assert.deepEqual(after.events,before.events);assert(!JSON.stringify(after).includes('x=12'));
+  await page.reload();await app.waitFor({state:'visible'});
+  assert.equal(await app.getAttribute('data-phase'),'probe');assert.equal(await answer.inputValue(),'');
+  assert.equal(await external.count(),0);assert.deepEqual(errors,[]);
+ }finally{await context.close();}
+}
 async function edgeCases(browser,base){
  const context=await browser.newContext({viewport:{width:320,height:900},javaScriptEnabled:false});await context.route('**/*',r=>r.request().url().startsWith(base+'/')?r.continue():r.abort());
  const page=await context.newPage();await page.goto(base+anchor);await page.locator('#fraction-bridge>summary').click().catch(()=>{});
@@ -60,13 +96,17 @@ async function edgeCases(browser,base){
  const denied=await browser.newContext();await denied.route('**/*',r=>r.request().url().startsWith(base+'/')?r.continue():r.abort());
  await denied.addInitScript(()=>Object.defineProperty(window,'sessionStorage',{get(){throw Error('denied')}}));
  const d=await denied.newPage();await d.goto(base+anchor);await d.locator('#fraction-bridge-app').waitFor({state:'visible'});
- assert.match(await d.locator('#fraction-bridge-storage').innerText(),/недоступно/);await click(d,'Пока не знаю');assert(await d.locator('#fraction-bridge-app').getByText('Что хочется проверить?').isVisible());await denied.close();
+ assert.match(await d.locator('#fraction-bridge-storage').innerText(),/недоступно/);
+ await d.locator('#fb-answer').fill('x=20');await d.locator('#fb-external').check();
+ assert.match(await d.locator('#fraction-bridge-app [data-fb-message]').innerText(),/сохранение в этой вкладке недоступно/);
+ await click(d,'Пока не знаю');assert(await d.locator('#fraction-bridge-app').getByText('Что хочется проверить?').isVisible());await denied.close();
  const corrupt=await browser.newContext();await corrupt.route('**/*',r=>r.request().url().startsWith(base+'/')?r.continue():r.abort());
  await corrupt.addInitScript(()=>sessionStorage.setItem('mathExam.linearFractionBridge.session.v1','{"version":999}'));
- const c=await corrupt.newPage();await c.goto(base+anchor);await c.locator('#fraction-bridge-app').waitFor({state:'visible'});await click(c,'Пока не знаю');
+ const c=await corrupt.newPage();await c.goto(base+anchor);await c.locator('#fraction-bridge-app').waitFor({state:'visible'});
+ await c.locator('#fb-answer').fill('x=20');await c.locator('#fb-external').check();await click(c,'Пока не знаю');
  assert.equal(await c.evaluate(()=>sessionStorage.getItem('mathExam.linearFractionBridge.session.v1')),'{"version":999}');await corrupt.close();
 }
 (async()=>{await fs.mkdir(out,{recursive:true});const server=await serve();const base=process.env.PILOT_BASE_URL||'http://127.0.0.1:'+server.address().port;let browser;
- try{browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH});for(const width of [320,390,1280])await exercise(browser,base,width);await edgeCases(browser,base);console.log('FRACTION_BRIDGE_BROWSER_OK: exact return, draft, linked existing lesson, transfer, no-JS and storage denial');}
+ try{browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH});for(const width of [320,390,1280]){await exercise(browser,base,width);await draftHelpRegression(browser,base,width);}await edgeCases(browser,base);console.log('FRACTION_BRIDGE_BROWSER_OK: exact return, draft, linked existing lesson, transfer, no-JS and storage denial');}
  finally{if(browser)await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

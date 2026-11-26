@@ -43,9 +43,14 @@
   }
   function draftFor(key){return snapshot.drafts[key]||{value:'',external:false};}
   function saveDraft(key,value,external){
-    const draft={value,external};
-    if(!m.validDraft(key,draft))return;
+    let draft={value,external};
+    const valid=m.validDraft(key,draft);
+    // Never retain stale input or arbitrary text when the new value is rejected.
+    // The separately selected help flag is still part of the allowed v1 draft.
+    if(!valid)draft={value:'',external};
+    if(!m.validDraft(key,draft))return false;
     snapshot.drafts[key]=draft;save();
+    return valid;
   }
   function formFor(p,phase,kind,q){
     const key=m.draftKey(p.id,phase,kind),draft=draftFor(key);
@@ -73,7 +78,13 @@
       else dispatch(phase==='transfer'?'transfer-answer':'original-answer',{value,external:!!external?.checked});
     }
     form.addEventListener('submit',event=>{event.preventDefault();send(false);});
-    const update=()=>saveDraft(key,input.value,!!external?.checked);
+    const update=()=>{
+      if(!saveDraft(key,input.value,!!external?.checked)){
+        message.textContent=storageOK
+          ?(external?'Этот текст не сохраняется: после обновления поле будет пустым, отметка помощи сохранится.':'Этот текст не сохраняется: после обновления поле будет пустым.')
+          :'Этот текст не записывается; сохранение в этой вкладке недоступно.';
+      }
+    };
     input.addEventListener('input',()=>{input.removeAttribute('aria-invalid');message.textContent='';update();});
     input.addEventListener('change',update);external?.addEventListener('change',update);
     actions.append(submit,button('Пока не знаю',()=>send(true),true));form.append(actions,message);
