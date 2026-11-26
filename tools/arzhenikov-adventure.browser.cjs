@@ -35,7 +35,18 @@ async function solveScene(page,scene,keyboard) {
       else await put(page,group).click();
     }
   }
-  assert.equal(await page.locator('.ws-instruction').innerText(),'Теперь нажми «Проверить раскладку».');
+  if (scene.kind === 'pack') {
+    assert.equal(await page.locator('.ws-instruction').innerText(),'Все предметы собраны в полные группы. Нажми «Проверить раскладку».');
+    const groups = scene.total / scene.size;
+    const targets = page.locator('#workshop-play .ws-target');
+    assert.equal(await targets.count(),scene.targets.length);
+    assert.deepEqual(await targets.evaluateAll(nodes=>nodes.map(n=>n.dataset.packState)),
+      scene.targets.map((_,index)=>index<groups?'full':'empty'));
+    assert.deepEqual(await targets.evaluateAll(nodes=>nodes.map(n=>n.querySelectorAll('.ws-token').length)),
+      scene.targets.map((_,index)=>index<groups?scene.size:0));
+  } else {
+    assert.equal(await page.locator('.ws-instruction').innerText(),'Теперь нажми «Проверить раскладку».');
+  }
   assert(await action(page,'check-layout').evaluate(el=>el.classList.contains('primary')));
   await action(page,'check-layout').press('Enter');
   await stage(page,'answer');

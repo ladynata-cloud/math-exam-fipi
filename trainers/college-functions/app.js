@@ -4,6 +4,8 @@
   if(!D||!E||!P){document.getElementById('current-step').textContent='Не удалось загрузить тренажёр. Обновите страницу.';return;}
   const $=id=>document.getElementById(id), esc=E.escapeHTML;
   const KEY='mathExam.collegeFunctions.v1';
+  const RATE_DRAFT_KEY = 'mathExam.collegeFunctions.rate.v1';
+  let rateExampleSeen = false;
   // Board isolation is decided before the first access to personal storage.
   const BOARD=window.CollegeFunctionsBoardMode===true || new URLSearchParams(window.location.search).get('board')==='1';
   let feedbackCode='none';
@@ -20,7 +22,23 @@
   function save(){if(BOARD)return;try{localStorage.setItem(KEY,JSON.stringify(store));}catch(_){storageOK=false;}}
   function blank(fresh){return {stage:0,drafts:{},accepted:[],marked:[],helpUsed:false,hintLevel:0,hintOpen:false,errors:0,completed:false,fresh:!BOARD&&!!fresh};}
   function key(){return mode+':'+task.id;}
-  function attempt(){let a=store.attempts[key()];if(!a||!Number.isInteger(a.stage)||a.stage<0||a.stage>8||!a.drafts||typeof a.drafts!=='object'||!Array.isArray(a.accepted)||!Array.isArray(a.marked)){a=blank(mode==='test'&&!store.seen[task.id]);store.attempts[key()]=a;}return a;}
+  function studiedRateExample() {
+    if (rateExampleSeen) return true;
+    try { return localStorage.getItem(RATE_DRAFT_KEY) !== null; } catch (_) { return false; }
+  }
+  function attempt() {
+    let a = store.attempts[key()];
+    if (!a || !Number.isInteger(a.stage) || a.stage < 0 || a.stage > 8 ||
+        !a.drafts || typeof a.drafts !== 'object' || !Array.isArray(a.accepted) || !Array.isArray(a.marked)) {
+      a = blank(mode === 'test' && !store.seen[task.id]);
+      store.attempts[key()] = a;
+    }
+    if (!BOARD && task.id === 'C3' && mode === 'test' && a.fresh && !a.completed && studiedRateExample()) a.fresh = false;
+    return a;
+  }
+  function rateExampleUnderTest() {
+    return !BOARD && task.id === 'C3' && mode === 'test' && !attempt().completed;
+  }
   if(store.last&&D.tasks.some(t=>t.id===store.last.id)){task=D.tasks.find(t=>t.id===store.last.id);mode=store.last.mode==='test'?'test':'learn';}
   function selectTask(id,nextMode=mode){const t=D.tasks.find(x=>x.id===id);if(!t)return;feedbackCode='none';if(BOARD&&(id!==task.id||nextMode!==mode))store={attempts:{},results:{},seen:{},last:null,diagnostic:null};if(nextMode==='learn'&&store.attempts['test:'+id]&&!store.attempts['test:'+id].completed)store.attempts['test:'+id].fresh=false;task=t;mode=nextMode;attempt();store.seen[task.id]=true;store.last={id:task.id,mode};save();render();}
   function rich(text){return esc(String(text||'')).replace(/(^|[\s(=;])(-?\d+)\/(\d+)(?=$|[\s);,.])/g,(_,pre,n,d)=>pre+'<span class="frac"><span>'+n+'</span><span>'+d+'</span></span>');}
@@ -53,6 +71,11 @@
     $('learn-mode').setAttribute('aria-pressed',String(mode==='learn'));$('test-mode').setAttribute('aria-pressed',String(mode==='test'));
     $('mode-note').textContent=mode==='learn'?'Разбираем по шагам. Подсказка доступна на каждом шаге и сохраняет Вашу работу.':a.fresh?'Новая задача без подсказок. Только решение с первой попытки попадёт в «Самостоятельно».':'Повторная проверка без подсказок. Эта задача уже встречалась и не считается новой самостоятельной работой.';
     document.querySelector('.course-tools>details:last-child').hidden=mode==='test';
+    $('open-rate-lab').parentElement.hidden = BOARD && mode === 'test';
+    const sameExample = rateExampleUnderTest();
+    $('open-rate-lab').disabled = sameExample;
+    syncLessonCycleEntry();
+    $('rate-entry-note').textContent = sameExample ? ' Завершите самостоятельную задачу C3 или выберите «Учимся», чтобы открыть исследование той же параболы.' : '';
     if(BOARD){$('mode-note').textContent=mode==='learn'?'Совместная работа на доске. Задание, ответы и подсказки видны обоим участникам.':'Совместная проверка без подсказок. Личные результаты за эту работу не начисляются.';$('test-mode').textContent='Без подсказок';}
     if(mode==='test')$('course-cheatsheet').open=false;
     if(!storageOK){$('mode-note').textContent+=' Браузер не разрешил сохранение: работа доступна до закрытия страницы.';}
@@ -65,6 +88,7 @@
   function render(){const a=attempt();renderFamilies();$('task-id').textContent=task.id;$('formula').innerHTML=task.formulaHtml;$('step-counter').textContent=a.stage<8?'Шаг '+(a.stage+1)+' из 8':'Задача завершена';$('step-progress').style.width=(a.stage/8*100)+'%';$('assistance').textContent=a.helpUsed?'С подсказкой':a.errors?'Были исправления':'';
     $('feedback').innerHTML='';$('history').innerHTML=a.accepted.map((answer,i)=>'<div class="done-step"><b>✓ '+(i+1)+'. '+titles[i]+'</b><span>'+rich(answer)+'</span></div>').join('');
     renderGraph();renderStep();renderHelp();renderProgress();renderFeedback();
+    if(BOARD) renderRateBoard();
   }
   function renderStep(){const a=attempt(), s=a.stage;let body='';
     if(s===8){renderComplete();return;}
@@ -111,7 +135,7 @@
   }
   function renderComplete(){const a=attempt();const independent=!BOARD&&mode==='test'&&a.fresh&&!a.helpUsed&&!a.errors;
     $('current-step').innerHTML='<h2>График исследован</h2><p>'+(independent?'Новая задача решена самостоятельно, с первой попытки.':a.helpUsed?'Вы разобрали задачу с подсказкой. Для самостоятельной проверки выберите новую похожую задачу.':a.errors?'Вы нашли и исправили ошибки. Закрепите результат на новой похожей задаче.':'Все восемь шагов пройдены. Проверьте понимание на новой похожей задаче.')+'</p><div class="status good">'+(BOARD?'✓ Совместная работа':independent?'✓ Самостоятельная работа':mode==='test'&&!a.fresh?'✓ Повторная проверка':'✓ Учебная работа')+'</div>';
-    $('step-actions').innerHTML='<button id="fresh-check">Новая задача без подсказок</button><button id="repeat-task" class="secondary">Повторить эту</button>';$('help-area').innerHTML='';
+    $('step-actions').innerHTML='<button id="fresh-check">Новая задача без подсказок</button><button id="repeat-task" class="secondary">Повторить эту</button>'+((!BOARD || mode==='learn')?'<button id="rate-after-graph" class="secondary">Исследовать скорость изменения</button>':'');$('help-area').innerHTML='';
   }
   function next(fresh=false){if(BOARD){const family=D.tasks.filter(t=>t.family===task.family),index=family.findIndex(t=>t.id===task.id);selectTask(family[(index+1)%family.length].id,fresh?'test':mode);return;}let pool=D.tasks.filter(t=>t.family===task.family&&t.id!==task.id);let candidate=pool.find(t=>!store.seen[t.id]);if(!candidate)candidate=pool.find(t=>!store.attempts[(fresh?'test':mode)+':'+t.id]?.completed)||pool[0];if(candidate)selectTask(candidate.id,fresh?'test':mode);}
   function renderProgress(){if(BOARD){$('progress-panel').hidden=true;$('progress-count').textContent='';$('progress-detail').textContent='';return;}const done=Object.entries(store.results).filter(([,a])=>a&&a.completed);const independent=done.filter(([k,a])=>k.startsWith('test:')&&a.fresh&&!a.helpUsed&&!a.errors).length;$('progress-count').textContent='· '+independent+' самостоятельно';
@@ -134,6 +158,7 @@
     if(b.id==='more-help'){attempt().hintLevel=2;save();renderHelp();}
     if(b.id==='place-point'&&requireAnswers($('point-controls')))markPoint(E.parseNumber($('plot-x').value),E.parseNumber($('plot-y').value));
     if(b.id==='fresh-check')next(true);
+    if(b.id==='rate-after-graph')openRateLab();
     if(b.id==='repeat-task'){feedbackCode='none';store.attempts[key()]=blank(false);save();render();}
     if(b.dataset.diag&&diag&&diag.index<D.diagnostics.length){const q=D.diagnostics[diag.index];if(!q.optionItems.some(o=>o.id===b.dataset.diag))return;diag.answers.push({choice:b.dataset.diag,id:q.id,correct:b.dataset.diag===String(q.correctId),family:q.recommendFamily,explanation:q.explanation});diag.index++;renderDiagnostic();}
     if(b.id==='start-recommended'){$('diagnostic-dialog').close();const t=D.tasks.find(t=>t.family===b.dataset.family);if(t)selectTask(t.id,'learn');}
@@ -148,9 +173,152 @@
   $('close-diagnostic').addEventListener('click',()=>$('diagnostic-dialog').close());
   $('reset-progress').addEventListener('click',()=>{if(BOARD)return;if(window.confirm('Сбросить все результаты и введённые ответы этого тренажёра в этом браузере?')){store={attempts:{},results:{},seen:{},last:null,diagnostic:null};mode='learn';selectTask(D.tasks[0].id,'learn');}});
   document.addEventListener('keydown',event=>{if(event.key==='Enter'&&event.target.matches('#current-step input[data-answer]')){event.preventDefault();check();}if(event.key==='Enter'&&event.target.matches('#point-controls input')){event.preventDefault();$('place-point').click();}});
+  // The board uses its existing shared exercise and reference-panel state.
+  // Personal lab drafts belong to the optional module and never enter that state.
+  const boardIntervals = {
+    C3: [0, 2, 'График выше оси Ox. Какой знак будет у средней скорости на левой ветви?'],
+    C4: [-3, 1, 'Сравните высоты концов и вершины. Менялась ли функция внутри этого отрезка?'],
+    C7: [0, 2, 'Предскажите знак средней скорости. Как совместить его с отрицательными значениями внутри отрезка?']
+  };
+  const rateEntry = document.createElement('p');
+  rateEntry.className = 'rate-entry';
+  rateEntry.innerHTML = '<button class="secondary" type="button" id="open-rate-lab">От графика к скорости изменения</button><span id="rate-entry-note"></span>';
+  document.querySelector('.heading').after(rateEntry);
+  const lessonCycleHost = BOARD ? null : document.createElement('div');
+  if (lessonCycleHost) rateEntry.after(lessonCycleHost);
+  function syncLessonCycleEntry() {
+    if (lessonCycleHost) window.MathExamLessonCycleEntry?.mount(lessonCycleHost, 'rate', {
+      visible: mode === 'learn' && !rateExampleUnderTest()
+    });
+  }
+  let rateLoading = null;
+  let rateMounted = false;
+
+  const rateStyles = document.createElement('link');
+  rateStyles.rel = 'stylesheet';
+  rateStyles.href = './rate-lab.css';
+  document.head.append(rateStyles);
+
+  function loadRateLab() {
+    if (rateLoading) return rateLoading;
+    rateLoading = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = './rate-lab.js';
+      script.onload = () => resolve(window.CollegeFunctionsRate);
+      script.onerror = () => {
+        rateLoading = null;
+        script.remove();
+        reject(new Error('Не удалось загрузить практикум.'));
+      };
+      document.head.append(script);
+    });
+    return rateLoading;
+  }
+
+  function renderRateBoard() {
+    const section = $('rate-board-work');
+    if (!section || !section.parentElement.open || section.dataset.task === task.id) return;
+    section.dataset.task = task.id;
+    const buttons = Object.keys(boardIntervals).map(id =>
+      '<button type="button" class="secondary" data-rate-task="'+id+'" aria-pressed="'+(id === task.id)+'">'+id+'</button>'
+    ).join(' ');
+    section.innerHTML = '<h3>От графика к скорости изменения</h3><p>Запишите прогноз, расчёт и вывод на полотне доски. Для сравнения можно перейти к другой задаче практикума.</p>'+buttons;
+    const [a, b, question] = boardIntervals[task.id] || [
+      Math.min(...task.points.map(point => point.x)), Math.max(...task.points.map(point => point.x)),
+      'Как изменится высота при переходе от A к B? Предскажите знак средней скорости и объясните свой прогноз.'
+    ];
+    const ya = D.evaluate(task, a), yb = D.evaluate(task, b);
+    section.insertAdjacentHTML('beforeend', '<p><b>'+esc(task.formulaText)+'</b> на отрезке ['+a+'; '+b+'].</p><p>'+question+'</p>'+
+      '<svg id="rate-board-graph" viewBox="0 0 640 460" width="100%" role="img"></svg>'+
+      '<p>A('+E.formatNumber(a)+'; '+E.formatNumber(ya)+'), B('+E.formatNumber(b)+'; '+E.formatNumber(yb)+'). Синяя линия показывает функцию, штриховая прямая AB — секущую.</p>'+
+      '<ol><li>Найдите горизонтальный шаг Δx и изменение высоты Δy от A до B. Учитывайте направление.</li>'+
+      '<li>Вычислите Δy/Δx. Сколько единиц y в среднем приходится на одну единицу x?</li>'+
+      '<li>Совпал ли знак с прогнозом? Что можно сказать только о концах, а что вы узнали по форме всей кривой?</li></ol>'+
+      '<p>Для самостоятельной проверки: уровень воды в баке через 3 и 9 минут был 44 см и 35 см. Какова средняя скорость изменения уровня воды? Можно ли по этим двум измерениям восстановить уровень на пятой минуте?</p>');
+    // A second task can be selected while the drawing code is loading.
+    const selected = task, graph = $('rate-board-graph');
+    loadRateLab().then(lab => {
+      if (graph.isConnected) lab.drawSecant(graph, selected, a, b);
+    }).catch(() => { if (graph.isConnected) graph.replaceWith('График не загрузился. Используйте координаты точек под ним.'); });
+  }
+
+  function revealRateBoard() {
+    const panel = $('course-cheatsheet');
+    panel.open = true;
+    renderRateBoard();
+    $('rate-board-work').scrollIntoView?.({block:'start'});
+  }
+
+  function openRateLab() {
+    if (BOARD) {
+      if (mode === 'learn') revealRateBoard();
+      return;
+    }
+    if (rateExampleUnderTest()) return;
+    const dialog = $('rate-dialog');
+    if (!dialog.open) dialog.showModal();
+    if (rateMounted) return;
+    const container = $('rate-lab');
+    container.textContent = 'Загружаем исследование…';
+    loadRateLab().then(lab => {
+      if (rateMounted) return;
+      lab.mount(container, RATE_DRAFT_KEY);
+      rateExampleSeen = true;
+      rateMounted = true;
+    }).catch(() => {
+      container.textContent = 'Практикум не загрузился. ';
+      const retry = document.createElement('button');
+      retry.textContent = 'Попробовать ещё раз';
+      retry.onclick = openRateLab;
+      container.append(retry);
+    });
+  }
+
+  if (BOARD) {
+    const panel = $('course-cheatsheet');
+    const section = document.createElement('section');
+    section.id = 'rate-board-work';
+    panel.querySelector('summary').after(section);
+    panel.addEventListener('toggle', renderRateBoard);
+    section.addEventListener('click', event => {
+      const choice = event.target.closest('button[data-rate-task]');
+      if (choice && boardIntervals[choice.dataset.rateTask]) {
+        selectTask(choice.dataset.rateTask, 'learn');
+        revealRateBoard();
+        section.querySelector('[aria-pressed="true"]')?.focus({preventScroll:true});
+      }
+    });
+  } else {
+    const dialog = document.createElement('dialog');
+    dialog.id = 'rate-dialog';
+    dialog.setAttribute('aria-labelledby','rate-title');
+    dialog.innerHTML = '<div class="dialog-top"><h2 id="rate-title">От графика к скорости изменения</h2>'+
+      '<button id="close-rate-lab" type="button" class="secondary">Вернуться к графикам</button></div>'+
+      '<div class="rate-scroll"><div id="rate-lab"></div><nav aria-label="Связанные занятия" class="rate-links">'+
+      '<a href="../linear-function-lab.html">Вспомнить наклон прямой</a> · '+
+      '<a href="../oge-task11-graphs-trainer.html">ОГЭ · чтение графиков</a> · '+
+      '<a href="../../ege-baza/path/index.html#lesson=graphs">ЕГЭ база · графики</a> · '+
+      '<a href="../../ege-profil/trainers/derivative-t8.html">ЕГЭ профиль · касательная и производная</a></nav></div>';
+    document.body.append(dialog);
+    $('close-rate-lab').onclick = () => dialog.close();
+    dialog.addEventListener('close', () => {
+      if (window.location.hash === '#rate-lab') history.replaceState(history.state, '', window.location.pathname + window.location.search);
+      $('open-rate-lab').focus({preventScroll:true});
+    });
+    window.addEventListener('hashchange', () => { if (window.location.hash === '#rate-lab') openRateLab(); });
+  }
+  $('open-rate-lab').onclick = openRateLab;
   // Test/read-only inspection surface; state mutations remain normal UI actions.
   window.CollegeFunctionsApp={snapshot:()=>JSON.parse(JSON.stringify({taskId:task.id,mode,attempt:attempt(),store,storageOK})),version:1};
   selectTask(task.id,mode);
+  if (!BOARD && window.top === window && /^https?:$/.test(location.protocol) && !['board','learning'].some(key => new URLSearchParams(location.search).get(key) === '1')) {
+    const cycleScript = document.createElement('script');
+    cycleScript.src = '../lesson-cycle/entry.js';
+    cycleScript.onload = syncLessonCycleEntry;
+    cycleScript.onerror = () => cycleScript.remove();
+    document.head.append(cycleScript);
+  }
+  if (!BOARD && window.location.hash === '#rate-lab') openRateLab();
   if(BOARD){
     document.documentElement.classList.add('college-board-mode');
     document.querySelectorAll('a[href]').forEach(link=>{link.removeAttribute('href');link.removeAttribute('target');link.setAttribute('aria-disabled','true');link.tabIndex=-1;});
@@ -169,7 +337,12 @@
     store.attempts[key()]={stage:state.stage,drafts:{...state.drafts},marked:Array.from({length:state.marked},(_,i)=>i),accepted:summaries.slice(0,state.stage),helpUsed:state.helpUsed,hintLevel:state.hintLevel,hintOpen:state.hintOpen,errors:state.errors,completed:state.stage===8,fresh:false};
     diag={index:state.diagnostic.index,answers:state.diagnostic.answers.map((choice,i)=>{const q=D.diagnostics[i];return {choice,id:q.id,correct:choice===q.correctId,family:q.recommendFamily,explanation:q.explanation};})};
     render();renderDiagnostic();
+    const wasOpen = $('course-cheatsheet').open;
     $('answer-reference').open=state.panels.reference;$('course-cheatsheet').open=state.panels.cheatsheet;
+    if (state.panels.cheatsheet) {
+      renderRateBoard();
+      if (!wasOpen) $('rate-board-work').scrollIntoView?.({block:'start'});
+    }
     const dialog=$('diagnostic-dialog');if(state.diagnostic.open&&!dialog.open)dialog.showModal();if(!state.diagnostic.open&&dialog.open)dialog.close();
   }
 })();

@@ -36,9 +36,10 @@
     }
     if(!all.length||all.length!==definitions.length){host.innerHTML='<section class="empty"><h1>Курс пока не загрузился</h1><p>Обновите страницу. Сохранённые работы остаются в кабинете.</p></section>';return()=>{alive=false;};}
     function boardLink(item){
-      if(item.unitId!==2)return '';
-      const trainer='/trainers/vilenkin6-percent/index.html?task='+encodeURIComponent(item.contentId);
-      return `<a class="button v6-course-board" data-vilenkin-percent-board href="https://mathexam.space/trainers/trainer-board.html?trainer=${E(encodeURIComponent(trainer))}" target="_blank" rel="noopener noreferrer">Решать вместе на доске</a>`;
+      const percent=item.unitId===2,proportion=[18,19,20,21].includes(item.unitId);
+      if(!percent&&!proportion)return '';
+      const trainer='/trainers/'+(percent?'vilenkin6-percent':'vilenkin6-proportion')+'/index.html?task='+encodeURIComponent(item.contentId);
+      return `<a class="button v6-course-board" ${percent?'data-vilenkin-percent-board':'data-vilenkin-proportion-board'} href="https://mathexam.space/trainers/trainer-board.html?trainer=${E(encodeURIComponent(trainer))}" target="_blank" rel="noopener noreferrer">Решать вместе на доске</a>`;
     }
     function row(item){
       const action=teacher?'Выбрать задание':item.role==='learn'?'Разобрать пример':'Начать задание';

@@ -100,6 +100,9 @@
     <loc>https://mathexam.space/ege-baza/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/ege-baza/inequality-match/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/ege-baza/path/</loc>
   </url>
   <url>
@@ -1342,6 +1345,9 @@
     <loc>https://mathexam.space/topics/lineynye-uravneniya/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/topics/metod-arzhenikova/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/topics/obyknovennye-drobi/</loc>
   </url>
   <url>
@@ -1825,6 +1831,9 @@
     <loc>https://mathexam.space/trainers/oge-task9-equations.html</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/oge-written-practice.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/oge13-inequalities-series.html</loc>
   </url>
   <url>
@@ -1882,7 +1891,16 @@
     <loc>https://mathexam.space/trainers/tyurin-statistics/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/tyurin-statistics/discrete-lab.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/tyurin-statistics/sum-dependence-lab.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/vilenkin6-percent/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/vilenkin6-proportion/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/vpr-math/</loc>

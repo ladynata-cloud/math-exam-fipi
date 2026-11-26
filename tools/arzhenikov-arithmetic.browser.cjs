@@ -101,7 +101,7 @@ async function domGate() {
     }
     const before = flow.getState(); await flow.reload();
     const after = flow.getState(), progress = flow.getProgress();
-    assert.equal(progress.total, 76);
+    assert.equal(progress.total, 82);
     assert.equal(progress.completed.length, 36);
     assert.equal(progress.independent.length, 144);
     for (const lesson of lessons) {
@@ -333,7 +333,7 @@ async function main() {
     for (const lesson of lessons) steps += (await page.evaluate(exerciseLesson, lesson)).steps;
     const before = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), key); await page.reload();
     const progress = await page.evaluate(() => window.ArzhenikovCoursesProgress());
-    assert.equal(progress.completed.length, 36); assert.equal(progress.total, 76); assert.equal(progress.independent.length, 144);
+    assert.equal(progress.completed.length, 36); assert.equal(progress.total, 82); assert.equal(progress.independent.length, 144);
     const after = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), key);
     for (const lesson of lessons) assert.equal(after.lessons[lesson.id].reviewedAt, before.lessons[lesson.id].reviewedAt);
     assert.deepEqual(errors, []); await context.close(); page = null;

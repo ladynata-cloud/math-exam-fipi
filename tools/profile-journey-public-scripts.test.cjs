@@ -3,7 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const {canonicalProfileLearningScripts}=require('./public-page-script.cjs');
 const shared=['../exam-map.js?v=20261115-fipi-map'];
 const map=['../skill-map-data.js?v=20261115-fipi-map','../azbuka-metodov/catalog.js?v=20261115-fipi-map','../skill-map.js?v=20261115-fipi-map','journey.js?v=20261115-fipi-map',
- 'second-part.js?v=20261115-fipi-map','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
+ 'second-part.js?v=20261117-equation-sets','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
  'vector-basics-data.js?v=20261118-opposites','vector-basics-models.js?v=20261112-vectors','/assets/trainer-skill-gif.js?v=20261117-research'];
 const publicCourseLinks='course-links.js?v=20261117-h12';
 const boardCourseLinks='course-links.js?v=20261115-fipi-map';
