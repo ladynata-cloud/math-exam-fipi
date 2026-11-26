@@ -45,10 +45,12 @@ jobs:
       - name: Verify and materialize the exact virtual composition with probability bridges
         if: github.event.pull_request.number == 768
         env:
-          BRIDGE_HEAD: bd39c9019170f25ed176390d4e4d47750e6ce9ba
-          ORIGINAL_BASE: ecf4cd2078c2c67da38f0c5fd1de3ebc41f257b0
+          BRIDGE_HEAD: 8ca6ac387a3be449faeff2f57750528484f97267
+          ORIGINAL_BASE: d12e0d1a1dac3ba873204f20cb1d4c446d601a65
         run: |
           candidate="$(git rev-parse HEAD)"
+          git fetch --no-tags origin refs/pull/767/head
+          test "$(git rev-parse FETCH_HEAD)" = "$BRIDGE_HEAD"
           test "$(git rev-parse "$BRIDGE_HEAD^{commit}")" = "$BRIDGE_HEAD"
           test "$(git merge-base "$candidate" "$BRIDGE_HEAD")" = "$ORIGINAL_BASE"
           composed="$(git merge-tree --write-tree "$candidate" "$BRIDGE_HEAD")"
@@ -61,7 +63,7 @@ jobs:
           from pathlib import Path
           a,b,c,base = (os.environ[k] for k in ("CANDIDATE","BRIDGE_HEAD","COMPOSED","ORIGINAL_BASE"))
           shared = "trainers/tyurin-statistics/condition-lab.js"
-          expected = {shared, "trainers/tyurin-statistics/discrete-lab.html", "trainers/tyurin-statistics/sum-dependence-lab.html", "tools/tyurin-probability-bridges.test.cjs", "docs/tasks/TYURIN_PROBABILITY_BRIDGES_20261126.md"}
+          expected = {shared, "trainers/tyurin-statistics/discrete-lab.html", "trainers/tyurin-statistics/sum-dependence-lab.html", "tools/tyurin-probability-bridges.test.cjs", "docs/tasks/TYURIN_PROBABILITY_BRIDGES_20261126.md", "assets/assistant/page-rollout.json", "assets/assistant/pages.json", "sitemap.xml", "tools/seo-public-pages.json"}
           def git(*args): return subprocess.check_output(["git", *args])
           def blob(ref,p): return git("show", f"{ref}:{p}")
           paths = set(filter(None,git("diff","--name-only","-z",a,c).decode().split("\0")))
@@ -78,7 +80,7 @@ jobs:
               path.parent.mkdir(parents=True,exist_ok=True)
               path.write_bytes(data)
               assert path.read_bytes() == data
-          print("PASS exact composition: 5 scoped files, unchanged bridge tail and lesson-cycle implementation")
+          print("PASS exact composition: 9 scoped files, unchanged bridge tail and lesson-cycle implementation")
           PY
           node tools/lesson-cycle/hooks.test.cjs
           node tools/lesson-cycle/entry.test.cjs

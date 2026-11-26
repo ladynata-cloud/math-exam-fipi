@@ -63,6 +63,53 @@ try:
     # Local file version must not navigate to the filesystem root. It is tested
     # independently of the origin's persistence; no network is required.
     browser=pw.chromium.launch(**{k:v for k,v in opts.items() if k in ('headless','executable_path')})
+    # A genuine downloaded backup must restore every legal long field,
+    # including the immutable first records and the separate correction.
+    source=browser.new_context(viewport={'width':390,'height':800},accept_downloads=True)
+    source.route('**/*',lambda r:r.continue_() if r.request.url.startswith(origin+'/') else r.abort())
+    p=source.new_page();boot(p)
+    counts=[3,1,2,1,3,1,1];expected={}
+    for i,count in enumerate(counts):
+        if i==6:p.get_by_role('button',name='Начать повторную проверку').click()
+        for j in range(count):
+            value='\\'*11994+f'{i}:{j:04d}'
+            assert len(value)==12000
+            p.locator(f'#answer-{i}-{j}').fill(value)
+            expected[f'{i}:{j}']=value
+        p.locator('#screen button.primary').click()
+        if i==3:
+            p.locator('#nav button').nth(3).click()
+            expected['revision']='\\'*11999+'R'
+            p.locator('#revision').fill(expected['revision'])
+            p.get_by_role('button',name='Следующий этап').click()
+    drain(p)
+    assert p.evaluate('mode(data.id).status')=='ok'
+    with p.expect_download() as dl:p.locator('#export').click()
+    raw=Path(dl.value.path()).read_bytes();payload=json.loads(raw);record=payload['backupState']
+    assert record['done']==[True]*7 and record['drafts']==expected
+    assert all(record['locked'][str(i)]==[expected[f'{i}:{j}'] for j in range(n)] for i,n in enumerate(counts))
+    assert payload['practiceRevision']==expected['revision']
+    assert len(json.dumps(record,ensure_ascii=False,separators=(',',':')))>420000
+    assert len(raw)<=p.evaluate('MAX_BACKUP_BYTES')
+    for denied in (False,True):
+        target=browser.new_context(viewport={'width':390,'height':800},accept_downloads=True)
+        target.route('**/*',lambda r:r.continue_() if r.request.url.startswith(origin+'/') else r.abort())
+        if denied:
+            target.add_init_script("const originalSetItem=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k.startsWith('mathexam:lesson-cycle-pilot:v2:'))throw new DOMException('test quota','QuotaExceededError');return originalSetItem.call(this,k,v)}")
+        q=target.new_page();boot(q)
+        q.locator('#import-file').set_input_files({'name':'long-backup.json','mimeType':'application/json','buffer':raw})
+        q.wait_for_function("document.querySelector('#import-status').textContent.includes('восстановлена')")
+        drain(q)
+        assert downloaded(q)['backupState']==record
+        assert q.evaluate('mode(data.id).status')==('unavailable' if denied else 'ok')
+        if denied:
+            assert q.evaluate('(k)=>localStorage.getItem(k)',KEY) is None
+        else:
+            q.reload();q.wait_for_function("state.done.every(Boolean)")
+            assert downloaded(q)['backupState']==record
+        target.close()
+    source.close()
+    print('PASS real large file export/import, restart, immutable records and simulated quota-denied memory recovery',flush=True)
     offline=browser.new_context(offline=True);p=offline.new_page()
     p.goto((ROOT/'trainers/lesson-cycle/START.html').as_uri());p.wait_for_selector('#screen h2')
     home=p.locator('[data-mathexam-home-link]');assert home.get_attribute('href')=='https://mathexam.space/' and home.get_attribute('target')=='_self'

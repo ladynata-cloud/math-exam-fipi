@@ -91,7 +91,12 @@ const STAGES=['Вход А','Объяснение','Исследование','�
 const TIMES=['0–8 мин','8–20 мин','20–34 мин','34–47 мин','47–55 мин','После урока','Через 2–7 дней'];
 const key=id=>'mathexam:lesson-cycle-pilot:v2:'+id;
 const blank=()=>({version:2,stage:0,done:Array(7).fill(false),drafts:{},locked:{},times:{}});
-const COUNTS=[3,1,2,1,3,1,1], MAX_TEXT=12000, MAX_JSON=420000;
+const COUNTS=[3,1,2,1,3,1,1], MAX_TEXT=12000;
+// Every field may need six JSON characters per UTF-16 code unit. The
+// immutable first record duplicates the twelve drafts; revision is separate.
+const MAX_JSON=6*MAX_TEXT*(2*COUNTS.reduce((sum,n)=>sum+n,0)+1)+4096;
+// A pretty-printed backup also repeats the record in its human-readable report.
+const MAX_BACKUP_BYTES=2*MAX_JSON+16384;
 const memory=Object.create(null), metadata=Object.create(null), queues=Object.create(null);
 const canLock=()=>typeof navigator.locks?.request==='function';
 let data=DATA[0],state=blank();
@@ -105,7 +110,7 @@ function validState(x){
  if(Object.entries(x.drafts).some(([k,v])=>!validDraftKey(k)||!validText(v)))return false;
  if(Object.hasOwn(x.drafts,'revision')&&!x.done[3])return false;
  for(let i=0;i<7;i++){
-  if(x.done[i]){if(!Array.isArray(x.locked[i])||x.locked[i].length!==COUNTS[i]||x.locked[i].some(v=>!validText(v))||typeof x.times[i]!=='string'||!/^\d{4}-\d{2}-\d{2}T/.test(x.times[i])||!Number.isFinite(Date.parse(x.times[i])))return false;
+  if(x.done[i]){if(!Array.isArray(x.locked[i])||x.locked[i].length!==COUNTS[i]||x.locked[i].some(v=>!validText(v))||typeof x.times[i]!=='string'||x.times[i].length>64||!/^\d{4}-\d{2}-\d{2}T/.test(x.times[i])||!Number.isFinite(Date.parse(x.times[i])))return false;
    if(x.locked[i].some((v,j)=>v!==(x.drafts[i+':'+j]||'')))return false;
   }else if(Object.hasOwn(x.locked,i)||Object.hasOwn(x.times,i))return false;
  }
@@ -165,7 +170,7 @@ const sessionRevealed=new Set();DATA.forEach(d=>{const o=node('option',d.title);
 $('reload').addEventListener('click',()=>{if(mode(data.id).pending)return;if(!confirm('Ты выгрузил текущую работу в JSON? При загрузке сохранённой записи черновик из этой вкладки будет заменён.'))return;state=read(data.id,true);sessionRevealed.delete(data.id);updateStorage();render()});
 $('import').addEventListener('click',()=>{$('import-file').click()});
 $('import-file').addEventListener('change',async e=>{const f=e.target.files?.[0];e.target.value='';if(!f)return;const target=data.id;try{
- if(f.size>MAX_JSON*8)throw Error('Файл слишком большой.');const raw=await f.text();const payload=JSON.parse(raw);
+ if(f.size>MAX_BACKUP_BYTES)throw Error('Файл слишком большой.');const raw=await f.text();const payload=JSON.parse(raw);
  if(payload?.schema!=='mathexam-lesson-cycle-pilot-v2')throw Error('Нужна резервная запись версии 2. Версия 1 остаётся отдельным архивом преподавателя.');
  if(payload.module!==target||data.id!==target)throw Error('Выбери соответствующую тему и повтори импорт.');
  if(!validState(payload.backupState))throw Error('Формат резервной записи неверен.');
