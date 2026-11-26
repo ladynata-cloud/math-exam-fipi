@@ -4,6 +4,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const {chromium}=require('playwright');
 const examMap=require('../ege-profil/exam-map.js');
+const equationFields=require('../ege-profil/part-two/equation-fields.js');
 const lessons=['algebra','geometry','models'].flatMap(n=>require('../ege-profil/part-two/content-'+n+'.js'));
 const root=path.resolve(__dirname,'..'),shots='/tmp/profile-part2-shots',errors=[],bad=[];
 const mime={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.json':'application/json'};
@@ -18,8 +19,16 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
    async function go(hash){await page.goto(base+hash);await page.locator('#main h1').waitFor();}
    async function record(id){return page.evaluate(id=>window.ProfilePartTwoApp.store.read(id),id);}
    async function fill(task){
+    const lesson=lessons.find(item=>item.tasks.includes(task));
+    const exact=equationFields.forTask(lesson,task,'independent',lesson.tasks.indexOf(task)>=3);
     const fields=task.independentFinal?[task.independentFinal]:task.final;
-    for(let i=0;i<fields.length;i++)await page.locator('#final-'+i).fill(String(fields[i].answers[0]));
+    let values=fields.map(field=>String(field.answers[0]));
+    if(exact){
+     const {answer}=exact,unit=answer.type==='finite-pi'?'π':'';
+     const finite=answer.finite.map(value=>value+unit).join(';')||'∅';
+     values=answer.general?[answer.general.map(([a,b])=>`${a}π+${b}πn`).join(';'),finite]:[finite];
+    }
+    for(let i=0;i<values.length;i++)await page.locator('#final-'+i).fill(values[i]);
    }
    await page.goto(origin+'/ege-profil/');
    for(const entry of [...examMap.entries,...examMap.extras]){const href=entry.source+'/index.html'+examMap.hash(entry);assert(await page.locator('#profile-2027 a[href="'+href+'"]').isVisible(),'visible entrance '+entry.id);}
@@ -50,8 +59,8 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
    }
    // First error, correction, proof draft, reload and repeat submission.
    const t=lessons[0].tasks[4];await go('#task/'+t.id+'/independent');await page.locator('#final-form button[type=submit]').click();assert.equal((await record(t.id)).attemptCount,0,'empty field not attempt');
-   await fill(t);await page.locator('#final-0').fill('987654321');await page.locator('#final-form button[type=submit]').click();await page.waitForFunction(id=>window.ProfilePartTwoApp.store.read(id).attemptCount===1,t.id);assert.equal((await record(t.id)).attempts[0].correct,false);
-   await page.locator('#proof-draft').fill('Проверяю исходное условие и ограничения.');await fill(t);await page.locator('#final-form button[type=submit]').click();await page.locator('#completion').waitFor();await page.reload();await page.locator('#completion').waitFor();let r=await record(t.id);assert.equal(r.attempts[0].answers[0],'987654321');assert(r.independent);assert.equal(await page.locator('#proof-draft').inputValue(),'Проверяю исходное условие и ограничения.');
+   await fill(t);await page.locator('#final-0').fill('πn');await page.locator('#final-form button[type=submit]').click();await page.waitForFunction(id=>window.ProfilePartTwoApp.store.read(id).attemptCount===1,t.id);assert.equal((await record(t.id)).attempts[0].correct,false);
+   await page.locator('#proof-draft').fill('Проверяю исходное условие и ограничения.');await fill(t);await page.locator('#final-form button[type=submit]').click();await page.locator('#completion').waitFor();await page.reload();await page.locator('#completion').waitFor();let r=await record(t.id);assert.equal(r.attempts[0].answers[0],'πn');assert(r.independent);assert.equal(await page.locator('#proof-draft').inputValue(),'Проверяю исходное условие и ограничения.');
    await page.locator('#final-form button[type=submit]').click();await page.locator('#completion').waitFor();assert((await record(t.id)).independent,'repeated click stays one task');
    // Assistance never becomes independent credit on the same fresh condition.
    const assisted=lessons[0].tasks[5];await go('#task/'+assisted.id+'/independent');await page.locator('#request-help').click();await page.getByText('Подсказка открыта. Для самостоятельной проверки потом выберите другое условие.',{exact:true}).waitFor();await fill(assisted);await page.locator('#final-form button[type=submit]').click();await page.locator('#completion').waitFor();r=await record(assisted.id);assert(r.helped&&r.completed&&!r.independent);

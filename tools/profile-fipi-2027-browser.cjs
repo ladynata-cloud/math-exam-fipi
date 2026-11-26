@@ -141,7 +141,7 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         const financeProgress = page.getByRole('region',{name:'№16 · Письменные финансовые задачи'});
         await financeProgress.waitFor();
         check('only the new written result appears in finance progress', /Самостоятельные ответы: 1/.test(await financeProgress.innerText()));
-        check('old progress retains its totals without written results', /252 условий.*Самостоятельные ответы: 0/s.test(await page.locator('#main > .stats').innerText()));
+        check('old progress retains its totals without written results', /264 условий.*Самостоятельные ответы: 0/s.test(await page.locator('#main > .stats').innerText()));
         await noOverflow('written finance progress');
 
 
