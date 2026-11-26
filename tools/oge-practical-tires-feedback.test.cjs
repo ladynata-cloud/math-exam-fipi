@@ -102,3 +102,32 @@ test('rolling-wheel captions remain readable outside the motion paths and follow
   w.loadVariant(20);await tick();w.goToStep(6);await tick();assert.notEqual(check(),first,'author variant displays its own current dimensions');w.resetAnim();await tick();check();assert.deepEqual(c.errors,[]);
  }finally{w.close();}
 });
+
+test('task 5 exposes the original rolling experiment without opening answer help',async()=>{
+ const c=await open(),{w,doc}=c;
+ try{
+  const count=doc.querySelector('#variant-select').options.length;
+  for(let i=0;i<count;i++){
+   w.loadVariant(i);await tick();
+   const section=doc.querySelector('#section-6'),intro=section.querySelector('.card-intro'),animation=section.querySelector('.anim-block'),answer=section.querySelector('#t5-final input'),result=doc.querySelector('#anim-result'),panel=section.querySelector('.pd-panel');
+   assert.equal(intro.nextElementSibling,animation,'original experiment immediately follows condition');
+   assert.equal(animation.closest('details,.pd-panel'),null,'no disclosure hides the model');
+   assert.equal(doc.querySelectorAll('#anim-svg').length,1);
+   assert.equal(doc.querySelectorAll('#btn-roll').length,1);
+   assert.equal(doc.querySelectorAll('#anim-result').length,1);
+   visible(animation,w);visible(answer,w);assert.equal(panel.hidden,true);
+   assert.ok(result.closest('.pd-original-steps'),'numeric solution remains in explicit help');
+   const originalKeys=keys(w),originalStorage=storage(w);
+   answer.value='17,5';
+   w.finishAnim();
+   assert.equal(result.classList.contains('show'),true);
+   assert.equal(panel.hidden,true);
+   assert.equal(result.closest('.pd-original-steps').open,false);
+   assert.equal(animation.contains(result),false);
+   assert.equal(answer.value,'17,5');assert.deepEqual(keys(w),originalKeys);assert.equal(storage(w),originalStorage);
+   w.resetAnim();assert.equal(result.classList.contains('show'),false);
+   assert.equal(doc.querySelector('#anim-svg').querySelectorAll('rect.anim-track,rect.anim-track-2').length,2);
+  }
+  assert.deepEqual(c.errors,[]);
+ }finally{w.close();}
+});
