@@ -322,3 +322,21 @@ html.arz-world-ready .arz-adventure .adv-postcard-icon.adv-scene { font-size: 0;
   }
   .arz-adventure:has(#workshop:not([hidden])) .adv-heading > .adv-mascot { position: static; }
 }
+
+/* Pack cards: only a completed group gets the success colour. A free card is neutral. */
+.arz-adventure #workshop-play[data-kind="pack"] .ws-target[data-pack-state="empty"] {
+  background: #f4f6f8; border-color: #b7c2cc;
+}
+.arz-adventure #workshop-play[data-kind="pack"] .ws-target[data-pack-state="partial"],
+.arz-adventure #workshop-play[data-kind="pack"] .ws-target[data-pack-state="over"] {
+  background: #fff5df; border-color: #d9b77a;
+}
+.arz-adventure #workshop-play[data-kind="pack"] .ws-target[data-pack-state="full"] {
+  background: #e4f4e9; border-color: #75ae8a;
+}
+.arz-adventure #workshop-play .ws-pack-status {
+  display: block; font-size: .78rem; line-height: 1.3; font-weight: 650; color: #536574; margin-top: .2rem;
+}
+.arz-adventure #workshop-play [data-pack-state="full"] .ws-pack-status { color: #245b3d; }
+.arz-adventure #workshop-play [data-pack-state="partial"] .ws-pack-status,
+.arz-adventure #workshop-play [data-pack-state="over"] .ws-pack-status { color: #805411; }
