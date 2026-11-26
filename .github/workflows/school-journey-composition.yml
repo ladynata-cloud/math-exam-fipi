@@ -32,10 +32,12 @@ jobs:
           BRIDGE_HEAD: 23cd22f61291674e283ce00c4edc786bd646440a
           BRIDGE_BASE: 0dc629ff055f99fa0409b363ecbc24148807a05f
           BRIDGE_RELEASE: b876a19a78910663aa6a976b4b3b781d7987a6d8
+          ACCEPTED_MAIN: c811c4c8ee87845a25598d958321d23feb83b43d
         run: |
           set -eu
           candidate="$(git rev-parse HEAD)"
-          test "$MAIN_SHA" = "$BRIDGE_RELEASE"
+          test "$MAIN_SHA" = "$ACCEPTED_MAIN"
+          test "$(git rev-parse "$ACCEPTED_MAIN^1")" = "$BRIDGE_RELEASE"
           test "$(git rev-parse HEAD^1)" = "$MAIN_SHA"
           test "$(git rev-parse HEAD^2)" = "$SCHOOL_HEAD"
           test "$(git merge-base "$candidate" "$SCHOOL_PRIOR")" = "$SCHOOL_PRIOR"
@@ -54,7 +56,8 @@ jobs:
               return git("show", ref + ":" + p)
           def changed(a,b):
               return set(filter(None, git("diff","--name-only","-z",a,b).decode().split("\0")))
-          candidate, bridge, base, released, school = (os.environ[k] for k in ("CANDIDATE","BRIDGE_HEAD","BRIDGE_BASE","BRIDGE_RELEASE","SCHOOL_PRIOR"))
+          candidate, bridge, base, released, school, accepted = (os.environ[k] for k in ("CANDIDATE","BRIDGE_HEAD","BRIDGE_BASE","BRIDGE_RELEASE","SCHOOL_PRIOR","ACCEPTED_MAIN"))
+          lesson_paths = {".github/workflows/lesson-cycle-v2-native-acceptance.yml","docs/tasks/LESSON_CYCLE_PILOT_V2_20261126.md","tools/lesson-cycle/cycle.py","tools/lesson-cycle/entry.test.cjs","tools/lesson-cycle/hooks.test.cjs","tools/lesson-cycle/native.py","tools/lesson-cycle/race.test.cjs","trainers/college-functions/app.js","trainers/lesson-cycle/README.txt","trainers/lesson-cycle/START.html","trainers/lesson-cycle/entry.js","trainers/lesson-cycle/materials/01_area_proofs_homework.pdf","trainers/lesson-cycle/materials/02_conditional_probability_homework.pdf","trainers/lesson-cycle/materials/03_rate_of_change_homework.pdf","trainers/lesson-cycle/materials/04_motion_modeling_homework.pdf","trainers/motion-grade6/model-entry.js","trainers/oge-written-practice.html","trainers/tyurin-statistics/condition-lab.js"}
           expected = {".github/workflows/linear-learning-pilot.yml", "assets/assistant/page-rollout.json", "docs/tasks/LINEAR_FRACTION_BRIDGE_20261124.md", "equations/linear-pilot/fraction-bridge-core.js", "equations/linear-pilot/fraction-bridge.css", "equations/linear-pilot/fraction-bridge.js", "equations/linear-pilot/index.html", "tools/equations/linear-pilot-fraction-bridge.browser.cjs", "tools/equations/linear-pilot-fraction-bridge.test.cjs"}
           school_paths = {".github/workflows/school-journey-composition.yml", ".github/workflows/school-journey.yml", "assets/assistant/page-rollout.json", "assets/school-journey-home.css", "assets/school-journey-home.js", "docs/ROADMAP.md", "docs/adr/0015-school-journey.md", "docs/tasks/UNIFIED_SCHOOL_JOURNEY_20261124.md", "index.html", "learning/school-journey.js", "scripts/build-oge-book-edition.py", "tools/book-edition/test_generator.py", "tools/school-journey-composition.browser.cjs", "tools/school-journey.browser.cjs", "tools/school-journey.test.cjs", "trainers/oge-basics/fraction-meaning.html"}
           shared="assets/assistant/page-rollout.json"
@@ -63,8 +66,13 @@ jobs:
           fraction="trainers/oge-basics/fraction-meaning.html"
           assert changed(base,bridge)==expected and changed(base,released)==expected, "fraction bridge scope drift"
           assert changed(base,school)==school_paths and school_paths & expected=={shared}, "school scope drift"
-          assert changed(released,candidate)==school_paths, "unexpected candidate delta"
-          assert changed(school,candidate)==expected | {workflow}, "unexpected composition delta"
+          assert changed(released,accepted)==lesson_paths, "published lesson-cycle scope drift"
+          assert not lesson_paths & (school_paths | expected), "lesson-cycle overlap"
+          assert changed(accepted,candidate)==school_paths, "unexpected candidate delta"
+          assert changed(released,candidate)==school_paths | lesson_paths, "unexpected delta from fraction release"
+          assert changed(school,candidate)==expected | lesson_paths | {workflow}, "unexpected composition delta"
+          for p in lesson_paths:
+              assert blob(candidate,p)==blob(accepted,p)==Path(p).read_bytes(), p
           old=json.loads(blob(base,shared))
           incoming=json.loads(blob(released,shared))
           prior=json.loads(blob(school,shared))
@@ -101,7 +109,7 @@ jobs:
               assert Path(p).read_bytes()==blob(candidate,p), p
           assert current["sourceBindingUpdates"]==prior["sourceBindingUpdates"]
           composed=git("rev-parse",candidate+"^{tree}").decode().strip()
-          print("SCHOOL_COMPOSITION_TREE_OK",candidate,bridge,composed,"9 published bridge paths; 16 school paths; both page bindings and all history retained")
+          print("SCHOOL_COMPOSITION_TREE_OK",candidate,bridge,composed,"9 published bridge paths; 18 published lesson paths; 16 school paths; both page bindings and all history retained")
           PY
       - name: Existing mathematical and route assertions on the composition
         run: |
