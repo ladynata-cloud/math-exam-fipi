@@ -6,7 +6,10 @@
     'кто это этот эта там тот его ее их он она они я мне у нас вы был была было были есть какой каком ' +
     'какую какого какойто какомто помню помните вспомнить найти ищу хочу помогите вроде кажется ' +
     'название названия книга книгу книге книги произведение произведении произведения рассказ рассказе ' +
-    'рассказа автор автора герой героя герои историю человек человека который которая которым чем только').split(' '));
+    'рассказа рассказы повесть повести повестей роман романа романы стихотворение стихотворения ' +
+    'автор автора герой героя герои историю человек человека который которая которым чем только ' +
+    'какие пожалуйста подскажи подскажите покажи покажите назови назовите знаешь знаете ' +
+    'расскажи расскажите вас подборке').split(' '));
 
   // Common endings in the short clue phrases. Strip at most one ending.
   const endings = [
@@ -47,7 +50,12 @@
     const author = /(?:ов|ев|ёв|ин|ын)$/iu.test(surname)
       ? card.author + ' ' + surname + 'а'
       : card.author;
-    for (const [text, weight] of [[card.teaser, 1], [Array.isArray(card.cues) ? card.cues.join(' ') : card.cues, 3], [author, 5], [card.title, 7]]) {
+    const cues = Array.isArray(card.cues) ? card.cues.join(' ') : card.cues;
+    // Keep identity separate: a matching surname cannot establish another title.
+    weights.authorTerms = terms(author);
+    weights.surnameTerms = terms(surname + ' ' + (/(?:ов|ев|ёв|ин|ын)$/iu.test(surname) ? surname + 'а' : surname));
+    weights.contentTerms = terms([card.title, card.teaser, cues].join(' '));
+    for (const [text, weight] of [[card.teaser, 1], [cues, 3], [author, 5], [card.title, 7]]) {
       for (const word of terms(text)) weights.set(word, Math.max(weight, weights.get(word) || 0));
     }
     return weights;
@@ -56,13 +64,22 @@
   function search(indexes, query) {
     const words = terms(query);
     if (!words.size) return [];
+    const authors = indexes.filter(index => [...words].some(word => index.surnameTerms.has(word)));
+    const authorWords = new Set(authors.flatMap(index => [...index.authorTerms]));
+    const details = [...words].filter(word => !authorWords.has(word));
+    // A quoted title or remembered phrase must match in full, not by one word.
+    const quoted = [...query.matchAll(/«([^»]+)»|“([^”]+)”|"([^"]+)"|‘([^’]+)’|'([^']+)'/gu)]
+      .map(match => [...terms(match.slice(1).find(Boolean))]).filter(parts => parts.length);
+    const eligible = indexes.map(index =>
+      (!authors.length || (authors.includes(index) && (!details.length || details.some(word => index.contentTerms.has(word))))) &&
+      quoted.every(parts => parts.every(word => index.contentTerms.has(word))));
     const hits = indexes.map(() => ({score: 0, count: 0}));
     for (const word of words) {
       const frequency = indexes.filter(index => index.has(word)).length;
       if (!frequency) continue;
       const rarity = 1 + Math.log((indexes.length + 1) / (frequency + 1));
       indexes.forEach((index, i) => {
-        if (index.has(word)) {
+        if (eligible[i] && index.has(word)) {
           hits[i].score += rarity * index.get(word);
           hits[i].count++;
         }
@@ -83,13 +100,17 @@
   }
 
   function firstReadingReply(cards, indexes, previousIndices, query) {
-    const candidates = previousIndices.length ? previousIndices : indexes.map((_, i) => i);
-    const matches = search(candidates.map(i => indexes[i]), query).map(i => candidates[i]);
+    // A correction starts a new search. An ordinary follow-up still narrows the
+    // previous candidates (a shared detail may be ambiguous in the full catalogue).
+    const replacement = query.match(/(?:^|\s)не\s+[^,;]+,\s*а\s+(.+)$/iu);
+    const correction = replacement || /перепутал|ошиб(?:ся|лась)|друг(?:ая книга|ую книгу|ой рассказ|ое произведение)|имел[аи]? в виду|на самом деле ищу|теперь\s+(?:поищи|найди(?:те)?|ищу|хочу (?:найти|прочитать))/iu.test(query);
+    const candidates = previousIndices.length && !correction ? previousIndices : indexes.map((_, i) => i);
+    const matches = search(candidates.map(i => indexes[i]), replacement?.[1] || query).map(i => candidates[i]);
     if (!matches.length) {
-      const text = previousIndices.length
+      const text = previousIndices.length && !correction
         ? 'По этой детали уточнить пока не получается. Помните имя, место или вещь из эпизода? Для другой книги можно начать заново.'
         : 'Такой детали я пока не нашёл в подборке. Вспомните имя героя, место или предмет из эпизода.';
-      return {indices: previousIndices, matched: false, text, links: []};
+      return {indices: correction ? [] : previousIndices, matched: false, text, links: []};
     }
     const found = matches.map(i => cards[i]);
     const links = found.slice(0, 3).map(c => ({id: c.id, label: c.title, url: c.url}));
@@ -116,6 +137,27 @@
     const links = [analysis, ...sourceLinks];
     if (record.source_status === 'blocked') {
       return {text: 'У мастерской есть только справочные сведения. ' + record.scope, paragraph: -1, links: sourceLinks};
+    }
+    if (record.source_status === 'limited') {
+      const primary = sourceLinks.find(source => source.kind === 'primary_fragment');
+      const pageReferences = [...q.matchAll(/(?:страниц[а-я]*|стр\.?|с\.)\s*[№#]?\s*(\d+(?:(?:\s*[–—,\-]\s*|\s+и\s+)\d+)*)|(\d+)(?:-[а-я]+)?\s+страниц[а-я]*/gu)]
+        .flatMap(match => (match[1] || match[2]).match(/\d+/gu).map(Number));
+      // Common ordinal page requests, including «прочитала девятую страницу».
+      const ordinalStems = ['перв', 'втор', 'треть', 'четверт', 'пят', 'шест', 'седьм', 'восьм', 'девят', 'десят'];
+      for (const match of q.matchAll(/(?:^|\s)([а-я]+?)(?:ую|юю|ой|ей|ая|яя)\s+страниц[а-я]*/gu)) {
+        const ordinal = ordinalStems.indexOf(match[1]) + 1;
+        if (ordinal && !/двадцать|тридцать|сорок|десят\s|сот\s|сто\s|тысяч/u.test(q)) pageReferences.push(ordinal);
+      }
+      // With incomplete evidence, an unclear page number cannot license a retelling.
+      const unnamedPage = !pageReferences.length && /страниц|(?:^|\s)стр\.?(?:\s|$)/u.test(q) &&
+        !/на (?:этой|проверенной|указанной) странице/u.test(q);
+      if (unnamedPage || pageReferences.some(page => !primary?.pages?.includes(page))) {
+        return {text: 'Эта страница выходит за пределы проверенного фрагмента. ' + record.scope +
+          ' Для ответа нужен текст этой страницы или фотография разворота.', paragraph: previousParagraph, links: primary ? [primary] : sourceLinks};
+      }
+      if (primary && /источник|фотограф|где (?:сверить|посмотреть)|(?:увидеть|открыть) (?:тот )?(?:разворот|фрагмент)/u.test(q)) {
+        return {text: primary.label + '. ' + record.scope, paragraph: previousParagraph, links: [primary]};
+      }
     }
     if (/цитат|дослов|чьи (?:это )?слова|слова (?:автора|писателя|платонова)|слова ли|источник|где сверить/u.test(q)) {
       return {text: 'Здесь приведён комментарий мастерской. Точные слова автора можно сверить по указанному источнику. ' + record.scope,

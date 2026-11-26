@@ -4,7 +4,8 @@ const assert=require('node:assert/strict');
 const path=require('node:path');
 const fs=require('node:fs');
 const lessons=require('../ege-profil/part-two/content-algebra.js');
-const tasks=lessons.flatMap(l=>l.tasks);
+const allTasks=lessons.flatMap(l=>l.tasks);
+const tasks=allTasks.filter(task=>!task.equationAnswer);
 const number=v=>{
   if(typeof v==='number')return v;
   const s=String(v).replace(/−/g,'-').replace(',','.');
@@ -21,18 +22,18 @@ const numRoots=(A,B,C)=>{
 };
 
 test('12 complete algebra lessons: distinct conditions, both numbers and real prerequisite links',()=>{
-  assert.equal(lessons.length,12);assert.equal(tasks.length,72);
+  assert.equal(lessons.length,12);assert.equal(tasks.length,72);assert.equal(allTasks.length,84);
   assert.equal(lessons.filter(l=>l.exam===14).length,6);
   assert.equal(lessons.filter(l=>l.exam===16).length,6);
-  assert.equal(new Set(tasks.map(t=>t.id)).size,72);
-  assert.equal(new Set(tasks.map(t=>t.prompt)).size,72);
+  assert.equal(new Set(allTasks.map(t=>t.id)).size,84);
+  assert.equal(new Set(allTasks.map(t=>t.prompt)).size,84);
   for(const l of lessons){
-    assert.equal(l.tasks.length,6);assert.ok(l.theory.length>=3);
+    assert.equal(l.tasks.length,l.exam===14?8:6);assert.ok(l.theory.length>=3);
     for(const p of l.prerequisites){
       let file=p.href.split(/[?#]/)[0];if(file.endsWith('/'))file+='index.html';
       assert.ok(fs.existsSync(path.join(__dirname,'..',file)),`missing prerequisite ${p.href}`);
     }
-    for(const t of l.tasks){
+    for(const t of l.tasks.slice(0,6)){
       assert.ok(t.steps.length>=4);assert.ok(t.solution.length>=3);
       assert.ok(t.proof.prompt);assert.ok(t.proof.criteria.length>=3);
       for(const s of t.steps)assert.ok(s.prompt&&s.hint&&s.explanation&&s.answers.length);

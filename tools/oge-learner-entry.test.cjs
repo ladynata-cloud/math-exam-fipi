@@ -14,6 +14,9 @@ const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.jso
 // changes. The apartment exercise has a reviewed new feedback engine. Other pages
 // and link metrics retain the published baseline.
 const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b44244753ac806d449a2040ad4b8c8af9acaf3","trainers/oge-task16-circle.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task17-quadrilaterals.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/task19-trainer.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge13-inequalities-series.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task18-grid.html":"7a7169c35c54351ace4f7844b7730899b4a61831",'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
+// WORK-07 / #765: the algebra factory has a reviewed new lesson and legacy-mode engine.
+// Compare its complete inline scripts and teaching controls to the immutable source.
+taskSources['trainers/like-terms-factory.html']='72b8c03dcdd824979500c02ed662344394e8ee65';
 // The fraction controls were reviewed on this immutable published source. Keep
 // the complete inline engine and static controls comparison, including fixes.
 taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
@@ -24,6 +27,9 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
 const reviewedSingleScripts={
+  // Reviewed interactive ruler and notebook. The historic HTML controls stay pinned;
+  // the full arithmetic path, boundary positions and assistance are exercised in the standalone/browser suites.
+  'trainers/oge-basics/multiplication-division/long-division-quotient-digit.html':'327e80f5188efa65bea0404e701c56342beae47766dd2f846ce708e2f7653941',
   // The requested first percentage uses the existing table, visual model and grading.
   // The normal random route and the article example are exercised separately.
   'trainers/percent-part-whole-trainer.html':'1b1e2bbd1bc8a3f3ff60a584b183131ea1311ed2285d913f315266183ea0c631',

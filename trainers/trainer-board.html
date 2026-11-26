@@ -13,7 +13,7 @@
     *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow:auto}.lesson{min-height:calc(100vh - 58px);height:auto;padding:12px;display:grid;grid-template-columns:minmax(360px,.92fr) minmax(480px,1.08fr);gap:12px}.lesson.hide-trainer{grid-template-columns:1fr}.hide-trainer .trainer{display:none}.trainer,.board{min-width:0;min-height:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}.head,.board-head,.share,.toolbar{padding:12px;border-bottom:1px solid var(--line);background:#fff}.url-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}.share-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:end}label{display:block;color:var(--muted);font-size:13px;font-weight:800;margin-bottom:4px}input[type=text],input[type=url],select{min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;padding:8px 10px}.btn,.tool,.quick{min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-weight:800;padding:8px 11px;cursor:pointer;white-space:nowrap}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.warn{color:var(--red);border-color:#f3cbd4;background:#fff7f9}.btn:disabled,.tool:disabled{opacity:.45;cursor:not-allowed}.btn:hover,.quick:hover,.tool[aria-pressed=true]{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}.btn.primary:hover{background:#1d4ed8;color:#fff}.quick-row,.mirror-row,.sheet,.tools,.actions,.share-meta,.participants-list,.control-panel{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.quick-row,.mirror-row{margin-top:10px}.frame{width:100%;flex:1;min-height:0;border:0;background:#fff}.board-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.title h1{font-size:22px;margin:0 0 4px}.title p{margin:0;color:var(--muted);font-weight:700}.sheet-count{min-width:92px;text-align:center;color:var(--muted);font-weight:800}.share{background:#fbfcff}.share h2{font-size:16px;margin:0 0 10px}.share input{width:100%}.share-link{margin-top:8px}.share-link input{font-size:13px}.participants{margin-top:8px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 10px}.participants b{display:block;margin-bottom:6px;font-size:13px}.participants-list{gap:6px}.participant{display:inline-flex;align-items:center;gap:6px;border:1px solid #e2e8f0;border-radius:999px;background:#f8fafc;padding:5px 8px;color:#334155;font-size:12px;font-weight:800}.participant-dot{width:9px;height:9px;border-radius:999px;display:inline-block;flex:0 0 auto}.participant-role{color:#64748b}.participant-status{color:#166534}.participant.offline{opacity:.72}.participant.offline .participant-status{color:#9f1239}.participant.local .participant-status{color:#64748b}.participants-empty{color:#64748b;font-size:12px;font-weight:800}.board-tip{margin:-2px 0 10px;color:#475569;font-size:13px;font-weight:800;line-height:1.4}.status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:900}.status.ok{background:#dcfce7;color:#166534}.status.bad{background:#ffe4e6;color:#9f1239}.status.wait{background:#fef3c7;color:#92400e}.role{display:inline-flex;border-radius:999px;padding:5px 9px;background:#f1f5f9;color:#334155;font-size:12px;font-weight:900}.viewer-note,.control-banner{display:none;margin-top:8px;border:1px solid #bae6fd;background:#f0f9ff;color:#075985;border-radius:8px;padding:8px 10px;font-weight:800}.control-banner{justify-content:space-between;gap:10px;align-items:center}.student-mode .viewer-note{display:block}.student-mode.control-owner .viewer-note{display:none}.student-mode.control-owner .control-banner{display:flex}.student-mode .teacher-only{display:none!important}.student-mode:not(.control-owner) .toolbar{display:none}.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;background:#f8fafc}.tools>span{height:32px;border-left:1px solid var(--line)}input[type=color]{width:44px;height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:4px}input[type=range]{width:112px}.size{min-width:42px;color:var(--muted);font-weight:800}.canvas-wrap{position:relative;flex:1 1 360px;min-height:360px;padding:12px;background:#eef2f7}canvas{display:block;width:100%;height:100%;min-height:0;border:1px solid var(--line);border-radius:8px;background:#fff;touch-action:none;cursor:crosshair}.viewer canvas{cursor:default}.viewer .frame{pointer-events:none}.editor{position:absolute;z-index:4;min-width:170px;min-height:42px;border:2px solid var(--blue);border-radius:8px;padding:8px 10px;background:#fff;color:var(--ink);box-shadow:0 12px 28px rgba(23,32,51,.18);font:20px Inter,system-ui,sans-serif;resize:both}.hidden{display:none}@media(max-width:1050px){body{overflow:auto}.lesson{height:auto;min-height:calc(100vh - 58px);grid-template-columns:1fr;grid-template-rows:minmax(340px,42vh) minmax(620px,1fr)}.toolbar{grid-template-columns:1fr}.actions{justify-content:flex-start}}@media(max-width:720px){.lesson{padding:8px}.url-row,.share-row{grid-template-columns:1fr}.board-head{display:block}.sheet{margin-top:10px}.canvas-wrap{min-height:460px}}
   </style>
   <link rel="stylesheet" href="board-picker.css?v=20261025-oge-course-college-mirror-2">
-  <link rel="stylesheet" href="board-tools.css?v=20261024-writing-1">
+  <link rel="stylesheet" href="board-tools.css?v=20261125-eraser-widths">
   <link rel="stylesheet" href="sections-course-navigation.css?v=20261108-mobile">
   <style>
     .ink-delivery { flex:none; padding:5px 8px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; border-top:1px solid #e3e8e5; }
@@ -21,6 +21,11 @@
     .ink-delivery .status { font-size:14px; }
     .ink-delivery .panel-buttons { margin:0; max-width:100%; }
     .ink-delivery .btn { white-space:normal; }
+    #roomNotice, #roomRecovery { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:0 12px; padding:8px 12px; border:1px solid #e6b76c; border-radius:8px; background:#fff5df; color:#78350f; font-size:13px; font-weight:700; line-height:1.35; }
+    #roomNotice { position:sticky; top:0; z-index:8; }
+    #roomNotice[hidden], #roomRecovery[hidden], #roomNotice button[hidden] { display:none !important; }
+    #roomNotice .btn, #roomRecovery .btn { min-height:32px; font-size:12px; white-space:normal; }
+    #roomRecovery select { min-width:0; max-width:100%; min-height:32px; font-size:12px; }
     #guestEntry { display: none; }
     .awaiting-room #guestEntry { display: grid; gap: .7rem; justify-items: start; margin: 1rem; padding: 1.25rem; border-radius: .8rem; background: #f0f7fb; color: #17394a; }
     .awaiting-room .trainer > .head { display: none; }
@@ -35,6 +40,8 @@
     <div id="workspaceModes" role="group" aria-label="Вид рабочего места"><button type="button" data-workspace-view="split" aria-pressed="true" aria-label="Тренажёр и доска вместе">Вместе</button><button type="button" data-workspace-view="trainer" aria-pressed="false" aria-label="Только тренажёр">Тренажёр</button><button type="button" data-workspace-view="board" aria-pressed="false" aria-label="Только доска">Доска</button></div>
     <div class="workspace-session"><span class="status" id="shareStatus" role="status">локальный режим</span><button class="btn primary" id="openShare" type="button" data-open-panel="sharePanel">Участники</button></div>
   </header>
+  <div id="roomNotice" role="status" aria-live="polite" hidden><span id="roomNoticeText"></span><button id="roomNoticeAction" class="btn" type="button" hidden></button></div>
+  <div id="roomRecovery" hidden><span id="roomRecoveryText"></span><select id="roomRecoveryChoice" aria-label="Резервная копия доски"></select><button id="roomRecoveryDownload" class="btn" type="button">Скачать JSON</button><button id="roomRecoveryRestore" class="btn teacher-only" type="button">Открыть копию локально</button><button id="roomRecoveryDiscard" class="btn teacher-only" type="button">Удалить копию</button></div>
   <main class="lesson" id="lesson">
     <section class="trainer" aria-label="Тренажёр">
       <div class="head">
@@ -52,13 +59,13 @@
     <div id="boardDivider" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Ширина тренажёра и доски"></div>
     <section class="board" aria-label="Цифровая доска">
       <div class="board-head"><div class="board-heading"><h1>Доска</h1><div class="board-control"><span id="boardControlStatus" role="status">Пишет учитель</span><button class="btn teacher-only" id="boardControlToggle" type="button" disabled>Передать ход</button></div></div><div class="sheet"><button class="btn icon-button teacher-only" id="prevSheet" type="button" aria-label="Предыдущий лист" title="Предыдущий лист">‹</button><span class="sheet-count" id="sheetCount">Лист 1 из 1</span><button class="btn icon-button teacher-only" id="nextSheet" type="button" aria-label="Следующий лист" title="Следующий лист">›</button><button class="btn icon-button teacher-only" id="addSheet" type="button" aria-label="Новый лист" title="Новый лист">+</button></div><button class="btn icon-button" id="boardOptions" type="button" data-open-panel="boardPanel" aria-label="Настройки доски" title="Настройки доски">⋯</button></div>
-      <div class="toolbar" aria-label="Инструменты доски"><div class="tools"><button class="tool" data-tool="pen" aria-pressed="true" type="button" title="Ручка"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 16-1 5 5-1L20 8l-4-4Z"/><path d="m14 6 4 4"/></svg><span>Ручка</span></button><button class="tool" data-tool="marker" aria-pressed="false" type="button" title="Маркер"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 15 7-10 6 4-7 10Z"/><path d="m5 15 6 4-4 2H3Z"/></svg><span>Маркер</span></button><button class="tool" data-tool="eraser" aria-pressed="false" type="button" title="Ластик"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 13 8-9a2 2 0 0 1 3 0l5 5a2 2 0 0 1 0 3l-9 9H8l-4-4a3 3 0 0 1 0-4Z"/><path d="m8 9 8 8M11 21h10"/></svg><span>Ластик</span></button><button class="tool" data-tool="text" aria-pressed="false" type="button" title="Текст"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M12 4v16M8 20h8"/></svg><span>Текст</span></button><button class="tool" id="addBoardImage" type="button" title="Добавить скриншот; можно вставить Ctrl+V на доске"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg><span>Снимок</span></button><input id="boardImageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><details class="shape-menu"><summary title="Стрелка, окружность и треугольник"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="8" r="5"/><path d="m15 9 7 12H8Z"/></svg><span>Фигуры</span></summary><div class="shape-options" aria-label="Геометрические фигуры"><button class="tool" data-tool="line" aria-pressed="false" type="button" title="Линия"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 19 14-14"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/></svg><span>Линия</span></button><button class="tool" data-tool="rect" aria-pressed="false" type="button" title="Рамка"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"/></svg><span>Рамка</span></button>
+      <div class="toolbar" aria-label="Инструменты доски"><div class="tools"><button class="tool" data-tool="pen" aria-pressed="true" type="button" title="Ручка"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 16-1 5 5-1L20 8l-4-4Z"/><path d="m14 6 4 4"/></svg><span>Ручка</span></button><button class="tool" data-tool="marker" aria-pressed="false" type="button" title="Маркер"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 15 7-10 6 4-7 10Z"/><path d="m5 15 6 4-4 2H3Z"/></svg><span>Маркер</span></button><button class="tool" data-tool="eraser" aria-pressed="false" type="button" title="Ластик"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m4 13 8-9a2 2 0 0 1 3 0l5 5a2 2 0 0 1 0 3l-9 9H8l-4-4a3 3 0 0 1 0-4Z"/><path d="m8 9 8 8M11 21h10"/></svg><span>Ластик</span></button><button class="tool btn warn" id="clear" type="button" aria-label="Очистить лист" title="Очистить текущий лист целиком"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></svg><span>Очистить</span></button><button class="tool" data-tool="text" aria-pressed="false" type="button" title="Текст"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M12 4v16M8 20h8"/></svg><span>Текст</span></button><button class="tool" id="addBoardImage" type="button" title="Добавить скриншот; можно вставить Ctrl+V на доске"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg><span>Снимок</span></button><input id="boardImageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><details class="shape-menu"><summary title="Стрелка, окружность и треугольник"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="8" r="5"/><path d="m15 9 7 12H8Z"/></svg><span>Фигуры</span></summary><div class="shape-options" aria-label="Геометрические фигуры"><button class="tool" data-tool="line" aria-pressed="false" type="button" title="Линия"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 19 14-14"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/></svg><span>Линия</span></button><button class="tool" data-tool="rect" aria-pressed="false" type="button" title="Рамка"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"/></svg><span>Рамка</span></button>
         <button class="tool" data-tool="arrow" aria-pressed="false" type="button" title="Стрелка; Shift — угол кратный 45°"><span aria-hidden="true">↗</span><span>Стрелка</span></button>
         <button class="tool" data-tool="ellipse" aria-pressed="false" type="button" title="Эллипс; Shift — окружность"><span aria-hidden="true">○</span><span>Окружность</span></button>
         <button class="tool" data-tool="triangle" aria-pressed="false" type="button" title="Треугольник"><span aria-hidden="true">△</span><span>Треугольник</span></button>
         <small>Тяните по доске. Shift — ровная линия, квадрат или круг.</small>
       </div></details></div><div class="actions"><button class="btn icon-button" id="undo" type="button" aria-label="Отменить действие" title="Отменить действие">↶</button><button class="btn icon-button" id="redo" type="button" aria-label="Повторить действие" title="Повторить действие">↷</button></div></div>
-      <div class="board-tools" aria-label="Цвет и толщина"><div class="tool-palette" role="group" aria-label="Быстрые цвета"><button type="button" data-pen-color="#172033" data-color="#172033" style="--swatch:#172033" aria-label="Чёрный" title="Чёрный" aria-pressed="true"></button><button type="button" data-pen-color="#2563eb" data-color="#2563eb" style="--swatch:#2563eb" aria-label="Синий" title="Синий" aria-pressed="false"></button><button type="button" data-pen-color="#dc2626" data-color="#dc2626" style="--swatch:#dc2626" aria-label="Красный" title="Красный" aria-pressed="false"></button><button type="button" data-pen-color="#16803d" data-color="#16803d" style="--swatch:#16803d" aria-label="Зелёный" title="Зелёный" aria-pressed="false"></button><button type="button" data-pen-color="#9333ea" data-color="#9333ea" style="--swatch:#9333ea" aria-label="Фиолетовый" title="Фиолетовый" aria-pressed="false"></button><input id="color" type="color" value="#172033" aria-label="Другой цвет" title="Другой цвет"></div><div class="pen-widths" role="group" aria-label="Толщина линии"><button type="button" data-pen-size="2" data-width="2" aria-label="Толщина 2 пикселей" title="Толщина 2 px" aria-pressed="false"><span style="width:4px;height:4px" aria-hidden="true"></span></button><button type="button" data-pen-size="5" data-width="5" aria-label="Толщина 5 пикселей" title="Толщина 5 px" aria-pressed="true"><span style="width:7px;height:7px" aria-hidden="true"></span></button><button type="button" data-pen-size="9" data-width="9" aria-label="Толщина 9 пикселей" title="Толщина 9 px" aria-pressed="false"><span style="width:11px;height:11px" aria-hidden="true"></span></button><button class="btn" type="button" data-open-panel="boardPanel" aria-label="Точная толщина и настройки доски" title="Точная толщина и настройки">⋯</button></div></div>
+      <div class="board-tools" aria-label="Цвет и толщина"><div class="tool-palette" role="group" aria-label="Быстрые цвета"><button type="button" data-pen-color="#172033" data-color="#172033" style="--swatch:#172033" aria-label="Чёрный" title="Чёрный" aria-pressed="true"></button><button type="button" data-pen-color="#2563eb" data-color="#2563eb" style="--swatch:#2563eb" aria-label="Синий" title="Синий" aria-pressed="false"></button><button type="button" data-pen-color="#dc2626" data-color="#dc2626" style="--swatch:#dc2626" aria-label="Красный" title="Красный" aria-pressed="false"></button><button type="button" data-pen-color="#16803d" data-color="#16803d" style="--swatch:#16803d" aria-label="Зелёный" title="Зелёный" aria-pressed="false"></button><button type="button" data-pen-color="#9333ea" data-color="#9333ea" style="--swatch:#9333ea" aria-label="Фиолетовый" title="Фиолетовый" aria-pressed="false"></button><input id="color" type="color" value="#172033" aria-label="Другой цвет" title="Другой цвет"></div><div class="pen-widths" role="group" aria-label="Толщина линии"><button type="button" data-pen-size="2" data-eraser-size="8" data-width="2" aria-label="Толщина 2 пикселей" title="Толщина 2 px" aria-pressed="false"><span style="width:4px;height:4px" aria-hidden="true"></span></button><button type="button" data-pen-size="5" data-eraser-size="24" data-width="5" aria-label="Толщина 5 пикселей" title="Толщина 5 px" aria-pressed="true"><span style="width:7px;height:7px" aria-hidden="true"></span></button><button type="button" data-pen-size="9" data-eraser-size="34" data-width="9" aria-label="Толщина 9 пикселей" title="Толщина 9 px" aria-pressed="false"><span style="width:11px;height:11px" aria-hidden="true"></span></button><button class="btn" type="button" data-open-panel="boardPanel" aria-label="Точная толщина и настройки доски" title="Точная толщина и настройки">⋯</button></div></div>
         <p id="boardMessage" class="board-message" role="status" hidden></p>
         <div class="viewer-note">Режим просмотра: пишет учитель. Можно двигать и приближать записи. Для письма попросите учителя передать ход.</div>
         <div class="control-banner" id="controlBanner"><span>Вы у доски. Учитель видит ваши действия.</span><button class="btn" id="releaseControl" type="button">Вернуть ход</button></div>
@@ -111,8 +118,7 @@
     <div class="board-setting teacher-only"><label for="bg">Фон листа</label><select id="bg"><option value="grid">Клетка</option><option value="lined">Линия</option><option value="blank">Чистый</option></select></div>
     <div class="board-layout"><label for="boardLayout">Место на экране</label><select id="boardLayout"><option value="balanced">Поровну</option><option value="trainer">Больше тренажёр</option><option value="board">Больше доска</option></select></div>
     <div class="panel-buttons"><button class="btn teacher-only" id="toggleTrainerBoard" type="button">Скрыть тренажёр</button><button class="btn" id="export" type="button">Скачать текущий вид PNG</button></div>
-
-    <div class="panel-buttons danger-zone"><button class="btn warn" id="clear" type="button">Очистить лист</button><button class="btn warn teacher-only" id="deleteSheet" type="button">Удалить лист</button></div>
+    <div class="panel-buttons danger-zone"><button class="btn warn teacher-only" id="deleteSheet" type="button">Удалить лист</button></div>
   </dialog>
   <dialog id="trainerPicker" class="picker-dialog" aria-labelledby="pickerTitle"><header><h2 id="pickerTitle">Выберите занятие</h2><button class="btn" id="pickerClose" type="button" aria-label="Закрыть каталог">Закрыть</button></header>
         <div class="board-courses teacher-only" aria-label="Курсы для урока"><button class="btn" data-course-picker="Виленкин · 5 класс">Виленкин 5</button><button class="btn" data-course-picker="Виленкин · 6 класс">Виленкин 6</button><button class="btn" data-course-picker="Макарычев · 9 класс">Макарычев 9</button></div>
@@ -135,17 +141,18 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261119-lesson-title"></script>
+  <script src="board-picker.js?v=20261124-vilenkin6-proportion"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
   <script src="board-delivery.js?v=20261120"></script>
   <script src="board-delivery-ui.js?v=20261120"></script>
-  <script src="board-writing.js?v=20261120-delivery"></script>
+  <script src="board-writing.js?v=20261127-delivery-eraser"></script>
   <script>
     const KEY='mathexam.trainerBoard.v1';
     const SERVER_KEY='mathexam.trainerBoard.serverUrl';
     const TEACHER_SESSION_KEY='mathexam.trainerBoard.teacherRoomSession.v1';
+    const RECOVERY_KEY='mathexam.trainerBoard.recovery.v1';
     const DEFAULT_SERVER='https://mathexam-board-ladynata.msk1.amvera.tech';
     const params=new URLSearchParams(location.search);
     // Article demonstrations keep their sheets in this tab, separately from lesson work.
@@ -183,7 +190,121 @@
     function persistLocalBoard(){try{sheetStorage().setItem(KEY,JSON.stringify(state))}catch(_){boardMessage('Не удалось сохранить копию в этом браузере. Скачайте текущий вид PNG.')}}
     function save(){if(shared.role==='student'||applyingRemote)return;clearTimeout(timer);timer=setTimeout(persistLocalBoard,140)}
     function page(){return state.pages[state.current]}
-    function canWrite(){if(deliveryBlocksWriting()||(shared.roomId&&!shared.connected))return false;return shared.connected?!!(shared.me&&shared.control===shared.me.participantId):shared.role==='teacher'}
+    // A transport connection alone is not an authenticated room.
+    function roomReady(){return !!(shared.roomId&&shared.connected&&roomStateReceived&&shared.socket?.connected===true)}
+    function canWrite(){if(deliveryBlocksWriting())return false;return shared.roomId?roomReady()&&!!(shared.me&&shared.control===shared.me.participantId):shared.role==='teacher'}
+    let roomConnectGeneration=0;
+    function readRecovery(){
+      if(initialRole!=='teacher'||params.get('demo')==='1')return {pending:null,copies:[]};
+      try{const record=JSON.parse(sessionStorage.getItem(RECOVERY_KEY)||'null');
+        const valid=item=>item&&typeof item.roomId==='string'&&typeof item.at==='string'&&Array.isArray(item.snapshot?.pages)&&item.snapshot.pages.length&&item.snapshot.pages.every(p=>p&&Array.isArray(p.strokes));
+        const copies=Array.isArray(record?.copies)?record.copies.filter(valid):[];
+        const pending=valid(record?.pending)?record.pending:null;
+        if(pending&&pending.roomId!==shared.roomId)copies.push(pending);
+        return {pending:pending?.roomId===shared.roomId?pending:null,copies};
+      }catch(_){return {pending:null,copies:[]}}
+    }
+    let recovery=readRecovery(), recoveryStorageFailed=false;
+    function persistRecovery(){
+      if(shared.role!=='teacher'||params.get('demo')==='1')return;
+      try{if(recovery.pending||recovery.copies.length)sessionStorage.setItem(RECOVERY_KEY,JSON.stringify(recovery));else sessionStorage.removeItem(RECOVERY_KEY);recoveryStorageFailed=false}
+      catch(_){recoveryStorageFailed=true}
+    }
+    function participantOnline(participant){return participant?.connected===true||Number(participant?.onlineCount)>0}
+    function knownRoleOffline(role){const participants=shared.participants.filter(p=>p?.role===role);return participants.length>0&&!participants.some(participantOnline)}
+    // Remote stroke-start / stroke-points are only a preview. The server
+    // persists a stroke at stroke-end, so an offline writer's preview must
+    // not be presented as accepted work or survive the next connection.
+    function clearOfflineWriterPreview(){
+      const writer=controlHolder();
+      if(current&&!drawing&&writer&&!participantOnline(writer)&&(writer.connected===false||writer.onlineCount===0)){current=null;scheduleRender()}
+    }
+    function refreshRoomNotice(){
+      const notice=$('roomNotice'),action=$('roomNoticeAction');
+      let message='',actionText='';
+      if(shared.roomId&&!roomReady()){
+        message=shared.role==='teacher'?'Нет подтверждённой связи с комнатой. Ученик не получает новые записи. Письмо приостановлено до восстановления.':'Нет связи с комнатой. Вы видите последние полученные записи. Ждём восстановления.';
+        actionText='Повторить подключение';
+      }else if(roomReady()&&shared.role==='teacher'&&knownRoleOffline('student')){
+        message='Ученик не в сети. Записи сохраняются в комнате, но появятся у ученика только после подключения.';
+        actionText='Участники';
+      }else if(roomReady()&&shared.role==='student'&&knownRoleOffline('teacher')){
+        message=canWrite()?'Учитель не в сети. Вы подключены к комнате; ваши записи будут доступны учителю после его подключения.':'Учитель не в сети. Вы видите последние записи комнаты; новые записи учителя пока не поступают.';
+      }else if(!shared.roomId&&(shared.roomError||missingTeacherRoomSession)){
+        message=shared.role==='teacher'?'Общая комната недоступна. Записи остались на этой доске, но ученик их не видит. Создайте новую комнату и отправьте новую ссылку.':'Комната недоступна. Вы видите прежние записи. Попросите учителя прислать новую ссылку.';
+        if(shared.role==='teacher')actionText='Создать новую комнату';
+      }else if(!shared.roomId&&shared.role==='student'){
+        message='Нет комнаты урока. Попросите учителя прислать ссылку ученика.';
+      }
+      // Ordinary local work uses the compact header status. Reserve the large
+      // notice for connection loss, an offline pupil or failed room recovery.
+      shareStatus.title=!shared.roomId&&shared.role==='teacher'?'Локальная доска: ученик не видит записи. Для общего урока создайте комнату.':'';
+      $('roomNoticeText').textContent=message;notice.hidden=!message;
+      action.textContent=actionText;action.hidden=!actionText;
+      const panel=$('roomRecovery'),choice=$('roomRecoveryChoice'),selected=choice.value;
+      panel.hidden=!recovery.copies.length&&!recoveryStorageFailed;
+      $('roomRecoveryText').textContent=recoveryStorageFailed?'Не удалось сохранить резервную копию в браузере. Не закрывайте вкладку.':'Сохранена локальная копия записей, не подтверждённых сервером. Общая доска не перезаписана.';
+      if(choice.options.length!==recovery.copies.length||Array.from(choice.options).some((option,i)=>option.textContent!==recovery.copies[i]?.at)){
+        choice.replaceChildren(...recovery.copies.map((item,i)=>new Option(item.at,String(i))));
+        if(recovery.copies[Number(selected)]&&selected!=='')choice.value=selected;else if(recovery.copies.length)choice.value=String(recovery.copies.length-1);
+      }
+      choice.disabled=!recovery.copies.length;
+      $('roomRecoveryDownload').disabled=$('roomRecoveryRestore').disabled=$('roomRecoveryDiscard').disabled=!recovery.copies.length;
+    }
+    // Capture the teacher's own interrupted gesture/text, not remote preview.
+    // No recovery object is emitted to the server.
+    function captureInterruptedBoard(){
+      if(shared.role!=='teacher'||!shared.roomId||!roomStateReceived)return;
+      if(shared.me&&shared.control===shared.me.participantId){
+        const sheet=state.pages.find(p=>p.id===gesturePageId);
+        if(drawing&&current&&sheet&&!sheet.strokes.some(s=>s.objectId===current.objectId))sheet.strokes.push(current);
+        if(!editor.classList.contains('hidden')&&editor.value.trim()&&textPoint&&textStyle)page().strokes.push({...newObjectMeta(),kind:'text',tool:'text',x:textPoint.x,y:textPoint.y,text:editor.value.trim(),...textStyle});
+      }
+      recovery.pending={roomId:shared.roomId,at:new Date().toISOString(),snapshot:JSON.parse(JSON.stringify(publicSnapshot()))};
+      persistRecovery();clearTimeout(timer);persistLocalBoard();
+    }
+    function snapshotHasUnconfirmed(local,remote){
+      if(!Array.isArray(remote?.pages)||!remote.pages.length)return false;
+      return local.pages.some(sheet=>{
+        const accepted=remote.pages.find(p=>p.id===sheet.id);
+        if(!accepted)return true;
+        return sheet.strokes.some(stroke=>!accepted.strokes?.some(item=>stroke.objectId?item.objectId===stroke.objectId:JSON.stringify(item)===JSON.stringify(stroke)));
+      });
+    }
+    function rememberUnconfirmed(remote){
+      const pending=recovery.pending;
+      if(!pending||pending.roomId!==shared.roomId||!Array.isArray(remote?.pages)||!remote.pages.length)return;
+      if(snapshotHasUnconfirmed(pending.snapshot,remote))recovery.copies.push(pending);
+      recovery.pending=null;persistRecovery();refreshRoomNotice();
+    }
+    function finishRecoveryForLostRoom(){
+      const pending=recovery.pending;
+      if(!pending||pending.roomId!==shared.roomId)return;
+      if(snapshotHasUnconfirmed(pending.snapshot,publicSnapshot()))recovery.copies.push(pending);
+      recovery.pending=null;persistRecovery();
+    }
+    function selectedRecovery(){return recovery.copies[Number($('roomRecoveryChoice').value)]||null}
+    function downloadRecovery(){
+      const item=selectedRecovery();if(!item)return;
+      const link=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(item.snapshot,null,2)],{type:'application/json'}));
+      link.href=url;link.download='mathexam-board-recovery.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }
+    function restoreRecovery(){
+      const item=selectedRecovery();if(shared.role!=='teacher'||!item||!confirm('Открыть резервную копию вместо текущего локального вида? Подключение к текущей комнате будет закрыто только в этой вкладке. Для совместной работы потребуется новая комната.'))return;
+      if(shared.roomId)handleRoomError({message:'Открыта локальная копия'},true);
+      // Do not discard a newer local view when opening an older backup.
+      const previous=publicSnapshot();
+      if(snapshotHasUnconfirmed(previous,item.snapshot)){
+        recovery.copies.push({roomId:'local',at:new Date().toISOString(),snapshot:JSON.parse(JSON.stringify(previous))});
+        persistRecovery();
+      }
+      applySnapshot(item.snapshot);clearTimeout(timer);persistLocalBoard();
+      setStatus('Открыта локальная копия. Создайте новую комнату.','wait');refreshRoomNotice();
+    }
+    function discardRecovery(){
+      const item=selectedRecovery();if(shared.role!=='teacher'||!item||!confirm('Удалить выбранную резервную копию? Текущая доска не изменится.'))return;
+      recovery.copies.splice(recovery.copies.indexOf(item),1);persistRecovery();refreshRoomNotice();
+    }
     function readonly(){return !canWrite()}
     function normalizeTrainer(v){return BoardPicker.normalize(v)}
     function normalizeServer(v){const server=String(v||'').trim().replace(/\/+$/,'');return server==='https://mathexam-board-ladynata.amvera.io'?DEFAULT_SERVER:server}
@@ -444,8 +565,9 @@
       });
     }
     async function surrenderControl(eventName){
+      if(vprControlTransfer||!['control:grant','control:release'].includes(eventName))return;
       finishText();cancelGesture(true);if(!deliveryAllowsHistory())return;
-      if(!shared.connected||vprControlTransfer||!['control:grant','control:release'].includes(eventName))return;
+      if(!roomReady()){boardMessage('Передать ход пока не удалось. Дождитесь восстановления связи с комнатой.');return;}
       if(canonicalTrainerFileFromUrl(state.trainerUrl)==='trainers/vpr-math/index.html'){
         const socket=shared.socket,room=shared.roomId,controller=shared.control,controlVersion=shared.controlVersion;
         const flush=flushVprControlState(),pending=vprControlTransfer;
@@ -501,7 +623,7 @@
     function flushPendingTrainerState(){if(bridgeSession||readyCandidate||!pendingTrainerState||!frame.contentWindow||!frameLoaded||trainerRegistry.status!=='ready')return;const entry=mirrorEntryFromPayload(pendingTrainerState),trainer=entry?.trainerId;if(canWrite()||!entry?.allowLegacyHtml||!isMirroredTrainerUrl(trainer,state.trainerUrl))return;const validation=MathExamBoard.validateState(pendingTrainerState.state,{allowHtml:true});if(!validation.ok)return;postTrainerMessage({type:'mathexam:apply-trainer-state',trainer,trainerId:trainer,state:pendingTrainerState.state});pendingTrainerState=null}
     function postBridgeTrainerState(payload){const trainer=mirrorTrainerFromPayload(payload);if(trainerRegistry.status!=='ready'||!bridgeSession?.hydrated||!payload||!trainer||!payload.state||!isMirroredTrainerUrl(trainer,state.trainerUrl))return false;const trainerState=bridgeStateFromPayload(payload,trainer);return !!trainerState&&postTrainerMessage(bridgeEnvelope('mathexam:apply-trainer-state',{state:trainerState}),bridgeSession.origin)}
     function applyTrainerStateToFrame(payload){if(!payload||!payload.state)return;latestTrainerState=payload;if(trainerRegistry.status!=='ready'||canWrite())return;const trainer=mirrorTrainerFromPayload(payload);if(!trainer||!isMirroredTrainerUrl(trainer,state.trainerUrl)){updateMirrorStatusForCurrentTrainer();return}if(bridgeSession||readyCandidate){if(!bridgeSession?.hydrated){maybeHydrateTrainer();return}postBridgeTrainerState(payload);return}pendingTrainerState=payload;flushPendingTrainerState()}
-    function setStatus(text,kind=''){shareStatus.textContent=text;shareStatus.className=`status ${kind}`.trim()}
+    function setStatus(text,kind=''){const local=shared.role==='teacher'&&!shared.roomId&&!shared.roomError&&!missingTeacherRoomSession&&params.get('demo')!=='1';shareStatus.textContent=local?(text==='локальный режим'?'Локально — ученик не видит':`Локально: ${text}`):text;shareStatus.className=`status ${kind}`.trim();refreshRoomNotice()}
     function participantRole(role){return role==='teacher'?'Учитель':role==='student'?'Ученик':'Участник'}
     function participantColor(value){const color=String(value||'');return /^#[0-9a-f]{3,8}$/i.test(color)?color:'#647086'}
     function participantToMe(participant,role=participant?.role||shared.role){if(!participant?.id)return null;return{participantId:participant.id,role,name:participant.name,color:participant.color,caps:{...(participant.caps||{})}}}
@@ -520,14 +642,14 @@
       if(!writable&&document.activeElement===frame)frame.blur();
       document.body.classList.toggle('viewer',!writable);
       document.body.classList.toggle('control-owner',writable);
-      controlBadge.textContent=shared.roomError?'Нет подключения к комнате':`У доски: ${controlLabel()}`;
+      controlBadge.textContent=shared.roomError||(shared.roomId&&!roomReady())?'Нет подключения к комнате':`У доски: ${controlLabel()}`;
       controlToggle.textContent=studentHasControl?'Забрать ход':'Передать ход';
-      controlToggle.disabled=!shared.connected||shared.role!=='teacher'||!!vprControlTransfer;
-      $('boardControlStatus').textContent=shared.roomError?(shared.role==='teacher'?'Локальная доска':'Нет подключения к комнате'):`Пишет ${studentHasControl?'ученик':'учитель'}`;
+      controlToggle.disabled=!roomReady()||shared.role!=='teacher'||!!vprControlTransfer;
+      $('boardControlStatus').textContent=shared.roomId&&!roomReady()?'Нет связи — письмо приостановлено':shared.roomError?(shared.role==='teacher'?'Локальная доска':'Нет подключения к комнате'):`Пишет ${studentHasControl?'ученик':'учитель'}`;
       $('boardControlToggle').textContent=controlToggle.textContent;
       $('boardControlToggle').disabled=controlToggle.disabled;
-      releaseControl.disabled=!shared.connected||!writable||shared.role!=='student';
-      buttons();
+      releaseControl.disabled=!roomReady()||!writable||shared.role!=='student';
+      buttons();refreshRoomNotice();
     }
     function genPageId(){return `local-${Date.now()}-${Math.random().toString(36).slice(2,9)}`}
     function ensurePageId(p){if(!p.id)p.id=genPageId();return p.id}
@@ -538,11 +660,52 @@
     function roomPayload(extra={}){return{roomId:shared.roomId,token:shared.token,...extra}}
     function publicSnapshot(){return{currentPage:state.current,trainerUrl:state.trainerUrl,pages:state.pages.map((p,i)=>({id:ensurePageId(p)||`page-${i+1}`,bg:p.bg||'grid',strokes:p.strokes||[]}))}}
     function applySnapshot(remote){if(remote)setControlState(remote);if(remote&&Array.isArray(remote.participants))setParticipants(remote.participants);if(remote&&Object.prototype.hasOwnProperty.call(remote,'latestTrainerState'))latestTrainerState=remote.latestTrainerState||null;if(!remote||!Array.isArray(remote.pages)||!remote.pages.length){if(bridgeSession){if(bridgeSession.hydrated&&latestTrainerState)postBridgeTrainerState(latestTrainerState);else maybeHydrateTrainer()}else if(latestTrainerState)applyTrainerStateToFrame(latestTrainerState);updateControlUi();return}applyingRemote=true;state.pages=remote.pages.map((p,i)=>remotePage(p,i));acknowledgeHistory();state.current=Math.min(Math.max(remote.currentPage||0,0),state.pages.length-1);state.trainerUrl=remote.trainerUrl||state.trainerUrl;trainerUrl.value=state.trainerUrl;setTrainerFrameSrc(state.trainerUrl);sync(false);applyingRemote=false;if(bridgeSession){if(bridgeSession.hydrated&&latestTrainerState)postBridgeTrainerState(latestTrainerState);else maybeHydrateTrainer()}else if(latestTrainerState)applyTrainerStateToFrame(latestTrainerState);updateControlUi()}
-    function emit(name,data={}){if(shared.connected&&shared.role==='teacher'){const refresh=markInkStructurePending(name);shared.socket.emit(name,roomPayload(data));if(refresh)shared.socket.emit('room:state')}}
-    function emitWriter(name,data={}){if(shared.connected&&canWrite()){const refresh=markInkStructurePending(name);shared.socket.emit(name,roomPayload(data));if(refresh)shared.socket.emit('room:state')}}
-    function emitSnapshot(){if(shared.connected&&shared.role==='teacher')shared.socket.emit('board:snapshot',roomPayload({state:publicSnapshot()}))}
+    function emit(name,data={}){
+      if(!(roomReady()&&shared.role==='teacher'))return;
+      const refresh=markInkStructurePending(name);
+      shared.socket.emit(name,roomPayload(data));
+      if(refresh)shared.socket.emit('room:state');
+    }
+    function emitWriter(name,data={}){
+      if(!(roomReady()&&canWrite()))return;
+      const refresh=markInkStructurePending(name);
+      shared.socket.emit(name,roomPayload(data));
+      if(refresh)shared.socket.emit('room:state');
+    }
+    function emitSnapshot(){if(roomReady()&&shared.role==='teacher')shared.socket.emit('board:snapshot',roomPayload({state:publicSnapshot()}))}
 
-    function openTrainer(u){if(shared.role!=='teacher')return false;let next;try{next=normalizeTrainer(u||trainerUrl.value);next=addBoardSeedToTrainerUrl(next,shared.roomId)}catch(e){BoardPicker.error(e.message);return false}BoardPicker.clearError();trainerUrl.value=next;state.trainerUrl=next;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(next,{selection:true});save();emit('board:trainer-url-change',{trainerUrl:next});return true}
+    function protectedPetersonId(url){
+      const file=canonicalTrainerFileFromUrl(url);
+      return /^trainers\/(peterson6-(?:complete|textbook|workshop))\.html$/.exec(file)?.[1]||'';
+    }
+    function trainerSelectionForRegistry(url){
+      const id=protectedPetersonId(url);
+      if(id==='peterson6-complete')return BoardPicker.petersonSelection(url,key=>trainerRegistry.byId.has(key),location.origin);
+      if(id&&!trainerRegistry.byId.has(id))throw Error('Этот раздел Петерсона пока недоступен на сервере общей доски. Текущее занятие сохранено.');
+      return url;
+    }
+    function pickerMirrorCapability(url){
+      if(trainerRegistry.status!=='ready')return 'unknown';
+      try{return mirrorEntryFromUrl(trainerSelectionForRegistry(BoardPicker.normalize(url)))?'supported':'unsupported'}
+      catch(_e){return 'unsupported'}
+    }
+    let trainerSelectionRequest=0;
+    function openTrainer(u){if(shared.role!=='teacher'||(shared.roomId&&!roomReady()))return false;const request=++trainerSelectionRequest;let next;try{next=normalizeTrainer(u||trainerUrl.value);
+      if(protectedPetersonId(next)&&trainerRegistry.status==='pending'){
+        const room=shared.roomId,previous=state.trainerUrl;
+        loadTrainerRegistry().then(()=>{
+          if(request===trainerSelectionRequest&&room===shared.roomId&&previous===state.trainerUrl&&openTrainer(next)){
+            document.getElementById('trainerPicker')?.close();setTrainerHidden(false);
+          }
+        });
+        return false;
+      }
+      if(trainerRegistry.status==='ready'){
+        next=trainerSelectionForRegistry(next);
+      }else if(shared.roomId&&protectedPetersonId(next)){
+        throw Error('Доска уточняет доступную версию курса. Повторите выбор после подключения. Текущее занятие сохранено.');
+      }
+      next=addBoardSeedToTrainerUrl(next,shared.roomId)}catch(e){BoardPicker.error(e.message);return false}BoardPicker.clearError();trainerUrl.value=next;state.trainerUrl=next;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(next,{selection:true});save();emit('board:trainer-url-change',{trainerUrl:next});return true}
     function setTrainerHidden(hidden){if(shared.role!=='teacher')return;document.dispatchEvent(new Event('board:view-changing'));lesson.classList.remove('trainer-only');state.trainerHidden=hidden;lesson.classList.toggle('hide-trainer',hidden);$('toggleTrainer').textContent=hidden?'Показать тренажёр':'Скрыть тренажёр';$('toggleTrainerBoard').textContent=hidden?'Показать тренажёр':'Скрыть тренажёр';requestAnimationFrame(resize);save()}
     function applyRemotePageAdd(payload){if(!payload?.page)return;cancelGesture(false);closeTextEditor();applyingRemote=true;const index=Number.isInteger(Number(payload.pageIndex))?Math.min(Math.max(Number(payload.pageIndex),0),state.pages.length):state.pages.length;state.pages.splice(index,0,remotePage(payload.page,index));state.current=Number.isInteger(Number(payload.currentPage))?Math.min(Math.max(Number(payload.currentPage),0),state.pages.length-1):index;sync(false);applyingRemote=false}
     function applyRemotePageDelete(payload){const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||index<0||index>=state.pages.length)return;cancelGesture(false);closeTextEditor();forgetPageRedo(state.pages[index].id);applyingRemote=true;if(state.pages.length===1){state.pages[0]=payload?.page?remotePage(payload.page,0):blank();state.current=0}else{state.pages.splice(index,1);state.current=Number.isInteger(Number(payload.currentPage))?Math.min(Math.max(Number(payload.currentPage),0),state.pages.length-1):Math.min(index,state.pages.length-1)}sync(false);applyingRemote=false}
@@ -558,10 +721,12 @@
     function removeTeacherTokenFromUrl(){const url=new URL(location.href);if(!url.searchParams.has('token'))return;url.searchParams.delete('token');history.replaceState(history.state,'',url.href)}
     function clearTeacherRoomMarker(){const url=new URL(location.href);url.searchParams.delete('room');url.searchParams.delete('role');url.searchParams.delete('token');history.replaceState(history.state,'',url.href)}
     function isTerminalRoomError(message){return message==='Комната не найдена'||message==='Нет доступа к комнате'||message==='Нет участника комнаты'}
-    function handleRoomError(error){
+    function handleRoomError(error,localRecovery=false){
       clearPendingHistory();pruneSharedRedo();buttons();
       const message=String(error?.message||'нет доступа');
-      if(!isTerminalRoomError(message)){setStatus(message,'bad');return}
+      if(localRecovery!==true&&!isTerminalRoomError(message)){setStatus(message,'bad');return}
+      if(shared.role==='teacher'){captureInterruptedBoard();finishRecoveryForLostRoom();clearTimeout(timer);persistLocalBoard()}
+      roomConnectGeneration++;
       const restoredTeacher=shared.role==='teacher'&&shared.restoredTeacherSession;
       if(shared.role==='teacher'){clearTeacherRoomSession(shared.roomId);clearTeacherRoomMarker()}
       // Retain only the live iframe's handshake metadata, never room state or
@@ -572,7 +737,7 @@
       invalidateTrainerBridge();pausedTrainerBridge=paused;bridgeReloadNeeded=true;latestTrainerState=null;
       shared.roomId='';shared.token='';shared.studentToken='';shared.studentLink='';shared.me=null;shared.control='';shared.controlVersion=0;studentLink.value='';
       const socket=shared.socket;shared.socket=null;
-      if(socket){socket.removeAllListeners();socket.disconnect()}
+      detachRoomSocket(socket);
       setParticipants([]);applyRole();setMirrorStatus('room-unavailable');
       guestConnectionHint(message+'. Попросите учителя прислать новую ссылку.');
       setStatus(restoredTeacher?'Сессия учителя недействительна. Создайте новую комнату.':message,'bad')
@@ -601,35 +766,75 @@
       $('guestRoomRetry').hidden=!retry;
     }
     async function checkServer(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}loadTrainerRegistry({force:trainerRegistry.server!==shared.server});setStatus('проверка сервера','wait');try{const res=await fetch(`${shared.server}/health`,{cache:'no-store'});const data=await res.json();if(!res.ok||data?.ok!==true)throw new Error('health');localStorage.setItem(SERVER_KEY,shared.server);setStatus('Сервер доступен','ok')}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
-    async function createRoom(){if(!deliveryAllowsHistory())return;shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}const registryReady=loadTrainerRegistry({force:trainerRegistry.server!==shared.server});if(['trainers/ege-profile-log-trig.html','trainers/ege-profile-circle.html','trainers/vpr-math/index.html'].includes(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
+    async function createRoom(){if(!deliveryAllowsHistory())return;if(shared.roomId&&!roomReady()){setStatus('Сначала восстановите связь с текущей комнатой.','wait');return}shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}const registryReady=loadTrainerRegistry({force:trainerRegistry.server!==shared.server});const requestedPeterson=protectedPetersonId(state.trainerUrl);if(requestedPeterson){
+        const previous=state.trainerUrl;await registryReady;
+        if(state.trainerUrl!==previous)return;
+        if(!trainerRegistry.byId.has(requestedPeterson)){
+          setStatus(requestedPeterson==='peterson6-complete'?'Полная версия Петерсона пока недоступна на этом сервере. Откройте первую часть для общего урока. Текущая работа сохранена.':'Этот раздел Петерсона пока недоступен на сервере общей доски. Текущая работа сохранена.','bad');
+          return;
+        }
+      }
+      if(['trainers/ege-profile-log-trig.html','trainers/ege-profile-circle.html','trainers/vpr-math/index.html'].includes(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.connected=false;roomStateReceived=false;shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
+    function detachRoomSocket(socket){
+      if(!socket)return;
+      if(socket.boardReconnectListener)socket.io?.off('reconnect_attempt',socket.boardReconnectListener);
+      socket.removeAllListeners();
+      socket.disconnect();
+    }
     async function connectRoom(){
       shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);
+      if(shared.role==='student'&&shared.roomId&&!shared.token.trim()){
+        guestConnectionHint('Ссылка на урок неполная. Попросите учителя прислать её заново целиком.');
+        setStatus('Ссылка ученика неполная','bad');
+        return;
+      }
       if(!shared.server||!shared.roomId||!shared.token){setStatus('локальный режим','');return}
+      const attempt=++roomConnectGeneration,room=shared.roomId,token=shared.token,server=shared.server;
+      captureInterruptedBoard();
+      shared.connected=false;roomStateReceived=false;imageImportEpoch++;cancelGesture(false);closeTextEditor();clearPendingHistory();pruneSharedRedo();
+      const previous=shared.socket;shared.socket=null;
+      detachRoomSocket(previous);
+      updateControlUi();
       loadTrainerRegistry({force:trainerRegistry.server!==shared.server});
       guestConnectionHint('Подключаемся. Здесь появится задание учителя.');
       serverUrl.value=shared.server;localStorage.setItem(SERVER_KEY,shared.server);setStatus('подключение','wait');
       try{
-        await loadSocketClient(shared.server);
-        if(shared.socket){shared.socket.disconnect();shared.socket.removeAllListeners()}
-        shared.socket=io(shared.server,{transports:['polling','websocket'],tryAllTransports:true,reconnection:true});
+        await loadSocketClient(server);
+        if(attempt!==roomConnectGeneration||room!==shared.roomId||token!==shared.token||server!==shared.server)return;
+        shared.socket=io(server,{transports:['polling','websocket'],tryAllTransports:true,reconnection:true});
+        const liveSocket=shared.socket;
+        const isCurrentSocket=()=>shared.socket===liveSocket&&attempt===roomConnectGeneration&&room===shared.roomId&&token===shared.token&&server===shared.server;
+        const onLiveEvent=(event,handler)=>liveSocket.on(event,payload=>{if(isCurrentSocket())handler(payload)});
+        const onRoomEvent=(event,handler)=>onLiveEvent(event,payload=>{if(roomReady())handler(payload)});
         let socketConnectedOnce=false;
-        shared.socket.on('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;inkSnapshotConfirmed=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключено','ok');shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
-        shared.socket.on('connect_error',()=>{
+        onLiveEvent('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;inkSnapshotConfirmed=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключение','wait');updateControlUi();shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
+        onLiveEvent('connect_error',()=>{
           if(shared.roomError)return;
           setStatus('Повторяем подключение к комнате…','wait');
           guestConnectionHint('Ждём ответа сервера. Можно повторить подключение.',true);
         });
-        shared.socket.on('disconnect',()=>{imageImportEpoch++;cancelGesture(true);finishText();clearTimeout(inkDeliveryTimer);inkDeliveryTimer=null;inkStructurePending=false;clearPendingHistory();pruneSharedRedo();shared.connected=false;roomStateReceived=false;inkSnapshotConfirmed=false;if(mirrorEntryFromUrl(state.trainerUrl))setMirrorStatus('pending');setStatus('нет связи','bad');updateControlUi()});
-        shared.socket.on('reconnect_attempt',()=>setStatus('переподключение','wait'));
-        shared.socket.on('room:error',handleRoomError);
-        shared.socket.on('room:state',payload=>{
-          inkStructurePending=false;
+        onLiveEvent('disconnect',()=>{captureInterruptedBoard();
+          cancelGesture(!!gestureInkContext);if(textInkContext)finishText();else closeTextEditor();
+          clearTimeout(inkDeliveryTimer);inkDeliveryTimer=null;inkStructurePending=false;inkSnapshotConfirmed=false;
+          shared.connected=false;roomStateReceived=false;imageImportEpoch++;clearPendingHistory();pruneSharedRedo();if(mirrorEntryFromUrl(state.trainerUrl))setMirrorStatus('pending');setStatus('нет связи','bad');updateControlUi()});
+        liveSocket.boardReconnectListener=()=>{if(isCurrentSocket())setStatus('переподключение','wait')};
+        liveSocket.io?.on('reconnect_attempt',liveSocket.boardReconnectListener);
+        onLiveEvent('room:error',handleRoomError);
+        onLiveEvent('room:state',payload=>{
+          if(!shared.connected||liveSocket.connected!==true)return;
           clearPendingHistory();
+          inkStructurePending=false;
+          rememberUnconfirmed(payload?.state);
           shared.roomError='';
           setControlState(payload?.state||payload||{});
           setSharedMe(payload?.you);
           roomStateReceived=true;
           activateInkDelivery(payload);
+          // An initial room snapshot can arrive after the first SDK publication.
+          // Reconcile an explicitly empty authoritative trainer state from the
+          // live hydrated frame; do not replay a cached snapshot or grant control.
+          const hydratedBeforeSnapshot=bridgeSession?.hydrated?bridgeSession:null;
+          const emptyAuthoritativeTrainer=payload?.state?.latestTrainerState===null&&Array.isArray(payload.state.pages)&&payload.state.pages.length>0;
           const prepared=takePreparedProfileTrainer(payload?.state);
           latestTrainerState=payload?.state?.latestTrainerState||prepared||null;
           updateMirrorStatusForCurrentTrainer();
@@ -641,10 +846,11 @@
           }
           if(pausedTrainerBridge||bridgeReloadNeeded)reconcileTrainerMirror();
           recoverExpiredBridgeOnce();maybeHydrateTrainer();if(latestTrainerState&&!canWrite())applyTrainerStateToFrame(latestTrainerState);scheduleLegacyTrainerRequest();
-          fallbackSharedMe();setStatus('подключено','ok');updateControlUi()
+          fallbackSharedMe();setStatus('подключено','ok');updateControlUi();
+          if(emptyAuthoritativeTrainer&&!latestTrainerState&&hydratedBeforeSnapshot&&bridgeSession===hydratedBeforeSnapshot&&canWrite())requestTrainerState()
         });
-        shared.socket.on('participants:state',payload=>{setParticipants(payload?.participants);updateControlUi()});
-        shared.socket.on('control:changed',payload=>{
+        onRoomEvent('participants:state',payload=>{setParticipants(payload?.participants);clearOfflineWriterPreview();updateControlUi()});
+        onRoomEvent('control:changed',payload=>{
           const wasMine=canWrite();
           finishText();
           setControlState(payload||{});
@@ -654,21 +860,23 @@
           if(!wasMine&&isMine)requestTrainerState();
           updateControlUi();setTool(tool)
         });
-        shared.socket.on('board:snapshot',payload=>applySnapshot(payload?.state));
-        shared.socket.on('board:trainer-url-change',payload=>{if(payload?.trainerUrl){state.trainerUrl=payload.trainerUrl;trainerUrl.value=payload.trainerUrl;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(payload.trainerUrl,{selection:true})}});
-        shared.socket.on('board:trainer-state-change',payload=>applyTrainerStateToFrame(payload));
-        shared.socket.on('board:stroke-start',payload=>{const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||!state.pages[index])return;state.current=index;current=payload?.stroke||null;scheduleRender()});
-        shared.socket.on('board:stroke-points',payload=>{if(!current)return;if(current.kind==='path'&&payload.kind==='path'&&Array.isArray(payload.points))current.points.push(...payload.points);if(payload.end)current.end=payload.end;scheduleRender()});
-        shared.socket.on('board:stroke-end',payload=>{current=null;if(payload?.stroke)addStroke(payload.stroke,true,payload.pageIndex)});
-        shared.socket.on('board:text-add',payload=>{const object=payload?.stroke||payload?.text||payload?.object;if(object)addStroke(object,true,payload.pageIndex)});
-        shared.socket.on('board:page-add',payload=>applyRemotePageAdd(payload));
-        shared.socket.on('board:page-delete',payload=>applyRemotePageDelete(payload));
-        shared.socket.on('board:page-state',payload=>applyRemotePageState(payload));
-        shared.socket.on('board:clear-page',payload=>{imageImportEpoch++;const target=state.pages[payload?.pageIndex];if(!target)return;forgetPageRedo(target.id);target.strokes=[];target.redo=[];target.pageEpoch=Number.isSafeInteger(payload.pageEpoch)?payload.pageEpoch:(target.pageEpoch||0)+1;acknowledgeHistory();render();save()});
-        shared.socket.on('board:page-switch',payload=>{if(payload?.pageIndex!==undefined){cancelGesture(false);closeTextEditor();state.current=Math.min(Math.max(payload.pageIndex,0),state.pages.length-1);sync(false)}});
-        shared.socket.on('board:bg-change',payload=>{if(payload?.bg){page().bg=payload.bg;sync(false)}})
+        onRoomEvent('board:snapshot',payload=>applySnapshot(payload?.state));
+        onRoomEvent('board:trainer-url-change',payload=>{if(payload?.trainerUrl){state.trainerUrl=payload.trainerUrl;trainerUrl.value=payload.trainerUrl;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(payload.trainerUrl,{selection:true})}});
+        onRoomEvent('board:trainer-state-change',payload=>applyTrainerStateToFrame(payload));
+        onRoomEvent('board:stroke-start',payload=>{const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||!state.pages[index])return;state.current=index;current=payload?.stroke||null;scheduleRender()});
+        onRoomEvent('board:stroke-points',payload=>{if(!current)return;if(current.kind==='path'&&payload.kind==='path'&&Array.isArray(payload.points))current.points.push(...payload.points);if(payload.end)current.end=payload.end;scheduleRender()});
+        onRoomEvent('board:stroke-end',payload=>{current=null;if(payload?.stroke)addStroke(payload.stroke,true,payload.pageIndex)});
+        onRoomEvent('board:text-add',payload=>{const object=payload?.stroke||payload?.text||payload?.object;if(object)addStroke(object,true,payload.pageIndex)});
+        onRoomEvent('board:page-add',payload=>applyRemotePageAdd(payload));
+        onRoomEvent('board:page-delete',payload=>applyRemotePageDelete(payload));
+        onRoomEvent('board:page-state',payload=>applyRemotePageState(payload));
+        onRoomEvent('board:clear-page',payload=>{imageImportEpoch++;const target=state.pages[payload?.pageIndex];if(!target)return;forgetPageRedo(target.id);target.strokes=[];target.redo=[];target.pageEpoch=Number.isSafeInteger(payload.pageEpoch)?payload.pageEpoch:(target.pageEpoch||0)+1;acknowledgeHistory();render();save()});
+        onRoomEvent('board:page-switch',payload=>{if(payload?.pageIndex!==undefined){cancelGesture(false);closeTextEditor();state.current=Math.min(Math.max(payload.pageIndex,0),state.pages.length-1);sync(false)}});
+        onRoomEvent('board:bg-change',payload=>{if(payload?.bg){page().bg=payload.bg;sync(false)}})
       }catch(_e){
-        setStatus(shared.role==='student'?'Не удалось войти в комнату':'Сервер недоступен, доска работает локально','bad');
+        if(attempt!==roomConnectGeneration)return;
+        shared.connected=false;roomStateReceived=false;updateControlUi();
+        setStatus(shared.role==='student'?'Не удалось войти в комнату':'Не удалось подключиться к комнате','bad');
         guestConnectionHint('Не удалось войти в комнату. Проверьте соединение и попробуйте ещё раз.',true);
       }
     }
@@ -698,13 +906,15 @@
       latestTrainerState={trainer,trainerId:trainer,state:data.state};
       emitWriter('board:trainer-state-change',latestTrainerState)
     });
-    $('openTrainer').onclick=()=>openTrainer();$('toggleTrainer').onclick=()=>setTrainerHidden(!lesson.classList.contains('hide-trainer'));$('toggleTrainerBoard').onclick=()=>setTrainerHidden(!lesson.classList.contains('hide-trainer'));retryTrainerRegistry.onclick=retryTrainerRegistryLoad;trainerUrl.onkeydown=e=>{if(e.key==='Enter')openTrainer()};document.querySelectorAll('[data-url]').forEach(b=>b.onclick=()=>openTrainer(b.dataset.url));bg.onchange=()=>{if(!deliveryAllowsHistory()){bg.value=page().bg;return;}if(shared.role!=='teacher'||!canWrite()||pendingHistory){bg.value=page().bg;return;}page().bg=bg.value;render();save();emit('board:bg-change',{bg:bg.value,pageIndex:state.current})};$('undo').onclick=undo;$('redo').onclick=redo;$('clear').onclick=clearPage;$('export').onclick=exportPng;$('prevSheet').onclick=()=>switchSheet(-1);$('nextSheet').onclick=()=>switchSheet(1);$('addSheet').onclick=addSheet;$('deleteSheet').onclick=delSheet;$('checkServer').onclick=checkServer;$('createRoom').onclick=createRoom;$('connectRoom').onclick=connectRoom;$('copyStudentLink').onclick=copyLink;$('boardControlToggle').onclick=()=>controlToggle.click();controlToggle.onclick=()=>{if(!shared.connected||vprControlTransfer)return;const studentHasControl=controlHolder()?.role==='student';if(studentHasControl)shared.socket.emit('control:revoke',roomPayload());else return surrenderControl('control:grant')};releaseControl.onclick=()=>surrenderControl('control:release');bindBoardWriting();bindInkDelivery();addEventListener('beforeunload',()=>{if(shared.role!=='student')persistLocalBoard()});
+    $('openTrainer').onclick=()=>openTrainer();$('toggleTrainer').onclick=()=>setTrainerHidden(!lesson.classList.contains('hide-trainer'));$('toggleTrainerBoard').onclick=()=>setTrainerHidden(!lesson.classList.contains('hide-trainer'));retryTrainerRegistry.onclick=retryTrainerRegistryLoad;trainerUrl.onkeydown=e=>{if(e.key==='Enter')openTrainer()};document.querySelectorAll('[data-url]').forEach(b=>b.onclick=()=>openTrainer(b.dataset.url));bg.onchange=()=>{if(!deliveryAllowsHistory()){bg.value=page().bg;return;}if(shared.role!=='teacher'||!canWrite()||pendingHistory){bg.value=page().bg;return;}page().bg=bg.value;render();save();emit('board:bg-change',{bg:bg.value,pageIndex:state.current})};$('undo').onclick=undo;$('redo').onclick=redo;$('clear').onclick=clearPage;$('export').onclick=exportPng;$('prevSheet').onclick=()=>switchSheet(-1);$('nextSheet').onclick=()=>switchSheet(1);$('addSheet').onclick=addSheet;$('deleteSheet').onclick=delSheet;$('checkServer').onclick=checkServer;$('createRoom').onclick=createRoom;$('connectRoom').onclick=connectRoom;$('copyStudentLink').onclick=copyLink;$('boardControlToggle').onclick=()=>controlToggle.click();controlToggle.onclick=()=>{if(vprControlTransfer)return;if(!roomReady()){boardMessage('Передать ход пока не удалось. Дождитесь восстановления связи с комнатой.');return;}const studentHasControl=controlHolder()?.role==='student';if(studentHasControl)shared.socket.emit('control:revoke',roomPayload());else return surrenderControl('control:grant')};releaseControl.onclick=()=>surrenderControl('control:release');bindBoardWriting();bindInkDelivery();addEventListener('beforeunload',()=>{if(shared.role!=='student')persistLocalBoard()});
     if(hasTeacherRoomMarker){removeTeacherTokenFromUrl();if(restoredTeacherRoomSession){replaceTeacherRoomUrl();shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink}}
     try{state.trainerUrl=normalizeTrainer(state.trainerUrl)}catch(_){state.trainerUrl='negative-numbers-line.html'}
     if(initialRole==='student'&&shared.roomId)document.body.classList.add('awaiting-room');
     $('guestRoomRetry').onclick=connectRoom;
-    trainerUrl.value=state.trainerUrl;loadTrainerRegistry();setTrainerFrameSrc(state.trainerUrl);applyRole();setTrainerHidden(state.trainerHidden);setTool(tool);loadTrainerQuickSelect();sync(false);requestAnimationFrame(resize);if(shared.roomId&&shared.token&&shared.server)connectRoom();else if(missingTeacherRoomSession)setStatus('Сессия учителя не восстановлена. Создайте новую комнату.','bad');else setStatus('локальный режим','');
-    BoardPicker.mount({open:url=>{if(!openTrainer(url))return false;setTrainerHidden(false);return true},retry:()=>setTrainerFrameSrc(state.trainerUrl,{force:true}),role:()=>shared.role,mirrorCapability:url=>trainerRegistry.status==='ready'?(mirrorEntryFromUrl(BoardPicker.normalize(url))?'supported':'unsupported'):'unknown',fallback:lessonTrainers});
+    $('roomNoticeAction').onclick=()=>{if(shared.roomId&&!roomReady())connectRoom();else if(shared.role==='teacher')$('openShare').click()};
+    $('roomRecoveryDownload').onclick=downloadRecovery;$('roomRecoveryRestore').onclick=restoreRecovery;$('roomRecoveryDiscard').onclick=discardRecovery;
+    trainerUrl.value=state.trainerUrl;loadTrainerRegistry();setTrainerFrameSrc(state.trainerUrl);applyRole();setTrainerHidden(state.trainerHidden);setTool(tool);loadTrainerQuickSelect();sync(false);requestAnimationFrame(resize);if(shared.roomId&&shared.server&&(shared.token||shared.role==='student'))connectRoom();else if(missingTeacherRoomSession)setStatus('Сессия учителя не восстановлена. Создайте новую комнату.','bad');else setStatus('локальный режим','');
+    BoardPicker.mount({open:url=>{if(!openTrainer(url))return false;setTrainerHidden(false);return true},retry:()=>setTrainerFrameSrc(state.trainerUrl,{force:true}),role:()=>shared.role,mirrorCapability:pickerMirrorCapability,fallback:lessonTrainers});
   </script>
   <script src="sections-course-navigation.js?v=20261107"></script>
   <script>

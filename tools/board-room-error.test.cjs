@@ -25,11 +25,12 @@ const copy = value => JSON.parse(JSON.stringify(value));
 // rendering, HTTP, Socket.IO and the child frame's wire protocol are fixtures;
 // no parent room/bridge handler is copied or replaced here.
 async function createBoardFixture({ role = 'student', sourceOverride, trainer = TRAINER,
-  trainerUrl = TRAINER_URL, registry = REGISTRY, querySuffix = '' } = {}) {
+  trainerUrl = TRAINER_URL, registry = REGISTRY, querySuffix = '', inviteToken = 'fixture-token' } = {}) {
   const errors = [], sockets = [], requests = [], registryRequests = [], timers = new Map();
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', error => errors.push(error.message));
-  const query = role === 'teacher' ? '' : `?role=${role === 'student' ? 'student' : 'teacher'}&room=fixture-room&token=fixture-token&server=${encodeURIComponent(SERVER)}`;
+  const tokenQuery = inviteToken === null ? '' : `&token=${encodeURIComponent(inviteToken)}`;
+  const query = role === 'teacher' ? '' : `?role=${role === 'student' ? 'student' : 'teacher'}&room=fixture-room${tokenQuery}&server=${encodeURIComponent(SERVER)}`;
   const html = sourceOverride ?? fs.readFileSync(path.join(ROOT, 'trainers/trainer-board.html'), 'utf8');
   const suffix = querySuffix ? `${query ? '&' : '?'}${querySuffix}` : '';
   const dom = new JSDOM(html, { url: `${ORIGIN}/trainers/trainer-board.html${query}${suffix}`, runScripts: 'outside-only', virtualConsole });
@@ -60,13 +61,27 @@ async function createBoardFixture({ role = 'student', sourceOverride, trainer = 
     studentToken: 'fixture-student-token', server: SERVER
   }));
 
-  class FakeSocket {
-    constructor() { this.listeners = new Map(); this.sent = []; this.disconnected = false; }
+  class FixtureEvents {
+    constructor() { this.listeners = new Map(); }
     on(name, fn) { if (!this.listeners.has(name)) this.listeners.set(name, new Set()); this.listeners.get(name).add(fn); return this; }
     off(name, fn) { if (fn) this.listeners.get(name)?.delete(fn); else this.listeners.delete(name); return this; }
     removeAllListeners() { this.listeners.clear(); return this; }
-    emit(name, payload) { this.sent.push({ name, payload: payload === undefined ? undefined : copy(payload) }); return this; }
     deliver(name, payload) { for (const fn of [...(this.listeners.get(name) || [])]) fn(payload === undefined ? undefined : inRealm(payload)); }
+  }
+  class FakeSocket extends FixtureEvents {
+    constructor() {
+      super();
+      this.io = new FixtureEvents();
+      this.sent = [];
+      this.disconnected = false;
+      this.connected = false;
+    }
+    emit(name, payload) { this.sent.push({ name, payload: payload === undefined ? undefined : copy(payload) }); return this; }
+    deliver(name, payload) {
+      if (name === 'connect') this.connected = true;
+      if (name === 'disconnect') this.connected = false;
+      super.deliver(name, payload);
+    }
     disconnect() { this.disconnected = true; this.deliver('disconnect'); return this; }
   }
   w.io = (_server, options) => {
@@ -187,6 +202,65 @@ const SECTIONS_REGISTRY = {
   trainers: [{ ...REGISTRY.trainers[0], trainerId: 'sections-from-zero', file: SECTIONS_WRAPPER.slice(1) }]
 };
 
+for (const [label, inviteToken] of [['missing', null], ['empty', ''], ['whitespace', ' \t\n ']]) {
+  test(`incomplete student invitation with ${label} token explains recovery and stays read-only`, async () => {
+    const f = await createBoardFixture({ inviteToken });
+    try {
+      const doc = f.w.document;
+      const hint = doc.getElementById('guestRoomHint');
+      const status = doc.getElementById('shareStatus');
+      const retry = doc.getElementById('guestRoomRetry');
+      function checkExplanation() {
+        assert.match(hint.textContent, /ссылка.*неполн/i);
+        assert.match(hint.textContent, /учител.*целиком/i);
+        assert.match(status.textContent, /ссылка.*неполн/i);
+        assert.ok(status.classList.contains('bad'));
+        assert.equal(retry.hidden, true, 'retrying the same incomplete link cannot repair it');
+        assert.ok(doc.body.classList.contains('awaiting-room'), 'unrelated trainer remains hidden');
+        assert.equal(f.w.getComputedStyle(doc.getElementById('guestEntry')).display, 'grid');
+        assert.equal(f.w.getComputedStyle(f.frame).visibility, 'hidden');
+        assert.ok(doc.body.classList.contains('student-mode'));
+        assert.equal(f.evaluate('canWrite()'), false);
+        assert.equal(f.frame.inert, true);
+        assert.equal(f.frame.tabIndex, -1);
+        assert.equal(doc.getElementById('controlToggle').disabled, true);
+        assert.equal(doc.getElementById('releaseControl').disabled, true);
+        assert.equal(f.sockets.length, 0, 'no socket or room join for the incomplete invitation');
+        assert.equal(f.requests.some(row => row.method !== 'GET' && row.method !== 'HEAD'), false, 'no new room or other mutation');
+      }
+      checkExplanation();
+      const before = f.snapshot();
+      // Exercise the real listeners too: an old/replayed connection action
+      // must not replace the explanation with an indefinite waiting message.
+      retry.click();
+      doc.getElementById('connectRoom').click();
+      await tick();
+      checkExplanation();
+      assert.deepEqual(f.snapshot(), before);
+    } finally { f.close(); }
+  });
+}
+
+test('complete student invitation retains its token and waits for room authority', async () => {
+  const inviteToken = 'fixture-CaseSensitive_token';
+  const f = await createBoardFixture({ inviteToken });
+  try {
+    const socket = f.socket();
+    assert.ok(socket, 'the normal invitation starts its transport');
+    assert.equal(f.evaluate('canWrite()'), false);
+    assert.equal(f.frame.inert, true);
+    socket.deliver('connect');
+    const joins = socket.sent.filter(row => row.name === 'room:join');
+    assert.equal(joins.length, 1);
+    assert.deepEqual(joins[0].payload, { roomId: 'fixture-room', role: 'student', token: inviteToken, proto: 2 });
+    assert.equal(f.evaluate('canWrite()'), false, 'transport connection alone grants no writing');
+    f.accept(socket);
+    assert.equal(f.w.document.body.classList.contains('awaiting-room'), false);
+    assert.equal(f.w.document.getElementById('shareStatus').textContent, 'подключено');
+    assert.equal(f.evaluate('canWrite()'), true, 'only the accepted room state grants its fixture pupil the turn');
+  } finally { f.close(); }
+});
+
 test('the invited pupil can retry the same room without seeing an unrelated exercise', async () => {
   const f = await createBoardFixture({role:'student'});
   try {
@@ -204,8 +278,14 @@ test('the invited pupil can retry the same room without seeing an unrelated exer
     const next = f.socket();
     assert.notEqual(next, first);
     assert.equal(first.disconnected, true);
+    const shareStatus = doc.getElementById('shareStatus');
+    next.io.deliver('reconnect_attempt', 1);
+    assert.equal(shareStatus.textContent, 'переподключение');
     next.deliver('connect');
     f.accept(next);
+    assert.equal(first.io.listeners.get('reconnect_attempt')?.size, 0);
+    first.io.deliver('reconnect_attempt', 2);
+    assert.equal(shareStatus.textContent, 'подключено', 'replaced Manager cannot overwrite the new room status');
     assert.equal(doc.body.classList.contains('awaiting-room'), false);
     assert.equal(doc.getElementById('shareStatus').textContent, 'подключено');
   } finally { f.close(); }
@@ -682,6 +762,209 @@ for (const order of ['registry-first', 'room-first']) test(`ordinary reconnect w
       assert.deepEqual(f.child.draft, draft, 'invalid incoming state never reaches the child');
       assert.equal(socket.sent.filter(item => item.name === 'board:trainer-state-change').length, publications.length);
     }
+  } finally { f.close(); }
+});
+
+test('teacher freezes mutations during transport loss and preserves an unconfirmed copy on rejoin', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect(), accepted=f.snapshot();
+    f.evaluate("state.pages[0].strokes.push({objectId:'unconfirmed-object',kind:'text',x:12,y:20,text:'local work',size:5,color:'#111'})");
+    socket.deliver('disconnect');
+    assert.equal(f.evaluate('canWrite()'),false);
+    assert.equal(f.frame.inert,true);
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/Ученик не получает/);
+    assert.equal(f.w.document.getElementById('addSheet').disabled,true);
+    assert.equal(f.evaluate("openTrainer('negative-numbers.html')"),false);
+    const count=socket.sent.length;
+    f.evaluate("emitWriter('board:text-add',{stroke:{text:'blocked'}})");
+    assert.equal(socket.sent.length,count);
+    socket.deliver('connect');
+    assert.equal(f.evaluate('canWrite()'),false,'transport alone is not room acceptance');
+    assert.notEqual(f.w.document.getElementById('shareStatus').textContent,'подключено');
+    socket.deliver('room:state',{state:{...accepted,control:'fixture-teacher',controlVersion:4,participants:[{id:'fixture-teacher',role:'teacher',connected:true}]},you:{participantId:'fixture-teacher',role:'teacher'}});
+    await tick();
+    assert.equal(f.evaluate('canWrite()'),true);
+    assert.deepEqual(f.snapshot(),accepted,'authoritative room is not overwritten');
+    assert.equal(f.evaluate('recovery.copies.length'),1);
+    assert.equal(f.evaluate('recovery.copies[0].snapshot.pages[0].strokes[0].objectId'),'unconfirmed-object');
+    assert.equal(f.w.document.getElementById('roomRecovery').hidden,false);
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+    const stored=JSON.parse(f.w.sessionStorage.getItem('mathexam.trainerBoard.recovery.v1'));
+    assert.equal(stored.copies.length,1);
+    assert(!JSON.stringify(stored).includes('fixture-teacher-token'));
+  } finally { f.close(); }
+});
+
+test('terminal teacher recovery retains local writing for a fresh room', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const old=await f.connect();
+    old.deliver('room:error',{message:'Комната не найдена'});
+    assert.equal(f.evaluate('canWrite()'),true);
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/Создайте новую комнату/);
+    f.evaluate("addStroke({objectId:'new-local',kind:'text',x:1,y:2,text:'saved',color:'#111',size:5})");
+    const next=await f.clickCreateRoom(), snapshot=f.snapshot();
+    next.deliver('connect');
+    assert.equal(f.evaluate('canWrite()'),false,'a new socket cannot write before room acceptance');
+    assert.equal(next.sent.some(x=>x.name==='board:snapshot'),false);
+    // The real server represents a newly created, uninitialized teacher room
+    // as state:null with the controller and participant in the envelope.
+    next.deliver('room:state',{role:'teacher',state:null,control:'fixture-teacher',controlVersion:1,you:{participantId:'fixture-teacher',role:'teacher'}});
+    assert.deepEqual(next.sent.find(x=>x.name==='board:snapshot').payload.state,snapshot);
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+  } finally { f.close(); }
+});
+
+test('teacher sees student offline without confusing it with teacher transport failure', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect();
+    socket.deliver('participants:state',{participants:[{id:'fixture-teacher',role:'teacher',connected:true},{id:'fixture-student',role:'student',connected:false}]});
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/Ученик не в сети/);
+    assert.equal(f.evaluate('canWrite()'),true,'teacher is still connected to the room');
+    socket.deliver('participants:state',{participants:[{id:'fixture-teacher',role:'teacher',connected:true},{id:'fixture-student',role:'student',connected:true}]});
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+  } finally { f.close(); }
+});
+
+test('opening a recovery copy is explicit and does not overwrite the shared room', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect(), accepted=f.snapshot();
+    f.evaluate("state.pages[0].strokes.push({objectId:'local-only',kind:'text',x:12,y:20,text:'saved',size:5,color:'#111'})");
+    socket.deliver('disconnect');socket.deliver('connect');
+    socket.deliver('room:state',{state:{...accepted,control:'fixture-teacher',controlVersion:4,participants:[{id:'fixture-teacher',role:'teacher',connected:true}]},you:{participantId:'fixture-teacher',role:'teacher'}});
+    await tick();
+    const sent=socket.sent.length;
+    f.w.confirm=()=>false;f.w.document.getElementById('roomRecoveryRestore').click();
+    assert.equal(f.evaluate('shared.connected'),true);
+    assert.deepEqual(f.snapshot(),accepted);
+    f.w.confirm=()=>true;f.w.document.getElementById('roomRecoveryRestore').click();
+    assert.equal(f.evaluate('shared.connected'),false);
+    assert.equal(f.evaluate('shared.roomId'),'');
+    assert.equal(f.evaluate('canWrite()'),true);
+    assert.equal(f.snapshot().pages[0].strokes[0].objectId,'local-only');
+    assert.equal(socket.sent.length,sent,'no snapshot or mutation is sent to the previous room');
+  } finally { f.close(); }
+});
+
+test('normal local teacher mode states pupil cannot see work without a disruptive warning row', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    assert.equal(f.evaluate('canWrite()'),true);
+    assert.match(f.w.document.getElementById('shareStatus').textContent,/Локально — ученик не видит/);
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+    assert.equal(f.w.document.getElementById('openShare').hidden,false);
+  } finally { f.close(); }
+});
+
+test('a queued callback from the old socket cannot unlock or reject the replacement room', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const old=await f.connect(), before=f.snapshot();
+    const delayedState=[...old.listeners.get('room:state')][0],delayedError=[...old.listeners.get('room:error')][0],delayedDisconnect=[...old.listeners.get('disconnect')][0];
+    await f.evaluate('connectRoom()');
+    const replacement=f.socket();
+    assert.notEqual(replacement,old);
+    replacement.deliver('connect');
+    assert.equal(f.evaluate('canWrite()'),false);
+    delayedState({state:{...before,control:'fixture-teacher',controlVersion:99},you:{participantId:'fixture-teacher',role:'teacher'}});
+    delayedError({message:'Комната не найдена'});
+    assert.equal(f.evaluate('canWrite()'),false);
+    assert.equal(f.evaluate('shared.socket')===replacement,true);
+    f.accept(replacement);
+    assert.equal(f.evaluate('canWrite()'),true);
+    delayedDisconnect();
+    assert.equal(f.evaluate('canWrite()'),true);
+    assert.deepEqual(f.snapshot(),before);
+  } finally { f.close(); }
+});
+
+test('late empty initial room snapshot requests fresh current trainer state without reloading the frame', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect(),before=f.snapshot(),instance=f.child.instanceId;
+    const publications=()=>socket.sent.filter(x=>x.name==='board:trainer-state-change');
+    assert.equal(publications().length,1);
+    f.child.draft={answer:'latest live work'};
+    // The first room:state response was generated before the initial SDK state
+    // reached the server. It can therefore explicitly carry null.
+    socket.deliver('room:state',{state:{...before,latestTrainerState:null,control:'fixture-teacher',controlVersion:4},you:{participantId:'fixture-teacher',role:'teacher'}});
+    await tick();
+    assert.equal(publications().length,2);
+    assert.deepEqual(publications().at(-1).payload.state,{answer:'latest live work'});
+    assert.deepEqual(copy(f.evaluate('latestTrainerState.state')),{answer:'latest live work'});
+    assert.equal(f.child.instanceId,instance);
+    assert.equal(f.status(),'connected');
+  } finally { f.close(); }
+});
+
+test('empty authoritative snapshot does not let a read-only pupil republish state', async () => {
+  const f=await createBoardFixture({role:'student'});
+  try {
+    const socket=await f.connect(),before=f.snapshot();
+    socket.deliver('room:state',{state:{...before,latestTrainerState:null,control:'fixture-teacher',controlVersion:5},you:{participantId:'fixture-student',role:'student'}});
+    await tick();
+    assert.equal(f.evaluate('canWrite()'),false);
+    assert.equal(socket.sent.filter(x=>x.name==='board:trainer-state-change').length,1);
+    // The single earlier publication belongs to fixture setup, before the
+    // authoritative control change. The viewer never sends a second one.
+  } finally { f.close(); }
+});
+
+test('an existing nonempty authoritative snapshot is not replaced by a new publication', async () => {
+  const f=await createBoardFixture({role:'teacher'});
+  try {
+    const socket=await f.connect(),before=f.snapshot();
+    const count=socket.sent.filter(x=>x.name==='board:trainer-state-change').length;
+    const latest={trainerId:TRAINER,trainer:TRAINER,protocolVersion:1,trainerVersion:'1.0.0',stateSchemaVersion:1,state:{answer:'server accepted work'}};
+    socket.deliver('room:state',{state:{...before,latestTrainerState:latest,control:'fixture-teacher',controlVersion:4},you:{participantId:'fixture-teacher',role:'teacher'}});
+    await tick();
+    assert.equal(socket.sent.filter(x=>x.name==='board:trainer-state-change').length,count);
+    assert.deepEqual(copy(f.evaluate('latestTrainerState.state')),latest.state);
+    assert.deepEqual(f.child.draft,latest.state);
+  } finally { f.close(); }
+});
+
+
+test('a viewer sees the teacher offline and discards only the unconfirmed remote preview', async () => {
+  const f=await createBoardFixture({role:'student'});
+  try {
+    const socket=await f.connect(), before=f.snapshot();
+    const teacher={id:'fixture-teacher',role:'teacher',connected:true,onlineCount:1};
+    const student={id:'fixture-student',role:'student',connected:true,onlineCount:1};
+    socket.deliver('room:state',{state:{...before,control:teacher.id,controlVersion:5,participants:[teacher,student]},you:{participantId:student.id,role:'student'}});
+    assert.equal(f.evaluate('canWrite()'),false);
+    socket.deliver('board:stroke-start',{pageIndex:before.currentPage,stroke:{objectId:'interrupted-remote',kind:'path',tool:'pen',points:[{x:10,y:10},{x:20,y:20}],color:'#111',size:5}});
+    assert.equal(f.evaluate('current?.objectId'),'interrupted-remote');
+    socket.deliver('participants:state',{participants:[{...teacher,connected:false,onlineCount:0},student]});
+    assert.equal(f.evaluate('current'),null,'only transient remote ink disappears');
+    assert.deepEqual(f.snapshot(),before,'accepted objects and pages remain unchanged');
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/Учитель не в сети/);
+    assert.equal(f.evaluate('canWrite()'),false);
+    socket.deliver('participants:state',{participants:[teacher,student]});
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+    assert.deepEqual(f.snapshot(),before);
+  } finally { f.close(); }
+});
+
+test('another connected writer socket does not discard preview, and an offline teacher is not a pupil transport failure', async () => {
+  const f=await createBoardFixture({role:'student'});
+  try {
+    const socket=await f.connect(), before=f.snapshot();
+    const teacher={id:'fixture-teacher',role:'teacher',connected:true,onlineCount:1};
+    const student={id:'fixture-student',role:'student',connected:true,onlineCount:1};
+    socket.deliver('room:state',{state:{...before,control:teacher.id,controlVersion:5,participants:[teacher,student]},you:{participantId:student.id,role:'student'}});
+    socket.deliver('board:stroke-start',{pageIndex:before.currentPage,stroke:{objectId:'valid-remote',kind:'path',tool:'pen',points:[{x:10,y:10}],color:'#111',size:5}});
+    socket.deliver('participants:state',{participants:[{...teacher,connected:false,onlineCount:1},student]});
+    assert.equal(f.evaluate('current?.objectId'),'valid-remote');
+    assert.equal(f.w.document.getElementById('roomNotice').hidden,true);
+    socket.deliver('control:changed',{control:student.id,controlVersion:6});
+    assert.equal(f.evaluate('canWrite()'),true);
+    socket.deliver('participants:state',{participants:[{...teacher,connected:false,onlineCount:0},student]});
+    assert.equal(f.evaluate('canWrite()'),true,'pupil still has authenticated room and permission');
+    assert.match(f.w.document.getElementById('roomNoticeText').textContent,/ваши записи будут доступны учителю/);
   } finally { f.close(); }
 });
 

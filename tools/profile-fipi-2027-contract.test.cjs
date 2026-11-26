@@ -185,7 +185,18 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
   assert.equal(start.length, 90);
   assert.equal(start.reduce((count, lesson) => count + lesson.tasks.length, 0), 540);
   assert.equal(partTwo.length, 42);
-  assert.equal(partTwo.reduce((count, lesson) => count + lesson.tasks.length, 0), 252);
+  assert.equal(partTwo.reduce((count, lesson) => count + lesson.tasks.length, 0), 264);
+  for (const lesson of partTwo) {
+    assert.deepEqual(lesson.tasks.slice(6).map(task => task.id),
+      lesson.exam === 14 ? [`${lesson.id}-7`, `${lesson.id}-8`] : []);
+  }
+  const preservedPartTwo = partTwo.map(lesson => ({ ...lesson, tasks: lesson.tasks.slice(0, 6) }));
+  // №13 corrects one theory paragraph: cancellation requires a nonzero divisor.
+  // Check the new wording, then reconstruct the exact earlier bank for the two historical digests.
+  const factors = preservedPartTwo.find(lesson => lesson.id === 'p14-trig-factors');
+  assert.equal(factors.theory[1], 'Произведение равно нулю, когда хотя бы один множитель равен нулю. Делить на sin x можно лишь при sin x ≠ 0. Отдельно рассмотрите случай sin x = 0, затем объедините решения.');
+  factors.theory = factors.theory.slice();
+  factors.theory[1] = 'Произведение равно нулю, когда хотя бы один множитель равен нулю. Деление на sin x потеряло бы все корни sin x = 0.';
   // PR 664 clarifies only 20 prompt/hint/why strings in similar-triangle and
   // cube-edge steps. Seal the reviewed copy and independently restore the H02
   // bank: IDs, numerical answers, task ordering and every other field stay exact.
@@ -220,8 +231,8 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
   // Accepted H04 adds explicit answerFormat descriptors without changing the
   // mathematical bank. Preserve its full snapshot from main 1469ad50 as well
   // as the original H02 snapshot with only that metadata removed.
-  assert.equal(digest(partTwo), '1e81234793712d0c5f61ce416b62a6044aada8598b0ee4766aa81f1fb59cfbdd');
-  const beforeAnswerFormat = JSON.parse(JSON.stringify(partTwo, (key, value) => key === 'answerFormat' ? undefined : value));
+  assert.equal(digest(preservedPartTwo), '1e81234793712d0c5f61ce416b62a6044aada8598b0ee4766aa81f1fb59cfbdd');
+  const beforeAnswerFormat = JSON.parse(JSON.stringify(preservedPartTwo, (key, value) => key === 'answerFormat' ? undefined : value));
   assert.equal(digest(beforeAnswerFormat), '826602f90743e1e0fe8d4e0f825441eb8fa090a63575f1fa6dc99d9a1bdd74e7');
   const skills = require('../ege-profil/skill-map-data.js');
   assert.equal(digest(Object.entries(skills.maps).map(([key, value]) => [key, value.challenges])), '99ecc0b2b022473b160f41537a346022e162973ed8350ad67e500fb85ca5b37a');

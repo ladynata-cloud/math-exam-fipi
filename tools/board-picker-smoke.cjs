@@ -17,12 +17,16 @@ try{
  await page.goto(board+'?trainer='+encodeURIComponent('/trainers/negative-numbers.html'));await page.waitForFunction(()=>document.querySelector('#trainerFrame').getAttribute('src')==='/trainers/negative-numbers.html');assert.deepEqual(await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam.trainerBoard.v1')).pages[0].strokes),strokes);assert.ok(await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam.trainerBoard.recent.v1')).includes('/trainers/ege-baza/course/#learn-decimal')));assert.ok(await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam.trainerBoard.recent.v1')).includes('/picker-slow.html')));
 
  // The default workspace prioritizes the task and canvas. Settings remain reachable.
+ assert.match(await page.locator('#shareStatus').textContent(),/Локально — ученик не видит/);
+ assert.equal(await page.locator('#roomNotice').isVisible(),false,'ordinary local work has no extra warning row');
  for(const width of [1440,1280,768,360]){
    await page.setViewportSize({width,height:900});await page.waitForTimeout(100);
    const f=await page.locator('#trainerFrame').boundingBox(),c=await page.locator('#canvas').boundingBox();
    assert.ok(f.y<205,'trainer begins near the top at '+width);
    if(width>1050)assert.ok(c.y<225,'canvas begins near the top');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal overflow '+width);
+   assert.equal(await page.locator('.toolbar #clear').isVisible(),true,'clear is visible at '+width);
+   assert.equal(await page.locator('#clear').isEnabled(),true,'local teacher can clear at '+width);
    await page.locator('#openShare').click();assert.equal(await page.locator('#createRoom').isVisible(),true);if(width===1280&&process.env.BOARD_SHARE_SCREENSHOT)await page.screenshot({path:process.env.BOARD_SHARE_SCREENSHOT});assert.equal(await page.locator('#serverUrl').isVisible(),false);
    await page.locator('.connection-settings summary').click();assert.equal(await page.locator('#serverUrl').isVisible(),true);await page.locator('.connection-settings summary').click();
    await page.keyboard.press('Escape');assert.equal(await page.locator('#openShare').evaluate(e=>e===document.activeElement),true);

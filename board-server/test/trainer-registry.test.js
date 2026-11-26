@@ -23,96 +23,7 @@ const conformanceFixturePath = path.resolve(
   __dirname,
   '../../tools/fixtures/trainer-path-conformance.json'
 );
-const addedOgeEntries = require('../../tools/fixtures/oge-course-board-entries.json');
-const expectedCatalogFiles = [
-  'trainers/negative-numbers-line.html',
-  'trainers/negative-numbers.html',
-  'trainers/negative-numbers-alternative.html',
-  'trainers/oge-task7-number-line.html',
-  'trainers/inequalities-number-line.html',
-  'trainers/linear-inequalities-basic.html',
-  'trainers/linear-inequalities-stepwise.html',
-  'trainers/like-terms-trainer.html',
-  'trainers/percent-part-whole-trainer.html',
-  'trainers/oge-1-5-trainers/percent-table-trainer.html',
-  'trainers/ege-t1-planimetry-trainer.html',
-  'trainers/ege-t2-vectors-trainer.html',
-  'trainers/oge-1-5-trainers/practice-1-5-roads-grid.html',
-  'trainers/oge-1-5-trainers/practice-1-5-map.html',
-  'trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html',
-  'trainers/oge-1-5-trainers/practice-1-5-plan-reading.html',
-  'trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html',
-  'trainers/oge-basics/index.html',
-  'trainers/oge-basics/multiplication-division/index.html',
-  'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html',
-  'trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html',
-  'trainers/oge-basics/percentages/index.html',
-  'trainers/oge-basics/percentages/percent-meaning.html',
-  'trainers/oge-basics/percentages/percent-of-number-and-whole.html',
-  'trainers/oge-basics/percentages/percent-choose-question.html',
-  'trainers/oge-basics/percentages/percent-change.html',
-  'trainers/oge-basics/percentages/proportion.html',
-  'trainers/oge-basics/percentages/percent-final-checkpoint.html',
-  'trainers/ege-profile/yashchenko-lines-1-2.html',
-  'trainers/algebra-7/control-work.html',
-  'trainers/dvi/math-18-20.html',
-  'trainers/dvi/math-18-20-video-studio.html',
-  'trainers/ege-profile-expressions.html',
-  'trainers/ege-profile-stereometry.html',
-  'trainers/ege-profile-planimetry.html',
-  'trainers/ege-profile-vectors.html',
-  'trainers/ege-profile-probability.html',
-  'trainers/ege-profile-random-variables.html',
-  'trainers/ege-profile-equations.html',
-  'trainers/ege-profile/log-inequalities/index.html',
-  'trainers/ege-profile/log-inequalities/lesson.html',
-  'trainers/ege-profile/log-inequalities/nested.html',
-  'trainers/atanasyan-7-9.html',
-  'trainers/peterson6.html',
-  'trainers/merzlyak-10-base.html',
-  'trainers/sections-from-zero.html',
-  'trainers/stereo-literacy-atanasyan.html',
-  'trainers/grade6-nok.html',
-  'trainers/grade6-nod.html',
-  'trainers/ege-baza-11.html',
-  'trainers/ege-baza-13.html',
-  'trainers/oge-task15-triangles.html',
-  'trainers/oge-task16-circle.html',
-  'trainers/oge-task17-quadrilaterals.html',
-  'trainers/oge-task18-grid.html',
-  'trainers/task19-trainer.html',
-  'trainers/college-functions/index.html',
-  'trainers/college-logarithms/index.html',
-  'trainers/vpr-math/index.html',
-  'trainers/oge-task6-fractions.html',
-  'trainers/oge-task8-powers-roots.html',
-  'trainers/oge-task9-equations.html',
-  'trainers/oge-task10-probability.html',
-  'trainers/oge-task11-graphs-trainer.html',
-  'trainers/oge-task12-formulas-trainer.html',
-  'trainers/oge13-inequalities-series.html',
-  'trainers/oge-task14-progressions.html',
-  'trainers/oge-task20-equations.html',
-  'trainers/oge-task21-word-problems.html',
-  'trainers/oge-task22-functions-graphs.html',
-  'trainers/oge-task23-geometry-calculations.html',
-  'trainers/oge-task24-proofs.html',
-  'trainers/oge-task25-geometry.html',
-  'trainers/oge-1-5-trainers/practice-1-5-roads-schema.html',
-  'trainers/oge-1-5-trainers/practice-1-5-stoves.html',
-  'trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html',
-  'trainers/oge-1-5-trainers/practice-1-5-tariffs.html',
-  'trainers/oge-1-5-trainers/practice-1-5-apartments.html',
-  'trainers/oge-1-5-trainers/practice-1-5-land-plots.html',
-  'trainers/atanasyan-grade7.html',
-  'trainers/geometry7-practice.html',
-  'trainers/ege-methods.html',
-  'trainers/geometry-7/control-work.html',
-  'trainers/geometry7-rebuild.html',
-  'trainers/vilenkin6-percent/index.html',
-  'trainers/ege-profile-log-trig.html',
-  'trainers/ege-profile-circle.html'
-];
+const {expectedMirrors, expectedProgress, expectedDigest, byId} = require('../../tools/fixtures/board-registry-expectations.cjs');
 
 function currentManifest() {
   return JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
@@ -244,257 +155,49 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with 87 catalog entries and 63 mirrors', () => {
+test('committed catalog validates; every entry refers to a real repository HTML file', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
-  assert.equal(result.ok, true);
+  assert.equal(result.ok, true, result.error);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
-  assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 87);
-  assert.equal(result.trainers.length, 63);
-  assert.deepEqual(result.progressTrainers, [{
-    trainerId: 'yashchenko-t12',
-    file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
-    progressSchemaVersion: 1
-  }, {
-    trainerId: 'algebra7-control',
-    file: 'trainers/algebra-7/control-work.html',
-    progressSchemaVersion: 1
-  }, {
-    trainerId: 'dvi-math-18-20',
-    file: 'trainers/dvi/math-18-20.html',
-    progressSchemaVersion: 1
-  }]);
+  assert.ok(manifest.trainers.length > 0);
+  assert.deepEqual([...result.trainers].sort(byId), expectedMirrors(manifest));
+  assert.deepEqual(result.progressTrainers, expectedProgress(manifest));
+  const root = fs.realpathSync(path.resolve(__dirname, '../..'));
+  for (const row of manifest.trainers) {
+    const target = fs.realpathSync(path.resolve(root, row.file));
+    assert.ok(target.startsWith(root + path.sep), row.file + ': inside repository');
+    assert.ok(fs.statSync(target).isFile(), row.file + ': regular file');
+  }
+  // Only the pre-existing exceptions to structured-state-only mirroring.
+  assert.deepEqual(manifest.trainers.filter(row => row.allowLegacyHtml === true)
+    .map(row => row.trainerId).sort(), ['linear-inequalities-stepwise', 'negative-numbers-line']);
 });
 
-test('runtime registry has exact parity with all 63 mirror authorizations', () => {
+test('runtime registry has exact authorization parity with the committed manifest', () => {
+  const manifest = currentManifest();
   const registry = loadTrainerRegistry({ env: {} });
-  assert.deepEqual(registry.entries, [
-    ...['atanasyan-grade7','geometry7-practice','geometry7-rebuild','ege-profile-log-trig','ege-profile-circle'].map(trainerId=>({trainerId,file:'trainers/'+trainerId+'.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false})),
-    {trainerId:'ege-methods',file:'trainers/ege-methods.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
-    {trainerId:'geometry7-control-work',file:'trainers/geometry-7/control-work.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
-    {
-      trainerId: 'atanasyan-7-9',
-      file: 'trainers/atanasyan-7-9.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'college-functions',
-      file: 'trainers/college-functions/index.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {trainerId:'vilenkin6-percent',file:'trainers/vilenkin6-percent/index.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
-    {trainerId:'college-logarithms',file:'trainers/college-logarithms/index.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
-    {trainerId:'vpr-math',file:'trainers/vpr-math/index.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
-    {trainerId:'sections-from-zero',file:'trainers/sections-from-zero.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
-    {trainerId:'stereo-literacy-atanasyan',file:'trainers/stereo-literacy-atanasyan.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false},
-    {
-      trainerId: 'ege-baza-11',
-      file: 'trainers/ege-baza-11.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'ege-baza-13',
-      file: 'trainers/ege-baza-13.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'ege-profile-equations',
-      file: 'trainers/ege-profile-equations.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'ege-profile-expressions',
-      file: 'trainers/ege-profile-expressions.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'ege-profile-planimetry',
-      file: 'trainers/ege-profile-planimetry.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'ege-profile-probability',
-      file: 'trainers/ege-profile-probability.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'ege-profile-random-variables',
-      file: 'trainers/ege-profile-random-variables.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'ege-profile-stereometry',
-      file: 'trainers/ege-profile-stereometry.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'ege-profile-vectors',
-      file: 'trainers/ege-profile-vectors.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'grade6-nod',
-      file: 'trainers/grade6-nod.html',
-      version: '1.1.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'grade6-nok',
-      file: 'trainers/grade6-nok.html',
-      version: '1.1.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'linear-inequalities-stepwise',
-      file: 'trainers/linear-inequalities-stepwise.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: true
-    },
-    {
-      trainerId: 'merzlyak-10-base',
-      file: 'trainers/merzlyak-10-base.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'negative-numbers-line',
-      file: 'trainers/negative-numbers-line.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: true
-    },
-    {
-      trainerId: 'oge-task15-triangles',
-      file: 'trainers/oge-task15-triangles.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'oge-task16-circle',
-      file: 'trainers/oge-task16-circle.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'oge-task17-quadrilaterals',
-      file: 'trainers/oge-task17-quadrilaterals.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'oge-task18-grid',
-      file: 'trainers/oge-task18-grid.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'oge-task19',
-      file: 'trainers/task19-trainer.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'peterson6',
-      file: 'trainers/peterson6.html',
-      version: '1.1.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'practice-1-5-roads-grid',
-      file: 'trainers/oge-1-5-trainers/practice-1-5-roads-grid.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'profile-log-inequalities',
-      file: 'trainers/ege-profile/log-inequalities/index.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'profile-log-nested-example',
-      file: 'trainers/ege-profile/log-inequalities/nested.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    },
-    {
-      trainerId: 'profile-log-one-example',
-      file: 'trainers/ege-profile/log-inequalities/lesson.html',
-      version: '1.0.0',
-      stateSchemaVersion: 1,
-      bridgeProtocolVersion: 1,
-      allowLegacyHtml: false
-    }
-  ].concat(addedOgeEntries.map(({trainerId,file}) => ({trainerId,file,version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false}))).sort((a,b) => a.trainerId.localeCompare(b.trainerId)));
+  assert.equal(registry.loaded, true);
+  assert.deepEqual(registry.entries, expectedMirrors(manifest));
+  assert.equal(registry.digest, expectedDigest(manifest));
+  assert.deepEqual(registry.progressEntries, expectedProgress(manifest).sort(byId));
+  const mirrorById = new Map(expectedMirrors(manifest).map(row => [row.trainerId, row]));
+  for (const row of manifest.trainers) {
+    const expected = mirrorById.get(row.trainerId) || null;
+    assert.deepEqual(registry.getById(row.trainerId), expected, row.trainerId);
+    assert.deepEqual(registry.getByFile(row.file), expected, row.file);
+    assert.deepEqual(registry.getByTrainerUrl('/' + row.file), expected, row.file);
+  }
+  assert.equal(registry.getById('unregistered-registry-probe'), null);
+  assert.equal(registry.getByTrainerUrl('/trainers/unregistered-registry-probe.html'), null);
 });
 
 test('bundled default loads relative to the server module', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.equal(registry.loaded, true);
   assert.equal(registry.source, 'bundled-default');
-  assert.equal(registry.entries.length, 63);
+  assert.deepEqual(registry.entries, expectedMirrors(currentManifest()));
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
 });
 
@@ -551,19 +254,19 @@ test('legacy version must match schemaVersion when present', () => {
 
 test('duplicate trainer IDs and files are rejected', () => {
   expectError(manifest => {
-    const duplicate = copy(manifest.trainers[0]);
+    const duplicate = copy(mirrorEntry(manifest));
     duplicate.file = 'trainers/duplicate.html';
     manifest.trainers.push(duplicate);
   }, 'REGISTRY_DUPLICATE_TRAINER_ID');
   expectError(manifest => {
-    const duplicate = copy(manifest.trainers[0]);
+    const duplicate = copy(mirrorEntry(manifest));
     duplicate.trainerId = 'duplicate-trainer';
     manifest.trainers.push(duplicate);
   }, 'REGISTRY_DUPLICATE_FILE');
 });
 
 test('required catalog and mirror fields are enforced', () => {
-  expectError(manifest => { delete manifest.trainers[0].title; }, 'REGISTRY_ENTRY_MISSING_FIELD');
+  expectError(manifest => { delete mirrorEntry(manifest).title; }, 'REGISTRY_ENTRY_MISSING_FIELD');
   expectError(manifest => { delete mirrorEntry(manifest).version; }, 'REGISTRY_ENTRY_VERSION_INVALID');
   expectError(manifest => { delete mirrorEntry(manifest).allowLegacyHtml; }, 'REGISTRY_ENTRY_LEGACY_FLAG_INVALID');
 });
@@ -575,18 +278,18 @@ test('trainer version and protocol versions are validated', () => {
 });
 
 test('unsafe, absolute, traversal, and non-HTML files are rejected', () => {
-  expectError(manifest => { manifest.trainers[0].file = 'https://mathexam.space/trainers/a.html'; }, 'REGISTRY_ENTRY_FILE_ABSOLUTE');
-  expectError(manifest => { manifest.trainers[0].file = '/trainers/a.html'; }, 'REGISTRY_ENTRY_FILE_ABSOLUTE');
-  expectError(manifest => { manifest.trainers[0].file = 'trainers/../a.html'; }, 'REGISTRY_ENTRY_FILE_UNSAFE');
-  expectError(manifest => { manifest.trainers[0].file = 'trainers\\a.html'; }, 'REGISTRY_ENTRY_FILE_UNSAFE');
-  expectError(manifest => { manifest.trainers[0].file = 'trainers/a.js'; }, 'REGISTRY_ENTRY_FILE_INVALID');
+  expectError(manifest => { mirrorEntry(manifest).file = 'https://mathexam.space/trainers/a.html'; }, 'REGISTRY_ENTRY_FILE_ABSOLUTE');
+  expectError(manifest => { mirrorEntry(manifest).file = '/trainers/a.html'; }, 'REGISTRY_ENTRY_FILE_ABSOLUTE');
+  expectError(manifest => { mirrorEntry(manifest).file = 'trainers/../a.html'; }, 'REGISTRY_ENTRY_FILE_UNSAFE');
+  expectError(manifest => { mirrorEntry(manifest).file = 'trainers\\a.html'; }, 'REGISTRY_ENTRY_FILE_UNSAFE');
+  expectError(manifest => { mirrorEntry(manifest).file = 'trainers/a.js'; }, 'REGISTRY_ENTRY_FILE_INVALID');
 });
 
 test('board compatibility and supportsBoardMirror must agree', () => {
-  expectError(manifest => { manifest.trainers[0].supportsBoardMirror = false; }, 'REGISTRY_ENTRY_FLAGS_INCONSISTENT');
-  expectError(manifest => { manifest.trainers[1].supportsBoardMirror = true; }, 'REGISTRY_ENTRY_FLAGS_INCONSISTENT');
-  expectError(manifest => { manifest.trainers[1].boardCompatibility = 'unknown'; }, 'REGISTRY_ENTRY_COMPATIBILITY_INVALID');
-  expectError(manifest => { manifest.trainers[1].allowLegacyHtml = true; }, 'REGISTRY_ENTRY_LEGACY_FLAG_INVALID');
+  expectError(manifest => { mirrorEntry(manifest).supportsBoardMirror = false; }, 'REGISTRY_ENTRY_FLAGS_INCONSISTENT');
+  expectError(manifest => { mirrorEntry(manifest, 'negative-numbers').supportsBoardMirror = true; }, 'REGISTRY_ENTRY_FLAGS_INCONSISTENT');
+  expectError(manifest => { mirrorEntry(manifest, 'negative-numbers').boardCompatibility = 'unknown'; }, 'REGISTRY_ENTRY_COMPATIBILITY_INVALID');
+  expectError(manifest => { mirrorEntry(manifest, 'negative-numbers').allowLegacyHtml = true; }, 'REGISTRY_ENTRY_LEGACY_FLAG_INVALID');
 });
 
 test('catalog-only entries do not enter the mirror registry', () => {
@@ -603,23 +306,10 @@ test('progress tracking is an explicit registry capability independent of mirror
 
   const validation = validateTrainerManifest(manifest);
   assert.equal(validation.ok, true);
-  assert.deepEqual(validation.progressTrainers, [{
-    trainerId: 'ege-t1-planimetry',
-    file: 'trainers/ege-t1-planimetry-trainer.html',
-    progressSchemaVersion: 1
-  }, {
-    trainerId: 'yashchenko-t12',
-    file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
-    progressSchemaVersion: 1
-  }, {
-    trainerId: 'algebra7-control',
-    file: 'trainers/algebra-7/control-work.html',
-    progressSchemaVersion: 1
-  }, {
-    trainerId: 'dvi-math-18-20',
-    file: 'trainers/dvi/math-18-20.html',
-    progressSchemaVersion: 1
-  }]);
+  assert.deepEqual(validation.progressTrainers, expectedProgress(manifest));
+  const expectedEntry = {trainerId: 'ege-t1-planimetry',
+    file: 'trainers/ege-t1-planimetry-trainer.html', progressSchemaVersion: 1};
+  assert.deepEqual(validation.progressTrainers.find(row => row.trainerId === entry.trainerId), expectedEntry);
   assert.match(progressRegistryDigest(1, validation.progressTrainers), /^sha256:[0-9a-f]{64}$/);
   assert.equal(
     canonicalProgressRegistryJson(1, validation.progressTrainers),
@@ -637,7 +327,7 @@ test('progress tracking is an explicit registry capability independent of mirror
     assert.equal(registry.loaded, true);
     assert.equal(registry.allowsProgress(entry.trainerId), true);
     assert.equal(registry.progressDigest, progressRegistryDigest(1, validation.progressTrainers));
-    assert.deepEqual(registry.getProgressById(entry.trainerId), validation.progressTrainers[0]);
+    assert.deepEqual(registry.getProgressById(entry.trainerId), expectedEntry);
     assert.equal(registry.getById(entry.trainerId), null);
     assert.equal(JSON.stringify(registry.publicPayload).includes('progressSchemaVersion'), false);
   });
@@ -645,17 +335,17 @@ test('progress tracking is an explicit registry capability independent of mirror
 
 test('progress registry capability fails closed on flag and schema mismatch', () => {
   expectError(
-    manifest => { manifest.trainers[1].supportsProgressTracking = 'yes'; },
+    manifest => { mirrorEntry(manifest, 'negative-numbers').supportsProgressTracking = 'yes'; },
     'REGISTRY_ENTRY_PROGRESS_FLAG_INVALID'
   );
   expectError(
-    manifest => { manifest.trainers[1].progressSchemaVersion = 1; },
+    manifest => { mirrorEntry(manifest, 'negative-numbers').progressSchemaVersion = 1; },
     'REGISTRY_ENTRY_PROGRESS_SCHEMA_UNEXPECTED'
   );
   expectError(
     manifest => {
-      manifest.trainers[1].supportsProgressTracking = true;
-      manifest.trainers[1].progressSchemaVersion = 2;
+      mirrorEntry(manifest, 'negative-numbers').supportsProgressTracking = true;
+      mirrorEntry(manifest, 'negative-numbers').progressSchemaVersion = 2;
     },
     'REGISTRY_ENTRY_PROGRESS_SCHEMA_UNSUPPORTED'
   );
@@ -678,6 +368,7 @@ test('digest is deterministic across manifest and entry order', () => {
 
 test('an additional synthetic mirror entry needs no registry core change', () => {
   const manifest = currentManifest();
+  const before = expectedMirrors(manifest);
   const synthetic = copy(mirrorEntry(manifest, 'linear-inequalities-stepwise'));
   synthetic.trainerId = 'synthetic-registry-trainer';
   synthetic.file = 'trainers/synthetic-registry-trainer.html';
@@ -686,18 +377,21 @@ test('an additional synthetic mirror entry needs no registry core change', () =>
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 64);
+    assert.equal(registry.entries.length, before.length + 1);
+    assert.deepEqual(registry.entries, expectedMirrors(manifest));
     assert.equal(registry.getById(synthetic.trainerId).file, synthetic.file);
   });
 });
 
 test('removing a mirror entry removes its runtime authorization', () => {
   const manifest = currentManifest();
+  const before = expectedMirrors(manifest);
   manifest.trainers = manifest.trainers.filter(entry => entry.trainerId !== 'linear-inequalities-stepwise');
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 62);
+    assert.equal(registry.entries.length, before.length - 1);
+    assert.deepEqual(registry.entries, expectedMirrors(manifest));
     assert.equal(registry.getById('linear-inequalities-stepwise'), null);
   });
 });

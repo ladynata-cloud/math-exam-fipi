@@ -240,8 +240,8 @@ async function diagnostics() {
         assert.equal(await teacher.evaluate(() => inkOutbox.pending().length), 0);
         phase = 'clear advances the page generation and a new native stroke is saved';
         const oldEpoch = await teacher.evaluate(() => page().pageEpoch);
-        await teacher.locator('#boardOptions').click(); await teacher.locator('#clear').click();
-        await teacher.locator('#boardPanel [data-close-panel]').click();
+        assert.equal(await teacher.locator('#boardPanel').isVisible(), false);
+        await teacher.locator('#clear').click();
         await saved(teacher, 0); await equalBoards(teacher, student);
         assert.ok(await teacher.evaluate(previous => page().pageEpoch > previous, oldEpoch));
         await pen(teacher, 180); await saved(teacher, 1); await equalBoards(teacher, student);

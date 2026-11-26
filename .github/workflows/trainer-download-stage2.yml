@@ -39,6 +39,7 @@ on:
       - 'school/makarychev8/**'
       - 'school/peterson6/**'
       - 'tools/trainer-download-stage2.browser.cjs'
+      - 'tools/offline-entrance.browser.cjs'
       - 'tools/trainer-download-oge-next.cjs'
       - 'tools/trainer-download-oge-final.cjs'
       - 'tools/trainer-download-profile-first.cjs'
@@ -68,3 +69,5 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Open and solve from the real ZIP and standalone HTML
         run: node tools/trainer-download-stage2.browser.cjs
+      - name: Verify the three directly linked legacy offline packages
+        run: node tools/offline-entrance.browser.cjs

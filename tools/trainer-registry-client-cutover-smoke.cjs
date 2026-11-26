@@ -8,6 +8,7 @@ const { createServer: createNetServer } = require('node:net');
 const { dirname, extname, resolve, sep } = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright');
+const {expectedMirrors, expectedDigest} = require('./fixtures/board-registry-expectations.cjs');
 
 const REPO_ROOT = resolve(__dirname, '..');
 const BOARD_SERVER_DIR = resolve(REPO_ROOT, 'board-server');
@@ -1063,11 +1064,11 @@ async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
 }
 
 async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
-  assert.equal(registry.trainers.length, 63, 'runtime registry exposes exactly 63 mirror entries');
-  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['atanasyan-grade7', 'geometry7-practice', 'geometry7-control-work', 'geometry7-rebuild', 'atanasyan-7-9', 'college-functions', 'college-logarithms', 'vilenkin6-percent', 'vpr-math', 'ege-baza-11', 'ege-baza-13', 'ege-methods', 'ege-profile-circle', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-log-trig', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'sections-from-zero', 'stereo-literacy-atanasyan', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example'].concat(require('./fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort());
   const catalog = await (await fetch(`${siteOrigin}/trainers/board-compat.json`)).json();
   const expectedCatalog = JSON.parse(readFileSync(resolve(REPO_ROOT, 'trainers', 'board-compat.json'), 'utf8'));
   assert.deepEqual(catalog, expectedCatalog, 'served catalog exactly matches the committed manifest');
+  assert.deepEqual(registry.trainers, expectedMirrors(expectedCatalog), 'runtime authorizations exactly match the committed manifest');
+  assert.equal(registry.digest, expectedDigest(expectedCatalog), 'runtime digest matches committed permissions');
   const catalogIds = new Set(), catalogFiles = new Set();
   for (const entry of expectedCatalog.trainers) {
     assert.ok(!catalogIds.has(entry.trainerId), `unique catalog id: ${entry.trainerId}`);
@@ -1077,7 +1078,6 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
     catalogIds.add(entry.trainerId);
     catalogFiles.add(entry.file.toLowerCase());
   }
-  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 63, 'catalog exposes exactly 63 mirrors');
   assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same mirror ids');
 
   const teacherContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });

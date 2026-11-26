@@ -609,13 +609,13 @@ test('replacement socket resumes an outstanding queue after the old connection A
 test('actual room-state handler never describes an unconfirmed initial seed as saved', () => {
   const f = deliveryUiFixture(), seedStates = [];
   const html = fs.readFileSync(path.join(ROOT, 'trainers/trainer-board.html'), 'utf8');
-  const match = html.match(/shared\.socket\.on\('room:state',payload=>\{([\s\S]*?)\n        \}\);/);
+  const match = html.match(/onLiveEvent\('room:state',payload=>\{([\s\S]*?)\n        \}\);/);
   assert.ok(match, 'exercise the real production room-state handler');
-  const noops = ['clearPendingHistory', 'setControlState', 'setSharedMe', 'updateMirrorStatusForCurrentTrainer',
+  const noops = ['rememberUnconfirmed', 'clearPendingHistory', 'setControlState', 'setSharedMe', 'updateMirrorStatusForCurrentTrainer',
     'applySnapshot', 'reconcileTrainerMirror', 'recoverExpiredBridgeOnce', 'maybeHydrateTrainer',
     'scheduleLegacyTrainerRequest', 'fallbackSharedMe', 'setStatus', 'emitWriter'];
   for (const name of noops) f.context[name] = () => {};
-  Object.assign(f.context, { roomStateReceived: false, latestTrainerState: null,
+  Object.assign(f.context, { roomStateReceived: false, latestTrainerState: null, bridgeSession: null,
     pausedTrainerBridge: null, bridgeReloadNeeded: false, canWrite: () => true,
     takePreparedProfileTrainer: () => null,
     updateControlUi: () => f.run('updateInkDeliveryStatus()'),
@@ -624,6 +624,8 @@ test('actual room-state handler never describes an unconfirmed initial seed as s
   f.context.document.body = { classList: { remove() {} } };
   f.context.shared.role = 'teacher';
   f.context.shared.socket = { emit() {} };
+  f.context.shared.connected = true;
+  f.context.liveSocket = { connected: true };
   const receive = f.run('(payload) => {' + match[1] + '\n}');
   receive({ state: null, inkDelivery: { version: 1, durable: true } });
   assert.equal(seedStates.length, 1);
@@ -663,13 +665,18 @@ test('actual writing permission blocks offline room reload before capability neg
   assert.ok(match, 'exercise the real production writing permission');
   const shared = { roomId: 'restored-room', connected: false, role: 'teacher', me: null, control: '' };
   let blocked = false;
-  const context = vm.createContext({ shared, deliveryBlocksWriting: () => blocked });
-  vm.runInContext(match[0], context);
+  const ready = html.match(/function roomReady\(\)\{[^\n]+\}/);
+  assert.ok(ready, 'exercise real room acceptance');
+  const context = vm.createContext({ shared, roomStateReceived: false, deliveryBlocksWriting: () => blocked });
+  vm.runInContext(ready[0] + '\n' + match[0], context);
   const allowed = () => vm.runInContext('canWrite()', context);
   assert.equal(allowed(), false, 'restored room cannot create local-only ink before Socket.IO loads');
   shared.connected = true;
   assert.equal(allowed(), false, 'connection still requires a joined writer identity');
   shared.me = { participantId: 'teacher' }; shared.control = 'teacher';
+  shared.socket = { connected: true };
+  assert.equal(allowed(), false, 'transport and cached identity still cannot replace room acceptance');
+  context.roomStateReceived = true;
   assert.equal(allowed(), true);
   shared.control = 'student';
   assert.equal(allowed(), false, 'joined teacher obeys current writing control');

@@ -251,6 +251,7 @@
       if (['general', 'twoDigit', 'remainder', 'quotientDigit'].includes(previous.divisionTopic)) selected.divisionTopic = previous.divisionTopic;
       if (['school', 'oge', 'ege', 'ege-base', 'ege-profile'].includes(previous.goal)) selected.goal = previous.goal;
       if (Number.isInteger(previous.grade) && previous.grade >= 5 && previous.grade <= 11) selected.grade = previous.grade;
+      if (previous.vprLevelGrade === 7 || previous.vprLevelGrade === 8) selected.vprLevelGrade = previous.vprLevelGrade;
       return Object.keys(selected).length ? {surface:'navigator', dialog:selected} : undefined;
     }
     async function send() {
