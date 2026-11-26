@@ -43,10 +43,15 @@ try:
     winner_text=winner.locator('#answer-0-0').input_value();loser_text=loser.locator('#answer-0-0').input_value()
     assert winner_text!=loser_text;assert downloaded(loser)['backupState']['drafts']['0:0']==loser_text
     assert winner.evaluate('(key)=>JSON.parse(localStorage.getItem(key)).drafts["0:0"]',KEY)==winner_text
+    print('PASS real concurrent Web Locks: winner durable, losing draft export intact',flush=True)
     winner.get_by_role('button',name='Зафиксировать первую запись').click();drain(winner);c.close()
     c=context(); p=c.new_page();p.goto(url);p.wait_for_selector('#screen h2');assert p.locator('#screen h2').inner_text()=='Объяснение';assert downloaded(p)['backupState']['locked']['0'][0]==winner_text
+    print('PASS persistent profile restart and immutable first record',flush=True)
     home=p.locator('[data-mathexam-home-link]');assert home.count()==1 and home.get_attribute('href')=='/' and home.get_attribute('target')=='_self'
-    home.click();p.wait_for_url(origin+'/');assert len(c.pages)==1
+    before_pages=tuple(c.pages)
+    home.click();p.wait_for_url(origin+'/')
+    assert tuple(c.pages)==before_pages, 'home navigation must retain exactly the pre-existing pages'
+    print('PASS same-tab home navigation without opening additional tabs',flush=True)
     # Verify actual host integration in the exact checkout, not just snippets.
     p.goto(origin+'/trainers/oge-written-practice.html#area-workshop');area=p.locator('[data-mathexam-lesson-cycle="area"]');area.wait_for(state='visible');p.locator('#area-transfer-open').click();area.wait_for(state='hidden')
     p.goto(origin+'/trainers/oge-written-practice.html#area-transfer');p.locator('#area-step-title').wait_for();assert not p.locator('[data-mathexam-lesson-cycle="area"]:visible').count()
