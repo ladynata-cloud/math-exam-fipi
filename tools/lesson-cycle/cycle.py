@@ -23,6 +23,8 @@ with sync_playwright() as pw:
  b=pw.chromium.launch(**({'executable_path':os.environ['CHROMIUM_EXECUTABLE_PATH']} if os.getenv('CHROMIUM_EXECUTABLE_PATH') else {}),headless=True,args=['--no-sandbox'])
  for width in (320,390,1280):
   c=b.new_context(viewport={'width':width,'height':800},offline=True,accept_downloads=True);page=c.new_page(); confirm(page);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));boot(page)
+  home=page.locator('[data-mathexam-home-link]');home.scroll_into_view_if_needed();box=home.bounding_box();assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=width+1 and box['height']>=44,box
+  assert home.get_attribute('href')=='/' and home.get_attribute('target')=='_self'
   for tid in ('area','prob','rate','motion'):
    page.select_option('#topic',tid)
    assert page.locator('#screen h2').inner_text()=='Вход А' and page.locator('#nav button').nth(4).is_disabled()
