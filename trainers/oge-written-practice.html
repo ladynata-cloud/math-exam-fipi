@@ -48,6 +48,7 @@
     <button type="button" class="primary" id="area-next">Следующий шаг →</button>
   </div>
   <button type="button" id="area-transfer-open">Открыть другую задачу для самостоятельной пробы</button>
+  <p id="area-cycle-entry" data-mathexam-lesson-cycle="area" hidden><a href="./lesson-cycle/START.html?topic=area" target="_blank" rel="noopener noreferrer">Полное занятие: диагностика, практика и домашняя работа</a> <small>· личный режим, отдельная вкладка</small></p>
   <details><summary>Как дать самостоятельную пробу на следующем занятии</summary>
     <p>Отправьте ученику <a id="area-direct" href="#area-transfer">прямую ссылку на задачу о четырёхугольнике</a>. В новой вкладке откроются условие и чистый чертёж. Попросите сохранить первую запись до самопроверки. Сравните с предыдущей работой, где ученик сам выбрал основание для вывода и где понадобился вопрос. История помощи и рисунки есть в скачанном файле.</p>
   </details>
@@ -338,6 +339,7 @@ function createAreaWorkshop() {
     $('area-next').disabled = !readyForNext();
     $('area-prev').disabled = current === 0;
     $('area-transfer-open').hidden = transfer();
+    syncLessonCycleEntry();
   }
   function report(text) {
     step().feedback = text;
@@ -488,6 +490,9 @@ function createAreaWorkshop() {
   $('area-model').addEventListener('click', () => openSupport('model'));
   $('area-next').addEventListener('click', () => { if (!transfer() && readyForNext()) go(current + 1); });
   $('area-prev').addEventListener('click', () => { if (current > 0) go(current - 1); });
+  function syncLessonCycleEntry() {
+    $('area-cycle-entry').hidden = !(window.top === window && /^https?:$/.test(location.protocol) && !['board','learning'].some(key => new URLSearchParams(location.search).get(key) === '1') && location.hash === '#area-workshop' && !transfer());
+  }
   function setMode(focus) {
     const active = ['#area-workshop', '#area-transfer'].includes(location.hash);
     for (const panel of classicPanels) panel.hidden = active;
@@ -499,6 +504,7 @@ function createAreaWorkshop() {
       render();
       if (focus) $('area-step-title').focus();
     } else if (focus) $('title').focus();
+    syncLessonCycleEntry();
   }
   function switchTo(hash) {
     if (location.hash === hash) setMode(true);

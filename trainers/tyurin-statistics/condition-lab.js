@@ -221,6 +221,7 @@
   function render(focus) {
     work.innerHTML = '<section class="condition-step" data-stage="' + state.stage + '">' +
       renderStage[state.stage]() + '</section><p class="condition-storage" role="status">' + esc(storageNotice) + '</p>';
+    syncLessonCycleEntry();
     if (focus === 'heading') work.querySelector('h3').focus();
     else if (focus) work.querySelector(focus)?.focus();
   }
@@ -230,10 +231,16 @@
     save();
     render('heading');
   }
+  function syncLessonCycleEntry() {
+    window.MathExamLessonCycleEntry?.mount(lab, 'prob', {
+      visible: !lab.hidden && lab.open && state.stage !== 'transfer'
+    });
+  }
   function sync() {
     const show = eligible.includes(lesson.value);
     lab.hidden = !show;
     if (entry) entry.hidden = lesson.value !== lesson.options[0]?.value;
+    syncLessonCycleEntry();
     if (show) {
       if (lab.open) render();
     }
@@ -337,4 +344,27 @@
   });
   if (eligible.includes(lesson.value) && new URLSearchParams(location.search).get('lab') === 'condition') lab.open = true;
   sync();
+  if (window.top === window && /^https?:$/.test(location.protocol) && !['board','learning'].some(key => new URLSearchParams(location.search).get(key) === '1')) {
+    const cycleScript = document.createElement('script');
+    cycleScript.src = '../lesson-cycle/entry.js';
+    cycleScript.onload = syncLessonCycleEntry;
+    cycleScript.onerror = () => cycleScript.remove();
+    document.head.append(cycleScript);
+  }
+})();
+
+/* WORK-12: additional standalone probability practice, separate from board state. */
+(function mountProbabilityBridges() {
+  'use strict';
+  if (typeof document === 'undefined' || typeof window === 'undefined' || window.top !== window) return;
+  const anchor = document.getElementById('condition-entry');
+  if (!anchor || document.getElementById('probability-bridges')) return;
+  const section = document.createElement('section');
+  section.id = 'probability-bridges';
+  section.setAttribute('aria-label', 'Дополнительные практикумы по вероятности');
+  section.innerHTML = '<h2>От случайного опыта к распределению и сумме</h2>' +
+    '<p>Дополнительные занятия для самостоятельной работы. Они не меняют результаты основного курса и не синхронизируются с доской.</p>' +
+    '<ol><li><a href="./discrete-lab.html">От исходов опыта к распределению</a> — перед пунктами 55 и 57 (7–9 классы).</li>' +
+    '<li><a href="./sum-dependence-lab.html">Ожидание и дисперсия суммы: что меняет зависимость?</a> — после пункта 11 (10–11 классы).</li></ol>';
+  anchor.insertAdjacentElement('afterend', section);
 })();
