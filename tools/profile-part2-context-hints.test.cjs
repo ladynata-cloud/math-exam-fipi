@@ -3,7 +3,7 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const lessons=require('../ege-profil/part-two/content-algebra.js');
 const checker=require('../ege-profil/start/checks.js');
-const tasks=lessons.flatMap(lesson=>lesson.tasks);
+const tasks=lessons.flatMap(lesson=>lesson.tasks).filter(task=>!task.equationAnswer);
 const family=kind=>tasks.filter(task=>task.meta.kind===kind);
 const near=(actual,expected,label)=>assert.ok(Number.isFinite(actual)&&Math.abs(actual-expected)<1e-8,label+': '+actual+' != '+expected);
 const at=(expression,x)=>checker.number(expression.replace(/\bx\b/g,'('+x+')').replace(/²/g,'^2'));

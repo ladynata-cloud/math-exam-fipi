@@ -1,0 +1,67 @@
+.rs-lesson {
+  max-width: 54rem;
+  color: #223c32;
+  line-height: 1.6;
+}
+.rs-lesson > h2 {
+  margin: .25rem 0 .65rem;
+  font: 600 clamp(1.8rem, 4vw, 2.65rem)/1.2 Georgia, serif;
+}
+.rs-lesson h3 {
+  margin: 0 0 .7rem;
+  font: 600 clamp(1.25rem, 3vw, 1.65rem)/1.25 Georgia, serif;
+}
+.rs-lesson section {
+  margin-block: 1.1rem;
+  padding: clamp(.9rem, 3vw, 1.6rem);
+  background: #fffef9;
+  border: 1px solid #cedbca;
+  border-radius: .7rem;
+}
+.rs-lesson :is(section, li) > :last-child { margin-bottom: 0; }
+.rs-lesson p, .rs-lesson ol { max-width: 68ch; }
+.rs-lesson ol, .rs-lesson ul { padding-inline-start: 1.4rem; }
+.rs-lesson li + li { margin-top: .45rem; }
+.rs-lesson label { display: block; font-weight: 600; }
+.rs-lesson input, .rs-lesson select, .rs-lesson button {
+  max-width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid #768d7f;
+  border-radius: .4rem;
+  padding: .42rem .65rem;
+  font: inherit;
+  background: white;
+  color: #203e34;
+}
+.rs-lesson form, .rs-actions, .rs-lesson footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .65rem 1rem;
+}
+.rs-lesson input[name=answer] { display: block; width: 8em; margin-top: .25rem; }
+.rs-lesson input[type=range] { display: block; width: min(100%, 24rem); accent-color: #17674e; }
+.rs-lesson button, .rs-lesson select { cursor: pointer; }
+.rs-lesson button[type=submit] { background: #135d4a; color: white; border-color: #135d4a; }
+.rs-lesson button:disabled, .rs-lesson input:disabled { opacity: .65; cursor: default; }
+.rs-lesson [data-model-feedback], .rs-lesson [data-feedback]:not(:empty) {
+  border-left: .24rem solid #46745c;
+  background: #edf3e8;
+  padding: .6rem .8rem;
+}
+.rs-variant { font-weight: 650; }
+.rs-lesson table { border-collapse: collapse; max-width: 100%; margin: .9rem 0; font-variant-numeric: tabular-nums; }
+.rs-lesson caption { text-align: left; color: #48604f; padding: .3rem 0; font-size: .95rem; }
+.rs-lesson th, .rs-lesson td {
+  border: 1px solid #b7c8b8;
+  padding: .3rem clamp(.3rem, 1.5vw, .85rem);
+  text-align: center;
+}
+.rs-lesson thead, .rs-lesson tfoot, .rs-lesson tbody td:last-child { background: #e6eee4; }
+.rs-lesson tfoot { font-weight: 700; }
+.rs-lesson footer a { padding: .6rem 0; }
+@media (max-width: 24rem) {
+  .rs-lesson table { width: 100%; table-layout: fixed; }
+  .rs-lesson th { font-size: .9rem; }
+  .rs-lesson :is(th, td) { padding-inline: .15rem; overflow-wrap: anywhere; }
+}
