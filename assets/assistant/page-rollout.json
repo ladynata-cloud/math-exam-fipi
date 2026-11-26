@@ -2551,9 +2551,10 @@
       "placement": "before-head-close"
     },
     "trainers/like-terms-factory.html": {
-      "beforeSha256": "c5577223269e588ca6fce53982a09638439e7d0ef75aa616c801ab0fecb152c6",
-      "afterSha256": "f182dfd4c9b57943940eb2ff77377a840fbc9a5f4a1e1950cd704aa55f1c6421",
-      "placement": "before-head-close"
+      "beforeSha256": "3018ec08ea486932f7abcfc0b65e265ad73fc2db3b37527745419b0447505ae2",
+      "afterSha256": "e62e710691a2b342de5df067781b17a13fdf4caf7124e55fff31067d2dcc1daa",
+      "placement": "before-head-close",
+      "sourceSha": "72b8c03dcdd824979500c02ed662344394e8ee65"
     },
     "trainers/like-terms-lab.html": {
       "beforeSha256": "55169ed27f752261292ec325c2474eec994dee7653e5bf371a50cacb8cfe4da9",
@@ -3068,9 +3069,10 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "f0d3caeaf080c49459430abc844fe3b99cc4c0542446c5ec3b0b5701d62b12af",
-      "afterSha256": "8efecc32aa9314fac00dd30b60a0853fcbb2ba6b4a4111f9b94b560d2f11970a",
-      "placement": "before-head-close"
+      "beforeSha256": "bd86f7dee8dcf5c202de7ba07dc3b76bb9f18622bef3961e52789c60c4965934",
+      "afterSha256": "7d00f0323e05d6c0a0ecf4deca606dc939b739f0836d6d91bafa42295910c75b",
+      "placement": "before-head-close",
+      "sourceSha": "b5d9c22c25bd5497b487bb645dff5ad17f0600b4"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
       "beforeSha256": "e1ad5bdeb3df48d151a76c7689c674487e103194d50932b178e0ac66b0bc6098",
@@ -6868,6 +6870,38 @@
       ],
       "bindingScope": "Three retained per-page sourceSha bindings from reviewed candidate; Vilenkin first-part file and original binding restored from current main. All #740 bindings retained.",
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "sourceBaseSha": "b5d9c22c25bd5497b487bb645dff5ad17f0600b4",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/OGE_WRITTEN_REASONING_20261124.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "reason": "Bind the single additive written-reasoning workshop entrance; existing OGE material, shared navigator pair and all other bindings unchanged.",
+      "bindingScope": "Exact per-page sourceSha; global base unchanged."
+    },
+    {
+      "sourceBaseSha": "957e99846672835c9df8b507c1d2c16136cfa8e6",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/LIKE_TERMS_TO_BRACKETS.md",
+      "changedPaths": [
+        "trainers/like-terms-factory.html"
+      ],
+      "reason": "Bind the reviewed algebra route to its exact source including the original navigator pair. Preserve all prior receipts and other bindings.",
+      "bindingScope": "Per-page sourceSha; global base and shared runtime unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "72b8c03dcdd824979500c02ed662344394e8ee65",
+      "previousSourceSha": "957e99846672835c9df8b507c1d2c16136cfa8e6",
+      "task": "docs/tasks/LIKE_TERMS_TO_BRACKETS.md",
+      "changedPaths": [
+        "trainers/like-terms-factory.html"
+      ],
+      "reason": "Bind the seven-step polynomial continuation to its exact source; the prior algebra source and receipt remain in history.",
+      "bindingScope": "One per-page sourceSha; shared navigator pair, global base and other bindings unchanged.",
+      "boundary": "Committed source identity only; not mathematical or publication approval."
     }
   ],
   "coverageUpdates": [

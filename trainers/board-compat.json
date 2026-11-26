@@ -1178,6 +1178,20 @@
       "notes": "Восемь задач из кабинета: совместные ответы, шаги, подсказки, правила и записи. Личные результаты не изменяются."
     },
     {
+      "trainerId": "vilenkin6-proportion",
+      "file": "trainers/vilenkin6-proportion/index.html",
+      "title": "Виленкин · 6 класс · Отношения и пропорции",
+      "group": "Виленкин / задания учебника",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "32 задачи курса (§18–21): отношения, пропорции, прямая и обратная зависимость, масштаб; общие ответы, шаги, подсказки, правила и короткие записи. Личные результаты не изменяются."
+    },
+    {
       "trainerId": "ege-profile-log-trig",
       "file": "trainers/ege-profile-log-trig.html",
       "title": "Логарифмы и тригонометрия · ЕГЭ профиль",
@@ -1302,6 +1316,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общее состояние текущей задачи, подсказки и результат. Личные сохранения изолированы."
+    },
+    {
+      "trainerId": "notebook-math",
+      "file": "trainers/notebook-math.html",
+      "title": "Математика по школьной тетради · индивидуальный курс",
+      "group": "Старшие классы · индивидуальные курсы",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Семантическое состояние урока, задания, ответа, шага, подсказки и модели. Личный прогресс вне комнаты."
     }
   ]
 }

@@ -7707,6 +7707,31 @@
       "href": "/trainers/vilenkin6-percent/index.html"
     },
     {
+      "title": "Отношения и пропорции · 32 задачи на общей доске",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html"
+    },
+    {
+      "title": "Пункт 18 · Отношения · зеркальная доска",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?unit=18"
+    },
+    {
+      "title": "Пункт 19 · Пропорции · зеркальная доска",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?unit=19"
+    },
+    {
+      "title": "Пункт 20 · Прямая и обратная пропорциональность · зеркальная доска",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?unit=20"
+    },
+    {
+      "title": "Пункт 21 · Масштаб · зеркальная доска",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?unit=21"
+    },
+    {
       "title": "Логарифмы и тригонометрия · 9 тем ЕГЭ профиль",
       "group": "ЕГЭ профиль · логарифмы и тригонометрия",
       "href": "/trainers/ege-profile-log-trig.html#course"
@@ -7880,6 +7905,11 @@
       "title": "Макарычев · алгебра 9 · 2017 · 36 пунктов",
       "group": "Школьная мастерская",
       "href": "/trainers/makarychev9-2017/index.html"
+    },
+    {
+      "title": "Математика по школьной тетради · индивидуальный курс",
+      "group": "Старшие классы · индивидуальные курсы",
+      "href": "/trainers/notebook-math.html"
     }
   ]
 }
