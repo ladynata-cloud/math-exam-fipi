@@ -159,10 +159,10 @@
     const trainerUrl=$('trainerUrl'),frame=$('trainerFrame'),trainerQuick=$('trainerQuick'),trainerQuickStatus=$('trainerQuickStatus'),mirrorStatus=$('mirrorStatus'),retryTrainerRegistry=$('retryTrainerRegistry'),color=$('color'),size=$('size'),sizeText=$('sizeText'),bg=$('bg'),sheetCount=$('sheetCount');
     const serverUrl=$('serverUrl'),shareStatus=$('shareStatus'),roleBadge=$('roleBadge'),roomBadge=$('roomBadge'),controlBadge=$('controlBadge'),controlToggle=$('controlToggle'),releaseControl=$('releaseControl'),studentLink=$('studentLink'),participantsList=$('participantsList');
     let dpr=1,view={w:1,h:1},tool='pen',drawing=false,current=null,textPoint=null,timer=null,applyingRemote=false,frameLoaded=false,pendingTrainerState=null,roomStateReceived=false,latestTrainerState=null,bridgeSession=null,pausedTrainerBridge=null,readyCandidate=null,bridgeHydrationTimer=null,legacyTrainerTimer=null,frameGeneration=0,lastFrameLoadAt=0,automaticRecoveryGeneration=-1,bridgeReloadNeeded=false;
-    let vprControlTransfer=null, activeHandoff=null, handoffVersion=0;
+    let vprControlTransfer=null;
     function clearHandoff(){
-      if(activeHandoff)activeHandoff.cleanup();
-      activeHandoff=null;
+      if(shared.activeHandoff)shared.activeHandoff.cleanup();
+      shared.activeHandoff=null;
     }
     let trainerDraft=null;
     function draftKey(){
@@ -202,7 +202,7 @@
     addEventListener('pagehide',captureTrainerDraft);
     function prepareHandoff(message,ack){
       if(typeof ack!=='function')return;
-      if(!message||activeHandoff||!canWrite()||message.roomId!==shared.roomId||
+      if(!message||shared.activeHandoff||!canWrite()||message.roomId!==shared.roomId||
          message.controlVersion!==shared.controlVersion||typeof message.handoffId!=='string'){
         ack({ok:false});return;
       }
@@ -211,7 +211,7 @@
       const pending={id:message.handoffId,cleanup:()=>removeEventListener('message',receive)};
       function receive(event){
         const data=event.data;
-        if(activeHandoff!==pending||room!==shared.roomId||epoch!==shared.controlVersion||
+        if(shared.activeHandoff!==pending||room!==shared.roomId||epoch!==shared.controlVersion||
            session!==bridgeSession||data?.type!=='mathexam:trainer-state'||
            data.handoffId!==pending.id||!bridgeMessageMatches(event,data))return;
         pending.cleanup();
@@ -222,7 +222,7 @@
       if(!editor.classList.contains('hidden'))finishText();
       captureInterruptedBoard();
       cancelGesture(false);
-      activeHandoff=pending;updateControlUi();
+      shared.activeHandoff=pending;updateControlUi();
       if(!entry){ack({ok:trainerRegistry.status==='ready',trainerState:null});return;}
       if(!session?.hydrated||session.trainerId!==entry.trainerId){ack({ok:false});return;}
       addEventListener('message',receive);
@@ -246,7 +246,7 @@
     const blank=()=>({id:`local-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,bg:'grid',strokes:[],redo:[]});
     const defaults=()=>({current:0,trainerUrl:'negative-numbers-line.html',trainerHidden:false,pages:[blank()]});
     let state=load();
-    const shared={role:initialRole,roomId:initialRole==='student'?params.get('room')||'':restoredTeacherRoomSession?.roomId||'',token:initialRole==='student'?params.get('token')||'':restoredTeacherRoomSession?.teacherToken||'',server:normalizeServer(restoredTeacherRoomSession?.server||params.get('server')||localStorage.getItem(SERVER_KEY)||DEFAULT_SERVER),studentToken:restoredTeacherRoomSession?.studentToken||'',studentLink:'',socket:null,connected:false,roomError:'',loadingClient:null,clientServer:'',participants:[],me:null,control:'',controlVersion:0,restoredTeacherSession:!!restoredTeacherRoomSession};
+    const shared={activeHandoff:null,handoffVersion:0,role:initialRole,roomId:initialRole==='student'?params.get('room')||'':restoredTeacherRoomSession?.roomId||'',token:initialRole==='student'?params.get('token')||'':restoredTeacherRoomSession?.teacherToken||'',server:normalizeServer(restoredTeacherRoomSession?.server||params.get('server')||localStorage.getItem(SERVER_KEY)||DEFAULT_SERVER),studentToken:restoredTeacherRoomSession?.studentToken||'',studentLink:'',socket:null,connected:false,roomError:'',loadingClient:null,clientServer:'',participants:[],me:null,control:'',controlVersion:0,restoredTeacherSession:!!restoredTeacherRoomSession};
 
     function load(){try{if(initialRole==='student')return defaults();const raw=sheetStorage().getItem(KEY);if(!raw)return defaults();const s=JSON.parse(raw);if(!s.pages?.length)return defaults();s.current=Math.min(Math.max(s.current||0,0),s.pages.length-1);s.pages.forEach((p,i)=>{p.id=p.id||`page-${i+1}`;p.bg=p.bg||'grid';p.strokes=Array.isArray(p.strokes)?p.strokes:[];p.redo=Array.isArray(p.redo)?p.redo:[]});s.trainerUrl=s.trainerUrl||'negative-numbers-line.html';return s}catch(_e){return defaults()}}
     function persistLocalBoard(){try{sheetStorage().setItem(KEY,JSON.stringify(state))}catch(_){boardMessage('Не удалось сохранить копию в этом браузере. Скачайте текущий вид PNG.')}}
@@ -254,7 +254,7 @@
     function page(){return state.pages[state.current]}
     // A transport connection alone is not an authenticated room.
     function roomReady(){return !!(shared.roomId&&shared.connected&&roomStateReceived&&shared.socket?.connected===true)}
-    function canWrite(){if(activeHandoff)return false;return shared.roomId?roomReady()&&!!(shared.me&&shared.control===shared.me.participantId):shared.role==='teacher'}
+    function canWrite(){if(shared.activeHandoff)return false;return shared.roomId?roomReady()&&!!(shared.me&&shared.control===shared.me.participantId):shared.role==='teacher'}
     let roomConnectGeneration=0;
     function readRecovery(){
       if(initialRole!=='teacher'||params.get('demo')==='1')return {pending:null,copies:[]};
@@ -629,7 +629,7 @@
     async function surrenderControl(eventName){
       if(vprControlTransfer||!['control:grant','control:release'].includes(eventName))return;
       if(!roomReady()){boardMessage('Передать ход пока не удалось. Дождитесь восстановления связи с комнатой.');return;}
-      if(handoffVersion!==1&&canonicalTrainerFileFromUrl(state.trainerUrl)==='trainers/vpr-math/index.html'){
+      if(shared.handoffVersion!==1&&canonicalTrainerFileFromUrl(state.trainerUrl)==='trainers/vpr-math/index.html'){
         const socket=shared.socket,room=shared.roomId,controller=shared.control,controlVersion=shared.controlVersion;
         const flush=flushVprControlState(),pending=vprControlTransfer;
         if(!await flush){
@@ -718,7 +718,7 @@
     function genObjectId(){const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';const bytes=new Uint8Array(14);if(window.crypto?.getRandomValues){window.crypto.getRandomValues(bytes);return Array.from(bytes,b=>alphabet[b&63]).join('')}return `obj-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,9)}`}
     function newObjectMeta(){const meta={objectId:genObjectId(),createdAt:new Date().toISOString()};if(shared.me?.participantId){meta.authorId=shared.me.participantId;meta.authorRole=shared.me.role;meta.layerId=`participant:${meta.authorId}`}else if(shared.role==='teacher'){meta.authorId='local-teacher';meta.authorRole='teacher';meta.layerId='participant:local-teacher'}return meta}
     function renderParticipants(){if(!participantsList)return;participantsList.replaceChildren();const list=Array.isArray(shared.participants)?shared.participants:[];if(!shared.roomId&&!list.length){const pill=document.createElement('span');pill.className='participant local';const dot=document.createElement('span');dot.className='participant-dot';dot.style.background='#172033';const label=document.createElement('span');label.textContent='Локально: только вы';pill.append(dot,label);participantsList.append(pill);return}if(!list.length){const empty=document.createElement('span');empty.className='participants-empty';empty.textContent='Участники появятся после подключения';participantsList.append(empty);return}list.forEach(participant=>{const role=participantRole(participant?.role);const online=participant?.connected===true||Number(participant?.onlineCount)>0;const nameText=String(participant?.name||role);const pill=document.createElement('span');pill.className=`participant ${online?'online':'offline'}`;const dot=document.createElement('span');dot.className='participant-dot';dot.style.background=participantColor(participant?.color);const name=document.createElement('span');name.textContent=nameText;const roleText=document.createElement('span');roleText.className='participant-role';roleText.textContent=role;const status=document.createElement('span');status.className='participant-status';status.textContent=online?'в сети':'не в сети';pill.append(dot,name,roleText,document.createTextNode('—'),status);participantsList.append(pill)})}
-    function roomPayload(extra={}){return{roomId:shared.roomId,token:shared.token,...(handoffVersion===1?{controlVersion:shared.controlVersion}:{}),...extra}}
+    function roomPayload(extra={}){return{roomId:shared.roomId,token:shared.token,...(shared.handoffVersion===1?{controlVersion:shared.controlVersion}:{}),...extra}}
     function publicSnapshot(){return{currentPage:state.current,trainerUrl:state.trainerUrl,pages:state.pages.map((p,i)=>({id:ensurePageId(p)||`page-${i+1}`,bg:p.bg||'grid',strokes:p.strokes||[]}))}}
     function applySnapshot(remote){if(remote)setControlState(remote);if(remote&&Array.isArray(remote.participants))setParticipants(remote.participants);if(remote&&Object.prototype.hasOwnProperty.call(remote,'latestTrainerState'))latestTrainerState=remote.latestTrainerState||null;if(!remote||!Array.isArray(remote.pages)||!remote.pages.length){if(bridgeSession){if(bridgeSession.hydrated&&latestTrainerState)postBridgeTrainerState(latestTrainerState);else maybeHydrateTrainer()}else if(latestTrainerState)applyTrainerStateToFrame(latestTrainerState);updateControlUi();return}applyingRemote=true;state.pages=remote.pages.map((p,i)=>remotePage(p,i));acknowledgeHistory();state.current=Math.min(Math.max(remote.currentPage||0,0),state.pages.length-1);state.trainerUrl=remote.trainerUrl||state.trainerUrl;trainerUrl.value=state.trainerUrl;setTrainerFrameSrc(state.trainerUrl);sync(false);applyingRemote=false;if(bridgeSession){if(bridgeSession.hydrated&&latestTrainerState)postBridgeTrainerState(latestTrainerState);else maybeHydrateTrainer()}else if(latestTrainerState)applyTrainerStateToFrame(latestTrainerState);updateControlUi()}
     function emit(name,data={}){if(roomReady()&&shared.role==='teacher')shared.socket.emit(name,roomPayload(data))}
@@ -827,7 +827,7 @@
       }
       if(['trainers/ege-profile-log-trig.html','trainers/ege-profile-circle.html','trainers/vpr-math/index.html'].includes(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.connected=false;roomStateReceived=false;shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
     function detachRoomSocket(socket){
-      clearHandoff();handoffVersion=0;
+      clearHandoff();shared.handoffVersion=0;
       if(!socket)return;
       if(socket.boardReconnectListener)socket.io?.off('reconnect_attempt',socket.boardReconnectListener);
       socket.removeAllListeners();
@@ -859,7 +859,7 @@
         const onLiveEvent=(event,handler)=>liveSocket.on(event,payload=>{if(isCurrentSocket())handler(payload)});
         const onRoomEvent=(event,handler)=>onLiveEvent(event,payload=>{if(roomReady())handler(payload)});
         liveSocket.on('control:prepare',(message,ack)=>{if(isCurrentSocket()&&roomReady())prepareHandoff(message,ack)});
-        onLiveEvent('control:finished',message=>{if(activeHandoff?.id===message?.handoffId){clearHandoff();updateControlUi()}});
+        onLiveEvent('control:finished',message=>{if(shared.activeHandoff?.id===message?.handoffId){clearHandoff();updateControlUi()}});
         let socketConnectedOnce=false;
         onLiveEvent('connect',()=>{const reconnecting=socketConnectedOnce;socketConnectedOnce=true;shared.connected=true;roomStateReceived=false;if(reconnecting)loadTrainerRegistry({force:true});else loadTrainerRegistry();setStatus('подключение','wait');updateControlUi();shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
         onLiveEvent('connect_error',()=>{
@@ -874,7 +874,7 @@
         onLiveEvent('room:state',payload=>{
           if(!shared.connected||liveSocket.connected!==true)return;
           if(roomStateReceived && payload?.state?.controlVersion<shared.controlVersion)return;
-          handoffVersion=payload?.handoffVersion||0;
+          shared.handoffVersion=payload?.handoffVersion||0;
           showTrainerDraft(payload?.state?.latestTrainerState);
           clearPendingHistory();
           rememberUnconfirmed(payload?.state);
