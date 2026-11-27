@@ -140,3 +140,15 @@ const hide=document.createElement('style');hide.textContent='html.learning-remed
  catch(error){main.textContent='Тренажёр не загрузился. Обновите страницу: сохранённая работа останется в кабинете.';}
 })();
 })();
+
+// The room link belongs to the live site. Fixed books use the standalone loader above.
+(function () {
+  'use strict';
+  if (window.MathExamRemediationManaged || window.MathExamBookEdition) return;
+  if (!/\/multiplication-division\/(?:long-division-one-digit|long-division-from-simple-to-decimals|decimal-division-natural|decimal-divisor-shift)\.html$/.test(location.pathname)) return;
+  const loader = document.currentScript;
+  if (!loader?.src) return;
+  const adapter = document.createElement('script');
+  adapter.src = new URL('../long-division-entry.js?v=20261127-classroom', loader.src).href;
+  document.head.append(adapter);
+})();

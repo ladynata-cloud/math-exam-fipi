@@ -14,7 +14,8 @@ test('guided ratio workshop and independent transfer accept independently worked
     ['2', '1', '12', '4', '72'],
     ['2', '3', '6;9', '2', ',', '12', '2.4', '7,2'],
     ['20;30', '6;9', '10', '72;3', '24', '7.2'],
-    ['14;5.6']
+    ['14;5.6'],
+    ['80:4=x:7', '140', '20;20']
   ];
   let state = core.initial();
   workshop.tasks.forEach((task, index) => {
@@ -61,4 +62,24 @@ test('historical snapshots, navigation into workshop cards and the 64 KiB board 
     work.hints.fill(true);
   }
   assert.ok(Buffer.byteLength(JSON.stringify(core.normalize(state))) <= 65536);
+});
+
+test('an equation must model the two purchases and can use either orientation or equivalent ratios', () => {
+  const start = core.initial('ratio-equation-build');
+  for(const equation of [
+    '80 : 4 = х : 7', 'x/7=80/4', '4/80=7/x', '7/x=4/80',
+    '80/x=4/7', '4/7=80/x', 'x/80=7/4', '7/4=x/80',
+    '20:1 = x:7', '1,75:1 = x:80', '7∶Х=1∶20'
+  ]) {
+    const checked = submit(start, equation);
+    assert.equal(core.current(checked).work.step, 1, equation);
+    assert.deepEqual(core.normalize(checked), checked);
+  }
+  for(const bad of ['80:4=7:x','x:4=80:7','80:0=x:7','80:4=7:0','x=140','140','4*x=560','x:x=7:7','1:1=x:140','x:7=20:1=80:4']) {
+    assert.equal(core.current(submit(start,bad)).work.step, 0, bad);
+  }
+  assert.throws(() => core.change(start,'mode','independent'));
+  const wrong = core.clone(submit(start, '80:4=x:7'));
+  wrong.works[start.taskId].answers[0]='80:4=7:x';
+  assert.throws(() => core.normalize(wrong));
 });

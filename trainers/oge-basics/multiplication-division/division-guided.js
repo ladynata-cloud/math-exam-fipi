@@ -720,7 +720,7 @@
     renderResults();
     renderRouteLinks();
     updateContextualHelp(s,a);
-    document.dispatchEvent(new CustomEvent('mathexam:division-step', {detail:{kind:a.kind, done:s.done}}));
+    document.dispatchEvent(new CustomEvent('mathexam:division-step', {detail:{kind:a.kind, done:s.done, topic:state.active}}));
   }
   function renderFractionEstimate(s) {
     let box=$('fraction-estimate');

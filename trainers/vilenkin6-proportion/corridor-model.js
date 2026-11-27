@@ -94,6 +94,11 @@
 
   const models = {
     'ratio-division-start': ratioTable,
+    'ratio-equation-build': step => `<figure class="rd-model"><table class="rd-table">
+      <caption>Альбомы одной цены</caption>
+      <thead><tr><th scope="col">Число альбомов</th><th scope="col">Стоимость, ₽</th></tr></thead>
+      <tbody><tr><td>4</td><td>80</td></tr><tr><td>7</td><td>${step>=2?'140':'x'}</td></tr></tbody>
+      </table></figure>`,
     'ratio-division-whole': step => columnDivision(false, step),
     'ratio-division-tenths': step => corridor(step, false) + columnDivision(true, step),
     'ratio-division-shift': step => corridor(step, true) + decimalDivisor(step)

@@ -44,6 +44,14 @@
       boardHelp.className='form-hint';
       boardHelp.append(boardLink,document.createTextNode('. Ссылку ученику выдаёт доска. Подборка кабинета открывается кнопкой «Начать урок».'));
       list.before(ratioButton,boardHelp);
+      if(root.RatioBoardTopics){
+        const topicChooser=document.createElement('details');
+        const summary=document.createElement('summary');
+        summary.textContent='Выбрать тему доски · 6 класс';
+        topicChooser.append(summary);
+        topicChooser.insertAdjacentHTML('beforeend',root.RatioBoardTopics.linksForUnit(null,'https://mathexam.space'));
+        list.before(topicChooser);
+      }
       ratioButton.onclick=()=>{
         if(!current())return;
         const missing=missingRatioMaterials();
