@@ -45,3 +45,9 @@
 .rd-low { left: 0; } .rd-high { left: 100%; }
 .rd-point { top: .09rem; font-weight: 750; color: #8a371c; }
 .rd-point::after { content: ''; position: absolute; left: 50%; top: 1.85rem; width: .58rem; height: .58rem; border-radius: 50%; background: #983e1d; transform: translate(-50%,-40%); }
+#board-topics{margin:.4rem 0 1rem}
+#board-topics h2{font:inherit;font-weight:700;margin:0 0 .4rem}
+#board-topics summary{cursor:pointer;font-weight:650}
+.board-topic-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr));gap:.4rem;margin:.5rem 0}
+.board-topic{display:flex;align-items:center;min-height:44px;padding:.45rem .65rem;border:1px solid #bdc9d5;border-radius:.4rem;background:white;color:#16486e;text-align:left;text-decoration:underline;text-underline-offset:.16em;white-space:normal;overflow-wrap:anywhere}
+.board-topic:hover,.board-topic:focus-visible{background:#edf5fa}

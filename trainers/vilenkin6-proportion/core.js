@@ -17,6 +17,32 @@
     if(!Object.hasOwn(works,task.id))works[task.id]=fresh(task);
     return {schema:1,taskId:task.id,works,rulesOpen:false};
   }
+  // Parse a single equality of two ratios. The unknown must stay paired
+  // with a supplied quantity; the numeric ratio on the other side may be reduced.
+  function proportionAnswer(value, expected) {
+    const atom = '(x|[0-9]+(?:[.,][0-9]+)?)';
+    const expression = new RegExp('^' + atom + '[:/]' + atom + '=' + atom + '[:/]' + atom + '$');
+    const parse = input => expression.exec(String(input).replace(/\s/g,'').toLowerCase().replace(/х/g,'x').replace(/[÷∶]/g,':'))?.slice(1);
+    const terms = parse(value);
+    if (!terms || terms.filter(t=>t==='x').length!==1) return {format:false,ok:false};
+    const reference = parse(expected);
+    const position = terms.indexOf('x');
+    const mate = math.parse(terms[position ^ 1]);
+    const same = (a,b) => a.n*b.d === b.n*a.d;
+    const positive = (n) => n && n.n>0n;
+    const numbers = terms.map(t => t==='x' ? null : math.parse(t));
+    if (!numbers.every((n,i)=>i===position || positive(n))) return {format:false,ok:false};
+    // Reference data are stored in the order cost : count = x : new count.
+    const [cost,count,,newCount] = reference.map(t => math.parse(t));
+    if (!same(mate,cost) && !same(mate,newCount)) return {format:true,ok:false};
+    numbers[position] = {n:cost.n*newCount.n*count.d,d:cost.d*newCount.d*count.n};
+    const [a,b,c,d] = numbers;
+    const ok = a.n*d.n*b.d*c.d === c.n*b.n*a.d*d.d;
+    return {format:true,ok};
+  }
+  const checkAnswer = (raw,item) => item.answerType==='proportion'
+    ? proportionAnswer(raw,item.answer)
+    : math.check(raw,item.answer,item.answerType||'number');
   function normalize(value){
     object(value,['schema','taskId','works','rulesOpen']);if(value.schema!==1||!byId.has(value.taskId)||typeof value.rulesOpen!=='boolean')fail();const activeExtra=(supplement?.tasks||[]).filter(t=>Object.hasOwn(value.works||{},t.id));
     const active=bookTasks.concat(activeExtra);
@@ -28,10 +54,10 @@
       if(!Array.isArray(p.answers)||p.answers.length!==n||!Array.isArray(p.wrong)||p.wrong.length!==n+1||!Array.isArray(p.hints)||p.hints.length!==n+1)fail();
       p.answers.forEach(answer=>text(answer,90));text(p.final,90);text(p.notes,120);
       if(p.wrong.some(count=>!Number.isInteger(count)||count<0||count>10000)||p.hints.some(hint=>typeof hint!=='boolean'))fail();
-      for(let index=0;index<p.step;index++)if(!math.check(p.answers[index],task.steps[index].answer,task.steps[index].answerType||'number').ok)fail();
-      if(task.role==='transfer'&&p.mode!=='independent')fail();
+      for(let index=0;index<p.step;index++)if(!checkAnswer(p.answers[index],task.steps[index]).ok)fail();
+      if(task.role==='transfer'&&p.mode!=='independent'||task.requireSteps&&p.mode!=='guided')fail();
       if(p.mode==='guided'&&p.complete!==(p.step===n))fail();
-      if(p.mode==='independent'&&p.complete&&!math.check(p.final,task.answer,task.answerType||'number').ok)fail();
+      if(p.mode==='independent'&&p.complete&&!checkAnswer(p.final,task).ok)fail();
     }
     return clone(value);
   }
@@ -42,9 +68,9 @@
     else if(action==='input'&&!p.complete){if(p.mode==='guided')p.answers[index]=clean(value,90);else p.final=clean(value,90);p.feedback='';}
     else if(action==='notes')p.notes=clean(value,120);
     else if(action==='rules')next.rulesOpen=value===true;
-    else if(action==='mode'&&!p.complete){if(!['guided','independent'].includes(value)||task.role==='transfer'&&value!=='independent')fail();p.mode=value;p.feedback='';if(value==='guided'&&p.step===task.steps.length)p.complete=true;}
+    else if(action==='mode'&&!p.complete){if(!['guided','independent'].includes(value)||task.role==='transfer'&&value!=='independent'||task.requireSteps&&value!=='guided')fail();p.mode=value;p.feedback='';if(value==='guided'&&p.step===task.steps.length)p.complete=true;}
     else if(action==='check'&&!p.complete){
-      const answer=p.mode==='guided'?p.answers[index]:p.final,result=math.check(answer,item.answer,item.answerType||'number');
+      const answer=p.mode==='guided'?p.answers[index]:p.final,result=checkAnswer(answer,item);
       p.feedback=result.ok?'correct':!result.format?'format':'wrong';
       if(result.ok){if(p.mode==='guided')p.step++;p.complete=p.mode==='independent'||p.step===task.steps.length;}
       else p.wrong[index]=Math.min(10000,p.wrong[index]+1);

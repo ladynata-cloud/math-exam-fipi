@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,'..'),read=file=>fs.readFileSync(path.join(roo
 function pending(){let resolve;const promise=new Promise(r=>resolve=r);return{promise,resolve};}
 function fixture(t,{teacher=false,api,open,progress=[]}={}){
  const dom=new JSDOM('<main></main>',{url:'https://cabinet.example/learning/',runScripts:'outside-only'}),w=dom.window,host=w.document.querySelector('main'),calls=[],routes=[],reads=[];
- w.eval(read('learning/vilenkin6-textbook-catalog.js'));w.eval(read('learning/vilenkin6-textbook-course.js'));
+ w.eval(read('learning/ratio-board-topics.js'));w.eval(read('learning/vilenkin6-textbook-catalog.js'));w.eval(read('learning/vilenkin6-textbook-course.js'));
  const dispose=w.LearningVilenkinTextbook.mount(host,{account:{id:teacher?'fixture-teacher':'fixture-pupil',role:teacher?'teacher':'student'},catalog,labels:{hinted:'Решено с подсказкой'},api:async url=>{reads.push(url);return api?api(url):{progress};},navigate:route=>routes.push(route),openContent:async(id,options)=>{calls.push(id);return open?.(id,options);}});
  t.after(()=>w.close());return{w,host,calls,routes,reads,dispose,button:id=>host.querySelector('[data-vilenkin-textbook-open="'+id+'"]')};
 }
@@ -163,5 +163,41 @@ test('exactly eight percentage cards open isolated shared practice without creat
   const f=fixture(t,{teacher});await tick();const rows=definitions.filter(row=>row.unitId===2),links=[...f.host.querySelectorAll('[data-vilenkin-percent-board]')];assert.equal(links.length,8);
   links.forEach((link,index)=>{const url=new URL(link.href),trainer=new URL(url.searchParams.get('trainer'),url.origin);assert.equal(url.origin,'https://mathexam.space');assert.equal(url.pathname,'/trainers/trainer-board.html');assert.equal(trainer.pathname,'/trainers/vilenkin6-percent/index.html');assert.equal(trainer.searchParams.get('task'),rows[index].contentId);assert.equal(link.target,'_blank');assert.match(link.rel,/noreferrer/);});
   assert.deepEqual(f.calls,[]);assert.deepEqual(f.routes,[]);
+ }
+});
+
+test('course topics have direct board starts without creating pupil work or passing account data', async t=>{
+ const expected=new Map([[18,['v6-book-3-32','ratio-division-whole','ratio-division-shift']],[19,['v6-book-3-41-d','v6-book-3-42-c','ratio-equation-build']],[20,['ratio-equation-build']]]);
+ for(const teacher of [false,true]){
+  const f=fixture(t,{teacher});await tick();
+  for(const [unit,ids] of expected){
+   const links=[...f.host.querySelectorAll('#vilenkin-source-'+unit+' [data-ratio-board-topic]')];
+   assert.deepEqual(links.map(link=>link.dataset.ratioBoardTopic),ids);
+   links.forEach((link,index)=>{
+    const url=new URL(link.href);
+    assert.equal(url.origin+url.pathname,'https://mathexam.space/trainers/trainer-board.html');
+    assert.deepEqual([...url.searchParams],[['trainer','/trainers/vilenkin6-proportion/index.html?task='+ids[index]]]);
+    assert.equal(link.rel,'noopener noreferrer');
+   });
+  }
+  assert.equal(f.calls.length,0);
+ }
+});
+
+test('embedded topic controls stay inside the host board and group views never open a separate room', t=>{
+ for(const board of ['trainer','group']){
+  const dom=new JSDOM('<iframe></iframe>',{url:'https://board.example/trainers/'+board+'-board.html',runScripts:'outside-only'});
+  t.after(()=>dom.window.close());
+  const frame=dom.window.document.querySelector('iframe').contentWindow;
+  frame.eval(read('learning/ratio-board-topics.js'));
+  assert.equal(frame.RatioBoardTopics.linksForUnit(18),'');
+  const requests=[];
+  dom.window.openGrade6LessonTask=(sender,taskId)=>requests.push([sender===frame,taskId]);
+  frame.document.body.innerHTML=frame.RatioBoardTopics.linksForUnit(18);
+  assert.equal(frame.document.querySelector('a'),null);
+  if(board==='trainer'){
+   frame.document.querySelector('[data-ratio-board-switch="ratio-division-whole"]').click();
+   assert.deepEqual(requests,[[true,'ratio-division-whole']]);
+  }else assert.equal(frame.document.querySelector('button'),null);
  }
 });

@@ -113,6 +113,9 @@ async function contextualHelp(){
  await script('basics-help.js?v=basics-context-20261020');
 }
 if(!managed){
+ if (/\/multiplication-division\/(?:long-division-one-digit|long-division-from-simple-to-decimals|decimal-division-natural|decimal-divisor-shift)\.html$/.test(location.pathname)) {
+  ready.then(()=>script('../long-division-entry.js?v=20261127-classroom')).catch(()=>{});
+ }
  // Keep the original teaching bank and its event handlers. Enhancement failures
  // leave the original working page available, including its native help.
  (async()=>{await ready;try{

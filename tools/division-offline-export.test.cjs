@@ -86,3 +86,23 @@ test('a file URL completes division and builds multiples without loading website
   assert.deepEqual(requests,[],'No local or network dependency was requested');
   assert.deepEqual(errors,[],'No runtime exceptions');
 });
+
+test('the offline notebook opens the board card matching the current topic', t => {
+  const dom = new JSDOM('<nav id="division-learning-route"></nav>', {
+    url:'file:///tmp/long-division-stepwise.html', runScripts:'outside-only'
+  });
+  t.after(() => dom.window.close());
+  const w = dom.window;
+  w.eval(read('trainers/long-division-entry.js'));
+  const topicCards = {oneDigit:'whole', decimalNatural:'tenths', decimalDivisor:'shift'};
+  for (const [topic, card] of Object.entries(topicCards)) {
+    w.document.dispatchEvent(new w.CustomEvent('mathexam:division-step', {detail:{topic}}));
+    const links = w.document.querySelectorAll('[data-division-board]');
+    assert.equal(links.length, 1);
+    const board = new URL(links[0].href);
+    assert.equal(board.origin + board.pathname, 'https://mathexam.space/trainers/trainer-board.html');
+    assert.deepEqual([...board.searchParams], [['trainer','/trainers/vilenkin6-proportion/index.html?task=ratio-division-' + card]]);
+  }
+  w.document.dispatchEvent(new w.CustomEvent('mathexam:division-step', {detail:{topic:'remainder'}}));
+  assert.equal(w.document.querySelector('[data-division-board]'), null);
+});

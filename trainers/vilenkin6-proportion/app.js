@@ -12,20 +12,21 @@
     let state=C.initial(params.get('task')||selectedUnit?.tasks[0].id),notify=()=>{},applying=false;
     const title=task=>task.label||'№ '+task.source.number+(task.source.part?' ('+task.source.part+')':'');
     $('task').innerHTML=units.map(unit=>'<optgroup label="'+M.esc(unit.title)+'">'+unit.tasks.map(task=>'<option value="'+M.esc(task.id)+'">'+M.esc(title(task))+'</option>').join('')+'</optgroup>').join('');
+    window.renderBoardTopicEntries($('board-topic-slot'),embedded,taskId=>act('task',taskId));
     let renderedUnit=null;
     function render(){
       const {task,work:p,index,item}=C.current(state),idx=C.tasks.indexOf(task),guided=p.mode==='guided';
       const unit=unitByTask.get(task.id),inWorkshop=unit===workshop,transfer=task.role==='transfer';
       if(renderedUnit!==unit.id){$('topic-heading').textContent=unit.title;$('rule-content').innerHTML=unit.rules.map(rule=>'<h3>'+M.esc(rule.title)+'</h3><p>'+M.fmt(rule.text)+'</p>').join('');renderedUnit=unit.id;}
       $('task').value=task.id;$('source').textContent=inWorkshop?'Практикум MathExam к §§ 18–19 · '+task.label:'К задаче '+title(task)+' · с. '+task.source.page+' · Виленкин, часть 1, 2024';$('condition').innerHTML=M.fmt(task.prompt);
-      $('guided').parentElement.hidden=transfer;
+      $('guided').parentElement.hidden=transfer||!!task.requireSteps;
       $('rules').hidden=transfer;
       window.renderRatioDivisionModel($('corridor-model'),inWorkshop&&guided?task.id:'',p.step,p.complete);
       $('guided').setAttribute('aria-pressed',String(guided));$('independent').setAttribute('aria-pressed',String(!guided));$('guided').disabled=p.complete;$('independent').disabled=p.complete;
-      $('history').innerHTML=p.step?'<ol>'+task.steps.slice(0,p.step).map((step,i)=>'<li><span>Шаг '+(i+1)+': </span>'+M.fmt(step.explain||p.answers[i])+'</li>').join('')+'</ol>':'';
+      $('history').innerHTML=p.step?'<ol>'+task.steps.slice(0,p.step).map((step,i)=>'<li><span>Шаг '+(i+1)+': </span>'+M.fmt(step.answerType==='proportion'?'Твоя пропорция: '+p.answers[i]:step.explain||p.answers[i])+'</li>').join('')+'</ol>':'';
       $('answer-form').hidden=p.complete;$('question').innerHTML=(guided?'Шаг '+(p.step+1)+' из '+task.steps.length+'. ':'')+M.fmt(item.inputLabel||(guided?item.prompt:'Ответ на задачу'))+(item.unit?' ('+M.esc(item.unit)+')':'');
       const answer=guided?p.answers[index]:p.final;if($('answer').value!==answer)$('answer').value=answer;
-      $('format').textContent=M.formats[item.answerType||'number'];
+      $('format').textContent=item.answerType==='proportion'?'Пиши отношения через : или /, а между отношениями поставь =. Латинская x и русская х подходят.':M.formats[item.answerType||'number'];
       $('feedback').dataset.kind=p.feedback;$('feedback').textContent=p.complete?(transfer?'Верно. 14 стаканов по 0,4 л вмещают 5,6 л.':'Задание выполнено вместе.'):p.feedback==='correct'?'Верно. Продолжим.':p.feedback==='format'?'Проверь запись ответа.':p.feedback==='wrong'?'Пока не получилось. Попробуй ещё раз.':'';
       $('hint').hidden=p.complete||transfer;$('hint').textContent=p.hints[index]?'Скрыть подсказку':'Подсказка';$('hint-text').hidden=transfer||p.complete||!p.hints[index];$('hint-text').innerHTML=M.fmt(item.hint||'Вспомни правило этой темы и проверь предыдущий шаг.');
       if(inWorkshop && ['wrong','format'].includes(p.feedback) && !p.complete){

@@ -127,7 +127,8 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261124-vilenkin6-proportion"></script>
+  <script src="board-picker.js?v=20261127-grade6-board-topics"></script>
+  <script src="../learning/ratio-board-topics.js?v=20261127"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
@@ -547,6 +548,13 @@
       catch(_e){return 'unsupported'}
     }
     let trainerSelectionRequest=0;
+    // Switch the exercise through the current room's teacher controls.
+    function openGrade6LessonTask(source, task) {
+      if (source !== frame.contentWindow || shared.role !== 'teacher' || !canWrite() || shared.roomError ||
+          missingTeacherRoomSession || (shared.roomId && (!shared.connected || !roomStateReceived))) return false;
+      if (task !== 'ratio-division-tenths' && !window.RatioBoardTopics?.topics.some(topic => topic.taskId === task)) return false;
+      return openTrainer('/trainers/vilenkin6-proportion/index.html?task=' + task);
+    }
     function openTrainer(u){if(shared.role!=='teacher')return false;const request=++trainerSelectionRequest;let next;try{next=normalizeTrainer(u||trainerUrl.value);
       if(protectedPetersonId(next)&&trainerRegistry.status==='pending'){
         const room=shared.roomId,previous=state.trainerUrl;
