@@ -108,8 +108,10 @@ jobs:
               assert blob(candidate,p)==blob(released,p)==blob(bridge,p), p
           for p in school_paths-{shared,workflow}:
               assert blob(candidate,p)==blob(school,p), p
+          fixed={"assets/school-journey-home.js": "eb3c1938e79d170e924a83b82af39e7484d22565", "tools/school-journey.browser.cjs": "8a0ff8f3a6b2df7f2ec1a1876b2db57d75374124"}
+          # Historical blobs are checked above; the two reviewed fixes are checked against live and pinned below.
           for p in (expected | school_paths)-{shared,workflow}:
-              assert Path(p).read_bytes()==blob(candidate,p), p
+              assert Path(p).read_bytes()==blob(live if p in fixed else candidate,p), p
           assert current["sourceBindingUpdates"]==prior["sourceBindingUpdates"]
           # Preserve the entire historical gate above, then verify the four exact published increments.
           releases = [
@@ -131,7 +133,6 @@ jobs:
           assert len(drift)==61 and changed(accepted,main)==drift
           assert drift & school_paths=={shared}
           assert changed(main,live)==school_paths
-          fixed={"assets/school-journey-home.js": "eb3c1938e79d170e924a83b82af39e7484d22565", "tools/school-journey.browser.cjs": "8a0ff8f3a6b2df7f2ec1a1876b2db57d75374124"}
           assert changed(candidate,live)==drift | {workflow} | set(fixed)
           for p, expected_blob in fixed.items():
               assert git("rev-parse",live+":"+p).decode().strip()==expected_blob, p
