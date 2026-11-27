@@ -15,23 +15,25 @@ const scripts = ['basics-help.js', ...[
   'decimal-shift.js', 'multiplication-refresh.js', 'division-guided.js'
 ].map(file => sub + file)];
 
-function open(t, topic = 'start', saved) {
+function open(t, topic = 'start', saved, ratioPractice = false) {
+  const key = ratioPractice ? 'mathExamBasics.ratioDivision.v1' : KEY;
+  const query = ratioPractice ? '?practice=ratio-division' : '';
   const dom = new JSDOM(html, {
-    url: 'https://mathexam.space/trainers/oge-basics/' + sub + 'long-division-from-simple-to-decimals.html#' + topic,
+    url: 'https://mathexam.space/trainers/oge-basics/' + sub + 'long-division-from-simple-to-decimals.html' + query + '#' + topic,
     runScripts: 'outside-only', pretendToBeVisual: true
   });
   t.after(() => dom.window.close());
   const w = dom.window, d = w.document;
   w.structuredClone = structuredClone;
   w.HTMLElement.prototype.scrollIntoView = () => {};
-  if (saved) w.localStorage.setItem(KEY, typeof saved === 'string' ? saved : JSON.stringify(saved));
+  if (saved) w.localStorage.setItem(key, typeof saved === 'string' ? saved : JSON.stringify(saved));
   for (const file of scripts) w.eval(fs.readFileSync(path.join(base, file), 'utf8'));
   return {
     w, d, $: selector => d.querySelector(selector),
     state: () => w.__divisionGuidedDebug.state(),
     session() { const s = this.state(); return s.sessions[s.active]; },
     plan: () => w.__divisionGuidedDebug.plan(),
-    stored: () => w.localStorage.getItem(KEY)
+    stored: () => w.localStorage.getItem(key)
   };
 }
 
@@ -150,4 +152,39 @@ test('contextual help closes on success while its assistance survives continuati
   assert.match(resumed.$('#completion-text').textContent, /помощью/);
   assert.equal(resumed.state().records[0].hints, 1);
   assert.equal(resumed.state().records[0].reveals, 1);
+});
+
+for (const topic of ['oneDigit', 'zero', 'decimalNatural', 'decimalDivisor']) {
+  test(topic + ': checking the bounds preserves stronger evidence on the same step', t => {
+    const f = open(t, topic, undefined, true);
+    f.$('.bh-toggle').click();
+    f.$('#reveal').click();
+    const before = f.session();
+    assert.equal(before.stepEvidence[before.step], 'revealed');
+    f.$('#ratio-estimate summary').click();
+    assert.deepEqual(f.session(), {...before, hints: before.hints + 1});
+    assert.deepEqual(JSON.parse(f.stored()).sessions[topic], f.session());
+  });
+}
+
+test('a new hint in a legacy ratio notebook leaves its earlier result and missing step evidence intact', t => {
+  const first = open(t, 'oneDigit', undefined, true);
+  complete(first);
+  const second = open(t, 'zero', first.stored(), true);
+  const legacy = second.state();
+  delete legacy.records[0].stepEvidence;
+  delete legacy.sessions.oneDigit.stepEvidence;
+  delete legacy.sessions.zero.stepEvidence;
+  const resumed = open(t, 'zero', legacy, true);
+  resumed.$('#ratio-estimate summary').click();
+  complete(resumed);
+  const saved = JSON.parse(resumed.stored());
+  assert.deepEqual(saved.records[0], legacy.records[0]);
+  assert.deepEqual(saved.sessions.oneDigit, legacy.sessions.oneDigit);
+  assert.equal(saved.records[1].hints, 1);
+  assert.equal(Object.hasOwn(saved.records[1], 'stepEvidence'), false);
+  resumed.$('#report-copy').click();
+  const report = resumed.$('#report-text').value;
+  assert.match(report, /72 : 3 — пошагово без ошибок и дополнительных подсказок/);
+  assert.match(report, /1005 : 5 — с помощью подсказки/);
 });

@@ -2277,6 +2277,14 @@ nav.oge-wayfinding[hidden]{display:none!important}
       panel = document.createElement('section');
       panel.id = 'ratio-estimate'; panel.className = 'workspace';
       panel.innerHTML = '<h2>Коридор ответа</h2><p></p><details><summary>Сверить обоснование границ</summary><p></p></details>';
+      const details = panel.querySelector('details');
+      details.querySelector('summary').addEventListener('click', () => {
+        const session = current();
+        if (!details.open && session && !session.done && panel.dataset.session === String(session.id)) {
+          recordSupport(session, 'hint');
+          save();
+        }
+      });
       $('problem').closest('section').before(panel);
     }
     if (panel.dataset.session !== String(s.id)) {

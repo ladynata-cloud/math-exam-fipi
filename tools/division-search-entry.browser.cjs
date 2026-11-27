@@ -54,7 +54,7 @@ async function continueWith(page, value) {
   assert.equal(current.accepted, false);
   assert.equal(current.draft, '');
 }
-async function finishInitialExample(page) {
+async function finishExample(page) {
   for (let turn = 0; turn < 80; turn++) {
     const state = await snapshot(page), session = state.sessions[state.active];
     if (session.done) return;
@@ -66,6 +66,79 @@ async function finishInitialExample(page) {
     await page.locator('#primary').click();
   }
   throw Error('The standalone initial example did not finish');
+}
+async function checkRatioHint(page, entry) {
+  const ratioKey = 'mathExamBasics.ratioDivision.v1';
+  const raw = key => page.evaluate(key => localStorage.getItem(key), key);
+  const fractionKey = 'mathExamBasics.fractionZeros.v1';
+  await ready(page, entry + '?practice=fraction-zeros#appendZeros');
+  await page.locator('#fraction-guess').fill('0,07');
+  const previousGuided = await raw(guidedKey), previousFraction = await raw(fractionKey);
+
+  await ready(page, entry + '?practice=ratio-division#zero');
+  await finishExample(page);
+  const oldRecord = (await snapshot(page)).records[0];
+  assert.equal(oldRecord.hints, 0, 'Solving without opening the proof stays independent');
+
+  await page.locator('#topics-open').click();
+  await page.locator('[data-topic="oneDigit"]').click();
+  const proof = page.locator('#ratio-estimate summary');
+  const details = page.locator('#ratio-estimate details');
+  for (const [index, gesture] of ['click', 'Enter', 'Space'].entries()) {
+    assert.equal(await details.evaluate(el => el.open), false);
+    if (gesture === 'click') await proof.click();
+    else await proof.press(gesture);
+    assert.equal(await details.evaluate(el => el.open), true);
+    const session = JSON.parse(await raw(ratioKey)).sessions.oneDigit;
+    assert.equal(session.hints, index + 1, gesture + ' opening saves one hint');
+    assert.equal(session.stepEvidence[0], 'hint');
+    await proof.click();
+    assert.equal(await details.evaluate(el => el.open), false);
+    assert.equal(JSON.parse(await raw(ratioKey)).sessions.oneDigit.hints, session.hints, 'Closing is free');
+  }
+  await page.reload();
+  await proof.waitFor();
+  assert.equal((await snapshot(page)).sessions.oneDigit.hints, 3);
+  await finishExample(page);
+  const completed = await snapshot(page);
+  assert.deepEqual(completed.records[0], oldRecord);
+  assert.equal(completed.records[1].hints, 3);
+  assert.equal(completed.records[1].stepEvidence[0], 'hint');
+  assert.match(await page.locator('#completion-text').innerText(), /с помощью подсказки/);
+  assert.match(await page.locator('#topic-progress').innerText(), /По шагам без подсказок: 0 .+с помощью или повторно: 1/);
+  await page.locator('#results summary').click();
+  await page.locator('#report-copy').click();
+  const report = await page.locator('#report-text').inputValue();
+  assert.match(report, /Новых, без ошибок и дополнительных подсказок: 1\./);
+  assert.match(report, /С подсказкой или показом ответа: 1\./);
+  assert.match(report, /72 : 3 — с помощью подсказки/);
+  await proof.press('Enter');
+  assert.equal(await details.evaluate(el => el.open), true);
+  assert.deepEqual(await snapshot(page), completed, 'Reading a finished proof preserves recorded history');
+
+  await page.locator('#repeat-example').click();
+  assert.equal(await details.evaluate(el => el.open), false);
+  const retry = (await snapshot(page)).sessions.oneDigit;
+  assert.equal(retry.repeated, true);
+  assert.equal(retry.hints, 0);
+  assert.notEqual(retry.id, completed.records[1].id);
+  await proof.press('Space');
+  let state = await snapshot(page);
+  assert.equal(state.sessions.oneDigit.hints, 1, 'A reused panel writes only to the new attempt');
+  assert.deepEqual(state.records, completed.records);
+
+  await finishExample(page);
+  const history = (await snapshot(page)).records;
+  assert.deepEqual(history.slice(0, 2), completed.records);
+  assert.equal(history[2].repeated, true);
+  assert.equal(history[2].hints, 1);
+  await page.locator('#next-example').click();
+  state = await snapshot(page);
+  assert.equal(state.sessions.oneDigit.hints, 0);
+  assert.equal(state.sessions.oneDigit.repeated, false);
+  assert.deepEqual(state.records, history);
+  assert.equal(await raw(guidedKey), previousGuided);
+  assert.equal(await raw(fractionKey), previousFraction);
 }
 function existingLocalTarget(url, origin) {
   const target = new URL(url);
@@ -148,6 +221,7 @@ function existingLocalTarget(url, origin) {
     assert.equal(new URL(page.url()).searchParams.get('course'), 'preoge');
     assert.deepEqual((await snapshot(page)).sessions.start, before.sessions.start, 'Selecting another topic retains the unfinished example');
     assert.equal(await page.evaluate(key => localStorage.getItem(key), legacyKey), legacyValue);
+    await checkRatioHint(page, origin + shortPath);
     await context.close();
 
     // Default links must work before JavaScript rewrites course navigation.
@@ -174,7 +248,7 @@ function existingLocalTarget(url, origin) {
     await ready(offline, pathToFileURL(download).href);
     assert.equal(await offline.locator('#problem').innerText(), '48 : 2');
     assert.equal(await offline.locator('script[src], link[rel="stylesheet"][href]').count(), 0, 'Standalone HTML contains its own scripts and styles');
-    await finishInitialExample(offline);
+    await finishExample(offline);
     assert.equal(await offline.locator('.quotient').innerText(), '24');
     assert.equal((await snapshot(offline)).records.length, 1);
     const offlinePractice = new URL(await offline.locator('#arithmetic-link').getAttribute('href'));
@@ -185,10 +259,11 @@ function existingLocalTarget(url, origin) {
       assert.equal(destination.origin, 'https://mathexam.space');
       assert.equal(destination.pathname, '/trainers/oge-basics/arithmetic-route.html');
     }
+    await checkRatioHint(offline, pathToFileURL(download).href);
     assert.deepEqual(remoteRequests, [], 'Opening and solving the downloaded trainer makes no HTTP requests');
     await offlineContext.close();
     assert.deepEqual(failures, [], 'No page errors, failed resources or HTTP errors');
-    console.log('DIVISION_SEARCH_ENTRY_OK: canonical and sitemap; exact deep/short resume with hints and draft; untouched legacy progress; course/hash routes; static links/assets; standalone offline completion and HTTPS navigation.');
+    console.log('DIVISION_SEARCH_ENTRY_OK: canonical and sitemap; exact deep/short resume with hints and draft; untouched legacy progress; course/hash routes; static links/assets; standalone offline completion, HTTPS navigation and online/offline Corridor hint accounting.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
