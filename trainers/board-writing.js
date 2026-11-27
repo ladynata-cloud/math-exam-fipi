@@ -518,8 +518,11 @@ function buttons() {
   color.disabled = size.disabled = !writable;
   $('undo').disabled = !writable || !!pendingHistory || ownUndoIndex() < 0;
   $('redo').disabled = !writable || !!pendingHistory || (shared.connected ? sharedRedo.length === 0 : page().redo.length === 0);
-  $('followWriting').hidden = shared.role !== 'student' || !shared.connected || canWrite();
-  $('followWriting').setAttribute('aria-pressed', String(followTeacherWriting));
+  const followButton = $('followWriting');
+  if (followButton) {
+    followButton.hidden = shared.role !== 'student' || !shared.connected || canWrite();
+    followButton.setAttribute('aria-pressed', String(followTeacherWriting));
+  }
   $('clear').disabled = !writable;
   $('addBoardImage').disabled = !writable || importingImage;
 }
@@ -557,11 +560,11 @@ function bindBoardWriting() {
   $('zoomOut').onclick = () => changeView('out');
   $('zoomReset').onclick = () => changeView('reset');
   $('fitBoard').onclick = () => changeView('fit');
-  $('followWriting').onclick = () => {
+  $('followWriting')?.addEventListener('click', () => {
     followTeacherWriting = !followTeacherWriting;
     if (followTeacherWriting) { fitViewport = false; followedStroke = null; }
     render();
-  };
+  });
   editor.onblur = finishText;
   editor.onkeydown = event => {
     if (event.key === 'Escape') { event.preventDefault(); closeTextEditor(); canvas.focus(); }
