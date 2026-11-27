@@ -91,9 +91,34 @@ const strokes=p=>p.evaluate(()=>publicSnapshot().pages[0].strokes.map(({createdA
   await student.mouse.move(box.x+70,box.y+80);await student.mouse.down();await student.mouse.move(box.x+190,box.y+120,{steps:8});await student.mouse.up();
   await teacher.waitForFunction(()=>publicSnapshot().pages[0].strokes.length>0);
   assert.deepEqual(await strokes(teacher),await strokes(student));
+  // The pupil still holds the pen. The authored warm-up uses the same registered
+  // mirror as the textbook and keeps earlier work when the selected task changes.
+  const workshop=require('./corridor.js');
+  for(const task of workshop.tasks){
+    await action(b,a,()=>b.locator('#task').selectOption(task.id));
+    const transfer=task.role==='transfer';
+    assert.equal(await a.locator('#corridor-model').isVisible(),!transfer);
+    if(task.id==='ratio-division-start'){
+      await action(b,a,()=>b.locator('#answer').fill('9999'));
+      await action(b,a,()=>b.locator('#check').click());
+      assert.equal((await state(a)).works[task.id].feedback,'wrong');
+    }
+    const keys=transfer?[task.answer]:task.steps.map(step=>step.answer);
+    for(const key of keys){
+      const value=Array.isArray(key)?key[0]:key;
+      await action(b,a,()=>b.locator('#answer').fill(value));
+      await action(b,a,()=>b.locator('#check').click());
+      assert.equal((await state(a)).works[task.id].feedback,'correct');
+      assert.equal(await a.locator('#corridor-model').innerHTML(),await b.locator('#corridor-model').innerHTML());
+    }
+    assert.equal((await state(a)).works[task.id].complete,true);
+  }
+  assert.equal((await state(a)).works[first].complete,true);
   const beforeReload=await state(a);await student.reload();b=await frame(student);await same(a,b);
   assert.deepEqual(await state(b),beforeReload);assert.deepEqual(await strokes(teacher),await strokes(student));
   assert.deepEqual(await privateStorage(a),beforeTeacher);assert.deepEqual(await privateStorage(b),beforeStudent);
+  await teacher.reload();a=await frame(teacher);await same(b,a);
+  assert.deepEqual(await state(a),beforeReload);assert.deepEqual(await strokes(teacher),await strokes(student));
   // Exercise canonical section routes and standalone layouts separately from room.
   const mobile=await tc.newPage();mobile.on('pageerror',e=>errors.push(e.message));
   for(const [i,width] of [320,390,768,1280].entries()){
@@ -105,5 +130,5 @@ const strokes=p=>p.evaluate(()=>publicSnapshot().pages[0].strokes.map(({createdA
     if(process.env.PROPORTION_SCREENSHOT_DIR){fs.mkdirSync(process.env.PROPORTION_SCREENSHOT_DIR,{recursive:true});await mobile.screenshot({path:path.join(process.env.PROPORTION_SCREENSHOT_DIR,'unit-'+units[i].id+'-'+width+'.png')});}
   }
   assert.deepEqual(errors,[]);
-  console.log('VILENKIN6_PROPORTION_BOARD_OK: four sections, 10 guided steps, independent pupil answer, hints, notes, rules, real control, ink, reload, no personal progress writes and four viewport widths');
+  console.log('VILENKIN6_PROPORTION_BOARD_OK: four sections, 10 guided steps, independent pupil answer, hints, notes, rules, real control, five workshop cards, ink, both reloads, no personal progress writes and four viewport widths');
 }finally{if(browser)await browser.close();if(child)child.kill();await new Promise(r=>site.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

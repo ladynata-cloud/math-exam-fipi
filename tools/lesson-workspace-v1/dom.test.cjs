@@ -113,3 +113,36 @@ test('the join entry uses the latest permitted lesson and stays unique', t => {
   f.ui.joinEntry(host, [old, latest]); assert.equal(host.querySelectorAll('#lesson-join-entry').length, 1);
   f.ui.joinEntry(host, []); assert.equal(host.querySelector('#lesson-join-entry'), null, 'A new pupil context does not retain another pupil’s join link');
 });
+
+test('grade 6 preset appends missing managed materials once and the separate board has no room credentials', t => {
+  const catalog = require('../../learning/catalog.js');
+  const initial = {trainerId:'vilenkin6-textbook',contentId:'v6-book-3-32',seed:17};
+  const f = setup(t, {catalog, initial:[initial]});
+  const button = f.host.querySelector('[data-lesson-ratio-preset]');
+  button.click();
+  const ids = clone(f.picker.value());
+  assert.deepEqual(ids[0], initial);
+  assert.deepEqual(ids.slice(1).map(i=>i.contentId), [
+    'v6-book-3-41-d','v6-book-3-42-c','v6-book-3-65'
+  ]);
+  assert(ids.every(item=>catalog.get(item.trainerId+':'+item.contentId)?.url));
+  assert.equal(button.disabled, true);
+  button.onclick();
+  assert.equal(f.picker.value().length, 4);
+  const url = new URL(f.host.querySelector('a').href);
+  assert.equal(url.origin+url.pathname, 'https://mathexam.space/trainers/trainer-board.html');
+  assert.deepEqual([...url.searchParams], [['trainer','/trainers/vilenkin6-proportion/index.html?task=ratio-division-start']]);
+  f.host.querySelector('[data-lesson-material-remove="0"]').click();
+  assert.equal(button.disabled, false);
+  assert.equal(f.network(), 0);
+});
+
+test('grade 6 preset neither partially fills a nearly full queue nor appears in a single-material picker', t => {
+  const catalog = require('../../learning/catalog.js');
+  const initial = [{sourceAttemptId:'exact-attempt',title:'Мой вариант'}];
+  const f = setup(t, {catalog,limit:4,initial});
+  f.host.querySelector('[data-lesson-ratio-preset]').click();
+  assert.deepEqual(clone(f.picker.value()), [{sourceAttemptId:'exact-attempt'}]);
+  assert.match(f.host.querySelector('[data-lesson-material-message]').textContent,/свободных мест/);
+  assert.equal(setup(t,{catalog,limit:1}).host.querySelector('[data-lesson-ratio-preset]'),null);
+});

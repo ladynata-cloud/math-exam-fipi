@@ -6,6 +6,12 @@
   const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clone=value=>JSON.parse(JSON.stringify(value));
   const families={'ege-path':'7 класс и ЕГЭ · база','oge-basics':'Математическая основа','oge-public':'ОГЭ','vilenkin6-textbook':'6 класс · Виленкин','vilenkin6-part1':'6 класс · практика','atanasyan-7-9':'Геометрия · Атанасян','motion-grade6':'Задачи на движение'};
+  const ratioLessonIds=[
+    'vilenkin6-textbook:v6-book-3-32',
+    'vilenkin6-textbook:v6-book-3-41-d',
+    'vilenkin6-textbook:v6-book-3-42-c',
+    'vilenkin6-textbook:v6-book-3-65'
+  ];
   function findItem(catalog,source){
     return catalog.items.find(item=>item.trainerId===source.trainerId&&item.contentId===source.contentId);
   }
@@ -20,8 +26,40 @@
       const option=document.createElement('option');option.value=key;option.textContent=families[key]||key;family.append(option);
     }
     const current=()=>alive&&host.isConnected&&isCurrent();
+    const ratioMaterials=ratioLessonIds.map(id=>items.find(item=>item.id===id));
+    let ratioButton;
+    function missingRatioMaterials(){
+      return ratioMaterials.filter(item=>!selected.some(source=>source.trainerId===item.trainerId&&source.contentId===item.contentId));
+    }
+    if(limit>=ratioLessonIds.length && ratioMaterials.every(Boolean)){
+      ratioButton=document.createElement('button');
+      ratioButton.type='button';
+      ratioButton.dataset.lessonRatioPreset='';
+      ratioButton.textContent='Добавить подборку «Отношения и пропорции» · 6 класс';
+      const boardLink=document.createElement('a');
+      boardLink.href='https://mathexam.space/trainers/trainer-board.html?trainer='+encodeURIComponent('/trainers/vilenkin6-proportion/index.html?task=ratio-division-start');
+      boardLink.target='_blank';boardLink.rel='noopener noreferrer';
+      boardLink.textContent='Открыть «Коридор» на отдельной общей доске ↗';
+      const boardHelp=document.createElement('p');
+      boardHelp.className='form-hint';
+      boardHelp.append(boardLink,document.createTextNode('. Ссылку ученику выдаёт доска. Подборка кабинета открывается кнопкой «Начать урок».'));
+      list.before(ratioButton,boardHelp);
+      ratioButton.onclick=()=>{
+        if(!current())return;
+        const missing=missingRatioMaterials();
+        if(!missing.length)return;
+        if(selected.length+missing.length>limit){
+          message.textContent='Для подборки нужно свободных мест: '+missing.length+'. Сейчас свободно: '+(limit-selected.length)+'.';
+          return;
+        }
+        selected.push(...missing.map(({trainerId,contentId})=>({trainerId,contentId})));
+        drawSelected();drawResults();
+        message.textContent='Добавлено заданий: '+missing.length+'. Порядок можно изменить в списке.';
+      };
+    }
     const title=source=>source.title||findItem(catalog,source)?.title||'Выбранное задание';
     function drawSelected(){
+      if(ratioButton)ratioButton.disabled=missingRatioMaterials().length===0;
       host.querySelector('[data-lesson-material-count]').textContent=selected.length+' / '+limit;
       list.innerHTML=selected.map((source,index)=>'<li><span><b>'+E(title(source))+'</b>'+(source.sourceAttemptId||Number.isInteger(source.seed)?'<small>Точное выбранное условие</small>':'')+'</span><div class="lesson-material-order"><button type="button" data-lesson-material-move="'+index+'" aria-label="Выше: '+E(title(source))+'" '+(index===0?'disabled':'')+'>↑</button><button type="button" data-lesson-material-remove="'+index+'" aria-label="Убрать: '+E(title(source))+'">×</button></div></li>').join('');
       list.hidden=!selected.length;

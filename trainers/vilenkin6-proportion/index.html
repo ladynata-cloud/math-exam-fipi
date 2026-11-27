@@ -9,7 +9,9 @@
   <link rel="stylesheet" href="../vilenkin6-percent/style.css">
   <script defer src="../board-bridge.js"></script>
   <script defer src="../../courses/vilenkin-6-part-1/textbook-math.js"></script>
-  <script defer src="core.js"></script><script defer src="app.js"></script>
+  <link rel="stylesheet" href="corridor.css?v=20261127-ratio-division">
+  <script defer src="corridor.js?v=20261127-ratio-division"></script><script defer src="corridor-model.js?v=20261127-ratio-division"></script>
+  <script defer src="core.js?v=20261127-ratio-division"></script><script defer src="app.js?v=20261127-ratio-division"></script>
 
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
@@ -23,9 +25,9 @@
       <label for="task">Задание</label><select id="task"></select>
       <article class="card"><p id="source" class="source"></p><h2 id="condition" class="prompt"></h2>
         <div class="mode-buttons" aria-label="Способ решения"><button id="guided" type="button">По шагам</button><button id="independent" type="button">Сразу ответ</button></div>
-        <div id="history"></div><form id="answer-form" novalidate><label id="question" for="answer"></label><div class="answer-row"><input id="answer" maxlength="90" autocomplete="off" spellcheck="false"><button class="primary" id="check" type="submit">Проверить</button></div><p id="format" class="format-help"></p></form>
+        <div id="corridor-model" hidden></div><div id="history"></div><form id="answer-form" novalidate><label id="question" for="answer"></label><div class="answer-row"><input id="answer" maxlength="90" autocomplete="off" spellcheck="false"><button class="primary" id="check" type="submit">Проверить</button></div><p id="format" class="format-help"></p></form>
         <p id="feedback" role="status" aria-live="polite"></p><button id="hint" type="button" hidden>Подсказка</button><p id="hint-text" class="hint" hidden></p>
-        <div class="actions"><button id="previous" type="button">← Предыдущее</button><button id="next" type="button">Следующее →</button><button id="repeat" type="button" hidden>Решить ещё раз</button></div>
+        <div class="actions"><button id="back-step" type="button" hidden>Изменить предыдущий шаг</button><button id="previous" type="button">← Предыдущее</button><button id="next" type="button">Следующее →</button><button id="repeat" type="button" hidden>Решить ещё раз</button></div>
       </article>
       <details id="rules" class="card"><summary>Вспомнить правило</summary><div id="rule-content"></div></details>
       <label for="notes">Общие записи к задаче</label><textarea id="notes" rows="3" maxlength="120" placeholder="Короткая заметка; длинные вычисления — на листе доски."></textarea>
