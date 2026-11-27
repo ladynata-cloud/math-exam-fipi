@@ -110,7 +110,6 @@
     ['division-remainder', 'Деление с остатком по шагам', '/trainers/long-division-stepwise.html#remainder', 'Письменные алгоритмы', ['делить с остатком']],
     ['division-quotient-digit', 'Подобрать одну цифру частного по шагам', '/trainers/long-division-stepwise.html#quotientDigit', 'Письменные алгоритмы', ['цифра частного в тренажёре']],
     ['division-digit', 'Подобрать цифру частного', '/trainers/oge-basics/multiplication-division/course-digit-choice.html', 'Письменные алгоритмы', ['выбрать цифру частного при делении']],
-    ['division-notebook', 'Деление столбиком (уголком): тетрадный тренажёр', '/trainers/trainers/long-division.html', 'Письменные алгоритмы', ['тетрадный формат', 'деление']],
     ['multiplication-notebook', 'Умножение столбиком', '/trainers/trainers/long-multiplication.html', 'Письменные алгоритмы', ['умножение столбиком']],
     // The compatibility URLs now redirect to these published lessons. Use the
     // direct routes and retain the existing compatibility pages unchanged.
