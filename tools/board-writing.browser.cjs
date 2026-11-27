@@ -536,6 +536,65 @@ async function undoOrRedo(source, observer, command) {
   await acknowledged(source, 'board:page-state', beforeSource); await acknowledged(observer, 'board:page-state', beforeObserver);
   return sameBoard(source, observer, command + ' acknowledgement agrees on both clients');
 }
+// Read the actual displayed pixel, including the intersection with the browser window.
+async function expectVisibleInk(observer, position) {
+  await framesSettled(observer);
+  const result = await observer.evaluate(world => {
+    const p = BoardInk.worldToScreen(world, camera), box = canvas.getBoundingClientRect();
+    const x = box.left + p.x, y = box.top + p.y;
+    if (p.x < 0 || p.y < 0 || p.x >= view.w || p.y >= view.h ||
+        document.elementFromPoint(x, y) !== canvas) return 'outside visible canvas';
+    const pixel = ctx.getImageData(Math.round(p.x * dpr), Math.round(p.y * dpr), 1, 1).data;
+    return pixel[0] < 80 && pixel[1] < 80 && pixel[2] < 100 ? 'ink' : 'paper';
+  }, position);
+  assert.equal(result, 'ink', 'the pupil can see the received handwriting at ' + JSON.stringify(position));
+}
+
+async function lowerLineWriting(teacher, student) {
+  phase = 'pupil sees the next line below the original sheet view';
+  await teacher.locator('#addSheet').click();
+  await sameBoard(teacher, student, 'new page before the lower line');
+  await student.setViewportSize({ width: 1100, height: 530 });
+  const first = await drawStroke(teacher, 'pen', { x: 80, y: 80 }, { x: 130, y: 80 });
+  await sameBoard(teacher, student, 'upper line arrives');
+  await expectVisibleInk(student, first.points.at(-1));
+  // Drag the paper upwards twice to continue writing below the original viewport.
+  await chooseTool(teacher, 'hand');
+  for (let i = 0; i < 2; i++) await mouseGesture(teacher, { x: 150, y: 490 }, { x: 150, y: 90 });
+  await chooseTool(teacher, 'pen');
+  await mouseGesture(teacher, { x: 80, y: 160 }, { x: 180, y: 160 }, { keepDown: true });
+  const lower = await teacher.evaluate(() => current.points.at(-1));
+  await student.waitForFunction(p => current?.points?.at(-1)?.x === p.x && current.points.at(-1).y === p.y, lower);
+  await expectVisibleInk(student, lower);
+  await teacher.mouse.up();
+  await sameBoard(teacher, student, 'lower line committed');
+  await expectVisibleInk(student, lower);
+  await student.reload({ waitUntil: 'domcontentloaded' }); await connected(student);
+  await expectVisibleInk(student, lower);
+  const follow = student.locator('#followWriting');
+  await student.locator('#zoomReset').click();
+  assert.equal(await follow.getAttribute('aria-pressed'), 'false', 'manual view stays independent');
+  const manualView = await cameraState(student);
+  const next = await drawStroke(teacher, 'pen', { x: 200, y: 180 }, { x: 250, y: 180 });
+  await sameBoard(teacher, student, 'manual observer still receives lower ink');
+  assert.deepEqual(await cameraState(student), manualView);
+  await follow.click();
+  await expectVisibleInk(student, next.points.at(-1));
+  await student.setViewportSize({ width: 390, height: 640 });
+  await student.locator('[data-workspace-view="split"]').click();
+  await student.evaluate(() => window.scrollTo(0, 0));
+  await mouseGesture(teacher, { x: 280, y: 160 }, { x: 330, y: 160 }, { keepDown: true });
+  const mobileTip = await teacher.evaluate(() => current.points.at(-1));
+  await student.waitForFunction(p => current?.points?.at(-1)?.x === p.x, mobileTip);
+  await expectVisibleInk(student, mobileTip);
+  await teacher.mouse.up();
+  await sameBoard(teacher, student, 'mobile observer receives the same completed line');
+  await student.setViewportSize({ width: 1440, height: 1000 });
+  teacher.once('dialog', dialog => dialog.accept());
+  await boardSettings(teacher, () => teacher.locator('#deleteSheet').click());
+  await sameBoard(teacher, student, 'original page restored');
+}
+
 async function sharedWriting(browser, siteOrigin, boardOrigin) {
   phase = 'real local room and observer permissions';
   const teacherSession = await newSession(browser, siteOrigin, boardOrigin, 'teacher'), teacher = teacherSession.page;
@@ -548,6 +607,7 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   const studentSession = await newSession(browser, siteOrigin, boardOrigin, 'student'), student = studentSession.page;
   await student.goto(studentLink, { waitUntil: 'domcontentloaded' }); await connected(student);
   await sameBoard(teacher, student, 'initial room hydration');
+  await lowerLineWriting(teacher, student);
   const teacherStroke = await drawStroke(teacher, 'pen', { x: 100, y: 120 }, { x: 220, y: 160 });
   await sameBoard(teacher, student, 'teacher handwriting appears on the observer');
   const observerBefore = await rawPages(student), observerOutgoing = await student.evaluate(() => JSON.stringify(window.__writingOutgoing));
