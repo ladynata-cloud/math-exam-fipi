@@ -8,7 +8,15 @@
   let buildMultiples = parameters.get('multiples') === 'build';
   const $ = id => document.getElementById(id);
   const fractionPilot = parameters.get('practice') === 'fraction-zeros';
-  const KEY = fractionPilot ? 'mathExamBasics.fractionZeros.v1' : 'mathExamBasics.guidedDivision.v1';
+  const ratioPractice = parameters.get('practice') === 'ratio-division';
+  const ratioStages = {
+    oneDigit: { pair: ['72', '3'], question: 'Сколько троек поместится в 72? Назови две круглые границы и проверь их умножением на 3.', proof: '3 · 20 = 60, 3 · 30 = 90. Значит, частное больше 20 и меньше 30.' },
+    zero: { pair: ['1005', '5'], question: 'Как решить, может ли частное быть двузначным, ещё до деления?', proof: '5 · 200 = 1000, 5 · 210 = 1050. Частное между 200 и 210. Проверь место для десятков в уголке.' },
+    decimalNatural: { pair: ['7,2', '3'], question: '7,2 литра поровну разливают по трём банкам. Сколько литров в одной банке? Назови две целые границы.', proof: 'По 2 л в трёх банках дадут 6 л, по 3 л — 9 л. На одну банку приходится больше 2 и меньше 3 л.' },
+    decimalDivisor: { pair: ['7,2', '0,3'], question: 'Есть 7,2 литра и стаканы по 0,3 литра. Хватит ли 10 стаканов? А 30? Обоснуй обе границы.', proof: 'В 10 стаканах 3 л, в 30 стаканах 9 л. Число стаканов между 10 и 30. Можно считать в десятых литра: тогда обе величины увеличивают своё числовое значение в 10 раз.' }
+  };
+  const KEY = ratioPractice ? 'mathExamBasics.ratioDivision.v1' :
+    fractionPilot ? 'mathExamBasics.fractionZeros.v1' : 'mathExamBasics.guidedDivision.v1';
   const esc = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const topicIds = new Set(G.topics.map(t => t.id));
   const names = { start:'Первое неполное делимое', count:'Намечаем места для ответа', digit:'Находим цифру ответа', product:'Умножаем', subtract:'Вычитаем', 'remainder-check':'Проверяем остаток', bring:'Сносим одну цифру', partial:'Читаем новое неполное делимое', comma:'Ставим запятую', answer:'Читаем ответ', 'final-remainder':'Записываем остаток', verify:'Проверяем решение', 'shift-count':'Готовим делитель', 'shift-factor':'Меняем оба числа одинаково', 'shift-divisor':'Меняем делитель', 'shift-dividend':'Меняем делимое' };
@@ -172,6 +180,10 @@
       const completed = state.records.filter(r=>r.topic===id && !r.repeated).length;
       const pair = [['3','40'],['2','25']][completed];
       if (pair) task = {topicId:id, level:id, dividend:pair[0], divisor:pair[1]};
+    }
+    if (ratioPractice && ratioStages[id] && !old && !repeat) {
+      const [dividend, divisor] = ratioStages[id].pair;
+      task = {topicId:id, level:id, dividend, divisor};
     }
     const repeated = state.records.some(r => fingerprint(r.task) === fingerprint(task));
     state.serial++;
@@ -512,6 +524,27 @@
     if (m.open && next >= 0) multiplesHost.querySelector('[data-multiple-input="' + (next + 1) + '"]')?.focus({preventScroll:true});
     else $('answer').focus({preventScroll:true});
   }
+  function renderRatioEstimate(s) {
+    const stage = ratioStages[s.task.topicId];
+    let panel = $('ratio-estimate');
+    const show = stage && s.task.dividend === stage.pair[0] && s.task.divisor === stage.pair[1];
+    if (!show) {
+      if (panel) panel.remove();
+      return;
+    }
+    if (!panel) {
+      panel = document.createElement('section');
+      panel.id = 'ratio-estimate'; panel.className = 'workspace';
+      panel.innerHTML = '<h2>Коридор ответа</h2><p></p><details><summary>Сверить обоснование границ</summary><p></p></details>';
+      $('problem').closest('section').before(panel);
+    }
+    if (panel.dataset.session !== String(s.id)) {
+      panel.dataset.session = String(s.id);
+      panel.querySelector('p').textContent = stage.pair.join(' : ') + '. ' + stage.question;
+      panel.querySelector('details').open = false;
+      panel.querySelector('details p').textContent = stage.proof;
+    }
+  }
   function renderLearningRoute(s) {
     let nav = $('division-learning-route');
     if (!nav) {
@@ -534,6 +567,11 @@
     recommendation.textContent = training.ready
       ? 'Есть 3 разных решения по шагам без подсказок. Можно перейти к следующей теме или ' + (['start','quotientDigit'].includes(state.active) ? 'продолжить тренировку на новых примерах.' : 'продолжить на более сложных числах.') + ' Самостоятельная проверка — в конце маршрута.'
       : 'Перед следующей темой реши ещё ' + missing + (missing === 1 ? ' новый пример' : ' новых примера') + ' по шагам без подсказок. Тему можно сменить в любой момент.';
+    if (ratioPractice && ratioStages[state.active]) {
+      recommendation.textContent = s.task.topicId === 'decimalDivisor'
+        ? 'Теперь самостоятельно проверь похожий пример или вернись к задаче на пропорцию.'
+        : 'Можно перейти к следующему шагу урока или решить ещё один пример на этот приём.';
+    }
     if (s.multiples) recommendation.textContent += ' Этот пример выполнен с выкладкой кратных.';
     let unassisted = $('next-without-multiples');
     if (!unassisted) {
@@ -678,6 +716,7 @@
     if (nextTopic) $('next-topic').textContent = (state.sessions[nextTopic.id] && !state.sessions[nextTopic.id].done ? 'Продолжить тему: ' : 'Следующая тема: ') + nextTopic.title;
     $('save-note').textContent = blocked || !storageAvailable ? 'Можно закончить на сегодня. Отправь учителю результат или снимок экрана: сохранение сейчас недоступно.' : 'Можно закончить на сегодня. Результат сохранится в этом браузере.';
     renderFractionEstimate(s);
+    if (ratioPractice) renderRatioEstimate(s);
     renderResults();
     renderRouteLinks();
     updateContextualHelp(s,a);
@@ -880,7 +919,10 @@
     revealOpen = true; save(); render();
   };
   function followingTopic() {
-    const route = G.topics.filter(t => !t.optional), index = route.findIndex(t => t.id === state.active);
+    const route = ratioPractice && ratioStages[state.active]
+      ? Object.keys(ratioStages).map(id => G.topics.find(t => t.id === id))
+      : G.topics.filter(t => !t.optional);
+    const index = route.findIndex(t => t.id === state.active);
     return index >= 0 ? route[index + 1] : null;
   }
   function showTopics() {
@@ -975,6 +1017,13 @@
   const pilotURL = new URL(location.href);
   pilotURL.searchParams.set('practice','fraction-zeros'); pilotURL.hash='appendZeros';
   if (!fractionPilot) {
+    if (!ratioPractice) {
+      const line = document.createElement('p'), link = document.createElement('a');
+      const url = new URL(location.href);
+      url.searchParams.set('practice', 'ratio-division'); url.hash = 'oneDigit';
+      link.href = url.href; link.textContent = 'Отношения и деление: от целых чисел к десятичным';
+      line.append(link); $('topics-list').after(line);
+    }
     const link=document.createElement('a');
     link.href=pilotURL.href; link.textContent='Дробь в десятичную: ноль в десятых';
     const line=document.createElement('p'); line.append(link); $('topics-list').after(line);
@@ -997,7 +1046,7 @@
     $('problem').closest('section').before(compare); renderComparison();
     if (compare.open) compare.querySelector('summary').focus();
   }
-  const requested = fractionPilot && !location.hash ? 'appendZeros' : location.hash.slice(1);
+  const requested = location.hash.slice(1) || (fractionPilot ? 'appendZeros' : ratioPractice ? 'oneDigit' : '');
   if (topicIds.has(requested)) state.active = requested;
   if (!current()) newSession(state.active, false);
   else { if (buildMultiples) prepareMultiples(); save(); }

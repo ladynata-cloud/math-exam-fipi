@@ -1,0 +1,47 @@
+.rd-model {
+  width: fit-content;
+  max-width: 100%;
+  margin: .7rem 0;
+  padding: .65rem .85rem;
+  border-left: 3px solid #087c4a;
+  background: #f3f8f5;
+  color: #20382a;
+}
+.rd-model figcaption, .rd-table caption {
+  font-size: .94rem;
+  font-weight: 650;
+  text-align: left;
+  margin-bottom: .4rem;
+}
+.rd-table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.rd-table th, .rd-table td {
+  border: 1px solid #b6cdbf;
+  padding: .19rem .65rem;
+  text-align: center;
+}
+.rd-table th { font-size: .91rem; }
+.rd-operation, .rd-result { color: #075d39; font-weight: 700; }
+.rd-column {
+  display: grid;
+  grid-template-columns: repeat(5, 1.12em);
+  grid-auto-rows: 1.4em;
+  width: fit-content;
+  font: 1.32rem/1.4 ui-monospace, Consolas, monospace;
+  text-align: center;
+}
+.rd-cell { position: relative; }
+.rd-comma { position: absolute; right: -.25em; bottom: 0; }
+.rd-line { border-bottom: 1.5px solid currentColor; }
+.rd-corner { border-left: 1.5px solid currentColor; }
+.rd-divisor { border-bottom: 1.5px solid currentColor; text-align: left; padding-left: .25em; }
+.rd-check { margin: .5rem 0 0; }
+.rd-corridor { width: min(100%, 19rem); box-sizing: border-box; }
+.rd-axis { position: relative; height: 3.3rem; margin-inline: 1.2rem; font-variant-numeric: tabular-nums; }
+.rd-segment { position: absolute; top: 1.9rem; inset-inline: 0; border-top: 2px dashed #89958c; }
+.rd-segment.rd-defined { border-top: 3px solid #087c4a; }
+.rd-bound, .rd-point { position: absolute; transform: translateX(-50%); font-size: .94rem; line-height: 1.2; }
+.rd-bound { top: 2.3rem; }
+.rd-bound::before { content: ''; position: absolute; left: 50%; top: -.4rem; width: .45rem; height: .45rem; border-radius: 50%; border: 2px solid #48705b; background: #f3f8f5; transform: translate(-50%,-37%); }
+.rd-low { left: 0; } .rd-high { left: 100%; }
+.rd-point { top: .09rem; font-weight: 750; color: #8a371c; }
+.rd-point::after { content: ''; position: absolute; left: 50%; top: 1.85rem; width: .58rem; height: .58rem; border-radius: 50%; background: #983e1d; transform: translate(-50%,-40%); }
