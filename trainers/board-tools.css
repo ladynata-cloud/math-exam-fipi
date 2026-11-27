@@ -133,6 +133,8 @@ body.board-divider-dragging #trainerFrame { pointer-events: none !important; }
 #lesson .board-viewbar .tool svg { width: 15px; height: 15px; }
 #lesson .board-viewbar .tool span { font-size: 11px; }
 #lesson .board-viewbar [data-tool="hand"] { margin-right: auto; }
+#lesson #followWriting[hidden] { display: none; }
+#lesson #followWriting[aria-pressed="true"] { color: #1a684b; background: #eaf4ee; border-color: #96bea7; }
 #lesson .board-viewbar .zoom-controls { display: flex; align-items: center; gap: 2px; }
 #lesson .board-viewbar [aria-live],
 #lesson .board-viewbar output { min-width: 34px; text-align: center; font-variant-numeric: tabular-nums; }
