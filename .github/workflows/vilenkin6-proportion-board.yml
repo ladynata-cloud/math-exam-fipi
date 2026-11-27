@@ -49,7 +49,7 @@ jobs:
         run: |
           node --check trainers/vilenkin6-proportion/app.js
           node --check trainers/vilenkin6-proportion/browser.cjs
-          node --test board-server/test/vilenkin6-proportion.test.js
+          node --test board-server/test/vilenkin6-proportion.test.js trainers/vilenkin6-proportion/corridor.test.cjs
           git diff --check
       - name: Install locked server and pinned browser tools
         run: |

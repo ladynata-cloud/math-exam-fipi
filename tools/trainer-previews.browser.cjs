@@ -33,10 +33,11 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'t
     const arzhenikovCard=catalogCards.filter({has:arzhenikovLink});
     const grade5Hrefs=['/school/peterson5/','/courses/vilenkin-5-part-1/'];
     const grade5Links=grade5Hrefs.map(href=>'a[href="'+href+'"]');
-    assert.equal(await previousCards.filter({hasNot:page.locator(grade5Links.join(','))}).count(),61);
+    assert.equal(await previousCards.filter({hasNot:page.locator(grade5Links.join(','))}).count(),60);
     for(const selector of grade5Links) assert.equal(await previousCards.locator(selector).count(),1);
-    assert.equal(await previousCards.count(),63,'all previous catalogue cards remain');
-    assert.equal(await catalogCards.count(),64);
+    assert.equal(await previousCards.count(),62,'all retained catalogue cards remain');
+    assert.equal(await catalogCards.count(),63);
+    assert.equal(await catalogCards.locator('a[href$="/long-division.html"]').count(),0,'retired notebook trainer is absent');
     assert.equal(await arzhenikovCard.count(),1,'one new Arzhenikov catalogue card');
     assert.equal(await arzhenikovCard.locator('h3').innerText(),'Арифметика по мотивам Арженикова');
     assert.equal(await arzhenikovCard.locator('.actions a[href="'+arzhenikovHref+'"]').count(),1);

@@ -13,7 +13,8 @@
   const element=(tag,txt)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;return e;};
   const button=(text,handler)=>{const b=element('button',text);b.type='button';b.addEventListener('click',handler);return b;};
   const link=(text,href)=>{const a=element('a',text);a.href=href;return a;};
-  function persist(){try{localStorage.setItem(key,JSON.stringify(choice));}catch(_){saved=false;}note.textContent=saved?'Запоминается только выбранная тема в этом браузере, не уровень знаний.':'Браузер не разрешил сохранить выбор. Можно продолжать заниматься.';}
+  function showStorageNote(){note.textContent=saved?'Запоминается только выбранная тема в этом браузере, не уровень знаний.':'Браузер не разрешил прочитать или сохранить выбор. Можно продолжать заниматься.';}
+  function persist(){try{localStorage.setItem(key,JSON.stringify(choice));saved=true;}catch(_){saved=false;}showStorageNote();}
   function setNode(id){if(!m.find(id))return;choice={goal:choice.goal,node:id};topic.value=id;persist();render();topic.focus();}
   for(const g of m.goals){const o=element('option',g.title);o.value=g.id;goal.append(o);}
   for(const group of [...new Set(m.nodes.map(n=>n.group))]){
@@ -64,10 +65,11 @@
     exposed.add(n.id);
     probeChecked=true;
     for(const control of form.querySelectorAll('input,button[type="submit"]'))control.disabled=true;
-    const title=r.kind==='two-correct'?'Обе пробы верны':r.kind==='check-again'?'Одна проба верна — нужна ещё проверка':'Стоит повторить эту тему';
+    const unanswered=answers.filter(a=>a==='?').length;
+    const title=unanswered===2?'Ответы пока не даны':unanswered===1?(r.correct===1?'Одна проба верна, другая без ответа':'Одна проба не совпала, другая без ответа'):r.kind==='two-correct'?'Обе пробы верны':r.kind==='check-again'?'Одна проба верна — нужна ещё проверка':'Стоит повторить эту тему';
     result.append(element('strong',repeated?'Повторение после разбора: '+title.toLowerCase():title));
-    result.append(element('p',repeated?'Вы уже видели разбор этой пары в текущей вкладке. Это упражнение для повторения, а не новая самостоятельная проверка.':r.kind==='two-correct'?'Это ещё не подтверждение освоения. Решите новые задачи самостоятельно.':'По двум задачам нельзя определить точную причину ошибки. Начните с разбора текущей темы; при необходимости проверьте её основы.'));
-    const ul=element('ul');n.questions.forEach((q,i)=>ul.append(element('li',(answers[i]===q.answer?'Верно. ':'Разбор. ')+q.explain)));result.append(ul);
+    result.append(element('p',repeated?'Вы уже видели разбор этой пары в текущей вкладке. Это упражнение для повторения, а не новая самостоятельная проверка.':r.kind==='two-correct'?'Это ещё не подтверждение освоения. Решите новые задачи самостоятельно.':unanswered===2?'Без ответов нельзя определить, что именно вызывает затруднение. Можно начать с объяснения текущей темы.':unanswered===1?'Одна проба осталась без ответа. Этого недостаточно, чтобы определить уровень знаний или причину затруднения. Можно разобрать текущую тему.':'По двум задачам нельзя определить точную причину ошибки. Начните с разбора текущей темы; при необходимости проверьте её основы.'));
+    const ul=element('ul');n.questions.forEach((q,i)=>ul.append(element('li',(answers[i]==='?'?'Ответ не дан. Разбор: ':answers[i]===q.answer?'Верно. ':'Ответ не совпал. Разбор: ')+q.explain)));result.append(ul);
     result.append(element('p','Разбор уже показан. Повтор этих же задач не является новой самостоятельной проверкой.'));
     if(r.kind==='two-correct'){const next=m.next(choice.goal,n.id);if(next)result.append(button('Посмотреть следующий шаг: '+next.title,()=>setNode(next.id)));}
     else for(const id of n.before)result.append(button('Проверить основу: '+m.find(id).title,()=>setNode(id)));
@@ -76,5 +78,5 @@
   topic.addEventListener('change',()=>{if(!m.find(topic.value))return;choice={goal:choice.goal,node:topic.value};persist();render();});
   // The same static shortcuts must stay visible with and without JavaScript.
   // They are real public entrances, not a hidden duplicate ahead of the old cards.
-  render();persist();details.hidden=false;
+  render();showStorageNote();details.hidden=false;
 })();

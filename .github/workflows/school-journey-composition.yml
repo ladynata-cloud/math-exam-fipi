@@ -33,7 +33,7 @@ jobs:
           BRIDGE_BASE: 0dc629ff055f99fa0409b363ecbc24148807a05f
           BRIDGE_RELEASE: b876a19a78910663aa6a976b4b3b781d7987a6d8
           ACCEPTED_MAIN: c811c4c8ee87845a25598d958321d23feb83b43d
-          FRESH_MAIN: dc084cbc111f4bade3aa9d28648995c6af6484c2
+          FRESH_MAIN: ea8f6f0680bbe0e5b4b6392966bc8c14eb8160ad
           SCHOOL_TESTED: 4d9f4ee00346abeb8884a749ed6c23d1755f0f66
         run: |
           set -eu
@@ -117,6 +117,10 @@ jobs:
               ("92b404e98828868277c9f34600133333b8744186", "33ff2a8eca1f1e3d89e2041d3be6351539c46366", {".github/workflows/trainer-download-stage2.yml", "assets/assistant/page-rollout.json", "docs/tasks/SEO_OFFLINE_ENTRANCE_20261126.md", "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html", "tools/offline-entrance.browser.cjs"}),
               ("33ff2a8eca1f1e3d89e2041d3be6351539c46366", "dbd912649b6c76ed9fcc59985c01e11f8971c845", {"assets/assistant/navigator-data.js", "docs/PROJECT_STATUS.md", "docs/tasks/GUEST_NAVIGATOR_INFORMATICS_FOLLOWUP_20261124.md", "tools/public-navigator-regression.cjs"}),
               ("dbd912649b6c76ed9fcc59985c01e11f8971c845", "dc084cbc111f4bade3aa9d28648995c6af6484c2", {"assets/assistant/page-rollout.json", "docs/tasks/PROFILE_PART_TWO_ERROR_JOURNAL_20261117.md", "ege-profil/review-part-two.js", "ege-profil/review-probe-2027.js", "ege-profil/review.html", "tools/profile-part2-review.test.cjs"}),
+              ("dc084cbc111f4bade3aa9d28648995c6af6484c2", "afbb30de370d872fb2128e0237f8b4356db249d1", {".github/workflows/vilenkin6-proportion-board.yml", "downloads/trainers-manifest.json", "downloads/trainers/long-division-stepwise/long-division-stepwise-package.zip", "downloads/trainers/long-division-stepwise/long-division-stepwise.html", "learning/index.html", "learning/lesson-workspace.js", "tools/lesson-workspace-v1/dom.test.cjs", "trainers/board-picker-data.json", "trainers/oge-basics/multiplication-division/division-guided.js", "trainers/vilenkin6-proportion/app.js", "trainers/vilenkin6-proportion/browser.cjs", "trainers/vilenkin6-proportion/core.js", "trainers/vilenkin6-proportion/corridor-model.js", "trainers/vilenkin6-proportion/corridor.css", "trainers/vilenkin6-proportion/corridor.js", "trainers/vilenkin6-proportion/corridor.test.cjs", "trainers/vilenkin6-proportion/index.html"}),
+              ("afbb30de370d872fb2128e0237f8b4356db249d1", "36f587295c2378c970c0b6033cf2a0fb87b97f54", {"courses/vilenkin-6-part-1/textbook-course.js", "downloads/trainers/long-division-stepwise/long-division-stepwise-package.zip", "downloads/trainers/long-division-stepwise/long-division-stepwise.html", "learning/index.html", "learning/lesson-workspace.js", "learning/ratio-board-topics.js", "learning/vilenkin6-course.js", "learning/vilenkin6-textbook-course.js", "tools/division-offline-export.test.cjs", "tools/learning-vilenkin-textbook.dom.cjs", "trainers/board-picker-data.json", "trainers/board-picker.js", "trainers/long-division-entry.js", "trainers/oge-basics/learning-loader.js", "trainers/oge-basics/multiplication-division/division-guided.js", "trainers/oge-basics/multiplication-division/division-path.html", "trainers/trainer-board.html", "trainers/vilenkin6-proportion/app.js", "trainers/vilenkin6-proportion/browser.cjs", "trainers/vilenkin6-proportion/core.js", "trainers/vilenkin6-proportion/corridor-model.js", "trainers/vilenkin6-proportion/corridor.css", "trainers/vilenkin6-proportion/corridor.js", "trainers/vilenkin6-proportion/corridor.test.cjs", "trainers/vilenkin6-proportion/index.html", "trainers/vilenkin6-proportion/topic-entries.js"}),
+              ("36f587295c2378c970c0b6033cf2a0fb87b97f54", "1d8cfb3bd8b959bbc9788d3cf7385e6cfc4e4a01", {"docs/tasks/BOARD_OBSERVER_FOLLOW_WRITING_20261127.md", "tools/board-writing.browser.cjs", "trainers/board-tools.css", "trainers/board-writing.js", "trainers/trainer-board.html"}),
+              ("1d8cfb3bd8b959bbc9788d3cf7385e6cfc4e4a01", "ea8f6f0680bbe0e5b4b6392966bc8c14eb8160ad", {"assets/assistant/navigator-data.js", "assets/assistant/page-rollout.json", "assets/assistant/pages.json", "docs/tasks/RETIRE_NOTEBOOK_LONG_DIVISION_20261127.md", "tools/seo-arzhenikov.test.cjs", "tools/trainer-previews.browser.cjs", "trainers/board-picker-data.json", "trainers/index.html", "trainers/long-division.html", "trainers/testing-hub.html", "trainers/trainers/long-division.html"}),
           ]
           assert git("rev-list","--first-parent","--reverse",accepted+".."+main).decode().split()==[r[1] for r in releases]
           drift=set()
@@ -124,15 +128,24 @@ jobs:
               assert git("rev-parse",revision+"^1").decode().strip()==parent
               assert changed(parent,revision)==paths, revision
               drift |= paths
-          assert len(drift)==20 and changed(accepted,main)==drift
+          assert len(drift)==61 and changed(accepted,main)==drift
           assert drift & school_paths=={shared}
           assert changed(main,live)==school_paths
-          assert changed(candidate,live)==drift | {workflow}
+          fixed={"assets/school-journey-home.js": "eb3c1938e79d170e924a83b82af39e7484d22565", "tools/school-journey.browser.cjs": "8a0ff8f3a6b2df7f2ec1a1876b2db57d75374124"}
+          assert changed(candidate,live)==drift | {workflow} | set(fixed)
+          for p, expected_blob in fixed.items():
+              assert git("rev-parse",live+":"+p).decode().strip()==expected_blob, p
+              assert blob(live,p)==Path(p).read_bytes(), p
+              assert blob(live,p)!=blob(candidate,p), p
           for p in drift-{shared}:
               assert blob(live,p)==blob(main,p)==Path(p).read_bytes(), p
-          for p in school_paths-{shared,workflow}:
+          for p in school_paths-{shared,workflow}-set(fixed):
               assert blob(live,p)==blob(candidate,p)==Path(p).read_bytes(), p
           fresh=json.loads(blob(main,shared))
+          pre_retire=json.loads(blob("1d8cfb3bd8b959bbc9788d3cf7385e6cfc4e4a01",shared))
+          pre_retire["addedPages"].pop("trainers/trainers/long-division.html")
+          pre_retire["provenance"].pop("trainers/trainers/long-division.html")
+          assert pre_retire==fresh, "retirement changed unrelated manifest bindings"
           assert fresh["addedPages"][fraction]==json.loads(blob(accepted,shared))["addedPages"][fraction]
           assert len(fresh["sourceBindingUpdates"])==220
           assert fresh["sourceBindingUpdates"][:215]==json.loads(blob(accepted,shared))["sourceBindingUpdates"]
@@ -141,6 +154,7 @@ jobs:
           assert len(fresh["sourceBindingUpdates"])==221
           live_manifest=json.loads(blob(live,shared))
           assert fresh==live_manifest and Path(shared).read_bytes()==blob(live,shared)
+          assert "trainers/trainers/long-division.html" not in live_manifest["addedPages"] and "trainers/trainers/long-division.html" not in live_manifest["provenance"]
           for p in (page,fraction):
               source=blob(live,p)
               row=live_manifest["addedPages"][p]
@@ -151,7 +165,7 @@ jobs:
           for p in expected | school_paths:
               assert Path(p).read_bytes()==blob(live,p), p
           composed=git("rev-parse",live+"^{tree}").decode().strip()
-          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 20 later published paths; 16 school paths; both page bindings and all 221 history receipts retained")
+          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 61 later published paths; 16 school paths; both page bindings and all 221 history receipts retained")
           PY
       - name: Existing mathematical and route assertions on the composition
         run: |

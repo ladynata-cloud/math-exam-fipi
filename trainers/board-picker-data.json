@@ -4547,11 +4547,6 @@
       "href": "/trainers/long-division-stepwise.html"
     },
     {
-      "title": "Переход…",
-      "group": "Школьная математика",
-      "href": "/trainers/long-division.html"
-    },
-    {
       "title": "Тренажёр Маруси",
       "group": "Школьная математика",
       "href": "/trainers/marusya-player.html"
@@ -4945,11 +4940,6 @@
       "title": "Деление уголком — тетрадный вид (CSS)",
       "group": "Школьная математика",
       "href": "/trainers/trainers/long-division-notebook-css.html"
-    },
-    {
-      "title": "Деление уголком (тетрадный формат) — тренажёр",
-      "group": "Школьная математика",
-      "href": "/trainers/trainers/long-division.html"
     },
     {
       "title": "Умножение столбиком — ОГЭ тренажёр",
@@ -7710,6 +7700,41 @@
       "title": "Отношения и пропорции · 32 задачи на общей доске",
       "group": "Виленкин · 6 класс · задачи учебника",
       "href": "/trainers/vilenkin6-proportion/index.html"
+    },
+    {
+      "title": "Коридор · отношения, пропорции и деление уголком",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-proportion/index.html?task=ratio-division-start"
+    },
+    {
+      "title": "Отношения",
+      "group": "Виленкин · 6 класс · темы на доске",
+      "href": "/trainers/vilenkin6-proportion/index.html?task=v6-book-3-32"
+    },
+    {
+      "title": "Пропорции — проверка правильности",
+      "group": "Виленкин · 6 класс · темы на доске",
+      "href": "/trainers/vilenkin6-proportion/index.html?task=v6-book-3-41-d"
+    },
+    {
+      "title": "Пропорции — решение уравнений",
+      "group": "Виленкин · 6 класс · темы на доске",
+      "href": "/trainers/vilenkin6-proportion/index.html?task=v6-book-3-42-c"
+    },
+    {
+      "title": "Пропорции — составление уравнений",
+      "group": "Виленкин · 6 класс · темы на доске",
+      "href": "/trainers/vilenkin6-proportion/index.html?task=ratio-equation-build"
+    },
+    {
+      "title": "Деление уголком натуральных чисел",
+      "group": "Виленкин · 6 класс · темы на доске",
+      "href": "/trainers/vilenkin6-proportion/index.html?task=ratio-division-whole"
+    },
+    {
+      "title": "Деление уголком десятичных дробей со сдвигом запятой",
+      "group": "Виленкин · 6 класс · темы на доске",
+      "href": "/trainers/vilenkin6-proportion/index.html?task=ratio-division-shift"
     },
     {
       "title": "Пункт 18 · Отношения · зеркальная доска",

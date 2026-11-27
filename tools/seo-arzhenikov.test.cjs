@@ -234,7 +234,6 @@ const existingCards = [
   ["НОК: наименьшее общее кратное","./grade6-nok.html"],
   ["НОД: наибольший общий делитель","./grade6-nod.html"],
   ["Деление столбиком (уголком)","./long-division-stepwise.html"],
-  ["Деление столбиком (уголком) в тетрадном формате","./trainers/long-division.html"],
   ["Умножение столбиком","./trainers/long-multiplication.html"],
   ["Таблица умножения вперемешку","./oge-basics/multiplication-division/multiplication-mixed.html"],
   ["Таблица Пифагора","./oge-basics/multiplication-division/multiplication-pythagoras-table.html"],
@@ -273,7 +272,7 @@ const existingCards = [
   ["Биссектриса угла","./bisector-trainer-v2.html"]
 ];
 
-test('the catalog retains all 63 existing entries and one new guide card with JS/source parity', () => {
+test('the catalog retains all 62 retained entries and one new guide card with JS/source parity', () => {
   const html = fs.readFileSync(path.join(root, 'trainers/index.html'), 'utf8');
   const url = origin + '/trainers/';
   const source = new JSDOM(html, {url});
@@ -297,6 +296,7 @@ test('the catalog retains all 63 existing entries and one new guide card with JS
       assert.equal(matching.length, 1, 'Preserve one existing catalog title: ' + previous[0]);
       assert.deepEqual(matching[0], previous, 'Preserve existing catalog destinations: ' + previous[0]);
     }
+    assert(!beforeScripts.some(card => card.includes('./trainers/long-division.html')), 'Retired notebook trainer stays out of the catalog');
     const newCards = beforeScripts.filter(card => card.slice(1).some(raw => new URL(raw, url).pathname === entry));
     assert.equal(newCards.length, 1, 'The new guide appears once, including after JavaScript');
     assert.match(newCards[0][0], /Аржеников/);
