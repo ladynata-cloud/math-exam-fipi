@@ -3244,11 +3244,6 @@
       "afterSha256": "e9a4f7e9c9e4efb33ef2f593e3072c7a69de265727ceb51b446f10d621bb7eb8",
       "placement": "before-head-close"
     },
-    "trainers/trainers/long-division.html": {
-      "beforeSha256": "9f4455406285ed768e2082d2260929caf315baeb686a73e945d3c7924694b809",
-      "afterSha256": "1ca25b2d556104c73780a6cf54a32efda652aa84e9a98fd59a5412dd48a6edac",
-      "placement": "before-head-close"
-    },
     "trainers/trainers/long-multiplication.html": {
       "beforeSha256": "9e4c07bdb24a737f37ab90848de40268b347c886b7ec70fd74bbca2e64280a66",
       "afterSha256": "a9830f0cf923272b7bdf7a71b7b19538170027cb2f9c10a66c65075541ce4083",
@@ -4024,7 +4019,6 @@
     "trainers/task14-progressions-trainer.html": "sitemap",
     "trainers/task19-trainer.html": "sitemap",
     "trainers/teatr-formul-daily.html": "sitemap",
-    "trainers/trainers/long-division.html": "trainers/index.html",
     "trainers/trainers/long-multiplication.html": "trainers/index.html",
     "trainers/trenazher-mcko-linejka-progress.html": "sitemap",
     "trainers/turing-trainer-modular-v3.html": "sitemap",
