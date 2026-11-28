@@ -19,8 +19,53 @@ const clone = value => JSON.parse(JSON.stringify(value));
 const column = require('../trainers/oge-basics/multiplication-division/multiplication-column-core.js');
 const oldItems = remediation.list().filter(item => !column.has(item.contentId) && !course.has(item.contentId) && item.contentId !== 'multiplication-division/quotient-estimate');
 assert.equal(oldItems.length, 36);
-const oldTasks = oldItems.flatMap(({ contentId }) => [0, 1, 17, 12345, 4294967295].map(seed => [contentId, seed, remediation.create(contentId, seed)]));
-assert.equal(crypto.createHash('sha256').update(JSON.stringify(oldTasks)).digest('hex'), '04ea262f68c4ebcf8d7d55e168871283885c3ca5f21af3601f26f5505a21c5df', 'The 180 old saved-task identities must remain byte-for-byte unchanged');
+const currentTasks = oldItems.flatMap(({ contentId }) => [0, 1, 17, 12345, 4294967295].map(seed => [contentId, seed, remediation.create(contentId, seed)]));
+
+function historicalFractionEnvelope(entry) {
+  const [contentId, seed, envelope] = entry;
+  if (contentId !== 'fraction-meaning') return entry;
+  const old = clone(envelope);
+  const lessons = old.taskSpec.lessons;
+  assert.equal(lessons.length, 5);
+  assert.equal(lessons[2].lead, "Если умножить числитель и знаменатель на одно и то же натуральное число, значение дроби не изменится. На ноль умножать нельзя: знаменатель станет нулём.");
+  assert.equal(lessons[3].question.prompt, "Сократите дробь <strong>4/10</strong> до несократимой. Ответ запишите через /.");
+  assert.equal(lessons[3].question.strict, true);
+  lessons[2].lead = "Если умножить числитель и знаменатель на одно и то же число, значение не изменится.";
+  lessons[3].question.prompt = "Сократите дробь <strong>4/10</strong>. Ответ запишите через /.";
+  delete lessons[3].question.strict;
+  return [contentId, seed, old];
+}
+
+// A deliberate lesson-only correction for five new fraction envelopes.
+// The complete original frozen hash is retained after reversing only the
+// three reviewed fields. Pin the new full output too, not a new baseline alone.
+assert.equal(currentTasks.filter(([id]) => id === 'fraction-meaning').length, 5);
+assert.equal(crypto.createHash('sha256').update(JSON.stringify(currentTasks)).digest('hex'), 'f76318f48e29c4bca8ade70eeeecc2b0f0e513b6ff7930b3ab710a50a90985ee', 'Only the reviewed new fraction lessons may differ');
+const oldTasks = currentTasks.map(historicalFractionEnvelope);
+
+assert.equal(crypto.createHash('sha256').update(JSON.stringify(oldTasks)).digest('hex'), '04ea262f68c4ebcf8d7d55e168871283885c3ca5f21af3601f26f5505a21c5df', 'The 180 historical saved-task identities must remain byte-for-byte unchanged after the exact lesson-only inverse');
+
+for (let i = 0; i < currentTasks.length; i++) {
+  const [id, , current] = currentTasks[i];
+  const legacy = oldTasks[i][2];
+  if (id !== 'fraction-meaning') {
+    assert.deepEqual(current, legacy);
+    continue;
+  }
+  const persisted = { ...clone(legacy.state), view:'learn', lessonIndex:3,
+    lessonAnswers:['','','','4/10'], lessonChecked:[false,false,false,true], note:'synthetic legacy draft' };
+  const snapshot = JSON.stringify(legacy.taskSpec);
+  // The stored specification, not a freshly generated seed, is authoritative.
+  assert.deepEqual(contracts.normalize('oge-basics', legacy.taskSpec, persisted), persisted);
+  assert.equal(JSON.stringify(legacy.taskSpec), snapshot);
+  assert.equal(contracts.normalize('oge-basics', current.taskSpec, persisted).lessonChecked[3], false);
+  const corrected = { ...persisted, lessonAnswers:['','','','2/5'] };
+  assert.deepEqual(contracts.normalize('oge-basics', current.taskSpec, corrected), corrected);
+  for (const raw of ['4/10','0,4','2/0']) {
+    assert.equal(remediation.checked(raw, current.taskSpec.lessons[3].question), false);
+  }
+}
+
 
 function mount(envelope, readOnly = false) {
   const dom = new JSDOM('<main id="learning-remediation-root"></main>', { url: 'https://example.test/?learning=1', runScripts: 'outside-only' });

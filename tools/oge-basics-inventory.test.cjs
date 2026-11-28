@@ -23,13 +23,13 @@ test('All 70 original course destinations remain available', () => {
   }
 });
 
-test('Task banks and engines preserve historical bytes except two exact book-audit corrections', () => {
+test('Task banks and engines preserve historical bytes except the exact book-audit and fraction corrections', () => {
   assert.equal(Object.keys(baseline.unchangedContent).length, 6);
   for (const [file, expected] of Object.entries(baseline.unchangedContent)) {
     assert.match(file, /^trainers\/oge-basics\/(?:[a-z0-9-]+\/)*[a-z0-9-]+\.js$/);
     assert.match(expected, /^[a-f0-9]{64}$/);
     const historical = restoreHistoricalBytes(file, fs.readFileSync(path.join(root, file), 'utf8'));
     const actual = crypto.createHash('sha256').update(historical).digest('hex');
-    assert.equal(actual, expected, file + ': preserve all bytes beyond the two independently tested book-audit mathematical corrections');
+    assert.equal(actual, expected, file + ': preserve all bytes beyond the explicitly enumerated and independently tested mathematical corrections');
   }
 });

@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
-const {corrections, restoreHistoricalBytes} = require('./oge-book-corrections.cjs');
+const {corrections, fractionMeaningCorrections, restoreHistoricalBytes} = require('./oge-book-corrections.cjs');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const sha = text => createHash('sha256').update(text).digest('hex');
@@ -92,7 +92,7 @@ test('preservation normalization rejects rollback, duplicates and any unrelated 
   const source = read(bankFile), expected = baseline.unchangedContent[bankFile];
   const preserved = value => assert.equal(sha(restoreHistoricalBytes(bankFile, value)), expected);
   preserved(source);
-  for (const {before, after} of Object.values(corrections)) {
+  for (const {before, after} of [...Object.values(corrections), ...fractionMeaningCorrections]) {
     assert.throws(() => preserved(source.replace(after, before)), {name:'AssertionError'});
     assert.throws(() => preserved(source.replace(after, after + after)), {name:'AssertionError'});
     assert.throws(() => preserved(source.replace(after, after + '/* extra change */')), {name:'AssertionError'});
