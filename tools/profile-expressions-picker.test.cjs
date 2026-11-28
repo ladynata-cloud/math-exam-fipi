@@ -53,7 +53,7 @@ test('only the six expressions lessons resolve to their wrapper; unknown routes 
     assert.equal(normalize(sourcePath + hash), wrapperPath + hash, hash);
   }
   for (const hash of [
-    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/5', '#calm/9',
+    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/0', '#calm/9',
     '#lesson/trig-unregistered', '#example/bridge-fractions', '#repair-task/expr-powers',
     '#practice/expr-powers', '#practice/expr-powers/other',
     '#practice/expr-powers/guided/extra', '#lesson/expr-powers/extra',

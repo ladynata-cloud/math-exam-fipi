@@ -1,9 +1,13 @@
 (function(){'use strict';
 const lessons=globalThis.ProfileLessons||[],byId=new Map(lessons.map(l=>[l.id,l])),main=document.getElementById('main'),groups=[['foundations','00','Вспомнить нужную основу','Короткие темы по пробелам, без повторения всего курса'],['geometry','01','Планиметрия','Научиться видеть решение на чертеже'],['vectors','02','Векторы','От перемещения — к скалярному произведению'],['stereometry','03','Стереометрия','Увидеть основание, высоту и нужное сечение'],['trigonometry','04','Тригонометрия','Понять круг, координаты и знаки'],['algebra','05','Алгебра для экзамена','Уравнения, степени, корни и логарифмы'],['probability','06','Вероятность и случайные величины','Исходы, события и распределения'],['calculus','07','Производная','Наклон, изменение и экстремумы'],['functions','08','Функции и графики','Связать формулу с рисунком'],['applied','09','Прикладные и текстовые задачи','Из условия — в понятную запись'],['finance','10','Финансовые расчёты','Проценты, долг и платежи']];
 const examMap=globalThis.ProfileExamMap;
-const boardAdapter=[globalThis.ProfileExpressionsBoard,globalThis.ProfileStereoBoard,globalThis.ProfilePlanimetryBoard,globalThis.ProfileVectorsBoard,globalThis.ProfileProbabilityBoard,globalThis.ProfileRandomVariablesBoard,globalThis.ProfileEquationsBoard,globalThis.ProfileLogTrigBoard].find(adapter=>adapter&&location.pathname===adapter.path&&document.body.dataset.profileBoard===adapter.marker)||null;
-const logTrigWrapper=location.pathname==='/trainers/ege-profile-log-trig.html'||document.body.dataset.profileBoard==='log-trig';
-if(logTrigWrapper&&(!boardAdapter||boardAdapter!==globalThis.ProfileLogTrigBoard)){
+const boardWrapper=[
+ globalThis.ProfileExpressionsBoard, globalThis.ProfileStereoBoard, globalThis.ProfilePlanimetryBoard,
+ globalThis.ProfileVectorsBoard, globalThis.ProfileProbabilityBoard, globalThis.ProfileRandomVariablesBoard,
+ globalThis.ProfileEquationsBoard, globalThis.ProfileLogTrigBoard, ...(globalThis.ProfileFirstPartBoardAdapters||[])
+].find(adapter=>adapter?.path===location.pathname);
+const boardAdapter=boardWrapper&&boardWrapper.marker===document.body.dataset.profileBoard?boardWrapper:null;
+if(!boardAdapter&&(boardWrapper||document.body.dataset.profileBoard||location.pathname==='/trainers/ege-profile-log-trig.html')){
  main.textContent='Совместный урок не загрузился. Обновите страницу, чтобы продолжить на общей доске.';main.inert=true;document.getElementById('calm-toggle').disabled=true;return;
 }
 const boardSession=boardAdapter?boardAdapter.create(lessons):null;
@@ -93,8 +97,8 @@ function difficultyHelp(l,mode,s,solved){return '<section id="difficulty-help" c
 function position(l){const entry=examMap?.forLesson(l.id);return entry?(entry.number?'ЕГЭ 2027 · №'+entry.number:'Дополнительная тема · '+esc(entry.title)):esc(typeof l.position==='string'?l.position:'Основа для профиля');}
 function breadcrumb(l){
  if(boardAdapter?.marker==='log-trig')return '<p class="breadcrumb"><a href="#course">← Логарифмы и тригонометрия</a></p>';
- const entry=examMap?.forLesson(l.id);
- const href=boardAdapter?.number?'#exam/'+boardAdapter.number:entry?examMap.hash(entry):'#home';
+ const entry=boardAdapter?.examNumber?examMap.get(boardAdapter.examNumber):examMap?.forLesson(l.id);
+ const href=boardAdapter?.examNumber?boardAdapter.defaultRoute:boardAdapter?.number?'#exam/'+boardAdapter.number:entry?examMap.hash(entry):'#home';
  return '<p class="breadcrumb"><a href="'+href+'">'+(entry?(entry.number?'№'+entry.number+' · Все темы':esc(entry.title)):'Маршрут')+'</a></p>';
 }
 const examNames={1:'Планиметрия',2:'Векторы',3:'Стереометрия',4:'Простая вероятность',5:'Сложные события',6:'Случайные величины',7:'Уравнения',8:'Вычисления и выражения',9:'Производная',10:'Задачи с формулами',11:'Текстовые задачи',12:'Функции и графики',13:'Финансовые расчёты'};
@@ -336,6 +340,7 @@ function practice(l,mode){
    document.getElementById('difficulty-help').hidden=true;
    next.disabled=false;next.hidden=false;submit.disabled=true;submit.hidden=true;
    if(mode==='guided')s.answers[s.step]=s.draft;else s.answers[0]=s.draft;
+   if(boardSession)main.querySelector('.micro-support')?.remove();
    for(const input of form.querySelectorAll('input'))input.disabled=true;
    save();rendered=stamp(s);document.getElementById('solution-history').outerHTML=history(t,s,mode);mountModel();if(boardSession)boardRenderHint(!document.getElementById('hint-box').hidden);formatDisplay();next.focus({preventScroll:true});
   }else{s.wrong=true;document.getElementById('difficulty-help').hidden=false;save();}
@@ -419,10 +424,10 @@ function courseBoard(){
  shell('<section class="lesson-head"><p class="eyebrow">ЕГЭ профиль · совместный урок</p><h1>Логарифмы и тригонометрия</h1><p class="lead">Выберите тему. Исследуйте модель вместе, решите задачу по шагам и попробуйте новое условие.</p><p>Для основ с нуля откройте «Тригонометрия с нуля · окружность» в выборе тренажёра на доске.</p></section>'+sections.map(([title,ids])=>'<section><h2>'+title+'</h2><div class="exam-topics">'+ids.map(id=>{const l=byId.get(id);return '<article class="exam-topic"><div><h3>'+esc(l.title)+'</h3><p>'+esc(l.summary)+'</p><span class="small">'+status(l)+'</span></div><div class="topic-actions"><a class="button" href="#lesson/'+id+'">Открыть тему</a><a href="#practice/'+id+'/guided">Решить вместе по шагам</a><a href="#practice/'+id+'/independent">Проверить себя</a></div></article>';}).join('')+'</div></section>').join(''));
 }
 function route(){if(boardSession&&!boardAdapter.validRoute(location.hash))historyReplace(boardAdapter.defaultRoute);const [page,id,mode]=location.hash.slice(1).split('/');if(boardAdapter?.marker==='log-trig'&&page==='course')return courseBoard();if(!boardSession)calm?.beforeRoute(page);if(page==='fipi'&&id==='2027')return currentExam(mode);if(page==='topic'){const entry=examMap?.topic(id);if(entry?.source==='start')return calm.route(globalThis.ProfileCalmData.project(entry));if(entry)return shell('<section class="panel"><h1>'+esc(entry.title)+'</h1><p>Дополнительная учебная тема.</p><a class="button" href="'+esc(examMap.href(entry))+'">Открыть тему</a></section>');}if(page==='calm')return calm.route(id);if(page==='example')return calm.example(id);if(page==='checkpoint')return calm.check();if(page==='checkpoint-pause')return calm.checkPause();if(page==='pause'&&byId.has(id)&&['guided','plan','independent'].includes(mode)){const l=byId.get(id),s=state.data.sessions[id+':'+mode];return shell('<section class="panel"><h1>Можно сделать паузу.</h1><p>'+esc(l.title)+'. '+(mode==='guided'?'Текущий шаг: '+((s?.step||0)+1)+'.':'')+' Введённый ответ сохранён.</p><a class="button" href="#practice/'+id+'/'+mode+'">Продолжить с того же места</a></section>');}if(page==='repair-task'&&byId.has(id)){const s=activeIndependent(byId.get(id));if(s&&!s.done){markHelp(s,'independent');setReturn('#practice/'+id+'/independent');state.remediate(id,s.taskId);location.hash='practice/'+id+'/guided';return;}}if(page==='readiness')return readiness();if(page==='diagnostic')return diagnose();if(page==='part-one')return partOne();if(page==='first-three')return firstThree();if(page==='exam'&&id==='15')return stereometryCourse();if(page==='exam'&&id==='16')return inequalities();if(page==='exam'&&examNames[Number(id)])return exam(Number(id));const l=byId.get(id);if(page==='lesson'&&l)return lesson(l);if(page==='practice'&&l&&['guided','plan','independent'].includes(mode))return practice(l,mode);if(page==='repair'&&l&&['guided','plan','independent'].includes(mode))return repair(l,mode);if(page==='progress')return progress();if(page==='sources')return sources();if(page==='home')return home();calm.route();}
-function createCalm(){return ProfileCalmUI.create({lessons,state,main,shell,esc,format,questionInput,save,route,download,setReturn,board,storage:boardSession?.storage,isApplyingRemoteState:()=>applyingBoardState,trackBoardView,setCleanup(fn){cleanup=fn;}});}
+function createCalm(){return ProfileCalmUI.create({lessons,state,main,shell,esc,format,questionInput,save,route,download,setReturn,board,storage:boardSession?.storage,shared:!!boardSession,isApplyingRemoteState:()=>applyingBoardState,trackBoardView,setCleanup(fn){cleanup=fn;}});}
 function historyReplace(hash){window.history.replaceState(null,'',location.pathname+location.search+hash);}
 function getBoardState(){return {
- route:location.hash,returnToTask,progress:boardSession.progress(state.data),preferences:boardSession.preferences(calm.getBoardState()),
+ route:location.hash,returnToTask,progress:boardSession.progress(state.data),preferences:boardSession.preferences(calm.getBoardState(),state.data.sessions),
  view:{hintOpen:!!document.getElementById('hint-box')&&!document.getElementById('hint-box').hidden,difficultyOpen:!!document.getElementById('difficulty-help')&&!document.getElementById('difficulty-help').hidden,feedback:boardFeedback,details:boardSession.readDetails(main),help:boardHelp?{...boardHelp}:null,model:boardViews.get('model')?.dispose.getBoardState?.()||null,solution:boardViews.get('solution')?.dispose.getBoardState?.()||null}
 };}
 function applyBoardState(value){

@@ -522,7 +522,10 @@ test('existing host preparation preserves a pre-room selection and draft without
   await mirrored(a, p.b, () => a.fill('.step.current [data-answer]', '-3;'));
   await mirrored(a, p.b, () => a.fill('#task-notes', 'Черновик перед созданием комнаты'));
   const host = fs.readFileSync(path.join(ROOT, 'trainers/trainer-board.html'), 'utf8');
-  const source = host.slice(host.indexOf('    function prepareProfileTrainerForRoom('), host.indexOf('    function compatLabel('));
+  const start = host.indexOf('    const roomSelectionAdapters =');
+  const end = host.indexOf('    function compatLabel(', start);
+  assert.ok(start >= 0 && end > start, 'The production room adapter registry and preparation functions are present');
+  const source = host.slice(start, end);
   const registryEntry = { trainerId: 'vpr-math', protocolVersion: 1, trainerVersion: '1.0.0', stateSchemaVersion: 1 };
   const context = {
     URL, URLSearchParams, JSON, frame: { contentWindow: a.w }, location: { origin: ORIGIN, href: ORIGIN + '/trainers/trainer-board.html' },

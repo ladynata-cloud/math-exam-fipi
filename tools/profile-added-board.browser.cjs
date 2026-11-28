@@ -528,13 +528,13 @@ async function diagnostics() {
   for (const session of sessions) {
     if (session.page.isClosed()) continue;
     const data = await session.page.evaluate(() => ({ share: document.querySelector('#shareStatus')?.textContent, connected: typeof shared === 'object' && shared.connected, hydrated: typeof roomStateReceived === 'boolean' && roomStateReceived, mirror: document.querySelector('#mirrorStatus')?.dataset.mirrorStatus, writer: document.body.classList.contains('control-owner'), messages: window.__profileGateMessages })).catch(() => null);
-    const frame = session.page.frames().find(item => /\/trainers\/ege-profile-(planimetry|vectors|probability|random-variables|equations)\.html/.test(item.url()));
+    const frame = session.page.frames().find(item => new URL(item.url()).pathname.startsWith('/trainers/ege-profile-'));
     const work = frame ? await frame.evaluate(() => ({ state: window.__profileGateApi?.getState(), route: location.hash, text: document.querySelector('#main')?.innerText.slice(0, 3000) })).catch(() => null) : null;
     console.error('DIAGNOSTIC ' + session.tag + ' ' + JSON.stringify({ ...data, work }));
     if (SHOTS) await session.page.screenshot({ path: join(SHOTS, 'failure-' + session.tag + '.png'), timeout: 3000 }).catch(() => {});
   }
 }
-(async () => {
+async function withLocalBoard(scenario) {
   if (SHOTS) mkdirSync(SHOTS, { recursive: true });
   const server = staticServer(); let browser, child, watchdog, serverErrors = '';
   try {
@@ -548,7 +548,8 @@ async function diagnostics() {
         child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); });
         await healthy(boardOrigin, child, () => serverErrors);
         browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH || process.env.BROWSER_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
-        await run(browser, siteOrigin, boardOrigin);
+        await scenario(browser, siteOrigin, boardOrigin);
+        assert.deepEqual(failures, [], 'no failed local assets, page errors or external requests');
       })(),
       new Promise((_, reject) => { watchdog = setTimeout(() => reject(new Error('Browser gate exceeded 240 seconds at ' + phase)), 240000); })
     ]);
@@ -557,4 +558,6 @@ async function diagnostics() {
     clearTimeout(watchdog); await browser?.close(); if (child && child.exitCode === null) child.kill('SIGTERM');
     if (server.listening) await new Promise(yes => server.close(yes));
   }
-})().catch(error => { console.error('PROFILE_ADDED_BOARD_BROWSER_FAILED at ' + phase + '\n' + (error.stack || error)); process.exitCode = 1; });
+}
+module.exports = { withLocalBoard, contextFor, connected, profileFrame, snapshot, synchronized, changedModel, handoff, personalStorage };
+if (require.main === module) withLocalBoard(run).catch(error => { console.error('PROFILE_ADDED_BOARD_BROWSER_FAILED at ' + phase + '\n' + (error.stack || error)); process.exitCode = 1; });
