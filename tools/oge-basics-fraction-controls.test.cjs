@@ -224,7 +224,7 @@ test('every fraction checkpoint covers its actions and the reduction exercise ne
     assert.deepEqual(meaningTasks.map(task => task.skill), ['parts','parts','equal','simplify','compare']);
     const parts = meaningTasks.slice(0, 2);
     for (const task of parts) {
-      assert.deepEqual(task.options.map(o => o.id).sort(), ['d','n']);
+      assert.deepEqual(Array.from(task.options, o => o.id).sort(), ['d','n']);
       const [n,d] = task.prompt.match(/(\d+)\/(\d+)/).slice(1).map(Number);
       assert(n > 0 && n < d);
       assert.equal(task.options.find(o => o.id === 'n').html, String(n));

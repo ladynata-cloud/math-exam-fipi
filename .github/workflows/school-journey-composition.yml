@@ -135,7 +135,7 @@ jobs:
           assert len(drift)==89 and changed(accepted,main)==drift
           assert drift & school_paths=={shared}
           dependency_paths={"trainers/oge-basics/learning-bank.js", "tools/oge-learner-entry.test.cjs"}
-          preservation_blobs={"tools/oge-book-corrections.cjs":"e56262095ad661f2bd2ff0be417566b08de93af0","tools/oge-book-corrections.test.cjs":"e56a786eb5ec57e472dcddd87ad77c1ff7febc1c","tools/oge-basics-inventory.test.cjs":"e4922e3fedbb57bf9c8d10ee524a7ddc9dfeee89","tools/learning-division-course.dom.cjs":"d73194292e2945dcc5e9c646d1c6d23069fb5e8c","tools/oge-basics-fraction-controls.test.cjs":"100a90c1672df9028920b681343dbda1a1f7ef86"}
+          preservation_blobs={"tools/oge-book-corrections.cjs":"e56262095ad661f2bd2ff0be417566b08de93af0","tools/oge-book-corrections.test.cjs":"e56a786eb5ec57e472dcddd87ad77c1ff7febc1c","tools/oge-basics-inventory.test.cjs":"e4922e3fedbb57bf9c8d10ee524a7ddc9dfeee89","tools/learning-division-course.dom.cjs":"d73194292e2945dcc5e9c646d1c6d23069fb5e8c","tools/oge-basics-fraction-controls.test.cjs":"e4627edbea4cf5dad6cbe7e3bc19c881a9850a0b"}
           preservation_paths=set(preservation_blobs)
           assert not (dependency_paths | preservation_paths) & (drift | school_paths | expected)
           assert not dependency_paths & preservation_paths
