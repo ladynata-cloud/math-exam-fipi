@@ -242,10 +242,18 @@ function history(t,s,mode){
  const count=mode==='guided'?Math.min(s.answers.length,t.steps.length):0;
  return '<section id="solution-history" class="solution-history" '+(!count?'hidden':'')+'><h2>Уже нашли</h2><ol>'+t.steps.slice(0,count).map((q,i)=>'<li data-step="'+i+'"><span class="earned-number">'+(i+1)+'</span><div><p>'+q.prompt+'</p><strong>'+esc(q.choiceLabels?.[q.answer]||format(q.answerExact??q.answer))+(q.unit?' '+esc(q.unit):'')+'</strong>'+('<details class="earned-explanation"><summary>Почему так</summary><p>'+q.why+'</p></details>')+'</div></li>').join('')+'</ol></section>';
 }
+function independentHint(t){
+ if(t.independentHint)return t.independentHint;
+ // The first hint may refer to an excluded value or a derivative introduced
+ // only in that step's question. Keep that context when helping with the task.
+ // Authored questions can already contain paragraphs, so use div wrappers.
+ const first=t.steps[0];
+ return '<div class="hint-step-question"><b>Первый шаг.</b> '+first.prompt+'</div><div class="hint-step-help">'+first.hint+'</div>';
+}
 function practice(l,mode){
  if(mode!=='independent'){const active=activeIndependent(l);if(active&&!active.done&&!active.answers.length)markHelp(active,'independent');}
  const {s,t}=current(l,mode);if(s.done){result(l,mode,s,t);return;}
- const q=mode==='guided'?t.steps[s.step]:{prompt:t.question||ProfileTaskFirst.question(t),answer:t.answer,answerExact:t.answerExact,choices:t.choices,choiceLabels:t.choiceLabels,unit:ProfileTaskFirst.unit?.(t)||t.unit,domain:t.domain,strictNumeric:t.strictNumeric,retry:t.retry,hint:t.steps[0].hint,why:t.explanation};
+ const q=mode==='guided'?t.steps[s.step]:{prompt:t.question||ProfileTaskFirst.question(t),answer:t.answer,answerExact:t.answerExact,choices:t.choices,choiceLabels:t.choiceLabels,unit:ProfileTaskFirst.unit?.(t)||t.unit,domain:t.domain,strictNumeric:t.strictNumeric,retry:t.retry,hint:independentHint(t),why:t.explanation};
  const solved=mode==='guided'?s.answers.length>s.step:s.answers.length>0;
  const hasModel=!!globalThis.ProfileTaskModels?.[t.id],hasDrawingWalkthrough=['geo-right-sine','geo-right-cosine','geo-right-tangent'].includes(t.id)&&hasModel;
  const stamp=x=>[x.taskId,x.started,x.step,x.answers.length,x.done].join('|');let rendered=stamp(s);
