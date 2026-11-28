@@ -134,8 +134,10 @@ jobs:
               drift |= paths
           assert len(drift)==89 and changed(accepted,main)==drift
           assert drift & school_paths=={shared}
-          assert changed(main,live)==school_paths
-          assert changed(candidate,live)==drift | {workflow} | set(fixed)
+          dependency_paths={"trainers/oge-basics/learning-bank.js", "tools/oge-learner-entry.test.cjs"}
+          assert not dependency_paths & (drift | school_paths | expected)
+          assert changed(main,live)==school_paths | dependency_paths
+          assert changed(candidate,live)==drift | {workflow} | set(fixed) | dependency_paths
           for p, expected_blob in fixed.items():
               assert git("rev-parse",live+":"+p).decode().strip()==expected_blob, p
               assert blob(live,p)==Path(p).read_bytes(), p
@@ -178,13 +180,29 @@ jobs:
               assert source.replace(snippet,b"",1)==blob(row.get("sourceSha") or live_manifest["baseSha"],p).replace(snippet,b"",1)
           for p in expected | school_paths:
               assert Path(p).read_bytes()==blob(live,p), p
+          # Two exact downstream dependencies of the reviewed fraction correction.
+          # Keep the old composition and source pins; extend only the live delta.
+          dependency_previous="b44d5fee3d9df5f9f7dbbc8495fd04f85003ec96"
+          assert changed(dependency_previous,live)==dependency_paths | {workflow}
+          dependency_blobs={"trainers/oge-basics/learning-bank.js":"f2ce4a478245c41066147dacf1d5c955afe6ba67","tools/oge-learner-entry.test.cjs":"fce5cc12ffe2c76d059ede87224d7b4752e49cd1"}
+          for p, expected_blob in dependency_blobs.items():
+              assert git("rev-parse",live+":"+p).decode().strip()==expected_blob, p
+              assert Path(p).read_bytes()==blob(live,p), p
+          entry_test="tools/oge-learner-entry.test.cjs"
+          old_entry=blob(dependency_previous,entry_test)
+          old_pin=b'79a9cc5f34d364d97ba341c718dab8aa3ee60e5edc82f86493740fe6173f35a7'
+          new_pin=b'0de77144d86640682f0134832c4ac4ea26583ca6f08c55a8b9cde89b55e9f50b'
+          assert old_entry.count(old_pin)==1 and new_pin not in old_entry
+          assert blob(live,entry_test)==old_entry.replace(old_pin,new_pin,1)
           composed=git("rev-parse",live+"^{tree}").decode().strip()
-          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 89 later published paths; 16 school paths; both page bindings and all 222 history receipts retained")
+          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 89 later published paths; 16 original school paths plus 2 exact fraction dependencies; both page bindings and all 222 history receipts retained")
           PY
       - name: Existing mathematical and route assertions on the composition
         run: |
           node --test tools/school-journey.test.cjs tools/equations/linear-pilot-fraction-bridge.test.cjs
           node --check tools/school-journey-composition.browser.cjs
+          node tools/learning-remediation-bank.cjs --check
+          node --check tools/oge-learner-entry.test.cjs
       - name: Install pinned Chromium test environment
         run: |
           npm install --prefix "$RUNNER_TEMP/school-composition" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
