@@ -210,7 +210,19 @@ function decorate(page){
    const steps=details('Помочь решить по шагам?');steps.classList.add('pd-original-steps');const content=q('.pm-content',steps);
    const body=q('.task-body',section);if(body)content.append(body);
    qa('.substep',section).filter(node=>node!==final&&!node.closest('.pd-original-steps')&&!node.closest('.pd-panel')).forEach(node=>content.append(node));
-   const animation=q('.anim-block',section);if(animation)content.prepend(animation);
+   const animation=q('.anim-block',section);
+   if(animation){
+    if(i===4){
+     // Restore the existing experiment to the question itself. The native
+     // finishAnim still writes to its original result node, now in explicit help.
+     // Moving (not cloning) preserves SVG IDs, handlers and the rolling engine.
+     const result=q('#anim-result',animation);
+     if(result)content.prepend(result);
+     const note=element('p','Посмотри, какой путь проходит каждое колесо за один полный оборот. Сравни цветные следы на дороге, затем вычисли ответ самостоятельно.','pd-instruction');
+     const controls=q('.anim-controls',animation);if(controls)controls.before(note);
+     intro.after(animation);
+    }else content.prepend(animation);
+   }
    const nativeButton=q('.substep-hint-btn',final),nativePanel=q('.substep-hint',final);
    if(nativeButton&&nativePanel){const exact=details('Подсказка к итоговому ответу');q('.pm-content',exact).classList.add('substep');q('.pm-content',exact).append(nativeButton,nativePanel);content.append(exact);}
    panel.insertBefore(steps,q('.pd-return',panel));

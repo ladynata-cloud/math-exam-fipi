@@ -61,7 +61,31 @@ async function run(page,width,isOffline=false){
  const selectedCell=await page.locator('#master-table input.calc-cell:not(:disabled)').first().evaluate(e=>({tire:e.dataset.tire,cell:e.dataset.cell,correct:eval('cellSpec(VD.byId['+JSON.stringify(e.dataset.tire)+'],'+JSON.stringify(e.dataset.cell)+').correct')}));
  // Validation disables this cell; keep its identity instead of selecting the next editable one.
  const input=page.locator('#master-table input.calc-cell[data-tire="'+selectedCell.tire+'"][data-cell="'+selectedCell.cell+'"]'),correct=selectedCell.correct;await input.fill(String(correct));await input.press('Tab');assert.equal(await input.isDisabled(),true);assert.equal(await input.evaluate(e=>e.classList.contains('correct')),true,'native blur validator accepts input');await active(page,2);assert.equal(await input.inputValue(),String(correct));assert.equal(await input.isDisabled(),true);
- await active(page,6);const animation=page.locator('#section-6 .anim-block');if(!await page.locator('#section-6 .pd-panel').first().isVisible())await page.locator('#section-6 .pd-toggle').first().click();await reveal(animation);await layout(page,'rolling diagram '+width);
+ await active(page,6);const animation=page.locator('#section-6 .anim-block');
+ if(!isOffline){
+  const section=page.locator('#section-6'),help=section.locator('.pd-panel').first(),roll=animation.locator('#btn-roll'),result=section.locator('#anim-result'),answer=section.locator('#t5-final input');
+  assert.equal(await animation.isVisible(),true,'rolling experiment visible without opening help');
+  assert.equal(await animation.evaluate(el=>el.closest('details,.pd-panel')===null&&el.previousElementSibling.matches('.card-intro')),true);
+  assert.equal(await help.isVisible(),false);assert.equal(await answer.isVisible(),true);
+  assert.equal(await page.locator('#anim-svg').count(),1);assert.equal(await page.locator('#btn-roll').count(),1);
+  const draft=await answer.inputValue(),beforeRoll=await page.evaluate(()=>JSON.stringify(Object.keys(localStorage).sort().map(k=>[k,localStorage.getItem(k)])));
+  await roll.click();
+  await page.waitForFunction(()=>document.querySelector('#anim-result').classList.contains('show')&&!document.querySelector('#btn-roll').disabled);
+  const tracks=await animation.locator('rect.anim-track,rect.anim-track-2').evaluateAll(es=>es.map(e=>+e.getAttribute('width')));
+  assert.equal(tracks.length,2);assert.ok(tracks.every(n=>n>0));assert.notEqual(tracks[0],tracks[1]);
+  assert.equal(await result.isVisible(),false,'rolling does not disclose the exact percentage');
+  assert.equal(await answer.inputValue(),draft);assert.equal(await page.evaluate(()=>JSON.stringify(Object.keys(localStorage).sort().map(k=>[k,localStorage.getItem(k)]))),beforeRoll);
+  await section.locator('.pd-toggle').first().click();const steps=help.locator('.pd-original-steps');
+  await steps.locator(':scope>summary').click();assert.equal(await result.isVisible(),true,'numeric explanation available on request');
+  await section.locator('.pd-toggle').first().click();
+  await animation.locator('#btn-roll-reset').click();
+  assert.equal(await result.evaluate(e=>e.classList.contains('show')),false);
+  assert.deepEqual(await animation.locator('rect.anim-track,rect.anim-track-2').evaluateAll(es=>es.map(e=>+e.getAttribute('width'))),[0,0]);
+ }else{
+  // Keep the original gate for the already distributed ZIP, which is not rewritten.
+  if(!await page.locator('#section-6 .pd-panel').first().isVisible())await page.locator('#section-6 .pd-toggle').first().click();await reveal(animation);
+ }
+ await layout(page,'rolling diagram '+width);
  const rollingFonts=await page.locator('#anim-svg text').evaluateAll(es=>es.filter(e=>getComputedStyle(e).display!=='none').map(e=>parseFloat(getComputedStyle(e).fontSize)*e.ownerSVGElement.getBoundingClientRect().width/e.ownerSVGElement.viewBox.baseVal.width));assert.ok(rollingFonts.length>0&&rollingFonts.every(n=>n>=18),'rolling diagram labels stay readable');
  const captions=animation.locator('.tlf-rolling-caption');assert.equal(await captions.count(),2);assert.equal(await captions.first().isVisible(),true);assert.equal(await captions.last().isVisible(),true);assert.ok((await captions.evaluateAll(es=>es.map(e=>parseFloat(getComputedStyle(e).fontSize)))).every(n=>n>=18));await animation.screenshot({path:path.join(out,(isOffline?'offline-':'')+'rolling-diagram-'+width+'.png')});
 }
