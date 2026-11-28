@@ -11,3 +11,17 @@ Use the existing structured board session and the course’s authored tasks. Eac
 Review level is HIGH because the change extends the trusted room trainer registry. Verify exact entry paths and capabilities, then exercise a teacher and a pupil in separate browser contexts. Check shared task changes, answers, clues, model controls, ownership transfer, reconnection and isolation from solo progress. Check real published assets and the Amvera registry after the Pages and server deployments.
 
 The acceptance gates include the first-part two-client browser suite, manifest preflight and existing profile board regressions. Publication follows the standing owner policy. A rollback reverts the scoped change and redeploys Pages and Amvera together. There is no database migration.
+
+## Returning pupils and browser cache
+
+POST779-CACHE-ENTRY-01 integrates the board release and the hint changes from
+PR #607 on main `901bf101286c403cb1b1f07fcbbd965115666725`. The public START
+page and all 14 START board entries load app, equations-data and functions-data
+with the new `20261128-powers-context` URL. The three other #779 modules retain
+the `20261128-first-part` URL: applied-tasks, calm-ui and the board-only adapter.
+The public START does not load the adapter.
+
+Validate the exact URLs, byte-bound source receipts, offline package, two-client
+board and a returning pupil with a warm browser cache. Keep the 12 official and
+50 lesson routes, personal credit, hint history and draft. Rollback reverts the
+scope together with its matching provenance and regenerated download.

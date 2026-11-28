@@ -131,7 +131,7 @@ test('the stereometry wrapper reuses canonical assets and the existing bridge wi
     .map(src => '/ege-profil/start/' + src);
   const wrapperScripts = scripts(wrapper);
   const bridge = '/trainers/board-bridge.js';
-  const adapter = '/ege-profil/start/board-session.js?v=20261115-fipi-map';
+  const adapter = '/ege-profil/start/board-session.js?v=20261128-first-part';
   const home = '/assets/assistant/home-link.js?v=20261110';
   assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), [...canonicalScripts, home]);
   assert.equal(wrapperScripts.at(-1), home, 'Only the exact standalone home script follows the canonical assets');

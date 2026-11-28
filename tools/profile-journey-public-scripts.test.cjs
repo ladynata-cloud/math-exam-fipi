@@ -7,18 +7,25 @@ const map=['../skill-map-data.js?v=20261115-fipi-map','../azbuka-metodov/catalog
  'vector-basics-data.js?v=20261118-opposites','vector-basics-models.js?v=20261112-vectors','/assets/trainer-skill-gif.js?v=20261117-research'];
 const publicCourseLinks='course-links.js?v=20261117-h12';
 const boardCourseLinks='course-links.js?v=20261115-fipi-map';
-const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity',publicCourseLinks,'calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261118-opposites','app.js?v=20261118-opposites','checks.js?v=20261114-numeric-domain'];
-const boardRuntime=[...shared,'geometry-data.js','state.js?v=20261101-trainer-repair',boardCourseLinks,'calm-data.js?v=20261115-fipi-map','calm-ui.js?v=20261115-fipi-map','app.js?v=20261115-fipi-map','checks.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
+const equationsData='equations-data.js?v=20261128-powers-context';
+const functionsData='functions-data.js?v=20261128-powers-context';
+const applied='applied-tasks.js?v=20261128-first-part';
+const calmUi='calm-ui.js?v=20261128-first-part';
+const app='app.js?v=20261128-powers-context';
+const adapter='board-session.js?v=20261128-first-part';
+const boardAdapter='/ege-profil/start/'+adapter;
+const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity',publicCourseLinks,'calm-data.js?v=20261115-fipi-map',equationsData,functionsData,applied,calmUi,app,'checks.js?v=20261114-numeric-domain'];
+const boardRuntime=[...shared,'geometry-data.js','state.js?v=20261101-trainer-repair',boardCourseLinks,'calm-data.js?v=20261115-fipi-map',equationsData,functionsData,applied,calmUi,adapter,app,'checks.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
 const html=sources=>sources.map(src=>'<script defer src="'+src+'"></script>').join('\n');
 const canonical=html([...shared,...map,...runtime]),wrapper=html(boardRuntime);
 function parity(page=canonical,board=wrapper){
  const actual=[...board.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match=>match[1]);
- assert.deepEqual(actual,canonicalProfileLearningScripts(page,board).map(src=>'/ege-profil/start/'+src));
+ assert.deepEqual(actual.filter(src=>src!==boardAdapter),canonicalProfileLearningScripts(page,board).map(src=>'/ege-profil/start/'+src));
 }
 
 test('board contract excludes public-only modules and permits only the reviewed runtime stamps',()=>{
  parity();
- assert.deepEqual(canonicalProfileLearningScripts(canonical,wrapper),boardRuntime.map(src=>src.slice('/ege-profil/start/'.length)));
+ assert.deepEqual(canonicalProfileLearningScripts(canonical,wrapper),boardRuntime.filter(src=>src!==boardAdapter).map(src=>src.slice('/ege-profil/start/'.length)));
 });
 test('adding, removing or reordering any learning script breaks parity in either page',()=>{
  for(const changed of [
@@ -34,6 +41,13 @@ test('adding, removing or reordering any learning script breaks parity in either
 test('unknown cache queries are rejected for reviewed and ordinary learning scripts',()=>{
  for(const src of runtime)assert.throws(()=>parity(canonical.replace(src,src.split('?')[0]+'?v=unreviewed'),wrapper));
  for(const src of boardRuntime)assert.throws(()=>parity(canonical,wrapper.replace(src,src.split('?')[0]+'?v=unreviewed')));
+});
+test('matching stale cache keys on both pages and missing or duplicate adapters are rejected',()=>{
+ for(const [current,previous] of [[equationsData,'equations-data.js?v=20261007'],[functionsData,'functions-data.js?v=20261007'],[app,'app.js?v=20261128-first-part'],[app,'app.js?v=20261118-opposites'],[calmUi,'calm-ui.js?v=20261115-fipi-map'],[applied,'applied-tasks.js?v=20261010-readable-help']])
+  assert.throws(()=>parity(canonical.replace(current,previous),wrapper.replace(current,previous)));
+ assert.throws(()=>parity(canonical,wrapper.replace(html([boardAdapter]),'')));
+ assert.throws(()=>parity(canonical,wrapper+html([boardAdapter])));
+ assert.throws(()=>parity(canonical+html([adapter]),wrapper));
 });
 test('public-only modules must appear once, first, in order and as exact deferred includes',()=>{
  for(const changed of [

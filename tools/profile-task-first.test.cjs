@@ -93,3 +93,64 @@ test('All 68 lesson families keep the real task, answer, diagram and nested help
     }finally{w.close();}
   }
 });
+
+function helpFixture(taskId,mode){
+  const {JSDOM}=require('jsdom'),path=require('node:path');
+  const State=require('../ege-profil/start/state.js'),root=path.resolve(__dirname,'..'),start=path.join(root,'ege-profil/start');
+  const lesson=lessons.find(l=>l.tasks.some(t=>t.id===taskId)),task=lesson.tasks.find(t=>t.id===taskId);
+  const dom=new JSDOM(fs.readFileSync(path.join(start,'index.html'),'utf8'),{url:'https://mathexam.space/ege-profil/start/#practice/'+lesson.id+'/'+mode,runScripts:'outside-only',pretendToBeVisual:true});
+  const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
+  // Resume a valid saved task in each supported mode, independent of its pool order.
+  const state=State.create(lessons,w.localStorage,{publicAttempts:true}),session=state.start(lesson.id,mode);
+  session.taskId=taskId;session.submissions.taskId=taskId;state.persist();
+  try{
+    for(const script of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(resolvePublicScript(root,start,script.getAttribute('src')),'utf8'));
+  }catch(error){w.close();throw error;}
+  const snapshot=()=>JSON.parse(w.localStorage.getItem(State.KEY));
+  const current=()=>snapshot().sessions[lesson.id+':'+mode];
+  const draft=value=>{const input=w.document.querySelector('#answer');input.value=value;input.dispatchEvent(new w.Event('input',{bubbles:true}));};
+  const submit=value=>{draft(value);w.document.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));};
+  return {w,task,lesson,snapshot,current,draft,submit};
+}
+function retainedAttempt(session){
+  const {taskId,started,step,draft,answers,done,wrong}=session;
+  return JSON.stringify({taskId,started,step,draft,answers,done,wrong,submissions:session.submissions?.steps});
+}
+const contextualHelpCases=[
+  ['expr-powers-4',[/умнож|перемнож/iu,/слож|склады/iu,/числител/iu,/дел/iu,/выч/iu,/знаменател/iu]],
+  ['eq-rational-4',[/Знаменатель\s+3x\s*[−-]\s*4\s+не должен равняться нулю/iu,/исключить/iu,/3x\s*[−-]\s*4\s*=\s*0/u]],
+  ['expr-fractions-4',[/Знаменатель\s+x\s*\+\s*6\s+не должен равняться нулю/iu,/запрещено/iu,/x\s*\+\s*6\s*=\s*0/u]],
+  ['eq-root-4',[/Для корня нужно\s+4x\s*[−-]\s*7\s*≥\s*0/iu,/При каком x.*равно нулю/iu]],
+  ['calc-extreme-5',[/f′\(x\)\s*=\s*2\(x\s*[−-]\s*4\)/u,/производная равна нулю/iu]]
+];
+for(const mode of ['independent','plan'])for(const [taskId,meaning] of contextualHelpCases){
+  test('Contextual help keeps the mathematical operation in '+mode+': '+taskId,()=>{
+    const f=helpFixture(taskId,mode),d=f.w.document;
+    try{
+      f.draft('1/7');const before=retainedAttempt(f.current());
+      d.querySelector('#hint').click();assert.equal(d.querySelector('#hint-box').hidden,false);
+      const text=d.querySelector('.short-hint').textContent.replace(/\s+/gu,' ').trim();
+      for(const required of meaning)assert.match(text,required,taskId+': visible help retains the mathematical context');
+      assert.equal(retainedAttempt(f.current()),before);assert.equal(f.current().assisted,true);
+      d.querySelector('#hint').click();d.querySelector('#hint').click();
+      assert.equal(d.querySelector('#answer').value,'1/7');assert.equal(retainedAttempt(f.current()),before);
+      f.submit(String(f.task.answer));assert.match(d.querySelector('#feedback').textContent,/^Верно\./u);
+      d.querySelector('#next').click();assert.equal(f.current().done,true);assert.equal(f.current().wrong,false);
+      assert.deepEqual(f.snapshot().records[f.lesson.id].independent,[],taskId+': using help cannot earn an independent success');
+    }finally{f.w.close();}
+  });
+}
+test('Guided powers help follows the current operation and preserves the earlier answer and draft',()=>{
+  const f=helpFixture('expr-powers-4','guided'),d=f.w.document;
+  try{
+    d.querySelector('#hint').click();assert.match(d.querySelector('.short-hint').textContent,/При умножении/iu);
+    f.submit('5');assert.match(d.querySelector('#feedback').textContent,/^Верно\./u);d.querySelector('#next').click();
+    assert.equal(f.current().step,1);assert.deepEqual(f.current().answers,['5']);
+    f.draft('2');const before=retainedAttempt(f.current());d.querySelector('#hint').click();
+    const text=d.querySelector('.short-hint').textContent;
+    assert.match(text,/При делении.*показатели вычитаются/iu);assert.doesNotMatch(text,/складыва|сложи/iu);
+    assert.equal(retainedAttempt(f.current()),before);assert.equal(d.querySelector('#answer').value,'2');
+    assert.equal(d.querySelectorAll('#solution-history [data-step]').length,1);
+    assert.deepEqual(f.current().answers,['5']);assert.equal(f.current().assisted,true);
+  }finally{f.w.close();}
+});

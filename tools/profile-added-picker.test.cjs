@@ -68,6 +68,26 @@ function courseRoutes(course) {
 }
 const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
 
+test('the eleven added wrappers load the reviewed START scripts in order', () => {
+  const {sourceForProfileBoard, canonicalProfileLearningScripts} = require('./public-page-script.cjs');
+  const bridge = '/trainers/board-bridge.js';
+  const adapter = '/ege-profil/start/board-session.js?v=20261128-first-part';
+  const home = '/assets/assistant/home-link.js?v=20261110';
+  const markers = [...courses.map(course => course.marker),
+    'compound-probability', 'derivative', 'formulas', 'word-problems', 'functions', 'extrema'];
+  for (const marker of markers) {
+    const wrapper = fs.readFileSync(path.join(root, 'trainers/ege-profile-' + marker + '.html'), 'utf8');
+    const canonical = sourceForProfileBoard(root, wrapper);
+    const expected = canonicalProfileLearningScripts(canonical, wrapper)
+      .filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + src);
+    const app = expected.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
+    assert.notEqual(app, -1, marker);
+    expected.splice(app, 0, bridge, adapter);
+    assert.deepEqual(scripts(wrapper), [...expected, home], marker);
+    assert.match(wrapper, /<script defer src="\/assets\/assistant\/home-link\.js\?v=20261110"><\/script>\s*<\/body>/);
+  }
+});
+
 test('the five route inventories match the authored 22 topics / 132 tasks', () => {
   const data = {};
   for (const file of ['geometry-data.js', 'algebra-data.js', 'probability-data.js', 'equations-data.js']) {
@@ -133,19 +153,8 @@ for (const course of courses) {
     }
   });
 
-  test('section ' + course.number + ': wrapper uses the canonical assets and existing bridge', () => {
+  test('section ' + course.number + ': wrapper preserves its learning surface and local assets', () => {
     const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
-    const canonical = require('./public-page-script.cjs').sourceForProfileBoard(root, wrapper);
-    const bridge = '/trainers/board-bridge.js';
-    const adapter = '/ege-profil/start/board-session.js?v=20261115-fipi-map';
-    const home = '/assets/assistant/home-link.js?v=20261110';
-    const wrapperScripts = scripts(wrapper);
-    assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter),
-      [...require('./public-page-script.cjs').canonicalProfileLearningScripts(canonical, wrapper).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + src), home]);
-    assert.equal(wrapperScripts.at(-1), home, 'Only the exact standalone home script follows the canonical assets');
-    assert.match(wrapper, /<script defer src="\/assets\/assistant\/home-link\.js\?v=20261110"><\/script>\s*<\/body>/);
-    const app = wrapperScripts.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
-    assert.deepEqual(wrapperScripts.slice(app - 2, app), [bridge, adapter]);
     assert.match(wrapper, new RegExp('<body data-profile-board="' + course.marker + '">'));
     const label = map.fromLegacyStart(course.number).number;
     assert.match(wrapper, new RegExp('href="#exam/' + course.number + '">' + (label ? 'Темы №' + label : 'Дополнительные темы') + '</a>'));
@@ -153,7 +162,7 @@ for (const course of courses) {
     assert.doesNotMatch(wrapper, /<base\b|<iframe\b|http-equiv\s*=\s*["']refresh|location\.(?:replace|assign)/i);
     for (const id of ['main', 'storage-warning', 'calm-toggle']) assert.match(wrapper, new RegExp('id="' + id + '"'));
     const styles = [...wrapper.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"/g)].map(match => match[1]);
-    for (const src of [...wrapperScripts, ...styles]) {
+    for (const src of [...scripts(wrapper), ...styles]) {
       assert.equal(src.startsWith('/'), true, src);
       assert.equal(fs.statSync(path.join(root, new URL(src, 'https://mathexam.space').pathname)).isFile(), true, src);
     }

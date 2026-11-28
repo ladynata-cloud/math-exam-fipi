@@ -85,12 +85,24 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   for (let index = 0; index < publicModules.length; index++)
     assert.equal(page[index + sharedPrefix.length].tag, '<script defer src="' + publicModules[index] + '"></script>', 'Exact deferred public-module include');
   assert.ok(board.every(script => !publicPaths.has(pathname(script.src))), 'Board wrappers must not load public-only modules');
+  // The shared modules and the board-only adapter must use a fresh, exact
+  // URL on every entry. Comparing the two lists alone would allow both to be stale.
+  const boardRelease = [
+    'equations-data.js?v=20261128-powers-context', 'functions-data.js?v=20261128-powers-context',
+    'applied-tasks.js?v=20261128-first-part', 'calm-ui.js?v=20261128-first-part',
+    'board-session.js?v=20261128-first-part', 'app.js?v=20261128-powers-context'
+  ];
+  const releasePaths = new Set(boardRelease.map(pathname));
+  const releaseTags = scripts => scripts.filter(script => releasePaths.has(pathname(script.src))).map(script => script.tag);
+  const deferred = src => '<script defer src="' + src + '"></script>';
+  assert.deepEqual(releaseTags(page), boardRelease.filter(src => !src.startsWith('board-session.js?')).map(deferred),
+    'The public board-entry assets load once with their reviewed versions and order');
+  assert.deepEqual(releaseTags(board), boardRelease.map(src => deferred('/ege-profil/start/' + src)),
+    'The shared wrapper loads the exact reviewed board runtime and adapter');
   const cacheStamps = new Map([
     ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
     ['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261118-opposites', 'app.js?v=20261115-fipi-map'],
-    ['calm-ui.js?v=20261118-opposites', 'calm-ui.js?v=20261115-fipi-map'],
     ['course-links.js?v=20261117-h12', 'course-links.js?v=20261115-fipi-map']
   ]);
   for (const current of cacheStamps.keys())

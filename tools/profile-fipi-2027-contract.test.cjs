@@ -8,8 +8,8 @@ const {JSDOM, ResourceLoader, VirtualConsole} = require('jsdom');
 const {resolvePublicScript} = require('./public-page-script.cjs');
 const map = require('../ege-profil/exam-map.js');
 const root = path.resolve(__dirname, '..');
-const start = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness', 'vector-basics']
-  .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
+const startBanks = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness', 'vector-basics'];
+const start = startBanks.flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
 const partTwo = ['algebra', 'geometry', 'models'].flatMap(name => require('../ege-profil/part-two/content-' + name + '.js'));
 const digest = value => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const plain = value => JSON.parse(JSON.stringify(value));
@@ -197,11 +197,23 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
   assert.equal(factors.theory[1], 'Произведение равно нулю, когда хотя бы один множитель равен нулю. Делить на sin x можно лишь при sin x ≠ 0. Отдельно рассмотрите случай sin x = 0, затем объедините решения.');
   factors.theory = factors.theory.slice();
   factors.theory[1] = 'Произведение равно нулю, когда хотя бы один множитель равен нулю. Деление на sin x потеряло бы все корни sin x = 0.';
+  // #607 changes only six pairs of powers hints and one prerequisite in this bank.
+  // Seal the new bank, then undo exactly those fields before checking the previous seals.
+  assert.equal(digest(start), '4918dca85b009f0cde547b5a40e1d6fd933ce231df432879cf985d5bb4576b56');
+  const restoredModules = {};
+  const restoreBank = () => startBanks.flatMap(name =>
+    restoredModules['ege-profil/start/' + name + '-data.js'] || require('../ege-profil/start/' + name + '-data.js'));
+  const equations = restoredModules['ege-profil/start/equations-data.js'] = plain(require('../ege-profil/start/equations-data.js'));
+  for (const task of equations.find(lesson => lesson.id === 'expr-powers').tasks) {
+    delete task.independentHint;
+    task.steps[0].hint = 'При одинаковом основании складываем показатели, а основание оставляем прежним.';
+  }
+  const functions = restoredModules['ege-profil/start/functions-data.js'] = plain(require('../ege-profil/start/functions-data.js'));
+  functions.find(lesson => lesson.id === 'calc-special').prereq.text = '<p>√9 = 3. Число в нулевой степени равно 1. Для a/x сначала определяем ненулевой знаменатель.</p>';
   // PR 664 clarifies only 20 prompt/hint/why strings in similar-triangle and
   // cube-edge steps. Seal the reviewed copy and independently restore the H02
   // bank: IDs, numerical answers, task ordering and every other field stay exact.
-  assert.equal(digest(start), '1a346b954dc06d67ccbf2b8bdf206d5aeb575f42dd4e1e1f94f3cc44971fd1b6');
-  const restoredModules = {};
+  assert.equal(digest(restoreBank()), '1a346b954dc06d67ccbf2b8bdf206d5aeb575f42dd4e1e1f94f3cc44971fd1b6');
   const inverse = require('./fixtures/profile-reviewed-ratio-copy.json');
   assert.equal(inverse.length, 20);
   for (const entry of inverse) {
@@ -213,11 +225,9 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
     assert.equal(parent[key], entry.after, entry.file + ':' + entry.path.join('.'));
     parent[key] = entry.before;
   }
-  const beforeRatioCopy = ['geometry', 'stereo', 'algebra', 'probability', 'equations', 'functions', 'applied', 'finance', 'readiness', 'vector-basics']
-    .flatMap(name => restoredModules['ege-profil/start/' + name + '-data.js'] || require('../ege-profil/start/' + name + '-data.js'));
   // PR 655 revises only the six explanatory fields of the earlier vector lesson.
   // Restore them after the ratio inverse, so both reviews share the original seal.
-  const earlierStart = plain(beforeRatioCopy);
+  const earlierStart = plain(restoreBank());
   const opposites = earlierStart.find(lesson => lesson.id === 'vec-basics-equality');
   opposites.title = 'Направление, равенство и перенос';
   opposites.summary = 'Сравни стрелки и отложи равный вектор от новой точки.';

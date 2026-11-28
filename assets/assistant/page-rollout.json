@@ -357,10 +357,10 @@
       "sourceSha": "71a20459a6b1c8535c2f2ccdcbab873947f8042e"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "d8e806dd065c9a75930b8119a95e353093a73484fb5c28889bd5cc4a9183f157",
-      "afterSha256": "33d0d9c7f3794873f51f62f3a1290f2351c009ce33bb606f09854d2d164b19f7",
+      "beforeSha256": "2e732c42aa1f5e6ae95e9a46970979a61d90a7bf0cfd18c02a153676d42ca5f4",
+      "afterSha256": "9352ea9b618c1fb46587657f624e877887fc5610b9c90c4e2f54142b1d48bbad",
       "placement": "before-head-close",
-      "sourceSha": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21"
+      "sourceSha": "f6cf3c07a2589002ec7e29680ab686bde10b3750"
     },
     "ege-profil/trainers/applied-t910.html": {
       "beforeSha256": "b149755312de601e6e46def156145df0081a5f86d566925fd1c4b8ff504aeb85",
@@ -2373,9 +2373,10 @@
       "placement": "before-head-close"
     },
     "trainers/attestaciya-1-kurs.html": {
-      "beforeSha256": "e412f468cdf7ab983e0f3743307d6a827794b61db055e24558e191d74ccd631d",
-      "afterSha256": "52e9e19b7c92664d3aa683cd543648e88c4fe8519e25ddd99173b9786d7c11e1",
-      "placement": "before-head-close"
+      "beforeSha256": "cc0a422a4281ef62a853d0ebbedab0f4a4ed9c3dc2aa75e071f910821ab40dfb",
+      "afterSha256": "0ed98b38cb68174f625ebf198e8f84c94e5c8a0d63f2cbc520074e5b22797959",
+      "placement": "before-head-close",
+      "sourceSha": "f6cf3c07a2589002ec7e29680ab686bde10b3750"
     },
     "trainers/bisector-trainer-v2.html": {
       "beforeSha256": "576622d778180e31cfae8c72c361ec82a31eb5489a38ee4b54044049677de13a",
@@ -6975,6 +6976,20 @@
       "reason": "Preserve both historical journal source receipts and bind the exact reviewed HTML to its existing source commit on the current composition.",
       "bindingScope": "One per-page sourceSha; global base and all other bindings unchanged.",
       "boundary": "Exact committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "f6cf3c07a2589002ec7e29680ab686bde10b3750",
+      "previousSourceShas": {
+        "ege-profil/start/index.html": "5ec4d29ac1a994749b6d9c888214d9c62e1b2a21",
+        "trainers/attestaciya-1-kurs.html": "2a5b85523dc89e734f77443685b7a3f0a530fab4"
+      },
+      "task": "docs/tasks/POWERS_AND_HINT_CONTEXT_20261115.md",
+      "changedPaths": [
+        "ege-profil/start/index.html",
+        "trainers/attestaciya-1-kurs.html"
+      ],
+      "reason": "Bind the contextual-hint correction and the profile first-part board script URLs to the integrated sources.",
+      "bindingScope": "Per-page sourceSha only; global base and all other bindings retain their previous values."
     }
   ],
   "coverageUpdates": [

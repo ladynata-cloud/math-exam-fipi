@@ -90,6 +90,26 @@ test('every equation root satisfies the original equation and each domain exclud
     }
   }
 });
+test('power multiplication hints name the operation and the screenshot answer retains its subtraction',()=>{
+  const Check=require('../ege-profil/start/checks.js');
+  const powers=lessons.find(l=>l.id==='expr-powers').tasks;
+  for(const task of powers){
+    assert.match(task.steps[0].hint,/При умножении степеней с одинаковым основанием.*показатели складываем/iu,task.id);
+    assert.match(task.steps[1].hint,/При делении.*ненулевым основанием.*показатели вычитаются/iu,task.id);
+  }
+  const screenshot=powers.find(t=>t.id==='expr-powers-4');assert.equal(screenshot.answer,16);
+  for(const input of ['16','4^(3+2-3)'])assert.equal(Check.check(screenshot.answer,input),true,input);
+  for(const input of ['65536','4^(3+2+3)'])assert.equal(Check.check(screenshot.answer,input),false,input);
+});
+test('the three active zero-exponent explanations explicitly exclude a zero base',()=>{
+  const special=require('../ege-profil/start/functions-data.js').find(l=>l.id==='calc-special');
+  assert.match(special.prereq.text,/Ненулевое число в нулевой степени равно 1/iu);
+  const college=fs.readFileSync(path.join(root,'trainers/attestaciya-1-kurs.html'),'utf8').split('\n');
+  const step=college.find(line=>line.includes('Значит ${rootMk} · ${b}^{0}'));
+  const trap=college.find(line=>line.includes('вы взяли ${b}^{0} = 0'));
+  assert.equal(typeof step,'string');assert.equal(typeof trap,'string');
+  for(const line of [step,trap])assert.match(line,/Любое ненулевое число в нулевой степени равно 1/iu);
+});
 test('all prerequisite links exist; new lessons and models register beside existing algebra without replacing them',()=>{
   const tree=new Set(execFileSync('git',['ls-tree','-r','--name-only','HEAD'],{cwd:root,encoding:'utf8'}).trim().split('\n'));
   for(const l of lessons)for(const link of[l.prereq,...l.links]){

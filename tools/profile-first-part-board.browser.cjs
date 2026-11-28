@@ -2,6 +2,7 @@
 
 const assert = require('node:assert/strict');
 const examMap = require('../ege-profil/exam-map.js');
+const { verifyWarmCache } = require('./profile-first-part-cache.browser.cjs');
 const {
   withLocalBoard, contextFor, connected, profileFrame, snapshot, synchronized,
   changedModel, handoff, personalStorage
@@ -151,6 +152,7 @@ async function guidedMotionMicroSteps(t, teacher, student, config) {
 }
 
 async function run(browser, origin, boardOrigin) {
+  await verifyWarmCache(browser);
   const teacher = await contextFor(browser, origin, boardOrigin, 'profile-first-teacher');
   const student = await contextFor(browser, origin, boardOrigin, 'profile-first-student');
   await teacher.page.goto(origin + '/trainers/trainer-board.html?server=' + encodeURIComponent(boardOrigin));

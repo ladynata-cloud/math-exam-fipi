@@ -8158,9 +8158,10 @@ const api={items,extras,progress};root.ProfileSecondPart=api;if(typeof module!==
     [[2,4,3,5],[3,5,2,7],[5,2,3,6],[4,3,2,3],[2,6,-2,5],[3,-1,4,2]].map(([base,p,q,r],i)=>{
       const combined=p+q,exponent=combined-r,answer=base**exponent;
       return {id:'expr-powers-'+(i+1),prompt:`Найдите значение <b>(${base}<sup>${n(p)}</sup> · ${base}<sup>${n(q)}</sup>)/${base}<sup>${n(r)}</sup></b>.`,
+        independentHint:`В числителе при умножении степеней с одинаковым основанием сложите показатели. При делении вычтите показатель знаменателя из полученной суммы. Основание ${base} сохраните.`,
         steps:[
           S(`В числителе степени перемножаются. Сложите показатели: ${n(p)} + (${n(q)}).`,combined,
-            'При одинаковом основании складываем показатели, а основание оставляем прежним.',`В числителе получилось ${base}^(${n(combined)}).`),
+            'При умножении степеней с одинаковым основанием показатели складываем, а основание оставляем прежним.',`В числителе получилось ${base}^(${n(combined)}).`),
           S(`Теперь делим на ${base}<sup>${n(r)}</sup>. Найдите показатель: ${n(combined)} − (${n(r)}).`,exponent,
             'При делении степеней с одинаковым ненулевым основанием показатели вычитаются.',`Всё выражение равно ${base}^(${n(exponent)}).`),
           S(`Вычислите ${base}<sup>${n(exponent)}</sup>.`,answer,
@@ -8458,7 +8459,7 @@ const api={items,extras,progress};root.ProfileSecondPart=api;if(typeof module!==
     L('calc-special', 9, 'Производная: экспонента, логарифм и корень', 'Три правила и подстановка числа.',
       '<p><b>(eˣ)′ = eˣ</b>. Число e — основание натурального логарифма. Здесь достаточно знать: e⁰ = 1.</p><p><b>(ln x)′ = 1/x</b> при x > 0. Запись ln x означает натуральный логарифм.</p><p><b>(√x)′ = 1/(2√x)</b> при x > 0. Постоянный множитель перед функцией сохраняется.</p>',
       'Проверь, можно ли подставить данное x. Для ln x и формулы производной √x здесь нужны положительные x.',
-      '√9 = 3. Число в нулевой степени равно 1. Для a/x сначала определяем ненулевой знаменатель.',
+      '√9 = 3. Ненулевое число в нулевой степени равно 1. Для a/x сначала определяем ненулевой знаменатель.',
       [derivative(1, 'exponential', { a: 4 }, 'calc-special'), derivative(2, 'logarithm', { a: 6, x: 3 }, 'calc-special'), derivative(3, 'root', { a: 8, x: 4 }, 'calc-special'), derivative(4, 'exponential', { a: -3 }, 'calc-special'), derivative(5, 'logarithm', { a: 10, x: 4 }, 'calc-special'), derivative(6, 'root', { a: 12, x: 9 }, 'calc-special')]),
     L('calc-extreme', 9, 'Наибольшее и наименьшее значение на отрезке', 'Проверяем точки внутри и оба конца.',
       '<p>Найди, где f′(x) = 0. Оставь только точки внутри данного отрезка.</p><p>Вычисли <b>саму функцию f(x)</b> в этих точках и на <b>обоих концах отрезка</b>. Сравни значения.</p><p>Если спрашивают значение функции, в ответ идёт <b>y</b>. Если спрашивают точку максимума или минимума, нужен <b>x</b>. Здесь спрашивается значение.</p>',
@@ -57989,10 +57990,18 @@ function history(t,s,mode){
  const count=mode==='guided'?Math.min(s.answers.length,t.steps.length):0;
  return '<section id="solution-history" class="solution-history" '+(!count?'hidden':'')+'><h2>Уже нашли</h2><ol>'+t.steps.slice(0,count).map((q,i)=>'<li data-step="'+i+'"><span class="earned-number">'+(i+1)+'</span><div><p>'+q.prompt+'</p><strong>'+esc(q.choiceLabels?.[q.answer]||format(q.answerExact??q.answer))+(q.unit?' '+esc(q.unit):'')+'</strong>'+('<details class="earned-explanation"><summary>Почему так</summary><p>'+q.why+'</p></details>')+'</div></li>').join('')+'</ol></section>';
 }
+function independentHint(t){
+ if(t.independentHint)return t.independentHint;
+ // The first hint may refer to an excluded value or a derivative introduced
+ // only in that step's question. Keep that context when helping with the task.
+ // Authored questions can already contain paragraphs, so use div wrappers.
+ const first=t.steps[0];
+ return '<div class="hint-step-question"><b>Первый шаг.</b> '+first.prompt+'</div><div class="hint-step-help">'+first.hint+'</div>';
+}
 function practice(l,mode){
  if(mode!=='independent'){const active=activeIndependent(l);if(active&&!active.done&&!active.answers.length)markHelp(active,'independent');}
  const {s,t}=current(l,mode);if(s.done){result(l,mode,s,t);return;}
- const q=mode==='guided'?t.steps[s.step]:{prompt:t.question||ProfileTaskFirst.question(t),answer:t.answer,answerExact:t.answerExact,choices:t.choices,choiceLabels:t.choiceLabels,unit:ProfileTaskFirst.unit?.(t)||t.unit,domain:t.domain,strictNumeric:t.strictNumeric,retry:t.retry,hint:t.steps[0].hint,why:t.explanation};
+ const q=mode==='guided'?t.steps[s.step]:{prompt:t.question||ProfileTaskFirst.question(t),answer:t.answer,answerExact:t.answerExact,choices:t.choices,choiceLabels:t.choiceLabels,unit:ProfileTaskFirst.unit?.(t)||t.unit,domain:t.domain,strictNumeric:t.strictNumeric,retry:t.retry,hint:independentHint(t),why:t.explanation};
  const solved=mode==='guided'?s.answers.length>s.step:s.answers.length>0;
  const hasModel=!!globalThis.ProfileTaskModels?.[t.id],hasDrawingWalkthrough=['geo-right-sine','geo-right-cosine','geo-right-tangent'].includes(t.id)&&hasModel;
  const stamp=x=>[x.taskId,x.started,x.step,x.answers.length,x.done].join('|');let rendered=stamp(s);

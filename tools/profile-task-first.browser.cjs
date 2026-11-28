@@ -71,5 +71,51 @@ const retained=s=>({taskId:s.taskId,started:s.started,step:s.step,draft:s.draft,
   assert.match(await oppositeTitle.textContent(),/противо\u00adположные/);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'opposite-vector route fits at 320px');
   const vectorShots=process.env.PROFILE_TASK_FIRST_SHOTS;if(vectorShots)await page.screenshot({path:path.join(vectorShots,'vector-opposites-320.png'),fullPage:true});
-  assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);console.log('PROFILE_TASK_FIRST_BROWSER_OK: '+count+' lesson families; same-page help, draft/model identity, nested state, guided history, independent credit, 320px');
+  // Hints for an entire task must retain the operation and its mathematical
+  // purpose. A bare first-step hint used to lose the denominator/derivative.
+  let contextualHints=0;
+  for(const width of [320,1280]){
+    const hintContext=await browser.newContext({viewport:{width,height:900}});
+    const hintPage=await hintContext.newPage();hintPage.setDefaultTimeout(10000);
+    hintPage.on('pageerror',e=>errors.push(e.message));
+    hintPage.on('response',r=>{if(r.status()>=400&&r.url().startsWith(origin))bad.push(r.url());});
+    try{
+      for(const mode of ['independent','plan'])for(const id of ['expr-powers','eq-rational','expr-fractions','eq-root','calc-extreme']){
+        await hintPage.goto(base+'#practice/'+id+'/'+mode);await hintPage.locator('#answer-form').waitFor();
+        await hintPage.locator('#answer').fill('1/7');const before=retained(await saved(hintPage,id,mode));
+        assert.equal(await hintPage.locator('#hint-box').isVisible(),false);
+        await hintPage.locator('#hint').click();
+        const help=hintPage.locator('#hint-box .short-hint'),text=await help.innerText();
+        if(id==='expr-powers'){
+          assert.match(text,/умножении[^.]*сложите показатели/);
+          assert.match(text,/делении[^.]*вычтите показатель знаменателя/);
+          assert(!text.includes('При одинаковом основании складываем'));
+        }else if(id==='calc-extreme'){
+          assert.match(text,/производная/);
+          assert.match(text,/f′\(x\)/);
+        }else{
+          assert.match(text,/(исключить|запрещено|Для корня нужно)/);
+          assert(await help.locator('.hint-step-question').count());
+        }
+        assert.deepEqual(retained(await saved(hintPage,id,mode)),before,id+': contextual help preserves work');
+        assert.equal((await saved(hintPage,id,mode)).assisted,true);
+        assert(await hintPage.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+': contextual help fits '+width);
+        const shots=process.env.PROFILE_TASK_FIRST_SHOTS;
+        if(shots&&mode==='independent'){
+          fs.mkdirSync(shots,{recursive:true});
+          await help.scrollIntoViewIfNeeded();
+          await hintPage.screenshot({path:path.join(shots,id+'-hint-'+width+'.png'),fullPage:true});
+        }
+        if(id==='expr-powers'&&mode==='independent'){
+          assert.equal((await saved(hintPage,id)).taskId,'expr-powers-4');
+          await hintPage.locator('#answer').fill('65536');await hintPage.locator('#submit-answer').click();
+          assert(await hintPage.locator('#feedback.bad').isVisible());
+          await hintPage.locator('#answer').fill('16');await hintPage.locator('#submit-answer').click();
+          assert(await hintPage.locator('#feedback.good').isVisible());
+        }
+        contextualHints++;
+      }
+    }finally{await hintContext.close();}
+  }
+  assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);console.log('PROFILE_TASK_FIRST_BROWSER_OK: '+count+' lesson families; '+contextualHints+' contextual hints at 320/1280px; same-page help, draft/model identity, nested state, guided history, independent credit');
 }finally{await browser?.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e.stack||e);process.exitCode=1;});
