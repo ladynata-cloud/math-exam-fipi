@@ -917,10 +917,10 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "215296704e24b496cc6ab9b6c48c243d04ddb19becc0129c5d63565393b709cc",
-      "afterSha256": "f3ac86319ecb5c0a8bae00b67ef356cc5f9a52e7b49690edba167842fa0ac5e6",
+      "beforeSha256": "8f9a586b4eea4c1a90e801e7cb5dccb169926241eddf17ee5c728fe6995c8b12",
+      "afterSha256": "fb191e7294c369722286dfc8262510aabae18555e86641644f26750cc510b2e4",
       "placement": "before-head-close",
-      "sourceSha": "4a7c2d1f1ef1c8fa7e97263269a74ce8df899772"
+      "sourceSha": "a527a91a76f13a2c29b1314fa55b1a250a1499e5"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
       "beforeSha256": "b79e90862fdcfead5543fb6bf42bd031913635f28e3896f7d4951d6004c8bc61",
@@ -2275,10 +2275,10 @@
       "placement": "before-head-close"
     },
     "school/peterson5/index.html": {
-      "beforeSha256": "61d8df0b916d9a29bfd019c7ac25feded46f19a8739b274a947b1e6d0206c0e5",
-      "afterSha256": "281374e1aa874a1be4e4d91973d9084a1b5a62bef2015e23f7a688c0d11cb17e",
+      "beforeSha256": "e641e20b0b25dcb65afca1df6c5b10b0eff93ec168b56a78d2a9e5e5c3c2b093",
+      "afterSha256": "0826b6b0e99b41d83000cdb388e9010c9554876b273ea86e84b4a23ea3f89723",
       "placement": "before-head-close",
-      "sourceSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11"
+      "sourceSha": "a527a91a76f13a2c29b1314fa55b1a250a1499e5"
     },
     "school/peterson6/topics/droby-i-desyatichnye/index.html": {
       "beforeSha256": "922041dbe60ea1a11cc16b1b25fd587356563378d2f3c3c122145fb98f2be143",
@@ -2346,10 +2346,10 @@
       "sourceSha": "85310a0bfbf82425ce945856381f19f1d6bd9776"
     },
     "topics/obyknovennye-drobi/index.html": {
-      "beforeSha256": "f5b297836f05c71e7534afe84550957256559801a4a0a285163046c90635e879",
-      "afterSha256": "b4772c0531e9dd314e07af778db8f97e58215fb962b6f63b1671b20a0ce3a31c",
+      "beforeSha256": "1bb71df4f9fa8c1f9b513937887c35894813f1ead113f9f1fb4e6b45ce702cbf",
+      "afterSha256": "56c82a0f70bbea2d3dc9d57a152ad95de1729995e10b8471aa49967600ab7e2e",
       "placement": "before-head-close",
-      "sourceSha": "cbe62ee1943415e6c777f0a40bedb500fabaff11"
+      "sourceSha": "a527a91a76f13a2c29b1314fa55b1a250a1499e5"
     },
     "topics/oge-geometriya/index.html": {
       "beforeSha256": "8c24b421f25f994be3e7863a49d71d2a73ed33f8bba51beda99ab7388a931277",
@@ -6974,6 +6974,18 @@
       ],
       "reason": "Preserve both historical journal source receipts and bind the exact reviewed HTML to its existing source commit on the current composition.",
       "bindingScope": "One per-page sourceSha; global base and all other bindings unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "a527a91a76f13a2c29b1314fa55b1a250a1499e5",
+      "task": "docs/tasks/SEO_SCHOOL_SEARCH_ENTRIES_20261129.md",
+      "changedPaths": [
+        "geometry-course/textbook/index.html",
+        "school/peterson5/index.html",
+        "topics/obyknovennye-drobi/index.html"
+      ],
+      "reason": "Bind only the three exact reviewed search entrance payloads; preserve all other pages and prior receipts.",
+      "bindingScope": "Three per-page sourceSha values; global base and all other bindings unchanged.",
       "boundary": "Exact committed source identity only; not mathematical or publication approval."
     }
   ],
