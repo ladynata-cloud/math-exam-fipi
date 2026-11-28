@@ -210,7 +210,7 @@ function decorate(page){
    const steps=details('Помочь решить по шагам?');steps.classList.add('pd-original-steps');const content=q('.pm-content',steps);
    const body=q('.task-body',section);if(body)content.append(body);
    qa('.substep',section).filter(node=>node!==final&&!node.closest('.pd-original-steps')&&!node.closest('.pd-panel')).forEach(node=>content.append(node));
-   const animation=q('.anim-block',section);if(animation)content.prepend(animation);
+   const animation=q('.anim-block',section);if(animation){if(global.OgeCourseSharedMode)content.prepend(animation);else final.before(animation);}
    const nativeButton=q('.substep-hint-btn',final),nativePanel=q('.substep-hint',final);
    if(nativeButton&&nativePanel){const exact=details('Подсказка к итоговому ответу');q('.pm-content',exact).classList.add('substep');q('.pm-content',exact).append(nativeButton,nativePanel);content.append(exact);}
    panel.insertBefore(steps,q('.pd-return',panel));

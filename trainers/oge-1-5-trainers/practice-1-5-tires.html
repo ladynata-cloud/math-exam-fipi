@@ -272,6 +272,8 @@
   .anim-result .strip{font-family:Georgia,serif;font-size:16px;text-align:center;padding:11px;background:#fff;border-radius:8px;margin:9px 0;color:var(--ink)}
   .anim-result .strip .cx{color:var(--error);text-decoration:line-through}
   .anim-result .big{font-family:Georgia,serif;font-size:18px;color:var(--accent)}
+  .anim-scrub{display:grid;gap:8px;margin:12px 0 18px;color:#18364c}.anim-scrub input[type=range]{width:100%;height:44px;accent-color:#a34c08}.anim-angle-labels{display:flex;justify-content:space-between;font-size:16px;font-variant-numeric:tabular-nums}.anim-overview{margin:14px 0;display:grid;gap:10px}.anim-overview p{margin:0;font-size:18px;font-weight:600}.anim-overview-row{display:grid;gap:4px;font-size:18px}.anim-overview-track{height:12px;background:#e4e8eb;border-radius:3px;overflow:hidden}.anim-overview-track>div{height:100%;width:0;background:#b45309}.anim-overview-track>#anim-bar-2{background:#1d4ed8}.anim-focus-one .anim-second,.anim-focus-one .tlf-rolling-caption[data-wheel=lower]{display:none!important}
+  .anim-svg .anim-lab{font-family:system-ui,sans-serif;font-weight:650}
 
   .teacher-block{margin-top:16px;padding:16px 20px;background:var(--accent-soft);border-radius:10px;border-left:3px solid var(--accent);display:none;font-size:14px;line-height:1.7}
   body[data-mode="teacher"] .teacher-block{display:block}
@@ -1166,13 +1168,18 @@ function renderTask5(){
     <p class="card-intro">На сколько процентов <b>${dirWord}</b> пробег автомобиля при одном обороте колеса, если заменить заводские шины (<b>${f.m}</b>) шинами <b>${t.m}</b>? Результат округли до десятых.</p>
 
     <div class="anim-block">
-      <div style="font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;font-weight:600">наглядно: пробег за оборот = длина окружности = π · D</div>
+      <div style="font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;font-weight:600">Один оборот — след длиной с окружность</div>
       <div class="anim-controls">
-        <button class="anim-btn" id="btn-roll">▶ Прокатить оба колеса</button>
+        <button class="anim-btn" id="btn-roll" type="button">▶ Один полный оборот</button>
+        <button class="anim-btn ghost" id="btn-roll-pause" type="button" disabled>Пауза</button>
+        <button class="anim-btn ghost" id="btn-roll-quarter" type="button">¼ оборота</button>
+        <button class="anim-btn ghost" id="btn-roll-focus" type="button" aria-pressed="false">Смотреть одно колесо</button>
         <button class="anim-btn ghost" id="btn-roll-reset">↻ Сбросить</button>
-        <span class="anim-note">размер разницы увеличен для наглядности; числа рядом — настоящие</span>
+        <span class="anim-note">Оба колеса показаны в одном масштабе. Оранжевая точка отмечает начало окружности.</span>
       </div>
-      <div class="anim-svg-wrap"><svg class="anim-svg" id="anim-svg" viewBox="0 0 720 340" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <div class="anim-scrub"><label for="roll-angle">Поверни колесо вручную от 0° до 360°</label><input id="roll-angle" type="range" min="0" max="360" step="1" value="0"><div class="anim-angle-labels" aria-hidden="true"><span>0°</span><span>90°</span><span>180°</span><span>270°</span><span>360°</span></div></div>
+      <div class="anim-svg-wrap"><svg class="anim-svg" id="anim-svg" viewBox="0 0 600 380" role="img" aria-label="Колёса катятся без проскальзывания; цветная окружность постепенно переходит в след на дороге" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <div class="anim-overview" aria-label="Сравнение пройденных отрезков в одном масштабе"><p>Следы на дороге (один масштаб)</p><div class="anim-overview-row"><span>Заводское</span><div class="anim-overview-track"><div id="anim-bar-1"></div></div></div><div class="anim-overview-row anim-second"><span>Новое</span><div class="anim-overview-track"><div id="anim-bar-2"></div></div></div></div>
       <div class="anim-result" id="anim-result"></div>
     </div>
 
@@ -1208,6 +1215,10 @@ function renderTask5(){
   const rb=sec.querySelector('#btn-roll'), rr=sec.querySelector('#btn-roll-reset');
   if(rb) rb.addEventListener('click',rollAnim);
   if(rr) rr.addEventListener('click',resetAnim);
+  sec.querySelector('#btn-roll-quarter')?.addEventListener('click',quarterAnim);
+  sec.querySelector('#btn-roll-pause')?.addEventListener('click',pauseAnim);
+  sec.querySelector('#btn-roll-focus')?.addEventListener('click',()=>{const block=sec.querySelector('.anim-block');block.classList.toggle('anim-focus-one');syncAnimFocus();});
+  sec.querySelector('#roll-angle')?.addEventListener('input',event=>{const value=Number(event.target.value);pauseAnim(false);setRollFraction(value/360);rollingStatus();});
   drawAnimScene();
 }
 
@@ -1216,14 +1227,14 @@ let animEls=null, animRAF=null;
 const NS='http://www.w3.org/2000/svg';
 function mkNS(tag,a){ const n=document.createElementNS(NS,tag); for(const k in a) n.setAttribute(k,a[k]); return n; }
 function animGeom(){
-  const f=VD.factory, t=VD.t5, realRatio=t.D/f.D;
-  const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
-  const amp=1+clamp(8*(realRatio-1),-0.32,0.32), rBase=52;
-  return { f,t, r1:rBase, r2:rBase*amp, startX:78, road1Y:150, road2Y:305 };
+  const f=VD.factory, t=VD.t5, scale=60/Math.max(f.D,t.D);
+  return { f,t, r1:f.D*scale, r2:t.D*scale, startX:90, road1Y:174, road2Y:345 };
 }
 function mkWheel(r,tireCls,spokeCls){
   const g=document.createElementNS(NS,'g');
   g.appendChild(mkNS('circle',{cx:0,cy:0,r,class:tireCls}));
+  g.appendChild(mkNS('circle',{cx:0,cy:0,r:r*.79,fill:'none',stroke:'#748195','stroke-width':2}));
+  for(let i=0;i<12;i++){const theta=i*Math.PI/6;g.appendChild(mkNS('line',{x1:Math.cos(theta)*r*.85,y1:Math.sin(theta)*r*.85,x2:Math.cos(theta)*r*.95,y2:Math.sin(theta)*r*.95,stroke:'#8f9ba9','stroke-width':2}));}
   g.appendChild(mkNS('circle',{cx:0,cy:0,r:r*0.42,class:'anim-hub'}));
   g.appendChild(mkNS('line',{x1:-r*0.82,y1:0,x2:r*0.82,y2:0,class:spokeCls}));
   g.appendChild(mkNS('line',{x1:0,y1:-r*0.82,x2:0,y2:r*0.82,class:spokeCls}));
@@ -1234,58 +1245,68 @@ function drawAnimScene(){
   if(animRAF){ cancelAnimationFrame(animRAF); animRAF=null; }
   svg.innerHTML='';
   const g=animGeom(), f=g.f, t=g.t;
-  const C1=Math.round(Math.PI*f.D), C2=Math.round(Math.PI*t.D);
-  svg.appendChild(mkNS('line',{x1:g.startX-28,y1:g.road1Y,x2:706,y2:g.road1Y,class:'anim-road'}));
-  svg.appendChild(mkNS('line',{x1:g.startX-28,y1:g.road2Y,x2:706,y2:g.road2Y,class:'anim-road'}));
+  // The public model shows geometry, not the calculated diameters or lengths.
+  svg.appendChild(mkNS('line',{x1:g.startX-28,y1:g.road1Y,x2:575,y2:g.road1Y,class:'anim-road'}));
+  svg.appendChild(mkNS('line',{x1:g.startX-28,y1:g.road2Y,x2:575,y2:g.road2Y,class:'anim-road anim-second'}));
   svg.appendChild(mkNS('line',{x1:g.startX,y1:g.road1Y-g.r1*2-14,x2:g.startX,y2:g.road2Y+8,stroke:'#c9c2b2','stroke-width':1.5,'stroke-dasharray':'4,4'}));
   let e=mkNS('text',{x:g.startX,y:16,class:'anim-lab small','text-anchor':'middle'}); e.textContent='старт'; svg.appendChild(e);
   e=mkNS('text',{x:g.startX-28,y:40,class:'anim-lab'}); e.textContent='заводское · '+f.m; svg.appendChild(e);
-  e=mkNS('text',{x:g.startX-28,y:58,class:'anim-lab small gold'}); e.textContent='C₁ = π·'+fmt(f.D)+' ≈ '+C1+' мм'; svg.appendChild(e);
+  e=mkNS('text',{x:g.startX-28,y:58,class:'anim-lab small gold'}); e.textContent='Окружность → след на дороге'; svg.appendChild(e);
   e=mkNS('text',{x:g.startX-28,y:g.road1Y+34,class:'anim-lab'}); e.textContent='новое · '+t.m; svg.appendChild(e);
-  e=mkNS('text',{x:g.startX-28,y:g.road1Y+52,class:'anim-lab small'}); e.textContent='C₂ = π·'+fmt(t.D)+' ≈ '+C2+' мм'; svg.appendChild(e);
-  const tr1=mkNS('rect',{x:g.startX,y:g.road1Y-4,width:0,height:4,class:'anim-track'});
-  const tr2=mkNS('rect',{x:g.startX,y:g.road2Y-4,width:0,height:4,class:'anim-track-2'});
+  e=mkNS('text',{x:g.startX-28,y:g.road1Y+52,class:'anim-lab small'}); e.textContent='Окружность → след на дороге'; svg.appendChild(e);
+  const tr1=mkNS('rect',{x:g.startX,y:g.road1Y-5,width:0,height:5,class:'anim-track'});
+  const tr2=mkNS('rect',{x:g.startX,y:g.road2Y-5,width:0,height:5,class:'anim-track-2 anim-second'});
+  const ticks=[g.road1Y,g.road2Y].map((y,i)=>mkNS('line',{x1:g.startX,x2:g.startX,y1:y-12,y2:y+11,stroke:i?'#1d4ed8':'#b45309','stroke-width':2,visibility:'hidden',...(i?{class:'anim-second'}:{})}));
   svg.appendChild(tr1); svg.appendChild(tr2);
   const w1=mkWheel(g.r1,'anim-tire','anim-spoke'), w2=mkWheel(g.r2,'anim-tire-2','anim-spoke-2');
-  svg.appendChild(w1); svg.appendChild(w2);
+  const rings=[w1,w2].map((wheel,i)=>{const r=i?g.r2:g.r1,color=i?'#1d4ed8':'#b45309';const ring=mkNS('circle',{cx:0,cy:0,r,fill:'none',stroke:color,'stroke-width':5,pathLength:1,transform:'rotate(90)','stroke-dasharray':'1 0'});wheel.appendChild(ring);wheel.appendChild(mkNS('circle',{cx:0,cy:r,r:6,fill:'#ea580c',stroke:'white','stroke-width':2}));return ring;});
+  tr1.setAttribute('style','fill:#b45309');tr2.setAttribute('style','fill:#1d4ed8');
+  w2.classList.add('anim-second');svg.appendChild(w1); svg.appendChild(w2);ticks.forEach(tick=>svg.appendChild(tick));
   const cy1=g.road1Y-g.r1, cy2=g.road2Y-g.r2;
   w1.setAttribute('transform','translate('+g.startX+','+cy1+')');
   w2.setAttribute('transform','translate('+g.startX+','+cy2+')');
-  animEls={svg,g,w1,w2,tr1,tr2,cy1,cy2,dist1:Math.PI*2*g.r1,dist2:Math.PI*2*g.r2};
+  animEls={svg,g,w1,w2,tr1,tr2,cy1,cy2,rings,ticks,p:0,dist1:Math.PI*2*g.r1,dist2:Math.PI*2*g.r2};
+  svg.setAttribute('data-roll-fraction','0');
   const res=document.getElementById('anim-result'); if(res){ res.classList.remove('show'); res.innerHTML=''; }
   const btn=document.getElementById('btn-roll'); if(btn) btn.disabled=false;
+  const quarter=document.getElementById('btn-roll-quarter');if(quarter)quarter.disabled=false;
+  const pause=document.getElementById('btn-roll-pause');if(pause)pause.disabled=true;syncAnimFocus();setRollFraction(0);
 }
-function rollAnim(){
-  if(!animEls) drawAnimScene();
-  const e=animEls; if(!e) return;
-  const btn=document.getElementById('btn-roll'); if(btn) btn.disabled=true;
-  const dur=1700, t0=performance.now();
-  const ease=p=>p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
-  function frame(now){
-    let p=Math.min(1,(now-t0)/dur), e2=ease(p);
-    const x1=e.g.startX+e.dist1*e2, x2=e.g.startX+e.dist2*e2, ang=360*e2;
-    e.w1.setAttribute('transform','translate('+x1+','+e.cy1+') rotate('+ang+')');
-    e.w2.setAttribute('transform','translate('+x2+','+e.cy2+') rotate('+ang+')');
-    e.tr1.setAttribute('width',x1-e.g.startX);
-    e.tr2.setAttribute('width',x2-e.g.startX);
-    if(p<1) animRAF=requestAnimationFrame(frame);
-    else { animRAF=null; finishAnim(); if(btn) btn.disabled=false; }
-  }
-  animRAF=requestAnimationFrame(frame);
+function syncAnimFocus(){const block=document.getElementById('anim-svg')?.closest('.anim-block');if(!block)return;const one=block.classList.contains('anim-focus-one'),btn=block.querySelector('#btn-roll-focus');btn.setAttribute('aria-pressed',String(one));btn.textContent=one?'Сравнить два колеса':'Смотреть одно колесо';block.querySelector('#anim-svg').setAttribute('viewBox',one?'0 0 600 198':'0 0 600 380');}
+function setRollFraction(p){
+  const e=animEls;if(!e)return;p=Math.max(0,Math.min(1,p));e.p=p;
+  const x1=e.g.startX+e.dist1*p,x2=e.g.startX+e.dist2*p,ang=360*p;
+  e.w1.setAttribute('transform','translate('+x1+','+e.cy1+') rotate('+ang+')');
+  e.w2.setAttribute('transform','translate('+x2+','+e.cy2+') rotate('+ang+')');
+  e.tr1.setAttribute('width',String(e.dist1*p));e.tr2.setAttribute('width',String(e.dist2*p));
+  e.rings.forEach(r=>{r.setAttribute('stroke-dasharray',(1-p)+' '+p);r.setAttribute('visibility',p===1?'hidden':'visible');});
+  e.svg.setAttribute('data-roll-fraction',String(p));
+  e.ticks.forEach((tick,i)=>{const x=i?x2:x1;tick.setAttribute('x1',x);tick.setAttribute('x2',x);tick.setAttribute('visibility',p===1?'visible':'hidden');});
+  const slider=document.getElementById('roll-angle');if(slider){slider.value=String(Math.round(ang));slider.setAttribute('aria-valuetext',Math.round(ang)+' градусов');}
+  const max=Math.max(e.dist1,e.dist2);[e.dist1,e.dist2].forEach((d,i)=>{const bar=document.getElementById('anim-bar-'+(i+1));if(bar)bar.style.width=(100*d*p/max)+'%';});
 }
-function finishAnim(){
-  const e=animEls; if(!e) return; const f=e.g.f, t=e.g.t;
-  const x1=e.g.startX+e.dist1, x2=e.g.startX+e.dist2;
-  e.svg.appendChild(mkNS('line',{x1,y1:e.g.road1Y-e.g.r1*2-6,x2:x1,y2:e.g.road1Y+6,stroke:'#b8924b','stroke-width':2,'stroke-dasharray':'3,3'}));
-  e.svg.appendChild(mkNS('line',{x1:x2,y1:e.g.road2Y-6,x2:x2,y2:e.g.road2Y+6,stroke:'#1e3a5f','stroke-width':2,'stroke-dasharray':'3,3'}));
-  const dir=VD.dir5, ansP=VD.ans.t5, more=dir==='inc'?'больше':'меньше';
-  const res=document.getElementById('anim-result'); if(!res) return;
-  res.innerHTML='За один оборот колесо проезжает длину своей окружности C = π·D. У колеса с бо́льшим диаметром окружность длиннее — за оборот оно уезжает дальше.'+
-    '<div class="strip"><span class="cx">π·</span>D₂ &nbsp;/&nbsp; <span class="cx">π·</span>D₁ &nbsp;=&nbsp; D₂ / D₁ &nbsp;=&nbsp; '+fmt(t.D)+' / '+fmt(f.D)+' ≈ '+(t.D/f.D).toFixed(4)+'</div>'+
-    'π в числителе и знаменателе одинаково и <b>сокращается</b> — поэтому хватает диаметров из таблицы, а не длин целиком.'+
-    '<div class="strip big">пробег '+more+' на '+fmt(ansP)+' %</div>';
+function rollingStatus(){
+  const e=animEls,res=document.getElementById('anim-result');if(!e||!res)return;
+  res.textContent=e.p===1?'Один полный оборот завершён. Метка снова касается дороги. Цветной след равен длине окружности колеса.':'Угол поворота: '+Math.round(360*e.p)+'°. Посмотри, где теперь метка и сколько окружности ещё не прокатилось.';
   res.classList.add('show');
 }
+function quarterAnim(){
+  if(animRAF)return;if(!animEls||animEls.p>=1)drawAnimScene();
+  setRollFraction(Math.min(1,animEls.p+.25));rollingStatus();
+}
+function pauseAnim(show=true){if(animRAF){cancelAnimationFrame(animRAF);animRAF=null;}const btn=document.getElementById('btn-roll'),quarter=document.getElementById('btn-roll-quarter'),pause=document.getElementById('btn-roll-pause');if(btn)btn.disabled=false;if(quarter)quarter.disabled=false;if(pause)pause.disabled=true;if(show)rollingStatus();}
+function rollAnim(){
+  if(animRAF)return;if(!animEls||animEls.p>=1)drawAnimScene();
+  const e=animEls;if(!e)return;
+  const btn=document.getElementById('btn-roll'),quarter=document.getElementById('btn-roll-quarter');
+  const pause=document.getElementById('btn-roll-pause');if(btn)btn.disabled=true;if(quarter)quarter.disabled=true;if(pause)pause.disabled=false;
+  const initial=e.p,dur=4400*(1-initial),t0=performance.now();
+  function frame(now){const p=Math.min(1,Math.max(0,(now-t0)/dur));setRollFraction(initial+(1-initial)*p);
+   if(p<1)animRAF=requestAnimationFrame(frame);else{animRAF=null;finishAnim();pauseAnim(false);}}
+  if(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches){setRollFraction(1);finishAnim();pauseAnim(false);return;}
+  animRAF=requestAnimationFrame(frame);
+}
+function finishAnim(){rollingStatus();}
 function resetAnim(){ drawAnimScene(); }
 
 /* ===== SIDEBAR RESET / RENDER ORCHESTRATION ===== */

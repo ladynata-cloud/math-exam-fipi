@@ -39,8 +39,8 @@ body.pm-minimal.pm-tires{font-size:19px;line-height:1.75}
 .pm-tires .tlf-draft{color:#5a5d60}
 .pm-tires .anim-svg-wrap,.pm-tires .wheel-svg-wrap{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
 /* Keep actual diagram pixels large instead of shrinking text with the viewBox. */
-.pm-tires svg.anim-svg{width:960px;min-width:960px;max-width:none;height:auto}
-.pm-tires svg.anim-svg .anim-lab,.pm-tires svg.anim-svg .anim-lab.small{font-size:20px}
+.pm-tires svg.anim-svg{width:100%;min-width:480px;max-width:none;height:auto}
+.pm-tires svg.anim-svg .anim-lab,.pm-tires svg.anim-svg .anim-lab.small{font-size:24px}
 .pm-tires svg.wheel{width:600px;min-width:600px;max-width:none;height:auto}
 .pm-tires svg.wheel text{font-size:20px}
 .pm-tires .anim-block :is(h3,h4,.anim-title){font-size:22px;line-height:1.5}

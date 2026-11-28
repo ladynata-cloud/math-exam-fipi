@@ -32,3 +32,31 @@ body.pv-exam{margin:0;background:#f5f7f4;color:#202d25;font:19px/1.75 system-ui,
 .pv-shell .pd-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px}.pv-shell .pd-control{min-width:0;display:grid;grid-template-columns:1fr auto;align-content:start;gap:8px;margin:8px 0}.pv-shell .pd-control>input,.pv-shell .pd-control>select{grid-column:1/-1;width:100%;min-height:48px;margin:0}.pv-shell .pd-control>output{font-weight:700;margin:0;font-variant-numeric:tabular-nums}.pv-shell .pd-action{min-height:48px;text-align:left;white-space:normal}.pv-shell .pd-action[aria-pressed=true]{background:#176747;color:white}.pv-shell .pd-picture{overflow:auto;max-width:100%;margin:20px auto;overscroll-behavior:contain}.pv-shell .pd-picture svg{display:block;width:100%;min-width:360px;height:auto;max-height:none;margin:0}.pv-shell .pd-picture.pd-picture-zoomed{max-height:390px;border:1px solid #b7d0bf}.pv-shell .pd-picture.pd-picture-zoomed svg{width:640px;max-width:none}.pv-shell .pd-reading{padding:14px 0;font-size:18px;line-height:1.8;min-height:2em}.pv-shell .pd-table{width:100%;table-layout:fixed;margin:18px 0}.pv-shell .pd-table th,.pv-shell .pd-table td{padding:6px;text-align:center}.pv-shell .pd-table button{display:block;width:100%;min-height:48px;padding:8px 2px}.pv-shell .pd-unsuitable{text-decoration:line-through;opacity:.6}.pv-shell .pd-return{margin-top:18px}.pv-shell .pm-model-step{margin:14px 0;padding:10px 0;border-bottom:1px solid #d7e3da}.pv-shell .pv-native-help{overflow-wrap:anywhere}.pv-shell .pm-table-scroll{max-width:100%;overflow:auto}
 @media(max-width:600px){.pv-shell .pd-controls{grid-template-columns:1fr}.pv-shell .pd-table th,.pv-shell .pd-table td{padding:4px}.pv-shell .pd-picture{margin:18px 0}}
 .pv-shell .pv-givens{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}.pv-shell .pv-givens .g{padding:10px 14px;background:#edf4ee;border-radius:8px}.pv-shell .pv-givens .k{font-size:18px}.pv-shell .pv-givens .v{font-weight:650}
+
+/* Free exploration is separate from answer forms and contextual help. */
+.pv-explore{margin-top:18px;padding:14px 0;border-top:1px solid #d4dfd6}
+.pv-explore h3{margin:0 0 8px}.pv-explore p{font-size:17px;margin:8px 0 12px}
+.pv-explore-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:end}
+.pv-explore-controls label{display:grid;gap:4px;min-width:0;flex:1}
+.pv-explore-coordinates{display:flex;gap:10px;flex:1 1 100%}
+.pv-explore-status:empty{display:none}.pv-explore button[aria-pressed=true]{background:#176747;color:#fff}
+.pv-primary-visual [data-pv-explore-choice]{cursor:pointer}
+.pv-primary-visual [data-pv-explore-choice]:focus-visible{stroke:#377ec3;stroke-opacity:.45;outline:none}
+.pv-primary-visual[data-pv-explore-ready] :is(svg[data-pv-apartment-plan],svg[data-pv-plot-plan]){cursor:crosshair}
+.pv-explore svg[hidden]{display:none!important}
+
+/* One colour links an action with its trace. Neutral view; no scoring. */
+.pv-explore button[data-pv-pencil="0"][aria-pressed=true]{background:#a34c08;color:white;border-color:#a34c08}
+.pv-explore button[data-pv-pencil="1"][aria-pressed=true]{background:#1d4ed8;color:white;border-color:#1d4ed8}
+.pv-explore figure{margin:12px 0}.pv-explore figure svg{display:block;width:100%;height:auto;min-width:0;background:#fbfdfb;border:1px solid #d4dfd6;border-radius:10px}
+.pv-explore figure[hidden],.pv-explore svg[hidden]{display:none!important}
+.pv-explore .pv-paper-detail figcaption,.pv-explore .pv-wall-net figcaption{margin:8px 0;font-size:18px}
+.pv-primary-visual .pv-tariff-diagram{cursor:crosshair}
+.pv-cut-new{animation:pv-cut-reveal .42s ease-out}
+@keyframes pv-cut-reveal{from{opacity:.25}to{opacity:1}}
+.pv-wall-panel{animation:pv-wall-reveal .42s ease-out backwards;animation-delay:var(--wall-delay,0ms);transform-box:fill-box;transform-origin:left center}
+@keyframes pv-wall-reveal{from{opacity:.2;transform:scaleX(.18)}to{opacity:1;transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){.pv-cut-new,.pv-wall-panel{animation:none!important}}
+
+.pv-part-controls{margin:14px 0}.pv-part-controls p{font-size:18px;margin:8px 0}.pv-part-controls button[aria-pressed=true]{background:#176747;color:white}
+.pv-part-muted{opacity:.22}.pv-part-active[data-pv-arc-part]{stroke:#b45309!important;stroke-width:4!important}.pv-part-active[data-pv-room-face]{stroke:#b45309!important;stroke-width:3.5!important}
