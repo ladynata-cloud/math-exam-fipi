@@ -9,6 +9,9 @@ from pathlib import Path
 import hashlib
 import json
 import subprocess
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools"))
+from habr_gifs_preservation import inline_block
 
 ROOT = Path(__file__).resolve().parent
 TOPICS = (
@@ -100,6 +103,7 @@ html{color-scheme:light dark}body{margin:0;padding:16px 10px;background:light-da
 page = (head + "<style>\n" + css + "\n</style>\n</head>\n<body>\n" + layout
         + "\n<script>window.OGE_DATA=" + serialized + ";</script>\n<script>\n"
         + scripts + "\n</script>\n</body>\n</html>\n")
+page = page.replace("</head>", inline_block() + "</head>", 1)
 (ROOT / "index.html").write_text(page, encoding="utf-8")
 catalog = json.loads((ROOT / "series-catalog.json").read_text(encoding="utf-8"))
 print(json.dumps({

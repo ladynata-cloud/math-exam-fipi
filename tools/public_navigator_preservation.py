@@ -1,4 +1,5 @@
 """Invert only the exact public navigator includes; retain all review receipts."""
+from habr_gifs_preservation import restore_habr_help
 import hashlib
 import json
 from pathlib import Path
@@ -12,6 +13,7 @@ assert ROLLOUT['snippet'].encode() == SNIPPET, 'Only the exact existing deferred
 
 
 def restore_public_navigator(name, raw):
+    raw = restore_habr_help(name, raw)
     row = ROLLOUT['addedPages'].get(str(name))
     if row is None or hashlib.sha256(raw).hexdigest() != row['afterSha256']:
         return raw  # Unknown bytes must still fail the existing historical gate.

@@ -1,6 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),{execFileSync}=require('node:child_process');
 const {restorePublicNavigator,snippet,rollout}=require('./public-navigator-preservation.cjs');
+const {restoreHabrHelp}=require('./habr-gifs-preservation.cjs');
 const root=path.resolve(__dirname,'..'),pages=require('../assets/assistant/pages.json');
 const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 test('every inventoried public page has one exact existing navigator pair; all added pages recover original bytes',()=>{
@@ -18,7 +19,7 @@ test('every inventoried public page has one exact existing navigator pair; all a
     assert.equal((text.match(/navigator-widget\.js/g)||[]).length,1,name+' no competing widget tag');
     if(!rollout.addedPages[name])continue;
     const row=rollout.addedPages[name],original=restorePublicNavigator(name,raw);
-    assert.equal(hash(raw),row.afterSha256,name+' current exact payload');
+    assert.equal(hash(restoreHabrHelp(name,raw)),row.afterSha256,name+' current exact payload after the separate reviewed Habr-only shell inverse');
     assert.equal(hash(original),row.beforeSha256,name+' complete original payload');
     const sourceSha=row.sourceSha||rollout.baseSha;
     const committed=execFileSync('git',['show',sourceSha+':'+name],{cwd:root,maxBuffer:16e6});

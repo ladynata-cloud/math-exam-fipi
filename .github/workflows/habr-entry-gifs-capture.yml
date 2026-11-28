@@ -1,0 +1,94 @@
+name: Habr standalone GIF capture
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "assets/habr-entry-gifs*"
+      - "assets/habr-entry-gifs/**"
+      - "tools/habr-gifs*"
+      - "tools/habr_gifs_preservation.py"
+      - "tools/build-habr-gifs.py"
+      - ".github/workflows/habr-entry-gifs-capture.yml"
+  push:
+    branches: ['task/habr-entry-gifs-*']
+    paths:
+      - 'assets/habr-entry-gifs*'
+      - 'assets/habr-entry-gifs/**'
+      - 'tools/habr-gifs*'
+      - 'tools/habr_gifs_preservation.py'
+      - 'oge/skills/build.py'
+      - 'oge/skills/index.html'
+      - 'trainers/negative-numbers-line.html'
+      - 'trainers/percent-part-whole-trainer.html'
+      - 'ege-profil/circle/index.html'
+      - 'ege-profil/trainers/trigonometry.html'
+      - 'stereo-course/literacy/index.html'
+      - 'stereo-course/sections/index.html'
+      - 'tools/habr-gifs-capture-20261119.json'
+      - 'tools/build-habr-gifs.py'
+      - 'tools/habr-gifs.test.cjs'
+      - 'tools/habr-gifs-encoder.test.py'
+      - '.github/workflows/habr-entry-gifs-capture.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: habr-gifs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate-and-strict-media:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - name: Install DOM tools outside checkout
+        run: npm install --prefix "$RUNNER_TEMP/habr-dom" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+      - name: Check exact integration, player and canonical outputs
+        env:
+          NODE_PATH: ${{ runner.temp }}/habr-dom/node_modules
+        run: |
+          node --check assets/habr-entry-gifs.js
+          node --test tools/habr-gifs.test.cjs tools/habr-gifs-integration.test.cjs tools/habr-gifs-player.test.cjs tools/public-navigator-preservation.test.cjs
+          node tools/habr-gifs.browser.cjs --check
+          python oge/skills/build.py
+          git diff --exit-code -- oge/skills/index.html oge/skills/course-data.json oge/skills/series-catalog.json
+          python tools/sections-course-build.py --check
+      - name: Require all eight genuine current-source recordings
+        run: node tools/habr-gifs-media-gate.cjs
+
+  native-playback:
+    needs: validate-and-strict-media
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - name: Install native browser outside checkout
+        run: |
+          npm install --prefix "$RUNNER_TEMP/habr-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/habr-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Verify all eight helpers on mobile and desktop
+        env:
+          NODE_PATH: ${{ runner.temp }}/habr-browser/node_modules
+          HABR_PLAYBACK_EVIDENCE: ${{ github.workspace }}/artifacts/habr-playback
+        run: node tools/habr-gifs-playback.browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: habr-native-playback
+          path: artifacts/habr-playback
+          if-no-files-found: error

@@ -1,0 +1,741 @@
+{
+  "schemaVersion": 1,
+  "complete": true,
+  "recordingHead": "f420976a461e67d27bfb8708294c693944d8f232",
+  "recordingTree": "146c6f9e6cf1bec82566855cb9d520ff45900456",
+  "clipList": [
+    "habr-negative-line",
+    "habr-percent-80",
+    "habr-battle-balance",
+    "habr-circle-fractional-turns",
+    "habr-sine-wave",
+    "habr-stereo-literacy",
+    "habr-sections-starter18",
+    "habr-sections-authcore05"
+  ],
+  "workflowRunId": "44516754821",
+  "workflowRunAttempt": "1",
+  "planSha256": "04d17730b9e27ec9b7186e5d99b1f1b828797f32640974509a2a41ab0a086401",
+  "recorderSha256": "22b6ed4c79d071948b85aaac0416087b45bed91f88f015cc8441026f76e3e759",
+  "encoderSha256": "f06f8257616d63bc9b4c82ac38da11530626107ea47c965c640087a3a2ff38e0",
+  "sourceHashes": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
+    "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
+    "ege-profil/circle/app.js": "c46096292a87b792e66f5ab7acc40d34ba53d56aa73a0b9f1b8e940644ab7a28",
+    "ege-profil/circle/board-session.js": "58c400a04d2db364df6bf57737030053aef65714385805cc1ce6c6ddd9cef526",
+    "ege-profil/circle/chapter4.js": "eeb9df0320ea6e8949526e9dbc9e018eb22900bc680f520baf3c5ea9fc1c1884",
+    "ege-profil/circle/chapter5.js": "b07a5180dd23456bafe595b18669bb46a82de2f5b43792af047d533f1433d92e",
+    "ege-profil/circle/chapter6a.js": "788369b63c0c99974fa642a2ceba0639fbf81f9b244edae6c4e789377ed0fb02",
+    "ege-profil/circle/chapter6b.js": "5644cd0ada93b675c368ca6d829df0cec28adb664aa878ef22eb1ce3f6531d7d",
+    "ege-profil/circle/checks.js": "dfb39f4186e3af5b79848da503d70f9749a6764e12b0018ee53f9d1e3ffa9de3",
+    "ege-profil/circle/index.html": "d3e3736ebb14c2cc1d5a8af87ae4363063b4952855917e6d686a5d732ad6e548",
+    "ege-profil/circle/models.js": "2f0b4779817c23e2c7a5eadb2bd4643138f0ac64ad93b51a8270d0067c37e940",
+    "ege-profil/circle/preparation.js": "e9eccf5d050397d9199c9f91e0f584c23f54ffc545abf69ee4238c60bc828c86",
+    "ege-profil/circle/state.js": "e3b788fa688c1a167221a55abfacd47cda394d059ca9dc2b66e3df088ea83071",
+    "ege-profil/circle/style.css": "c39f42cb09c8a8030211f25fb637afc9f3b342670d0774c5be24f55d77439887",
+    "ege-profil/exam-map.js": "53d09298ec9b17744f62b892f85e1a506dfbfd2275bda00713b18ead22237197",
+    "ege-profil/learning/data.js": "9a221de139c943ec94092e4eae7626ed8438a8b30c38d0255b2da5f71b133bc9",
+    "ege-profil/learning/route.js": "c6b35f1d6976af5a646d69dc18fc300004ef05be5bad3c5da701d16071f9b952",
+    "ege-profil/learning/style.css": "f57fce4a5e4d7cf71323f1ac7e9fb617ead87af91782b665870c42d1358bff0c",
+    "ege-profil/skill-map-data.js": "e9b3af4a98679f76e9c0e2a81c5b832eb2b09cd9b6fd1885bcf69ad3f8a55a35",
+    "ege-profil/skill-map.css": "d6f2e26f00d73f5c6f203890c0a6db81b4b8cbcd61d4030cfdc96327d14b714c",
+    "ege-profil/skill-map.js": "74f6350931daa711a57551764f071c332fdac3bc89fef6f515dce7e126975d7f",
+    "ege-profil/start/checks.js": "cf2db7ec857df82b6aa5a2097a827f96f2da6e2c0e9a56f79c8087664715f242",
+    "ege-profil/start/course-links.css": "69ac7b23e83af7e2be01321a836879b9e420993e92e223cb278dbb8284ea9221",
+    "ege-profil/start/course-links.js": "e8b368525d5e16b87672327eca31ca815a8e184d5b2ad32b5ace4f9eda26b250",
+    "ege-profil/trainers/trigonometry.html": "b204df985acfe9a39b4e626a75f3eaa7746fe438ba5a781804964fa461604fe9",
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28",
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
+    "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
+    "stereo-course/literacy/app.js": "f04dcf3d356ab9d570de1d29950e1e37978b360745af1acfb51bb2c1b0587d61",
+    "stereo-course/literacy/data/course.json": "4eac1b155b1a32095bebdb72b8d629ae0b6a827ce8816837f3c78896c17b4fd8",
+    "stereo-course/literacy/index.html": "5913305003b2a7188339030e0f61f8c84f5ade0eedef9ce3b56ea612bfa06199",
+    "stereo-course/literacy/style.css": "e66802bae021f5d222810f0314e2e020bef8fe27d0946d882d6bbfc5e0fb0b8b",
+    "stereo-course/sections/assets/app.js": "0e683deacc5ee989f3ae9fd5ac4dea6e6a7526de1161798a0e3342142452036c",
+    "stereo-course/sections/assets/course-data.js": "09fbd6df146216d2b7458554e55721eee1e01660f532bc1bac3b421677e23a3d",
+    "stereo-course/sections/assets/style.css": "a6594e7f418d15ef83e105beb49384627196fa518581727c867cfc8c41b157a9",
+    "stereo-course/sections/index.html": "30843860995d2faa32b8b9d2d23d1240177da50b634c27dffccff66d0154afd7",
+    "trainers/board-bridge.js": "64318538ca6801866bf5571745494359eef8f2af8621b39b1265fa3fdc262d60",
+    "trainers/negative-numbers-line.html": "964f127470315527d87059b34d45c382cba2af633b6debb21079c1b2d6e221fb",
+    "trainers/percent-part-whole-trainer.html": "9f4e3ca4ceb6ab36461bad2539bbe244ae189e6c2f5b671a4c950e0f0207f9da"
+  },
+  "browser": "151.0.7922.34",
+  "playwrightVersion": "1.62.1",
+  "chromiumExecutableSha256": "0b20b130e7edd9dd51873be867761295fe0cfad490c2b9a64f95bd3cfc08fa71",
+  "pillowVersion": "11.3.0",
+  "captionFontSha256": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280",
+  "captureReceiptSha256": "9b61b89e1d1e7cf22b9dd17a53fe807df416ff445a41e5720781ab09e90bef3f",
+  "clips": [
+    {
+      "id": "habr-negative-line",
+      "sourcePage": "/trainers/negative-numbers-line.html?seed=habr-311",
+      "complete": true,
+      "scenarioSha256": "173f5fb7817b808914355aa49d4e9bba8ff8f9e048da0bb93c106b1c11d179b3",
+      "recordingSha256": "86e1585374c86190f7be2bb2665e18ec89137c1608649556f164b40e8c9092a5",
+      "frameCount": 4,
+      "width": 1120,
+      "height": 804,
+      "durationsMs": [
+        1500,
+        1500,
+        1500,
+        1500
+      ],
+      "frames": [
+        {
+          "file": "frame-01.png",
+          "caption": "Начни в числе −1: положительное слагаемое задаёт движение вправо.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-02.png",
+          "caption": "Нажми начальную точку −1.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-03.png",
+          "caption": "Семь единиц вправо: конечная точка 6.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-04.png",
+          "caption": "Введи 6 и проверь результат.",
+          "durationMs": 1500
+        }
+      ],
+      "files": {
+        "contact-sheet.png": {
+          "bytes": 127496,
+          "sha256": "2f47a56a9e2e167e901bfcc984e1f5795d5679b6abca6cd1bbfb68c1a714bd07"
+        },
+        "frame-01.png": {
+          "bytes": 80226,
+          "sha256": "24a3930155c0029feb32ddc1d57dd0e9a711633e25dcee5f7b36593e63c9f41f"
+        },
+        "frame-02.png": {
+          "bytes": 86321,
+          "sha256": "1e48b8ef1a4dc0bbfce1099a3361161b338bb2a67810c83f0ee341e2b54f9854"
+        },
+        "frame-03.png": {
+          "bytes": 90126,
+          "sha256": "0ad3bf5662e6b3b83955adaae1dbeeebd5babf4010b2356104c5ffec2570099c"
+        },
+        "frame-04.png": {
+          "bytes": 91623,
+          "sha256": "f7bc375e834df8af0fde701fd4a5e04e87beee7292b32d3b6dbca15a0a704720"
+        },
+        "habr-negative-line.gif": {
+          "bytes": 177857,
+          "sha256": "1a26bdcb66393c57903260ccc1d56de851dff58510a20979e4eebf1adc7c312c"
+        }
+      }
+    },
+    {
+      "id": "habr-percent-80",
+      "sourcePage": "/trainers/percent-part-whole-trainer.html?percent=80#exercise",
+      "complete": true,
+      "scenarioSha256": "823d10045b60f1b6bba3cc7367fabb4941407bd72f9955cd60a2fbb13400f42f",
+      "recordingSha256": "0261e384e456cccc57c164664a35d6fec753099921b723b81dd2b5c2b81fc7c8",
+      "frameCount": 3,
+      "width": 842,
+      "height": 1120,
+      "durationsMs": [
+        1500,
+        1500,
+        1500
+      ],
+      "frames": [
+        {
+          "file": "frame-01.png",
+          "caption": "80 закрашенных клеток из 100 — это 80%.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-02.png",
+          "caption": "Сократи 80/100: числитель 4, знаменатель 5.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-03.png",
+          "caption": "Нажми «Проверить»: 80% равны четырём пятым.",
+          "durationMs": 1500
+        }
+      ],
+      "files": {
+        "contact-sheet.png": {
+          "bytes": 137757,
+          "sha256": "962e877952521651bf327a20b05d53d7dea6c3f1d926bf152d1f7114fb1cbe36"
+        },
+        "frame-01.png": {
+          "bytes": 49205,
+          "sha256": "c416e88eb889a6a88e601cb31159b53599bd1b1135a68d4d695549f46a1c09b2"
+        },
+        "frame-02.png": {
+          "bytes": 49806,
+          "sha256": "ddd73df4cbb2924a3ef99dc8fd4ebe3ad9e1a75041f8434e6a6f862fcc599a71"
+        },
+        "frame-03.png": {
+          "bytes": 67929,
+          "sha256": "a1369293d37748d7149cea4804b5d78c65b6f9ed89ccf1d2d5c724344a747b2a"
+        },
+        "habr-percent-80.gif": {
+          "bytes": 97813,
+          "sha256": "eefde92b071377824205dd94596ace7ea52e59eac5b6285088390ec129f7f60a"
+        }
+      }
+    },
+    {
+      "id": "habr-battle-balance",
+      "sourcePage": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
+      "complete": true,
+      "scenarioSha256": "6089f780dcf0bafc0cdac274b74869397d2b28c77a22f96649217e5c0983f374",
+      "recordingSha256": "9b56d80a6f47584d1c1a851f4336cafff96c9d36d358217a35e50387b6a69c21",
+      "frameCount": 4,
+      "width": 850,
+      "height": 1000,
+      "durationsMs": [
+        1500,
+        1500,
+        1500,
+        1500
+      ],
+      "frames": [
+        {
+          "file": "frame-01.png",
+          "caption": "Одна положительная и одна отрицательная единица.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-02.png",
+          "caption": "Предположи: противоположные единицы дадут ноль.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-03.png",
+          "caption": "Убери одну противоположную пару.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-04.png",
+          "caption": "Ничего не осталось: запиши 0 и проверь.",
+          "durationMs": 1500
+        }
+      ],
+      "files": {
+        "contact-sheet.png": {
+          "bytes": 184966,
+          "sha256": "6f3c2d8ad6c459ed093faa0cb895efb77842b5fe5dd5bcd23d1eeaa2830c552c"
+        },
+        "frame-01.png": {
+          "bytes": 62279,
+          "sha256": "ad7bf7bbeaa4f488ecf258d77638d199d917bf644465acf6a15241ef0b4b17d2"
+        },
+        "frame-02.png": {
+          "bytes": 63048,
+          "sha256": "ead0b725b7ad58c266de194939faeadcb34483b7dc77b7d9cc6595c1bfdab0b6"
+        },
+        "frame-03.png": {
+          "bytes": 63405,
+          "sha256": "ed2e5ca6251a9a8dd2c0676a65684cd35cfc31f7580a2e47745db2b8908884cb"
+        },
+        "frame-04.png": {
+          "bytes": 86673,
+          "sha256": "08b8ba0b6ae3db0a8e52c11d15474be4b046a75233e2b8c5e581d590aa7df70b"
+        },
+        "habr-battle-balance.gif": {
+          "bytes": 133039,
+          "sha256": "85245b478cc7a69450fc7c60eb752d05867a02f9ceade3909d50c2fe4c08546b"
+        }
+      }
+    },
+    {
+      "id": "habr-circle-fractional-turns",
+      "sourcePage": "/ege-profil/circle/index.html?route=trigonometry&unit=m4-fractional-turns#lesson/m4-fractional-turns",
+      "complete": true,
+      "scenarioSha256": "d5ab454c26a171283cc1aff1670d6175bf174c436b23f5f42d1571b351278f1f",
+      "recordingSha256": "aab061ecdcd1b574c03dd3e54d8260d0e338acd9eb1609489bb4d0c76da09da8",
+      "frameCount": 4,
+      "width": 791,
+      "height": 1636,
+      "durationsMs": [
+        1500,
+        1500,
+        1500,
+        1500
+      ],
+      "frames": [
+        {
+          "file": "frame-01.png",
+          "caption": "Сравни π/6, π/4 и π/3 внутри первой четверти.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-02.png",
+          "caption": "π/6 — треть первой четверти.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-03.png",
+          "caption": "π/4 — половина первой четверти.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-04.png",
+          "caption": "π/3 — две трети первой четверти.",
+          "durationMs": 1500
+        }
+      ],
+      "files": {
+        "contact-sheet.png": {
+          "bytes": 483494,
+          "sha256": "39dd6a031eb2de72f2999891676dc69d96cbd162874c1c00e86bcc6dacffe225"
+        },
+        "frame-01.png": {
+          "bytes": 226901,
+          "sha256": "29443263b8cbd740e89d4d2641956da92ab579a28b2ce9f32d93d37613424e7f"
+        },
+        "frame-02.png": {
+          "bytes": 227554,
+          "sha256": "7c4564bc133e178a948bb2cf10b903664d1d5672e895f763fed1de67053ba935"
+        },
+        "frame-03.png": {
+          "bytes": 225328,
+          "sha256": "7607eb9d4383fe0f5674eaca78521e0083b8888695d8c174e8a39f4e7ee48f0a"
+        },
+        "frame-04.png": {
+          "bytes": 227813,
+          "sha256": "290f42e97d4aa9e883b944d7fcd3468046e94fe8d10c99866c2c60e04381da7d"
+        },
+        "habr-circle-fractional-turns.gif": {
+          "bytes": 546921,
+          "sha256": "6d7b43c26f3f1163107804756206f6c0d8df6ab667ac6206c55eb635779282c5"
+        }
+      }
+    },
+    {
+      "id": "habr-sine-wave",
+      "sourcePage": "/ege-profil/trainers/trigonometry.html#sine-wave",
+      "complete": true,
+      "scenarioSha256": "a655d53f54ab54c44e65089684fb2d0826778c327f0c5b2b46e86471380c0b5f",
+      "recordingSha256": "492468689b8ebfeaaaa1f04f7cbed130ee97e55021244690b0f41defa4088b40",
+      "frameCount": 5,
+      "width": 1044,
+      "height": 982,
+      "durationsMs": [
+        1500,
+        1500,
+        1500,
+        1500,
+        1500
+      ],
+      "frames": [
+        {
+          "file": "frame-01.png",
+          "caption": "Точка синусоиды имеет ту же высоту, что конец радиуса.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-02.png",
+          "caption": "Сдвинь угол примерно до π/2: синус близок к 1.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-03.png",
+          "caption": "Около π точка снова рядом с горизонтальной осью.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-04.png",
+          "caption": "Около 3π/2 синус близок к −1.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-05.png",
+          "caption": "Кнопка «в начало» возвращает обе точки к нулю.",
+          "durationMs": 1500
+        }
+      ],
+      "files": {
+        "contact-sheet.png": {
+          "bytes": 261185,
+          "sha256": "b8c06200416528106b531a8c9ff0ae474574ec813b4cc308696d1fe3529d6bf1"
+        },
+        "frame-01.png": {
+          "bytes": 100539,
+          "sha256": "eab3c4687020ab9213e43b0943738f38b245f052f9c0758a157dfa2d493a69fe"
+        },
+        "frame-02.png": {
+          "bytes": 102127,
+          "sha256": "0078f9b482a554d5fa33b4361c9b7a7f545c8371c9a7aff4579a84db60b2e219"
+        },
+        "frame-03.png": {
+          "bytes": 103089,
+          "sha256": "0a8ca97217588103a0d4c1aa93de4d9b1056ca9476df87325c5d77b0e7994ddb"
+        },
+        "frame-04.png": {
+          "bytes": 102267,
+          "sha256": "830ccad7516cdd6f4a0046c15d06037d3d5a9b359501502d351ef5ae3002e7f5"
+        },
+        "frame-05.png": {
+          "bytes": 101591,
+          "sha256": "e7ee13c595de67ba25391484cc6bd9e28d6954c3b49bda731133871851e88709"
+        },
+        "habr-sine-wave.gif": {
+          "bytes": 238082,
+          "sha256": "9fedf6c7684ba0521966162c8e219539d63158fb66813883a2bd2e194dc20880"
+        }
+      }
+    },
+    {
+      "id": "habr-stereo-literacy",
+      "sourcePage": "/stereo-course/literacy/#atanasyan2024-theory-001",
+      "complete": true,
+      "scenarioSha256": "cae23bb58105f6f68b4360752fa67ce01e7ab36113e35ffd1d1630262fedf831",
+      "recordingSha256": "ce7ce5426b28643b8fef92f4989f50fa16a7f1155d8d7907b12a87fa2b03ba07",
+      "frameCount": 5,
+      "width": 640,
+      "height": 902,
+      "durationsMs": [
+        1500,
+        1500,
+        1500,
+        1500,
+        1500
+      ],
+      "frames": [
+        {
+          "file": "frame-01.png",
+          "caption": "Один куб можно рассматривать с разных сторон.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-02.png",
+          "caption": "Поверни модель вправо: меняется изображение, не сам куб.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-03.png",
+          "caption": "Наклони модель, чтобы сопоставить грани.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-04.png",
+          "caption": "Верни исходный вид кнопкой сброса.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-05.png",
+          "caption": "В разборе выделяется одна плоская грань куба.",
+          "durationMs": 1500
+        }
+      ],
+      "files": {
+        "contact-sheet.png": {
+          "bytes": 356793,
+          "sha256": "b1d9ad13f2a489364d8f567b761f6cb6bf262bde8a53f98b594ff30ed30c03ea"
+        },
+        "frame-01.png": {
+          "bytes": 71373,
+          "sha256": "241c277770d8d4a644a04afbd5b9cc612d5ea0c560e07ece3d66d9c64760ab79"
+        },
+        "frame-02.png": {
+          "bytes": 68032,
+          "sha256": "e144d01390a4f7481b6501e089bcd551d728e89d6a30db06725b8664828b761d"
+        },
+        "frame-03.png": {
+          "bytes": 65208,
+          "sha256": "56684010bf67ff4ba0cc70370055647a5e597e9816de67c6ff5328332b053556"
+        },
+        "frame-04.png": {
+          "bytes": 69239,
+          "sha256": "80c010a45676f3d73ee9d53a54bde41d8721848b09479db5c5b57567299cf65a"
+        },
+        "frame-05.png": {
+          "bytes": 68290,
+          "sha256": "67fa4c03aa03b6a640c23d2c71b4ea202803709bfd05501fe51f4933bc0eb6e3"
+        },
+        "habr-stereo-literacy.gif": {
+          "bytes": 178440,
+          "sha256": "402ddfca24463647e2f7a12ee71587fe74c2108eacbea16723b2cfca997be460"
+        }
+      }
+    },
+    {
+      "id": "habr-sections-starter18",
+      "sourcePage": "/stereo-course/sections/#starter-18",
+      "complete": true,
+      "scenarioSha256": "f956ec7397ac39ca23d6d52b34fdd8baea7543bc77f45dc13f6e26e571e085f8",
+      "recordingSha256": "45e8955c790eb9ddd118177f20f80869982a79e1cb4a6996b850b063227b9c7e",
+      "frameCount": 12,
+      "width": 1226,
+      "height": 1728,
+      "durationsMs": [
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500
+      ],
+      "frames": [
+        {
+          "file": "frame-01.png",
+          "caption": "Четыре точки M, N, P, Q уже даны в одной плоскости среза.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-02.png",
+          "caption": "Открой самостоятельное построение.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-03.png",
+          "caption": "Выбери грань AEFB, точки M и N, роль «Сторона сечения».",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-04.png",
+          "caption": "Проверь действие: сторона MN построена.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-05.png",
+          "caption": "Выбери грань BFGC, точки N и P, роль «Сторона сечения».",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-06.png",
+          "caption": "Проверь действие: сторона NP построена.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-07.png",
+          "caption": "Выбери грань CGHD, точки P и Q, роль «Сторона сечения».",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-08.png",
+          "caption": "Проверь действие: сторона PQ построена.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-09.png",
+          "caption": "Выбери грань DHEA, точки Q и M, роль «Сторона сечения».",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-10.png",
+          "caption": "Проверь действие: сторона QM построена.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-11.png",
+          "caption": "Выбери M, N, P, Q по обходу и проверь замкнутую границу.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-12.png",
+          "caption": "У последней стороны действует то же правило принадлежности.",
+          "durationMs": 1500
+        }
+      ],
+      "files": {
+        "contact-sheet.png": {
+          "bytes": 966935,
+          "sha256": "7582fe0c1843171a0c7d5792f297c8798bc8b36a839993c497176a483a971018"
+        },
+        "frame-01.png": {
+          "bytes": 197966,
+          "sha256": "0aabb335a44a04e2ca57cb2550884a90bb694bf755582a0536bbde01da6c10e8"
+        },
+        "frame-02.png": {
+          "bytes": 239725,
+          "sha256": "22e5efde114f381d194c13e08f0cb476997e42ccbfd5ab6cca7ef7df67754a77"
+        },
+        "frame-03.png": {
+          "bytes": 240869,
+          "sha256": "129f12c11153d4bc27f8e7c13dec31c5204a235ff60a4d93bd59b14f8abbe201"
+        },
+        "frame-04.png": {
+          "bytes": 193729,
+          "sha256": "8935595f394cd2ff75ae25229b764480418009a9d1082badeeff0308eb038e01"
+        },
+        "frame-05.png": {
+          "bytes": 255661,
+          "sha256": "d8544bc15372ab6b4b9cdf99cdcf9a7df9d602af274883359f9e390ddfda7fc4"
+        },
+        "frame-06.png": {
+          "bytes": 197406,
+          "sha256": "46f3612c3e8bcfaec3a094ca0ff7aad4f97d8bcef49af58ca546b7d375afbaec"
+        },
+        "frame-07.png": {
+          "bytes": 259027,
+          "sha256": "4e29a1585cf126943b96715b9828d76fb06b6c4c4da115f0e33356ce3adc8750"
+        },
+        "frame-08.png": {
+          "bytes": 200653,
+          "sha256": "5811472eaf56b53172de592b0e3771dcc0bb353bd1bbb9f386d8564e8d6c448d"
+        },
+        "frame-09.png": {
+          "bytes": 253211,
+          "sha256": "ece0d51977953e33d64d6d340bc850315707b2c2c7ef7ef85db50e4a54b7500d"
+        },
+        "frame-10.png": {
+          "bytes": 272879,
+          "sha256": "d64f597d44e93a39babee12d87b6eba1b27418f61f50772060e05d1c4fc038b5"
+        },
+        "frame-11.png": {
+          "bytes": 275334,
+          "sha256": "eb033ba1fa3f2aaf5a4b0590d7ee048d99d4a34755d5e716952348baf715b924"
+        },
+        "frame-12.png": {
+          "bytes": 292754,
+          "sha256": "b6c0f00238ab6bcde1ccc9f7c19301cdf75c38ef936676f2a447ab604a806a30"
+        },
+        "habr-sections-starter18.gif": {
+          "bytes": 1781582,
+          "sha256": "fcc3213b82ae278e0a338dccded079723367321a04c5e4c92e88799796048afa"
+        }
+      }
+    },
+    {
+      "id": "habr-sections-authcore05",
+      "sourcePage": "/stereo-course/sections/#auth-core-05",
+      "complete": true,
+      "scenarioSha256": "bc6bc2775e546aa40a1f3d2e7c42a12dfc089f58df03d68eeb12c6b3a5557c6a",
+      "recordingSha256": "7b80a2c15a60477509460096c392394654abdc838ce50540ebe7ce1a4a2e0736",
+      "frameCount": 10,
+      "width": 936,
+      "height": 1362,
+      "durationsMs": [
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500
+      ],
+      "frames": [
+        {
+          "file": "frame-01.png",
+          "caption": "У тетраэдра четыре грани: исследуй границу сечения.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-02.png",
+          "caption": "Начни построение с самостоятельного выбора плоскости.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-03.png",
+          "caption": "MN — средняя линия в грани SAB.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-04.png",
+          "caption": "Выполни действие в выбранной плоскости.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-05.png",
+          "caption": "PQ ∥ AB и MN ∥ AB: так обосновывается принадлежность Q.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-06.png",
+          "caption": "Выполни действие в выбранной плоскости.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-07.png",
+          "caption": "N и P лежат в секущей и в грани SBC.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-08.png",
+          "caption": "Выполни действие в выбранной плоскости.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-09.png",
+          "caption": "Q и M замыкают сечение в грани SCA.",
+          "durationMs": 1500
+        },
+        {
+          "file": "frame-10.png",
+          "caption": "Выполни действие в выбранной плоскости.",
+          "durationMs": 1500
+        }
+      ],
+      "files": {
+        "contact-sheet.png": {
+          "bytes": 1090381,
+          "sha256": "fed38bfb3b47d0093ae9659c4b1a3419db3075cde72914a8eb8f7dc8d1dc54fa"
+        },
+        "frame-01.png": {
+          "bytes": 183499,
+          "sha256": "f6942ae19befd9e6073e4679a11fdf06d5b15212cf2ab9bdc22a0d6107903baa"
+        },
+        "frame-02.png": {
+          "bytes": 216384,
+          "sha256": "56b26d207a2b791c3c157eab61b9e562c069f06258676eb3594464e1adea5cb1"
+        },
+        "frame-03.png": {
+          "bytes": 237085,
+          "sha256": "c5cf719395813c00c88f5ce8fd5279059b7d7895afea275cacbe3b3f0d46826d"
+        },
+        "frame-04.png": {
+          "bytes": 201864,
+          "sha256": "9cadddf866e8b3d4f975db561897be1ec25e73df0f460cb47589745d76bd6f3c"
+        },
+        "frame-05.png": {
+          "bytes": 252306,
+          "sha256": "43e5fd6d249204e08eeda1fb83026a221d6f5f4c1b353d3d04afc582161dc055"
+        },
+        "frame-06.png": {
+          "bytes": 204174,
+          "sha256": "498b409032628ad119158ed628908a90a43fcb6fdb66eb5cbe01f3fb11e3f4bd"
+        },
+        "frame-07.png": {
+          "bytes": 242332,
+          "sha256": "3be65dda15a618d160edc3b9ad3c82bf958abb84e2e605527242f371b7114341"
+        },
+        "frame-08.png": {
+          "bytes": 215013,
+          "sha256": "aa66bcc2751008b10ba9b12cf5dac57a24de3eba5da96c685b2f02e2776f307a"
+        },
+        "frame-09.png": {
+          "bytes": 246299,
+          "sha256": "b0702c7a2808e78251367985ea284f18dcd4dde673487b412615f06cf2f5618e"
+        },
+        "frame-10.png": {
+          "bytes": 216144,
+          "sha256": "cd99219ad6ed557cf61636e63405bedef4dbcd2accf924cac1f3ce8251546ef2"
+        },
+        "habr-sections-authcore05.gif": {
+          "bytes": 1265180,
+          "sha256": "1c8929b74f459879af9e98ff3f216192a8d7f8adc7eac6c712f668947ad40e99"
+        }
+      }
+    }
+  ]
+}

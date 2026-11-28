@@ -1,0 +1,212 @@
+{
+  "id": "habr-circle-fractional-turns",
+  "url": "/ege-profil/circle/index.html?route=trigonometry&unit=m4-fractional-turns#lesson/m4-fractional-turns",
+  "scenarioSha256": "d5ab454c26a171283cc1aff1670d6175bf174c436b23f5f42d1571b351278f1f",
+  "sourceHashes": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "ege-profil/circle/app.js": "c46096292a87b792e66f5ab7acc40d34ba53d56aa73a0b9f1b8e940644ab7a28",
+    "ege-profil/circle/board-session.js": "58c400a04d2db364df6bf57737030053aef65714385805cc1ce6c6ddd9cef526",
+    "ege-profil/circle/chapter4.js": "eeb9df0320ea6e8949526e9dbc9e018eb22900bc680f520baf3c5ea9fc1c1884",
+    "ege-profil/circle/chapter5.js": "b07a5180dd23456bafe595b18669bb46a82de2f5b43792af047d533f1433d92e",
+    "ege-profil/circle/chapter6a.js": "788369b63c0c99974fa642a2ceba0639fbf81f9b244edae6c4e789377ed0fb02",
+    "ege-profil/circle/chapter6b.js": "5644cd0ada93b675c368ca6d829df0cec28adb664aa878ef22eb1ce3f6531d7d",
+    "ege-profil/circle/checks.js": "dfb39f4186e3af5b79848da503d70f9749a6764e12b0018ee53f9d1e3ffa9de3",
+    "ege-profil/circle/index.html": "d3e3736ebb14c2cc1d5a8af87ae4363063b4952855917e6d686a5d732ad6e548",
+    "ege-profil/circle/models.js": "2f0b4779817c23e2c7a5eadb2bd4643138f0ac64ad93b51a8270d0067c37e940",
+    "ege-profil/circle/preparation.js": "e9eccf5d050397d9199c9f91e0f584c23f54ffc545abf69ee4238c60bc828c86",
+    "ege-profil/circle/state.js": "e3b788fa688c1a167221a55abfacd47cda394d059ca9dc2b66e3df088ea83071",
+    "ege-profil/circle/style.css": "c39f42cb09c8a8030211f25fb637afc9f3b342670d0774c5be24f55d77439887",
+    "ege-profil/exam-map.js": "53d09298ec9b17744f62b892f85e1a506dfbfd2275bda00713b18ead22237197",
+    "ege-profil/learning/data.js": "9a221de139c943ec94092e4eae7626ed8438a8b30c38d0255b2da5f71b133bc9",
+    "ege-profil/learning/route.js": "c6b35f1d6976af5a646d69dc18fc300004ef05be5bad3c5da701d16071f9b952",
+    "ege-profil/learning/style.css": "f57fce4a5e4d7cf71323f1ac7e9fb617ead87af91782b665870c42d1358bff0c",
+    "ege-profil/skill-map-data.js": "e9b3af4a98679f76e9c0e2a81c5b832eb2b09cd9b6fd1885bcf69ad3f8a55a35",
+    "ege-profil/skill-map.css": "d6f2e26f00d73f5c6f203890c0a6db81b4b8cbcd61d4030cfdc96327d14b714c",
+    "ege-profil/skill-map.js": "74f6350931daa711a57551764f071c332fdac3bc89fef6f515dce7e126975d7f",
+    "ege-profil/start/checks.js": "cf2db7ec857df82b6aa5a2097a827f96f2da6e2c0e9a56f79c8087664715f242"
+  },
+  "frames": [
+    {
+      "file": "frame-01.png",
+      "actualPageUrl": "/ege-profil/circle/index.html?route=trigonometry&unit=m4-fractional-turns#lesson/m4-fractional-turns",
+      "caption": "Сравни π/6, π/4 и π/3 внутри первой четверти.",
+      "durationMs": 1500,
+      "sha256": "87be8c9fb45936420e70bf1cf03e7be48f32347c702e449af11a54b58b5f52d3",
+      "actions": [],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#lab [data-angle-input]",
+          "value": "π/4"
+        },
+        {
+          "kind": "text",
+          "selector": "h1",
+          "value": "Доли π внутри четвертей"
+        }
+      ],
+      "bounds": {
+        "x": 90,
+        "y": 0.109375,
+        "width": 791,
+        "height": 1487.65625
+      }
+    },
+    {
+      "file": "frame-02.png",
+      "actualPageUrl": "/ege-profil/circle/index.html?route=trigonometry&unit=m4-fractional-turns#lesson/m4-fractional-turns",
+      "caption": "π/6 — треть первой четверти.",
+      "durationMs": 1500,
+      "sha256": "76cd8315e4dd8c07ec144e6478ab2371831db6c4ec78d694f5b34897abf06410",
+      "actions": [
+        {
+          "type": "fill",
+          "selector": "#lab [data-angle-input]",
+          "value": "pi/6"
+        },
+        {
+          "type": "click",
+          "selector": "#lab [data-apply-angle]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#lab [data-angle-input]",
+          "value": "π/6"
+        },
+        {
+          "kind": "text",
+          "selector": "#lab [data-lab-readings]",
+          "value": "I четверть"
+        },
+        {
+          "kind": "circle",
+          "selector": "#lab [data-current-point]",
+          "angle": 0.5235987755982988
+        }
+      ],
+      "bounds": {
+        "x": 90,
+        "y": 0.109375,
+        "width": 791,
+        "height": 1487.65625
+      }
+    },
+    {
+      "file": "frame-03.png",
+      "actualPageUrl": "/ege-profil/circle/index.html?route=trigonometry&unit=m4-fractional-turns#lesson/m4-fractional-turns",
+      "caption": "π/4 — половина первой четверти.",
+      "durationMs": 1500,
+      "sha256": "5559816ac9abf4ecba65ab3f3e48db356ce7d2b4d6c018541bbbfc62b8392209",
+      "actions": [
+        {
+          "type": "fill",
+          "selector": "#lab [data-angle-input]",
+          "value": "pi/4"
+        },
+        {
+          "type": "click",
+          "selector": "#lab [data-apply-angle]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#lab [data-angle-input]",
+          "value": "π/4"
+        },
+        {
+          "kind": "text",
+          "selector": "#lab [data-lab-readings]",
+          "value": "I четверть"
+        },
+        {
+          "kind": "circle",
+          "selector": "#lab [data-current-point]",
+          "angle": 0.7853981633974483
+        }
+      ],
+      "bounds": {
+        "x": 90,
+        "y": 0.109375,
+        "width": 791,
+        "height": 1487.65625
+      }
+    },
+    {
+      "file": "frame-04.png",
+      "actualPageUrl": "/ege-profil/circle/index.html?route=trigonometry&unit=m4-fractional-turns#lesson/m4-fractional-turns",
+      "caption": "π/3 — две трети первой четверти.",
+      "durationMs": 1500,
+      "sha256": "4495672e07636e2e9b147983f19d330b0b5580571a81cc27778bcb94e3789b50",
+      "actions": [
+        {
+          "type": "fill",
+          "selector": "#lab [data-angle-input]",
+          "value": "pi/3"
+        },
+        {
+          "type": "click",
+          "selector": "#lab [data-apply-angle]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "value",
+          "selector": "#lab [data-angle-input]",
+          "value": "π/3"
+        },
+        {
+          "kind": "text",
+          "selector": "#lab [data-lab-readings]",
+          "value": "I четверть"
+        },
+        {
+          "kind": "circle",
+          "selector": "#lab [data-current-point]",
+          "angle": 1.0471975511965976
+        }
+      ],
+      "bounds": {
+        "x": 90,
+        "y": 0.109375,
+        "width": 791,
+        "height": 1487.65625
+      }
+    }
+  ],
+  "loadedSources": {
+    "ege-profil/circle/index.html": "d3e3736ebb14c2cc1d5a8af87ae4363063b4952855917e6d686a5d732ad6e548",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "ege-profil/circle/style.css": "c39f42cb09c8a8030211f25fb637afc9f3b342670d0774c5be24f55d77439887",
+    "ege-profil/learning/style.css": "f57fce4a5e4d7cf71323f1ac7e9fb617ead87af91782b665870c42d1358bff0c",
+    "ege-profil/skill-map.css": "d6f2e26f00d73f5c6f203890c0a6db81b4b8cbcd61d4030cfdc96327d14b714c",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "ege-profil/learning/data.js": "9a221de139c943ec94092e4eae7626ed8438a8b30c38d0255b2da5f71b133bc9",
+    "ege-profil/learning/route.js": "c6b35f1d6976af5a646d69dc18fc300004ef05be5bad3c5da701d16071f9b952",
+    "ege-profil/circle/state.js": "e3b788fa688c1a167221a55abfacd47cda394d059ca9dc2b66e3df088ea83071",
+    "ege-profil/start/checks.js": "cf2db7ec857df82b6aa5a2097a827f96f2da6e2c0e9a56f79c8087664715f242",
+    "ege-profil/circle/preparation.js": "e9eccf5d050397d9199c9f91e0f584c23f54ffc545abf69ee4238c60bc828c86",
+    "ege-profil/circle/checks.js": "dfb39f4186e3af5b79848da503d70f9749a6764e12b0018ee53f9d1e3ffa9de3",
+    "ege-profil/circle/chapter4.js": "eeb9df0320ea6e8949526e9dbc9e018eb22900bc680f520baf3c5ea9fc1c1884",
+    "ege-profil/circle/chapter5.js": "b07a5180dd23456bafe595b18669bb46a82de2f5b43792af047d533f1433d92e",
+    "ege-profil/circle/chapter6b.js": "5644cd0ada93b675c368ca6d829df0cec28adb664aa878ef22eb1ce3f6531d7d",
+    "ege-profil/circle/board-session.js": "58c400a04d2db364df6bf57737030053aef65714385805cc1ce6c6ddd9cef526",
+    "ege-profil/circle/models.js": "2f0b4779817c23e2c7a5eadb2bd4643138f0ac64ad93b51a8270d0067c37e940",
+    "ege-profil/circle/chapter6a.js": "788369b63c0c99974fa642a2ceba0639fbf81f9b244edae6c4e789377ed0fb02",
+    "ege-profil/circle/app.js": "c46096292a87b792e66f5ab7acc40d34ba53d56aa73a0b9f1b8e940644ab7a28",
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "ege-profil/skill-map.js": "74f6350931daa711a57551764f071c332fdac3bc89fef6f515dce7e126975d7f",
+    "ege-profil/skill-map-data.js": "e9b3af4a98679f76e9c0e2a81c5b832eb2b09cd9b6fd1885bcf69ad3f8a55a35",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "ege-profil/exam-map.js": "53d09298ec9b17744f62b892f85e1a506dfbfd2275bda00713b18ead22237197"
+  },
+  "blockedExternal": [],
+  "complete": true
+}

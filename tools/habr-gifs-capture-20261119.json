@@ -1,0 +1,1165 @@
+{
+  "schemaVersion": 1,
+  "reviewedSourceTree": "1aa81c8420aaec3389bb30bb5115c99d5ddf68ef",
+  "playwrightVersion": "1.62.1",
+  "pillowVersion": "11.3.0",
+  "viewport": {
+    "width": 1280,
+    "height": 1000
+  },
+  "externalFonts": "blocked; use browser system fallback, record this explicitly",
+  "sourceHashes": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "assets/oge-wayfinding.css": "3e60bd7a5b9097d58097e877a90e7ed8c2311a65ff4441845896014f52fa1f37",
+    "assets/oge-wayfinding.js": "1eb57ccd65596e7497ec6bac02bb86cba21a2f9e64b6f8a4917b935c1953138e",
+    "ege-profil/circle/app.js": "c46096292a87b792e66f5ab7acc40d34ba53d56aa73a0b9f1b8e940644ab7a28",
+    "ege-profil/circle/board-session.js": "58c400a04d2db364df6bf57737030053aef65714385805cc1ce6c6ddd9cef526",
+    "ege-profil/circle/chapter4.js": "eeb9df0320ea6e8949526e9dbc9e018eb22900bc680f520baf3c5ea9fc1c1884",
+    "ege-profil/circle/chapter5.js": "b07a5180dd23456bafe595b18669bb46a82de2f5b43792af047d533f1433d92e",
+    "ege-profil/circle/chapter6a.js": "788369b63c0c99974fa642a2ceba0639fbf81f9b244edae6c4e789377ed0fb02",
+    "ege-profil/circle/chapter6b.js": "5644cd0ada93b675c368ca6d829df0cec28adb664aa878ef22eb1ce3f6531d7d",
+    "ege-profil/circle/checks.js": "dfb39f4186e3af5b79848da503d70f9749a6764e12b0018ee53f9d1e3ffa9de3",
+    "ege-profil/circle/index.html": "d3e3736ebb14c2cc1d5a8af87ae4363063b4952855917e6d686a5d732ad6e548",
+    "ege-profil/circle/models.js": "2f0b4779817c23e2c7a5eadb2bd4643138f0ac64ad93b51a8270d0067c37e940",
+    "ege-profil/circle/preparation.js": "e9eccf5d050397d9199c9f91e0f584c23f54ffc545abf69ee4238c60bc828c86",
+    "ege-profil/circle/state.js": "e3b788fa688c1a167221a55abfacd47cda394d059ca9dc2b66e3df088ea83071",
+    "ege-profil/circle/style.css": "c39f42cb09c8a8030211f25fb637afc9f3b342670d0774c5be24f55d77439887",
+    "ege-profil/exam-map.js": "53d09298ec9b17744f62b892f85e1a506dfbfd2275bda00713b18ead22237197",
+    "ege-profil/learning/data.js": "9a221de139c943ec94092e4eae7626ed8438a8b30c38d0255b2da5f71b133bc9",
+    "ege-profil/learning/route.js": "c6b35f1d6976af5a646d69dc18fc300004ef05be5bad3c5da701d16071f9b952",
+    "ege-profil/learning/style.css": "f57fce4a5e4d7cf71323f1ac7e9fb617ead87af91782b665870c42d1358bff0c",
+    "ege-profil/skill-map-data.js": "e9b3af4a98679f76e9c0e2a81c5b832eb2b09cd9b6fd1885bcf69ad3f8a55a35",
+    "ege-profil/skill-map.css": "d6f2e26f00d73f5c6f203890c0a6db81b4b8cbcd61d4030cfdc96327d14b714c",
+    "ege-profil/skill-map.js": "74f6350931daa711a57551764f071c332fdac3bc89fef6f515dce7e126975d7f",
+    "ege-profil/start/checks.js": "cf2db7ec857df82b6aa5a2097a827f96f2da6e2c0e9a56f79c8087664715f242",
+    "ege-profil/start/course-links.css": "69ac7b23e83af7e2be01321a836879b9e420993e92e223cb278dbb8284ea9221",
+    "ege-profil/start/course-links.js": "e8b368525d5e16b87672327eca31ca815a8e184d5b2ad32b5ace4f9eda26b250",
+    "ege-profil/trainers/trigonometry.html": "b204df985acfe9a39b4e626a75f3eaa7746fe438ba5a781804964fa461604fe9",
+    "oge/skills/index.html": "96deca6239a9f9f5eaea86a13b9ad999fae11e0a3f09a5b07a12695dece17a28",
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
+    "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
+    "stereo-course/literacy/app.js": "f04dcf3d356ab9d570de1d29950e1e37978b360745af1acfb51bb2c1b0587d61",
+    "stereo-course/literacy/data/course.json": "4eac1b155b1a32095bebdb72b8d629ae0b6a827ce8816837f3c78896c17b4fd8",
+    "stereo-course/literacy/index.html": "5913305003b2a7188339030e0f61f8c84f5ade0eedef9ce3b56ea612bfa06199",
+    "stereo-course/literacy/style.css": "e66802bae021f5d222810f0314e2e020bef8fe27d0946d882d6bbfc5e0fb0b8b",
+    "stereo-course/sections/assets/app.js": "0e683deacc5ee989f3ae9fd5ac4dea6e6a7526de1161798a0e3342142452036c",
+    "stereo-course/sections/assets/course-data.js": "09fbd6df146216d2b7458554e55721eee1e01660f532bc1bac3b421677e23a3d",
+    "stereo-course/sections/assets/style.css": "a6594e7f418d15ef83e105beb49384627196fa518581727c867cfc8c41b157a9",
+    "stereo-course/sections/index.html": "30843860995d2faa32b8b9d2d23d1240177da50b634c27dffccff66d0154afd7",
+    "trainers/board-bridge.js": "64318538ca6801866bf5571745494359eef8f2af8621b39b1265fa3fdc262d60",
+    "trainers/negative-numbers-line.html": "964f127470315527d87059b34d45c382cba2af633b6debb21079c1b2d6e221fb",
+    "trainers/percent-part-whole-trainer.html": "9f4e3ca4ceb6ab36461bad2539bbe244ae189e6c2f5b671a4c950e0f0207f9da"
+  },
+  "clips": [
+    {
+      "id": "habr-negative-line",
+      "url": "/trainers/negative-numbers-line.html?seed=habr-311",
+      "captureSelector": "main > section.card:first-of-type",
+      "runtimeFiles": [
+        "assets/assistant/navigator-data.js",
+        "assets/assistant/navigator-widget.js",
+        "assets/assistant/widget.css",
+        "assets/download-panel.css",
+        "assets/habr-entry-gifs.css",
+        "assets/habr-entry-gifs.js",
+        "assets/oge-wayfinding.css",
+        "assets/oge-wayfinding.js",
+        "trainers/board-bridge.js",
+        "trainers/negative-numbers-line.html"
+      ],
+      "frames": [
+        {
+          "caption": "Начни в числе −1: положительное слагаемое задаёт движение вправо.",
+          "durationMs": 1500,
+          "actions": [],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": "#instr",
+              "value": "-1"
+            },
+            {
+              "kind": "count",
+              "selector": "#svg g.pt",
+              "value": 21
+            }
+          ]
+        },
+        {
+          "caption": "Нажми начальную точку −1.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#svg g.pt",
+              "nth": 9
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": "#instr",
+              "value": "Шаг 2"
+            }
+          ]
+        },
+        {
+          "caption": "Семь единиц вправо: конечная точка 6.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#svg g.pt",
+              "nth": 16
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "disabled",
+              "selector": "#ans",
+              "value": false
+            }
+          ]
+        },
+        {
+          "caption": "Введи 6 и проверь результат.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "fill",
+              "selector": "#ans",
+              "value": "6"
+            },
+            {
+              "type": "click",
+              "selector": "#check"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": "#feedback",
+              "value": "Верно"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "habr-percent-80",
+      "url": "/trainers/percent-part-whole-trainer.html?percent=80#exercise",
+      "captureSelector": "#exercise",
+      "runtimeFiles": [
+        "assets/assistant/navigator-data.js",
+        "assets/assistant/navigator-widget.js",
+        "assets/assistant/widget.css",
+        "assets/habr-entry-gifs.css",
+        "assets/habr-entry-gifs.js",
+        "assets/oge-wayfinding.css",
+        "assets/oge-wayfinding.js",
+        "trainers/percent-part-whole-trainer.html"
+      ],
+      "frames": [
+        {
+          "caption": "80 закрашенных клеток из 100 — это 80%.",
+          "durationMs": 1500,
+          "actions": [],
+          "assertions": [
+            {
+              "kind": "count",
+              "selector": "#bar .g-cell",
+              "value": 100
+            },
+            {
+              "kind": "count",
+              "selector": "#bar .g-cell.fill",
+              "value": 80
+            }
+          ]
+        },
+        {
+          "caption": "Сократи 80/100: числитель 4, знаменатель 5.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "fill",
+              "selector": "#ansNumerator",
+              "value": "4"
+            },
+            {
+              "type": "fill",
+              "selector": "#ansDenominator",
+              "value": "5"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#ansNumerator",
+              "value": "4"
+            },
+            {
+              "kind": "value",
+              "selector": "#ansDenominator",
+              "value": "5"
+            }
+          ]
+        },
+        {
+          "caption": "Нажми «Проверить»: 80% равны четырём пятым.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#checkBtn"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": "#feedback",
+              "value": "Верно"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "habr-battle-balance",
+      "url": "/oge/skills/?topic=base&route=family%3Aarith-battle-balance",
+      "captureSelector": "#mathexam-skill-lab .task",
+      "runtimeFiles": [
+        "oge/skills/index.html"
+      ],
+      "frames": [
+        {
+          "caption": "Одна положительная и одна отрицательная единица.",
+          "durationMs": 1500,
+          "actions": [],
+          "assertions": [
+            {
+              "kind": "count",
+              "selector": "#mathexam-skill-lab .task .token.neg",
+              "value": 1
+            },
+            {
+              "kind": "count",
+              "selector": "#mathexam-skill-lab .task .token.pos",
+              "value": 1
+            },
+            {
+              "kind": "text",
+              "selector": "#mathexam-skill-lab .task .task-prompt",
+              "value": "Найди сумму 1 + (−1)"
+            }
+          ]
+        },
+        {
+          "caption": "Предположи: противоположные единицы дадут ноль.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#mathexam-skill-lab .task [data-action=\"sign\"][data-value=\"0\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "attr",
+              "selector": "#mathexam-skill-lab .task [data-action=\"sign\"][data-value=\"0\"]",
+              "name": "aria-pressed",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "caption": "Убери одну противоположную пару.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#mathexam-skill-lab .task [data-action=\"cancel\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "count",
+              "selector": "#mathexam-skill-lab .task .token.cancelled",
+              "value": 2
+            },
+            {
+              "kind": "disabled",
+              "selector": "#mathexam-skill-lab .task [data-action=\"cancel\"]",
+              "value": true
+            }
+          ]
+        },
+        {
+          "caption": "Ничего не осталось: запиши 0 и проверь.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "fill",
+              "selector": "#mathexam-skill-lab .task #skill-answer",
+              "value": "0"
+            },
+            {
+              "type": "click",
+              "selector": "#mathexam-skill-lab .task [data-action=\"check\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": "#mathexam-skill-lab .task .feedback.good",
+              "value": "Ничего не осталось: сумма равна 0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "habr-circle-fractional-turns",
+      "url": "/ege-profil/circle/index.html?route=trigonometry&unit=m4-fractional-turns#lesson/m4-fractional-turns",
+      "captureSelector": "#lab .mord-lab",
+      "runtimeFiles": [
+        "assets/assistant/navigator-data.js",
+        "assets/assistant/navigator-widget.js",
+        "assets/assistant/widget.css",
+        "assets/habr-entry-gifs.css",
+        "assets/habr-entry-gifs.js",
+        "ege-profil/circle/app.js",
+        "ege-profil/circle/board-session.js",
+        "ege-profil/circle/chapter4.js",
+        "ege-profil/circle/chapter5.js",
+        "ege-profil/circle/chapter6a.js",
+        "ege-profil/circle/chapter6b.js",
+        "ege-profil/circle/checks.js",
+        "ege-profil/circle/index.html",
+        "ege-profil/circle/models.js",
+        "ege-profil/circle/preparation.js",
+        "ege-profil/circle/state.js",
+        "ege-profil/circle/style.css",
+        "ege-profil/exam-map.js",
+        "ege-profil/learning/data.js",
+        "ege-profil/learning/route.js",
+        "ege-profil/learning/style.css",
+        "ege-profil/skill-map-data.js",
+        "ege-profil/skill-map.css",
+        "ege-profil/skill-map.js",
+        "ege-profil/start/checks.js"
+      ],
+      "frames": [
+        {
+          "caption": "Сравни π/6, π/4 и π/3 внутри первой четверти.",
+          "durationMs": 1500,
+          "actions": [],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#lab [data-angle-input]",
+              "value": "π/4"
+            },
+            {
+              "kind": "text",
+              "selector": "h1",
+              "value": "Доли π внутри четвертей"
+            }
+          ]
+        },
+        {
+          "caption": "π/6 — треть первой четверти.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "fill",
+              "selector": "#lab [data-angle-input]",
+              "value": "pi/6"
+            },
+            {
+              "type": "click",
+              "selector": "#lab [data-apply-angle]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#lab [data-angle-input]",
+              "value": "π/6"
+            },
+            {
+              "kind": "text",
+              "selector": "#lab [data-lab-readings]",
+              "value": "I четверть"
+            },
+            {
+              "kind": "circle",
+              "selector": "#lab [data-current-point]",
+              "angle": 0.5235987755982988
+            }
+          ]
+        },
+        {
+          "caption": "π/4 — половина первой четверти.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "fill",
+              "selector": "#lab [data-angle-input]",
+              "value": "pi/4"
+            },
+            {
+              "type": "click",
+              "selector": "#lab [data-apply-angle]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#lab [data-angle-input]",
+              "value": "π/4"
+            },
+            {
+              "kind": "text",
+              "selector": "#lab [data-lab-readings]",
+              "value": "I четверть"
+            },
+            {
+              "kind": "circle",
+              "selector": "#lab [data-current-point]",
+              "angle": 0.7853981633974483
+            }
+          ]
+        },
+        {
+          "caption": "π/3 — две трети первой четверти.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "fill",
+              "selector": "#lab [data-angle-input]",
+              "value": "pi/3"
+            },
+            {
+              "type": "click",
+              "selector": "#lab [data-apply-angle]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#lab [data-angle-input]",
+              "value": "π/3"
+            },
+            {
+              "kind": "text",
+              "selector": "#lab [data-lab-readings]",
+              "value": "I четверть"
+            },
+            {
+              "kind": "circle",
+              "selector": "#lab [data-current-point]",
+              "angle": 1.0471975511965976
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "habr-sine-wave",
+      "url": "/ege-profil/trainers/trigonometry.html#sine-wave",
+      "captureSelector": "#sine-wave",
+      "runtimeFiles": [
+        "assets/assistant/navigator-data.js",
+        "assets/assistant/navigator-widget.js",
+        "assets/assistant/widget.css",
+        "assets/download-adaptation.css",
+        "assets/download-adaptation.js",
+        "assets/download-panel.css",
+        "assets/habr-entry-gifs.css",
+        "assets/habr-entry-gifs.js",
+        "ege-profil/exam-map.js",
+        "ege-profil/skill-map-data.js",
+        "ege-profil/skill-map.css",
+        "ege-profil/skill-map.js",
+        "ege-profil/start/course-links.css",
+        "ege-profil/start/course-links.js",
+        "ege-profil/trainers/trigonometry.html"
+      ],
+      "frames": [
+        {
+          "caption": "Точка синусоиды имеет ту же высоту, что конец радиуса.",
+          "durationMs": 1500,
+          "actions": [],
+          "assertions": [
+            {
+              "kind": "attr",
+              "selector": "[data-p=\"func\"]",
+              "name": "aria-selected",
+              "value": "true"
+            },
+            {
+              "kind": "sine",
+              "selector": "#wvSvg"
+            }
+          ]
+        },
+        {
+          "caption": "Сдвинь угол примерно до π/2: синус близок к 1.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "press",
+              "selector": "#wvT",
+              "key": "Home"
+            },
+            {
+              "type": "press",
+              "selector": "#wvT",
+              "key": "ArrowRight",
+              "repeat": 157
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#wvT",
+              "value": "1.57"
+            },
+            {
+              "kind": "sine",
+              "selector": "#wvSvg"
+            }
+          ]
+        },
+        {
+          "caption": "Около π точка снова рядом с горизонтальной осью.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "press",
+              "selector": "#wvT",
+              "key": "ArrowRight",
+              "repeat": 157
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#wvT",
+              "value": "3.14"
+            },
+            {
+              "kind": "sine",
+              "selector": "#wvSvg"
+            }
+          ]
+        },
+        {
+          "caption": "Около 3π/2 синус близок к −1.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "press",
+              "selector": "#wvT",
+              "key": "ArrowRight",
+              "repeat": 157
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#wvT",
+              "value": "4.71"
+            },
+            {
+              "kind": "sine",
+              "selector": "#wvSvg"
+            }
+          ]
+        },
+        {
+          "caption": "Кнопка «в начало» возвращает обе точки к нулю.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#wvReset"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "value",
+              "selector": "#wvT",
+              "value": "0"
+            },
+            {
+              "kind": "sine",
+              "selector": "#wvSvg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "habr-stereo-literacy",
+      "url": "/stereo-course/literacy/#atanasyan2024-theory-001",
+      "captureSelector": ".literacy-model",
+      "runtimeFiles": [
+        "assets/habr-entry-gifs.css",
+        "assets/habr-entry-gifs.js",
+        "stereo-course/assets/math-text.js",
+        "stereo-course/assets/task-scene-viewer.js",
+        "stereo-course/assets/task-scenes.css",
+        "stereo-course/literacy/app.js",
+        "stereo-course/literacy/data/course.json",
+        "stereo-course/literacy/index.html",
+        "stereo-course/literacy/style.css"
+      ],
+      "frames": [
+        {
+          "caption": "Один куб можно рассматривать с разных сторон.",
+          "durationMs": 1500,
+          "actions": [],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": ".literacy-card h1",
+              "value": "Что изучает стереометрия"
+            }
+          ]
+        },
+        {
+          "caption": "Поверни модель вправо: меняется изображение, не сам куб.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": ".literacy-model [aria-label=\"Повернуть вправо\"]"
+            },
+            {
+              "type": "click",
+              "selector": ".literacy-model [aria-label=\"Повернуть вправо\"]"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Наклони модель, чтобы сопоставить грани.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": ".literacy-model [aria-label=\"Наклонить вверх\"]"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Верни исходный вид кнопкой сброса.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": ".literacy-model [aria-label=\"Вернуть исходный вид\"]"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "В разборе выделяется одна плоская грань куба.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-literacy-start-steps]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-literacy-explain=\"0\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "attr",
+              "selector": ".literacy-model svg",
+              "name": "data-view",
+              "value": "face"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "habr-sections-starter18",
+      "url": "/stereo-course/sections/#starter-18",
+      "captureSelector": ".workbench",
+      "runtimeFiles": [
+        "assets/assistant/navigator-data.js",
+        "assets/assistant/navigator-widget.js",
+        "assets/assistant/widget.css",
+        "assets/download-adaptation.css",
+        "assets/download-adaptation.js",
+        "assets/download-panel.css",
+        "assets/habr-entry-gifs.css",
+        "assets/habr-entry-gifs.js",
+        "stereo-course/sections/assets/app.js",
+        "stereo-course/sections/assets/course-data.js",
+        "stereo-course/sections/assets/style.css",
+        "stereo-course/sections/index.html"
+      ],
+      "frames": [
+        {
+          "caption": "Четыре точки M, N, P, Q уже даны в одной плоскости среза.",
+          "durationMs": 1500,
+          "actions": [],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": "#lesson-title",
+              "value": "Наклонный срез"
+            }
+          ]
+        },
+        {
+          "caption": "Открой самостоятельное построение.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"start-construction\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": ".construction-status",
+              "value": "0 из 4"
+            }
+          ]
+        },
+        {
+          "caption": "Выбери грань AEFB, точки M и N, роль «Сторона сечения».",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-construction-plane=\"AEFB\"]"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"a\"]",
+              "value": "M"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"b\"]",
+              "value": "N"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"role\"]",
+              "value": "section"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Проверь действие: сторона MN построена.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construction-submit\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": ".construction-status",
+              "value": "1 из 4"
+            }
+          ]
+        },
+        {
+          "caption": "Выбери грань BFGC, точки N и P, роль «Сторона сечения».",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construction-next\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-construction-plane=\"BFGC\"]"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"a\"]",
+              "value": "N"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"b\"]",
+              "value": "P"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"role\"]",
+              "value": "section"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Проверь действие: сторона NP построена.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construction-submit\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": ".construction-status",
+              "value": "2 из 4"
+            }
+          ]
+        },
+        {
+          "caption": "Выбери грань CGHD, точки P и Q, роль «Сторона сечения».",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construction-next\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-construction-plane=\"CGHD\"]"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"a\"]",
+              "value": "P"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"b\"]",
+              "value": "Q"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"role\"]",
+              "value": "section"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Проверь действие: сторона PQ построена.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construction-submit\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": ".construction-status",
+              "value": "3 из 4"
+            }
+          ]
+        },
+        {
+          "caption": "Выбери грань DHEA, точки Q и M, роль «Сторона сечения».",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construction-next\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-construction-plane=\"DHEA\"]"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"a\"]",
+              "value": "Q"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"b\"]",
+              "value": "M"
+            },
+            {
+              "type": "select",
+              "selector": "[data-construction-input=\"role\"]",
+              "value": "section"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Проверь действие: сторона QM построена.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construction-submit\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": ".construction-status",
+              "value": "4 из 4"
+            }
+          ]
+        },
+        {
+          "caption": "Выбери M, N, P, Q по обходу и проверь замкнутую границу.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-construction-vertex=\"M\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-construction-vertex=\"N\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-construction-vertex=\"P\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-construction-vertex=\"Q\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-action=\"construction-boundary-submit\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": ".construction-finish",
+              "value": "Граница проверена"
+            }
+          ]
+        },
+        {
+          "caption": "У последней стороны действует то же правило принадлежности.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-construction-check=\"0\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": ".construction-finish",
+              "value": "Геометрические действия и итоговые выборы проверены"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "habr-sections-authcore05",
+      "url": "/stereo-course/sections/#auth-core-05",
+      "captureSelector": ".workbench",
+      "runtimeFiles": [
+        "assets/assistant/navigator-data.js",
+        "assets/assistant/navigator-widget.js",
+        "assets/assistant/widget.css",
+        "assets/download-adaptation.css",
+        "assets/download-adaptation.js",
+        "assets/download-panel.css",
+        "assets/habr-entry-gifs.css",
+        "assets/habr-entry-gifs.js",
+        "stereo-course/sections/assets/app.js",
+        "stereo-course/sections/assets/course-data.js",
+        "stereo-course/sections/assets/style.css",
+        "stereo-course/sections/index.html"
+      ],
+      "frames": [
+        {
+          "caption": "У тетраэдра четыре грани: исследуй границу сечения.",
+          "durationMs": 1500,
+          "actions": [],
+          "assertions": [
+            {
+              "kind": "text",
+              "selector": "#lesson-title",
+              "value": "Почему у тетраэдра не бывает пятиугольного сечения"
+            }
+          ]
+        },
+        {
+          "caption": "Начни построение с самостоятельного выбора плоскости.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"start-practice\"]"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "MN — средняя линия в грани SAB.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-plane-choice=\"SAB\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-reason-choice=\"1\"]"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Выполни действие в выбранной плоскости.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construct\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "attr",
+              "selector": "[role=\"progressbar\"]",
+              "name": "aria-valuenow",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "caption": "PQ ∥ AB и MN ∥ AB: так обосновывается принадлежность Q.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"next-step\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-plane-choice=\"ABC\"]"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Выполни действие в выбранной плоскости.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construct\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "attr",
+              "selector": "[role=\"progressbar\"]",
+              "name": "aria-valuenow",
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "caption": "N и P лежат в секущей и в грани SBC.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"next-step\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-plane-choice=\"SBC\"]"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Выполни действие в выбранной плоскости.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construct\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "attr",
+              "selector": "[role=\"progressbar\"]",
+              "name": "aria-valuenow",
+              "value": "3"
+            }
+          ]
+        },
+        {
+          "caption": "Q и M замыкают сечение в грани SCA.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"next-step\"]"
+            },
+            {
+              "type": "click",
+              "selector": "[data-plane-choice=\"SCA\"]"
+            }
+          ],
+          "assertions": []
+        },
+        {
+          "caption": "Выполни действие в выбранной плоскости.",
+          "durationMs": 1500,
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[data-action=\"construct\"]"
+            }
+          ],
+          "assertions": [
+            {
+              "kind": "attr",
+              "selector": "[role=\"progressbar\"]",
+              "name": "aria-valuenow",
+              "value": "4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "integrationFrozen": true,
+  "capturePrecondition": "Root must create the exact reviewed source checkpoint in ancestry before pushing the separate capture commit; import must preserve all48runtime source hashes.",
+  "integrationBaseTree": "53036a535470c7dc00821610f22b9ef43bb3fcaa"
+}

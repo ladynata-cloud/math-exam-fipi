@@ -1,0 +1,147 @@
+{
+  "id": "habr-stereo-literacy",
+  "url": "/stereo-course/literacy/#atanasyan2024-theory-001",
+  "scenarioSha256": "cae23bb58105f6f68b4360752fa67ce01e7ab36113e35ffd1d1630262fedf831",
+  "sourceHashes": {
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
+    "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
+    "stereo-course/literacy/app.js": "f04dcf3d356ab9d570de1d29950e1e37978b360745af1acfb51bb2c1b0587d61",
+    "stereo-course/literacy/data/course.json": "4eac1b155b1a32095bebdb72b8d629ae0b6a827ce8816837f3c78896c17b4fd8",
+    "stereo-course/literacy/index.html": "5913305003b2a7188339030e0f61f8c84f5ade0eedef9ce3b56ea612bfa06199",
+    "stereo-course/literacy/style.css": "e66802bae021f5d222810f0314e2e020bef8fe27d0946d882d6bbfc5e0fb0b8b"
+  },
+  "frames": [
+    {
+      "file": "frame-01.png",
+      "actualPageUrl": "/stereo-course/literacy/#atanasyan2024-theory-001",
+      "caption": "Один куб можно рассматривать с разных сторон.",
+      "durationMs": 1500,
+      "sha256": "a505e2b2cca627731859892d4225ab23dca146b0a7383d8aeb814c981d3cc542",
+      "actions": [],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": ".literacy-card h1",
+          "value": "Что изучает стереометрия"
+        }
+      ],
+      "bounds": {
+        "x": 580.453125,
+        "y": 210.140625,
+        "width": 578.609375,
+        "height": 748.65625
+      }
+    },
+    {
+      "file": "frame-02.png",
+      "actualPageUrl": "/stereo-course/literacy/#atanasyan2024-theory-001",
+      "caption": "Поверни модель вправо: меняется изображение, не сам куб.",
+      "durationMs": 1500,
+      "sha256": "5b032299dc1031ba9bbcb88e009d5ac1243c621a09bbf96a8771393efc722d39",
+      "actions": [
+        {
+          "type": "click",
+          "selector": ".literacy-model [aria-label=\"Повернуть вправо\"]"
+        },
+        {
+          "type": "click",
+          "selector": ".literacy-model [aria-label=\"Повернуть вправо\"]"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 580.453125,
+        "y": 210.140625,
+        "width": 578.609375,
+        "height": 748.65625
+      }
+    },
+    {
+      "file": "frame-03.png",
+      "actualPageUrl": "/stereo-course/literacy/#atanasyan2024-theory-001",
+      "caption": "Наклони модель, чтобы сопоставить грани.",
+      "durationMs": 1500,
+      "sha256": "4c97394331743a788e0d6e5ca1a7eae8e66ecadb55c28ffbf59b13c13a8e094e",
+      "actions": [
+        {
+          "type": "click",
+          "selector": ".literacy-model [aria-label=\"Наклонить вверх\"]"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 580.453125,
+        "y": 210.140625,
+        "width": 578.609375,
+        "height": 748.65625
+      }
+    },
+    {
+      "file": "frame-04.png",
+      "actualPageUrl": "/stereo-course/literacy/#atanasyan2024-theory-001",
+      "caption": "Верни исходный вид кнопкой сброса.",
+      "durationMs": 1500,
+      "sha256": "01d8e2e44d8ec1a6554b8a3673927a18bfce358169a49beacd877f27a5bdafdc",
+      "actions": [
+        {
+          "type": "click",
+          "selector": ".literacy-model [aria-label=\"Вернуть исходный вид\"]"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 580.453125,
+        "y": 210.140625,
+        "width": 578.609375,
+        "height": 748.65625
+      }
+    },
+    {
+      "file": "frame-05.png",
+      "actualPageUrl": "/stereo-course/literacy/#atanasyan2024-theory-001",
+      "caption": "В разборе выделяется одна плоская грань куба.",
+      "durationMs": 1500,
+      "sha256": "867729b37146a85bfee0d7783aad0e95bc388d9a92015ef4b284455d47d90ad6",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-literacy-start-steps]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-literacy-explain=\"0\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "attr",
+          "selector": ".literacy-model svg",
+          "name": "data-view",
+          "value": "face"
+        }
+      ],
+      "bounds": {
+        "x": 580.453125,
+        "y": 0.140625,
+        "width": 578.609375,
+        "height": 753.078125
+      }
+    }
+  ],
+  "loadedSources": {
+    "stereo-course/literacy/index.html": "5913305003b2a7188339030e0f61f8c84f5ade0eedef9ce3b56ea612bfa06199",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "stereo-course/assets/task-scenes.css": "1100ff4d47f419db531fc8f08d923e910c297413de4ccc572abe340a18fe972d",
+    "stereo-course/literacy/style.css": "e66802bae021f5d222810f0314e2e020bef8fe27d0946d882d6bbfc5e0fb0b8b",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "stereo-course/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "stereo-course/literacy/app.js": "f04dcf3d356ab9d570de1d29950e1e37978b360745af1acfb51bb2c1b0587d61",
+    "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
+    "stereo-course/literacy/data/course.json": "4eac1b155b1a32095bebdb72b8d629ae0b6a827ce8816837f3c78896c17b4fd8"
+  },
+  "blockedExternal": [],
+  "complete": true
+}

@@ -1,0 +1,408 @@
+{
+  "id": "habr-sections-starter18",
+  "url": "/stereo-course/sections/#starter-18",
+  "scenarioSha256": "f956ec7397ac39ca23d6d52b34fdd8baea7543bc77f45dc13f6e26e571e085f8",
+  "sourceHashes": {
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599",
+    "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "stereo-course/sections/assets/app.js": "0e683deacc5ee989f3ae9fd5ac4dea6e6a7526de1161798a0e3342142452036c",
+    "stereo-course/sections/assets/course-data.js": "09fbd6df146216d2b7458554e55721eee1e01660f532bc1bac3b421677e23a3d",
+    "stereo-course/sections/assets/style.css": "a6594e7f418d15ef83e105beb49384627196fa518581727c867cfc8c41b157a9",
+    "stereo-course/sections/index.html": "30843860995d2faa32b8b9d2d23d1240177da50b634c27dffccff66d0154afd7"
+  },
+  "frames": [
+    {
+      "file": "frame-01.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Четыре точки M, N, P, Q уже даны в одной плоскости среза.",
+      "durationMs": 1500,
+      "sha256": "ed15597d61f5b950bea0f1f6d9beebed5c80b0c4aa14c75337233a4df21911e4",
+      "actions": [],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": "#lesson-title",
+          "value": "Наклонный срез"
+        }
+      ],
+      "bounds": {
+        "x": 27,
+        "y": 201.96875,
+        "width": 1226,
+        "height": 797.578125
+      }
+    },
+    {
+      "file": "frame-02.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Открой самостоятельное построение.",
+      "durationMs": 1500,
+      "sha256": "f591f09ec5d066384fb6fd51ded550d87e71b2bd5cecb9ff8b13c9ce430e1031",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"start-construction\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": ".construction-status",
+          "value": "0 из 4"
+        }
+      ],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 1202.734375
+      }
+    },
+    {
+      "file": "frame-03.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Выбери грань AEFB, точки M и N, роль «Сторона сечения».",
+      "durationMs": 1500,
+      "sha256": "58552446268be91a6cce7bd9a0bdcf5defe916b62a2141fa40c2a26ff7afd28c",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-construction-plane=\"AEFB\"]"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"a\"]",
+          "value": "M"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"b\"]",
+          "value": "N"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"role\"]",
+          "value": "section"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 1202.734375
+      }
+    },
+    {
+      "file": "frame-04.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Проверь действие: сторона MN построена.",
+      "durationMs": 1500,
+      "sha256": "f93018b711459676573f6971f27e424e8eb3400d2af08c1886714b37b241ac53",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construction-submit\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": ".construction-status",
+          "value": "1 из 4"
+        }
+      ],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 797.578125
+      }
+    },
+    {
+      "file": "frame-05.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Выбери грань BFGC, точки N и P, роль «Сторона сечения».",
+      "durationMs": 1500,
+      "sha256": "ad8cd4c3fb06c3cd6c3df4197d02f7266049f9fb359847a45cc2f57b420d8ac0",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construction-next\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-construction-plane=\"BFGC\"]"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"a\"]",
+          "value": "N"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"b\"]",
+          "value": "P"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"role\"]",
+          "value": "section"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 1363.28125
+      }
+    },
+    {
+      "file": "frame-06.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Проверь действие: сторона NP построена.",
+      "durationMs": 1500,
+      "sha256": "75052de68dcb594502f7a3f7d4cf3e4d2fdc2276484228f23ec2177904e3f74f",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construction-submit\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": ".construction-status",
+          "value": "2 из 4"
+        }
+      ],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 797.578125
+      }
+    },
+    {
+      "file": "frame-07.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Выбери грань CGHD, точки P и Q, роль «Сторона сечения».",
+      "durationMs": 1500,
+      "sha256": "d1a6911ee2ce2e45f40d358d89bfac48baa93e451fd45c1c1108de204ff76294",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construction-next\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-construction-plane=\"CGHD\"]"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"a\"]",
+          "value": "P"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"b\"]",
+          "value": "Q"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"role\"]",
+          "value": "section"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 1363.28125
+      }
+    },
+    {
+      "file": "frame-08.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Проверь действие: сторона PQ построена.",
+      "durationMs": 1500,
+      "sha256": "d192a98852f445ad3cff9437b7850e7e03a15e011db4f54d849370a1782fc8d2",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construction-submit\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": ".construction-status",
+          "value": "3 из 4"
+        }
+      ],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 797.578125
+      }
+    },
+    {
+      "file": "frame-09.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Выбери грань DHEA, точки Q и M, роль «Сторона сечения».",
+      "durationMs": 1500,
+      "sha256": "9af067bf2ce0dc09969e65d41cd77f7ebc22e379d7a89b00bc1202968ecd26b0",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construction-next\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-construction-plane=\"DHEA\"]"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"a\"]",
+          "value": "Q"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"b\"]",
+          "value": "M"
+        },
+        {
+          "type": "select",
+          "selector": "[data-construction-input=\"role\"]",
+          "value": "section"
+        }
+      ],
+      "assertions": [],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 1332.6875
+      }
+    },
+    {
+      "file": "frame-10.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Проверь действие: сторона QM построена.",
+      "durationMs": 1500,
+      "sha256": "bc9a9ee0ef76ff5f83edec6a5f76df28db4c2eaa322df4932b3d5395f3f56d96",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-action=\"construction-submit\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": ".construction-status",
+          "value": "4 из 4"
+        }
+      ],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 1302.953125
+      }
+    },
+    {
+      "file": "frame-11.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "Выбери M, N, P, Q по обходу и проверь замкнутую границу.",
+      "durationMs": 1500,
+      "sha256": "34b99c40b6b39331e9f84038e9d8cdbe27b44e998670533b29eeeb1e3a4d6a22",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-construction-vertex=\"M\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-construction-vertex=\"N\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-construction-vertex=\"P\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-construction-vertex=\"Q\"]"
+        },
+        {
+          "type": "click",
+          "selector": "[data-action=\"construction-boundary-submit\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": ".construction-finish",
+          "value": "Граница проверена"
+        }
+      ],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 1387.515625
+      }
+    },
+    {
+      "file": "frame-12.png",
+      "actualPageUrl": "/stereo-course/sections/#starter-18",
+      "caption": "У последней стороны действует то же правило принадлежности.",
+      "durationMs": 1500,
+      "sha256": "bdd6bf76b04d28f0fb1cbbce8ba53de45967282cc005b64035089721df122a46",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "[data-construction-check=\"0\"]"
+        }
+      ],
+      "assertions": [
+        {
+          "kind": "text",
+          "selector": ".construction-finish",
+          "value": "Геометрические действия и итоговые выборы проверены"
+        }
+      ],
+      "bounds": {
+        "x": 27,
+        "y": -0.03125,
+        "width": 1226,
+        "height": 1578.5
+      }
+    }
+  ],
+  "loadedSources": {
+    "stereo-course/sections/index.html": "30843860995d2faa32b8b9d2d23d1240177da50b634c27dffccff66d0154afd7",
+    "assets/habr-entry-gifs.css": "8df2c6d58fb1510b5b95a0905b3b1fa82834ddb1e11c24bfd6ba9bc5fcf121f3",
+    "stereo-course/sections/assets/style.css": "a6594e7f418d15ef83e105beb49384627196fa518581727c867cfc8c41b157a9",
+    "assets/download-panel.css": "79a001ffa077de248614dc39b24ce528c6680b4dab954950c0f8c0eb42056483",
+    "assets/download-adaptation.css": "3cfedc2913c3ceba17f5dae770de98df4b85d7d4a507bcfc415aea8f82fb7467",
+    "assets/habr-entry-gifs.js": "f085f0d9f30e21d88023c6dfd7f66ff5acd2e3b033923d7ce56f55730c7a2a87",
+    "assets/assistant/navigator-data.js": "8046f0749168397e052636a16c5af50944aa943b08562d47ee73c108820eef9d",
+    "assets/assistant/navigator-widget.js": "75cbe2f18996be9af74b66a030a9f0cbcdba3c6ca17bf2c9f6dafb5e683db6be",
+    "assets/download-adaptation.js": "e5ea190451ae47a5ca3efdf9368da1178e1a9cbeafd1066d8866c8db8db42cc7",
+    "stereo-course/sections/assets/app.js": "0e683deacc5ee989f3ae9fd5ac4dea6e6a7526de1161798a0e3342142452036c",
+    "stereo-course/sections/assets/course-data.js": "09fbd6df146216d2b7458554e55721eee1e01660f532bc1bac3b421677e23a3d",
+    "assets/assistant/widget.css": "87ea751d92f2bc47fd758f854198d4be49257b2040b7bde3ca7f57a051b26599"
+  },
+  "blockedExternal": [],
+  "complete": true
+}

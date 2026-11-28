@@ -55,6 +55,17 @@ function createHarness(options = {}) {
     virtualConsole,
     // resources is deliberately omitted: external subresources are not loaded.
     beforeParse(window) {
+      // JSDOM has no media-query implementation. This is a declared synthetic
+      // motion preference, not evidence of native CSS or browser playback.
+      window.matchMedia = query => {
+        assert.equal(query, "(prefers-reduced-motion: reduce)", "Undeclared synthetic media query");
+        const result = new window.EventTarget();
+        Object.defineProperties(result, {
+          media: {value: query},
+          matches: {value: Boolean(options.reducedMotion)}
+        });
+        return result;
+      };
       const NativeDate = window.Date;
       window.Date = class ControlledDate extends NativeDate {
         constructor(...args) { super(...(args.length ? args : [clock.now])); }
