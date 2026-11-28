@@ -116,9 +116,13 @@ function create(A){
    input.value=rec.draft;input.setAttribute('aria-describedby','micro-question');
    if(!remote())input.focus({preventScroll:true});
    if(A.shared)showFeedback(rec.feedback);
-   input.oninput=()=>{rec.draft=input.value.slice(0,200);if(A.shared){rec.feedback='none';showFeedback('none');}write();};
+   function readDraft(){
+    if(A.shared&&!question.choices)input.value=input.value.slice(0,200).replace(/</g,'‹').replace(/>/g,'›');
+    return input.value;
+   }
+   input.oninput=()=>{rec.draft=readDraft();if(A.shared){rec.feedback='none';showFeedback('none');}write();};
    panel.querySelector('#micro-form').onsubmit=e=>{
-    e.preventDefault();const value=input.value;
+    e.preventDefault();const value=readDraft();
     let kind='wrong';
     if(!value.trim())kind='empty';
     else if(!question.choices&&!Number.isFinite(root.ProfileCheck.number(value)))kind='format';

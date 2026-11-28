@@ -155,8 +155,13 @@ test('№10 guided micro-steps survive hydration and navigation without changing
 
     for (const question of questions) {
       if (!question.choices) {
-        input('abc');
+        input('<x>' + '1'.repeat(240));
+        assert.equal(record().draft, '‹x›' + '1'.repeat(197));
+        assert.equal(f.query('#micro-answer').value, record().draft);
+        f.roundtrip('pasted markup in numeric draft');
+        f.query('#micro-answer').value = '<x>';
         submit();
+        assert.equal(record().draft, '‹x›');
         assert.equal(record().feedback, 'format');
         f.roundtrip('invalid numeric format feedback');
       }
