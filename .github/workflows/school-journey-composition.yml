@@ -108,7 +108,7 @@ jobs:
               assert blob(candidate,p)==blob(released,p)==blob(bridge,p), p
           for p in school_paths-{shared,workflow}:
               assert blob(candidate,p)==blob(school,p), p
-          fixed={"assets/school-journey-home.js": "eb3c1938e79d170e924a83b82af39e7484d22565", "tools/school-journey.browser.cjs": "8a0ff8f3a6b2df7f2ec1a1876b2db57d75374124"}
+          fixed={"assets/school-journey-home.js": "eb3c1938e79d170e924a83b82af39e7484d22565", "tools/school-journey.browser.cjs": "8a0ff8f3a6b2df7f2ec1a1876b2db57d75374124", fraction: "ef27dd94836add6ff8015325fabb0d0b5e7cd890", "tools/school-journey-composition.browser.cjs": "5f368ea0db1e885158a2f1e2559eecd29e4f75f4"}
           # Historical blobs are checked above; the two reviewed fixes are checked against live and pinned below.
           for p in (expected | school_paths)-{shared,workflow}:
               assert Path(p).read_bytes()==blob(live if p in fixed else candidate,p), p
@@ -155,6 +155,17 @@ jobs:
           fresh["addedPages"][fraction]=current["addedPages"][fraction]
           fresh["sourceBindingUpdates"].append(current["sourceBindingUpdates"][-1])
           assert len(fresh["sourceBindingUpdates"])==221
+          # Keep the historical composition intact and verify the exact additional source commit.
+          fraction_source="3a23bc65bf7ba599b65d546887eaca05dcddbd34"
+          fraction_previous="62bc1c951e1a93a07971218e0866837f35789b22"
+          fraction_test="tools/school-journey-composition.browser.cjs"
+          assert git("rev-parse",fraction_source+"^1").decode().strip()==fraction_previous
+          assert changed(fraction_previous,fraction_source)=={fraction,fraction_test}
+          assert blob(fraction_source,fraction)==blob(live,fraction)
+          assert blob(fraction_source,fraction_test)==blob(live,fraction_test)
+          fresh["addedPages"][fraction]=json.loads('{"beforeSha256":"8039ca6904e9caf5b416c96c803bc17a5a249d7d1000c1e89524eced0df4263d","afterSha256":"e0a73fa99035e320fadf7a130f90037a0a3e9b00aeb99d1ac927580930dde6ef","placement":"before-head-close","sourceSha":"3a23bc65bf7ba599b65d546887eaca05dcddbd34"}')
+          fresh["sourceBindingUpdates"].append(json.loads('{"sourceBaseSha":"3a23bc65bf7ba599b65d546887eaca05dcddbd34","previousSourceSha":"3d1fb25cc9d367f8ac8e2f629acd6d0c2369b166","task":"docs/tasks/UNIFIED_SCHOOL_JOURNEY_20261124.md","changedPaths":["trainers/oge-basics/fraction-meaning.html"],"reason":"Bind the four reviewed standalone fraction corrections; preserve the published bridge and existing navigator pair.","bindingScope":"Per-page sourceSha; global base and shared runtime unchanged.","boundary":"Exact committed source identity only; not mathematical or publication approval."}'))
+          assert len(fresh["sourceBindingUpdates"])==222
           live_manifest=json.loads(blob(live,shared))
           assert fresh==live_manifest and Path(shared).read_bytes()==blob(live,shared)
           assert "trainers/trainers/long-division.html" not in live_manifest["addedPages"] and "trainers/trainers/long-division.html" not in live_manifest["provenance"]
@@ -168,7 +179,7 @@ jobs:
           for p in expected | school_paths:
               assert Path(p).read_bytes()==blob(live,p), p
           composed=git("rev-parse",live+"^{tree}").decode().strip()
-          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 89 later published paths; 16 school paths; both page bindings and all 221 history receipts retained")
+          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 89 later published paths; 16 school paths; both page bindings and all 222 history receipts retained")
           PY
       - name: Existing mathematical and route assertions on the composition
         run: |
