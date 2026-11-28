@@ -145,6 +145,56 @@ async function checkLearningEntries(page, origin, javaScriptEnabled) {
   console.log('SEO_FIRST_LEARNING_ENTRIES_OK: JavaScript ' + javaScriptEnabled);
 }
 
+async function checkSchoolSearchEntries(page, origin, javaScriptEnabled) {
+  for (const width of [320, 390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(origin + '/courses/vilenkin-5/');
+    const part = page.locator('.topic-hero a[href="/courses/vilenkin-5-part-1/"]');
+    assert.equal(await part.count(), 1);
+    await part.scrollIntoViewIfNeeded();
+    assert(await part.isVisible());
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Vilenkin entry overflow');
+    await Promise.all([page.waitForURL(url => url.pathname === '/courses/vilenkin-5-part-1/'), part.click()]);
+    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://mathexam.space/courses/vilenkin-5-part-1/');
+    await page.goto(origin + '/topics/obyknovennye-drobi/');
+    const primary = page.locator('.topic-hero .topic-actions a.btn').first();
+    assert.equal(await primary.getAttribute('href'), '/trainers/oge-basics/fraction-common-denominator.html');
+    assert(await primary.isVisible());
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'fraction entry overflow');
+    await Promise.all([page.waitForURL(url => url.pathname.endsWith('/fraction-common-denominator.html')), primary.click()]);
+    assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://mathexam.space/trainers/oge-basics/fraction-common-denominator.html');
+    for (const target of ['/pedagogam/raboty/arith-fraction-add-subtract/', '/trainers/desyatichnye-drobi-level-1.html']) {
+      await page.goto(origin + '/topics/obyknovennye-drobi/');
+      const link = page.locator('a[href="' + target + '"]');
+      assert.equal(await link.count(), 1);
+      await link.scrollIntoViewIfNeeded();
+      assert(await link.isVisible());
+      await Promise.all([page.waitForURL(url => url.pathname === target), link.click()]);
+      assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://mathexam.space' + target);
+    }
+  }
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto(origin + '/school/peterson5/');
+  const quick = ['p16', 'p17', 'p28', 'p43'];
+  for (const id of quick) {
+    const route = '#topic/' + id + '/discover';
+    const link = javaScriptEnabled ? page.locator('.workshop-topic-card[href="' + route + '"]') : page.locator('.grade5-entry > p a[href="' + route + '"]');
+    await link.waitFor({ state: 'visible' });
+    assert.equal(await link.count(), 1);
+    if (!javaScriptEnabled) assert.equal(await page.locator('[id="' + route.slice(1) + '"]').count(), 1);
+  }
+  if (javaScriptEnabled) {
+    await page.locator('.workshop-topic-card[href="#topic/p28/discover"]').click();
+    await page.locator('.workshop-lesson-header h1').waitFor();
+    assert.match(await page.locator('.workshop-lesson-header h1').innerText(), /сложение и вычитание дробей/i);
+  }
+  // The atlas title is independent of the dynamic catalog; do not infer index status.
+  await page.goto(origin + '/geometry-course/textbook/', {waitUntil: 'domcontentloaded'});
+  assert.match(await page.title(), /Атанасян.*чертежами и подсказками/);
+  assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://mathexam.space/geometry-course/textbook/');
+  console.log('SEO_SCHOOL_SEARCH_ENTRIES_OK: 320/390/1280, JavaScript ' + javaScriptEnabled);
+}
+
 (async () => {
   let browser;
   try {
@@ -158,6 +208,7 @@ async function checkLearningEntries(page, origin, javaScriptEnabled) {
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
       await checkLearningEntries(page, origin, javaScriptEnabled);
+      await checkSchoolSearchEntries(page, origin, javaScriptEnabled);
       await checkVilenkinEntrances(page, origin, javaScriptEnabled);
       for (let i = 0; i < legacy.length; i++) {
         await page.goto(`${origin}/trainers/multiplication-table/${legacy[i]}?source=compat-check#saved-route`, { waitUntil: 'commit' });
