@@ -6,6 +6,14 @@
   const fmt = n => String(Number(n.toFixed(8))).replace('.', ',').replace('-', '−');
   const lessons = (root.ProfileLessons || []).filter(l => l.id.startsWith('applied-'));
   const ids = lessons.flatMap(l => l.tasks.map(t => t.id));
+  function validBoardState(taskId, value) {
+    return value !== null && typeof value === 'object' && !Array.isArray(value) &&
+      [Object.prototype, null].includes(Object.getPrototypeOf(value)) &&
+      Reflect.ownKeys(value).length === 3 && ['taskId', 'highlight', 'help'].every(key => {
+        const property = Object.getOwnPropertyDescriptor(value, key);
+        return property && property.enumerable && Object.hasOwn(property, 'value');
+      }) && value.taskId === taskId && typeof value.highlight === 'boolean' && typeof value.help === 'boolean';
+  }
   function sceneFor(task, context = {}, options = {}) {
     const complete = context.mode === 'independent' ? !!context.solved :
       Math.max(Number(context.completed) || 0, (Number(context.step) || 0) + (context.solved ? 1 : 0)) >= task.steps.length;
@@ -175,9 +183,22 @@
     highlight.onclick = () => { options.highlight = !options.highlight; paint(); };
     explain.onclick = () => { options.help = !options.help; if (options.help && !sceneFor(task, context).complete && context.mode === 'independent' && typeof context.onHelp === 'function') context.onHelp(); paint(); };
     paint();
-    return () => { highlight.onclick = null; explain.onclick = null; };
+    let disposed = false;
+    const cleanup = () => { disposed = true; highlight.onclick = null; explain.onclick = null; };
+    cleanup.getBoardState = () => ({ taskId: task.id, highlight: options.highlight, help: options.help });
+    cleanup.applyBoardState = value => {
+      if (disposed || !validBoardState(task.id, value)) throw new TypeError('Invalid applied model board state');
+      options.highlight = value.highlight;
+      options.help = value.help;
+      paint();
+    };
+    return cleanup;
   }
   const models = root.ProfileTaskModels = root.ProfileTaskModels || {};
-  for (const id of ids) models[id] = render;
+  for (const id of ids) {
+    const model = (container, task, context) => render(container, task, context);
+    model.validateBoardState = value => validBoardState(id, value);
+    models[id] = model;
+  }
   if (typeof module !== 'undefined' && module.exports) module.exports = { ids, sceneFor, render };
 })(globalThis);

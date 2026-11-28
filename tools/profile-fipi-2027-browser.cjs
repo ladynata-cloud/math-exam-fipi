@@ -71,6 +71,13 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         for (const entry of map.entries) {
           await go(map.href(entry));
           check('official label ' + entry.number, new RegExp('№\\s*' + entry.number + '(?:\\D|$)').test(await page.locator('main').innerText()));
+          if (entry.part === 1) {
+            const board = await page.locator('main a.board-link').getAttribute('href');
+            const target = new URL(board, origin);
+            check('first-part board entry ' + entry.number, target.pathname, '/trainers/trainer-board.html');
+            const trainer = new URL(target.searchParams.get('trainer'), origin);
+            check('board preserves the chosen number ' + entry.number, trainer.hash, entry.number === 2 ? '#exam/2' : map.hash(entry));
+          }
           await lessonsVisible(entry.number === 2 ? entry.preparationIds : entry.lessonIds);
           await noOverflow('official ' + entry.number);
           row.official.push(entry.number);
