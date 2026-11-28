@@ -38,6 +38,11 @@
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/math-home.css?v=20261105">
+<link rel="stylesheet" href="/assets/school-journey-home.css">
+<script defer src="/learning/division-course-map.js?v=multiplication-complete-20261019"></script>
+<script defer src="/learning/preparation-map.js?v=multiplication-complete-20261019"></script>
+<script defer src="/learning/school-journey.js?v=20261124-pilot3"></script>
+<script defer src="/assets/school-journey-home.js?v=20261125-pilot4"></script>
 <style>
   .actions { display:flex; flex-wrap:wrap; gap:12px; margin:24px 0; }
   #where-to-start { margin-top:36px; }
@@ -87,7 +92,34 @@
     <p class="kicker">5–11 классы · Бесплатно · В своём темпе</p>
     <h1 id="math-heading">Тренажёры по математике</h1>
     <p class="lead">От деления столбиком до ОГЭ и ЕГЭ.<br>Выберите тему, разберите пример и попробуйте сами.</p>
-    <div class="actions"><a class="btn" href="/trainers/">Выбрать тренажёр</a><a class="btn secondary" href="/foundations/">Начать с основ</a></div>
+    <div class="actions"><a class="btn" href="#learning-journey">Найти свой учебный маршрут</a><a class="btn secondary" href="/trainers/">Выбрать тренажёр</a><a class="btn secondary" href="/foundations/">Начать с основ</a></div>
+  </div>
+</div></section>
+<section class="section sj" id="learning-journey" aria-labelledby="sj-heading"><div class="container">
+  <p class="kicker">Бесплатно · Без обязательной регистрации</p>
+  <h2 id="sj-heading">Мой маршрут по математике</h2>
+  <p>Выберите цель и текущую тему. Можно начинать с любой точки, возвращаться к основам и продолжать работу в знакомом курсе.</p>
+  <p class="sj-note">Первая версия общей карты. Короткие пробы помогают выбрать занятие; они не заменяют полную диагностику. Старшие темы пока соединены ссылками на действующие курсы.</p>
+  <div id="sj-fallback" role="navigation" aria-label="Быстрые переходы к учебным курсам"><p><strong>Быстрые переходы:</strong> <a href="/foundations/">Основы</a> · <a href="/equations/linear-pilot/">Уравнения</a> · <a href="/geometry-course/">Геометрия</a> · <a href="/courses/">Курсы по классам</a> · <a href="/oge/">ОГЭ</a> · <a href="/ege-baza/">ЕГЭ база</a> · <a href="/ege-profil/">ЕГЭ профиль</a></p></div>
+  <div id="sj-details" hidden>
+    <div class="sj-controls">
+      <label>Моя цель<select id="sj-goal"></select></label>
+      <label>Тема, с которой хочу начать<select id="sj-topic"></select></label>
+    </div>
+    <div class="sj-columns">
+      <div class="sj-card">
+        <h3 id="sj-title"></h3><p>Открыть действующие учебные материалы:</p><ul id="sj-resources"></ul>
+        <div id="sj-before-wrap"><p>Если здесь трудно, можно проверить:</p><ul id="sj-before"></ul></div>
+        <p id="sj-probe-note"></p><form id="sj-probe" novalidate></form>
+        <div id="sj-result" role="status" aria-live="polite" hidden></div>
+      </div>
+      <div class="sj-card">
+        <h3>Рекомендуемая последовательность</h3><p>Это не обязательные ступени. Можно выбрать любую тему и сразу перейти к экзамену или учебнику.</p>
+        <details><summary>Показать карту тем для моей цели</summary><ol id="sj-map"></ol></details>
+        <p id="sj-target"></p><p id="sj-storage" class="sj-note"></p>
+        <p><a href="/trainers/oge-basics/multiplication-division/arzhenikov-map.html#journey">Открыть пространственную карту Арженикова</a></p>
+      </div>
+    </div>
   </div>
 </div></section>
 <section class="section home-directions" aria-labelledby="where-to-start"><div class="container">

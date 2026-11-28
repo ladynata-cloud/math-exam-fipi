@@ -2723,9 +2723,10 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/fraction-meaning.html": {
-      "beforeSha256": "8c9d8c6fe7734e25566c913944829bef08dd62617f70fbfb6f6f9ae4096e8040",
-      "afterSha256": "aecd20992589f388cf11c163d590dff8e6eb7dd06302eab3e0424769c39b6f8e",
-      "placement": "before-head-close"
+      "beforeSha256": "8039ca6904e9caf5b416c96c803bc17a5a249d7d1000c1e89524eced0df4263d",
+      "afterSha256": "e0a73fa99035e320fadf7a130f90037a0a3e9b00aeb99d1ac927580930dde6ef",
+      "placement": "before-head-close",
+      "sourceSha": "3a23bc65bf7ba599b65d546887eaca05dcddbd34"
     },
     "trainers/oge-basics/index.html": {
       "beforeSha256": "ea88fae8bb68fb1cb7c5f7465b9e3d13933fac7372cc198e39f41db4aa46ecb6",
@@ -6974,6 +6975,28 @@
       ],
       "reason": "Preserve both historical journal source receipts and bind the exact reviewed HTML to its existing source commit on the current composition.",
       "bindingScope": "One per-page sourceSha; global base and all other bindings unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "3d1fb25cc9d367f8ac8e2f629acd6d0c2369b166",
+      "previousSourceSha": "2a5b85523dc89e734f77443685b7a3f0a530fab4",
+      "task": "docs/tasks/UNIFIED_SCHOOL_JOURNEY_20261124.md",
+      "changedPaths": [
+        "trainers/oge-basics/fraction-meaning.html"
+      ],
+      "reason": "Bind the exact reviewed noscript paper prerequisite, leaving the interactive lesson and navigator scripts unchanged.",
+      "bindingScope": "Per-page sourceSha; global base and shared runtime unchanged.",
+      "boundary": "Exact committed source identity only; not mathematical or publication approval."
+    },
+    {
+      "sourceBaseSha": "3a23bc65bf7ba599b65d546887eaca05dcddbd34",
+      "previousSourceSha": "3d1fb25cc9d367f8ac8e2f629acd6d0c2369b166",
+      "task": "docs/tasks/UNIFIED_SCHOOL_JOURNEY_20261124.md",
+      "changedPaths": [
+        "trainers/oge-basics/fraction-meaning.html"
+      ],
+      "reason": "Bind the four reviewed standalone fraction corrections; preserve the published bridge and existing navigator pair.",
+      "bindingScope": "Per-page sourceSha; global base and shared runtime unchanged.",
       "boundary": "Exact committed source identity only; not mathematical or publication approval."
     }
   ],

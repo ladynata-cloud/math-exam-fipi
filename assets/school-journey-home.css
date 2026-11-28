@@ -1,0 +1,23 @@
+/* Scoped home pilot; does not modify the old maps or trainer controls. */
+.sj {scroll-margin-top:90px;}
+.sj [hidden]{display:none!important}
+.sj-note{font-size:.95rem;color:#465569}
+.sj-controls,.sj-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+.sj-controls label{display:grid;gap:5px;font-weight:700;min-width:0}
+.sj select,.sj button{font:inherit;min-height:44px;max-width:100%;white-space:normal;border:1px solid #9cabbc;border-radius:7px;background:#fff;color:#20384f;padding:8px 12px}
+.sj select{width:100%;font-weight:400}
+.sj button{cursor:pointer;text-align:left}
+.sj button:hover,.sj button[aria-current]{background:#eaf2f7;border-color:#447498}
+.sj :focus-visible{outline:3px solid #205b86;outline-offset:3px}
+.sj-card{min-width:0;padding:clamp(12px,2vw,24px);background:#fff;border:1px solid #c9d5df;border-radius:12px;overflow-wrap:anywhere}
+.sj-card h3{margin-top:0}
+.sj fieldset{min-width:0;border:1px solid #d4dce5;border-radius:8px;padding:10px;margin:12px 0}
+.sj legend{font-weight:700;padding:0 6px}
+.sj fieldset label{display:flex;align-items:center;gap:10px;padding:5px;min-height:44px;cursor:pointer}
+.sj fieldset input{width:20px;height:20px;flex:none}
+.sj ul,.sj ol{padding-inline-start:22px}
+.sj li{margin:6px 0}
+.sj summary{cursor:pointer;min-height:44px;padding:10px 0}
+.sj #sj-result{margin-top:18px;border-top:1px solid #b9c8d6;padding-top:12px}
+.sj #sj-result button{display:block;margin:7px 0}
+@media(max-width:720px){.sj-controls,.sj-columns{grid-template-columns:1fr}.sj-card{padding:14px}}

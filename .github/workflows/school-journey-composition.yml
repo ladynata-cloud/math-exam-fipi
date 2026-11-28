@@ -1,0 +1,225 @@
+name: School journey - exact composition
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'learning/school-journey.js'
+      - 'learning/preparation-map.js'
+      - 'learning/division-course-map.js'
+      - 'assets/school-journey-home.*'
+      - 'tools/school-journey-composition.browser.cjs'
+      - '.github/workflows/school-journey-composition.yml'
+permissions:
+  contents: read
+jobs:
+  composition:
+    if: github.event.pull_request.number == 749
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Verify the exact composition with the published fraction bridge
+        env:
+          SCHOOL_HEAD: ${{ github.event.pull_request.head.sha }}
+          MAIN_SHA: ${{ github.event.pull_request.base.sha }}
+          SCHOOL_PRIOR: b32d4121b3755b17a4bfd3d07c4d2af724e57c81
+          BRIDGE_HEAD: 23cd22f61291674e283ce00c4edc786bd646440a
+          BRIDGE_BASE: 0dc629ff055f99fa0409b363ecbc24148807a05f
+          BRIDGE_RELEASE: b876a19a78910663aa6a976b4b3b781d7987a6d8
+          ACCEPTED_MAIN: c811c4c8ee87845a25598d958321d23feb83b43d
+          FRESH_MAIN: 901bf101286c403cb1b1f07fcbbd965115666725
+          SCHOOL_TESTED: 4d9f4ee00346abeb8884a749ed6c23d1755f0f66
+        run: |
+          set -eu
+          candidate="$(git rev-parse HEAD)"
+          test "$MAIN_SHA" = "$FRESH_MAIN"
+          test "$(git rev-parse "$ACCEPTED_MAIN^1")" = "$BRIDGE_RELEASE"
+          test "$(git rev-parse HEAD^1)" = "$MAIN_SHA"
+          test "$(git rev-parse HEAD^2)" = "$SCHOOL_HEAD"
+          test "$(git merge-base "$candidate" "$SCHOOL_PRIOR")" = "$SCHOOL_PRIOR"
+          git diff --check "$MAIN_SHA" "$candidate"
+          git fetch --no-tags origin refs/pull/750/head
+          test "$(git rev-parse FETCH_HEAD)" = "$BRIDGE_HEAD"
+          test "$(git rev-parse "$BRIDGE_HEAD^{tree}")" = "$(git rev-parse "$BRIDGE_RELEASE^{tree}")"
+          test "$(git merge-base "$BRIDGE_RELEASE" "$SCHOOL_PRIOR")" = "$BRIDGE_BASE"
+          export CANDIDATE="$candidate"
+          python3 - <<'PY'
+          import copy, hashlib, json, os, subprocess
+          from pathlib import Path
+          def git(*args):
+              return subprocess.check_output(["git", *args])
+          def blob(ref, p):
+              return git("show", ref + ":" + p)
+          def changed(a,b):
+              return set(filter(None, git("diff","--name-only","-z",a,b).decode().split("\0")))
+          live, main, candidate = (os.environ[k] for k in ("CANDIDATE","FRESH_MAIN","SCHOOL_TESTED"))
+          bridge, base, released, school, accepted = (os.environ[k] for k in ("BRIDGE_HEAD","BRIDGE_BASE","BRIDGE_RELEASE","SCHOOL_PRIOR","ACCEPTED_MAIN"))
+          lesson_paths = {".github/workflows/lesson-cycle-v2-native-acceptance.yml","docs/tasks/LESSON_CYCLE_PILOT_V2_20261126.md","tools/lesson-cycle/cycle.py","tools/lesson-cycle/entry.test.cjs","tools/lesson-cycle/hooks.test.cjs","tools/lesson-cycle/native.py","tools/lesson-cycle/race.test.cjs","trainers/college-functions/app.js","trainers/lesson-cycle/README.txt","trainers/lesson-cycle/START.html","trainers/lesson-cycle/entry.js","trainers/lesson-cycle/materials/01_area_proofs_homework.pdf","trainers/lesson-cycle/materials/02_conditional_probability_homework.pdf","trainers/lesson-cycle/materials/03_rate_of_change_homework.pdf","trainers/lesson-cycle/materials/04_motion_modeling_homework.pdf","trainers/motion-grade6/model-entry.js","trainers/oge-written-practice.html","trainers/tyurin-statistics/condition-lab.js"}
+          expected = {".github/workflows/linear-learning-pilot.yml", "assets/assistant/page-rollout.json", "docs/tasks/LINEAR_FRACTION_BRIDGE_20261124.md", "equations/linear-pilot/fraction-bridge-core.js", "equations/linear-pilot/fraction-bridge.css", "equations/linear-pilot/fraction-bridge.js", "equations/linear-pilot/index.html", "tools/equations/linear-pilot-fraction-bridge.browser.cjs", "tools/equations/linear-pilot-fraction-bridge.test.cjs"}
+          school_paths = {".github/workflows/school-journey-composition.yml", ".github/workflows/school-journey.yml", "assets/assistant/page-rollout.json", "assets/school-journey-home.css", "assets/school-journey-home.js", "docs/ROADMAP.md", "docs/adr/0015-school-journey.md", "docs/tasks/UNIFIED_SCHOOL_JOURNEY_20261124.md", "index.html", "learning/school-journey.js", "scripts/build-oge-book-edition.py", "tools/book-edition/test_generator.py", "tools/school-journey-composition.browser.cjs", "tools/school-journey.browser.cjs", "tools/school-journey.test.cjs", "trainers/oge-basics/fraction-meaning.html"}
+          shared="assets/assistant/page-rollout.json"
+          workflow=".github/workflows/school-journey-composition.yml"
+          page="equations/linear-pilot/index.html"
+          fraction="trainers/oge-basics/fraction-meaning.html"
+          assert changed(base,bridge)==expected and changed(base,released)==expected, "fraction bridge scope drift"
+          assert changed(base,school)==school_paths and school_paths & expected=={shared}, "school scope drift"
+          assert changed(released,accepted)==lesson_paths, "published lesson-cycle scope drift"
+          assert not lesson_paths & (school_paths | expected), "lesson-cycle overlap"
+          assert changed(accepted,candidate)==school_paths, "unexpected candidate delta"
+          assert changed(released,candidate)==school_paths | lesson_paths, "unexpected delta from fraction release"
+          assert changed(school,candidate)==expected | lesson_paths | {workflow}, "unexpected composition delta"
+          for p in lesson_paths:
+              assert blob(candidate,p)==blob(accepted,p)==Path(p).read_bytes(), p
+          old=json.loads(blob(base,shared))
+          incoming=json.loads(blob(released,shared))
+          prior=json.loads(blob(school,shared))
+          current=json.loads(blob(candidate,shared))
+          approved=copy.deepcopy(old)
+          approved["addedPages"][page]=incoming["addedPages"][page]
+          assert approved==incoming, "incoming manifest contains unrelated changes"
+          approved=copy.deepcopy(old)
+          approved["addedPages"][fraction]=prior["addedPages"][fraction]
+          approved["sourceBindingUpdates"]=prior["sourceBindingUpdates"]
+          assert approved==prior, "school manifest contains unrelated changes"
+          assert prior["sourceBindingUpdates"][:-1]==old["sourceBindingUpdates"]
+          assert len(prior["sourceBindingUpdates"])==len(old["sourceBindingUpdates"])+1
+          expected_manifest=copy.deepcopy(prior)
+          expected_manifest["addedPages"][page]=incoming["addedPages"][page]
+          assert current==expected_manifest, "both page bindings and history must be retained"
+          assert current["baseSha"]==prior["baseSha"]==incoming["baseSha"]
+          assert current["snippet"]==prior["snippet"]==incoming["snippet"]
+          snippet=current["snippet"].encode()
+          sha=lambda raw: hashlib.sha256(raw).hexdigest()
+          for p in (page,fraction):
+              source=blob(candidate,p)
+              row=current["addedPages"][p]
+              assert source.count(snippet)==1
+              assert sha(source)==row["afterSha256"]
+              assert sha(source.replace(snippet,b"",1))==row["beforeSha256"]
+              source_commit=blob(row.get("sourceSha") or current["baseSha"],p)
+              assert source.replace(snippet,b"",1)==source_commit.replace(snippet,b"",1)
+          for p in expected-{shared}:
+              assert blob(candidate,p)==blob(released,p)==blob(bridge,p), p
+          for p in school_paths-{shared,workflow}:
+              assert blob(candidate,p)==blob(school,p), p
+          fixed={"assets/school-journey-home.js": "eb3c1938e79d170e924a83b82af39e7484d22565", "tools/school-journey.browser.cjs": "8a0ff8f3a6b2df7f2ec1a1876b2db57d75374124", fraction: "ef27dd94836add6ff8015325fabb0d0b5e7cd890", "tools/school-journey-composition.browser.cjs": "5f368ea0db1e885158a2f1e2559eecd29e4f75f4"}
+          # Historical blobs are checked above; the two reviewed fixes are checked against live and pinned below.
+          for p in (expected | school_paths)-{shared,workflow}:
+              assert Path(p).read_bytes()==blob(live if p in fixed else candidate,p), p
+          assert current["sourceBindingUpdates"]==prior["sourceBindingUpdates"]
+          # Preserve the entire historical gate above, then verify the ten exact published increments.
+          releases = [
+              ("c811c4c8ee87845a25598d958321d23feb83b43d", "92b404e98828868277c9f34600133333b8744186", {"assets/assistant/page-rollout.json", "courses/vilenkin-6-part-1/textbook.html", "docs/tasks/SEO_FIRST_LEARNING_ENTRIES_20261125.md", "tools/seo-entrypoints.browser.cjs", "topics/index.html", "topics/lineynye-uravneniya/index.html", "trainers/desyatichnye-drobi-level-1.html"}),
+              ("92b404e98828868277c9f34600133333b8744186", "33ff2a8eca1f1e3d89e2041d3be6351539c46366", {".github/workflows/trainer-download-stage2.yml", "assets/assistant/page-rollout.json", "docs/tasks/SEO_OFFLINE_ENTRANCE_20261126.md", "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html", "tools/offline-entrance.browser.cjs"}),
+              ("33ff2a8eca1f1e3d89e2041d3be6351539c46366", "dbd912649b6c76ed9fcc59985c01e11f8971c845", {"assets/assistant/navigator-data.js", "docs/PROJECT_STATUS.md", "docs/tasks/GUEST_NAVIGATOR_INFORMATICS_FOLLOWUP_20261124.md", "tools/public-navigator-regression.cjs"}),
+              ("dbd912649b6c76ed9fcc59985c01e11f8971c845", "dc084cbc111f4bade3aa9d28648995c6af6484c2", {"assets/assistant/page-rollout.json", "docs/tasks/PROFILE_PART_TWO_ERROR_JOURNAL_20261117.md", "ege-profil/review-part-two.js", "ege-profil/review-probe-2027.js", "ege-profil/review.html", "tools/profile-part2-review.test.cjs"}),
+              ("dc084cbc111f4bade3aa9d28648995c6af6484c2", "afbb30de370d872fb2128e0237f8b4356db249d1", {".github/workflows/vilenkin6-proportion-board.yml", "downloads/trainers-manifest.json", "downloads/trainers/long-division-stepwise/long-division-stepwise-package.zip", "downloads/trainers/long-division-stepwise/long-division-stepwise.html", "learning/index.html", "learning/lesson-workspace.js", "tools/lesson-workspace-v1/dom.test.cjs", "trainers/board-picker-data.json", "trainers/oge-basics/multiplication-division/division-guided.js", "trainers/vilenkin6-proportion/app.js", "trainers/vilenkin6-proportion/browser.cjs", "trainers/vilenkin6-proportion/core.js", "trainers/vilenkin6-proportion/corridor-model.js", "trainers/vilenkin6-proportion/corridor.css", "trainers/vilenkin6-proportion/corridor.js", "trainers/vilenkin6-proportion/corridor.test.cjs", "trainers/vilenkin6-proportion/index.html"}),
+              ("afbb30de370d872fb2128e0237f8b4356db249d1", "36f587295c2378c970c0b6033cf2a0fb87b97f54", {"courses/vilenkin-6-part-1/textbook-course.js", "downloads/trainers/long-division-stepwise/long-division-stepwise-package.zip", "downloads/trainers/long-division-stepwise/long-division-stepwise.html", "learning/index.html", "learning/lesson-workspace.js", "learning/ratio-board-topics.js", "learning/vilenkin6-course.js", "learning/vilenkin6-textbook-course.js", "tools/division-offline-export.test.cjs", "tools/learning-vilenkin-textbook.dom.cjs", "trainers/board-picker-data.json", "trainers/board-picker.js", "trainers/long-division-entry.js", "trainers/oge-basics/learning-loader.js", "trainers/oge-basics/multiplication-division/division-guided.js", "trainers/oge-basics/multiplication-division/division-path.html", "trainers/trainer-board.html", "trainers/vilenkin6-proportion/app.js", "trainers/vilenkin6-proportion/browser.cjs", "trainers/vilenkin6-proportion/core.js", "trainers/vilenkin6-proportion/corridor-model.js", "trainers/vilenkin6-proportion/corridor.css", "trainers/vilenkin6-proportion/corridor.js", "trainers/vilenkin6-proportion/corridor.test.cjs", "trainers/vilenkin6-proportion/index.html", "trainers/vilenkin6-proportion/topic-entries.js"}),
+              ("36f587295c2378c970c0b6033cf2a0fb87b97f54", "1d8cfb3bd8b959bbc9788d3cf7385e6cfc4e4a01", {"docs/tasks/BOARD_OBSERVER_FOLLOW_WRITING_20261127.md", "tools/board-writing.browser.cjs", "trainers/board-tools.css", "trainers/board-writing.js", "trainers/trainer-board.html"}),
+              ("1d8cfb3bd8b959bbc9788d3cf7385e6cfc4e4a01", "ea8f6f0680bbe0e5b4b6392966bc8c14eb8160ad", {"assets/assistant/navigator-data.js", "assets/assistant/page-rollout.json", "assets/assistant/pages.json", "docs/tasks/RETIRE_NOTEBOOK_LONG_DIVISION_20261127.md", "tools/seo-arzhenikov.test.cjs", "tools/trainer-previews.browser.cjs", "trainers/board-picker-data.json", "trainers/index.html", "trainers/long-division.html", "trainers/testing-hub.html", "trainers/trainers/long-division.html"}),
+              ("ea8f6f0680bbe0e5b4b6392966bc8c14eb8160ad", "c385a8bc179119d7462e4bbc6e29b1d3576a90ff", {"docs/tasks/BOARD_VISIBLE_LINES_20261128.md", "tools/board-writing.browser.cjs", "trainers/board-writing.js", "trainers/trainer-board.html"}),
+              ("c385a8bc179119d7462e4bbc6e29b1d3576a90ff", "901bf101286c403cb1b1f07fcbbd965115666725", {".github/workflows/profile-added-board.yml", "docs/tasks/PROFILE_FIRST_PART_BOARD_20261128.md", "downloads/trainers-manifest.json", "downloads/trainers/ege-profil-start/ege-profil-start-package.zip", "downloads/trainers/ege-profil-start/ege-profil-start.html", "ege-profil/start/app.js", "ege-profil/start/applied-tasks.js", "ege-profil/start/board-session.js", "ege-profil/start/calm-ui.js", "tools/build-profile-exam-catalog.cjs", "tools/profile-added-board.browser.cjs", "tools/profile-added-board.test.cjs", "tools/profile-added-picker.test.cjs", "tools/profile-applied.test.cjs", "tools/profile-expressions-picker.test.cjs", "tools/profile-fipi-2027-browser.cjs", "tools/profile-first-part-board.browser.cjs", "tools/profile-log-trig-room-selection.test.cjs", "tools/profile-stereo-picker.test.cjs", "tools/vpr-control-transfer.test.cjs", "trainers/board-compat.json", "trainers/board-picker-data.json", "trainers/board-picker.js", "trainers/ege-profile-compound-probability.html", "trainers/ege-profile-derivative.html", "trainers/ege-profile-extrema.html", "trainers/ege-profile-formulas.html", "trainers/ege-profile-functions.html", "trainers/ege-profile-word-problems.html", "trainers/trainer-board.html", "trainers/vpr-math/board.test.cjs"}),
+          ]
+          assert git("rev-list","--first-parent","--reverse",accepted+".."+main).decode().split()==[r[1] for r in releases]
+          drift=set()
+          for parent, revision, paths in releases:
+              assert git("rev-parse",revision+"^1").decode().strip()==parent
+              assert changed(parent,revision)==paths, revision
+              drift |= paths
+          assert len(drift)==89 and changed(accepted,main)==drift
+          assert drift & school_paths=={shared}
+          dependency_paths={"trainers/oge-basics/learning-bank.js", "tools/oge-learner-entry.test.cjs"}
+          preservation_blobs={"tools/oge-book-corrections.cjs":"e56262095ad661f2bd2ff0be417566b08de93af0","tools/oge-book-corrections.test.cjs":"e56a786eb5ec57e472dcddd87ad77c1ff7febc1c","tools/oge-basics-inventory.test.cjs":"e4922e3fedbb57bf9c8d10ee524a7ddc9dfeee89","tools/learning-division-course.dom.cjs":"d73194292e2945dcc5e9c646d1c6d23069fb5e8c","tools/oge-basics-fraction-controls.test.cjs":"e4627edbea4cf5dad6cbe7e3bc19c881a9850a0b"}
+          preservation_paths=set(preservation_blobs)
+          assert not (dependency_paths | preservation_paths) & (drift | school_paths | expected)
+          assert not dependency_paths & preservation_paths
+          assert changed(main,live)==school_paths | dependency_paths | preservation_paths
+          assert changed(candidate,live)==drift | {workflow} | set(fixed) | dependency_paths | preservation_paths
+          for p, expected_blob in fixed.items():
+              assert git("rev-parse",live+":"+p).decode().strip()==expected_blob, p
+              assert blob(live,p)==Path(p).read_bytes(), p
+              assert blob(live,p)!=blob(candidate,p), p
+          for p in drift-{shared}:
+              assert blob(live,p)==blob(main,p)==Path(p).read_bytes(), p
+          for p in school_paths-{shared,workflow}-set(fixed):
+              assert blob(live,p)==blob(candidate,p)==Path(p).read_bytes(), p
+          fresh=json.loads(blob(main,shared))
+          pre_retire=json.loads(blob("1d8cfb3bd8b959bbc9788d3cf7385e6cfc4e4a01",shared))
+          pre_retire["addedPages"].pop("trainers/trainers/long-division.html")
+          pre_retire["provenance"].pop("trainers/trainers/long-division.html")
+          assert pre_retire==fresh, "retirement changed unrelated manifest bindings"
+          assert fresh["addedPages"][fraction]==json.loads(blob(accepted,shared))["addedPages"][fraction]
+          assert len(fresh["sourceBindingUpdates"])==220
+          assert fresh["sourceBindingUpdates"][:215]==json.loads(blob(accepted,shared))["sourceBindingUpdates"]
+          fresh["addedPages"][fraction]=current["addedPages"][fraction]
+          fresh["sourceBindingUpdates"].append(current["sourceBindingUpdates"][-1])
+          assert len(fresh["sourceBindingUpdates"])==221
+          # Keep the historical composition intact and verify the exact additional source commit.
+          fraction_source="3a23bc65bf7ba599b65d546887eaca05dcddbd34"
+          fraction_previous="62bc1c951e1a93a07971218e0866837f35789b22"
+          fraction_test="tools/school-journey-composition.browser.cjs"
+          assert git("rev-parse",fraction_source+"^1").decode().strip()==fraction_previous
+          assert changed(fraction_previous,fraction_source)=={fraction,fraction_test}
+          assert blob(fraction_source,fraction)==blob(live,fraction)
+          assert blob(fraction_source,fraction_test)==blob(live,fraction_test)
+          fresh["addedPages"][fraction]=json.loads('{"beforeSha256":"8039ca6904e9caf5b416c96c803bc17a5a249d7d1000c1e89524eced0df4263d","afterSha256":"e0a73fa99035e320fadf7a130f90037a0a3e9b00aeb99d1ac927580930dde6ef","placement":"before-head-close","sourceSha":"3a23bc65bf7ba599b65d546887eaca05dcddbd34"}')
+          fresh["sourceBindingUpdates"].append(json.loads('{"sourceBaseSha":"3a23bc65bf7ba599b65d546887eaca05dcddbd34","previousSourceSha":"3d1fb25cc9d367f8ac8e2f629acd6d0c2369b166","task":"docs/tasks/UNIFIED_SCHOOL_JOURNEY_20261124.md","changedPaths":["trainers/oge-basics/fraction-meaning.html"],"reason":"Bind the four reviewed standalone fraction corrections; preserve the published bridge and existing navigator pair.","bindingScope":"Per-page sourceSha; global base and shared runtime unchanged.","boundary":"Exact committed source identity only; not mathematical or publication approval."}'))
+          assert len(fresh["sourceBindingUpdates"])==222
+          live_manifest=json.loads(blob(live,shared))
+          assert fresh==live_manifest and Path(shared).read_bytes()==blob(live,shared)
+          assert "trainers/trainers/long-division.html" not in live_manifest["addedPages"] and "trainers/trainers/long-division.html" not in live_manifest["provenance"]
+          for p in (page,fraction):
+              source=blob(live,p)
+              row=live_manifest["addedPages"][p]
+              assert source.count(snippet)==1
+              assert sha(source)==row["afterSha256"]
+              assert sha(source.replace(snippet,b"",1))==row["beforeSha256"]
+              assert source.replace(snippet,b"",1)==blob(row.get("sourceSha") or live_manifest["baseSha"],p).replace(snippet,b"",1)
+          for p in expected | school_paths:
+              assert Path(p).read_bytes()==blob(live,p), p
+          # Two exact downstream dependencies of the reviewed fraction correction.
+          # Keep the old composition and source pins; extend only the live delta.
+          dependency_previous="b44d5fee3d9df5f9f7dbbc8495fd04f85003ec96"
+          assert changed(dependency_previous,live)==dependency_paths | preservation_paths | {workflow}
+          preservation_previous="70f49e93a2a155b4d66eab42446f2e189716e967"
+          assert changed(preservation_previous,live)==preservation_paths | {workflow}
+          controls_previous="6c34edb87205a1353cee01c2edc770e740dd3ef0"
+          controls_test="tools/oge-basics-fraction-controls.test.cjs"
+          assert changed(controls_previous,live)=={controls_test,workflow}
+          for p, expected_blob in preservation_blobs.items():
+              assert git("rev-parse",live+":"+p).decode().strip()==expected_blob, p
+              assert Path(p).read_bytes()==blob(live,p), p
+              assert blob(preservation_previous,p)!=blob(live,p), p
+          dependency_blobs={"trainers/oge-basics/learning-bank.js":"f2ce4a478245c41066147dacf1d5c955afe6ba67","tools/oge-learner-entry.test.cjs":"fce5cc12ffe2c76d059ede87224d7b4752e49cd1"}
+          for p, expected_blob in dependency_blobs.items():
+              assert git("rev-parse",live+":"+p).decode().strip()==expected_blob, p
+              assert Path(p).read_bytes()==blob(live,p), p
+          entry_test="tools/oge-learner-entry.test.cjs"
+          old_entry=blob(dependency_previous,entry_test)
+          old_pin=b'79a9cc5f34d364d97ba341c718dab8aa3ee60e5edc82f86493740fe6173f35a7'
+          new_pin=b'0de77144d86640682f0134832c4ac4ea26583ca6f08c55a8b9cde89b55e9f50b'
+          assert old_entry.count(old_pin)==1 and new_pin not in old_entry
+          assert blob(live,entry_test)==old_entry.replace(old_pin,new_pin,1)
+          composed=git("rev-parse",live+"^{tree}").decode().strip()
+          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 89 later published paths; 16 original school paths plus 2 exact fraction dependencies and 5 historical compatibility tests; both page bindings and all 222 history receipts retained")
+          PY
+      - name: Existing mathematical and route assertions on the composition
+        run: |
+          node --test tools/school-journey.test.cjs tools/equations/linear-pilot-fraction-bridge.test.cjs
+          node --check tools/school-journey-composition.browser.cjs
+          node tools/learning-remediation-bank.cjs --check
+          node --check tools/oge-learner-entry.test.cjs
+          node --check tools/oge-basics-fraction-controls.test.cjs
+      - name: Install pinned Chromium test environment
+        run: |
+          npm install --prefix "$RUNNER_TEMP/school-composition" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/school-composition/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Home to course to prerequisite and back, actual browser and no-JS
+        run: |
+          NODE_PATH="$RUNNER_TEMP/school-composition/node_modules" node tools/school-journey-composition.browser.cjs
