@@ -1,13 +1,8 @@
-name: Profile START — five added board trainers
+name: Profile START — shared first-part trainers
 on:
   pull_request:
     paths:
       - 'ege-profil/start/**'
-      - 'trainers/ege-profile-planimetry.html'
-      - 'trainers/ege-profile-vectors.html'
-      - 'trainers/ege-profile-probability.html'
-      - 'trainers/ege-profile-random-variables.html'
-      - 'trainers/ege-profile-equations.html'
       - 'trainers/board-bridge.js'
       - 'trainers/board-picker.js'
       - 'trainers/board-picker-data.json'
@@ -20,17 +15,16 @@ on:
       - 'trainers/board-layout.js'
       - 'trainers/board-tools.css'
       - 'board-server/**'
+      - 'tools/profile-first-part-board.browser.cjs'
+      - 'tools/build-profile-exam-catalog.cjs'
+      - 'ege-profil/exam-map.js'
+      - 'trainers/ege-profile-*.html'
       - 'tools/profile-added-*'
       - '.github/workflows/profile-added-board.yml'
   push:
     branches: [main]
     paths:
       - 'ege-profil/start/**'
-      - 'trainers/ege-profile-planimetry.html'
-      - 'trainers/ege-profile-vectors.html'
-      - 'trainers/ege-profile-probability.html'
-      - 'trainers/ege-profile-random-variables.html'
-      - 'trainers/ege-profile-equations.html'
       - 'trainers/board-bridge.js'
       - 'trainers/board-picker.js'
       - 'trainers/board-picker-data.json'
@@ -43,6 +37,10 @@ on:
       - 'trainers/board-layout.js'
       - 'trainers/board-tools.css'
       - 'board-server/**'
+      - 'tools/profile-first-part-board.browser.cjs'
+      - 'tools/build-profile-exam-catalog.cjs'
+      - 'ege-profil/exam-map.js'
+      - 'trainers/ege-profile-*.html'
       - 'tools/profile-added-*'
       - '.github/workflows/profile-added-board.yml'
 permissions:
@@ -69,6 +67,8 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/profile-added-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
           "$RUNNER_TEMP/profile-added-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/profile-added-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Verify generated profile board routes
+        run: node tools/build-profile-exam-catalog.cjs --check
       - name: Five adapters, all authored models and picker contracts
         run: node --test tools/profile-added-board.test.cjs tools/profile-added-board-models.test.cjs tools/profile-added-picker.test.cjs
       - name: Shared adapter regression for existing stereometry and expressions
@@ -79,6 +79,8 @@ jobs:
         env:
           PROFILE_ADDED_BOARD_SHOTS: ${{ runner.temp }}/profile-added-board-shots
         run: node tools/profile-added-board.browser.cjs
+      - name: Full first-part route coverage and six mirrored sections in two browsers
+        run: node tools/profile-first-part-board.browser.cjs
       - name: Save local acceptance screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

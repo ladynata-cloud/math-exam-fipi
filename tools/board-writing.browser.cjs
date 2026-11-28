@@ -589,7 +589,29 @@ async function lowerLineWriting(teacher, student) {
   await expectVisibleInk(student, mobileTip);
   await teacher.mouse.up();
   await sameBoard(teacher, student, 'mobile observer receives the same completed line');
+  // A mobile pupil reading the exercise can have a sliver of paper on screen.
+  const visibleHeight = await student.evaluate(() => {
+    const top = canvas.getBoundingClientRect().top + scrollY;
+    scrollTo({ top: top - innerHeight + 6, behavior: 'instant' });
+    return innerHeight - canvas.getBoundingClientRect().top;
+  });
+  assert(visibleHeight > 0 && visibleHeight < 10, 'only the edge of the paper is showing, visible height ' + visibleHeight);
+  const tall = await drawStroke(teacher, 'pen', { x: 100, y: 190 }, { x: 100, y: 230 });
+  await sameBoard(teacher, student, 'vertical writing arrives at the lower line');
+  await expectVisibleInk(student, tall.points[0]);
+  await expectVisibleInk(student, tall.points.at(-1));
+
   await student.setViewportSize({ width: 1440, height: 1000 });
+  // A pupil moving the paper while holding the pen has not opted out of following.
+  await handoff(teacher, student, true);
+  await student.locator('#zoomIn').click();
+  await chooseTool(student, 'hand');
+  await mouseGesture(student, { x: 100, y: 220 }, { x: 100, y: 100 });
+  await handoff(teacher, student, false);
+  assert.equal(await follow.getAttribute('aria-pressed'), 'true', 'follow resumes after the writing turn');
+  const afterTurn = await drawStroke(teacher, 'pen', { x: 160, y: 245 }, { x: 240, y: 245 });
+  await sameBoard(teacher, student, 'teacher continues on the lower line after handoff');
+  await expectVisibleInk(student, afterTurn.points.at(-1));
   teacher.once('dialog', dialog => dialog.accept());
   await boardSettings(teacher, () => teacher.locator('#deleteSheet').click());
   await sameBoard(teacher, student, 'original page restored');

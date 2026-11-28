@@ -128,12 +128,12 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261127-grade6-board-topics"></script>
+  <script src="board-picker.js?v=20261128-profile-first-part"></script>
   <script src="../learning/ratio-board-topics.js?v=20261127"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
-  <script src="board-writing.js?v=20261127-follow-writing"></script>
+  <script src="board-writing.js?v=20261128-visible-lines"></script>
   <script>
     const KEY='mathexam.trainerBoard.v1';
     const SERVER_KEY='mathexam.trainerBoard.serverUrl';
@@ -201,6 +201,23 @@
         return raw.split('#',1)[0]+hash;
       }catch(_){return url}
     }
+    const roomSelectionAdapters = new Map([
+      ['trainers/ege-profile-log-trig.html', '__profileLogTrigBoard'],
+      ['trainers/ege-profile-circle.html', '__profileCircleBoard'],
+      ['trainers/ege-profile-planimetry.html', '__profilePlanimetryBoard'],
+      ['trainers/ege-profile-vectors.html', '__profileVectorsBoard'],
+      ['trainers/ege-profile-stereometry.html', '__profileStereoBoard'],
+      ['trainers/ege-profile-probability.html', '__profileProbabilityBoard'],
+      ['trainers/ege-profile-equations.html', '__profileEquationsBoard'],
+      ['trainers/ege-profile-expressions.html', '__profileExpressionsBoard'],
+      ['trainers/ege-profile-compound-probability.html', '__profileCompoundProbabilityBoard'],
+      ['trainers/ege-profile-derivative.html', '__profileDerivativeBoard'],
+      ['trainers/ege-profile-formulas.html', '__profileFormulasBoard'],
+      ['trainers/ege-profile-word-problems.html', '__profileWordProblemsBoard'],
+      ['trainers/ege-profile-functions.html', '__profileFunctionsBoard'],
+      ['trainers/ege-profile-extrema.html', '__profileExtremaBoard'],
+      ['trainers/vpr-math/index.html', 'VPRBoard']
+    ]);
     function prepareProfileTrainerForRoom(url){
       // Fixed courses choose tasks in memory, not from a random seed.
       // Carry only a validated public lesson snapshot across the room reload;
@@ -208,7 +225,7 @@
       try{
         const raw=normalizeTrainer(url),file=canonicalTrainerFileFromUrl(raw);
         const vpr=file==='trainers/vpr-math/index.html';
-        const key=vpr?'VPRBoard':file==='trainers/ege-profile-log-trig.html'?'__profileLogTrigBoard':file==='trainers/ege-profile-circle.html'?'__profileCircleBoard':null;
+        const key=roomSelectionAdapters.get(file);
         if(!key)return null;
         const child=frame.contentWindow,current=new URL(child.location.href),entry=mirrorEntryFromUrl(raw);
         if(!entry||current.origin!==location.origin||current.username||current.password||canonicalTrainerFileFromUrl(current.href)!==file)return null;
@@ -638,7 +655,7 @@
           return;
         }
       }
-      if(['trainers/ege-profile-log-trig.html','trainers/ege-profile-circle.html','trainers/vpr-math/index.html'].includes(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
+      if(roomSelectionAdapters.has(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
     async function connectRoom(){
       shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);
       if(!shared.server||!shared.roomId||!shared.token){setStatus('локальный режим','');return}

@@ -38,7 +38,19 @@ test('FIPI 2027 public links select the original registered board topics without
     assert.equal(normalize(sourcePath + '?seed=31&unit=keep' + hash), target.replace('#', '?seed=31&unit=keep#'));
     assert.equal(normalize(sourcePath + '#exam/' + legacy), target, 'An old numeric link still selects its old topic');
   }
-  for (const hash of ['#fipi/2027/5', '#fipi/2027/8', '#fipi/2027/12', '#fipi/2027/16', '#fipi/2027/20', '#topic/integral']) {
+  for (const [number, slug] of [[5, 'compound-probability'], [8, 'derivative'], [9, 'formulas'],
+    [10, 'word-problems'], [11, 'functions'], [12, 'extrema']]) {
+    const hash = '#fipi/2027/' + number;
+    assert.equal(normalize(sourcePath + hash), '/trainers/ege-profile-' + slug + '.html' + hash);
+  }
+  for (const [legacy, slug] of [[5, 'compound-probability'], [10, 'formulas'], [11, 'word-problems'], [12, 'functions']]) {
+    for (const prefix of ['#exam/', '#calm/']) {
+      const hash = prefix + legacy;
+      assert.equal(normalize(sourcePath + hash), '/trainers/ege-profile-' + slug + '.html' + hash);
+    }
+  }
+  assert.equal(normalize(sourcePath + '#topic/integral'), '/trainers/ege-profile-derivative.html#topic/integral');
+  for (const hash of ['#exam/9', '#calm/9', '#fipi/2027/16', '#fipi/2027/20']) {
     assert.equal(normalize(sourcePath + hash), sourcePath + hash, 'No registered board wrapper is invented for ' + hash);
   }
   assert.equal(normalize('https://external.example' + sourcePath + '#fipi/2027/6'), 'https://external.example' + sourcePath + '#fipi/2027/6', 'The new aliases remain same-origin only');

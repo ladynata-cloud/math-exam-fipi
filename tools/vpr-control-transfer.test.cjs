@@ -67,7 +67,7 @@ function fixture(role = 'teacher') {
     part('function unsafePathText(', 'function validateTrainerRegistryResponse('),
     part('function mirrorEntryFromPayload(', 'function clearBridgeTimers('),
     part('function canWrite(){', 'function readonly(){'),
-    part('function prepareProfileTrainerForRoom(', 'function takePreparedProfileTrainer('),
+    part('const roomSelectionAdapters =', 'function takePreparedProfileTrainer('),
     part('function postTrainerMessage(', 'function plainTextFromHtml('),
     part('function bridgeStateFromPayload(', 'function requestTrainerState('),
     part('function flushVprControlState(', 'function scheduleLegacyTrainerRequest('),

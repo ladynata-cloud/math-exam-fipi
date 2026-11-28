@@ -237,7 +237,10 @@ function followRemoteInk() {
   if (!Number.isFinite(tip?.x) || !Number.isFinite(tip?.y)) return;
   let box = canvas.getBoundingClientRect();
   if (box.width < 2 || box.height < 2) return;
-  if (stroke !== followedStroke && (box.bottom <= 0 || box.top >= innerHeight)) {
+  // A thin strip of paper still intersects the viewport, but cannot show a line of writing.
+  const visibleHeight = Math.min(box.bottom, innerHeight) - Math.max(box.top, 0);
+  const lineArea = Math.min(96, box.height, innerHeight / 2);
+  if (stroke !== followedStroke && visibleHeight < lineArea) {
     canvas.scrollIntoView({ block: 'center', behavior: 'instant' });
     box = canvas.getBoundingClientRect();
   }
@@ -281,7 +284,7 @@ function scheduleRender() {
 function changeView(action) {
   if (activePointerId !== null) return;
   finishText();
-  if (shared.role === 'student') followTeacherWriting = false;
+  if (shared.role === 'student' && !canWrite()) followTeacherWriting = false;
   fitViewport = action === 'fit';
   if (action === 'reset') camera = { scale: 1, x: 0, y: 0 };
   else if (action !== 'fit') camera = BoardInk.zoomAt(camera,
@@ -335,7 +338,7 @@ function move(event, final = false) {
   event.preventDefault();
   if (panOrigin) {
     const next = screenPoint(event);
-    if (shared.role === 'student' && (next.x !== panOrigin.point.x || next.y !== panOrigin.point.y)) followTeacherWriting = false;
+    if (shared.role === 'student' && !canWrite() && (next.x !== panOrigin.point.x || next.y !== panOrigin.point.y)) followTeacherWriting = false;
     camera = BoardInk.pan(panOrigin.camera, next.x - panOrigin.point.x, next.y - panOrigin.point.y);
     scheduleRender();
     return;

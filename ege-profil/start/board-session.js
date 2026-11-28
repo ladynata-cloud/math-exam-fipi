@@ -45,6 +45,20 @@
     lessonIds: Object.freeze(['expr-logarithms', 'algebra-logarithmic', 'fn-explog',
       'trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent', 'algebra-cosine', 'algebra-double-angle'])
   });
+  const examMap = root.ProfileExamMap || (typeof module !== 'undefined' && module.exports ? require('../exam-map.js') : null);
+  const firstPartBoardAdapters = Object.freeze((examMap ? [5, 8, 9, 10, 11, 12] : []).map(number => {
+    const entry = examMap.get(number);
+    const id = 'ege-profile-' + entry.id;
+    // Legacy section 9 includes both derivatives and extrema. Each official
+    // board has its own overview and can return there from its lesson pages.
+    const legacyMatches = examMap.fromLegacyStart(entry.legacyStart)?.id === entry.id;
+    return api({
+      id, marker: entry.id, number: legacyMatches ? entry.legacyStart : null,
+      official: entry, defaultRoute: examMap.hash(entry), path: '/trainers/' + id + '.html',
+      debugKey: '__profile' + entry.id.split('-').map(word => word[0].toUpperCase() + word.slice(1)).join('') + 'Board',
+      lessonIds: Object.freeze([...entry.lessonIds, ...entry.preparationIds])
+    });
+  }));
   const MODES = ['guided', 'plan', 'independent'];
   const PROGRESS_KEY = 'mathexam.profileStart2027.v1';
   const PREFERENCES_KEY = 'mathexam.profileCalmPreferences.v1';
@@ -68,11 +82,16 @@
   const text = value => typeof value === 'string' && value.length <= 200 && !/<\/?[a-z][^>]*>/i.test(value);
   function validRoute(hash, config) {
     if (config.defaultRoute && hash === config.defaultRoute) return true;
+    if (config.official && typeof hash === 'string' && hash.startsWith('#topic/')) {
+      const topic = examMap.topic(hash.slice(7));
+      return topic?.number === config.official.number && topic.source === 'start' &&
+        topic.lessonIds.every(id => config.lessonIds.includes(id));
+    }
     if (config.number && (hash === '#exam/' + config.number || hash === '#calm/' + config.number)) return true;
     // Current public links are aliases for the same registered legacy scope.
     // They cannot add a lesson or expand the synchronized payload boundary.
-    const entry = config.number && root.ProfileExamMap?.fromLegacyStart(config.number);
-    if (entry && hash === root.ProfileExamMap.hash(entry) && entry.source === 'start' &&
+    const entry = config.number && examMap?.fromLegacyStart(config.number);
+    if (entry && hash === examMap.hash(entry) && entry.source === 'start' &&
         entry.lessonIds.every(id => config.lessonIds.includes(id))) return true;
     const match = /^#(lesson|example|practice|repair|pause)\/([a-z0-9-]+)(?:\/(guided|plan|independent))?$/.exec(hash || '');
     return !!match && config.lessonIds.includes(match[2]) &&
@@ -114,8 +133,38 @@
         sessions: subset(data.sessions, LESSON_IDS.flatMap(id => MODES.map(mode => id + ':' + mode)))
       };
     }
-    function preferences(prefs) {
-      return { version: 1, enabled: prefs.enabled, examples: subset(prefs.examples, LESSON_IDS), micro: {} };
+    function activeMicroSteps(sessions) {
+      const active = new Map();
+      for (const id of LESSON_IDS) {
+        const session = sessions[id + ':guided'];
+        if (!session || session.done || session.answers.length > session.step) continue;
+        const questions = root.ProfileCalmMicro?.steps(tasks.get(session.taskId), session.step);
+        if (questions?.length) active.set([session.taskId, session.started, session.step].join('|'), questions);
+      }
+      return active;
+    }
+    function preferences(prefs, sessions = {}) {
+      const active = activeMicroSteps(sessions);
+      return { version: 1, enabled: prefs.enabled, examples: subset(prefs.examples, LESSON_IDS), micro: subset(prefs.micro, [...active.keys()]) };
+    }
+    function validMicro(panels, sessions) {
+      if (!object(panels)) return false;
+      const active = activeMicroSteps(sessions);
+      return Object.entries(panels).every(([key, record]) => {
+        const questions = active.get(key);
+        if (!questions || !fields(record, ['answers', 'draft', 'feedback']) || !Array.isArray(record.answers) ||
+            record.answers.length > questions.length || !text(record.draft)) return false;
+        if (!record.answers.every((answer, i) => text(answer) &&
+            (!questions[i].choices || questions[i].choices.includes(answer)) &&
+            root.ProfileCheck.check(questions[i].answer, answer, questions[i].choices))) return false;
+        const next = questions[record.answers.length];
+        if (!next) return record.draft === '' && record.feedback === 'none';
+        if (next.choices && record.draft !== '' && !next.choices.includes(record.draft)) return false;
+        if (record.feedback === 'none') return true;
+        if (!record.draft.trim()) return record.feedback === 'empty';
+        if (!next.choices && !Number.isFinite(root.ProfileCheck.number(record.draft))) return record.feedback === 'format';
+        return record.feedback === 'wrong' && !root.ProfileCheck.check(next.answer, record.draft, next.choices);
+      });
     }
     function sessionValid(key, value) {
       if (!fields(value, ['taskId', 'step', 'wrong', 'assisted', 'familiar', 'done', 'draft', 'answers', 'started', 'registered'])) return false;
@@ -175,7 +224,7 @@
         if (!Object.entries(data.seen).every(([id, n]) => tasks.has(id) && integer(n, 0, 100000)) ||
             !Object.entries(data.sessions).every(([key, session]) => sessionValid(key, session) && data.seen[session.taskId] >= 1)) return false;
         if (!fields(prefs, ['version', 'enabled', 'examples', 'micro']) || prefs.version !== 1 || typeof prefs.enabled !== 'boolean' ||
-            !object(prefs.examples) || !fields(prefs.micro, []) || !Object.entries(prefs.examples).every(([id, n]) =>
+            !object(prefs.examples) || !validMicro(prefs.micro, data.sessions) || !Object.entries(prefs.examples).every(([id, n]) =>
               known.has(id) && integer(n, 0, root.ProfileSolutions.steps(known.get(id).tasks[0]).length - 1))) return false;
         const [page, id, mode] = value.route.slice(1).split('/');
         if (['practice', 'repair', 'pause'].includes(page) && !data.sessions[id + ':' + mode]) return false;
@@ -239,6 +288,11 @@
       const canonical = new URL('/ege-profil/start/index.html', location.origin);
       for (const link of main.querySelectorAll('a[href]')) {
         const href = link.getAttribute('href');
+        if (config.official && !config.number &&
+            (href === '#exam/' + config.official.legacyStart || href === '#calm/' + config.official.legacyStart)) {
+          link.setAttribute('href', config.defaultRoute);
+          continue;
+        }
         if (href.startsWith('#') && (routeValid(href) || ['#task-model', '#task-solution', '#main'].includes(href))) continue;
         const url = new URL(href, canonical);
         if (!['http:', 'https:'].includes(url.protocol)) continue;
@@ -251,13 +305,14 @@
   function api(config) {
     return Object.freeze({
       LESSON_IDS: config.lessonIds, id: config.id, marker: config.marker,
-      path: config.path, debugKey: config.debugKey, defaultRoute: config.defaultRoute || '#exam/' + config.number,
+      path: config.path, debugKey: config.debugKey, examNumber: config.official?.number, defaultRoute: config.defaultRoute || '#exam/' + config.number,
       validRoute: hash => validRoute(hash, config), create: lessons => create(lessons, config)
     });
   }
   const expressions = api(EXPRESSIONS), stereometry = api(STEREOMETRY), planimetry = api(PLANIMETRY),
     vectors = api(VECTORS), probability = api(PROBABILITY), randomVariables = api(RANDOM_VARIABLES), equations = api(EQUATIONS),
     logTrig = api(LOG_TRIG);
+  root.ProfileFirstPartBoardAdapters = firstPartBoardAdapters;
   root.ProfileExpressionsBoard = expressions;
   root.ProfileStereoBoard = stereometry;
   root.ProfilePlanimetryBoard = planimetry;
@@ -268,5 +323,5 @@
   root.ProfileLogTrigBoard = logTrig;
   // Preserve the published №8 default and №3 named CommonJS APIs.
   if (typeof module !== 'undefined' && module.exports) module.exports = Object.freeze({ ...expressions, stereometry,
-    planimetry, vectors, probability, randomVariables, equations, logTrig });
+    planimetry, vectors, probability, randomVariables, equations, logTrig, firstPartBoardAdapters });
 })(globalThis);
