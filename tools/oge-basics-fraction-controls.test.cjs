@@ -218,10 +218,20 @@ test('every fraction checkpoint covers its actions and the reduction exercise ne
   const basic = mount(t, {}, false, meaning).w.__trainerDebug;
   const denominator = mount(t, {}, false, common).w.__trainerDebug;
   const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+  const positions = new Set();
   for (let sample = 0; sample < 100; sample++) {
     const meaningTasks = Array.from(basic.makeCheckSet());
     assert.deepEqual(meaningTasks.map(task => task.skill), ['parts','parts','equal','simplify','compare']);
-    assert.notEqual(meaningTasks[0].options[1].html, meaningTasks[1].options[1].html);
+    const parts = meaningTasks.slice(0, 2);
+    for (const task of parts) {
+      assert.deepEqual(task.options.map(o => o.id).sort(), ['d','n']);
+      const [n,d] = task.prompt.match(/(\d+)\/(\d+)/).slice(1).map(Number);
+      assert(n > 0 && n < d);
+      assert.equal(task.options.find(o => o.id === 'n').html, String(n));
+      assert.equal(task.options.find(o => o.id === 'd').html, String(d));
+    }
+    assert.notEqual(parts[0].options.find(o => o.id === 'd').html, parts[1].options.find(o => o.id === 'd').html);
+    positions.add(parts.map(task => task.options.findIndex(o => o.id === task.answer)).join(''));
     assert.equal(meaningTasks[0].answer, 'd');
     assert.equal(meaningTasks[1].answer, 'n');
     const commonTasks = Array.from(denominator.makeCheckSet());
@@ -236,6 +246,7 @@ test('every fraction checkpoint covers its actions and the reduction exercise ne
       if (task.skill === 'add') assert.equal(gcd(numerator, lcm), 1);
     }
   }
+  assert.deepEqual([...positions].sort(), ['00','01','10','11']);
 });
 
 test('least common denominator help also works when the product is the answer', t => {
@@ -268,8 +279,35 @@ test('native lesson and practice controls work if optional enhancement fails to 
 test('128 original cabinet specs and question identities remain byte-for-byte compatible', () => {
   const samples = Array.from({length:128}, (_,seed) => contracts.create('oge-basics','fraction-meaning',seed));
   const hash = value => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
-  // Recorded from main add234c3 before changing the display code.
-  assert.equal(hash(samples), 'a6dbbc33277fc7e9c289b288164e5e0e8e88cf13a8514d3d4809d1ef8033eb17');
+  // Pin the corrected full envelopes AND the original published bytes after
+  // reversing exactly the three intentional lesson-only changes.
+  const legacyEnvelope = envelope => {
+    const old = clone(envelope);
+    assert.equal(old.taskSpec.contentId, 'fraction-meaning');
+    const lessons = old.taskSpec.lessons;
+    assert.equal(lessons.length, 5);
+    assert.equal(lessons[2].lead, "Если умножить числитель и знаменатель на одно и то же натуральное число, значение дроби не изменится. На ноль умножать нельзя: знаменатель станет нулём.");
+    assert.equal(lessons[3].question.prompt, "Сократите дробь <strong>4/10</strong> до несократимой. Ответ запишите через /.");
+    assert.equal(lessons[3].question.strict, true);
+    lessons[2].lead = "Если умножить числитель и знаменатель на одно и то же число, значение не изменится.";
+    lessons[3].question.prompt = "Сократите дробь <strong>4/10</strong>. Ответ запишите через /.";
+    delete lessons[3].question.strict;
+    return old;
+  };
+  assert.equal(hash(samples), '221bec12dd1dbca470f7dc0b2a8eadbec7356abe81d48289f74f4b20f70f66c2');
+  const legacy = samples.map(legacyEnvelope);
+  assert.equal(hash(legacy), 'a6dbbc33277fc7e9c289b288164e5e0e8e88cf13a8514d3d4809d1ef8033eb17');
+  for (const mutate of [
+    x => { x.taskSpec.lessons[2].lead += '!'; },
+    x => { x.taskSpec.lessons[3].question.prompt += '!'; },
+    x => { x.taskSpec.lessons[3].question.strict = false; }
+  ]) {
+    const wrong = clone(samples[0]); mutate(wrong);
+    assert.throws(() => legacyEnvelope(wrong));
+  }
+  const unrelated = clone(samples);
+  unrelated[0].state.note = 'synthetic changed state';
+  assert.notEqual(hash(unrelated.map(legacyEnvelope)), hash(legacy));
   assert.equal(hash(samples.map(row => contracts.questionIdentity(row.taskSpec))),
     '0ce9eae7a8001c926e2a920da7b20d8dddea0808bc6ad760702d97f7a35efae7');
 });

@@ -135,7 +135,7 @@ jobs:
           assert len(drift)==89 and changed(accepted,main)==drift
           assert drift & school_paths=={shared}
           dependency_paths={"trainers/oge-basics/learning-bank.js", "tools/oge-learner-entry.test.cjs"}
-          preservation_blobs={"tools/oge-book-corrections.cjs":"e56262095ad661f2bd2ff0be417566b08de93af0","tools/oge-book-corrections.test.cjs":"e56a786eb5ec57e472dcddd87ad77c1ff7febc1c","tools/oge-basics-inventory.test.cjs":"e4922e3fedbb57bf9c8d10ee524a7ddc9dfeee89","tools/learning-division-course.dom.cjs":"d73194292e2945dcc5e9c646d1c6d23069fb5e8c"}
+          preservation_blobs={"tools/oge-book-corrections.cjs":"e56262095ad661f2bd2ff0be417566b08de93af0","tools/oge-book-corrections.test.cjs":"e56a786eb5ec57e472dcddd87ad77c1ff7febc1c","tools/oge-basics-inventory.test.cjs":"e4922e3fedbb57bf9c8d10ee524a7ddc9dfeee89","tools/learning-division-course.dom.cjs":"d73194292e2945dcc5e9c646d1c6d23069fb5e8c","tools/oge-basics-fraction-controls.test.cjs":"100a90c1672df9028920b681343dbda1a1f7ef86"}
           preservation_paths=set(preservation_blobs)
           assert not (dependency_paths | preservation_paths) & (drift | school_paths | expected)
           assert not dependency_paths & preservation_paths
@@ -189,6 +189,9 @@ jobs:
           assert changed(dependency_previous,live)==dependency_paths | preservation_paths | {workflow}
           preservation_previous="70f49e93a2a155b4d66eab42446f2e189716e967"
           assert changed(preservation_previous,live)==preservation_paths | {workflow}
+          controls_previous="6c34edb87205a1353cee01c2edc770e740dd3ef0"
+          controls_test="tools/oge-basics-fraction-controls.test.cjs"
+          assert changed(controls_previous,live)=={controls_test,workflow}
           for p, expected_blob in preservation_blobs.items():
               assert git("rev-parse",live+":"+p).decode().strip()==expected_blob, p
               assert Path(p).read_bytes()==blob(live,p), p
@@ -204,7 +207,7 @@ jobs:
           assert old_entry.count(old_pin)==1 and new_pin not in old_entry
           assert blob(live,entry_test)==old_entry.replace(old_pin,new_pin,1)
           composed=git("rev-parse",live+"^{tree}").decode().strip()
-          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 89 later published paths; 16 original school paths plus 2 exact fraction dependencies and 4 historical compatibility tests; both page bindings and all 222 history receipts retained")
+          print("SCHOOL_COMPOSITION_TREE_OK",live,bridge,composed,"9 published bridge paths; 18 published lesson paths; 89 later published paths; 16 original school paths plus 2 exact fraction dependencies and 5 historical compatibility tests; both page bindings and all 222 history receipts retained")
           PY
       - name: Existing mathematical and route assertions on the composition
         run: |
@@ -212,6 +215,7 @@ jobs:
           node --check tools/school-journey-composition.browser.cjs
           node tools/learning-remediation-bank.cjs --check
           node --check tools/oge-learner-entry.test.cjs
+          node --check tools/oge-basics-fraction-controls.test.cjs
       - name: Install pinned Chromium test environment
         run: |
           npm install --prefix "$RUNNER_TEMP/school-composition" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
