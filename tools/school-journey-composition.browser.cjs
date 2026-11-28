@@ -113,6 +113,101 @@ async function exercise(browser,origin,width){
     console.log('SCHOOL_COMPOSITION_ROUTE_OK width='+width+' original→prerequisite→return→transfer→home→resume');
   }finally{await context.close();}
 }
+async function fractionPractice(browser,origin,width){
+  const context=await browser.newContext({viewport:{width,height:900}});
+  await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
+  try{
+    const page=await context.newPage(), errors=[];
+    page.on('pageerror',e=>errors.push(String(e)));
+    const own='mathExamBasics.fraction-meaning.v1', shared='mathExamCourseProgress.v1';
+    await page.addInitScript(({own,shared})=>{
+      if(!localStorage.getItem(own))localStorage.setItem(own,JSON.stringify({independent:7,supported:3,reviewed:2,best:4,lastCheck:4,learnDone:[],practiceBySkill:{parts:7}}));
+      if(!localStorage.getItem(shared))localStorage.setItem(shared,JSON.stringify({syntheticOther:{solved:2,total:5}}));
+    },{own,shared});
+    await page.goto(origin+'/trainers/oge-basics/fraction-meaning.html');
+    await page.waitForFunction(()=>window.__trainerDebug&&document.body.dataset.basicsStandalone==='basic');
+    const route=async name=>{
+      const menu=page.locator('.bs-navigation');
+      if(!(await menu.evaluate(e=>e.open)))await keyboard(menu.locator('summary'));
+      await keyboard(menu.locator('button[data-route="'+name+'"]'));
+    };
+    await route('learn');
+    await keyboard(page.locator('#learnRail button').nth(3));
+    const input=page.locator('#lessonQuestion input');
+    for(const bad of ['4/10','6/15','0,4']){
+      await input.fill(bad);await input.press('Enter');
+      assert.match(await page.locator('#lessonFeedback').getAttribute('class'),/bad/);
+    }
+    await input.fill('2/5');await keyboard(page.locator('#lessonQuestion .q-answer button'));
+    assert.match(await page.locator('#lessonFeedback').getAttribute('class'),/good/);
+    const numeric=await page.evaluate(()=>{
+      const d=window.__trainerDebug;
+      return ['4','4,0','8/2','4.000000001','4000000001/1000000000','4/00'].map(x=>d.answerEqual(x,4));
+    });
+    assert.deepEqual(numeric,[true,true,true,false,false,false]);
+    await route('practice');
+    // New exercises use the native next button; synthetic storage seeded above must survive.
+    const snapshot=()=>page.evaluate(()=>{const s=window.__trainerDebug.state();return [s.independent,s.supported,s.reviewed]});
+    const before=await snapshot();
+    const answer=async()=>{
+      const t=await page.evaluate(()=>window.__trainerDebug.state().current);
+      if(t.kind==='choice'){
+        await keyboard(page.locator('#practiceAnswer button[data-id="'+t.answer+'"]'));
+        await keyboard(page.locator('#checkTask'));
+      }else{
+        const value=await page.evaluate(()=>{const d=window.__trainerDebug;return d.fmtAnswer(d.state().current.answer)});
+        const i=page.locator('#practiceAnswer input');await i.fill(value);await i.press('Enter');
+      }
+    };
+    // The explanation detour can mark the initial task supported. Use an actual fresh page
+    // before the independent, supported and reveal trials.
+    await page.reload();
+    await page.waitForFunction(()=>window.__trainerDebug&&document.body.dataset.basicsStandalone==='basic');
+    assert.deepEqual(await snapshot(),before);
+    await answer();
+    const terminal=async expected=>{
+      const feedback=await page.locator('#practiceFeedback').innerHTML();
+      for(const key of ['hint1','hint2','solutionBtn']){
+        const button=page.locator('#'+key);
+        assert(await button.isDisabled(),'terminal help remains disabled: '+key);
+        // Negative control: direct native handler, in addition to disabled user controls.
+        await button.evaluate(e=>e.onclick());
+      }
+      assert.deepEqual(await snapshot(),expected);
+      assert.equal(await page.locator('#practiceFeedback').innerHTML(),feedback);
+      assert.deepEqual(await page.evaluate(k=>{const s=JSON.parse(localStorage.getItem(k));return [s.independent,s.supported,s.reviewed]},own),expected);
+    };
+    await terminal([before[0]+1,before[1],before[2]]);
+    await keyboard(page.locator('#nextTask'));
+    const hint=page.locator('#hint1');
+    assert(!(await hint.isDisabled()));
+    await hint.evaluate(e=>e.click());
+    await answer();
+    await terminal([before[0]+1,before[1]+1,before[2]]);
+    await keyboard(page.locator('#nextTask'));
+    await page.locator('#solutionBtn').evaluate(e=>e.click());
+    await terminal([before[0]+1,before[1]+1,before[2]+1]);
+    const check=await page.evaluate(()=>{
+      const d=window.__trainerDebug;let positions=new Set(),valid=true;
+      for(let k=0;k<64;k++){
+        const [a,b]=d.makeCheckSet();positions.add(a.options.findIndex(o=>o.id==='d'));
+        valid=valid&&a.options.find(o=>o.id==='d').html!==b.options.find(o=>o.id==='d').html;
+      }
+      return {positions:[...positions].sort(),valid};
+    });
+    assert.deepEqual(check,{positions:[0,1],valid:true});
+    await route('check');
+    for(let j=0;j<5;j++){
+      const t=await page.evaluate(()=>window.__trainerDebug.state().check.tasks[window.__trainerDebug.state().check.i]);
+      if(t.kind==='choice'){await keyboard(page.locator('#checkAnswer button[data-id="'+t.answer+'"]'));await keyboard(page.locator('#checkNext'));}
+      else{const v=await page.evaluate(()=>{const d=window.__trainerDebug;return d.fmtAnswer(d.state().check.tasks[d.state().check.i].answer)});const i=page.locator('#checkAnswer input');await i.fill(v);await i.press('Enter');}
+    }
+    assert.equal(await page.locator('#resultScore').innerText(),'5/5');
+    assert.deepEqual(await page.evaluate(k=>JSON.parse(localStorage.getItem(k)).syntheticOther,shared),{solved:2,total:5});
+    assert.deepEqual(errors,[]);
+    console.log('SCHOOL_FRACTION_PRACTICE_OK width='+width);
+  }finally{await context.close();}
+}
 async function noJS(browser,origin){
   const context=await browser.newContext({viewport:{width:320,height:900},javaScriptEnabled:false});
   await context.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
@@ -149,6 +244,7 @@ async function noJS(browser,origin){
     browser=await chromium.launch({headless:true});
     const origin='http://127.0.0.1:'+server.address().port;
     for(const width of [320,390,1280])await exercise(browser,origin,width);
+    for(const width of [320,390,1280])await fractionPractice(browser,origin,width);
     await noJS(browser,origin);
     console.log('SCHOOL_JOURNEY_COMPOSITION_BROWSER_OK');
   }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
