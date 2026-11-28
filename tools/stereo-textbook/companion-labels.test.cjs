@@ -59,7 +59,12 @@ assert.equal(doc.querySelector('[data-catalog-pending]'),null,'the entire sphere
 const sphereSeen=new Set();collect('[data-catalog-ready]',sphereSeen,true);
 assert.deepEqual([...sphereSeen].sort(),[...require('./sphere-baseline.cjs').ids].sort(),'all 37 sphere task parts and nine theory points have captions across pages');
 choose('catalog-chapter','V. Объёмы тел');choose('catalog-paragraph','V:1');
-assert.match(doc.querySelector('[data-catalog-pending] .companion-location').textContent,/К главе V.*К параграфу 1 «Объём прямоугольного параллелепипеда»/);
+assert.match(doc.querySelector('[data-catalog-ready] .companion-location').textContent,/К главе V.*К параграфу 1 «Объём прямоугольного параллелепипеда»/);
+assert.equal(doc.querySelector('[data-catalog-pending]'),null,'the entire box volume paragraph is available');
+const boxSeen=new Set();collect('[data-catalog-ready]',boxSeen,true);
+assert.deepEqual([...boxSeen].sort(),Object.keys(require('./box-volumes.json').cards).sort(),'all 19 task parts and two theory points are available');
+choose('catalog-chapter','VI. Векторы в пространстве');choose('catalog-paragraph','VI:1');
+assert.match(doc.querySelector('[data-catalog-pending] .companion-location').textContent,/К главе VI.*К параграфу 1 «Понятие вектора в пространстве»/);
 assert.equal(doc.querySelectorAll('[data-catalog-ready] [data-lesson]').length,0,'a pending paragraph never becomes available because it has a caption');
 app.home();search('Пирамида');assert.ok(doc.querySelector('[data-catalog-ready] [data-lesson]'));
 
@@ -85,7 +90,10 @@ for(const [number,paragraph]of [[32,1],[33,1],[164,2],[165,2],[196,3],[238,1],[2
 }
 app.home();choose('catalog-collection','main');
 for(const [number,paragraph]of [[451,1],[502,3],[517,4],[591,2],[612,3],[681,1],[835,1],[848,2],[849,2],[850,2],[857,3],[858,3],[862,3],[870,4]]){
- search(String(number));const reference=doc.querySelector('[data-catalog-pending] [data-companion-source]');assert.ok(reference);assert.match(reference.textContent,new RegExp('К параграфу '+paragraph+' «'));
+ search(String(number));
+ const references=[...doc.querySelectorAll('[data-companion-source]')].filter(ref=>new RegExp('^К задаче № '+number+'(?:$| ·)').test(ref.querySelector('.companion-identity').textContent));
+ assert.ok(references.length,'exact source number '+number);
+ for(const ref of references)assert.match(ref.querySelector('.companion-location').textContent,new RegExp('К параграфу '+paragraph+' «'));
 }
 search('518');assert.doesNotMatch(doc.querySelector('[data-catalog-pending] [data-companion-source]').textContent,/К параграфу/,'additional task 518 shares page138 with chapter questions, not paragraph4');
 

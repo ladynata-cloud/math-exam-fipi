@@ -228,6 +228,7 @@
   </section>
 </div>
 
+<script src="number-input.js"></script>
 <script>
 (function(){
   "use strict";
@@ -281,13 +282,6 @@
     });
   });
 
-  function pnum(v){
-    v=(v==null?"":(""+v)).trim().replace(",",".");
-    if(v==="") return null;
-    var m=v.match(/^(-?)(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
-    if(m){ var n=parseFloat(m[2])/parseFloat(m[3]); return m[1]?-n:n; }
-    var n2=parseFloat(v); return isNaN(n2)?NaN:n2;
-  }
 
   function fnPath(f,x0,x1,step,PX,PY){
     var d="",pen=false;
@@ -352,7 +346,7 @@
     }
     $("#qCheck").addEventListener("click",function(){
       if(!cur) return;
-      var a=pnum($("#qa").value), b=pnum($("#qb").value), c=pnum($("#qc").value);
+      var a=parseParameterNumber($("#qa").value), b=parseParameterNumber($("#qb").value), c=parseParameterNumber($("#qc").value);
       if(a===null||b===null||c===null){ fb.className="feedback warn on"; fb.textContent="Впиши все три коэффициента."; return; }
       if(isNaN(a)||isNaN(b)||isNaN(c)){ fb.className="feedback bad on"; fb.textContent="Не разобрал число. Дробь пиши как 0.5 или 1/2."; return; }
       var ok=Math.abs(a-cur.a)<1e-9&&Math.abs(b-cur.b)<1e-9&&Math.abs(c-cur.c)<1e-9;
@@ -360,8 +354,9 @@
         streak++; if(streak>best){best=streak; save({drillBest:best});}
         $("#qStreak").textContent=streak; $("#qBest").textContent=best;
         fb.className="feedback ok on";
-        fb.textContent="Верно: a = "+cur.a+", b = "+cur.b+", c = "+cur.c+". Следующий график →";
-        setTimeout(gen,700);
+        fb.textContent="Верно: a = "+cur.a+", b = "+cur.b+", c = "+cur.c+". Нажми «Новый график», чтобы продолжить.";
+        cur=null;
+        $("#qNew").focus();
       } else {
         streak=0; $("#qStreak").textContent=0;
         fb.className="feedback bad on";
@@ -424,7 +419,7 @@
     }
     ka.addEventListener("input",render); render();
     $("#kCheck").addEventListener("click",function(){
-      var s=pnum($("#ksum").value), p=pnum($("#kprod").value), fb=$("#kFb");
+      var s=parseParameterNumber($("#ksum").value), p=parseParameterNumber($("#kprod").value), fb=$("#kFb");
       if(s===null||p===null){ fb.className="feedback warn on"; fb.textContent="Впиши оба значения."; return; }
       var ok=Math.abs(s-1)<1e-9&&Math.abs(p+3)<1e-9;
       if(ok){ fb.className="feedback ok on"; fb.textContent="Верно: для a² − a − 3 = 0 сумма корней 1, произведение −3 — Виета работает и по параметру."; save({key:"kasanie"}); }
@@ -479,7 +474,7 @@
     }
     rp.addEventListener("input",render); render();
     $("#rCheck").addEventListener("click",function(){
-      var l=pnum($("#rl").value), r=pnum($("#rr").value), fb=$("#rFb");
+      var l=parseParameterNumber($("#rl").value), r=parseParameterNumber($("#rr").value), fb=$("#rFb");
       if(l===null||r===null){ fb.className="feedback warn on"; fb.textContent="Впиши обе границы."; return; }
       var ok=Math.abs(l+3.25)<1e-9&&Math.abs(r-1)<1e-9;
       if(ok){ fb.className="feedback ok on"; fb.textContent="Верно: (p − 1)(4p + 13) < 0 при −3,25 < p < 1. В тесте это и были ответы: а) −3,25; б) 1."; save({key:"rootsloc"}); }
@@ -565,7 +560,7 @@
     function pset(v){
       v=(v||"").trim();
       if(!v) return null;
-      var parts=v.split(/[;\s]+/).filter(Boolean).map(pnum);
+      var parts=v.replace(/\s*\/\s*/g,"/").split(/[;\s]+/).filter(Boolean).map(parseParameterNumber);
       if(parts.some(function(x){return x==null||isNaN(x);})) return NaN;
       parts.sort(function(a,b){return a-b;});
       return parts.filter(function(x,i){return i===0||Math.abs(x-parts[i-1])>1e-9;});

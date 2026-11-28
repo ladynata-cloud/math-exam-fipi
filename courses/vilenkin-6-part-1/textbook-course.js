@@ -172,7 +172,17 @@
     setSupplementView(false);
     const epoch=++renderEpoch,hash=location.hash,live=()=>viewIsCurrent(epoch,hash);
     const progress=progressSummary(unit), next=unit.tasks.find(t=>!state.tasks[t.id]?.status) || unit.tasks[0];
-    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a><span>›</span><span>${text(Sources.pointLabel(unit.id))}</span></nav><p class="eyebrow">${text(Sources.sectionLabel(unit.id))} · с. ${unit.page}–${unit.endPage}</p><h1>${text(unit.title)}</h1><p class="intro">${fmt(unit.goal)}</p>${unit.prereq?.length?`<p class="unit-rule-link">Пригодится: ${unit.prereq.map(id=>unitMap.get(id)).filter(Boolean).map(u=>`<a href="${unitURL(u)}">${text(u.title)}</a>`).join(' · ')}.</p>`:''}<section class="card rules" aria-label="Коротко о главном">${unit.rules.map(r=>`<article><h2>${text(r.title)}</h2><p>${fmt(r.text)}</p></article>`).join('')}${unit.pitfalls?.length?`<details data-disclosure="pitfalls"><summary>Где легко ошибиться</summary><ul>${unit.pitfalls.map(p=>`<li>${fmt(p)}</li>`).join('')}</ul></details>`:''}</section><aside class="card" data-study-support aria-label="Справка и повторение"></aside><a class="button-link" href="${taskURL(unit,next)}">${progress.total?'Продолжить задания':'Начать с решения по шагам'}</a><div class="task-groups">${['learn','practice','check'].map(role=>`<section class="card"><h2>${roleLabels[role]}</h2><ol>${unit.tasks.filter(t=>t.role===role).map(t=>`<li><a href="${taskURL(unit,t)}">${text(Sources.taskLabel(t))}</a><small>${statusLabels[state.tasks[t.id]?.status] || (role==='learn'?'Один шаг за другим':'Попробуй решить сам')}</small></li>`).join('')}</ol></section>`).join('')}</div>${progress.total?`<p class="status-detail">Выполнено ${progress.total} из ${unit.tasks.length}. Самостоятельно с первого прохождения: ${progress.counts.independent}. По шагам и с помощью: ${progress.counts.learned+progress.counts.assisted}. По памятке: ${progress.counts.manual}. Повторно: ${progress.counts.repeated}.</p>`:''}<p class="muted">После этой подборки попробуй ещё одно задание того же вида в учебнике. Не торопись переходить дальше, если пока нужна помощь.</p><div class="reset"><button type="button" data-action="ask-reset">Начать эту тему заново</button>${resetPending?`<div class="reset-confirm"><p>Очистить только ответы и отметки этой темы в этом браузере?</p><button type="button" data-action="confirm-reset">Да, начать заново</button> <button type="button" data-action="cancel-reset">Отмена</button></div>`:''}</div>`;
+    main.innerHTML=`<nav class="breadcrumb" aria-label="Путь"><a href="#">Все темы</a><span>›</span><span>${text(Sources.pointLabel(unit.id))}</span></nav><p class="eyebrow">${text(Sources.sectionLabel(unit.id))} · с. ${unit.page}–${unit.endPage}</p><h1>${text(unit.title)}</h1><p class="intro">${fmt(unit.goal)}</p>${!managed && [18,19,20].includes(unit.id)?'<div data-ratio-board-links></div>':''}${unit.prereq?.length?`<p class="unit-rule-link">Пригодится: ${unit.prereq.map(id=>unitMap.get(id)).filter(Boolean).map(u=>`<a href="${unitURL(u)}">${text(u.title)}</a>`).join(' · ')}.</p>`:''}<section class="card rules" aria-label="Коротко о главном">${unit.rules.map(r=>`<article><h2>${text(r.title)}</h2><p>${fmt(r.text)}</p></article>`).join('')}${unit.pitfalls?.length?`<details data-disclosure="pitfalls"><summary>Где легко ошибиться</summary><ul>${unit.pitfalls.map(p=>`<li>${fmt(p)}</li>`).join('')}</ul></details>`:''}</section><aside class="card" data-study-support aria-label="Справка и повторение"></aside><a class="button-link" href="${taskURL(unit,next)}">${progress.total?'Продолжить задания':'Начать с решения по шагам'}</a><div class="task-groups">${['learn','practice','check'].map(role=>`<section class="card"><h2>${roleLabels[role]}</h2><ol>${unit.tasks.filter(t=>t.role===role).map(t=>`<li><a href="${taskURL(unit,t)}">${text(Sources.taskLabel(t))}</a><small>${statusLabels[state.tasks[t.id]?.status] || (role==='learn'?'Один шаг за другим':'Попробуй решить сам')}</small></li>`).join('')}</ol></section>`).join('')}</div>${progress.total?`<p class="status-detail">Выполнено ${progress.total} из ${unit.tasks.length}. Самостоятельно с первого прохождения: ${progress.counts.independent}. По шагам и с помощью: ${progress.counts.learned+progress.counts.assisted}. По памятке: ${progress.counts.manual}. Повторно: ${progress.counts.repeated}.</p>`:''}<p class="muted">После этой подборки попробуй ещё одно задание того же вида в учебнике. Не торопись переходить дальше, если пока нужна помощь.</p><div class="reset"><button type="button" data-action="ask-reset">Начать эту тему заново</button>${resetPending?`<div class="reset-confirm"><p>Очистить только ответы и отметки этой темы в этом браузере?</p><button type="button" data-action="confirm-reset">Да, начать заново</button> <button type="button" data-action="cancel-reset">Отмена</button></div>`:''}</div>`;
+    const boardLinks=main.querySelector('[data-ratio-board-links]');
+    if(boardLinks){
+      const showBoardLinks=()=>{
+        if(live())boardLinks.innerHTML=window.RatioBoardTopics.linksForUnit(unit.id);
+      };
+      if(window.RatioBoardTopics)showBoardLinks();
+      else import('../../learning/ratio-board-topics.js?v=20261127-topics').then(showBoardLinks).catch(()=>{
+        if(live())boardLinks.textContent='Переходы на доску временно недоступны.';
+      });
+    }
     mountSupport(unit,epoch,hash);
     main.querySelector('[data-action="ask-reset"]').addEventListener('click',()=>{if(!live())return;resetPending=true;renderUnit(unit);});
     main.querySelector('[data-action="cancel-reset"]')?.addEventListener('click',()=>{if(!live())return;resetPending=false;renderUnit(unit);});
@@ -234,7 +244,14 @@
       }
     }
     mountSupport(unit,epoch,hash,task,p);
-    main.querySelector('.source a')?.addEventListener('click',()=>{if(!viewIsCurrent(epoch,hash))return;if(!p.status){p.helped=true;save();}});
+    const consultSource=event=>{
+      if(event.type==='auxclick'&&event.button!==1)return;
+      if(!viewIsCurrent(epoch,hash)||state.tasks[task.id]!==p){event.preventDefault();return;}
+      if(!p.status){p.helped=true;save();}
+    };
+    const sourceLink=main.querySelector('.source a');
+    sourceLink?.addEventListener('click',consultSource);
+    sourceLink?.addEventListener('auxclick',consultSource);
     const rule=main.querySelector('[data-disclosure="rule"]');
     rule.addEventListener('toggle',()=>{if(!viewIsCurrent(epoch,hash)||isComplete)return;p.ruleOpen=rule.open;if(rule.open){p.helped=true;}save();});
     main.querySelector('[data-action="repeat"]')?.addEventListener('click',()=>{if(!viewIsCurrent(epoch,hash)||state.tasks[task.id]!==p||!p.status)return;if(managed){save('new-task');return;}const old=p;delete state.tasks[task.id];const fresh=getProgress(task);fresh.repeated=true;fresh.attempts=old.attempts;save();renderTask(unit,task,true);});
@@ -359,7 +376,7 @@
     if(!unit){renderHome();return;}
     state.last=location.hash;save();
     const task=parsed.task&&unit.tasks.find(t=>t.id===parsed.task);
-    if(task){if(task.role==='check'&&!getProgress(task).status){state.activeCheck=task.id;save();}else if(task.role==='learn'&&state.activeCheck){const checked=taskMap.get(state.activeCheck);if(checked&&!getProgress(checked).status)getProgress(checked).helped=true;delete state.activeCheck;save();}renderTask(unit,task);}else renderUnit(unit);
+    if(task){if(task.role==='check'&&!getProgress(task).status){state.activeCheck=task.id;save();}else if(task.role!=='check'&&state.activeCheck){const checked=taskMap.get(state.activeCheck);if(checked&&!getProgress(checked).status)getProgress(checked).helped=true;delete state.activeCheck;save();}renderTask(unit,task);}else renderUnit(unit);
     main.focus({preventScroll:true});window.scrollTo?.(0,0);
   }
   async function start() {

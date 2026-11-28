@@ -118,12 +118,81 @@ case 'homothety':return T('Гомотетия с центром O(0;0), коэф
 case 'similarity-method':return T('Гомотетия с центром C и коэффициентом 1/2 переводит A в M и B в N. AB = '+(2*x)+' см. Найди MN.',x,[S('Во сколько раз уменьшаются расстояния?',2,'Коэффициент 1/2 уменьшает каждое расстояние вдвое.'),S('Найди длину образа AB.',x,'M и N — середины CA и CB; получили теорему о средней линии другим методом.')]);
 default:throw Error('Unknown task kind: '+kind);
 }}
-function number(value){let s=String(value).toLowerCase().replace(/\s/g,'').replace(/,/g,'.').replace(/[−–]/g,'-').replace(/π/g,'pi').replace(/√/g,'sqrt');if(s.length>120)throw Error('Слишком длинная запись.');const tok=s.match(/sqrt|pi|\d+(?:\.\d+)?|[()+\-*/^]/g)||[];if(tok.join('')!==s)throw Error('Используй числа, дроби, sqrt(...) или pi.');let i=0,depth=0;
- function atom(){if(++depth>20)throw Error('Слишком сложная запись.');let v,t=tok[i++];if(t==='-')v=-atom();else if(t==='+')v=atom();else if(t==='pi')v=Math.PI;else if(t==='sqrt'){if(tok[i++]!=='(')throw Error('После sqrt нужны скобки.');v=Math.sqrt(expr());if(tok[i++]!==')')throw Error('Закрой скобку.');}else if(t==='('){v=expr();if(tok[i++]!==')')throw Error('Закрой скобку.');}else if(t&&/^\d/.test(t))v=Number(t);else throw Error('Неполная запись.');depth--;if(tok[i]==='^'){i++;const power=atom();if(Math.abs(power)>12)throw Error('Слишком большая степень.');v=Math.pow(v,power);}return v;}
- function term(){let v=atom();while(tok[i]==='*'||tok[i]==='/'){const t=tok[i++],w=atom();v=t==='*'?v*w:v/w;}return v;}
- function expr(){let v=term();while(tok[i]==='+'||tok[i]==='-'){const t=tok[i++],w=term();v=t==='+'?v+w:v-w;}return v;}
- const out=expr();if(i!==tok.length||!Number.isFinite(out)||Math.abs(out)>1e12)throw Error('Проверь запись числа.');return out;}
-function equal(value,a){if(Array.isArray(a)){const p=String(value).split(';');return p.length===a.length&&p.every((x,i)=>equal(x,a[i]));}if(typeof a==='string')return String(value).trim().toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ')===a.toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ');try{const n=number(value);return Math.abs(n-a)<= (Number.isInteger(a)?1e-8:0.00051);}catch(_){return false;}}
+function number(value) {
+ const source=String(value).trim().toLowerCase().replace(/,/g,'.').replace(/[−–]/g,'-')
+  .replace(/[×·]/g,'*').replace(/[÷:]/g,'/').replace(/π/g,'pi').replace(/²/g,'^2').replace(/³/g,'^3');
+ if(source.length>120)throw Error('Слишком длинная запись.');
+ // Accept thousands groups without joining adjacent numbers or pieces of a mixed fraction.
+ let grouped=source.replace(/(?:\d+(?:\.\d*)?|\.\d+)(?:\s+(?:\d+(?:\.\d*)?|\.\d+))+/g,
+  group=>/^\d{1,3}(?:[ \u00a0\u202f]+\d{3})+(?:\.\d*)?$/.test(group)?group.replace(/\s+/g,''):group);
+ // A proper mixed fraction may conflict with a spaced numerator, as in 1 234/567.
+ const mixed=source.match(/^([+-]?)(\d+)[ \u00a0\u202f]+(\d+)\s*\/\s*(\d+)$/);
+ if(mixed&&Number(mixed[3])>0&&Number(mixed[3])<Number(mixed[4])){
+   if(grouped!==source)throw Error('Запиши смешанное число со знаком + или числитель дроби без пробелов.');
+   grouped=mixed[1]+'('+mixed[2]+'+'+mixed[3]+'/'+mixed[4]+')';
+ }
+ const tokens=grouped.match(/sqrt|pi|√|\d+(?:\.\d*)?|\.\d+|[()+\-*/^]/g)||[];
+ if(tokens.join('')!==grouped.replace(/\s/g,''))throw Error('Используй числа, дроби, sqrt(...) или pi.');
+ let i=0,depth=0;
+ function finite(n) {
+  if(!Number.isFinite(n))throw Error('Выражение не определено.');
+  return n;
+ }
+ function atom() {
+  if(++depth>20)throw Error('Слишком сложная запись.');
+  const token=tokens[i++];
+  let result;
+  if(token==='(') {
+   result=sum();
+   if(tokens[i++]!==')')throw Error('Закрой скобку.');
+  } else if(token==='sqrt'||token==='√') {
+   if(tokens[i]!=='('&&!(token==='√'&&/^(?:\d|\.)/.test(tokens[i]||'')))throw Error('Запиши корень в виде sqrt(число).');
+   result=Math.sqrt(atom());
+  } else if(token==='pi')result=Math.PI;
+  else if(/^(?:\d|\.)/.test(token||''))result=Number(token);
+  else throw Error('Неполная запись.');
+  depth--;
+  return finite(result);
+ }
+ function power() {
+  const base=atom();
+  if(tokens[i]!=='^')return base;
+  i++;
+  const exponent=unary();
+  if(Math.abs(exponent)>12)throw Error('Слишком большая степень.');
+  if(base===0&&exponent<=0)throw Error('Выражение не определено.');
+  return finite(base**exponent);
+ }
+ function unary() {
+  if(tokens[i]==='+'){i++;return unary();}
+  if(tokens[i]==='-'){i++;return -unary();}
+  return power();
+ }
+ function product() {
+  let result=unary();
+  while(i<tokens.length) {
+   let op=tokens[i];
+   if(op==='*'||op==='/')i++;
+   else if(['pi','sqrt','√','('].includes(op))op='*';
+   else break;
+   const next=unary();
+   result=finite(op==='*'?result*next:result/next);
+  }
+  return result;
+ }
+ function sum() {
+  let result=product();
+  while(tokens[i]==='+'||tokens[i]==='-') {
+   const op=tokens[i++],next=product();
+   result=finite(op==='+'?result+next:result-next);
+  }
+  return result;
+ }
+ const out=sum();
+ if(i!==tokens.length||Math.abs(out)>1e12)throw Error('Проверь запись числа.');
+ return out;
+}
+function equal(value,a){if(Array.isArray(a)){const p=String(value).split(';');return p.length===a.length&&p.every((x,i)=>equal(x,a[i]));}if(typeof a==='string')return String(value).trim().toLowerCase().replace(/[’']/g,'′').replace(/\s+/g,' ')===a.toLowerCase().replace(/[’']/g,'′').replace(/\s+/g,' ');try{const n=number(value);return Math.abs(n-a)<= (Number.isInteger(a)?1e-8:0.00051);}catch(_){return false;}}
 function format(a){return Array.isArray(a)?a.map(format).join('; '):typeof a==='number'?(Number.isInteger(a)?String(a):String(Number(a.toFixed(6)))):a;}
 function fingerprint(t){return JSON.stringify([t.question,t.answer]);}
 function equalTask(t,value,stepIndex=null){

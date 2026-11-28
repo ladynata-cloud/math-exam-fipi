@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/geometry_release_review",
+  "reviewedAt": "2026-11-18T11:18:43.796171+00:00",
+  "reviewType": "independent bounded runtime/profile composition review",
+  "externalReview": false,
+  "releaseApproval": false,
+  "verdict": "PASS_WITH_STATED_LIMITS",
+  "snapshot": {
+    "localSourceCommit": "b648c553b97316b277712cf485482df25c8c6a6e",
+    "sourceTree": "d32809dc65a99fb24b07a7cfda3b0540d9ea0b9e",
+    "priorFrozenRightAngleProduct": "36a875714a4d45658e86c589c2bac1fa48c718e6",
+    "incomingMathHead": "9d04e62f6956fb3d9f92e4c9870a6ccb1a0cac8e",
+    "inspectedFilesSHA256": {
+      "stereo-course/assets/task-scene-viewer.js": "2571e7958fde3156d768fdcd53d1f5242d48f95ecb37256aec8f46ec47265fe6",
+      "stereo-course/index.html": "7d039da497be36c544da989a3a34bb8439e70c526f9cc59c710f012c9be4532f",
+      "stereo-course/merzlyak-10-base/index.html": "6e89a5d2d190e4252087512d406e1e6d147ca8e8111fd2c45e75d76f2386a8e5",
+      "trainers/merzlyak-10-base.html": "bbc65c5e5db1e028c9a8ca7bdcc97b7b42eacd8bc2bd82adc758b108628087a7",
+      "tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs": "09ea5c4c37d8980e66decb0c646e3c1381ad809f5f621f28c98f7eabb1c48cdc",
+      "tools/stereo-textbook/harmonization-preview-migration.cjs": "4d8bbb88b863045a1186e8dbb9c849e5224e18b1bb8ccc7d6d28be4650301307",
+      "tools/stereo-textbook/harmonization-preview-migration.test.cjs": "4170b4d31c32c844f2438fb5c613bfb051fee40a5fbdf557b6d3c501a1459b48",
+      "tools/stereo-textbook/right-angle-renderer-migration.cjs": "abf92d4b5af9ca2f92f4b82d27753c319c0ef9cf9a2719df201928945a0ec0be",
+      "tools/stereo-textbook/fixtures/right-angle-renderer-inverse.json": "bd6ea238b855098cbf089c527dc1dc2e752d4f5f832ade6cfeeb1e002199bfbc",
+      "tools/stereo-textbook/mobile-layout-migration.cjs": "fc8822361f71ec59015a1fb71978eb0f4ff3be527b6b720d90e34595a56fd2c1",
+      "tools/stereo-textbook/mobile-layout-migration.test.cjs": "651969c42e5f1e3b2e8caf6fdddf25804a7cf00036ad80fd7d29328b73db4d9b",
+      "tools/stereo-textbook/visibility-migration.cjs": "03f21951261a64300432dd4d90595864114777f2d354d32a53941f511c9441f8",
+      "tools/stereo-textbook/visibility-migration.json": "095d3b4ce203e435ceda16dd9236826b180c0745aad31a4bbdc541fb3b9af033",
+      "tools/stereo-textbook/visibility-migration.test.cjs": "f67e95eb24aa3726b338f184f3222643b409eceffa277023ad06b4200f78a778",
+      "tools/stereo-textbook/visibility-profile-runtime-migration.cjs": "801d9e1b15fcf5ae84e521fc66d26ff4309dbd91f49938ddd46fcc91950a8c75",
+      "tools/stereo-textbook/visibility-profile-composition.cjs": "dbae242fea616f3ffa415d07e01b1f9944596088b1c042db73aaf67406a5cfab",
+      "tools/stereo-textbook/visibility-profile-composition.test.cjs": "e9427bd478048ceb04a1628f52812cedd6aa0299791ba5f5acf49601eb2329a2",
+      "tools/stereo-textbook/visibility-profiles/merzlyak-sections-composition.json": "cbd45bd04121cba38c00f14a9e1fb68cc9ab2ed7b2f9f651f33d7ebe376f928d",
+      "tools/stereo-textbook/visibility-profiles/merzlyak.json": "10184ec658e1fec8e574c89cc898a58e118d99205ebdf367d324a64780639605",
+      "stereo-course/merzlyak-10-base/lessons/research-sections-004.json": "20c2a67a144992ccbdccf08da9342f7128538808236cc0934a22e4e1d4ce9eeb",
+      "tools/stereo-textbook/polyhedra-practical-baseline.json": "285c55645fbe83a907197ba28731e9dcbee57aeb86ada20dc891a861065102a7",
+      "tools/stereo-textbook/additional288-baseline.json": "bfe353c291d8b453c179d5c584d5a9e6cc80c0c2c79cab0a5937e782dc08dfc9",
+      "tools/stereo-textbook/additional294-baseline.json": "494e0660f8f45bec8de1c2fc7d872c9a60f77ee7395dae03749474feecfada15",
+      "tools/stereo-textbook/additional299-baseline.json": "0f98233c73d455ab96be38fbec49aed8c52094b796899d2f86adecedb301ca2e",
+      "tools/stereo-textbook/additional310-baseline.json": "81fd7a2a69d29b89f0561944df2f3d035d9ba73fb562bcd1649182ec1ea93ff4",
+      "tools/stereo-textbook/cylinder-baseline.json": "194d36c9db446ffc76fc854f32f49da8fb6c6a30db763c441ea79a4ee5043bb5",
+      "tools/stereo-textbook/cone-baseline.json": "5b3972ec357ff1a51c1c1b19f904a4dc7aa054934d6a01d593011e917c930a2d"
+    }
+  },
+  "findings": [
+    "Current renderer equals the previously approved 36a product plus exactly one 2656-byte reviewed surface-profile entry; removing that entry restores full SHA256 0dc666caa83c11de28da4aef0cb8e3af14f84b71662c9efaf17496bc75f6f5ca.",
+    "The strict current inverse sequence is 2571e795… compact preview removal -> 961453ba… exact right-angle inverse -> da832009… unchanged profile inverse -> historical 91ef00cd…. The preview helper retains the separately pinned 7681->91ef and da984->da832 variants. Unknown source variants are rejected.",
+    "The right-angle inverse preserves the complete repaired profile renderer. The profile inverse, model-projection helper, derived profile JSON, original Merzlyak profiles and authored research-sections-004 lesson remain byte-identical to corrected #658. All seven historical baseline files remain unchanged; visibility manifest changes only its separately reviewed rightAngleSHA256 pin.",
+    "The actual current renderer is required by the focused six-card test and independent ray oracle; normalization is confined to historical byte assertions. All three new 004 views retain their named finite surfaces.",
+    "Two Merzlyak cache-query URLs and their strict expected script source differ from incoming math head by exactly three token replacements to 20261118-2571e795.",
+    "An initially stale embedded workshop renderer was found during this review. It lacked the already approved staged-angle, deduplication and accessible-description changes. Canonical rebuild resolved it: final workshop SHA256 7d039da497be36c544da989a3a34bb8439e70c526f9cc59c710f012c9be4532f contains the complete current 314790-byte renderer exactly once. Replacing only the former inline script reproduces the full final HTML; other workshop bytes remain unchanged."
+  ],
+  "executedChecks": {
+    "previewProjectionNegativeControls": 10,
+    "rightAngleHelperNegativeControls": 3,
+    "visibilityNegativeControls": 21,
+    "layoutNegativeControls": 8,
+    "inputMigrationNegativeControls": 10,
+    "exactSurfaceProfiles": 246,
+    "focusedVisibility": {
+      "cards": 6,
+      "authoredViews": 51,
+      "rotatedViews": 86,
+      "worldRays": 35421,
+      "hiddenPaths": 519,
+      "compositionNegativeControls": 12,
+      "rayOracleNegativeControls": 4
+    },
+    "historicalBaselinesByteIdentical": 7,
+    "cacheTokenOnlyChanges": 3,
+    "workshopCurrentRendererOccurrences": 1
+  },
+  "limitations": [
+    "No fresh native Chromium, layout screenshot or external provider audit was performed by this reviewer; final-head CI and release-owner checks remain required.",
+    "The previously reviewed right-angle mathematical/staging/deduplication design was not expanded or re-audited; this review proves exact preservation of that frozen product while composing the repaired surface profile and delivering the complete runtime to the generated workshop.",
+    "Navigator binding metadata was still being finalized by the implementation owner and is excluded from the inspected-file hash set. This snapshot review does not approve a merge or claim a live deployment."
+  ]
+}

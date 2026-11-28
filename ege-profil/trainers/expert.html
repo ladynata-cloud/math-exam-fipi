@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Проверь как эксперт · вторая часть</title>
@@ -36,6 +37,7 @@
   .btn:hover{background:var(--ink-strong)}
   .btn.ghost{background:transparent;color:var(--ink)}
   .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn.ghost[aria-pressed="true"]{background:var(--ink);color:#fff}
   .btn:disabled{opacity:.45;cursor:default}
   .plist{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
   .pcard{border:1.5px solid var(--ink);border-radius:10px;background:#fff;padding:14px;cursor:pointer;text-align:left;font:inherit}
@@ -43,8 +45,9 @@
   .pcard .tag{font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--red)}
   .pcard .done{color:var(--ok);font-weight:700;font-size:13px;margin-top:6px}
   ol.work{margin:12px 0 0;padding-left:24px;counter-reset:none}
-  ol.work li{margin-bottom:7px;border-left:3px solid var(--ink);padding:8px 11px;background:rgba(255,255,255,.72);cursor:pointer}
+  ol.work li{margin-bottom:7px;border-left:3px solid var(--ink);background:rgba(255,255,255,.72)}
   ol.work li:hover{background:rgba(30,58,159,.08)}
+  .work-step{width:100%;padding:8px 11px;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;overflow-wrap:anywhere}
   ol.work li.pick{outline:2.5px solid var(--red);background:var(--badbg)}
   ol.work li.iserr{border-left-color:var(--red);background:var(--badbg)}
   ol.work li.clean{border-left-color:var(--ok)}
@@ -58,20 +61,25 @@
   .feedback.bad{background:var(--badbg);color:var(--red)}
   .crit{font-size:13px;color:var(--muted);border-left:3px solid var(--red);padding:6px 10px;background:rgba(255,255,255,.6);margin-top:10px}
   .scoreline{font:700 14px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink-strong)}
+  .sources{margin-top:32px;scroll-margin-top:14px}
+  .sources .card{margin-bottom:0}
+  .sources-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:12px}
+  .sources summary{cursor:pointer;color:var(--ink-strong);font-weight:700;padding:6px 0}
+  .sources details p{margin:6px 0 0}
 </style>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="expert"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="expert"></script>
 </head>
 <body>
-<div class="wrap">
+<main class="wrap">
   <a class="back" href="../index.html">← Курс</a>
   <p class="eyebrow">вторая часть · критерии оценивания</p>
   <h1>Проверь как эксперт</h1>
-  <p class="lede">Перед вами двенадцать чужих работ по заданиям 13, 14, 15 и 17. В части из них спрятана ошибка — вычислительная, логическая или пробел в обосновании. Найдите её (или убедитесь, что работа чистая), поставьте балл и сверьтесь с настоящим экспертом. Кто проверял чужое — свою работу пишет иначе.</p>
+  <p class="lede">Найдите ошибку или пробел в учебном решении и поставьте балл. Ниже можно так же проверить <a href="#fipi-samples">реальные работы выпускников по всем семи заданиям второй части</a>.</p>
   <p class="scoreline" id="totalLine"></p>
 
   <div id="list" class="plist"></div>
@@ -80,28 +88,79 @@
     <p><button class="btn ghost" id="backBtn">← Ко всем работам</button></p>
     <div class="card">
       <p class="mono small" id="wTag" style="color:var(--red);font-weight:700"></p>
-      <h2 id="wTitle"></h2>
+      <h2 id="wTitle" tabindex="-1"></h2>
       <p id="wCond" style="font-size:16.5px"></p>
     </div>
     <div class="card">
       <h3>Работа ученика</h3>
-      <p class="small muted">Шаг 1. Нажмите на строку, где, по-вашему, ошибка или пробел, — либо кнопку «работа чистая».</p>
+      <p class="small muted">Шаг 1. Выберите строку с ошибкой или пробелом. Если решение полное, нажмите «Работа верная».</p>
       <ol class="work" id="wSteps"></ol>
-      <p style="margin-top:10px"><button class="btn ghost" id="cleanBtn">Работа чистая, ошибок нет</button></p>
-      <p class="small muted" style="margin-top:14px">Шаг 2. Поставьте балл, как поставил бы эксперт:</p>
+      <p style="margin-top:10px"><button class="btn ghost" id="cleanBtn" aria-pressed="false">Работа верная</button></p>
+      <p class="small muted" style="margin-top:14px">Шаг 2. Выберите балл.</p>
       <div class="chips" id="wChips"></div>
-      <p><button class="btn" id="wCheck" disabled>Свериться с экспертом</button></p>
-      <div class="feedback" id="wFb"></div>
+      <p><button class="btn" id="wCheck" disabled>Проверить оценку</button></p>
+      <div class="feedback" id="wFb" role="status"></div>
       <div class="crit" id="wCrit" style="display:none"></div>
     </div>
   </div>
-</div>
+
+  <section class="sources" id="fipi-samples" aria-labelledby="fipi-samples-heading">
+    <h2 id="fipi-samples-heading">Работы выпускников из пособия ФИПИ</h2>
+    <p>Откройте страницу с работой. Прикройте комментарий, оцените решение и вернитесь сюда, чтобы сравнить свой балл. Примеры взяты из пособия для экспертов 2026 года. Критерии к конкретным заданиям 2027 года есть в <a href="https://fipi.ru/ege/demoversii-specifikacii-kodifikatory">демоверсии ФИПИ</a>.</p>
+    <div class="sources-grid">
+      <article class="card" data-expert-number="13">
+        <h3>№13. Уравнение</h3>
+        <p>Проверьте, объясняет ли разметка окружности отбор корней на отрезке.</p>
+        <p><a href="https://doc.fipi.ru/ege/dlya-predmetnyh-komissiy-subektov-rf/2026/matematika_mr_ege_2026.pdf#page=15" target="_blank" rel="noopener">Работа 13.1.2, с. 15 (PDF)</a></p>
+        <details><summary>Показать оценку</summary><p><strong>1 из 2.</strong> Общий вид корней записан верно. Список отобранных корней совпал с ответом, но отметки на окружности не объясняют отбор.</p></details>
+      </article>
+      <article class="card" data-expert-number="14">
+        <h3>№14. Стереометрия</h3>
+        <p>Посмотрите, какой отрезок вычислили в пункте б) и как он связан с искомым.</p>
+        <p><a href="https://doc.fipi.ru/ege/dlya-predmetnyh-komissiy-subektov-rf/2026/matematika_mr_ege_2026.pdf#page=49" target="_blank" rel="noopener">Работа 14.1.2, с. 49–50 (PDF)</a></p>
+        <details><summary>Показать оценку</summary><p><strong>1 из 3.</strong> Пункт а) доказан. В пункте б) участник неверно находит длину MC, от которой зависит ответ.</p></details>
+      </article>
+      <article class="card" data-expert-number="15">
+        <h3>№15. Неравенство</h3>
+        <p>Проверьте точки равенства и итоговое множество.</p>
+        <p><a href="https://doc.fipi.ru/ege/dlya-predmetnyh-komissiy-subektov-rf/2026/matematika_mr_ege_2026.pdf#page=92" target="_blank" rel="noopener">Работа 15.1.3, с. 92 (PDF)</a></p>
+        <details><summary>Показать оценку</summary><p><strong>1 из 2.</strong> После преобразований в ответе потеряны две допустимые точки, −1 и 1.</p></details>
+      </article>
+      <article class="card" data-expert-number="16">
+        <h3>№16. Экономическая задача</h3>
+        <p>Оцените отдельно модель кредита и вычисления по ней.</p>
+        <p><a href="https://doc.fipi.ru/ege/dlya-predmetnyh-komissiy-subektov-rf/2026/matematika_mr_ege_2026.pdf#page=123" target="_blank" rel="noopener">Работа 16.1.3, с. 123 (PDF)</a></p>
+        <details><summary>Показать оценку</summary><p><strong>1 из 2.</strong> Модель составлена верно. Ошибка допущена при делении.</p></details>
+      </article>
+      <article class="card" data-expert-number="17">
+        <h3>№17. Планиметрия</h3>
+        <p>Найдите утверждение, на котором держится вычисление пункта б).</p>
+        <p><a href="https://doc.fipi.ru/ege/dlya-predmetnyh-komissiy-subektov-rf/2026/matematika_mr_ege_2026.pdf#page=157" target="_blank" rel="noopener">Работа 17.1.2, с. 157 (PDF)</a></p>
+        <details><summary>Показать оценку</summary><p><strong>1 из 3.</strong> При вычислении использовано утверждение пункта а), доказательство которого пропущено.</p></details>
+      </article>
+      <article class="card" data-expert-number="18">
+        <h3>№18. Параметр</h3>
+        <p>Сопоставьте граничные значения, рассмотренные в решении, с ответом.</p>
+        <p><a href="https://doc.fipi.ru/ege/dlya-predmetnyh-komissiy-subektov-rf/2026/matematika_mr_ege_2026.pdf#page=217" target="_blank" rel="noopener">Работа 18.4.2, с. 217–218 (PDF)</a></p>
+        <details><summary>Показать оценку</summary><p><strong>3 из 4.</strong> По критериям этой задачи потеря двух граничных значений a = −2 и a = 2 стоит одного балла.</p></details>
+      </article>
+      <article class="card" data-expert-number="19">
+        <h3>№19. Числа и их свойства</h3>
+        <p>Проверьте, показано ли, что найденная в пункте в) граница достигается.</p>
+        <p><a href="https://doc.fipi.ru/ege/dlya-predmetnyh-komissiy-subektov-rf/2026/matematika_mr_ege_2026.pdf#page=237" target="_blank" rel="noopener">Работа 19.1.1, с. 237 (PDF)</a></p>
+        <details><summary>Показать оценку</summary><p><strong>2 из 4.</strong> Пункты а) и б) обоснованы. Для результата пункта в) не приведён пример, который его достигает.</p></details>
+      </article>
+    </div>
+  </section>
+</main>
 
 <script>
 /* ================= РАБОТЫ (без DOM) ================= */
 var EXW = (function(){
   "use strict";
   /* err — индекс дефектной строки (с нуля) или -1, expert — балл эксперта */
+  const stereoCondition = "В правильной четырёхугольной пирамиде SABCD сторона основания равна 6, высота равна 4. Точка O — центр основания, K — середина BC. а) Докажите, что BD ⊥ SC. б) Найдите расстояние от точки A до плоскости SBC.";
+  const planeCondition = "Из точки M вне окружности проведены касательная MA и секущая, пересекающая окружность в точках B и C, причём MB < MC. Точка A — точка касания. а) Докажите, что MA² = MB · MC. б) Найдите MC, если MA = 6, MB = 4.";
   var WORKS = [
     /* ─────────── задание 13 ─────────── */
     { id:"w13a", line:13, max:2, title:"Уравнение: работа Алисы",
@@ -110,7 +169,8 @@ var EXW = (function(){
         "2(1 − sin²x) + 3sin x − 3 = 0, раскрываем: −2sin²x + 3sin x − 1 = 0, умножаем на −1: 2sin²x − 3sin x + 1 = 0.",
         "Замена t = sin x, |t| ≤ 1: 2t² − 3t + 1 = 0, корни t = 1 и t = 1/2 — оба допустимы.",
         "sin x = 1 ⇒ x = π/2 + 2πn; sin x = 1/2 ⇒ x = π/6 + 2πn или x = 5π/6 + 2πn, n ∈ ℤ.",
-        "б) Перебор n = −1: π/2 − 2π = −3π/2 ∈ отрезку; π/6 − 2π = −11π/6 ∈; 5π/6 − 2π = −7π/6 ∈. Другие n не дают попаданий. Ответ б): −3π/2; −11π/6; −7π/6."
+        "б) При n ≤ −2 даже наибольший корень не больше 5π/6 − 4π = −19π/6 < −5π/2. При n ≥ 0 все корни положительны. Остаётся n = −1.",
+        "При n = −1 корни равны −3π/2, −11π/6 и −7π/6. Все три числа принадлежат отрезку. Ответ б): −11π/6; −3π/2; −7π/6."
       ],
       err:-1, expert:2,
       why:"Работа чистая: замена с ограничением, обе серии для sin x = 1/2, отбор с перебором и проверкой каждого кандидата. Эксперт ставит максимум.",
@@ -142,7 +202,7 @@ var EXW = (function(){
 
     /* ─────────── задание 14 ─────────── */
     { id:"w14a", line:14, max:3, title:"Стереометрия: работа Глеба",
-      cond:"В правильной четырёхугольной пирамиде SABCD сторона основания равна 6, высота равна 4, K — середина BC. а) Докажите, что BD ⊥ SC. б) Найдите расстояние от точки A до плоскости SBC.",
+      cond:stereoCondition,
       steps:[
         "BD ⊥ AC как диагонали квадрата ABCD.",
         "SO — высота пирамиды, поэтому SO ⊥ плоскости ABCD, а значит SO ⊥ BD.",
@@ -156,21 +216,21 @@ var EXW = (function(){
       crit:"3 балла — доказательство а) полное, б) обоснованно верно." },
 
     { id:"w14b", line:14, max:3, title:"Стереометрия: работа Даши",
-      cond:"Та же пирамида: сторона 6, высота 4. а) Докажите, что BD ⊥ SC. б) Найдите расстояние от точки A до плоскости SBC.",
+      cond:stereoCondition,
       steps:[
-        "BD ⊥ AC как диагонали квадрата.",
+        "O — точка пересечения диагоналей основания.",
         "SO ⊥ плоскости основания, значит SO ⊥ BD.",
-        "Раз BD ⊥ AC и BD ⊥ SO, то BD ⊥ плоскости SAC.",
+        "Так как BD ⊥ SO и SO лежит в плоскости SAC, то BD ⊥ плоскости SAC.",
         "SC лежит в этой плоскости, поэтому BD ⊥ SC.",
-        "б) SK = √(16 + 9) = 5, S(SBC) = 15, V(ASBC) = ⅓ · 18 · 4 = 24.",
+        "б) OK = 3, SK — апофема, поэтому SK = √(16 + 9) = 5 и S(SBC) = ½ · 6 · 5 = 15. Объём ASBC по основанию ABC равен ⅓ · 18 · 4 = 24.",
         "24 = ⅓ · 15 · d ⇒ d = 4,8. Ответ: 4,8."
       ],
       err:2, expert:2,
-      why:"В третьей строке признак применён с пробелом: не сказано, что AC и SO — ПЕРЕСЕКАЮЩИЕСЯ прямые, лежащие в плоскости SAC. Без этого признак не работает, и а) не засчитывают целиком. Пункт б) безупречен и даёт верный ответ.",
-      crit:"2 балла — верно получен ответ в б); в доказательстве а) есть пробел." },
+      why:"Для признака нужны две пересекающиеся прямые плоскости. В третьей строке есть только перпендикулярность к SO. Дополните доказательство: BD ⊥ AC по свойству диагоналей квадрата, а AC и SO пересекаются в точке O. Пункт б) решён независимо от доказательства.",
+      crit:"2 балла за обоснованно верный пункт б), который решён независимо от пункта а)." },
 
     { id:"w14c", line:14, max:3, title:"Стереометрия: работа Егора",
-      cond:"Та же пирамида: сторона 6, высота 4. а) Докажите, что BD ⊥ SC. б) Найдите расстояние от точки A до плоскости SBC.",
+      cond:stereoCondition,
       steps:[
         "BD ⊥ AC как диагонали квадрата.",
         "SO ⊥ плоскости основания ⇒ SO ⊥ BD.",
@@ -222,7 +282,7 @@ var EXW = (function(){
 
     /* ─────────── задание 17 ─────────── */
     { id:"w17a", line:17, max:3, title:"Планиметрия: работа Киры",
-      cond:"Из точки M к окружности проведены касательная MA (A — точка касания) и секущая, пересекающая окружность в точках B и C, причём MB < MC. а) Докажите, что MA² = MB · MC. б) Найдите MC, если MA = 6, MB = 4.",
+      cond:planeCondition,
       steps:[
         "Рассмотрим треугольники MAB и MCA: угол M у них общий.",
         "Угол MAB — угол между касательной MA и хордой AB; он равен вписанному углу ACB, опирающемуся на ту же хорду AB.",
@@ -235,19 +295,19 @@ var EXW = (function(){
       crit:"3 балла — доказательство а) полное и б) обоснованно верно." },
 
     { id:"w17b", line:17, max:3, title:"Планиметрия: работа Льва",
-      cond:"Та же конфигурация. а) Докажите, что MA² = MB · MC. б) Найдите MC, если MA = 6, MB = 4.",
+      cond:planeCondition,
       steps:[
         "Рассмотрим треугольники MAB и MCA: угол M общий.",
         "∠MAB = ∠MCA — это хорошо видно на аккуратном чертеже.",
         "Значит △MAB ∼ △MCA по двум углам, и MA/MC = MB/MA, то есть MA² = MB · MC.",
         "б) 36 = 4 · MC, MC = 9. Ответ: 9."
       ],
-      err:1, expert:2,
-      why:"Ссылка на чертёж — не обоснование: равенство ∠MAB и ∠MCA держится на теореме об угле между касательной и хордой, и её нужно назвать. В а) пробел, б) верно — типичная работа на два балла.",
-      crit:"2 балла — б) верно, но в доказательстве а) есть пробел." },
+      err:1, expert:1,
+      why:"Равенство ∠MAB и ∠MCA следует из теоремы об угле между касательной и хордой. По чертежу его обосновать нельзя. В пункте б) ответ верный, но расчёт опирается на недоказанное утверждение пункта а).",
+      crit:"1 балл за верный ответ в пункте б), полученный с использованием недоказанного утверждения пункта а)." },
 
     { id:"w17c", line:17, max:3, title:"Планиметрия: работа Майи",
-      cond:"Та же конфигурация. а) Докажите, что MA² = MB · MC. б) Найдите MC, если MA = 6, MB = 4.",
+      cond:planeCondition,
       steps:[
         "Угол M общий для треугольников MAB и MCA.",
         "Угол между касательной MA и хордой AB равен вписанному углу ACB, опирающемуся на AB.",
@@ -278,40 +338,50 @@ if (typeof module !== "undefined") module.exports = EXW;
 (function(){
   "use strict";
   var KEY = "mathExamCourseProgress.v1", TID = "expert-t";
-  function readAll(){ try{ return JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ return {}; } }
-  function st(){ return readAll()[TID] || { done:{} }; }
+  function object(value){ return value && typeof value === "object" && !Array.isArray(value); }
+  function readAll(){
+    try{
+      const data = JSON.parse(localStorage.getItem(KEY) || "{}");
+      return object(data) ? data : {};
+    }catch(e){ return {}; }
+  }
+  function savedWorks(data){ return object(data[TID]?.done) ? data[TID].done : {}; }
   function save(id, rec){
     try{
       var all = readAll();
-      var s = all[TID] = all[TID] || { done:{} };
-      s.done = s.done || {};
-      s.done[id] = rec;
+      const done = savedWorks(all);
+      done[id] = rec;
+      all[TID] = { ...all[TID], done };
       localStorage.setItem(KEY, JSON.stringify(all));
     }catch(e){}
   }
-  function totals(){
-    var d = st().done || {}, n = 0, hit = 0, k;
-    for (k in d){ n++; if (d[k].hit) hit++; }
-    return { n:n, hit:hit };
+  function savedMatch(work, record){
+    if (Number.isInteger(record.pick) && Number.isInteger(record.mark)) {
+      return EXW.verdict(work, record.pick, record.mark).hit;
+    }
+    return record.hit === true;
   }
   function paintTotal(){
-    var t = totals();
-    document.getElementById("totalLine").textContent = t.n
-      ? "проверено работ: " + t.n + " из " + EXW.WORKS.length + " · вердикт совпал с экспертом: " + t.hit
-      : "проверено работ: 0 из " + EXW.WORKS.length;
+    const done = savedWorks(readAll());
+    const checked = EXW.WORKS.filter(work => object(done[work.id]));
+    const matches = checked.filter(work => savedMatch(work, done[work.id])).length;
+    document.getElementById("totalLine").textContent = `Проверено работ: ${checked.length} из ${EXW.WORKS.length} · совпало с разбором: ${matches}`;
   }
 
   var listHost = document.getElementById("list");
+  const sources = document.getElementById("fipi-samples");
+  const cleanButton = document.getElementById("cleanBtn");
   function renderList(){
     listHost.innerHTML = "";
-    var done = st().done || {};
+    const done = savedWorks(readAll());
     EXW.WORKS.forEach(function(w){
       var b = document.createElement("button");
       b.className = "pcard";
+      b.dataset.workId = w.id;
       var d = done[w.id];
       b.innerHTML = '<span class="tag">задание ' + w.line + ' · до ' + w.max + ' баллов</span>' +
         '<h3 style="margin:6px 0 4px">' + w.title + '</h3>' +
-        (d ? '<div class="done">' + (d.hit ? "вердикт совпал ✓" : "проверено · эксперт: " + w.expert) + '</div>' : "");
+        (object(d) ? '<div class="done">' + (savedMatch(w, d) ? "вердикт совпал ✓" : "проверено · балл в разборе: " + w.expert) + '</div>' : "");
       b.addEventListener("click", function(){ openWork(w); });
       listHost.appendChild(b);
     });
@@ -322,23 +392,32 @@ if (typeof module !== "undefined") module.exports = EXW;
   function openWork(w){
     cur = w; pickLine = null; pickMark = null;
     listHost.style.display = "none";
+    sources.hidden = true;
+    cleanButton.setAttribute("aria-pressed", "false");
     document.getElementById("workView").style.display = "block";
     document.getElementById("wTag").textContent = "задание " + w.line + " · максимум " + w.max;
-    document.getElementById("wTitle").textContent = w.title;
+    const title = document.getElementById("wTitle");
+    title.textContent = w.title;
     document.getElementById("wCond").textContent = w.cond;
     var ol = document.getElementById("wSteps");
     ol.innerHTML = "";
     w.steps.forEach(function(s, i){
       var li = document.createElement("li");
-      li.textContent = s;
-      li.addEventListener("click", function(){
+      const step = document.createElement("button");
+      step.type = "button";
+      step.className = "work-step";
+      step.textContent = s;
+      step.setAttribute("aria-pressed", "false");
+      step.addEventListener("click", function(){
         if (li.classList.contains("iserr") || li.classList.contains("clean")) return;
         pickLine = i;
-        ol.querySelectorAll("li").forEach(function(x){ x.classList.remove("pick"); });
+        clearLineSelection();
         li.classList.add("pick");
-        document.getElementById("cleanBtn").setAttribute("aria-pressed", "false");
+        step.setAttribute("aria-pressed", "true");
+        cleanButton.setAttribute("aria-pressed", "false");
         maybeEnable();
       });
+      li.appendChild(step);
       ol.appendChild(li);
     });
     var chips = document.getElementById("wChips");
@@ -346,6 +425,7 @@ if (typeof module !== "undefined") module.exports = EXW;
     for (var m = 0; m <= w.max; m++)(function(m){
       var b = document.createElement("button");
       b.textContent = m;
+      b.setAttribute("aria-pressed", "false");
       b.addEventListener("click", function(){
         pickMark = m;
         chips.querySelectorAll("button").forEach(function(z){ z.setAttribute("aria-pressed", "false"); });
@@ -354,14 +434,21 @@ if (typeof module !== "undefined") module.exports = EXW;
       });
       chips.appendChild(b);
     })(m);
-    document.getElementById("wFb").className = "feedback";
+    const feedback = document.getElementById("wFb");
+    feedback.className = "feedback";
+    feedback.textContent = "";
     document.getElementById("wCrit").style.display = "none";
     document.getElementById("wCheck").disabled = true;
-    window.scrollTo({ top:0, behavior:"smooth" });
+    title.focus();
   }
-  document.getElementById("cleanBtn").addEventListener("click", function(){
-    pickLine = -1;
+  function clearLineSelection(){
     document.querySelectorAll("#wSteps li").forEach(function(x){ x.classList.remove("pick"); });
+    document.querySelectorAll("#wSteps button").forEach(button => button.setAttribute("aria-pressed", "false"));
+  }
+  cleanButton.addEventListener("click", function(){
+    pickLine = -1;
+    clearLineSelection();
+    cleanButton.setAttribute("aria-pressed", "true");
     maybeEnable();
   });
   function maybeEnable(){
@@ -371,14 +458,14 @@ if (typeof module !== "undefined") module.exports = EXW;
     var v = EXW.verdict(cur, pickLine, pickMark);
     var lis = document.querySelectorAll("#wSteps li");
     lis.forEach(function(li, i){
-      li.classList.remove("pick");
       li.classList.add(cur.err === i ? "iserr" : "clean");
     });
+    clearLineSelection();
     var fb = document.getElementById("wFb");
     fb.className = "feedback on " + (v.hit ? "ok" : "bad");
     fb.innerHTML = (v.hit
-        ? "Вердикт совпал с экспертом: " + cur.expert + (cur.expert === 1 ? " балл" : (cur.expert < 5 && cur.expert > 1 ? " балла" : " баллов")) + "."
-        : "Эксперт поставил <b>" + cur.expert + "</b>" +
+        ? "Вердикт совпал с разбором: " + cur.expert + (cur.expert === 1 ? " балл" : (cur.expert < 5 && cur.expert > 1 ? " балла" : " баллов")) + "."
+        : "Балл в разборе — <b>" + cur.expert + "</b>" +
           (v.lineOk ? "" : (cur.err === -1 ? " — ошибки в работе нет" : " — дефект в строке " + (cur.err + 1))) + ".") +
       " " + cur.why;
     var cr = document.getElementById("wCrit");
@@ -390,7 +477,9 @@ if (typeof module !== "undefined") module.exports = EXW;
   document.getElementById("backBtn").addEventListener("click", function(){
     document.getElementById("workView").style.display = "none";
     listHost.style.display = "grid";
+    sources.hidden = false;
     renderList();
+    listHost.querySelector(`[data-work-id="${cur.id}"]`).focus();
   });
   renderList();
 })();

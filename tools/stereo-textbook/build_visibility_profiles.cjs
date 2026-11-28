@@ -3,6 +3,7 @@
 // No lesson, learner identity, source text or historical review is rewritten.
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '../..'), directory = path.join(__dirname, 'visibility-profiles');
+const {historicalSignature} = require('./visibility-profile-composition.cjs');
 const signature = source => JSON.stringify([source.points, source.edges || [], source.faces || [],
   Object.entries(source.views || {}).map(([id, view]) => [id, view.segments || [], view.polygon || []]), !!source.planar]);
 const lessons = new Map(['textbook', 'merzlyak-10-base', 'shestakov-yaschenko-10-11'].flatMap(course =>
@@ -16,7 +17,7 @@ for (const name of fs.readdirSync(directory).filter(name => name.endsWith('.json
     assert(Array.isArray(row.lessonIds) && row.lessonIds.length, name + ': explicit amended lessons');
     for (const id of row.lessonIds) {
       assert(lessons.has(id), name + ': existing amended lesson ' + id);
-      assert.equal(signature(lessons.get(id).visualization.model), row.signature, name + ': exact original geometry ' + id);
+      assert.equal(historicalSignature(id, lessons.get(id).visualization.model, row.signature), row.signature, name + ': exact original geometry ' + id);
     }
     const geometry = {};
     for (const key of ['faces', 'views', 'spheres', 'viewSpheres']) if (row[key] !== undefined) geometry[key] = row[key];

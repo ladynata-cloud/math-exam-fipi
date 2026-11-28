@@ -3,6 +3,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from oge_video_models_book_context import without_download_controls, restore_quadrilateral_angles
+
 ROOT = Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-book-ui.json').read_text())
 OLD_HELP = 'Хочешь подсказку?'
@@ -20,9 +22,13 @@ def matches_worked_steps_ui(record, text, fixture_texts):
             return False
         for route, expected in {pin['route']: pin['sha256'], **PINS['assets']}.items():
             loaded = record['resources'][route]
-            if loaded['status'] != 200 or loaded['sha256'] != expected:
+            file = route[1:]
+            raw = (ROOT / file).read_bytes()
+            if loaded['status'] != 200 or loaded['sha256'] != hashlib.sha256(raw).hexdigest():
                 return False
-            if hashlib.sha256((ROOT / route[1:]).read_bytes()).hexdigest() != expected:
+            native = without_download_controls(file, raw) if route == pin['route'] else raw
+            native = restore_quadrilateral_angles(file, native)
+            if hashlib.sha256(native).hexdigest() != expected:
                 return False
         for original in fixture_texts:
             if original.count(OLD_HELP) != 1 or NEW_HELP in original:
@@ -36,5 +42,5 @@ def matches_worked_steps_ui(record, text, fixture_texts):
             if text == expected_text:
                 return True
         return False
-    except (KeyError, TypeError, OSError):
+    except (KeyError, TypeError, ValueError, OSError):
         return False

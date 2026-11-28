@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "sourceCommit": "5d58b20a9aad26fbddc479f038d7df0faa62c68a",
+  "composedParent": "5439d927feb3b7f9a29a9c0d7b764f6d340864f2",
+  "task": "GEOMETRY_COURSES_AUDIT_20261118",
+  "boundary": "Exact ten files already reviewed in #658. The original 878-file aggregate remains frozen: 868 files unchanged, ten exact reviewed runtime/route amendments. This supplement does not approve any new content or broaden excluded paths.",
+  "files": {
+    "ege-profil/atanasyan-10-11/course.js": {
+      "beforeSHA256": "193b3c54b2061a08e6847d613c81ff61254cf01a343df6bf9bcdddc23ac110d9",
+      "afterSHA256": "d0c7bbb95b5c12d9cccd7ab4eba569129024d501f6ea0b65db92ffd3a8b2a0ff"
+    },
+    "ege-profil/atanasyan-10-11/lesson-model.js": {
+      "beforeSHA256": "56e4e23158c6f4311f70491df126800532b7717f14ee8adb0f7bd694fd8403c8",
+      "afterSHA256": "ee54410f0965cb2b5e7e8cd829b8ff434e62de90714148865b54107e846643c9"
+    },
+    "ege-profil/atanasyan-10-11/lesson.html": {
+      "beforeSHA256": "6e3561a2d8cdf6cf96f1b928479fb235f1bdc27ec11002a217d7f1c03304ed5a",
+      "afterSHA256": "2b64087a1659d4c953b21f0ca61298f84b3af0e34f3f525d07b57a2587d4a4cc"
+    },
+    "ege-profil/atanasyan-10-11/lesson.js": {
+      "beforeSHA256": "f414f5e2ba575706507f52e5f6e1e5d7a497af7e84535cb93c7daad33467cd94",
+      "afterSHA256": "51936dc4efab390d39a9beeb170bd3444101bdb29a2773405f2f16d6893c163c"
+    },
+    "ege-profil/atanasyan-10-11/lessons-a.js": {
+      "beforeSHA256": "84cb2660d1d93ae3545987caf4c8a55c4eefc756cbf9fb38e0ec472898b2274b",
+      "afterSHA256": "2212a4a66d53034af140c7a9f723d3ea6243da7865d46e856113b0448dd5e6c6"
+    },
+    "ege-profil/atanasyan-10-11/lessons-b.js": {
+      "beforeSHA256": "fa143c084cf2bb7e5a200e7ee95cd72dc09c2fdab9bcf50597510c096db28b56",
+      "afterSHA256": "5642d8da271447d3153ea49c5670a18fd97a2955c89e58dc2bbfa953ce68e4bc"
+    },
+    "ege-profil/atanasyan-10-11/lessons.js": {
+      "beforeSHA256": "b5343535a7bbc32e4002ea94ef1940d11fde3d7f81f6804436025798e6cdb080",
+      "afterSHA256": "d2c22b1b2acb69bfaf24da3f5d146fa047ea76f1c31217b405758778f6566448"
+    },
+    "geometry-course/textbook/assets/engine.js": {
+      "beforeSHA256": "15511e2d45d3ab847ca31a9a65e2549245c17801021b35fce8ab08a5ef1c5817",
+      "afterSHA256": "50d8ef944320f6c5f135597caf39899e1c75906e25e01453871ef75714ad6959"
+    },
+    "geometry-course/textbook/assets/grade7-board-engine.js": {
+      "beforeSHA256": "3870e7d939227d1aac35cece1c6524b7e1cee9c8a52ba00f1a61189e29c16cd3",
+      "afterSHA256": "a3a6d5cb1a39e2b189a648ef7085e174b184f510f7bc66b85181c2fdf675e4dd"
+    },
+    "stereo-course/literacy/app.js": {
+      "beforeSHA256": "176c3f728080914e364ce6ba23ee890c9d55619b8c4e3b5bc4d7406bffa1cdcd",
+      "afterSHA256": "facfd8b46159c7a43abda61e7c013dbb51d47166258f3209769f2e428a231e64"
+    }
+  }
+}

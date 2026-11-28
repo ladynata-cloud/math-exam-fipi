@@ -1,0 +1,30 @@
+{
+  "base": "fe941e098c4b18b90be7569ee7ba1edb0361758d",
+  "sourceCommit": "e63e826be07180ac83025618633344c704dd86c8",
+  "additions": {
+    "stereo-course/textbook/lessons/ex-main-0414-a.json": "82aa97a352c76e553aac7f0084ca25eea5beb1d80749e05b2a4ef003c352220d",
+    "stereo-course/textbook/lessons/ex-main-0414-b.json": "21e4f85f3ce70ed7ac4784c132e90a7adef0947288c244627166042b3bd2f593",
+    "stereo-course/textbook/lessons/ex-main-0414-c.json": "98021fe49968b9adc9cc6d4defd5672094c475c5dd383c7654a4535fc1a5ad0e",
+    "stereo-course/textbook/lessons/ex-main-0415-a.json": "11faed4cb726c70a69ff5e53d94e343158dd29aba3bca1fc6e42f1cb370c8545",
+    "stereo-course/textbook/lessons/ex-main-0415-b.json": "2a556ffbd5055028e8fb27c2912d5986e3f3a9c50c455faecd9ee73773ad2956",
+    "stereo-course/textbook/lessons/ex-main-0416-a.json": "3db1642a34a1508368b44bb76c987b4e4d95ce7c4c517b3482988e38da94bbf5",
+    "stereo-course/textbook/lessons/ex-main-0416-b.json": "23adbe2e658ffab34a5ccea1428a88f17a26eedf76e0730625829c1b7af8ab86",
+    "stereo-course/textbook/lessons/ex-main-0417.json": "d1495545b96e1cdcf13376d9ad2b68af0da6fcf0f2713968b2798a4bf7100232",
+    "stereo-course/textbook/lessons/ex-main-0418-a.json": "2ad5b7bcf5e0aadef416e35ed5e076438dc71801945e9d90c03dc9d68cb67be1",
+    "stereo-course/textbook/lessons/ex-main-0418-b.json": "8b294205b70fca09ad24fdca678fb014f9af049b35e369535a1e1acdc041c368",
+    "stereo-course/textbook/lessons/ex-main-0419-a.json": "720b3e80578c4fc159678b856e99913d2ae63dfdea94c3d8bc5ce0506cc39abb",
+    "stereo-course/textbook/lessons/ex-main-0419-b.json": "5f2ee6480192d8b69acbd2c8c7fcb3bc91b59cc22706a47334eca88b9e253849",
+    "stereo-course/textbook/lessons/ex-main-0420.json": "4f119dec88c364c6e231c71ee0be55db3ad0e1b9472ba71d3f7115a673dcd31a",
+    "stereo-course/textbook/lessons/ex-main-0421.json": "98a7b5a62f4373af1e7b12eb19c9755f77c98677bc7693b848e4cd3e4d698646"
+  },
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "5b253776895b913125eb2e64ecc112192a847fdb2c779709dfc886d26c7cc2f0",
+      "afterSHA256": "3744e72a7d7bc976aab23eec7b0645abb370cae1edaae4dbfa4ebee6366bc911"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "0c35319b3949b1be56ec835c55dfac0a63733aa310208be5e0e9b904da22d36a",
+      "afterSHA256": "45e582e2d89d6164b42acbf430bb7ce4539986afd5bfa0c485bdf54a7e0cc534"
+    }
+  }
+}

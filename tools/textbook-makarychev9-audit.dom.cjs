@@ -18,6 +18,69 @@ function answer(w,value){input(w,'#answer',value);w.document.querySelector('#ans
 const text=(w,t)=>t.answerFormat==='m9-pairs'?t.answer.map(p=>'('+p.map(x=>text(w,{answer:x})).join(';')+')').join(';'):Array.isArray(t.answer)?t.answer.map(x=>text(w,{answer:x})).join(';'):typeof t.answer==='object'?w.WorkshopMath.fmt(t.answer):String(t.answer);
 (async()=>{
  let dom=boot(),w=dom.window;
+ const skip=w.document.querySelector('.skip');
+ skip.focus();skip.click();assert.equal(w.location.hash,'#lesson/m9f-root-square');assert.equal(w.document.activeElement.id,'main');
+ input(w,'[data-root]',-3);click(w,'[data-lab-action=root-check]');
+ assert.match(w.document.querySelector('.m9-status').textContent,/знак/);
+ assert.equal(w.document.activeElement.dataset.labAction,'root-check');
+ for(const x of [-5,0,4]){
+  input(w,'[data-param=x]',x,'change');
+  assert.equal(w.document.querySelector('[data-root]').value,'');
+  input(w,'[data-root]',Math.abs(x));click(w,'[data-lab-action=root-check]');
+  assert.match(w.document.querySelector('.m9-status.good').textContent,/^Верно/);
+ }
+ const rootSaved=w.localStorage.getItem(w.WorkshopState.KEY);
+ dom.window.close();dom=boot('lesson/m9f-root-square',rootSaved);w=dom.window;
+ assert.equal(w.document.querySelector('[data-param=x]').value,'4');
+ assert.equal(w.document.querySelector('[data-root]').value,'4');
+ assert.equal(w.document.querySelectorAll('.m9-status.good').length,1);
+ w.location.hash='lesson/m9f-interval-rational';await tick();
+ assert.equal(w.document.querySelector('[data-param=type]').value,'quotient-left');
+ click(w,'[data-lab-action=sign-check]');assert.match(w.document.querySelector('.m9-status').textContent,/знаки числителя и знаменателя/);
+ click(w,'[data-interval="0"]');click(w,'[data-interval="2"]');click(w,'[data-end="1"]');
+ assert.equal(w.document.querySelector('[data-chosen-interval="0"]').getAttribute('visibility'),'visible');
+ assert.equal(w.document.querySelector('[data-chosen-interval="1"]').getAttribute('visibility'),'hidden');
+ assert.equal(w.document.querySelector('[data-chosen-end="1"]').getAttribute('class'),'m9-point');
+ click(w,'[data-end="0"]');click(w,'[data-lab-action=sign-check]');
+ assert.match(w.document.querySelector('.m9-status').textContent,/нуль знаменателя/);
+ click(w,'[data-end="0"]');
+ assert.equal(w.document.querySelector('[data-chosen-end="0"]').getAttribute('class'),'m9-open');
+ click(w,'[data-lab-action=sign-check]');
+ assert.match(w.document.querySelector('.m9-status.good').textContent,/^Верно/);
+ input(w,'[data-param=type]','product','change');
+ click(w,'[data-interval="0"]');click(w,'[data-interval="2"]');click(w,'[data-lab-action=sign-check]');
+ assert.match(w.document.querySelector('.m9-status').textContent,/произведение равно нулю/);
+ input(w,'[data-param=type]','even','change');click(w,'[data-lab-action=sign-check]');
+ assert.match(w.document.querySelector('.m9-status').textContent,/в квадрате/);
+ for(const [lesson,type] of [['read-graph','line'],['rational-point','inverse']]){
+  const id='m9f-'+lesson;
+  w.location.hash='lesson/'+id;await tick();
+  assert.equal(w.document.querySelector('[data-param=type]').value,type);
+  const data=w.WorkshopMath.generate(id,state(w).last.seed).data;
+  if(type==='line')assert.equal(w.document.querySelector('[data-param=h]'),null);
+  else input(w,'[data-param=h]',data.h,'change');
+  input(w,'[data-param=k]',data.b,'change');input(w,'[data-param=a]',0,'change');
+  click(w,'[data-lab-action=graph-check]');assert.equal(w.document.querySelector('.m9-status.good'),null);
+  input(w,'[data-param=a]',data.sgn*data.c,'change');click(w,'[data-lab-action=graph-check]');
+  assert.match(w.document.querySelector('.m9-status.good').textContent,type==='line'?/прямой/:/гиперболе/);
+  click(w,'[data-lab-action=target]');assert.equal(w.document.querySelectorAll('.m9-target').length,2);
+ }
+ w.location.hash='lesson/m9f-shift-vertex';await tick();
+ const graphData=w.WorkshopMath.generate('m9f-shift-vertex',state(w).last.seed).data;
+ for(const [key,value] of Object.entries({a:graphData.sgn*graphData.c,h:graphData.h,k:graphData.b}))input(w,'[data-param='+key+']',value,'change');
+ click(w,'[data-lab-action=graph-check]');
+ const graph=w.document.querySelector('.m9-coordinate');
+ graph.createSVGPoint=()=>({matrixTransform(){return {x:this.x,y:this.y};}});
+ graph.getScreenCTM=()=>({inverse(){return {};}});
+ graph.setPointerCapture=()=>{};
+ const pointer=(x,y)=>({clientX:300+20*x,clientY:260-20*y,button:0,pointerId:1});
+ graph.onpointerdown(pointer(graphData.h,graphData.b));
+ assert(w.document.querySelector('.m9-status.good'));
+ graph.onpointermove(pointer(graphData.h+1,graphData.b));
+ assert.equal(w.document.querySelector('.m9-status.good'),null);
+ assert.equal(state(w).m9Drafts['m9f-shift-vertex'].modelState.success,false);
+ graph.onpointerup(pointer(graphData.h+1,graphData.b));
+ assert.equal(state(w).events.length,0,'laboratory observations do not create results');
  assert(w.WorkshopMath.accepts('(-inf; -4/2) U [1,5; +inf)',{answer:'(-∞;-2)∪[1.5;+∞)',answerFormat:'m9-set'}));
  assert(w.WorkshopMath.accepts('[2;3] U (3;4]',{answer:'[2;4]',answerFormat:'m9-set'}));
  assert(w.WorkshopMath.accepts('[-2;-2] U [3;+inf)',{answer:'{-2}∪[3;+∞)',answerFormat:'m9-set'}));
@@ -52,5 +115,5 @@ const text=(w,t)=>t.answerFormat==='m9-pairs'?t.answer.map(p=>'('+p.map(x=>text(
  w.location.hash='m9-check/sets';await tick();assert.equal(state(w).last.mode,'check');assert.equal(state(w).last.skill,'sets');
  for(const alias of ['makarychev7','makarychev8']){w.location.hash='course/'+alias;await tick();assert(w.document.querySelector('a[href="'+alias+'/"]'));}
  const persisted=w.localStorage.getItem(w.WorkshopState.KEY);dom.window.close();dom=boot('lesson/m9f-root-square',persisted,true);w=dom.window;await tick();assert.match(w.document.querySelector('.lesson-head').textContent,/Личный прогресс/);input(w,'#answer','42');click(w,'[data-cmd=hint]');answer(w,'42');assert.equal(w.localStorage.getItem(w.WorkshopState.KEY),persisted,'board must not touch personal work');assert.equal(w.localStorage.getItem('audit-sentinel'),'keep');dom.window.close();
- assert.deepEqual(errors,[]);console.log('PASS M9 audit DOM: all 93 entrypoints; saved inquiry, first answer, attempts and level-3 hints; new independent task; bounded archive/import; domain a=0; model mission and inputs reload; numbered check entry; native links; board byte isolation.');
+ assert.deepEqual(errors,[]);console.log('PASS M9 audit DOM: keyboard skip routing, signed square roots, interval and endpoint selections, line and hyperbola missions, all 93 entrypoints; saved inquiry, first answer, attempts and level-3 hints; new independent task; bounded archive/import; domain a=0; model mission and inputs reload; numbered check entry; native links; board byte isolation.');
 })().catch(e=>{console.error(e);process.exitCode=1;});

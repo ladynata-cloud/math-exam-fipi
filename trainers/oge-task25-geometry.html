@@ -194,6 +194,9 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
 <script defer src="oge-video-graphs.js"></script>
 <script defer src="oge-video-geometry.js"></script>
 <script defer src="oge-video-models.js" data-oge-video-task="25"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
@@ -476,7 +479,7 @@ const TYPES=[];
 
 /* ---------- ТИП 1: биссектриса и медиана перпендикулярны и равны ---------- */
 TYPES.push({
-  id:1, topic:'Треугольник', pill:'tri', tag:'биссектриса = высота',
+  id:1, topic:'Треугольник', pill:'tri', tag:'BE — биссектриса, AD — медиана, BE = AD и BE ⟂ AD',
   title:'Биссектриса и медиана: ⟂ и равны',
   pool:[12,8,32,20,40,36,28,16,44,24],
   cond:p=>`В треугольнике <b>ABC</b> биссектриса <b>BE</b> и медиана <b>AD</b> перпендикулярны и имеют одинаковую длину, равную <b>${p}</b>. Найдите стороны треугольника ABC.`,
@@ -514,10 +517,12 @@ TYPES.push({
     s+=svRight(P_, A_, B_,{d:12,stroke:'#16a34a',w:2.2});
     // равные углы при B (две дуги)
     s+=svArc(B_,A_,P_,17,{stroke:'#d97706',w:2.2});
-    s+=svArc(B_,P_,C_,23,{stroke:'#d97706',w:2.2});
+    s+=svArc(B_,P_,C_,17,{stroke:'#d97706',w:2.2});
     // равные длины BE и AD — по одной засечке
-    s+=svTicks(A_,D_,1,{stroke:'#2d70b3'});
-    s+=svTicks(B_,E_,1,{stroke:'#d97706'});
+    s+=svTicks(A_,lerp(A_,D_,0.55),1,{stroke:'#2d70b3'});
+    s+=svTicks(lerp(B_,E_,0.55),E_,1,{stroke:'#d97706'});
+    s+=svTicks(B_,D_,2);
+    s+=svTicks(D_,C_,2);
     // точки и подписи
     [[A_,'A',[-14,-2]],[B_,'B',[0,-16]],[C_,'C',[15,-2]],[D_,'D',[10,14]],[E_,'E',[16,4]],[P_,'P',[-13,10]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:15,col:'#1a1a2e'}); });
     return svgWrap(s,VW,VH);
@@ -2045,5 +2050,28 @@ if(!CP.RO && document.documentElement.nodeType===1){
 <script src="oge-course-proof.js?v=20261025-oge-course-mirror"></script>
 <script src="board-bridge.js"></script>
 <script src="oge-part2-geometry-board.js"></script>
+<!-- download-panel:start:oge-task25-geometry -->
+<section class="download-panel" id="download" data-trainer-download="oge-task25-geometry">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/oge-task25-geometry/oge-task25-geometry.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/oge-task25-geometry/oge-task25-geometry-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/oge-task25-geometry/oge-task25-geometry-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Сделай обозначения на чертеже крупнее. В подсказках отдельно напомни условия применимости теоремы, не раскрывая следующий ответ."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-geometry">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:oge-task25-geometry -->
 </body>
 </html>

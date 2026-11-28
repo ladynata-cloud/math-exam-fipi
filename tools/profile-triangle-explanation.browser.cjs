@@ -119,8 +119,8 @@ async function accept(page, value) {
       const page = await context.newPage(); page.setDefaultTimeout(12000);
       page.on('pageerror', error => errors.push(error.message));
       page.on('response', response => { if (response.status() >= 400 && response.url().startsWith(origin)) failedRequests.push(response.status() + ' ' + response.url()); });
-      await page.goto(base); await page.locator('[data-calm-exam="13"]').waitFor();
-      assert.equal(await page.locator('[data-calm-exam]').count(), 13, 'The independent-first catalogue remains the entry');
+      await page.goto(base); await page.locator('[data-calm-exam="12"]').waitFor();
+      assert.equal(await page.locator('[data-calm-exam]').count(), 12, 'The independent-first catalogue remains the entry');
       assert.equal(await page.locator('[data-exam-start="1"]').getAttribute('href'), '#practice/geo-right/independent');
       await page.locator('[data-exam-start="1"]').click(); await page.locator('#answer-form').waitFor();
       for (const item of cases) {

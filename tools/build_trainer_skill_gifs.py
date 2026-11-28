@@ -1,7 +1,7 @@
 """Build the short animated examples used by the public trainer help panels.
 
 Run from any directory with Python 3 and Pillow. DejaVu Sans is used for
-Cyrillic and mathematical notation. Use --group to preview a group locally.
+Cyrillic and mathematical notation. Use --group to rebuild one set of examples.
 """
 
 import argparse
@@ -106,16 +106,19 @@ def render(title, steps, draw, index):
 
 
 def main():
-    groups = ('arithmetic', 'oge', 'profile', 'entries')
+    groups = ('arithmetic', 'oge', 'profile', 'entries', 'downloads')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--group', choices=groups)
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    metadata = {}
+    index = OUT / 'index.json'
+    metadata = json.loads(index.read_text(encoding='utf-8')) if args.group else {}
+    built = set()
 
     def build(slug, title, steps, draw):
-        if slug in metadata or not 4 <= len(steps) <= 5:
+        if slug in built or not 4 <= len(steps) <= 5:
             raise ValueError(f'Invalid example or frame count: {slug}')
+        built.add(slug)
         frames = [render(title, steps, draw, i) for i in range(len(steps))]
         indexed = [frame.quantize(colors=96) for frame in frames]
         indexed[0].save(OUT / f'{slug}.gif', save_all=True, append_images=indexed[1:],
@@ -130,8 +133,7 @@ def main():
 
     for group in ([args.group] if args.group else groups):
         importlib.import_module(f'trainer_gif_{group}').build_all(build)
-    if not args.group:
-        (OUT / 'index.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    index.write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
 if __name__ == '__main__':

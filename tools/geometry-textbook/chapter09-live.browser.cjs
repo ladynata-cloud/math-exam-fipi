@@ -10,10 +10,13 @@ if(process.env.ATANASYAN_IX_HEAD)assert.equal(head,process.env.ATANASYAN_IX_HEAD
 const out=path.resolve(process.env.ATANASYAN_IX_ARTIFACTS||'artifacts/atanasyan-chapter09-live');fs.mkdirSync(out,{recursive:true});
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const names=['index.html','data/course.json','source-inventory.json','assets/engine.js','assets/style.css','assets/math-text.js','assets/planar-viewer.js'];
-const files=Object.fromEntries(names.map(name=>[prefix+name,fs.readFileSync(path.join(root,prefix.slice(1),name))]));
+const {unitFiles,append}=require('../../geometry-course/textbook/assets/additional-lessons.js');
+const resources=[...names.map(name=>prefix+name),prefix+'assets/additional-lessons.js',...unitFiles,'/assets/geometry-step-views.js'];
+const files=Object.fromEntries(resources.map(name=>[name,fs.readFileSync(path.join(root,name.slice(1)))]));
 const expected=Object.fromEntries(Object.entries(files).map(([name,bytes])=>[name,sha(bytes)]));
 for(const name of Object.keys(files))assert.equal(expected[name],sha(execFileSync('git',['show',head+':'+name.slice(1)],{cwd:root,maxBuffer:32*1024*1024})),name+' matches the source commit');
 const bundle=JSON.parse(files[prefix+'data/course.json']),ix=bundle.lessons.filter(l=>l.source.chapter==='IX');
+const assembled=unitFiles.reduce((course,url)=>append(course,JSON.parse(files[url])),bundle);
 const releaseScope=JSON.parse(fs.readFileSync(path.join(__dirname,'release-scope.json'),'utf8'));
 const evidence={schemaVersion:1,head,mode,origin:null,startedAt:new Date().toISOString(),scriptSha256:sha(fs.readFileSync(__filename)),
   expectedHashes:expected,matchedHashes:{},browserMatchedHashes:{},lessons:bundle.lessons.length,chapterIXCards:ix.length,
@@ -45,7 +48,7 @@ async function visit(page,lesson,pending,width){
  assert.equal(await page.locator('[data-preview-notice]').count(),0,'Use the genuine public entry');
  assert.equal(await page.locator('.lesson-permalink').getAttribute('href'),'#'+lesson.id);
  assert.equal(await page.locator('main h1').innerText(),expectedTitle(lesson));
- assert.equal(await page.evaluate(()=>window.textbookApp.coverage.available),bundle.lessons.length);
+ assert.equal(await page.evaluate(()=>window.textbookApp.coverage.available),assembled.lessons.length);
  assert.deepEqual(await page.evaluate(()=>window.textbookApp.issues),[]);
  const sourceMatches=await page.evaluate(lesson=>{const span=document.createElement('span');StereoMath.appendText(span,lesson.statement.text);return document.querySelector('.textbook-condition').innerHTML===span.innerHTML;},lesson);
  assert(sourceMatches,lesson.id+' original condition');
@@ -55,7 +58,7 @@ async function visit(page,lesson,pending,width){
  }
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'No horizontal overflow');
  assert(!/NaN|Infinity/.test(await page.locator('[data-main-model] svg').evaluate(n=>n.outerHTML)),'Finite drawing');
- await page.screenshot({path:path.join(out,lesson.id+'-'+width+'.png'),fullPage:true});
+ await page.locator('[data-main-model]').screenshot({path:path.join(out,lesson.id+'-'+width+'.png')});
  evidence.checks.push({id:lesson.id,width,directEntry:true,condition:true,drawing:true,overflow:false});
 }
 async function retainedWork(page,lesson,pending,width){
@@ -92,18 +95,21 @@ async function retainedWork(page,lesson,pending,width){
  browser=await chromium.launch({headless:true,...(process.env.GEOMETRY_CHROMIUM?{executablePath:process.env.GEOMETRY_CHROMIUM}:{})});evidence.browser=browser.version();
  for(const width of [320,1280]){
   // Nonpersistent, empty contexts: no real account, cookie, learner state or disk profile.
-  const context=await browser.newContext({viewport:{width,height:900},extraHTTPHeaders:{'Cache-Control':'no-cache'}}),page=await context.newPage(),pending=[];
-  // Routing disables the HTTP cache while preserving real responses for exact body verification.
-  await context.route('**/*',route=>route.continue());
-  page.setDefaultTimeout(15000);page.on('pageerror',error=>evidence.errors.push(error.message));
-  page.on('response',response=>{const url=new URL(response.url()),name=url.pathname.replace(/\/$/,'/index.html');if(!(name in expected))return;
-   pending.push((async()=>{assert.equal(url.origin,new URL(base).origin,'Resource origin');assert.equal(response.status(),200,name+' browser HTTP');
-    const actual=sha(await response.body());assert.equal(actual,expected[name],name+' browser received exact committed bytes');evidence.browserMatchedHashes[name]=actual;
-   })().catch(error=>{evidence.errors.push(error.message);}));});
-  for(const lesson of lessons)await visit(page,lesson,pending,width);
-  await retainedWork(page,sample,pending,width);await context.close();
+  for (const [index, lesson] of [...lessons,sample].entries()) {
+   const context=await browser.newContext({viewport:{width,height:900},extraHTTPHeaders:{'Cache-Control':'no-cache'}}),page=await context.newPage(),pending=[];
+   // Routing disables the HTTP cache while preserving real responses for exact body verification.
+   await context.route('**/*',route=>route.continue());
+   page.setDefaultTimeout(15000);page.on('pageerror',error=>evidence.errors.push(error.message));
+   page.on('response',response=>{const url=new URL(response.url()),name=url.pathname.replace(/\/$/,'/index.html');if(!(name in expected))return;
+    pending.push((async()=>{assert.equal(url.origin,new URL(base).origin,'Resource origin');assert.equal(response.status(),200,name+' browser HTTP');
+     const actual=sha(await response.body());assert.equal(actual,expected[name],name+' browser received exact committed bytes');evidence.browserMatchedHashes[name]=actual;
+    })().catch(error=>{evidence.errors.push(error.message);}));});
+   if (index===lessons.length) await retainedWork(page,lesson,pending,width);
+   else await visit(page,lesson,pending,width);
+   await context.close();
+  }
  }
- for(const name of names.filter(n=>n!=='source-inventory.json'))assert.equal(evidence.browserMatchedHashes[prefix+name],expected[prefix+name],'Browser loaded '+name);
+ for(const name of resources.filter(n=>n!==prefix+'source-inventory.json'))assert.equal(evidence.browserMatchedHashes[name],expected[name],'Browser loaded '+name);
  await verifyBytes();assert.deepEqual(evidence.errors,[]);evidence.completed=true;
  evidence.localSmokePassed=mode==='local';evidence.httpsReleaseVerified=mode==='https'&&ix.length===160;
  console.log((evidence.httpsReleaseVerified?'ATANASYAN_IX_HTTPS_RELEASE_OK':'ATANASYAN_IX_LOCAL_PUBLIC_SMOKE_OK')+' '+JSON.stringify({head,lessons:bundle.lessons.length,ix:ix.length}));

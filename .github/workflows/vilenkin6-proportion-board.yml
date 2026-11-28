@@ -1,0 +1,69 @@
+name: Vilenkin 6 ratios and proportions — paired board
+on:
+  pull_request:
+    paths:
+      - 'trainers/vilenkin6-proportion/**'
+      - 'trainers/vilenkin6-percent/style.css'
+      - 'courses/vilenkin-6-part-1/textbook-data/units-D.json'
+      - 'courses/vilenkin-6-part-1/textbook-math.js'
+      - 'courses/vilenkin-6-part-1/textbook-course.css'
+      - 'learning/vilenkin6-textbook-course.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/board-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - '.github/workflows/vilenkin6-proportion-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/vilenkin6-proportion/**'
+      - 'trainers/vilenkin6-percent/style.css'
+      - 'courses/vilenkin-6-part-1/textbook-data/units-D.json'
+      - 'courses/vilenkin-6-part-1/textbook-math.js'
+      - 'courses/vilenkin-6-part-1/textbook-course.css'
+      - 'learning/vilenkin6-textbook-course.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/board-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - '.github/workflows/vilenkin6-proportion-board.yml'
+permissions:
+  contents: read
+concurrency:
+  group: vilenkin6-proportion-board-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  mathematics-and-paired-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: All 32 tasks, 82 steps, registry and state size
+        run: |
+          node --check trainers/vilenkin6-proportion/app.js
+          node --check trainers/vilenkin6-proportion/browser.cjs
+          node --test board-server/test/vilenkin6-proportion.test.js trainers/vilenkin6-proportion/corridor.test.cjs
+          git diff --check
+      - name: Install locked server and pinned browser tools
+        run: |
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+          npm install --prefix "$RUNNER_TEMP/proportion-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          echo "NODE_PATH=$RUNNER_TEMP/proportion-qa/node_modules" >> "$GITHUB_ENV"
+          "$RUNNER_TEMP/proportion-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Real teacher and pupil, four sections, handoff and reload
+        env:
+          PROPORTION_SCREENSHOT_DIR: artifacts/vilenkin6-proportion
+        run: node trainers/vilenkin6-proportion/browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: vilenkin6-proportion-browser
+          path: artifacts/vilenkin6-proportion
+          if-no-files-found: ignore

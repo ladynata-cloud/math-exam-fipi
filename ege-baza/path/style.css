@@ -76,9 +76,25 @@ header .path-home:focus-visible{outline:3px solid #ad591d;outline-offset:3px}
 header nav>a.btn{min-height:44px;display:inline-flex;align-items:center}
 
 /* Guidance is offered after repeated difficulty without replacing the learner's work. */
-.task-first-course #repairStep[hidden]{display:none!important}
+.task-first-course #repairStep[hidden],.task-first-course #startSteps[hidden]{display:none!important}
 .task-first-course #repairStep{margin:.3rem 0;min-height:44px;text-align:left;white-space:normal}
 .task-first-course .task-first-variant:empty{display:none}
 .task-first-course .task-first-variant{padding:.65rem .8rem;border-left:3px solid #388567;background:#f4faf5;line-height:1.5}
 .task-first-start{padding:.7rem 0;line-height:1.6}
-.task-first-next #new.primary{order:-1;flex-basis:100%;text-align:left;white-space:normal}
+
+.plane-figure .plane-lines{fill:none;stroke:#24674e;stroke-width:2.5;stroke-linejoin:round}
+.plane-figure .outline{fill:#f0f7f2}
+.plane-figure .construction{stroke:#a74924}
+.plane-figure .plane-labels{fill:#20382c;font:16px system-ui,sans-serif;text-anchor:middle;paint-order:stroke;stroke:white;stroke-width:3px;stroke-linejoin:round}
+.plane-problem:has(#taskHelp[open] #taskSteps[open])>.task-support{display:none}
+.plane-work{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:1rem}
+.plane-work .task-figure{margin:0;max-height:285px}
+.plane-work h2,.plane-work .task-first-form label{margin-top:.25rem}
+.plane-history{margin-top:.75rem}
+@media(max-width:650px){.plane-work{grid-template-columns:minmax(0,1fr);gap:.4rem}.plane-work .task-figure{max-height:205px}}
+
+.plane-figure .active-plane{fill:#d4ebdc;stroke:none}.working-equation{font-size:1.12rem;font-weight:600;margin:.35rem 0}
+
+.plane-work #stepAnswerFormat{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.plane-step-title{font-size:1.2rem;margin:.5rem 0}
+#completionAction .primary{background:var(--green);color:white;white-space:normal;text-align:left}
+#completionAction .primary:hover{background:#12523f}

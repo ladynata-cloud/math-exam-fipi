@@ -88,8 +88,8 @@ async function validateCross(row) {
       const page = await context.newPage(); page.setDefaultTimeout(12000);
       page.on('pageerror', error => errors.push(error.message));
       page.on('response', response => { if (response.status() >= 400 && response.url().startsWith(origin)) failedRequests.push(response.status() + ' ' + response.url()); });
-      await page.goto(base); await page.locator('[data-calm-exam="13"]').waitFor();
-      assert.equal(await page.locator('[data-calm-exam]').count(), 13, 'Exam catalogue remains the entry point');
+      await page.goto(base); await page.locator('[data-calm-exam="12"]').waitFor();
+      assert.equal(await page.locator('[data-calm-exam]').count(), 12, 'Exam catalogue remains the entry point');
       async function seed(item, suffix = '') {
         await page.evaluate(({ key, lessonId, taskId, mode }) => {
           localStorage.clear();

@@ -1,0 +1,23 @@
+name: Makarychev 2013 workshop routes
+on:
+  pull_request:
+    paths:
+      - 'school/makarychev8-2013-book.js'
+      - 'tools/makarychev8-2013-book.browser.cjs'
+      - '.github/workflows/makarychev8-2013-map.yml'
+permissions:
+  contents: read
+jobs:
+  edition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+      - name: Verify all 43 personal and board destinations at 375 pixels
+        run: |
+          npm install --prefix "$RUNNER_TEMP/edition-check" --ignore-scripts --no-save --no-package-lock playwright@1.62.1
+          "$RUNNER_TEMP/edition-check/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/edition-check/node_modules" node tools/makarychev8-2013-book.browser.cjs

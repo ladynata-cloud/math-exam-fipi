@@ -211,6 +211,7 @@
   </section>
 </div>
 
+<script src="number-input.js"></script>
 <script>
 (function(){
   "use strict";
@@ -257,13 +258,6 @@
     });
   });
 
-  function pnum(v){
-    v=(v==null?"":(""+v)).trim().replace(",",".");
-    if(v==="") return null;
-    var m=v.match(/^(-?)(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
-    if(m){ var n=parseFloat(m[2])/parseFloat(m[3]); return m[1]?-n:n; }
-    var n2=parseFloat(v); return isNaN(n2)?NaN:n2;
-  }
   function fmt(x){ return Number.isInteger(x)?(""+x):(""+(Math.round(x*100)/100)).replace(".",","); }
   function rint(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
   function pick(arr){return arr[rint(0,arr.length-1)];}
@@ -330,7 +324,7 @@
     }
     sa.addEventListener("input",render); render();
     $("#sCheck").addEventListener("click",function(){
-      var n=pnum($("#sAns").value), fb=$("#sFb");
+      var n=parseParameterNumber($("#sAns").value), fb=$("#sFb");
       if(n===null){ fb.className="feedback warn on"; fb.textContent="Впиши значение a."; return; }
       if(!isNaN(n)&&Math.abs(n+0.25)<1e-9){
         fb.className="feedback ok on";
@@ -398,7 +392,7 @@
     }
     $("#rCheck").addEventListener("click",function(){
       if(!cur) return;
-      var k=pnum($("#rk").value), h=pnum($("#rh").value), v=pnum($("#rv").value);
+      var k=parseParameterNumber($("#rk").value), h=parseParameterNumber($("#rh").value), v=parseParameterNumber($("#rv").value);
       if(k===null||h===null||v===null){ fb.className="feedback warn on"; fb.textContent="Впиши все три коэффициента."; return; }
       var ok=Math.abs(k-cur.k)<1e-9&&Math.abs(h-cur.h)<1e-9&&Math.abs(v-cur.v)<1e-9;
       if(ok){
@@ -453,7 +447,7 @@
     }
     pa.addEventListener("input",render); render();
     $("#pCheck").addEventListener("click",function(){
-      var n=pnum($("#pAns").value), fb=$("#pFb");
+      var n=parseParameterNumber($("#pAns").value), fb=$("#pFb");
       if(n===null){ fb.className="feedback warn on"; fb.textContent="Впиши значение p."; return; }
       if(!isNaN(n)&&Math.abs(n-3)<1e-9){
         fb.className="feedback ok on";
@@ -553,7 +547,7 @@
     $("#quizCheck").addEventListener("click",function(){
       var right=0, filled=0;
       $$("input[data-i]",list).forEach(function(inp,i){
-        var n=pnum(inp.value); var d=dots.children[i];
+        var n=parseParameterNumber(inp.value); var d=dots.children[i];
         d.className="";
         if(n===null) return;
         filled++;

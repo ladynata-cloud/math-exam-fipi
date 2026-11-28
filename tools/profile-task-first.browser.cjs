@@ -13,7 +13,7 @@ const retained=s=>({taskId:s.taskId,started:s.started,step:s.step,draft:s.draft,
 (async()=>{let browser;await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port,base=origin+'/ege-profil/start/';try{
   browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,headless:true,args:['--no-sandbox']});
   const errors=[],bad=[];const context=await browser.newContext({viewport:{width:1280,height:900}});const page=await context.newPage();page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400&&r.url().startsWith(origin))bad.push(r.url());});
-  await page.goto(base);await page.locator('[data-calm-exam="13"]').waitFor();
+  await page.goto(base);await page.locator('[data-calm-exam="12"]').waitFor();
   let count=0;
   for(const lesson of lessons){
     await page.goto(base+'#practice/'+lesson.id+'/independent');await page.locator('#answer-form').waitFor();
@@ -66,6 +66,11 @@ const retained=s=>({taskId:s.taskId,started:s.started,step:s.step,draft:s.draft,
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+': mobile fits');
     const shots=process.env.PROFILE_TASK_FIRST_SHOTS;if(shots){fs.mkdirSync(shots,{recursive:true});await page.screenshot({path:path.join(shots,id+'-320.png'),fullPage:true});}
   }
+  await page.goto(base+'#calm/2');
+  const oppositeTitle=page.locator('.plain-steps a[href="#lesson/vec-basics-equality"]');await oppositeTitle.waitFor();
+  assert.match(await oppositeTitle.textContent(),/противо\u00adположные/);
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'opposite-vector route fits at 320px');
+  const vectorShots=process.env.PROFILE_TASK_FIRST_SHOTS;if(vectorShots)await page.screenshot({path:path.join(vectorShots,'vector-opposites-320.png'),fullPage:true});
   // Hints for an entire task must retain the operation and its mathematical
   // purpose. A bare first-step hint used to lose the denominator/derivative.
   let contextualHints=0;

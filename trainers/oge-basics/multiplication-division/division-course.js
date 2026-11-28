@@ -55,7 +55,8 @@ function supplements(track){
 }
 function preparationView(stage){
  const item=stage.preparation;if(!item)return '';
- return `<li class="division-course-preparation" data-division-preparation="${E(item.id)}"><span class="division-course-number" aria-hidden="true">↳</span><article><p class="division-course-meta">Перед прикидкой</p><h3>${E(item.title)}</h3><p>${E(item.goal)}</p><div class="actions"><a class="button" href="${E(item.publicUrl)}" target="_blank" rel="noopener">${E(item.action)} ↗</a></div><p>${E(item.returnNote)}</p><p class="division-course-status">Отдельная практика. Результат не входит в счётчик шагов.</p></article></li>`;
+ const links=(item.modes??[item]).map(mode=>`<a class="button" href="${E(mode.publicUrl)}" target="_blank" rel="noopener">${E(mode.action)} ↗</a>`).join(' ');
+ return `<li class="division-course-preparation" data-division-preparation="${E(item.id)}"><span class="division-course-number" aria-hidden="true">↳</span><article><p class="division-course-meta">Перед прикидкой</p><h3>${E(item.title)}</h3><p>${E(item.goal)}</p><div class="actions">${links}</div><p>${E(item.returnNote)}</p><p class="division-course-status">Отдельная практика. Результат не входит в счётчик шагов.</p></article></li>`;
 }
 function render(){
  host.innerHTML=foundationsView(course)+course.tracks.map(track=>{

@@ -6,18 +6,20 @@ const ROOT=path.resolve(__dirname,'..'),KEY='mathexam.profileStart2027.v1';
 const geometry=[...require('../ege-profil/start/geometry-data.js'),...require('../ege-profil/start/stereo-data.js')].filter(l=>[1,2,3].includes(l.position));
 const shotLessons=new Set(['geo-right','vec-coordinates','stereo-box']);
 const SHOTS=process.env.PROFILE_MAIN_GEOMETRY_SHOTS||'/tmp/profile-main-geometry-disclosure-shots';
+const mime={'.js':'text/javascript','.css':'text/css','.gif':'image/gif','.png':'image/png','.json':'application/json'};
 const server=http.createServer((req,res)=>{
-  try{let file=path.resolve(ROOT,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));if(!file.startsWith(ROOT+path.sep))return res.writeHead(403).end();if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html');res.end(fs.readFileSync(file));}catch(_){res.writeHead(404).end();}
+  try{let file=path.resolve(ROOT,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));if(!file.startsWith(ROOT+path.sep))return res.writeHead(403).end();if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',mime[path.extname(file)]||'text/html');res.end(fs.readFileSync(file));}catch(_){res.writeHead(404).end();}
 });
 (async()=>{
   let browser;await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port,base=origin+'/ege-profil/start/index.html';
-  const errors=[],failed=[];let journeys=0,firstScreenChecks=0,screenshots=0;
+  const errors=[],failed=[];let journeys=0,firstScreenChecks=0,screenshots=0,demos=0;
   try{
     assert.equal(geometry.length,18,'All main geometry lessons are included');
     browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,headless:true,args:['--no-sandbox']});
     fs.mkdirSync(SHOTS,{recursive:true});
     for(const width of [320,390,1280]){
       const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<600});
+      await context.route('**/*',route=>route.request().url().startsWith(origin+'/')?route.continue():route.abort());
       const page=await context.newPage();page.setDefaultTimeout(12000);
       page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(origin)&&r.status()>=400)failed.push(r.url());});
       await page.goto(base+'#calm');await page.locator('[data-calm-exam="1"]').waitFor();
@@ -74,6 +76,29 @@ const server=http.createServer((req,res)=>{
       assert(await lab.locator('svg').isVisible(),'requested construction drawing '+width);
       assert(await line.isVisible()&&await input.isVisible(),'construction controls remain available '+width);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'construction width '+width);journeys++;
+      for(const [id,slug] of [['geo-quadrilaterals','trapezoid'],['vec-coordinates','vector-coordinates']]){
+        await page.goto(base+'?research='+width+'-'+slug+'#lesson/'+id);
+        const experiment=page.locator('#explore-lab'),summary=experiment.locator(':scope > summary');
+        const demo=page.locator('#research-demo'),image=demo.locator('img');
+        const experimentRect=await summary.boundingBox(),practiceRect=await page.locator('#guided').boundingBox();
+        assert(experimentRect&&practiceRect&&experimentRect.y<practiceRect.y&&experimentRect.y+experimentRect.height<900,id+': experiment first at '+width);
+        assert.equal(await image.count(),0);
+        await summary.click();await demo.locator(':scope > summary').click();
+        await image.waitFor();
+        assert.match(await image.getAttribute('src'),new RegExp(slug+'\\.png$'));
+        await page.waitForFunction(()=>document.querySelector('#research-demo img').naturalWidth===640);
+        await demo.getByRole('button',{name:'Следующий кадр'}).click();
+        assert.match(await demo.locator('.trainer-skill-gif-caption').innerText(),/Кадр 2 из 3/);
+        await demo.getByRole('button',{name:'Воспроизвести GIF'}).click();
+        assert.match(await image.getAttribute('src'),new RegExp(slug+'\\.gif$'));
+        await page.waitForFunction(()=>document.querySelector('#research-demo img').naturalHeight===360);
+        await summary.click();
+        await page.waitForFunction(()=>!document.getElementById('research-demo').open&&document.querySelector('#research-demo img').getAttribute('src').endsWith('.png'));
+        await summary.click();await demo.locator(':scope > summary').click();
+        assert.match(await demo.locator('.trainer-skill-gif-caption').innerText(),/Кадр 2 из 3/);
+        assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+': GIF width '+width);
+        demos++;
+      }
       await page.goto(base+'#practice/fn-parabola/independent');await page.locator('#task-model svg').waitFor();
       const explore=page.locator('#task-model details');assert.equal(await explore.getAttribute('open'),null);
       await explore.locator('summary').click();await page.locator('#task-model [data-revealed-value]').waitFor();
@@ -83,7 +108,7 @@ const server=http.createServer((req,res)=>{
       await context.close();
     }
     assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
-    assert.equal(firstScreenChecks,54);assert.equal(screenshots,9);
-    console.log('PROFILE_MAIN_GEOMETRY_DISCLOSURE_BROWSER_OK: '+journeys+' synthetic journeys; '+firstScreenChecks+' first-screen condition/diagram checks across all 18 geometry lessons at 320/390/1280px; '+screenshots+' representative screenshots; requested references; retained drafts/constructions; graph keyboard controls');
+    assert.equal(firstScreenChecks,54);assert.equal(screenshots,9);assert.equal(demos,6);
+    console.log('PROFILE_MAIN_GEOMETRY_DISCLOSURE_BROWSER_OK: '+journeys+' synthetic journeys; '+firstScreenChecks+' first-screen condition/diagram checks across all 18 geometry lessons at 320/390/1280px; '+screenshots+' representative screenshots; '+demos+' opt-in demonstrations; retained drafts/constructions; graph keyboard controls');
   }finally{await browser?.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e.stack||e);process.exitCode=1;});

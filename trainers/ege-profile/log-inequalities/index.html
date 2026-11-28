@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script defer src="../../../ege-profil/exam-map.js?v=20261115-fipi-map"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#176f58">
@@ -11,13 +12,16 @@
   <script defer src="engine.js?v=1"></script>
   <script defer src="../../board-bridge.js"></script>
   <script defer src="app.js?v=1"></script>
-<link rel="stylesheet" href="../../../ege-profil/start/course-links.css?v=20261010-readable-help"><script defer src="../../../ege-profil/start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../../../ege-profil/start/course-links.css?v=20261010-readable-help"><script defer src="../../../ege-profil/start/course-links.js?v=20261115-fipi-map"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../../../ege-profil/skill-map.css?v=20261111-skills">
-<script defer src="../../../ege-profil/skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../../../ege-profil/skill-map.js?v=20261111-skills" data-profile-skill-map="log-inequalities"></script>
+<script defer src="../../../ege-profil/skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../../../ege-profil/skill-map.js?v=20261115-fipi-map" data-profile-skill-map="log-inequalities"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#exercise">Перейти к задаче</a>
@@ -66,5 +70,28 @@
   <footer><p><a href="../../../ege-profil/">К профильной математике</a> · <a href="../../arifmetika.html">Повторить вычисления</a></p><p>Задачи с новыми числовыми данными. Тематика — <a href="https://math-ege.sdamgia.ru/test?theme=313&amp;print=true" target="_blank" rel="noopener noreferrer">подборка логарифмических неравенств «Решу ЕГЭ»</a>. Условия и разборы этого тренажёра подготовлены отдельно.</p></footer>
   <dialog id="topics" aria-labelledby="topics-title"><div class="dialog-head"><h2 id="topics-title">Выберите тему</h2><button id="topics-close" type="button" aria-label="Закрыть выбор темы">Закрыть</button></div><p>В каждой теме четыре задачи с разными числами. Можно вернуться к начатому решению.</p><div id="topic-list"></div></dialog>
   <noscript><p>Для интерактивного решения включите JavaScript в браузере.</p></noscript>
+<!-- download-panel:start:ege-profil-log-inequalities -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-log-inequalities">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="В первом варианте семейства sign замени знаменатель 6 на 8 и проверь новые границы на числовой оси."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-log-inequality">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-log-inequalities -->
 </body>
 </html>

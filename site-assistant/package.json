@@ -1,0 +1,12 @@
+{
+  "name": "mathexam-reading-site-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "sync:reader": "node scripts/sync-reader.mjs"
+  }
+}

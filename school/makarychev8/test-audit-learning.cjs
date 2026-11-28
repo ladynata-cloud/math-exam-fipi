@@ -51,3 +51,120 @@ test('valid graph no-hole token is a mathematical attempt, not a format error',(
 test('graph parser readable rational coefficients retain mathematical attempt history',()=>{const rt=boot(),lesson=rt.w.MakarychevCourse.lessons.find(l=>l.id==='p04'),index=lesson.tasks.findIndex(t=>t.id==='p04-ex108-графики'),task=lesson.tasks[index];assert(index>=0);rt.w.history.replaceState(null,'','#lesson/p04/'+index);rt.api.route();const value='4/-1;1;2;3';assert(rt.w.MakarychevTaskGraphs.parsePair(value));rt.answer(value);let rec=rt.api.getState().tasks[task.id];assert(!rec.correct);assert.equal(rec.attempts,1);assert.equal(rec.firstAttempt.value,value);rt.answer(task.answer);rec=rt.api.getState().tasks[task.id];assert(rec.correct);assert.equal(rec.attempts,2);assert(!rec.independent);rt.close();});
 
 test('an unfinished graph tuple remains a format correction before the first answer',()=>{const rt=boot(),lesson=rt.w.MakarychevCourse.lessons.find(l=>l.id==='p02'),index=lesson.tasks.findIndex(t=>t.id==='p02-ex038-а'),task=lesson.tasks[index];rt.w.history.replaceState(null,'','#lesson/p02/'+index);rt.api.route();rt.answer('0,5;-2,5');assert.equal(rt.api.getState().tasks[task.id].attempts,0);rt.answer(task.answer);assert(rt.api.getState().tasks[task.id].independent);rt.close();});
+
+test('square equation shows two, one or no points and distinguishes exact and approximate roots', () => {
+ const rt=boot('#lesson/p12/0');
+ begin(rt,0);
+ const points=()=>rt.d.querySelectorAll('#model svg circle').length;
+ const result=()=>rt.d.querySelector('#model .m8-result').textContent;
+ numeric(rt,'Правая часть a',9);
+ assert.equal(points(),2);assert.match(result(),/x₁ = [-−]3, x₂ = 3/);
+ numeric(rt,'Правая часть a',5);
+ assert.equal(points(),2);assert.match(result(),/x₁ = −√5 ≈ [-−]2,236, x₂ = √5 ≈ 2,236/);
+ numeric(rt,'Правая часть a',0);
+ assert.equal(points(),1);assert.match(result(),/Один корень: x = 0/);
+ numeric(rt,'Правая часть a',-4);
+ assert.equal(points(),0);assert.match(result(),/Действительных корней нет/);
+ const restored=boot('#lesson/p12/0',rt.api.getState());
+ assert.match(restored.d.querySelector('#model .m8-result').textContent,/Действительных корней нет/);
+ restored.close();rt.close();
+});
+
+test('square of a signed base gives its absolute value on both sides of zero', () => {
+ const rt=boot('#lesson/p16/0');begin(rt,1);
+ for(const a of [-3,0,3]){
+  numeric(rt,'Число a',a);
+  assert(rt.d.querySelector('#model .m8-equation').textContent.endsWith('= '+Math.abs(a)));
+ }
+ rt.close();
+});
+
+test('a pupil can keep a correct root, then complete the set using plus-minus notation', () => {
+ const rt=boot('#lesson/p12/0');
+ rt.answer('6');
+ let task=rt.api.getState().tasks['p12-t01'];
+ assert.equal(task.attempts,1);assert.match(task.feedback,/Это число подходит/);
+ rt.answer('±5');
+ task=rt.api.getState().tasks['p12-t01'];assert.equal(task.attempts,2);assert(!task.correct);
+ rt.answer('±6');
+ task=rt.api.getState().tasks['p12-t01'];assert(task.correct);assert(!task.independent);assert.equal(task.firstAttempt.value,'6');
+ const restored=boot('#lesson/p12/0',rt.api.getState());
+ assert(restored.api.getState().tasks['p12-t01'].correct);
+ restored.close();rt.close();
+});
+
+test('a plus-minus pair for an arithmetic root is a mathematical misconception', () => {
+ const rt=boot('#lesson/p11/0');
+ rt.answer('±9');
+ const task=rt.api.getState().tasks['p11-t01'];
+ assert(!task.correct);assert.equal(task.attempts,1);assert.match(task.feedback,/Знак √ обозначает одно неотрицательное значение/);
+ rt.answer('9');assert(rt.api.getState().tasks['p11-t01'].correct);
+ rt.close();
+});
+
+test('saved roots with a trailing delimiter keep their original completion', () => {
+ const rt=boot('#lesson/p12/0'),state=rt.api.getState();
+ state.tasks['p12-t01']={value:'{−6;6;}',correct:true,attempts:1,assisted:false,independent:true,
+  completion:{at:Date.now()-1000,attempts:1,assisted:false,independent:true}};
+ const restored=boot('#lesson/p12/0',state),record=restored.api.getState().tasks['p12-t01'];
+ assert(record.correct);assert(record.independent);assert.equal(record.value,'{−6;6;}');assert.equal(record.attempts,1);
+ restored.close();rt.close();
+});
+
+test('the unknown in a square-root equation has no assumed sign', () => {
+ const rt=boot('#lesson/p11/4');
+ rt.answer('±8');
+ const task=rt.api.getState().tasks['p11-t05'];
+ assert.equal(task.attempts,1);assert.match(task.feedback,/Проверь каждое из них по условию/);
+ assert.doesNotMatch(task.feedback,/неотрицательн/);
+ rt.close();
+});
+
+test('both reciprocal graphs use one x and retain their shared investigation', () => {
+ const rt=boot('#lesson/p51/5');
+ const id='p51-t06';
+ try {
+  begin(rt,0);
+  const [power,abscissa]=rt.d.querySelectorAll('#model .m8-controls select');
+  const graph=() => rt.d.querySelector('#model .m8-chart');
+  rt.input(power,'-2');
+  for (const x of [-2,-1,-0.5,0,0.5,1,2]) {
+   rt.input(abscissa,x);
+   const round=graph().querySelector('[data-reciprocal-value]');
+   const square=graph().querySelector('[data-square-reciprocal-value]');
+   assert.equal(graph().querySelectorAll('path').length,4,'four disjoint branches');
+   if (x===0) {
+    assert.equal(round,null);
+    assert.equal(square,null);
+    assert.match(rt.d.querySelector('.m8-result').textContent,/ноль в знаменателе/);
+    continue;
+   }
+   assert.equal(Number(round.dataset.reciprocalValue),1/x);
+   assert.equal(Number(square.dataset.squareReciprocalValue),1/(x*x));
+   assert.equal(Number(round.getAttribute('cx')),Number(square.getAttribute('x'))+3);
+   assert.equal(Math.sign(Number(square.getAttribute('y'))+3-Number(round.getAttribute('cy'))),Math.sign(1/x-1/(x*x)));
+  }
+  rt.input(abscissa,'-0.5');
+  const state=rt.api.getState();
+  assert.equal(state.tasks[id].correct,false,'exploring records no mastery');
+  const restored=boot('#lesson/p51/5',state);
+  try {
+   assert.deepEqual(Array.from(restored.d.querySelectorAll('#model .m8-controls select'),s=>s.value),['-2','-0.5']);
+   assert.match(restored.d.querySelector('.m8-result').textContent,/Квадрат выше круга/);
+  } finally { restored.close(); }
+  state.tasks[id].investigation.parameters=['-2'];
+  const legacy=boot('#lesson/p51/5',state);
+  try {
+   assert.deepEqual(Array.from(legacy.d.querySelectorAll('#model .m8-controls select'),s=>s.value),['-2','1']);
+  } finally { legacy.close(); }
+ } finally { rt.close(); }
+});
+
+test('the number finder and course overview describe the reviewed range consistently',()=>{
+ const rt=boot('#home');
+ assert.match(rt.d.getElementById('number-form').closest('section').textContent,/Все подпункты №1–509 имеют разбор/);
+ const overview=Array.from(rt.d.querySelectorAll('details')).find(el=>el.querySelector('summary')?.textContent==='Как устроен курс');
+ assert.match(overview.textContent,/№1–509 разобраны полностью/);
+ assert.match(rt.d.querySelector('#chapter-1 .chapter-coverage').textContent,/№1–267/);
+ assert.match(rt.d.querySelector('#chapter-2 .chapter-coverage').textContent,/№268–509/);
+});

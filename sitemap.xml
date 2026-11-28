@@ -76,6 +76,9 @@
     <loc>https://mathexam.space/articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/books/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/courses/</loc>
   </url>
   <url>
@@ -97,6 +100,18 @@
     <loc>https://mathexam.space/ege-baza/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/ege-baza/inequality-match/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/ege-baza/path/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/ege-baza/reference/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/ege-baza/reference/exam.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/ege-baza/topics/izmenenie-tseny-procenty/</loc>
   </url>
   <url>
@@ -106,7 +121,16 @@
     <loc>https://mathexam.space/ege-baza/topics/veroyatnost/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/ege-baza/work-rate/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/ege-profil/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/ege-profil/atanasyan-10-11/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/ege-profil/azbuka-metodov/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/ege-profil/circle/</loc>
@@ -212,6 +236,9 @@
   </url>
   <url>
     <loc>https://mathexam.space/equations/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/equations/linear-pilot/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/foundations/</loc>
@@ -1159,6 +1186,9 @@
     <loc>https://mathexam.space/grade7/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/grade7/geometry-rebuild/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/laboratory/</loc>
   </url>
   <url>
@@ -1169,6 +1199,9 @@
   </url>
   <url>
     <loc>https://mathexam.space/oge/geometry/task-15-external-angle.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/oge/skills/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/oge/variants/2027/</loc>
@@ -1196,6 +1229,9 @@
   </url>
   <url>
     <loc>https://mathexam.space/pedagogam/materialy/ravenstvo-treugolnikov/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/pedagogam/pomoshchniki-dlya-ucheby-i-chteniya/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/pedagogam/raboty/</loc>
@@ -1243,6 +1279,9 @@
     <loc>https://mathexam.space/school/alimov10-11/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/school/m9-exercises/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/school/makarychev7/</loc>
   </url>
   <url>
@@ -1267,6 +1306,9 @@
     <loc>https://mathexam.space/school/peterson6/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/school/peterson6/textbook/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/school/peterson6/topics/droby-i-desyatichnye/</loc>
   </url>
   <url>
@@ -1280,6 +1322,9 @@
   </url>
   <url>
     <loc>https://mathexam.space/stereo-course/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/stereo-course/literacy/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/stereo-course/merzlyak-10-base/</loc>
@@ -1298,6 +1343,9 @@
   </url>
   <url>
     <loc>https://mathexam.space/topics/lineynye-uravneniya/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/topics/metod-arzhenikova/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/topics/obyknovennye-drobi/</loc>
@@ -1330,6 +1378,18 @@
     <loc>https://mathexam.space/trainers/college-logarithms/intro/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/college-stereometry/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/college-stereometry/lessons/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/college-stereometry/polyhedra-sections/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/college-stereometry/pyramids/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/credit-differential-payment-trainer.html</loc>
   </url>
   <url>
@@ -1351,6 +1411,9 @@
     <loc>https://mathexam.space/trainers/ege-baza/course/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/ege-baza/data-course/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/ege-informatics-task1-graphs-trainer.html</loc>
   </url>
   <url>
@@ -1364,6 +1427,9 @@
   </url>
   <url>
     <loc>https://mathexam.space/trainers/ege-profile/inequalities/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/ege-profile/inequalities/lesson.html</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/ege-profile/log-inequalities/</loc>
@@ -1391,6 +1457,9 @@
   </url>
   <url>
     <loc>https://mathexam.space/trainers/formuly-sokrashchennogo-umnozheniya.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/geometry-7/control-work.html</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/grade6-nod.html</loc>
@@ -1423,7 +1492,22 @@
     <loc>https://mathexam.space/trainers/linear-systems-trainer.html</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/long-division-claude.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/long-division-stepwise.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/makarychev9-2017/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/merzlyak9-2014/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/motion-grade6/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/motion-grade6/river-lab.html</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/negative-numbers-line.html</loc>
@@ -1495,6 +1579,12 @@
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/arithmetic-foundations.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/arzhenikov-map.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html</loc>
   </url>
   <url>
@@ -1507,7 +1597,31 @@
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-bring-digit.html</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-four-by-one.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-mixed.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-one-digit.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-three-by-one.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-three-by-three.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-three-by-two.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-two-by-three.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-two-digit.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-column-zeros.html</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-decimal-divisor.html</loc>
@@ -1516,16 +1630,40 @@
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-decimal-natural.html</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-digit-choice.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-estimate.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-first-part.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-independent-check.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-mixed-guided.html</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-multiply-bridge.html</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-multiply-two-digit.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-remainder.html</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-simple-check.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-subtract.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-whole-simple.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-whole-two-digit.html</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/oge-basics/multiplication-division/course-zeros.html</loc>
@@ -1693,10 +1831,19 @@
     <loc>https://mathexam.space/trainers/oge-task9-equations.html</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/oge-written-practice.html</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/oge13-inequalities-series.html</loc>
   </url>
   <url>
+    <loc>https://mathexam.space/trainers/peterson6-workshop/</loc>
+  </url>
+  <url>
     <loc>https://mathexam.space/trainers/pitosha-python-trainer.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/practice-topics/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/quadratic-inequalities-lab.html</loc>
@@ -1709,6 +1856,9 @@
   </url>
   <url>
     <loc>https://mathexam.space/trainers/rounding-stepwise.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/school-workshop-check/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/simple-equations-stepwise.html</loc>
@@ -1736,6 +1886,21 @@
   </url>
   <url>
     <loc>https://mathexam.space/trainers/turing-trainer-upgrade.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/tyurin-statistics/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/tyurin-statistics/discrete-lab.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/tyurin-statistics/sum-dependence-lab.html</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/vilenkin6-percent/</loc>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/vilenkin6-proportion/</loc>
   </url>
   <url>
     <loc>https://mathexam.space/trainers/vpr-math/</loc>

@@ -40,7 +40,8 @@ function mount(host,context){
  }
  function preparationView(stage){
   const item=stage.preparation;if(!item)return '';
-  return `<li class="division-course-preparation" data-division-preparation="${E(item.id)}"><span class="division-course-number" aria-hidden="true">↳</span><article><p class="division-course-meta">Перед прикидкой</p><h3>${E(item.title)}</h3><p>${E(item.goal)}</p><div class="actions"><a class="button" href="https://mathexam.space${E(item.publicUrl)}" target="_blank" rel="noopener">${E(item.action)} ↗</a></div><p>${E(item.returnNote)}</p><p class="division-course-status">Отдельная практика. Результат не входит в прогресс кабинета.</p></article></li>`;
+  const links=(item.modes??[item]).map(mode=>`<a class="button" href="https://mathexam.space${E(mode.publicUrl)}" target="_blank" rel="noopener">${E(mode.action)} ↗</a>`).join(' ');
+  return `<li class="division-course-preparation" data-division-preparation="${E(item.id)}"><span class="division-course-number" aria-hidden="true">↳</span><article><p class="division-course-meta">Перед прикидкой</p><h3>${E(item.title)}</h3><p>${E(item.goal)}</p><div class="actions">${links}</div><p>${E(item.returnNote)}</p><p class="division-course-status">Отдельная практика. Результат не входит в прогресс кабинета.</p></article></li>`;
  }
  function trackView(track,summary){
   const stages=track.stages,current=progress?stages.findIndex(stage=>!finished(stage,rowFor(stage,summary))):-1;

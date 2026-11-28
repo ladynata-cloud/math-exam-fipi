@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "sourceCommit": "f5987d9a654d6b0f4ad8d18f5786e8d9f8510b7a",
+  "task": "FINAL651_EXACT_RENDERER_SYNC_20261119",
+  "boundary": "The generated legacy Atanasyan renderer is synchronized byte-for-byte with the already reviewed shared visibility implementation. No mathematical model, source geometry, protected baseline or other runtime is changed.",
+  "files": {
+    "ege-profil/atanasyan-10-11/model.js": {
+      "beforeSHA256": "97f01b68064b317759b6814b3c9f4b2087aa89aad22eb3abece65b0feb8b063b",
+      "afterSHA256": "0a9e2f188edf3b71252a708a801f292978944f8ca9a48d20aaba82220aaa66f1"
+    }
+  }
+}

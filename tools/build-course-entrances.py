@@ -3,12 +3,13 @@
 Does not generate native app code or modify persisted learner data.
 """
 from pathlib import Path
+from grade5_course_entries import grade5_entries
 from html import escape as e
 import json,re,subprocess,argparse
 ROOT=Path(__file__).resolve().parents[1]
 DATA=json.loads((ROOT/'content/course-entrances/topics.json').read_text())
 COURSES={
- 'peterson6':dict(path='/school/peterson6/',title='Петерсон, 6 класс: дроби, движение и проценты',label='Петерсон · 6 класс',desc='Первая часть: 14 тем от логики до сложного процентного роста. Пошаговые задания, модели и самостоятельные примеры. Материалы идут по темам Дорофеева и Петерсон, часть 1 (2019); курс не заявляет охват всех трёх частей.'),
+ 'peterson6':dict(path='/school/peterson6/',title='Петерсон, 6 класс: части 1–3',label='Петерсон · 6 класс',desc='Курс к трём частям учебника Дорофеева и Петерсон за 6 класс. Первая часть и выбранные задания из частей 2 и 3 с моделями, пошаговыми разборами и самостоятельной проверкой.'),
  'makarychev8':dict(path='/school/makarychev8/',title='Алгебра 8 класса: курс по темам Макарычева',label='Макарычев · 8 класс',desc='Все 51 тема: рациональные дроби, квадратные корни, уравнения, неравенства и степени. Теория, выбранные задачи, модели и тренировка вычислений по темам учебника 2024 года. Охват тем не означает наличие решения каждого номера.'),
  'ege-baza':dict(path='/ege-baza/',title='ЕГЭ база: курс математики с задачами и подсказками',label='ЕГЭ · Базовый уровень',desc='Подготовка по заданиям 1–21: вычисления, текстовые задачи, вероятность, графики и геометрия. Авторские условия, разбор трудного шага и новые варианты. Начните с темы, в которой нужна помощь, или пройдите диагностику.')}
 def math(s):
@@ -55,9 +56,12 @@ for key,c in COURSES.items():
   includes='<link rel="stylesheet" href="/assets/course-examples.css?v=20261110">\n<script defer src="/assets/course-examples-data.js?v=20261110"></script>\n<script defer src="/assets/course-examples.js?v=20261110"></script>\n'
   s=s.replace('<script',includes+'<script',1)
  footer='<nav class="ce-guide-footer" aria-label="Наглядные разборы"><a href="/">Главная MathExam</a>'+''.join(f'<a href="{url(t)}">{e(t["short"])}</a>' for t in topics)+'</nav>'
- s=re.sub(r'<nav class="ce-guide-footer".*?</nav>\n?','',s,flags=re.S);s=s.replace('</body>',footer+'\n</body>')
+ existing_footer=r'<nav class="ce-guide-footer".*?</nav>'
+ if re.search(existing_footer,s,flags=re.S):s=re.sub(existing_footer,lambda _:footer,s,count=1,flags=re.S)
+ else:s=s.replace('</body>',footer+'\n</body>',1)
  if key=='peterson6':s=s.replace('src="/assets/course-examples','src="../../assets/course-examples').replace('href="/assets/course-examples','href="../../assets/course-examples')
  outputs[path]=s
+outputs.update(grade5_entries(ROOT))
 args=argparse.ArgumentParser();args.add_argument('--check',action='store_true');check=args.parse_args().check
 changed=[]
 for name,content in outputs.items():

@@ -6,21 +6,22 @@
   const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
   function f(a,b=1){const g=gcd(a,b);return b/g===1?String(a/g):(a/g)+'/'+(b/g);}
   function radical(n,d=1){let a=1;for(let k=2;k*k<=n;k++)while(n%(k*k)===0){a*=k;n/=k*k;}const g=gcd(a,d);a/=g;d/=g;return n===1?f(a,d):(a===1?'':a+'*')+'sqrt('+n+')'+(d===1?'':'/'+d);}
-  const step=(prompt,answer,hint,explanation)=>({prompt,answers:[answer],hint,explanation});
-  const field=(label,answer)=>({label,answers:[answer]});
+  const step=(prompt,answer,hint,explanation,answerFormat='number')=>({prompt,answers:[answer],hint,explanation,answerFormat});
+  const field=(label,answer,answerFormat='number')=>({label,answers:[answer],answerFormat});
   const oldStereo=[{title:'Атанасян 10–11: теория и вращаемые модели',href:'/ege-profil/atanasyan-10-11/index.html'},{title:'Стереометрия первой части',href:'/ege-profil/start/#calm/3'},{title:'Прежняя подборка стереометрии (№14, 2026)',href:'/ege-profil/trainers/stereo-t14.html'}];
   const oldPlane=[{title:'Геометрия: восстановить основу',href:'/ege-profil/start/#calm/1'},{title:'Прежняя подборка с доказательствами (№17, 2026)',href:'/ege-profil/trainers/planimetry-t17.html'}];
   function add(id,exam,title,goal,theory,tasks){lessons.push({id,exam,title,goal,theory,prerequisites:exam===15?oldStereo:oldPlane,tasks});}
   function xml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));}
-  function diagram(title,points,edges,accent=[],circles=[],notes=[]){
+  function diagram(title,points,edges,accent=[],circles=[],notes=[],detail={}){
     // Coordinates are computed from each task's exact geometry. A 3-D diagram
     // is an affine projection, not a second independent set of dimensions.
     const values=Object.values(points);let minX=Math.min(...values.map(p=>p[0])),maxX=Math.max(...values.map(p=>p[0])),minY=Math.min(...values.map(p=>p[1])),maxY=Math.max(...values.map(p=>p[1]));
     for(const c of circles){minX=Math.min(minX,c[0]-c[2]);maxX=Math.max(maxX,c[0]+c[2]);minY=Math.min(minY,c[1]-c[2]);maxY=Math.max(maxY,c[1]+c[2]);}
     const scale=Math.min(290/(maxX-minX||1),185/(maxY-minY||1));
     const tr=p=>[35+(p[0]-minX)*scale,225-(p[1]-minY)*scale];
-    const line=(pair,color)=>{const a=tr(points[pair[0]]),b=tr(points[pair[1]]);return '<line x1="'+a[0].toFixed(2)+'" y1="'+a[1].toFixed(2)+'" x2="'+b[0].toFixed(2)+'" y2="'+b[1].toFixed(2)+'" stroke="'+color+'" stroke-width="2"'+(pair[2]?' stroke-dasharray="6 5"':'')+'/>';};
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 '+(265+notes.length*20)+'" role="img" aria-label="'+xml(title)+'"><title>'+xml(title)+'</title><rect width="360" height="100%" fill="#fff"/>'+circles.map(c=>{const p=tr(c);return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+c[2]*scale+'" fill="none" stroke="#17695c" stroke-width="2"/>';}).join('')+edges.map(e=>line(e,'#38566b')).join('')+accent.map(e=>line(e,'#bc4e22')).join('')+Object.entries(points).map(([label,p])=>{const q=tr(p);return '<circle cx="'+q[0]+'" cy="'+q[1]+'" r="2.5" fill="#163e47"/><text x="'+(q[0]+5)+'" y="'+(q[1]-7)+'" font-size="15" fill="#163e47">'+xml(label)+'</text>';}).join('')+notes.map((n,i)=>'<text x="16" y="'+(260+i*20)+'" font-size="13" fill="#38566b">'+xml(n)+'</text>').join('')+'</svg>';
+    const line=(pair,color)=>{const a=tr(points[pair[0]]),b=tr(points[pair[1]]),active=detail.labels&&color==='#bc4e22';return '<line'+(active?' data-proof-segment="'+xml(pair[0]+pair[1])+'"':'')+' x1="'+a[0].toFixed(2)+'" y1="'+a[1].toFixed(2)+'" x2="'+b[0].toFixed(2)+'" y2="'+b[1].toFixed(2)+'" stroke="'+color+'" stroke-width="'+(active?4:2)+'"'+(pair[2]?' stroke-dasharray="6 5"':'')+'/>';};
+    const corners=(detail.corners||[]).map(({angle,points})=>'<polyline data-right-angle="'+xml(angle)+'" points="'+points.map(p=>tr(p).map(x=>x.toFixed(2)).join(',')).join(' ')+'" fill="none" stroke="#9d431f" stroke-width="2"/>').join('');
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+(detail.viewBox||'0 0 360 '+(265+notes.length*20))+'" role="img" aria-label="'+xml(title)+'"><title>'+xml(title)+'</title><rect width="360" height="100%" fill="#fff"/>'+circles.map(c=>{const p=tr(c);return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+c[2]*scale+'" fill="none" stroke="#17695c" stroke-width="2"/>';}).join('')+edges.map(e=>line(e,'#38566b')).join('')+accent.map(e=>line(e,'#bc4e22')).join('')+corners+Object.entries(points).map(([label,p])=>{const q=tr(p);const [dx,dy]=detail.labels?.[label]||[5,-7];return '<circle cx="'+q[0]+'" cy="'+q[1]+'" r="2.5" fill="#163e47"/><text x="'+(q[0]+dx)+'" y="'+(q[1]+dy)+'" font-size="'+(detail.labels?22:15)+'" fill="#163e47">'+xml(label)+'</text>';}).join('')+notes.map((n,i)=>'<text x="16" y="'+(260+i*20)+'" font-size="13" fill="#38566b">'+xml(n)+'</text>').join('')+'</svg>';
   }
   const project=p=>[p[0]+.38*p[1],p[2]+.25*p[1]];
   const view=points=>Object.fromEntries(Object.entries(points).map(([k,p])=>[k,project(p)]));
@@ -56,18 +57,49 @@
     ],[field('Синус угла AC₁ с основанием',answer)],[`CC₁ ⟂ (ABCD), а A лежит в основании. Поэтому проекция AC₁ — AC, и искомый угол равен ∠C₁AC.`,`AC²=${u*u+v*v}; AC₁=√(${u*u+v*v}+${h*h})=${d}.`,`sin α=CC₁/AC₁=${answer}.`],{prompt:'Обоснуйте, почему выбран именно угол C₁AC, и запишите вычисление.',criteria:['Установлен перпендикуляр CC₁ к основанию.','Названа ортогональная проекция AC.','Синус вычислен в прямоугольном треугольнике ACC₁.']},{kind:'line-plane',u,v,h});
   }));
 
+  const dihedralViews=new Map();
   add('p2-15-dihedral',15,'Линейный угол двугранного угла','Построить два перпендикуляра к ребру, затем вычислить тангенс.',[
     'Для двугранного угла при ребре AB выбираем по одному перпендикуляру к AB в каждой грани. Угол между ними — линейный угол.',
     'В правильной четырёхугольной пирамиде S с центром основания O и серединой ребра M: SM ⟂ AB и OM ⟂ AB.',
     'В прямоугольном треугольнике SOM: OM=a/2, tan ∠SMO=SO/OM. Боковое ребро SA не заменяет апофему SM.'
   ],[[8,3],[6,4],[10,6],[12,5],[14,9],[16,6]].map(([a,h],i)=>{
     const p={A:[-a/2,-a/2,0],B:[a/2,-a/2,0],C:[a/2,a/2,0],D:[-a/2,a/2,0],O:[0,0,0],M:[0,-a/2,0],S:[0,0,h]};
-    return make('p2-15-dihedral',i,`В правильной четырёхугольной пирамиде SABCD сторона основания равна ${a}, высота SO=${h}. M — середина AB. а) Докажите, что ∠SMO — линейный угол двугранного угла между (SAB) и (ABCD) внутри пирамиды. б) Найдите его тангенс.`,diagram('Правильная пирамида, O — центр, M — середина AB',view(p),[['A','B'],['B','C'],['C','D',true],['D','A',true],['S','A'],['S','B'],['S','C'],['S','D',true]],[['S','O',true],['S','M'],['O','M']],[],[`AB=${a}; SO=${h}. Проекция.`]),[
+    const edges=[['A','B'],['B','C'],['C','D',true],['D','A',true],['S','A'],['S','B'],['S','C'],['S','D',true]];
+    const so=['S','O',true],sm=['S','M'],om=['O','M'];
+    const dimensions=[`AB=${a}; SO=${h}. Проекция.`];
+    const proofLabels={A:[-18,-6],B:[6,-6],C:[5,-8],D:[-16,2],M:[-7,24],O:[5,-5],S:[5,-9]};
+    function corner(vertex,one,two){
+      const v=p[vertex],along=name=>{
+        const d=p[name].map((x,k)=>x-v[k]),scale=.09*a/Math.hypot(...d);
+        return d.map(x=>x*scale);
+      };
+      const u=along(one),w=along(two);
+      return {angle:one+vertex+two,points:[u,u.map((x,k)=>x+w[k]),w].map(d=>project(v.map((x,k)=>x+d[k])))};
+    }
+    const side=corner('M','S','B'),base=corner('M','A','O'),height=corner('O','S','M');
+    const figure=(caption,mark,corners=[])=>({caption,diagram:diagram(caption,view(p),edges.filter(e=>!mark.includes(e)),mark,[],dimensions,{labels:proofLabels,corners,viewBox:'4 4 352 270'})});
+    const task=make('p2-15-dihedral',i,`В правильной четырёхугольной пирамиде SABCD сторона основания равна ${a}, высота SO=${h}. M — середина AB. а) Докажите, что ∠SMO — линейный угол двугранного угла между (SAB) и (ABCD) внутри пирамиды. б) Найдите его тангенс.`,diagram('Правильная пирамида, O — центр, M — середина AB',view(p),edges,[so,sm,om],[],dimensions),[
       step('Найдите OM.',a/2,'От центра квадрата до середины стороны — половина стороны.',`OM=${a}/2=${a/2}.`),
       step('Чему равен угол SOM в градусах?',90,'SO — высота пирамиды, OM лежит в основании.','SO ⟂ OM, поэтому ∠SOM=90°.'),
       step('Вычислите SO/OM.',f(2*h,a),'Противолежащий катет делим на прилежащий.',`SO/OM=${f(2*h,a)}.`)
     ],[field('Тангенс линейного угла',f(2*h,a))],[`В равнобедренном треугольнике SAB медиана SM является высотой: SM ⟂ AB. В квадрате OM ⟂ AB. Поэтому ∠SMO — искомый линейный угол.`,`SO ⟂ (ABCD), значит ∠SOM=90°. OM=${a/2}.`,`tan ∠SMO=SO/OM=${f(2*h,a)}.`],{prompt:'Докажите перпендикулярность обеих сторон линейного угла ребру AB.',criteria:['Обосновано SM ⟂ AB через равнобедренный треугольник.','Обосновано OM ⟂ AB в квадрате.','Тангенс найден в треугольнике SOM, а не по боковому ребру.']},{kind:'dihedral',a,h});
+    const presentation={diagram:figure('Правильная пирамида SABCD. Высота SO, M — середина AB.',[so]).diagram,
+      solution:[`Общее ребро граней — AB. В равнобедренном треугольнике SAB медиана SM является высотой, поэтому SM ⟂ AB. В квадрате O лежит на серединном перпендикуляре к AB, значит OM ⟂ AB. Оба перпендикуляра проведены из M, каждый в своей грани. Следовательно, ∠SMO — линейный угол.`,...task.solution.slice(1)]};
+    presentation.construction=[
+      {figure:figure('Две грани SAB и ABCD.',[so]),prompt:'По какому ребру пересекаются эти грани?',choices:['AB','SA'],answer:0,hint:'Обе вершины ребра должны принадлежать обеим граням.'},
+      {figure:figure('AB — общее ребро.',[edges[0],so]),prompt:'Какой отрезок из M будет перпендикуляром к AB в грани SAB?',choices:['MO','MS'],answer:1,hint:'Ищи медиану равнобедренного треугольника SAB.'},
+      {figure:figure('SA = SB, M — середина AB. Медиана SM служит высотой: SM ⟂ AB.',[edges[0],so,sm],[side]),prompt:'Какой луч из M перпендикулярен AB в основании?',choices:['MO','MC'],answer:0,hint:'Центр квадрата равноудалён от A и B.'}
+    ];
+    presentation.angleQuestionFigure=figure('Рассмотрим треугольник SOM. Где высота SO встречает плоскость основания?',[so,sm,om]);
+    presentation.solutionFigures=[
+      figure('SM ⟂ AB в грани SAB. OA = OB, поэтому OM ⟂ AB в основании. Угол SMO — линейный угол двугранного угла.',[edges[0],sm,om],[side,base]),
+      figure('SO — высота пирамиды. Поскольку OM лежит в основании, SO ⟂ OM.',[so,sm,om],[height]),
+      figure('Для угла SMO катет SO противолежащий, OM — прилежащий.',[so,sm,om],[height])
+    ];
+    dihedralViews.set(task.id,presentation);
+    return task;
   }));
+  root.ProfileDihedralView=id=>dihedralViews.get(id);
 
   add('p2-15-distance',15,'Расстояние от точки до плоскости','Составить уравнение плоскости по трём точкам и найти расстояние.',[
     'Выбирайте координатные оси по трём попарно перпендикулярным рёбрам. Плоскость через точки (u,0,0), (0,v,0), (0,0,h) имеет уравнение x/u+y/v+z/h=1.',

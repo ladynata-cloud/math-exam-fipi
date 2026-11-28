@@ -7,6 +7,58 @@ function boot(saved,hash='#home'){
 }
 function answer(rt,value){rt.input('#final-answer',value);rt.submit('#answer-form');}
 let rt=boot(),lessons=rt.w.MakarychevCourse.lessons;
+// Equivalent values in the wrong requested form can be revised before the first mathematical attempt.
+const fractionRun=boot(null,'#lesson/p01/0');
+// The preview and the completed step use the same leading-sign handling as the checker.
+for(const [entry,whole,num,den] of [['− 1 1/2','-1','1','2'],['– 2 1/3','-2','1','3']]){
+ fractionRun.input('#final-answer',entry);
+ const shown=fractionRun.d.querySelector('#answer-preview .mixed');
+ assert.equal(shown.firstChild.textContent,whole);
+ assert.deepEqual(Array.from(shown.querySelectorAll('.fra > span'),node=>node.textContent),[num,den]);
+}
+const display=fractionRun.api.displayValue;
+assert.equal(display('− 1 1/2','decimal'),'-1,5');
+assert.equal(display('− 3 / 8'),'{{frac:-3:8}}');
+assert.equal(display('(a − b) / (a + b)'),'{{frac:a-b:a+b}}');
+for(const draft of ['4,2','42/10','4 1/5']){
+ answer(fractionRun,draft);
+ const item=fractionRun.state().tasks['p01-t01'];
+ assert.match(item.feedback,/Значение верное/);
+ assert.equal(item.attempts,0);
+ assert.equal(item.learning.firstAnswer,null);
+}
+answer(fractionRun,'21/5');
+assert(fractionRun.state().tasks['p01-t01'].independent);
+fractionRun.nav('#lesson/p01/1');
+fractionRun.input('#notebook','Сравню расстояния до нуля.');
+fractionRun.nav('#lesson/p01/0');
+fractionRun.click('[data-action="fresh-topic"]');
+assert.equal(fractionRun.w.location.hash,'#lesson/p01/2','A card with notebook work is already familiar');
+// A detour from a review must restore that review, even after a reload on the practice route.
+const repeatRoute='#review/p01/0/2';
+fractionRun.nav(repeatRoute);
+fractionRun.input('#notebook','Черновик повтора');
+fractionRun.click('[data-action="detour"]');
+const detourRun=boot(fractionRun.state(),fractionRun.w.location.hash);
+detourRun.click('[data-action="return"]');
+assert.equal(detourRun.w.location.hash,repeatRoute);
+detourRun.nav(repeatRoute);
+assert.equal(detourRun.d.querySelector('#notebook').value,'Черновик повтора');
+assert(detourRun.state().tasks['p01-t01'].independent);
+detourRun.close();
+const stepRun=boot(null,'#lesson/p01/1');
+stepRun.click('[data-action="guided"]');
+stepRun.input('[data-step-input="0"]','3,42');
+stepRun.submit('[data-step-form="0"]');
+// The second step asks for −3.24. The pupil writes the same value as a mixed number.
+stepRun.input('[data-step-input="1"]','− 3 6/25');
+stepRun.submit('[data-step-form="1"]');
+const shownStep=stepRun.d.querySelector('.step:nth-of-type(2) .recorded .mixed');
+assert(shownStep);
+assert.equal(shownStep.firstChild.textContent,'-3');
+assert.deepEqual(Array.from(shownStep.querySelectorAll('.fra > span'),node=>node.textContent),['6','25']);
+stepRun.close();
+fractionRun.close();
 // Existing task and step mathematics are checked separately. These are state/UI contracts.
 const lesson=lessons.find(l=>l.tasks.some(t=>t.kind==='number'&&!t.answerFormat&&Number(t.answer)!==0)),index=lesson.tasks.findIndex(t=>t.kind==='number'&&!t.answerFormat&&Number(t.answer)!==0),task=lesson.tasks[index],route='#lesson/'+lesson.id+'/'+index;
 rt.nav(route);assert.equal(rt.d.querySelector('.prompt').nextElementSibling.id,'answer-form','Initial answer directly follows the full condition');assert(rt.d.documentElement.classList.contains('m7-task-page'));answer(rt,'');assert.equal(rt.state().tasks[task.id].attempts,0);answer(rt,'a malformed number');assert.equal(rt.state().tasks[task.id].attempts,0);assert.equal(rt.state().tasks[task.id].learning.firstAnswer,null);
@@ -19,6 +71,19 @@ raw.tasks[task.id].assisted=false;safe=rt.api.validateState(raw);assert.equal(sa
 let cycles=0;
 for(const l of lessons){rt.nav('#lesson/'+l.id+'/0');assert(rt.d.querySelector('.m7-investigation textarea'),l.id);}
 for(const family of rt.w.MakarychevModels.modelIds){const l=lessons.find(l=>l.model===family);rt.nav('#lesson/'+l.id+'/0');const t=l.tasks[0];rt.input('.m7-investigation textarea','Думаю, что условие изменит только выбранную величину');assert.equal(rt.state().tasks[t.id].assisted,false);rt.click('.m7-investigation button');assert.equal(rt.state().tasks[t.id].assisted,true);const control=rt.d.querySelector('#model input[type="number"]');assert(control);control.value=control.value===control.max?control.min:control.max;control.dispatchEvent(new rt.w.Event('input',{bubbles:true}));const choose=rt.d.querySelector('[aria-label="Как объяснить наблюдение"]');choose.value=String(rt.w.MakarychevModels.investigations[family].answer);choose.dispatchEvent(new rt.w.Event('change',{bubbles:true}));const check=Array.from(rt.d.querySelectorAll('.m7-investigation button')).find(x=>x.textContent==='Проверить объяснение');assert(!check.disabled);check.click();assert(rt.d.querySelector('#model').textContent.includes('Объяснение верно'));assert.equal(rt.state().tasks[t.id].correct,false);const before=rt.state().tasks[t.id].learning.model;rt.nav('#lesson/'+l.id+'/0');assert.deepEqual(Array.from(rt.d.querySelectorAll('#model input[type="range"],#model .m7-controls select'),x=>x.value),before.controls);assert.equal(rt.d.querySelector('#model input[type="number"]').value,rt.d.querySelector('#model input[type="range"]').value);const changed=rt.d.querySelector('#model input[type="range"]');changed.value=changed.value===changed.max?changed.min:changed.max;changed.dispatchEvent(new rt.w.Event('input',{bubbles:true}));assert.equal(rt.state().tasks[t.id].learning.model.checked,false);cycles++;}
+const replay=boot(null,'#lesson/p16/0');
+replay.input('.m7-investigation textarea','Изменится высота точки на оси y');
+replay.click('.m7-investigation button');
+const offset=replay.d.querySelectorAll('#model input[type="number"]')[2];
+offset.value='2';offset.dispatchEvent(new replay.w.Event('input',{bubbles:true}));
+const explanation=replay.d.querySelector('[aria-label="Как объяснить наблюдение"]');
+explanation.value='0';explanation.dispatchEvent(new replay.w.Event('change',{bubbles:true}));
+replay.click('.m7-investigation:last-child button');
+const functionInquiry=replay.w.MakarychevModels.investigations.function;
+const observed=replay.d.querySelector('.m7-investigation:last-child [role="status"]').textContent;
+assert(observed.includes(functionInquiry.retry));
+assert(!observed.includes(functionInquiry.why));
+replay.close();
 // Equation operation stage survives route reload. Button preset in systems is stored.
 const eq=lessons.find(l=>l.model==='equation');rt.nav('#lesson/'+eq.id+'/0');const model=rt.d.querySelector('[data-equation-stage]');const number=rt.d.querySelector('#model input[type="number"]');number.value='2';number.dispatchEvent(new rt.w.Event('input',{bubbles:true}));const buttons=Array.from(model.querySelectorAll('button'));buttons[0].click();buttons[1].click();assert.equal(rt.state().tasks[eq.tasks[0].id].learning.model.stage,2);rt.nav('#lesson/'+eq.id+'/0');assert.equal(rt.d.querySelector('[data-equation-stage]').dataset.equationStage,'2');
 const system=lessons.find(l=>l.model==='system');rt.nav('#lesson/'+system.id+'/0');const preset=Array.from(rt.d.querySelectorAll('#model button')).find(b=>b.textContent.includes('Совпадающие'));assert(preset);preset.click();const controls=rt.state().tasks[system.tasks[0].id].learning.model.controls;rt.nav('#lesson/'+system.id+'/0');assert.deepEqual(rt.state().tasks[system.tasks[0].id].learning.model.controls,controls);

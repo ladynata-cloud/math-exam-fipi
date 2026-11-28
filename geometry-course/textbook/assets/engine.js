@@ -5,6 +5,50 @@ const idOK=x=>typeof x==='string'&&/^[a-z][a-z0-9-]*$/.test(x)&&!reserved.has(x)
 const textOK=x=>typeof x==='string'&&x.trim().length>0;
 const stable=x=>JSON.stringify(x&&typeof x==='object'?Array.isArray(x)?x.map(v=>JSON.parse(stable(v))):Object.fromEntries(Object.keys(x).sort().map(k=>[k,JSON.parse(stable(x[k]))])):x);
 const normalized=x=>String(x).trim().replace(/\s+/g,' ').replace(/−/g,'-');
+// Begin quantity self-check.
+const quantityExercises=new Set([41,51,52,53,55,62,78,95,114,117,228,255,261,264,276,279,286,344,357,371,391,463,545,546,547,553,555,556,557,558,559,564,565,566,567,578,585,597,598,599,600,629,651,672,673,674,751,752]);
+const lengthInMillimetres={мм:1n,см:10n,дм:100n,м:1000n,км:1000000n};
+
+function readQuantity(text,defaultUnit){
+ // Compare exact rational numbers. A rounded decimal is not an exact fraction.
+ const match=/^([+]?[0-9]{1,24})(?:[.,]([0-9]{1,24})|\s*\/\s*([0-9]{1,24}))?\s*((?:мм|см|дм|км|м)(?:\s*\^?\s*[2²])?|°)?$/u.exec(text.trim());
+ if(!match)return null;
+ const unit=(match[4]||defaultUnit||'').replace(/\s/g,'').replace(/\^?[2²]$/u,'²');
+ if(!unit)return null;
+ const denominator=match[2]?10n**BigInt(match[2].length):BigInt(match[3]||'1');
+ if(denominator===0n)return null;
+ const area=unit.endsWith('²'),dimension=unit==='°'?'angle':area?'area':'length';
+ let factor=dimension==='angle'?1n:lengthInMillimetres[unit.replace('²','')];
+ if(area)factor*=factor;
+ return {unit,dimension,numerator:BigInt(match[1]+(match[2]||''))*factor,denominator};
+}
+
+function quantityTarget(lesson){
+ if(lesson.answer?.mode!=='manual'||lesson.source.collection!=='main'||!quantityExercises.has(Number(lesson.source.exercise)))return null;
+ const result=lesson.help.find(item=>item.id==='compare-result');
+ return result?readQuantity(result.text.replace(/\.$/,'')):null;
+}
+
+function mountQuantityCheck(lesson,form,input,el){
+ const expected=quantityTarget(lesson);
+ if(!expected)return;
+ const unit=expected.unit,button=el('button','Проверить численный ответ',{type:'button','data-quantity-check':''});
+ const instruction=el('p','На последней строке запиши число или дробь. Для числа без единицы используется '+unit+'.',{id:'quantity-instruction'});
+ const feedback=el('p',undefined,{role:'status','data-quantity-feedback':''});
+ input.setAttribute('aria-describedby','quantity-instruction');
+ form.append(instruction,button,feedback);
+ button.addEventListener('click',()=>{
+  const line=input.value.trim().split(/\r?\n/).pop().replace(/^\s*ответ\s*:\s*/iu,'').replace(/\.$/,'');
+  const actual=readQuantity(line,unit);
+  if(!actual){feedback.textContent='На последней строке оставь число или обыкновенную дробь. Единицу можно указать рядом.';return;}
+  if(actual.dimension!==expected.dimension){feedback.textContent='Проверь единицу измерения. Здесь нужна единица «'+unit+'».';return;}
+  if(actual.numerator*expected.denominator!==expected.numerator*actual.denominator){feedback.textContent='Получилось другое число. Проверь вычисление и единицы измерения.';return;}
+  if(lesson.source.exercise==='547'&&actual.unit!==unit){feedback.textContent='Величина та же. Вырази её в единицах, указанных в задании ('+unit+').';return;}
+  feedback.textContent='Численный ответ верен. Объясни в записи, как ты его получил.';
+ });
+ input.addEventListener('input',()=>{feedback.textContent='';});
+}
+// End quantity self-check.
 const localChapter=source=>['main','theory'].includes(source.collection)?null:source.chapter||null;
 const sourceGroup=entry=>stable([entry.kind,entry.source.bookId,entry.source.collection,localChapter(entry.source),entry.source.examTask||null,entry.kind==='theory'?entry.source.point:entry.source.exercise,entry.source.collection==='example'?entry.source.point||null:null]);
 const chapterLabels=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV'];
@@ -225,6 +269,7 @@ function createApp(root,options){
     const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
     setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;save();
    });form.append(label,input,check,feedback);main.append(form);
+   mountQuantityCheck(lesson,form,input,el);
   }
   const help=el('details',undefined,{'data-main-help':''}),summary=el('summary','Хочешь подсказку?'),helpBody=el('div');summary.addEventListener('click',event=>{if(!help.open&&!assisted())event.preventDefault();});help.addEventListener('toggle',()=>{if(help.isConnected&&help.open)assisted();});help.append(summary,helpBody);mountHelp(lesson.help,helpBody);
   const steps=el('section',undefined,{'data-steps':''}),next=el('button','Разобрать по шагам',{type:'button'});helpBody.append(steps,next);

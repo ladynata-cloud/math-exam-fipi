@@ -2,29 +2,62 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ЕГЭ профиль: вторая часть №14–20 — MathExam</title>
+<title>ЕГЭ профиль: вторая часть №13–19 — MathExam</title>
 <meta name="description" content="Уравнения, стереометрия, неравенства, моделирование, планиметрия, параметры и числа: теория, задачи по шагам, самостоятельная практика и письменные обоснования.">
 <link rel="canonical" href="https://mathexam.space/ege-profil/part-two/">
-<link rel="stylesheet" href="style.css?v=20261110">
+<link rel="stylesheet" href="style.css?v=20261117-equation-sets">
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <script defer src="../start/checks.js?v=20261114-numeric-domain"></script>
-<script defer src="content-algebra.js?v=20261114-open-answer"></script>
-<script defer src="content-geometry.js?v=20261110"></script>
-<script defer src="content-models.js?v=20261110"></script>
-<script defer src="state.js?v=20261114-open-answer"></script>
+<script defer src="content-algebra.js?v=20261117-equation-sets"></script>
+<script defer src="content-geometry.js?v=20261116-answer-format"></script>
+<script defer src="content-models.js?v=20261116-answer-format"></script>
+<script defer src="content-finance.js?v=20261117-h12"></script>
+<script defer src="state.js?v=20261117-equation-sets"></script>
 <script defer src="models.js?v=20261110"></script>
 <link rel="stylesheet" href="../skill-map.css?v=20261113-alphabets">
 <script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../azbuka-metodov/catalog.js?v=20261114-parameter-plane"></script>
-<script defer src="../skill-map.js?v=20261113-foundations"></script>
-<script defer src="app.js?v=20261114-open-answer"></script>
+<script defer src="../azbuka-metodov/catalog.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map"></script>
+<script defer src="parameter-proof.js?v=20261114"></script>
+<script defer src="equation-answers.js?v=20261117-equation-sets"></script>
+<script defer src="equation-fields.js?v=20261117-equation-sets"></script>
+<script defer src="equation-investigations-data.js?v=20261117-equation-sets"></script>
+<script defer src="equation-investigations.js?v=20261117-equation-sets"></script>
+<script defer src="app.js?v=20261117-equation-sets-finance"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">К заданию</a>
-<header><a class="brand" href="/">MathExam</a><nav aria-label="Навигация курса"><a href="/ege-profil/">Весь профиль</a><a href="#map">№14–20</a><a href="#progress">Мой прогресс</a></nav></header>
+<header><a class="brand" href="/">MathExam</a><nav aria-label="Навигация курса"><a href="/ege-profil/">Весь профиль</a><a href="#map">№13–19</a><a href="#progress">Мой прогресс</a></nav></header>
 <div id="save-warning" class="warning" role="status" hidden></div>
 <main id="main" tabindex="-1"><h1>Вторая часть профильного ЕГЭ</h1><p>Загружаем темы и сохранённую работу…</p></main>
 <noscript><p>Для проверки ответов включите JavaScript. <a href="/ege-profil/">Все материалы профильного курса</a>.</p></noscript>
-<footer><p>Нумерация по проекту ФИПИ 2027 · авторские учебные задачи.</p><p>Ответы проверяются автоматически; полное письменное обоснование — с преподавателем. Сохранение в этом браузере.</p></footer>
+<footer><p>Нумерация по утверждённой спецификации ФИПИ 2027 · авторские учебные задачи.</p><p>Ответы проверяются автоматически; полное письменное обоснование — с преподавателем. Сохранение в этом браузере.</p></footer>
+<!-- download-panel:start:ege-profil-part-two -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-part-two">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-part-two/ege-profil-part-two.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-part-two/ege-profil-part-two-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-part-two/ege-profil-part-two-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь одно условие на отбор корней тригонометрического уравнения."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-part-two -->
 </body></html>

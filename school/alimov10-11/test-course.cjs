@@ -17,3 +17,8 @@ assert(Check.check('(0;0,5)',{answer:'(0;1/2)',kind:'text'}));
 assert(!Check.check('[0;0,5)',{answer:'(0;1/2)',kind:'text'}));
 assert(Check.check('x<0,5',{answer:'x<1/2',kind:'text'}));
 assert(!Check.check('x>0,5',{answer:'x<1/2',kind:'text'}));
+
+// A computation detour should address the operation actually used.
+assert(D.lessons[0].tasks[0].skills.includes('fraction-reduce'));
+assert(D.lessons[65].tasks[0].skills.includes('decimal-subtract'));
+assert.equal(D.lessons[74].tasks[0].skills.length,0,'logical implication needs no fraction detour');

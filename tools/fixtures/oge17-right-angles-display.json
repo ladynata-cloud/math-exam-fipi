@@ -1,0 +1,18 @@
+{
+  "file": "trainers/oge-task17-quadrilaterals.html",
+  "task": "docs/GEOMETRY_DRAWINGS.md",
+  "fragments": [
+    {
+      "before": "function figSquare(p){ // p:{sideLab, showDiag, diagLab}",
+      "after": "function markRectangle(F, corners){\n  corners.forEach((vertex,i)=>F.rsq(vertex,corners[(i+3)%4],corners[(i+1)%4],{c:'#68786c',s:8}));\n}\n\nfunction figSquare(p){ // p:{sideLab, showDiag, diagLab}"
+    },
+    {
+      "before": "  F.rsq(A,B,D,{c:'#8a8375'});\n  F.lab(p.sideLab,{x:s/2,y:0},{dy:22});",
+      "after": "  markRectangle(F,[A,B,C,D]);\n  F.lab(p.sideLab,{x:s/2,y:0},{dy:22});"
+    },
+    {
+      "before": "  F.poly([A,B,C,D],{close:1});\n  F.seg(A,C,{w:2});F.seg(B,D,{w:2});F.dot(O,{r:3.2});",
+      "after": "  F.poly([A,B,C,D],{close:1});\n  markRectangle(F,[A,B,C,D]);\n  F.seg(A,C,{w:2});F.seg(B,D,{w:2});F.dot(O,{r:3.2});"
+    }
+  ]
+}

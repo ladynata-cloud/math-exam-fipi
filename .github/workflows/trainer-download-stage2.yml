@@ -1,0 +1,73 @@
+name: Trainer downloads — standalone and GIF workflow
+
+on:
+  pull_request:
+    paths:
+      - 'downloads/**'
+      - 'scripts/*trainer-download*'
+      - 'assets/download-*.css'
+      - 'assets/download-*.js'
+      - 'assets/trainer-skill-gif*'
+      - 'assets/course-examples*'
+      - 'pedagogam/kak-skachat-i-adaptirovat-trenazher/**'
+      - 'trainers/oge-course/**'
+      - 'trainers/oge-task*.html'
+      - 'trainers/oge13-inequalities-series.html'
+      - 'trainers/oge-course-*.js'
+      - 'trainers/ege-profile/log-inequalities/**'
+      - 'trainers/ege-methods.html'
+      - 'trainers/ege-methods/**'
+      - 'ege-baza/path/**'
+      - 'ege-baza/algebra/math.js'
+      - 'ege-profil/part-two/**'
+      - 'ege-profil/start/**'
+      - 'ege-profil/learning/**'
+      - 'ege-profil/skill-map*'
+      - 'ege-profil/azbuka-metodov/**'
+      - 'ege-profil/index.html'
+      - 'ege-profil/trainers/vectors-t2.html'
+      - 'ege-profil/trainers/vectors-yashchenko-t2.html'
+      - 'ege-profil/trainers/derivative-t8.html'
+      - 'ege-profil/trainers/applied-t910.html'
+      - 'ege-profil/trainers/probability-t45.html'
+      - 'ege-profil/trainers/functions-t1112.html'
+      - 'ege-profil/trainers/finance.html'
+      - 'ege-profil/trainers/planimetry-yashchenko-t1.html'
+      - 'ege-profil/trainers/trigonometry.html'
+      - 'ege-profil/trainers/numbers-t19.html'
+      - 'stereo-course/sections/**'
+      - 'school/makarychev8/**'
+      - 'school/peterson6/**'
+      - 'tools/trainer-download-stage2.browser.cjs'
+      - 'tools/offline-entrance.browser.cjs'
+      - 'tools/trainer-download-oge-next.cjs'
+      - 'tools/trainer-download-oge-final.cjs'
+      - 'tools/trainer-download-profile-first.cjs'
+      - 'tools/trainer-download-profile-next.cjs'
+      - 'tools/trainer-download-profile-reasoning.cjs'
+      - 'tools/trainer-download-profile-courses.cjs'
+      - '.github/workflows/trainer-download-stage2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install browser test tools
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Open and solve from the real ZIP and standalone HTML
+        run: node tools/trainer-download-stage2.browser.cjs
+      - name: Verify the three directly linked legacy offline packages
+        run: node tools/offline-entrance.browser.cjs

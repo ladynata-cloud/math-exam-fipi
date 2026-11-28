@@ -22,6 +22,17 @@ for(const [n,signs]of Object.entries(expectedSigns))signs.forEach((s,i)=>assert.
 const witness=final(1,0)[0];assert(Check.check(witness,'0.002;0.003;0.004;0.005;0.006;0.007;0.008;0.009;0.0091;0.0092').ok);assert(!Check.check(witness,'0.001;0.003;0.004;0.005;0.006;0.007;0.008;0.009;0.0091;0.0092').ok);
 assert(Check.check(final(1,1)[0],'sqrt(5)/1000;pi/1000').ok);assert.equal(Check.check(final(4,0)[0],'sqrt(2)*sqrt(2);0').unsupported,true);assert(Check.check(final(4,0)[0],'-4;-100').ok);assert(Check.check(final(15,0)[0],'1/4;4/9;9/16;16/25;0').ok);assert(Check.check(final(15,1)[0],'1/2;3/4;2;3;5').ok);
 assert(!Check.check(final(14,0)[0],'').ok);assert(Check.check(final(14,0)[0],'2,65').ok);assert(!Check.check(final(14,0)[0],'2,7').ok);
+const mixedPoint=final(14,5)[0];
+for(const input of ['3 1/3','3\u00a01 / 3','10/3'])assert(Check.check(mixedPoint,input).ok,input);
+for(const input of ['31/3','−3 1/3'])assert(!Check.check(mixedPoint,input).ok,input);
+assert.equal(Check.number('−3 1/3').value,-10/3);
+assert.equal(Check.number('-0 1/3').value,-1/3);
+assert.equal(Check.number('2 * (−3 1/3)').value,-20/3);
+assert.deepEqual(Check.number('1 2/3').fraction,{n:5,d:3});
+for(const input of ['3 1','1 2 3','3 4/3','3 1/0'])assert.throws(()=>Check.number(input));
+const halfPoint=final(14,4)[0];
+for(const input of ['0,48','0,52'])assert(Check.check(halfPoint,input).ok,input);
+for(const input of ['0,4799','0,5201'])assert(!Check.check(halfPoint,input).ok,input);
 assert.equal(Check.number('-2^2').value,-4);assert.equal(Check.number('(-2)^2').value,4);assert.equal(Check.number('sqrt(4/9)').rational,true);assert.equal(Check.number('sqrt(2)').rational,false);assert(Check.close(Check.number('0,0(9)').value,.1));assert.equal(Check.number('2^(-3)').value,.125);assert.throws(()=>Check.number('alert(1)'));assert.throws(()=>Check.number('1/0'));
 let state=State.blank();state.records['1:0']={seen:true,learn:true,check:false,independent:false};assert.deepEqual(State.validate(state),state);assert.throws(()=>State.validate({}));assert.throws(()=>State.validate({...state,records:{'100:0':state.records['1:0']}}));assert.throws(()=>State.validate({...state,sessions:{'1:0':{mode:'learn',index:999}}}));
 

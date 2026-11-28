@@ -2,6 +2,7 @@
  'use strict';
  const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const experiments={
+  'root-square':'Сравни √(x²) и x для отрицательного, положительного числа и нуля. Посмотри, как каждый результат связан с расстоянием до нуля.',
   numbers:'Поменяй точное и приближённое значения местами. Предскажи, что случится с абсолютной и относительной погрешностью. Сравни расчёт с расстоянием на модели.',
   graph:'Измени только один коэффициент, остальные оставь прежними. Сначала предскажи движение графика; затем сравни формулу, таблицу и рисунок. Проверь также a=0 и запрещённый аргумент.',
   signs:'Сначала предскажи знак на каждом промежутке и выбери границы. Затем открой пробные точки. Объясни, почему нуль знаменателя нельзя включать даже при нестрогом знаке.',
@@ -19,7 +20,7 @@
  }
  function render(lesson,task,draft){
   const inquiry=draft.inquiry||{};
-  return '<section class="panel m9-inquiry"><p class="eyebrow">Короткий цикл · 10–15 минут</p><h2>Предскажи → проверь → объясни</h2><label for="m9-prediction">'+esc(lesson.reflect[0])+'</label><textarea id="m9-prediction" maxlength="2000" rows="2" placeholder="Сначала запиши своё предположение">'+esc(inquiry.prediction)+'</textarea><details><summary>Небольшой опыт в лаборатории</summary><p>'+esc(experiments[task.model.family])+'</p><p class="tiny">Лаборатория — отдельный опыт; её параметры не заменяют условие задачи.</p></details><label for="m9-explanation">Что подтвердилось? Запиши проверку или контрпример.</label><textarea id="m9-explanation" maxlength="2000" rows="2" placeholder="Например: подставил значение, сравнил стороны…">'+esc(inquiry.explanation)+'</textarea><p class="tiny">Записи сохраняются для обсуждения. Текст объяснения автоматически не оценивается; верный итог сам по себе не подтверждает ход рассуждения.</p></section>';
+  return '<section class="panel m9-inquiry"><p class="eyebrow">Короткий цикл · 10–15 минут</p><h2>Предскажи → проверь → объясни</h2><label for="m9-prediction">'+esc(lesson.reflect[0])+'</label><textarea id="m9-prediction" maxlength="2000" rows="2" placeholder="Сначала запиши своё предположение">'+esc(inquiry.prediction)+'</textarea><details><summary>Небольшой опыт в лаборатории</summary><p>'+esc(experiments[task.model.key]||experiments[task.model.family])+'</p><p class="tiny">Лаборатория — отдельный опыт; её параметры не заменяют условие задачи.</p></details><label for="m9-explanation">Что подтвердилось? Запиши проверку или контрпример.</label><textarea id="m9-explanation" maxlength="2000" rows="2" placeholder="Например: подставил значение, сравнил стороны…">'+esc(inquiry.explanation)+'</textarea><p class="tiny">Записи сохраняются для обсуждения. Текст объяснения автоматически не оценивается; верный итог сам по себе не подтверждает ход рассуждения.</p></section>';
  }
  function checkpoint(state,session,now){
   if(!session||!session.task.m9Full||session.diagnostic)return;

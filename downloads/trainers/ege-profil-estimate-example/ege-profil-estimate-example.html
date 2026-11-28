@@ -1,0 +1,1270 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:">
+<script data-offline-runtime>
+(/* Inlined only in the downloaded HTML. */
+(function standaloneTrainer(config) {
+  'use strict';
+  const source = new URL(config.source);
+  const current = new URL(location.href);
+  const indexPath = source.pathname.endsWith('/index.html') ? source.pathname.slice(0, -'index.html'.length) : null;
+
+  function link(href) {
+    if (!href || href.startsWith('#') || /^(?:mailto:|tel:|data:|blob:)/i.test(href)) return href;
+    const url = new URL(href, source);
+    // Some course helpers have already resolved site paths using the file URL.
+    if (url.protocol === 'file:') {
+      if (url.pathname === current.pathname) return href;
+      url.href = new URL(url.pathname + url.search + url.hash, source.origin).href;
+    }
+    if (url.origin !== source.origin) return href;
+    if (url.pathname === source.pathname || url.pathname === indexPath) {
+      const local = new URL(current.href);
+      local.search = url.search;
+      local.hash = url.hash;
+      return local.href;
+    }
+    return url.href;
+  }
+
+  function update(anchor) {
+    if (anchor.namespaceURI !== 'http://www.w3.org/1999/xhtml') return;
+    const href = anchor.getAttribute('href');
+    const fixed = link(href);
+    if (fixed !== href) anchor.setAttribute('href', fixed);
+  }
+
+  window.MathExamTrainerOffline = Object.freeze({
+    origin: source.origin,
+    media: pathname => config.media[pathname] || pathname
+  });
+
+  // Practice views create and replace links as the learner switches tasks.
+  const anchors = 'a[href]';
+  new MutationObserver(records => {
+    for (const record of records) {
+      if (record.type === 'attributes' && record.target.matches(anchors)) update(record.target);
+      for (const node of record.addedNodes) {
+        if (node.nodeType !== Node.ELEMENT_NODE) continue;
+        if (node.matches(anchors)) update(node);
+        node.querySelectorAll(anchors).forEach(update);
+      }
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+})
+)({"source":"https://mathexam.space/trainers/ege-methods.html","media":{}});
+</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Оценка плюс пример · MathExam</title>
+  <meta name="description" content="От первых числовых оценок до ЕГЭ: целые числа, делимость, двойные неравенства, оценка и пример. Интерактивный курс для №19 профиля и №21 базы.">
+  <link rel="canonical" href="https://mathexam.space/trainers/ege-methods.html">
+  <style data-inline-source="/trainers/ege-methods/style.css">
+:root {
+  color-scheme: light;
+  --ink: #172d32;
+  --muted: #456069;
+  --paper: #fffefa;
+  --canvas: #f6f5ed;
+  --line: #d5ded9;
+  --accent: #185b52;
+  --accent-strong: #0e483f;
+  --tint: #e3efe8;
+  --warm: #f8efdb;
+  --warning: #8a3528;
+  font: 1rem/1.55 Inter, "Segoe UI", system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--canvas); color: var(--ink); }
+a { color: var(--accent-strong); text-underline-offset: .18em; }
+:focus-visible { outline: 3px solid #286d9f; outline-offset: 3px; }
+button, select, input, textarea { font: inherit; }
+button, select { cursor: pointer; }
+button { color: inherit; }
+h1, h2, h3, p, figure { margin: 0; }
+h1, h2, h3 { line-height: 1.2; }
+h1 { margin: .3rem 0 .7rem; font-size: clamp(1.65rem, 4.4vw, 2.9rem); letter-spacing: -.025em; }
+h2 { font-size: 1.18rem; margin-bottom: .55rem; }
+h3 { font-size: 1.06rem; }
+p + p { margin-top: .7rem; }
+[hidden] { display: none !important; }
+.sr-only, .skip:not(:focus) { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: absolute; inset: .5rem auto auto .5rem; z-index: 2; background: var(--paper); padding: .55rem; }
+.site-header { background: var(--paper); border-bottom: 1px solid var(--line); }
+.header-inner, main, .save-warning { max-width: 69rem; margin-inline: auto; padding-inline: clamp(.75rem, 4vw, 2rem); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: .35rem 1rem; flex-wrap: wrap; min-height: 3.35rem; padding-block: .4rem; }
+.header-inner nav { display: flex; flex-wrap: wrap; gap: .35rem 1.15rem; font-size: .9rem; }
+.brand { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font-weight: 800; text-decoration: none; }
+main { padding-block: clamp(1rem, 4vw, 2rem) 3rem; }
+.save-warning { padding-block: .7rem; background: var(--warm); }
+.hero { display: grid; grid-template-columns: 1.65fr 1fr; align-items: end; gap: 1.5rem; margin-bottom: 1.75rem; }
+.eyebrow { color: var(--accent-strong); font-weight: 750; font-size: .83rem; letter-spacing: .03em; }
+.lead { color: var(--muted); max-width: 62ch; margin-bottom: .8rem; }
+.panel, .progress-panel, .model { min-width: 0; padding: clamp(.8rem, 2.4vw, 1.25rem); border: 1px solid var(--line); border-radius: .8rem; background: var(--paper); }
+.progress-panel { background: var(--tint); }
+.meters { display: grid; gap: .35rem; }
+.meters label { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: .55rem; font-size: .9rem; }
+progress { width: 100%; height: .75rem; margin-bottom: .45rem; accent-color: var(--accent); }
+.lesson-list, .progress-list { list-style: none; margin: .7rem 0 0; padding: 0; display: grid; gap: .55rem; }
+.lesson-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.lesson-card, .progress-list li { min-width: 0; display: flex; align-items: start; gap: .75rem; padding: .8rem; border: 1px solid var(--line); border-radius: .65rem; background: var(--paper); }
+.lesson-card p, .progress-list p { margin-top: .24rem; color: var(--muted); font-size: .9rem; }
+.lesson-number { display: grid; place-items: center; flex: 0 0 1.8rem; height: 1.8rem; border-radius: .4rem; background: var(--tint); color: var(--accent-strong); font-weight: 750; }
+.completion { display: inline-block; margin-top: .24rem; color: var(--accent-strong); font-size: .83rem; font-weight: 700; }
+.completion + .completion::before { content: '·'; margin-inline: .1rem .3rem; }
+.assessment-summary { margin-block: 0 1.15rem; }
+.panel + .assessment-summary { margin-top: .8rem; }
+.assessment-date { margin-top: .65rem; color: var(--muted); }
+.progress-list li { justify-content: space-between; align-items: center; }
+.progress-list h2 { margin-bottom: 0; font-size: 1rem; }
+.actions { display: flex; gap: .55rem; flex-wrap: wrap; align-items: center; margin-top: .7rem; }
+.button {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 2.65rem;
+  padding: .4rem .8rem; border: 1px solid var(--accent); border-radius: .45rem;
+  font-weight: 700; font-size: .91rem; line-height: 1.3; text-align: center; text-decoration: none;
+}
+.primary { background: var(--accent); color: white; }
+.primary:hover { background: var(--accent-strong); }
+.secondary { background: var(--paper); color: var(--accent-strong); }
+.secondary:hover { background: var(--tint); }
+.back { display: inline-block; margin-bottom: .55rem; font-size: .9rem; }
+.lesson-grid { display: grid; gap: .7rem; max-width: 54rem; align-items: start; }
+.lesson-grid.with-model { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: none; }
+.work { grid-column: 1 / -1; }
+.problem p, .practice p { max-width: 72ch; }
+.text-button { border: 0; background: none; color: var(--accent-strong); padding: .45rem 0; text-decoration: underline; text-underline-offset: .18em; font-weight: 700; }
+.note { border-left: 3px solid var(--accent); background: var(--tint); padding: .45rem .65rem; margin-top: .45rem; }
+#sample h3 { margin-top: .6rem; }
+#sample ul { margin: .3rem 0 0; padding-inline-start: 1.2rem; }
+.solved { margin: 0 0 .8rem; padding: .5rem .5rem .5rem 1.6rem; background: var(--tint); border-radius: .45rem; }
+.solved li + li { margin-top: .3rem; }
+.work h2 { margin-top: .1rem; }
+.practice { max-width: 54rem; }
+.field { display: grid; gap: .25rem; margin-top: .65rem; width: min(100%, 35rem); font-weight: 650; }
+.field small { color: var(--muted); font-weight: 400; }
+.field :is(input, select, textarea) { width: 100%; min-width: 0; min-height: 2.6rem; border: 1px solid #849e97; border-radius: .4rem; background: white; color: var(--ink); padding: .35rem .55rem; }
+.field textarea { resize: vertical; }
+.field :is(input, select, textarea):disabled { opacity: 1; background: #edf2ee; color: var(--muted); }
+.field [aria-invalid="true"] { border-color: var(--warning); outline-color: var(--warning); }
+.answer-group { padding: 0; border: 0; min-width: 0; margin: 0; }
+.feedback { margin-top: .45rem; color: var(--warning); font-weight: 650; }
+.feedback:empty { margin-top: 0; }
+.result { margin-top: .9rem; padding-top: .8rem; border-top: 1px solid var(--line); }
+.result h2 { color: var(--accent-strong); }
+.transfer { margin-top: 1.3rem; }
+.transfer ul { margin: .25rem 0 0; padding-left: 1.25rem; }
+.transfer li + li { margin-top: .2rem; }
+.model { margin: 0; background: #eef3f1; }
+.model figcaption { font-size: 1.04rem; font-weight: 800; }
+.model p, .range-labels, .model output { font-size: .87rem; }
+.model output { display: block; min-height: 1.4em; margin-top: .45rem; color: var(--accent-strong); font-weight: 650; }
+.ticks, .packs { display: grid; gap: .2rem; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.ticks { gap: 0; }
+.ticks.ten { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+.packs { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: .45rem; }
+:is(.ticks, .packs) button { min-width: 0; padding: .15rem; min-height: 2rem; border-radius: .35rem; border: 1px solid #9eb4ad; background: white; font-size: .85rem; font-weight: 700; }
+:is(.ticks, .packs) button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: white; }
+.pack-count, .dots { display: block; }
+.dots { font-size: .72rem; letter-spacing: .05em; }
+.axis, .intersection-tracks { position: relative; height: 1.6rem; margin: .25rem 0; }
+.axis::before { content: ''; position: absolute; inset: .75rem 0 auto; height: 1px; background: #627b77; }
+.axis i { position: absolute; top: .63rem; left: 21.4286%; width: 64.285714%; height: .25rem; background: var(--accent); }
+.axis i::before, .axis i::after { content: ''; position: absolute; top: 50%; width: .6rem; height: .6rem; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid var(--accent); background: #eef3f1; }
+.axis i::after { left: 100%; background: var(--accent); }
+.range-labels { display: flex; flex-wrap: wrap; gap: .05rem .7rem; }
+.range-labels span::before { content: ""; display: inline-block; width: .65em; height: .65em; margin-right: .32em; border-radius: .18em; background: var(--accent); }
+.range-labels span + span::before { background: #80531b; }
+.intersection-tracks i { position: absolute; height: .3rem; border-radius: .4rem; }
+.intersection-tracks i:first-child { top: .4rem; left: 25%; width: 70%; background: var(--accent); }
+.intersection-tracks i:last-child { top: .95rem; left: 5%; width: 70%; background: #80531b; }
+.embedded main { padding-bottom: 1.25rem; }
+
+@media (max-width: 680px) {
+  .hero, .lesson-grid.with-model { grid-template-columns: minmax(0, 1fr); }
+  .hero { gap: .75rem; }
+  .lesson-list { grid-template-columns: minmax(0, 1fr); }
+  .progress-list li { flex-wrap: wrap; }
+}
+
+</style>
+
+
+
+
+
+</head>
+<body>
+  <a class="skip" href="#main">К содержанию</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" data-mathexam-home-link href="/" target="_self" aria-label="Главная MathExam">MathExam</a>
+      <nav aria-label="Навигация по курсу">
+        <a href="#map" data-course-nav>Все уроки</a>
+        <a href="#progress" data-course-nav>Мой прогресс</a>
+      </nav>
+    </div>
+  </header>
+  <p class="save-warning" id="save-warning" role="status" hidden></p>
+  <main id="main" tabindex="-1">
+    <h1>Оценка плюс пример</h1>
+    <p>Восемь уроков от числовых оценок до задач №19 профильного и №21 базового ЕГЭ.</p>
+    <h2>Как доказать максимум</h2>
+    <p>Разложили 15 карандашей в три коробки, по меньшей мере по 3 в каждую. В двух других коробках вместе как минимум 6 карандашей, поэтому в выбранной не больше 9. Расклад 9, 3, 3 даёт ровно 9. Значит, 9 — максимум.</p>
+    <p><a href="/ege-profil/part-two/#fipi/2027/19">Задание №19 профильного ЕГЭ</a> · <a href="/ege-baza/#task?pos=21">Задание №21 базового ЕГЭ</a></p>
+    <noscript>
+      <p>Для интерактивных заданий включи JavaScript.</p>
+    </noscript>
+  </main>
+<script data-inline-source="/ege-baza/algebra/math.js">
+(function(root){'use strict';
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
+function rational(n,d=1){if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d)||d===0)return null;const g=gcd(n,d),sg=d<0?-1:1;return {n:n/g*sg,d:Math.abs(d/g)};}
+function parse(value){let s=String(value).trim().replace(/−/g,'-').replace(',','.');if(s.length>32)return null;let m;
+ if((m=s.match(/^([+-]?)(\d{1,4})\s+(\d{1,4})\/(\d{1,4})$/))){const [,sign,w,n,d]=m;if(+d===0||+n>=+d)return null;return rational((sign==='-'?-1:1)*(+w*+d + +n),+d);}
+ if((m=s.match(/^([+-]?\d{1,4})\/([+-]?\d{1,4})$/)))return rational(+m[1],+m[2]);
+ if(!/^[+-]?(?:\d{1,8}(?:\.\d{0,4})?|\.\d{1,4})$/.test(s))return null;const places=(s.split('.')[1]||'').length;return rational(Math.round(Number(s)*10**places),10**places);
+}
+const value=r=>r.n/r.d,equal=(a,b)=>!!a&&!!b&&a.n===b.n&&a.d===b.d;
+function operate(a,b,op){if(!a||!b)return null;return op==='+'?rational(a.n*b.d+b.n*a.d,a.d*b.d):op==='-'?rational(a.n*b.d-b.n*a.d,a.d*b.d):op==='*'?rational(a.n*b.n,a.d*b.d):op==='/'?rational(a.n*b.d,a.d*b.n):null;}
+const text=r=>r?(r.d===1?String(r.n):`${r.n}/${r.d}`):'не определено';
+const exponential=(base,x)=>Math.pow(base,x),logarithm=(base,x)=>base>0&&base!==1&&x>0?Math.log(x)/Math.log(base):null;
+const api={gcd,rational,parse,value,equal,operate,text,exponential,logarithm};root.AlgebraMath=api;if(typeof module!=='undefined')module.exports=api;
+})(typeof window==='undefined'?globalThis:window);
+
+</script>
+<script data-inline-source="/trainers/ege-methods/content.js">
+(function (root) {
+  'use strict';
+
+  const integer = (label, answer) => ({ label, answer, kind: 'integer' });
+  const list = (label, ...answer) => ({ label, answer, kind: 'list' });
+  const choice = (label, answer, options) => ({ label, answer, options, kind: 'choice' });
+  const step = (title, field, hint, explain, error = '') => ({ title, field, hint, explain, error });
+  const profile = (id, title) => ({ href: '/ege-profil/part-two/#lesson/' + id, title: 'Профиль №19 · ' + title });
+  const base = (id, title) => ({ href: '/ege-baza/path/index.html#lesson=practice-' + id, title: 'База №21 · ' + title });
+  const links = {
+    extremum: profile('numbers-extremum', 'Оценка и достигающий её пример'),
+    remainders: profile('numbers-remainders', 'Остатки и все решения'),
+    factors: profile('numbers-diophantine', 'Полный перебор множителей'),
+    whole: base('whole-count', 'Оценка числа участников'),
+    score: base('integer-budget', 'Баллы за верные и неверные ответы'),
+    mushrooms: base('mushroom-count', 'Грибы — что значит «среди любых»')
+  };
+
+  const lessons = [
+    {
+      id: 'bounds', title: 'Нижняя и верхняя оценка',
+      goal: 'Найти границы суммы и исключить невозможный результат.',
+      idea: 'Чтобы оценить сумму, замени каждое слагаемое его нижней или верхней границей. Полученные неравенства верны для любого допустимого набора.',
+      story: 'В каждой из четырёх коробок от 2 до 5 тетрадей включительно. Каковы границы общего числа тетрадей? Могло ли их быть 22?',
+      steps: [
+        step('Нижняя граница', integer('Сколько тетрадей получится, если в каждой коробке минимум?', 8), 'Возьми по две тетради в каждой из четырёх коробок.', 'Всего не меньше 4 · 2 = 8 тетрадей.', 'Проверь минимум для всех четырёх коробок вместе.'),
+        step('Верхняя граница', integer('Сколько тетрадей получится, если в каждой коробке максимум?', 20), 'В каждой коробке может быть до пяти тетрадей. Сложи четыре таких максимума.', 'Всего не больше 4 · 5 = 20 тетрадей.', 'Представь, что во всех коробках столько тетрадей, сколько позволяет условие.'),
+        step('Проверка возможного', choice('Почему 22 тетради собрать нельзя?', 'upper', [
+          ['lower', '22 меньше нижней границы'], ['upper', '22 больше верхней границы'], ['even', '22 — чётное число']
+        ]), 'Сравни 22 с обеими найденными границами.', '22 > 20, поэтому такое количество невозможно.', 'Сравни 22 именно с той границей, за которую это число выходит.')
+      ],
+      practice: {
+        story: 'Каждая из пяти команд получила от 3 до 7 очков включительно. Оцени сумму очков всех команд и реши, могли ли они набрать 36 очков.',
+        fields: [integer('Нижняя граница', 15), integer('Верхняя граница', 35),
+          choice('Могли ли команды набрать 36 очков?', 'no', [['yes', 'Да'], ['no', 'Нет']])],
+        review: 'При пяти командах сумма от 5 · 3 = 15 до 5 · 7 = 35. Число 36 превышает верхнюю границу.'
+      },
+      links: [links.whole]
+    },
+    {
+      id: 'integers', title: 'Целые числа между границами',
+      goal: 'Учитывать строгие знаки и перечислять только целые значения.',
+      idea: 'Строгий знак исключает саму границу. Нестрогий знак включает её, но граница попадёт в ответ только тогда, когда она целая.',
+      story: 'Известно, что −2 < n ≤ 2,5 и n — целое. Найди первое и последнее подходящие числа, затем запиши все значения n.',
+      model: 'line',
+      steps: [
+        step('Левый конец', integer('Какое самое маленькое целое число подходит?', -1), 'Число −2 исключено строгим знаком. Какое целое идёт сразу правее?', 'Самое маленькое подходящее целое число — −1.', 'Проверь, строго ли n должно быть больше −2.'),
+        step('Правый конец', integer('Какое самое большое целое число подходит?', 2), '2,5 можно взять как границу. Найди ближайшее целое число слева от неё.', 'Самое большое подходящее целое число — 2.'),
+        step('Все значения', list('Запиши все подходящие целые через точку с запятой', -1, 0, 1, 2), 'Пройди по целым делениям от найденного первого числа до последнего, включая оба.', 'Подходят −1, 0, 1 и 2. Целые значения перечислены подряд.','В списке должны быть оба найденных конца и все целые между ними.')
+      ],
+      practice: {
+        story: 'Дано −3,5 < k < 0, где k — целое. Запиши все возможные значения k.',
+        fields: [list('Все значения через точку с запятой', -3, -2, -1)],
+        retry: ['Начни с первого целого справа от −3,5. Перечисляй числа по порядку и остановись перед правой границей.'],
+        review: 'Первое целое правее −3,5 — это −3. Ноль исключён строгим знаком, поэтому последнее подходящее число −1.'
+      },
+      links: [links.whole]
+    },
+    {
+      id: 'divisibility', title: 'Делимость и остаток',
+      goal: 'Ограничить перебор кратными и проверить остаток каждого кандидата.',
+      idea: 'Если n делится на 4, перебирай только числа вида 4k. Условие об остатке отсеет часть кратных.',
+      story: 'Найди все целые n от 20 до 40 включительно, которые делятся на 4 и дают остаток 1 при делении на 3.',
+      steps: [
+        step('Шаг перебора', integer('На сколько отличаются соседние кратные 4?', 4), 'Посмотри на 4k и 4(k + 1).', 'Между соседними кратными 4 разность 4.'),
+        step('Кандидаты', list('Запиши через точку с запятой все кратные 4 от 20 до 40', 20, 24, 28, 32, 36, 40), 'Начни с 20, прибавляй по 4. Оба конца разрешены.', 'Кандидаты: 20, 24, 28, 32, 36, 40.', 'Проверь границы и шаг между соседними числами.'),
+        step('Проверка остатка', list('Оставь числа с остатком 1 при делении на 3', 28, 40), 'Раздели каждый кандидат на 3 с остатком. Подходит число на единицу больше кратного 3.', '28 = 3 · 9 + 1, 40 = 3 · 13 + 1. Другие кандидаты дают остаток 0 или 2.', 'Теперь проверь остатки, а не только делимость на 4.')
+      ],
+      practice: {
+        story: 'Найди все натуральные числа от 15 до 50 включительно, которые делятся на 6 и дают остаток 3 при делении на 5.',
+        fields: [list('Все подходящие числа через точку с запятой', 18, 48)],
+        retry: ['Выпиши кратные 6 в заданных границах. Вычти из каждого 3 и проверь, делится ли разность на 5.'],
+        review: 'Кратные 6 в этих границах: 18, 24, 30, 36, 42, 48. Только 18 и 48 дают при делении на 5 остаток 3.'
+      },
+      links: [links.remainders]
+    },
+    {
+      id: 'construction', title: 'Пример, который можно проверить',
+      goal: 'Построить допустимый набор и проверить все условия.',
+      idea: 'Начни с простого набора, затем меняй его по одному элементу. Каждый обмен увеличивает сумму на заранее известное число.',
+      story: 'Есть пять пакетов. В каждом ровно 2 или ровно 3 наклейки. Можно ли получить 13 наклеек? Построй пример. Что изменится, если разрешены только пакеты по 2 или по 4?',
+      model: 'packs',
+      steps: [
+        step('Начальный набор', integer('Сколько наклеек в пяти пакетах по 2?', 10), 'Сложи по две наклейки из каждого пакета.', 'При пяти пакетах по 2 получается 10 наклеек.'),
+        step('Построение примера', integer('Сколько пакетов нужно сделать тройками, чтобы получилось 13 наклеек?', 3), 'Одна замена 2 на 3 прибавляет одну наклейку. Сколько наклеек не хватает?', 'Три пакета по 3 и два по 2 дают 3 · 3 + 2 · 2 = 13. Всего пакетов пять.'),
+        step('Почему границ бывает мало', choice('Почему из пяти пакетов по 2 или 4 нельзя собрать 13?', 'parity', [
+          ['range', '13 лежит вне границ от 10 до 20'], ['parity', 'Сумма чётных количеств всегда чётна'], ['odd', 'Нечётное число пакетов даёт нечётную сумму']
+        ]), 'Подумай о чётности каждого слагаемого.', 'Число 13 лежит между границами, но сумма чётных чисел чётна.', 'Сначала проверь, входит ли 13 между 10 и 20. Затем проверь чётность.')
+      ],
+      practice: {
+        story: 'Есть шесть пакетов. В каждом ровно 4 или ровно 7 фишек. Построй набор из 33 фишек. Объясни, можно ли при тех же правилах получить 34 фишки.',
+        fields: [integer('Пакетов по 4 фишки для суммы 33', 3), integer('Пакетов по 7 фишек для суммы 33', 3),
+          choice('Как проверить возможность суммы 34?', 'change', [
+            ['bounds', '34 между 24 и 42, значит собрать можно'],
+            ['change', 'После 24 фишек прибавляем по 3, а 34 − 24 не делится на 3'],
+            ['parity', 'Пакетов шесть, поэтому сумма всегда чётна']
+          ])],
+        proof: 'Проверь число пакетов, сумму фишек и объясни, почему 34 недостижимо.',
+        retry: [
+          'Начни с шести пакетов по 4. Сколько пакетов останется такими после замен?',
+          'Сравни нужную сумму с шестью четвёрками. Сколько фишек добавляет одна замена?',
+          'Запиши несколько сумм, начиная с шести четвёрок. С каким шагом меняется сумма?'
+        ],
+        review: 'Три пакета по 4 и три по 7 дают 33. У каждого набора сумма 24 + 3k, где k — число пакетов по 7. Разность 34 − 24 = 10 не делится на 3.'
+      },
+      links: [links.extremum]
+    },
+    {
+      id: 'double-inequality', title: 'Двойное неравенство из условия',
+      goal: 'По общей сумме найти границы целого количества.',
+      idea: 'Если у каждой из n групп от a до b предметов, сумма S удовлетворяет an ≤ S ≤ bn. Правая часть даёт нижнюю границу для n, левая — верхнюю.',
+      story: '46 деталей распределили между n командами. Каждая получила от 5 до 7 целых деталей включительно. Оцени число команд и покажи, как распределить детали между семью командами.',
+      steps: [
+        step('Перевод условия', choice('Какое двойное неравенство выражает границы суммы?', 'bounds', [
+          ['reverse', '7n ≤ 46 ≤ 5n'], ['bounds', '5n ≤ 46 ≤ 7n'], ['lower', '6n ≤ 46 ≤ 7n']
+        ]), 'При n командах минимум — по 5, максимум — по 7. Условие разрешает оба конца.', 'Границы суммы: 5n ≤ 46 ≤ 7n.'),
+        step('Минимальное целое', integer('Сколько команд должно быть как минимум?', 7), 'Умножь число команд на 7. Смогут ли они вместе принять все 46 деталей?', '46/7 ≤ n, поэтому n ≥ 7.', 'Сравни 46 с наибольшим числом деталей, которое могут принять твои команды.'),
+        step('Максимальное целое', integer('Сколько команд может быть как максимум?', 9), 'Используй 5n ≤ 46. На каждую команду нужно выделить хотя бы 5 деталей.', 'n ≤ 46/5, поэтому n ≤ 9. Возможные кандидаты: 7, 8, 9.', 'Проверь, можно ли каждой из твоих команд выдать хотя бы 5 деталей.'),
+        step('Достижимость нижней границы', integer('Пять команд получили по 7 деталей, одна — 5. Сколько деталей получила седьмая?', 6), 'Вычти из 46 детали уже указанных шести команд.', 'Пять семёрок, одна пятёрка и одна шестёрка дают 46 деталей. Семь команд действительно возможны.')
+      ],
+      practice: {
+        story: 'Всего 67 очков. Каждый участник получил 8 или 9 очков. Сколько было участников и сколько из них получили по 9?',
+        fields: [integer('Число участников', 8), integer('Из них получили 9 очков', 3)],
+        proof: 'Запиши обе границы для суммы и проверь распределение очков.',
+        retry: [
+          'Умножь своё число участников сначала на 8, затем на 9. Попадает ли 67 между результатами?',
+          'Представь, что каждый получил по 8. Сколько очков недостаёт до общей суммы?'
+        ],
+        review: '8n ≤ 67 ≤ 9n, поэтому единственное целое n — 8. Если дать всем по 8 очков, получится 64. Ещё 3 очка дают три участника с результатом 9.'
+      },
+      links: [links.whole]
+    },
+    {
+      id: 'intersection', title: 'Система двойных неравенств',
+      goal: 'Свести два ограничения к одной переменной и взять общую часть.',
+      idea: 'Вырази второе количество через первое. После преобразования у первого количества будут две пары границ. Оставь числа, которые удовлетворяют обеим.',
+      story: 'В двух командах 18 человек. В первой от 5 до 12, во второй от 8 до 15. Пусть x — число человек в первой команде. Какие целые значения x возможны?',
+      model: 'intersection',
+      steps: [
+        step('Одна переменная', choice('Как выразить число человек во второй команде?', 'rest', [
+          ['same', 'x'], ['more', '18 + x'], ['rest', '18 − x']
+        ]), 'Сложи численности команд: сумма должна быть 18.', 'Во второй команде 18 − x человек.'),
+        step('Границы второй команды', choice('Как преобразуется 8 ≤ 18 − x ≤ 15?', 'limits', [
+          ['limits', '3 ≤ x ≤ 10'], ['old', '8 ≤ x ≤ 15'], ['reverse', '10 ≤ x ≤ 3']
+        ]), 'Разбери два края отдельно: чем больше людей во второй команде, тем меньше их в первой.', 'Из 18 − x ≤ 15 следует x ≥ 3, а из 8 ≤ 18 − x следует x ≤ 10.', 'Проверь направления обоих знаков при переходе от 18 − x к x.'),
+        step('Общая часть', list('Запиши все возможные x через точку с запятой', 5, 6, 7, 8, 9, 10), 'Сравни отрезки от 5 до 12 и от 3 до 10. Возьми более строгую границу с каждой стороны.', 'Общая часть — целые от 5 до 10. Для каждого из них 18 − x удовлетворяет условию для второй команды.', 'Число должно одновременно пройти обе проверки.')
+      ],
+      practice: {
+        story: 'В двух группах всего 23 человека. В первой от 5 до 11, во второй от 10 до 16. Найди наименьшее и наибольшее возможное число человек в первой группе. Сколько будет во второй при наибольшем значении?',
+        fields: [integer('Минимум в первой группе', 7), integer('Максимум в первой группе', 11), integer('Тогда во второй группе', 12)],
+        proof: 'Обоснуй обе границы и проверь, что крайние распределения возможны.',
+        retry: [
+          'Отдай второй группе максимально возможное число людей. Проверь, сколько останется первой.',
+          'Подставь свой максимум в оба ограничения. Можно ли увеличить его на одного человека?',
+          'Возьми найденный максимум первой группы. В сумме обе группы должны дать 23.'
+        ],
+        review: 'Условия 5 ≤ x ≤ 11 и 10 ≤ 23 − x ≤ 16 дают 5 ≤ x ≤ 11 и 7 ≤ x ≤ 13. Их общая часть: 7 ≤ x ≤ 11. Крайние распределения (7; 16) и (11; 12) допустимы.'
+      },
+      links: [links.whole, links.score]
+    },
+    {
+      id: 'maximum', title: 'Оценка плюс пример для максимума',
+      goal: 'Доказать границу для всех случаев и достичь её конкретным набором.',
+      idea: 'Для максимума сначала докажи, что любое допустимое значение не больше твоей оценки. Затем построй допустимый пример, в котором значение равно оценке.',
+      story: '18 фишек разложили в три пакета. В каждом не меньше 4 фишек. Найди наибольшее возможное число фишек в одном пакете и докажи, что оно достижимо.',
+      steps: [
+        step('Оценка для остальных', integer('Сколько фишек как минимум в двух других пакетах вместе?', 8), 'В каждом из двух других пакетов должно быть не меньше четырёх фишек.', 'Два остальных пакета занимают не меньше 4 + 4 = 8 фишек.'),
+        step('Оценка для выбранного', integer('Сколько фишек может быть в выбранном пакете не более?', 10), 'Вычти наименьшую возможную сумму двух других пакетов из 18.', 'В выбранном пакете не больше 18 − 8 = 10 фишек. Эта оценка верна для любого разложения.'),
+        step('Пример достижения', integer('Если в выбранном пакете 10, а во втором 4, сколько должно быть в третьем?', 4), 'Проверь одновременно общую сумму и минимум в каждом пакете.', 'Набор (10; 4; 4) допустим и достигает оценки. Следовательно, максимум равен 10.')
+      ],
+      practice: {
+        story: '20 фишек разложили в три пакета. В каждом не меньше 4 фишек, и все три количества различны. Найди максимум в одном пакете и приведи разложение.',
+        fields: [integer('Максимум в одном пакете', 11), list('Три количества через точку с запятой', 4, 5, 11)],
+        proof: 'Объясни, почему больше получить нельзя, и проверь все условия для примера.',
+        retry: [
+          'Как мало фишек могут забрать два остальных пакета, если в них разные количества?',
+          'Проверь сумму, различие трёх чисел и минимум в каждом пакете. Есть ли среди чисел указанный максимум?'
+        ],
+        criteria: [
+          'Ты показал, сколько фишек нужно оставить двум другим пакетам при любом распределении.',
+          'Твой пример достигает границы и выполняет каждое условие задачи.'
+        ],
+        review: 'Два других количества различны и не меньше 4, поэтому их сумма не меньше 4 + 5 = 9. Выбранному пакету остаётся не более 11. Набор (4; 5; 11) удовлетворяет всем условиям.'
+      },
+      links: [links.extremum]
+    },
+    {
+      id: 'combined', title: 'Границы, остаток и достижимость',
+      goal: 'Сократить перебор двумя способами и построить пример для каждого оставшегося случая.',
+      idea: 'Сначала найди конечный диапазон. Затем проверь делимость или остаток, чтобы отсеять часть значений. Для оставшихся кандидатов проверь, что нужный набор можно составить.',
+      story: '37 пирожных разложили по коробкам, ровно по 3 или по 5 в каждой. Найди все возможные количества коробок и покажи, как реализовать каждое из них.',
+      steps: [
+        step('Диапазон', list('Из 3n ≤ 37 ≤ 5n выпиши все целые кандидаты n', 8, 9, 10, 11, 12), 'Раздели 37 на 5 для нижней границы и на 3 для верхней. Оставь целые числа.', '8 ≤ n ≤ 12. За пределами этих значений нужная сумма невозможна.'),
+        step('Чётность', list('Какие кандидаты останутся, если учесть чётность?', 9, 11), 'Оба возможных размера коробки нечётны. Чётность их суммы совпадает с чётностью числа коробок.', '37 нечётно, значит и число коробок нечётно. Остались 9 и 11.', 'Каждая коробка добавляет нечётное количество. Проверь чётность n.'),
+        step('Пример для девяти коробок', integer('Сколько коробок из девяти должны быть по 5 пирожных?', 5), 'Начни с девяти коробок по 3. Одна замена тройки на пятёрку добавляет два пирожных.', '9 · 3 = 27. Пять замен дают 37, значит подходят 5 коробок по 5 и 4 по 3.'),
+        step('Пример для одиннадцати коробок', integer('Сколько коробок из одиннадцати должны быть по 5 пирожных?', 2), 'Повтори построение от одиннадцати троек. Проверь, что число замен не превышает 11.', '11 · 3 = 33. Две замены дают 37, значит подходят 2 коробки по 5 и 9 по 3.')
+      ],
+      practice: {
+        story: '43 карандаша разложили по коробкам, ровно по 4 или по 7 в каждой. Найди все возможные количества коробок. Для каждого случая укажи, сколько коробок было по 7 карандашей.',
+        fields: [list('Все возможные числа коробок через точку с запятой', 7, 10),
+          integer('Коробок по 7 при наименьшем числе коробок', 5), integer('Коробок по 7 при наибольшем числе коробок', 1)],
+        proof: 'Покажи, какие количества исключают границы и остаток. Проверь оба распределения.',
+        retry: [
+          'Для каждого числа коробок в допустимых границах проверь разность между 43 и суммой одних четвёрок. Получится ли покрыть её заменами?',
+          'Начни с наименьшего числа коробок по 4. Сколько замен на семёрки даст 43?',
+          'Теперь возьми наибольшее число коробок по 4. Проверь общее число карандашей после замен.'
+        ],
+        criteria: [
+          'По границам и остатку ты исключил все остальные числа коробок.',
+          'Для каждого оставшегося числа коробок твой пример даёт ровно 43 карандаша.'
+        ],
+        review: 'Из 4n ≤ 43 ≤ 7n следует 7 ≤ n ≤ 10. Если начать с n четвёрок, каждая замена на семёрку добавляет 3. Значит, 43 − 4n делится на 3, и n даёт остаток 1 при делении на 3. Подходят n = 7 и n = 10. Примеры: 2 · 4 + 5 · 7 = 43 и 9 · 4 + 1 · 7 = 43.'
+      },
+      links: [links.remainders, links.factors, links.mushrooms]
+    }
+  ];
+
+  const checkpoint = {
+    id: 'checkpoint',
+    title: 'Проверка на новой задаче',
+    practice: {
+      story: 'На выставке 10 стендов. На каждом от 2 до 5 рисунков, всего 34 рисунка. На каком наибольшем числе стендов может быть ровно по 5 рисунков? Приведи одно возможное распределение.',
+      fields: [
+        integer('Наибольшее число стендов с пятью рисунками', 4),
+        { kind: 'distribution', label: 'Число рисунков на каждом из 10 стендов через точку с запятой',
+          size: 10, min: 2, max: 5, total: 34, target: 5, targetCount: 4 }
+      ],
+      proof: 'Кратко запиши, почему больше таких стендов быть не может.',
+      success: 'Сопоставь два разных применения метода. В №19 профиля нужно доказать границу и построить пример. В №21 базы границы помогают найти возможное целое число участников.',
+      criteria: [
+        'В обосновании учтены все десять стендов и минимальное число рисунков на остальных.',
+        'Пример даёт ровно 34 рисунка, соблюдает границы на каждом стенде и достигает найденного максимума.'
+      ],
+      review: 'Пусть k стендов содержат по 5 рисунков. Всего рисунков не меньше 5k + 2(10 − k) = 20 + 3k. Из 20 + 3k ≤ 34 получаем k ≤ 4. Подходит, например, распределение 5; 5; 5; 5; 4; 2; 2; 2; 2; 2. Значит, максимум равен 4.'
+    },
+    links: [links.extremum, links.whole]
+  };
+
+  const repeat = {
+    id: 'repeat',
+    title: 'Повторение на новой задаче',
+    practice: {
+      story: 'На каждой из 8 полок стоит от 3 до 6 книг. Всего 32 книги. На каком наименьшем числе полок может стоять не больше 4 книг? Приведи одно возможное распределение.',
+      fields: [
+        integer('Наименьшее число полок с четырьмя книгами или меньше', 4),
+        { kind: 'distribution', label: 'Число книг на каждой из 8 полок через точку с запятой',
+          size: 8, min: 3, max: 6, total: 32, target: 4, targetCount: 4, atMost: true }
+      ],
+      proof: 'Кратко запиши, почему таких полок не может быть ещё меньше.',
+      criteria: [
+        'Учтено, сколько книг должно быть на каждой полке, где их больше четырёх.',
+        'Пример даёт ровно 32 книги, соблюдает границы на каждой полке и достигает найденного минимума.'
+      ],
+      review: 'Пусть на k полках не больше 4 книг. На каждой из них не меньше 3 книг, на каждой другой не меньше 5. Всего не меньше 3k + 5(8 − k) = 40 − 2k. Из 40 − 2k ≤ 32 получаем k ≥ 4. Распределение 3; 3; 3; 3; 5; 5; 5; 5 даёт 32 книги. Значит, минимум равен 4.'
+    },
+    links: [links.extremum, links.whole]
+  };
+
+  const course = { lessons, links, checkpoint, repeat };
+  root.EgeMethodCourse = course;
+  if (typeof module === 'object') module.exports = course;
+})(typeof window === 'undefined' ? globalThis : window);
+
+</script>
+<script data-inline-source="/trainers/ege-methods/state.js">
+(function (root) {
+  'use strict';
+
+  const { lessons, checkpoint, repeat } = root.EgeMethodCourse || require('./content.js');
+  const { parse } = root.AlgebraMath || require('../../ege-baza/algebra/math.js');
+  const byId = new Map(lessons.map(lesson => [lesson.id, lesson]));
+  const prefix = 'mathexam.ege-methods.v1.';
+  const inputLimit = 48;
+  const proofLimit = 500;
+  const attemptLimit = 100000;
+  const day = 86_400_000;
+  const assessments = new Map([checkpoint, repeat].filter(Boolean).map(task => [task.id, task]));
+  const modelRanges = { line: [-3, 3], packs: [0, 31], intersection: [3, 12] };
+  const object = value => value && typeof value === 'object' && !Array.isArray(value);
+  const count = value => Number.isInteger(value) && value >= 0 && value <= attemptLimit;
+  const text = (value, limit) => typeof value === 'string' && value.length <= limit;
+  const feedback = value => ['', 'missing', 'format', 'wrong'].includes(value);
+  const cleanInput = value => String(value).replace(/[\u0000-\u001f\u007f]/g, '').slice(0, inputLimit);
+  const cleanProof = value => String(value).replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, '').slice(0, proofLimit);
+
+  function exactInteger(value) {
+    const rational = parse(value);
+    return rational?.d === 1 ? rational.n : null;
+  }
+
+  function checkDistribution(field, values) {
+    if (values.length !== field.size) return 'size';
+    if (values.some(value => value < field.min || value > field.max)) return 'range';
+    if (values.reduce((total, value) => total + value, 0) !== field.total) return 'total';
+    const targetCount = values.filter(value => field.atMost ? value <= field.target : value === field.target).length;
+    if (targetCount !== field.targetCount) return 'target';
+    return 'correct';
+  }
+
+  function check(field, input) {
+    if (!input.trim()) return 'missing';
+    if (field.kind === 'choice') return input === field.answer ? 'correct' : 'wrong';
+    if (field.kind === 'integer') {
+      const value = exactInteger(input);
+      if (value === null) return 'format';
+      return value === field.answer ? 'correct' : 'wrong';
+    }
+    const separator = field.kind === 'distribution' ? /\s*;\s*/ : /\s*(?:;|,\s+)\s*/;
+    const values = input.trim().split(separator).map(exactInteger);
+    if (values.some(value => value === null)) return 'format';
+    if (field.kind === 'distribution') return checkDistribution(field, values);
+    return values.length === field.answer.length && new Set(values).size === values.length &&
+      values.every(value => field.answer.includes(value)) ? 'correct' : 'wrong';
+  }
+
+  function emptyPractice({ practice }) {
+    return {
+      drafts: practice.fields.map(() => ''), proof: '', attempts: 0,
+      checked: false, done: false, review: false
+    };
+  }
+
+  function empty(lesson) {
+    return {
+      guide: {
+        solved: [], draft: '', misses: 0, hint: false, theory: false, feedback: '',
+        model: lesson.model === 'packs' ? 0 : null
+      },
+      practice: emptyPractice(lesson)
+    };
+  }
+
+  function validModel(lesson, value) {
+    if (value === null) return lesson.model !== 'packs';
+    const range = modelRanges[lesson.model];
+    return !!range && Number.isInteger(value) && value >= range[0] && value <= range[1];
+  }
+
+  function validPractice(lesson, practice) {
+    return object(practice) &&
+      Array.isArray(practice.drafts) && practice.drafts.length === lesson.practice.fields.length &&
+      practice.drafts.every(value => text(value, inputLimit)) &&
+      text(practice.proof, lesson.practice.proof ? proofLimit : 0) && count(practice.attempts) &&
+      typeof practice.checked === 'boolean' && typeof practice.done === 'boolean' && typeof practice.review === 'boolean' &&
+      (!practice.done || (practice.checked && practice.attempts > 0 &&
+        lesson.practice.fields.every((field, index) => check(field, practice.drafts[index]) === 'correct'))) &&
+      (!practice.review || practice.done);
+  }
+
+  function validRecord(lesson, record) {
+    const guide = record?.guide;
+    return object(record) && object(guide) &&
+      Array.isArray(guide.solved) && guide.solved.length <= lesson.steps.length &&
+      guide.solved.every((value, index) => text(value, inputLimit) && check(lesson.steps[index].field, value) === 'correct') &&
+      text(guide.draft, inputLimit) && count(guide.misses) && feedback(guide.feedback) &&
+      typeof guide.hint === 'boolean' && typeof guide.theory === 'boolean' && validModel(lesson, guide.model) &&
+      validPractice(lesson, record.practice);
+  }
+
+  function validAssessment(task, record) {
+    return object(record) && validPractice(task, record.practice) &&
+      (record.practice.done ? Number.isSafeInteger(record.completedAt) && record.completedAt > 0 &&
+        record.completedAt < 8.64e15 - day : record.completedAt === null);
+  }
+
+  function repeatAt(record) {
+    return record.practice.done ? record.completedAt + day : null;
+  }
+
+  function answerGuide(record, lesson, index, value) {
+    const guide = record.guide;
+    if (index !== guide.solved.length || !lesson.steps[index]) return;
+    guide.draft = cleanInput(value);
+    const result = check(lesson.steps[index].field, guide.draft);
+    if (result === 'correct') {
+      guide.solved.push(guide.draft);
+      Object.assign(guide, { draft: '', misses: 0, hint: false, feedback: '' });
+      return;
+    }
+    guide.feedback = result;
+    if (result === 'wrong') guide.misses = Math.min(attemptLimit, guide.misses + 1);
+    if (guide.misses >= 2) guide.hint = true;
+  }
+
+  function answerPractice(record, lesson, drafts) {
+    const practice = record.practice;
+    if (practice.done || drafts.length !== lesson.practice.fields.length) return;
+    practice.drafts = drafts.map(cleanInput);
+    const results = lesson.practice.fields.map((field, index) => check(field, practice.drafts[index]));
+    practice.checked = true;
+    if (results.some(result => result === 'missing' || result === 'format')) return;
+    practice.attempts = Math.min(attemptLimit, practice.attempts + 1);
+    practice.done = results.every(result => result === 'correct');
+  }
+
+  function answerAssessment(record, task, drafts, now = Date.now()) {
+    if (record.practice.done) return;
+    answerPractice(record, task, drafts);
+    if (record.practice.done) record.completedAt = now;
+  }
+
+  function createProgress(storage, locks, warn, validate = validRecord, initial = empty, keyPrefix = prefix) {
+    const memory = new Map();
+    const unavailable = new Set();
+    function block(id) {
+      unavailable.add(id);
+      warn();
+    }
+    function read(lesson) {
+      const id = lesson.id;
+      if (!unavailable.has(id)) {
+        try {
+          const raw = storage?.getItem(keyPrefix + id);
+          if (raw != null) {
+            const value = JSON.parse(raw);
+            if (!validate(lesson, value)) throw Error('Invalid course record');
+            memory.set(id, value);
+          } else {
+            memory.delete(id);
+          }
+        } catch {
+          block(id);
+        }
+      }
+      return structuredClone(memory.get(id) || initial(lesson));
+    }
+    function update(lesson, change) {
+      const id = lesson.id;
+      const key = keyPrefix + id;
+      const write = () => {
+        const value = read(lesson);
+        change(value);
+        memory.set(id, value);
+        if (!unavailable.has(id)) {
+          try {
+            if (!storage) throw Error('Storage is unavailable');
+            storage.setItem(key, JSON.stringify(value));
+          } catch {
+            block(id);
+          }
+        }
+        return value;
+      };
+      return locks?.request ? locks.request(key, write) : Promise.resolve(write());
+    }
+    return { read, update };
+  }
+
+  const assessmentPrefix = 'mathexam.ege-methods.assessment.v1.';
+  function createAssessmentProgress(storage, locks, warn) {
+    return createProgress(storage, locks, warn, validAssessment,
+      task => ({ practice: emptyPractice(task), completedAt: null }), assessmentPrefix);
+  }
+
+  function route(hash) {
+    if (hash === '#progress') return { page: 'progress', id: null };
+    const match = /^#(lesson|practice)\/([a-z-]+)$/.exec(hash);
+    if (match && byId.has(match[2])) return { page: match[1], id: match[2] };
+    return { page: 'map', id: null };
+  }
+
+  function personalRoute(hash) {
+    const task = hash.slice(1);
+    return assessments.has(task) ? { page: task, id: null } : route(hash);
+  }
+
+  function validRoom(value) {
+    if (!object(value) || !object(value.view) || !object(value.records)) return false;
+    const { page, id } = value.view;
+    const routeValid = (page === 'map' || page === 'progress') ? id === null :
+      (page === 'lesson' || page === 'practice') && byId.has(id);
+    return routeValid && Object.entries(value.records).every(([key, record]) =>
+      byId.has(key) && validRecord(byId.get(key), record));
+  }
+
+  const api = {
+    answerAssessment, answerGuide, answerPractice, assessmentPrefix, assessments, byId, check, cleanInput,
+    cleanProof, createAssessmentProgress, createProgress, empty, inputLimit, prefix, proofLimit,
+    personalRoute, repeatAt, route, validRecord, validRoom
+  };
+  root.EgeMethodState = api;
+  if (typeof module === 'object') module.exports = api;
+})(typeof window === 'undefined' ? globalThis : window);
+
+</script>
+<script data-inline-source="/trainers/ege-methods/app.js">
+(function (root) {
+  'use strict';
+
+  const { lessons, links, checkpoint, repeat } = root.EgeMethodCourse;
+  const S = root.EgeMethodState;
+  const main = document.getElementById('main');
+  const warning = document.getElementById('save-warning');
+  const embedded = root.parent !== root;
+  const isChoice = input => input.tagName === 'SELECT';
+  const esc = value => String(value).replace(/[&<>"']/g, character =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+  const display = number => String(number).replace(/^-/, '−');
+  const href = (page, id) => '#' + page + (id ? '/' + id : '');
+  const courseLink = (page, id, label, style = '') =>
+    `<a class="${style}" href="${href(page, id)}" data-course-nav>${label}</a>`;
+  const title = 'Оценка плюс пример';
+  const personalChecks = !embedded && checkpoint && repeat && typeof S.createAssessmentProgress === 'function';
+  const pageRoute = personalChecks ? S.personalRoute : S.route;
+  let view = pageRoute(location.hash);
+  let generation = 0;
+  let repeatTimer;
+  let records = {};
+  let bridge;
+  let storage;
+
+  if (!embedded) {
+    try { storage = root.localStorage; } catch { /* The store reports a failure on save. */ }
+  } else {
+    document.body.classList.add('embedded');
+    document.querySelector('.brand').removeAttribute('href');
+    document.querySelector('.header-inner a[href="#progress"]').textContent = 'Ход работы';
+  }
+
+  function warnSave() {
+    warning.textContent = 'Часть работы не удалось сохранить в браузере. Введённые данные доступны в этой вкладке.';
+    warning.hidden = false;
+  }
+  const progress = S.createProgress(storage, root.navigator.locks, warnSave);
+  const assessments = personalChecks ? S.createAssessmentProgress(storage, root.navigator.locks, warnSave) : null;
+
+  function recordFor(lesson) {
+    return embedded ? (records[lesson.id] || S.empty(lesson)) : progress.read(lesson);
+  }
+
+  async function change(lesson, edit, updateView) {
+    const revision = generation;
+    let record;
+    if (embedded) {
+      record = recordFor(lesson);
+      edit(record);
+      records[lesson.id] = record;
+      bridge?.notifyStateChanged();
+    } else {
+      const store = assessments && S.assessments.has(lesson.id) ? assessments : progress;
+      record = await store.update(lesson, edit);
+    }
+    if (generation === revision) updateView?.(record);
+  }
+
+  function currentTask() {
+    return S.byId.get(view.id) || (assessments && S.assessments.get(view.page));
+  }
+
+  function totals() {
+    const entries = lessons.map(lesson => ({ lesson, record: recordFor(lesson) }));
+    return {
+      entries,
+      guided: entries.filter(({ lesson, record }) => record.guide.solved.length === lesson.steps.length).length,
+      checked: entries.filter(({ record }) => record.practice.done).length
+    };
+  }
+
+  function progressBar({ guided, checked }) {
+    return `<div class="meters">
+      <label for="guided-progress">Уроки по шагам <strong>${guided} из ${lessons.length}</strong></label>
+      <progress id="guided-progress" value="${guided}" max="${lessons.length}"></progress>
+      <label for="practice-progress">Самопроверки <strong>${checked} из ${lessons.length}</strong></label>
+      <progress id="practice-progress" value="${checked}" max="${lessons.length}"></progress>
+    </div>`;
+  }
+
+  function examinerLinks(items, note) {
+    if (embedded || !items.length) return '';
+    return `<section class="transfer" aria-labelledby="transfer-title"><h2 id="transfer-title">Применить на ЕГЭ</h2>
+      ${note ? `<p>${esc(note)}</p>` : ''}
+      <ul>${items.map(item => `<li><a href="${item.href}">${esc(item.title)}</a></li>`).join('')}</ul></section>`;
+  }
+
+  function repeatReadyAt() {
+    return S.repeatAt(assessments.read(checkpoint));
+  }
+
+  function waitForRepeat(at) {
+    const label = new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long', timeStyle: 'short' }).format(at);
+    return `Повторение откроется <time datetime="${new Date(at).toISOString()}">${esc(label)}</time> по времени устройства.`;
+  }
+
+  const startedPractice = practice => Boolean(practice.attempts || practice.proof || practice.drafts.some(Boolean));
+
+  function assessmentStatus() {
+    if (!assessments) return null;
+    const first = assessments.read(checkpoint);
+    const at = S.repeatAt(first);
+    const ready = at !== null && Date.now() >= at;
+    const second = ready ? assessments.read(repeat).practice : null;
+    const firstStarted = startedPractice(first.practice);
+    const secondStarted = second && startedPractice(second);
+    return {
+      at, ready, firstDone: first.practice.done, repeatDone: Boolean(second?.done),
+      firstLabel: first.practice.done ? 'Результат проверки' : firstStarted ? 'Продолжить проверку' : 'Начать проверку',
+      repeatLabel: second?.done ? 'Результат повторения' : secondStarted ? 'Продолжить повторение' : 'Открыть повторение',
+      resume: secondStarted && !second.done ? repeat.id : firstStarted && !first.practice.done ? checkpoint.id : null
+    };
+  }
+
+  function checkpointNext(status) {
+    if (!status.firstDone) return '';
+    if (!status.ready) return `<p class="assessment-date">${waitForRepeat(status.at)}</p>`;
+    return `<div class="actions">${courseLink(repeat.id, null, status.repeatLabel, 'button secondary')}</div>`;
+  }
+
+  function assessmentSummary(status) {
+    if (!status) return '';
+    const description = status.repeatDone ? 'Ответы в обеих задачах верны.' :
+      status.firstDone ? 'Ответы в первой задаче верны. Повторение — в другом условии.' :
+        'Реши новую задачу самостоятельно. Образец обоснования откроется после проверки ответов.';
+    return `<section class="panel assessment-summary" aria-labelledby="assessment-title">
+      <h2 id="assessment-title">Проверка и повторение</h2>
+      <p>${description}</p>
+      <div class="actions">${courseLink(checkpoint.id, null, status.firstLabel, 'button secondary')}</div>
+      ${checkpointNext(status)}
+    </section>`;
+  }
+
+  function map() {
+    const summary = totals();
+    const openPractice = summary.entries.find(({ record: { practice } }) =>
+      !practice.done && (practice.attempts || practice.proof || practice.drafts.some(Boolean)));
+    const openLesson = summary.entries.find(({ lesson, record: { guide } }) =>
+      guide.solved.length < lesson.steps.length && (guide.solved.length || guide.draft || guide.misses));
+    const next = openPractice || openLesson || summary.entries.find(({ lesson, record }) =>
+      !record.practice.done || record.guide.solved.length < lesson.steps.length);
+    const go = next && (openPractice === next || next.record.guide.solved.length === next.lesson.steps.length ? 'practice' : 'lesson');
+    const started = summary.guided > 0 || summary.checked > 0 || Boolean(openPractice || openLesson);
+    const practiceEntry = href('practice', 'maximum');
+    const status = assessmentStatus();
+    const showPracticeEntry = !embedded && (status?.resume || !next || href(go, next.lesson.id) !== practiceEntry);
+    const primary = status?.resume ? courseLink(status.resume, null, 'Продолжить', 'button primary') :
+      next ? courseLink(go, next.lesson.id, started ? 'Продолжить' : 'Начать с оценок', 'button primary') :
+        courseLink('progress', null, 'Посмотреть прогресс', 'button primary');
+    main.innerHTML = `<section class="hero" aria-labelledby="course-title">
+      <div><p class="eyebrow">ЕГЭ · профиль №19 и база №21</p><h1 id="course-title">${title}</h1>
+        <p class="lead">Находи границы, отбирай целые значения и строй примеры. Затем проверь себя на новом условии.</p>
+        <div class="actions">${primary}
+        ${showPracticeEntry ? courseLink('practice', 'maximum', 'Самопроверка по максимуму', 'button secondary') : ''}
+        ${embedded ? '' : '<a class="button secondary" href="/trainers/trainer-board.html?trainer=ege-methods.html">Открыть на общей доске</a>'}</div>
+      </div><aside class="progress-panel"><h2>${embedded ? 'Ход работы на доске' : 'Мой прогресс'}</h2>${progressBar(summary)}</aside>
+    </section>
+    ${assessmentSummary(status)}
+    <section aria-labelledby="route-title"><h2 id="route-title">Учебный маршрут</h2><ol class="lesson-list">
+      ${summary.entries.map(({ lesson, record }, index) => `<li class="lesson-card">
+        <span class="lesson-number" aria-hidden="true">${index + 1}</span>
+        <div><h3>${courseLink('lesson', lesson.id, esc(lesson.title))}</h3><p>${esc(lesson.goal)}</p>
+        ${record.guide.solved.length === lesson.steps.length ? '<span class="completion">Урок пройден</span>' :
+          record.guide.solved.length ? `<span class="completion">${record.guide.solved.length} из ${lesson.steps.length} шагов</span>` : ''}
+        ${record.practice.done ? '<span class="completion">Самопроверка пройдена</span>' : ''}</div>
+      </li>`).join('')}
+    </ol></section>${examinerLinks([links.extremum, links.whole])}`;
+  }
+
+  function progressView() {
+    const summary = totals();
+    main.innerHTML = `${courseLink('map', null, '← Все уроки', 'back')}
+      <h1>${embedded ? 'Ход работы на доске' : 'Мой прогресс'}</h1>
+      <p class="lead">${embedded ? 'На доске отображается ход работы в текущей комнате.' : 'Работа сохраняется в этом браузере. Самопроверка засчитывается после верных ответов на отдельную задачу.'}</p>
+      <section class="panel">${progressBar(summary)}</section>${assessmentSummary(assessmentStatus())}
+      <ol class="progress-list">${summary.entries.map(({ lesson, record }) => `<li>
+        <div><h2>${courseLink('lesson', lesson.id, esc(lesson.title))}</h2>
+        <p>${record.guide.solved.length} из ${lesson.steps.length} шагов · ${record.practice.done ? 'самопроверка пройдена' : 'самопроверка впереди'}
+        ${record.practice.attempts ? ` · попыток: ${record.practice.attempts}` : ''}</p></div>
+        ${courseLink('practice', lesson.id, record.practice.done ? 'Открыть работу' : 'К самопроверке', 'button secondary')}
+      </li>`).join('')}</ol>`;
+  }
+
+  function fieldMarkup(field, value, index) {
+    const id = 'answer-' + index;
+    if (field.kind === 'choice') {
+      return `<label class="field" for="${id}"><span>${esc(field.label)}</span>
+        <select id="${id}" name="${id}" data-answer="${index}">
+          <option value="">Выбери ответ</option>
+          ${field.options.map(([key, label]) => `<option value="${key}"${key === value ? ' selected' : ''}>${esc(label)}</option>`).join('')}
+        </select></label>`;
+    }
+    return `<label class="field" for="${id}"><span>${esc(field.label)}</span>
+      <input id="${id}" name="${id}" data-answer="${index}" type="text" maxlength="${S.inputLimit}"
+        autocomplete="off" spellcheck="false" value="${esc(value)}"></label>`;
+  }
+
+  const formatMessage = field => field.kind === 'list' || field.kind === 'distribution' ?
+    'Введи целые числа через точку с запятой.' : 'Введи целое число.';
+  function message(step, record) {
+    switch (record.feedback) {
+      case 'missing': return 'Введи ответ или выбери вариант.';
+      case 'format': return formatMessage(step.field);
+      case 'wrong': return step.error || 'Проверь вычисление и ещё раз сверься с условием.';
+      default: return '';
+    }
+  }
+
+  function model(lesson) {
+    if (!lesson.model) return '';
+    if (lesson.model === 'packs') {
+      return `<figure class="model" aria-labelledby="model-title"><figcaption id="model-title">Собери набор</figcaption>
+        <p>Нажми на пакет, чтобы поменять 2 наклейки на 3 или обратно.</p>
+        <div class="packs">${Array.from({ length: 5 }, (_, i) =>
+          `<button type="button" data-model="${i}" aria-pressed="false"><span class="pack-count"></span><span class="dots" aria-hidden="true"></span></button>`).join('')}</div>
+        <output id="model-output" aria-live="polite"></output></figure>`;
+    }
+    const intersection = lesson.model === 'intersection';
+    const low = intersection ? 3 : -3;
+    const count = intersection ? 10 : 7;
+    const ranges = intersection ? `<div class="range-labels"><span>Первая команда</span><span>Условие для второй команды</span></div>
+      <div class="intersection-tracks" aria-hidden="true"><i></i><i></i></div>` :
+      `<p>−2 &lt; n ≤ 2,5. Нажми на целое деление, чтобы его проверить.</p>
+      <div class="axis" aria-hidden="true"><i></i></div>`;
+    return `<figure class="model" aria-labelledby="model-title"><figcaption id="model-title">${intersection ? 'Где отрезки пересекаются' : 'Проверь число на прямой'}</figcaption>
+      ${ranges}<div class="ticks ${intersection ? 'ten' : ''}">${Array.from({ length: count }, (_, i) => {
+        const number = low + i;
+        return `<button type="button" data-model="${number}" aria-label="Проверить ${intersection ? 'x' : 'n'} = ${display(number)}" aria-pressed="false">${display(number)}</button>`;
+      }).join('')}</div><output id="model-output" aria-live="polite"></output></figure>`;
+  }
+
+  function updateModel(lesson, value) {
+    if (!lesson.model) return;
+    const output = document.getElementById('model-output');
+    for (const button of main.querySelectorAll('[data-model]')) {
+      const number = Number(button.dataset.model);
+      if (lesson.model === 'packs') {
+        const larger = !!(value & (1 << number));
+        const size = larger ? 3 : 2;
+        button.setAttribute('aria-pressed', String(larger));
+        button.setAttribute('aria-label', 'Пакет ' + (number + 1) + ', ' + size + ' наклейки');
+        button.querySelector('.pack-count').textContent = size;
+        button.querySelector('.dots').textContent = '●'.repeat(size);
+      } else {
+        button.setAttribute('aria-pressed', String(value === number));
+      }
+    }
+    if (lesson.model === 'packs') {
+      const larger = main.querySelectorAll('[data-model][aria-pressed="true"]').length;
+      output.textContent = `Всего наклеек: ${2 * (5 - larger) + 3 * larger}.`;
+    } else if (value === null) {
+      output.textContent = lesson.model === 'intersection' ? 'Выбери число x и проверь оба условия.' : 'Выбери одно целое число.';
+    } else if (lesson.model === 'line') {
+      const fits = value > -2 && value <= 2.5;
+      output.textContent = `${display(value)} ${fits ? 'подходит: обе границы соблюдены.' : 'не подходит: число вне заданных границ.'}`;
+    } else {
+      const first = value >= 5 && value <= 12;
+      const second = 18 - value >= 8 && 18 - value <= 15;
+      output.textContent = `При x = ${value} во второй команде ${18 - value}. Первое условие: ${first ? 'да' : 'нет'}. Второе: ${second ? 'да' : 'нет'}.`;
+    }
+  }
+
+  function guideView(lesson, { guide }) {
+    const index = guide.solved.length;
+    const step = lesson.steps[index];
+    const number = lessons.indexOf(lesson) + 1;
+    main.innerHTML = `<div class="lesson-head">${courseLink('map', null, '← Все уроки', 'back')}
+      <p class="eyebrow">Урок ${number} из ${lessons.length}</p><h1>${esc(lesson.title)}</h1></div>
+      <div class="lesson-grid${lesson.model ? ' with-model' : ''}">
+        <section class="panel problem"><h2>Задача</h2><p>${esc(lesson.story)}</p>
+          <button class="text-button" type="button" data-action="theory" aria-controls="theory" aria-expanded="${guide.theory}">Как работает метод</button>
+          <p id="theory" class="note"${guide.theory ? '' : ' hidden'}>${esc(lesson.idea)}</p>
+        </section>${model(lesson)}
+        <section class="panel work" aria-labelledby="active-step">
+          ${index ? `<ol class="solved">${lesson.steps.slice(0, index).map(item => `<li>${esc(item.explain)}</li>`).join('')}</ol>` : ''}
+          ${step ? `<p class="eyebrow">Шаг ${index + 1} из ${lesson.steps.length}</p>
+          <h2 id="active-step" tabindex="-1">${esc(step.title)}</h2>
+          <form id="guide-form" data-step="${index}">${fieldMarkup(step.field, guide.draft, 0)}
+            <div class="actions"><button class="button primary" type="submit">Проверить шаг</button>
+            <button class="button secondary" type="button" data-action="hint" aria-expanded="${guide.hint}" aria-controls="hint-text">Подсказка</button></div>
+            <p id="guide-feedback" class="feedback" role="status">${esc(message(step, guide))}</p>
+            <p id="hint-text" class="note" role="status"${guide.hint ? '' : ' hidden'}>${esc(step.hint)}</p>
+          </form>` : `<h2 id="active-step" tabindex="-1">Задача разобрана</h2>
+          <p>Примени тот же метод в новой задаче.</p>${courseLink('practice', lesson.id, 'К самопроверке', 'button primary')}`}
+        </section>
+      </div>`;
+    updateModel(lesson, guide.model);
+  }
+
+  function practiceMessages(lesson, practice) {
+    const checks = lesson.practice.fields.map((field, index) => S.check(field, practice.drafts[index]));
+    const missing = checks.indexOf('missing');
+    if (missing >= 0) return { index: missing, text: 'Заполни все поля ответа.' };
+    const format = checks.indexOf('format');
+    if (format >= 0) return { index: format, text: formatMessage(lesson.practice.fields[format]) };
+    const index = checks.findIndex(result => result !== 'correct');
+    const field = lesson.practice.fields[index];
+    if (field?.kind === 'distribution') {
+      const message = {
+        size: `Введи ${field.size} чисел через точку с запятой, по одному для каждого места.`,
+        range: `Каждое число должно быть от ${field.min} до ${field.max}.`,
+        total: `Сумма чисел в распределении должна быть равна ${field.total}.`
+      }[checks[index]];
+      if (message) return { index, text: message };
+    }
+    return { index, text: lesson.practice.retry?.[index] || 'Проверь ответы в отмеченных полях и попробуй ещё раз.' };
+  }
+
+  function practiceView(lesson, { practice }, assessment = false) {
+    const { fields, story, proof, review, criteria, success } = lesson.practice;
+    const next = assessment ? null : lessons[lessons.indexOf(lesson) + 1];
+    const back = assessment ? courseLink('map', null, '← К маршруту', 'back') :
+      courseLink('lesson', lesson.id, '← К уроку', 'back');
+    const nextLesson = next ? courseLink('lesson', next.id, 'Следующий урок', 'button primary') :
+      courseLink('progress', null, 'Посмотреть прогресс', 'button primary');
+    const nextStep = assessment ? (lesson === checkpoint ?
+      `<div id="assessment-follow-up">${practice.done ? checkpointNext(assessmentStatus()) : ''}</div>` : '') :
+      `<div class="actions">${nextLesson}
+        ${assessments && (lesson.id === 'maximum' || !next) ?
+          courseLink('checkpoint', null, 'К проверке на новой задаче', 'button secondary') : ''}</div>`;
+    const proofPrompt = assessment ? `${esc(proof)} Черновик сохраняется в этом браузере. Сверь обоснование с критериями после проверки.` :
+      `${esc(proof)} Полное решение можно сверить с образцом или обсудить с учителем.`;
+    main.innerHTML = `${back}
+      <p class="eyebrow">${assessment ? 'Оценка плюс пример' : 'Самопроверка'}</p><h1>${esc(lesson.title)}</h1>
+      <section class="panel practice" aria-labelledby="practice-title"><h2 id="practice-title">Новая задача</h2>
+        <p>${esc(story)}</p><form id="practice-form">
+          <fieldset class="answer-group"${practice.done ? ' disabled' : ''}><legend class="sr-only">Ответы</legend>
+          ${fields.map((field, index) => fieldMarkup(field, practice.drafts[index], index)).join('')}</fieldset>
+          ${proof ? `<label class="field" for="proof-draft"><span>Черновик обоснования</span><small>${proofPrompt}</small>
+            <textarea id="proof-draft" maxlength="${S.proofLimit}" rows="3">${esc(practice.proof)}</textarea></label>` : ''}
+          ${practice.done ? '' : '<div class="actions"><button class="button primary" type="submit">Проверить ответы</button></div>'}
+          <p id="practice-feedback" class="feedback" role="status"></p>
+        </form>
+        ${practice.done ? `<div class="result"><h2 id="practice-complete" tabindex="-1">Ответы верны</h2>
+          ${assessment ? `<p>Попыток: ${practice.attempts}. Обоснование можно сверить с образцом.</p>` : ''}
+          <button class="text-button" type="button" data-action="review" aria-expanded="${practice.review}" aria-controls="sample">${practice.review ? 'Скрыть разбор' : 'Показать разбор'}</button>
+          <div class="note" id="sample"${practice.review ? '' : ' hidden'}><p>${esc(review)}</p>
+            ${criteria ? `<h3>Сверь обоснование</h3><ul>${criteria.map(item => `<li>${esc(item)}</li>`).join('')}</ul>` : ''}</div></div>
+          ${nextStep}` : ''}
+      </section>${practice.done ? examinerLinks(lesson.links, success) : ''}`;
+    if (practice.checked && !practice.done) updatePracticeFeedback(lesson, practice);
+  }
+
+  function assessmentView(task) {
+    const at = task === repeat ? repeatReadyAt() : null;
+    if (task === repeat && (at === null || Date.now() < at)) {
+      main.innerHTML = `${courseLink('map', null, '← К маршруту', 'back')}
+        <h1>Повторение на новой задаче</h1><p class="lead">${at === null ?
+          'Сначала пройди первую проверку. Повторение откроется через сутки.' : waitForRepeat(at)}</p>
+        ${courseLink('checkpoint', null, 'К первой проверке', 'button primary')}`;
+      return;
+    }
+    practiceView(task, assessments.read(task), true);
+  }
+
+  function refreshRepeat() {
+    if (view.page === 'checkpoint') {
+      const followUp = document.getElementById('assessment-follow-up');
+      if (followUp) followUp.innerHTML = checkpointNext(assessmentStatus());
+    } else {
+      const focus = view.page === 'repeat' && main.contains(document.activeElement) ? 'main' : undefined;
+      render(focus);
+    }
+  }
+
+  function updatePracticeFeedback(lesson, practice, focus = false) {
+    const result = practiceMessages(lesson, practice);
+    const feedback = document.getElementById('practice-feedback');
+    feedback.textContent = result.text;
+    for (const input of main.querySelectorAll('[data-answer]')) {
+      const index = Number(input.dataset.answer);
+      const check = S.check(lesson.practice.fields[index], practice.drafts[index]);
+      if (check !== 'correct') input.setAttribute('aria-invalid', 'true');
+      else input.removeAttribute('aria-invalid');
+    }
+    if (focus) document.getElementById('answer-' + result.index)?.focus();
+  }
+
+  function render(focus) {
+    generation++;
+    root.clearTimeout(repeatTimer);
+    const lesson = S.byId.get(view.id);
+    if (view.page === 'lesson') guideView(lesson, recordFor(lesson));
+    else if (view.page === 'practice') practiceView(lesson, recordFor(lesson));
+    else if (view.page === 'progress') progressView();
+    else if (assessments && S.assessments.has(view.page)) assessmentView(S.assessments.get(view.page));
+    else map();
+    if (assessments && ['map', 'progress', 'checkpoint', 'repeat'].includes(view.page) &&
+        (view.page !== 'repeat' || !document.getElementById('practice-form'))) {
+      const at = repeatReadyAt();
+      const remaining = at === null ? 0 : at - Date.now();
+      if (remaining > 0) repeatTimer = root.setTimeout(refreshRepeat, Math.min(remaining, 2_147_483_647));
+    }
+    if (focus) document.getElementById(focus)?.focus();
+  }
+
+  function move(next) {
+    if (view.page === next.page && view.id === next.id) return;
+    view = next;
+    render('main');
+    root.scrollTo(0, 0);
+    if (embedded) bridge?.notifyStateChanged();
+  }
+
+  function reveal(button, show) {
+    button.setAttribute('aria-expanded', String(show));
+    document.getElementById(button.getAttribute('aria-controls')).hidden = !show;
+    if (button.dataset.action === 'review') button.textContent = show ? 'Скрыть разбор' : 'Показать разбор';
+  }
+
+  document.addEventListener('click', event => {
+    const navigation = event.target.closest('[data-course-nav]');
+    if (navigation && embedded) {
+      event.preventDefault();
+      move(S.route(navigation.hash));
+    }
+    const button = event.target.closest('[data-action], [data-model]');
+    const lesson = currentTask();
+    if (!lesson || !button) return;
+    if (button.dataset.model !== undefined) {
+      const value = Number(button.dataset.model);
+      change(lesson, record => {
+        record.guide.model = lesson.model === 'packs' ? record.guide.model ^ (1 << value) : value;
+      }, record => updateModel(lesson, record.guide.model));
+      return;
+    }
+    const action = button.dataset.action;
+    if (action === 'hint' || action === 'theory') {
+      const index = Number(document.getElementById('guide-form')?.dataset.step);
+      change(lesson, ({ guide }) => {
+        if (action === 'theory' || guide.solved.length === index) guide[action] = !guide[action];
+      }, ({ guide }) => { if (button.isConnected) reveal(button, guide[action]); });
+    } else if (action === 'review') {
+      change(lesson, ({ practice }) => { if (practice.done) practice.review = !practice.review; },
+        ({ practice }) => { if (button.isConnected) reveal(button, practice.review); });
+    }
+  });
+
+  function saveDraft(event) {
+    const input = event.target;
+    if ((event.type === 'change') !== isChoice(input)) return;
+    const lesson = currentTask();
+    if (!lesson) return;
+    if (input.id === 'proof-draft') {
+      const value = S.cleanProof(input.value);
+      if (input.value !== value) input.value = value;
+      change(lesson, ({ practice }) => { practice.proof = value; });
+      return;
+    }
+    if (!input.hasAttribute('data-answer')) return;
+    const value = S.cleanInput(input.value);
+    if (input.value !== value) input.value = value;
+    input.removeAttribute('aria-invalid');
+    const form = input.form;
+    if (form.id === 'guide-form') {
+      const index = Number(form.dataset.step);
+      document.getElementById('guide-feedback').textContent = '';
+      change(lesson, ({ guide }) => {
+        if (guide.solved.length === index) Object.assign(guide, { draft: value, feedback: '' });
+      });
+    } else {
+      const index = Number(input.dataset.answer);
+      document.getElementById('practice-feedback').textContent = '';
+      change(lesson, ({ practice }) => {
+        if (!practice.done) {
+          practice.drafts[index] = value;
+          practice.checked = false;
+        }
+      });
+    }
+  }
+  main.addEventListener('input', saveDraft);
+  main.addEventListener('change', saveDraft);
+
+  main.addEventListener('submit', event => {
+    event.preventDefault();
+    const lesson = currentTask();
+    const form = event.target;
+    if (!lesson) return;
+    if (lesson === repeat) {
+      const at = repeatReadyAt();
+      if (at === null || Date.now() < at) {
+        render('main');
+        return;
+      }
+    }
+    if (form.id === 'guide-form') {
+      const index = Number(form.dataset.step);
+      const input = form.elements['answer-0'];
+      const value = input.value;
+      change(lesson, record => S.answerGuide(record, lesson, index, value), ({ guide }) => {
+        if (guide.solved.length !== index) {
+          render('active-step');
+          return;
+        }
+        const hint = form.querySelector('[data-action="hint"]');
+        reveal(hint, guide.hint);
+        document.getElementById('guide-feedback').textContent = message(lesson.steps[index], guide);
+        input.setAttribute('aria-invalid', 'true');
+        input.focus();
+      });
+    } else if (form.id === 'practice-form') {
+      const drafts = lesson.practice.fields.map((_, i) => form.elements['answer-' + i].value);
+      const answer = assessments && S.assessments.has(lesson.id) ? S.answerAssessment : S.answerPractice;
+      change(lesson, record => answer(record, lesson, drafts), ({ practice }) => {
+        if (practice.done) render('practice-complete');
+        else updatePracticeFeedback(lesson, practice, true);
+      });
+    }
+  });
+
+  if (!embedded) {
+    root.addEventListener('hashchange', () => move(pageRoute(location.hash)));
+    root.addEventListener('storage', event => {
+      if (event.key?.startsWith(S.prefix) && (view.page === 'map' || view.page === 'progress')) render();
+      if (assessments && event.key?.startsWith(S.assessmentPrefix) &&
+          (view.page === 'map' || view.page === 'progress' ||
+            (view.page === 'repeat' && !document.getElementById('practice-form')))) render();
+    });
+  } else {
+    let onBoard = false;
+    try {
+      onBoard = root.parent.location.origin === location.origin && root.parent.location.pathname === '/trainers/trainer-board.html';
+    } catch { /* The course is usable in an unrelated frame without sharing data. */ }
+    if (onBoard) {
+      bridge = root.MathExamBoard.register({
+        id: 'ege-methods', version: '1.0.0', stateSchemaVersion: 1, parentOrigin: location.origin,
+        // Comparison signs in a written draft are plain text in the shared bridge.
+        getState: () => ({ work: JSON.stringify({ view, records }).replace(/</g, '\\u003c').replace(/>/g, '\\u003e') }),
+        applyState: wire => {
+          if (typeof wire.work !== 'string') throw TypeError('Invalid room state');
+          const state = JSON.parse(wire.work);
+          if (!S.validRoom(state)) throw TypeError('Invalid room state');
+          const changedPage = view.page !== state.view.page || view.id !== state.view.id;
+          ({ view, records } = state);
+          render();
+          if (changedPage) root.scrollTo(0, 0);
+        }
+      });
+    }
+  }
+  render();
+})(window);
+
+</script>
+</body>
+</html>

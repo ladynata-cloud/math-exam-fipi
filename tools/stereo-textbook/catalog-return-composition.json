@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "task": "ATANASYAN_7_11_HARMONIZATION_20261116",
+  "file": "stereo-course/textbook/assets/engine.js",
+  "harmonizationParent": "99b3bfb9c231d5fd3b5cdda2c543231171a57618",
+  "catalogReturnParent": "5439d927feb3b7f9a29a9c0d7b764f6d340864f2",
+  "combinedSHA256": "aded83bf7166a6c083bac6fa683b661db50af988bb8e1fe7dd16783b2f95ec62",
+  "harmonizationSHA256": "d938edf8cf7f7043e2e45b2e1ae391e5a9af496ba2a4fa1b38299619a89a4c23",
+  "catalogReturnSHA256": "8b233b55bd72852274fcd6b2eb6a6cd8b0d66e3e0ffb23998be0e27c19f9dc54",
+  "purpose": "Reverse exactly the four previously reviewed catalog-return spans from the exact combined runtime. Existing harmonization and older historical gates then retain every prior assertion."
+}

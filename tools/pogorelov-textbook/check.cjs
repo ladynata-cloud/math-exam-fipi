@@ -1,4 +1,5 @@
 'use strict';
+require('./geometry-input.test.cjs');
 const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../..'),dir=path.join(root,'geometry-pogorelov/textbook');
 const ctx={window:{}};vm.runInNewContext(fs.readFileSync(path.join(dir,'data.js'),'utf8'),ctx);
@@ -67,6 +68,28 @@ const p6=byId.get('p11-n6').t.model.points;
 const angle=Math.acos(((p6.B.x-p6.A.x)*(p6.C.x-p6.A.x)+(p6.B.y-p6.A.y)*(p6.C.y-p6.A.y))/(Math.hypot(p6.B.x-p6.A.x,p6.B.y-p6.A.y)*Math.hypot(p6.C.x-p6.A.x,p6.C.y-p6.A.y)))*180/Math.PI;
 assert.ok(Math.abs(angle-30)<1e-9,'given 30-degree angle');
 const p40=byId.get('p11-n40').t.model.points;assert.ok(Math.abs(Math.hypot(p40.B.x-p40.H.x,p40.B.y-p40.H.y)-9)<1e-9);
+// The two drawings must each satisfy the givens and show different solutions.
+const distance=(m,a,b)=>Math.hypot(m.points[a].x-m.points[b].x,m.points[a].y-m.points[b].y);
+for(const id of ['p5-n11','p7-n4','p12-n2']){
+  const t=byId.get(id).t;
+  assert.equal(new Set(t.modelCases).size,2);
+  for(const [index,model] of [t.model,t.anotherModel].entries()){
+    if(id==='p5-n11'){
+      assert.equal(distance(model,'O','T'),30);
+      assert.equal(distance(model,'O₁','T'),40);
+      assert.equal(distance(model,'O','O₁'),index===0?70:10);
+    }else if(id==='p7-n4'){
+      assert.equal(distance(model,'A','B'),3);
+      assert.equal(distance(model,index===0?'A':'B','C'),4);
+      assert.equal(model.points.B.y,model.points.A.y);
+      assert.equal(model.points.C.x,model.points.A.x);
+    }else{
+      assert.equal(distance(model,'A','C'),6);
+      assert.equal(distance(model,'B','C'),5);
+      assert.ok(Math.abs(distance(model,'A','B')**2-(index===0?13:109))<1e-9);
+    }
+  }
+}
 const sources=JSON.parse(fs.readFileSync(path.join(dir,'source-map.json'),'utf8'));
 assert.equal(sources.completeExerciseCoverage,false);assert.equal(sources.exercises.length,134);
 assert.ok(sources.exercises.every(s=>s.pdfPage===s.printedPage+1));

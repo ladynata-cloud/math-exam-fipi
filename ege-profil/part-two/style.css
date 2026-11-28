@@ -5,7 +5,24 @@
 @media(prefers-reduced-motion:no-preference){button,a.button{transition:background .15s ease}}
 @media print{header,footer,.actions,.modes,button{display:none}.task-layout{display:block}.panel,.card{break-inside:avoid}main{padding:0}}
 .part2-lab label{display:block}.part2-lab select{max-width:100%;min-height:44px;display:block;margin:10px 0}.part2-lab input[type=range]{width:100%;min-height:44px}.part2-lab form button{margin-top:10px}
+.equation-investigation>summary{display:list-item;min-height:44px;color:var(--accent);font-weight:700;cursor:pointer}
+.equation-investigation table th,.equation-investigation table td{overflow-wrap:anywhere}
 
 /* Long exact expressions and answer-format labels may wrap at narrow widths;
    neither the grid track nor its children may impose their min-content width. */
 .task-layout{overflow-wrap:anywhere}.task-layout>*{min-width:0}
+
+#proof-jump{margin:0 0 10px}
+#proof-jump[hidden],#proof-open-saved[hidden],#equation-open-saved[hidden]{display:none}
+.proof-review-list{list-style:none;padding:0;margin:12px 0}
+.proof-review-list li{border-top:1px solid var(--line);padding:6px 0}
+.proof-review-list label{display:flex;align-items:flex-start;gap:10px;padding:6px 0;min-height:44px;cursor:pointer}
+.proof-review-list input{flex:0 0 20px;width:20px;height:20px;margin:4px 0 0;accent-color:var(--accent)}
+.proof-review-list strong{display:block}
+.proof-review-list details{margin:0 0 0 30px}
+.proof-review-list summary{font-size:.85rem;color:var(--accent)}
+.proof-review-list .hint{margin:0 0 6px}
+.proof-example{border-top:1px solid var(--line);padding-top:6px}
+#proof-review{overflow-wrap:anywhere}
+
+.solution-figure{max-width:360px;margin:.4rem auto .85rem}.solution-figure figcaption{font-size:1rem;line-height:1.45;color:var(--ink)}

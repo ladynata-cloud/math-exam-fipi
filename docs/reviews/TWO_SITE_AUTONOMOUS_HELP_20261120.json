@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "created_at_utc": "2026-11-20T03:54:11.780000+00:00",
+  "reviewer": "independent child reviewer; not implementation author",
+  "status": "PASS_CODE_LOCAL_TESTS_BROWSER_GATE_PENDING",
+  "pr": 683,
+  "base_sha": "ab6083cdb99f5124c1c4b6930cf19ae4b032d5da",
+  "worktree_parent_sha": "723e230fb71d555f41548f31e1405497f701d4e1",
+  "reviewed_snapshot_sha256": {
+    "assets/assistant/division-dialogue.js": "1ac9988740c49a0d5aba48ba81b572f689f77ab1e5c4817f9f0fe6193c4bbe6d",
+    "site-assistant/dialogue.mjs": "cebabbd9d17f39075eed19bdba51d31c261b0abf2c6d3f63bbbbdce34c60718a",
+    "tools/division-dialogue.test.cjs": "bc6ed1c29addafe63a9dd6c644b0f461185dd38fa2f1028a61997542e12cc277",
+    "site-assistant/test/server.test.mjs": "7694ccc8af8e12b95c444c274921f736b8e0ca7d9e90ba38f55d99f94c521bed",
+    "docs/reviews/TWO_SITE_AUTONOMOUS_HELP_20261120.test.cjs": "0413809a20a098a06a16c8c9c0dbf92469d776732f12b95b0913e2a49063dfb3",
+    "tools/division-dialogue.browser.cjs": "610ace9320bae5910d48323451f5a4e9cdc1613ecc4d0a58bfc476efb7bb9fbf",
+    ".github/workflows/public-navigator.yml": "7c383b26e5acf7d7b319dc13a8da9271abe6bfcdc012ed29ba26500912c395e5",
+    "docs/tasks/TWO_SITE_PREFLIGHT_20261119.md": "a77964868340411a1a4b337311787416680d1abeb43cabf282accbb914b5fe90"
+  },
+  "test_results": {
+    "dom_and_pure": {
+      "passed": 18,
+      "failed": 0,
+      "independent_cases": 7,
+      "synthetic_numeric_chains": 1710
+    },
+    "local_http_and_training": {
+      "passed": 17,
+      "failed": 0
+    },
+    "native_plans": {
+      "passed": 2700
+    },
+    "navigator": {
+      "passed": 65,
+      "failed": 0
+    },
+    "syntax_and_diff": "PASS",
+    "workflow_yaml": "PASS"
+  },
+  "browser": {
+    "status": "NOT_RUN_SCENARIOS_LAUNCH_BLOCKED",
+    "expected_scenarios": 6,
+    "actual_scenarios": 0,
+    "viewports": [
+      320,
+      390,
+      1280
+    ],
+    "bundled_chromium": "missing",
+    "system_chromium": "socket() failed: Operation not permitted; SIGABRT",
+    "ci_gate": "public-navigator shard 0; tools/division-dialogue.browser.cjs"
+  },
+  "open_code_findings": [],
+  "release_blockers": [
+    "Obtain passing browser smoke on the final PR source snapshot and inspect screenshots.",
+    "Coordinator must validate current authoritative main/PR head and record identity of reviewed source blobs."
+  ],
+  "external_provider_review": false,
+  "paid_api_calls": 0,
+  "production_writes": 0
+}

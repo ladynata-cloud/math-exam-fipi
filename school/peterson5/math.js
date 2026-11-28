@@ -51,7 +51,11 @@ const rows=[
 ['natural-divide','Деление натуральных чисел','Находим десятки и единицы частного.',['natural-multiply']],
 ['natural-order','Порядок действий с натуральными числами','Скобки, затем умножение, затем сложение.',[]],
 ['gcd','Наибольший общий делитель','Берём общие простые множители в меньшем количестве.',[]],
-['lcm','Наименьшее общее кратное','Берём все нужные простые множители в большем количестве.',['gcd']]
+['lcm','Наименьшее общее кратное','Берём все нужные простые множители в большем количестве.',['gcd']],
+// Keep new IDs at the end. The original row positions are part of the saved practice seeds.
+['letter-product','Запись произведения с буквами','Перенеси числовой множитель перед буквами и опусти знаки умножения.',[]],
+['unlike-fraction-subtract','Вычитание дробей с разными знаменателями','Приведи дроби к общему знаменателю и вычти числители.',['fraction-subtract']],
+['decimal-place-subtract','Вычитание дробей с разным числом знаков после запятой','Совмести запятые и допиши нули справа у более короткой дробной части.',['decimal-subtract']]
 ];
 const skills=rows.map(r=>({id:r[0],title:r[1],description:r[2],prerequisites:r[3]}));
 function generate(id,seed,level=1){
@@ -61,7 +65,8 @@ function generate(id,seed,level=1){
  const step=(prompt,value,hint,explanation,answerFormat)=>{if(!answerFormat&&/десятичной дробью|Введи десятичную дробь/.test(prompt))answerFormat='decimal';const s={prompt,answer:answerFormat==='decimal'?decimal(value):answer(value),hint,explanation:explanation||hint};if(answerFormat)s.answerFormat=answerFormat;task.steps.push(s);};
  const done=(op,a,b,result)=>{task.answer=answer(result);task.calculation={op,left:answer(a),right:answer(b)};};
  const f=()=>{let d=R(2,level===1?8:level===2?12:20),n=R(1,level===1?d-1:2*d-1);return must(n+'/'+d);};
- const D=()=>{const places=level===1?1:R(1,level===2?2:3),den=10**places;let n=R(1,level===1?39:level===2?249:1499);while(n%10===0)n++;return {r:must(n+'/'+den),n,den,places,text:decimal(n+'/'+den)};};
+ const decimalOperand=(n,places)=>{const den=10**places,r=must(n+'/'+den);return {r,n,den,places,text:decimal(r)};};
+ const D=()=>{const places=level===1?1:R(1,level===2?2:3);let n=R(1,level===1?39:level===2?249:1499);while(n%10===0)n++;return decimalOperand(n,places);};
  const binary=(op,A,B,displayA,displayB)=>{
   const sym={add:'+',subtract:'−',multiply:'·',divide:':'}[op],result=operation(op,A,B);task.prompt='Вычисли: '+(displayA||format(A))+' '+sym+' '+(displayB||format(B))+'. Запиши число или дробь.';
   if(op==='add'||op==='subtract'){const den=lcm(A.d,B.d),a=A.n*(den/A.d),b=B.n*(den/B.d);step('Найди наименьший общий знаменатель. Запиши целое число.',den,'Подбери наименьшее число, которое делится на оба знаменателя.');step('Запиши числитель первой дроби после приведения к знаменателю '+den+'.',a,'Во сколько раз увеличился знаменатель, во столько же увеличь числитель.');step('Запиши числитель второй дроби после приведения к знаменателю '+den+'.',b,'Умножь числитель и знаменатель второй дроби на одно число.');step('Выполни действие с полученными числителями. Запиши новый числитель.',op==='add'?a+b:a-b,'Знаменатель остаётся общим.','Числитель результата: '+a+' '+sym+' '+b+' = '+(op==='add'?a+b:a-b)+'.');}
@@ -69,7 +74,22 @@ function generate(id,seed,level=1){
   else{step('Какой числитель у дроби, обратной делителю? Запиши число.',B.d,'В обратной дроби числитель и знаменатель меняются местами.');step('Какой знаменатель у дроби, обратной делителю? Запиши число.',B.n,'Первую дробь не переворачиваем.');step('Перемножь числители после замены деления умножением.',A.n*B.d,'Числитель первой дроби умножь на числитель обратной.');step('Перемножь знаменатели после замены деления умножением.',A.d*B.n,'Знаменатель первой дроби умножь на знаменатель обратной.');}
   done(op,A,B,result);task.explanation=(displayA||format(A))+' '+sym+' '+(displayB||format(B))+' = '+format(result)+'. Проверь, можно ли сократить результат.';
  };
- if(id==='natural-multiply'){
+ if(id==='letter-product'){
+  const pool=Array.from('abcdfkmnprtxy'),letters=[];
+  for(let i=0;i<level;i++)letters.push(pool.splice(R(0,pool.length-1),1)[0]);
+  letters.sort();
+  const coefficient=R(2,level===1?19:49),literal=letters.join(''),factors=letters.slice();
+  factors.splice(R(0,letters.length),0,String(coefficient));
+  const product=factors.join(' · ');
+  task.kind='choice';task.prompt='Упрости запись '+product+'. Поставь число перед буквами и опусти знаки умножения.';
+  step('Какой числовой множитель входит в произведение?',coefficient,'Найди число среди множителей.');
+  step('Сколько буквенных множителей в произведении?',level,'Посчитай буквы в исходной записи.');
+  task.answer=coefficient+literal;
+  task.choices=[task.answer,literal+coefficient,coefficient+' + '+letters.join(' + '),(coefficient+1)+literal];
+  for(let i=task.choices.length-1;i>0;i--){const j=R(0,i);[task.choices[i],task.choices[j]]=[task.choices[j],task.choices[i]];}
+  task.finalLabel='Выбери запись произведения с числовым множителем перед буквами.';
+  task.explanation='Множители можно переставлять. Число '+coefficient+' пишем перед '+(level===1?'буквой':'буквами')+'. Получается '+task.answer+'.';
+ }else if(id==='natural-multiply'){
   const a=R(12,level===1?49:level===2?99:299),b=R(2,level===1?5:level===2?9:15),tens=Math.floor(a/10)*10,ones=a%10;
   task.prompt='Вычисли: '+a+' · '+b+'.';step('Умножь единицы: '+ones+' · '+b+'.',ones*b,'В числе '+a+' единиц: '+ones+'.');step('Умножь десятки: '+tens+' · '+b+'.',tens*b,'Сначала умножь '+tens/10+' на '+b+', затем допиши ноль.');step('Сложи два произведения: '+ones*b+' + '+tens*b+'.',a*b,'Мы умножили каждое слагаемое и складываем результаты.');done('multiply',a,b,a*b);task.answerFormat='integer';task.explanation=a+' · '+b+' = ('+tens+' + '+ones+') · '+b+' = '+tens*b+' + '+ones*b+' = '+a*b+'.';
  }else if(id==='natural-divide'){
@@ -91,10 +111,23 @@ function generate(id,seed,level=1){
  }else if(id==='fraction-mixed'){
   const w=R(1,level===1?4:12),d=R(2,level===1?8:16),n=R(1,d-1);task.prompt='Запиши '+mix(w,n,d)+' в виде неправильной дроби.';
   step('Сколько долей со знаменателем '+d+' содержится в '+w+' целых? Запиши число.',w*d,'Умножь целую часть на знаменатель.');step('Прибавь ещё '+n+' долей. Каким стал числитель?',w*d+n,'К долям из целой части добавь числитель дробной части.');task.answer=answer((w*d+n)+'/'+d);task.answerFormat='improper-fraction';task.calculation={op:'identity',left:(w*d+n)+'/'+d};task.explanation=mix(w,n,d)+' = '+frac(w*d+n,d)+'. Знаменатель не меняется.';
+ }else if(id==='unlike-fraction-subtract'){
+  const limit=[8,12,20][level-1],firstDen=R(2,limit-1),secondDen=R(firstDen+1,limit);
+  const proper=(den)=>{const numerators=[];for(let n=1;n<den;n++)if(gcd(n,den)===1)numerators.push(n);return must(pick(numerators)+'/'+den);};
+  let a=proper(firstDen),b=proper(secondDen);
+  if(a.n*b.d<b.n*a.d)[a,b]=[b,a];
+  binary('subtract',a,b);
+  task.answerFormat='reduced-fraction';task.finalLabel='Запиши разность несократимой дробью.';
  }else if(/^fraction-(add|subtract|multiply|divide)$/.test(id)){
   const op=id.slice(9);let A=f(),B=f();if(op==='subtract'&&operation('subtract',A,B).n<0){const t=A;A=B;B=t;}binary(op,A,B);
- }else if(id==='decimal-add'||id==='decimal-subtract'){
-  let A=D(),B=D();const op=id==='decimal-add'?'add':'subtract';if(op==='subtract'&&operation('subtract',A.r,B.r).n<0){const t=A;A=B;B=t;}const den=Math.max(A.den,B.den),a=A.n*(den/A.den),b=B.n*(den/B.den),result=operation(op,A.r,B.r),unit=den===10?'десятых':den===100?'сотых':'тысячных';
+ }else if(id==='decimal-add'||id==='decimal-subtract'||id==='decimal-place-subtract'){
+  let A,B;
+  if(id==='decimal-place-subtract'){
+   const short=level===3?2:1,long=level===1?2:3,whole=R(3,level*12+5);
+   const operand=(integer,places)=>decimalOperand(integer*10**places+R(0,10**(places-1)-1)*10+R(1,9),places);
+   A=operand(whole,short);B=operand(R(1,whole-1),long);
+  }else{A=D();B=D();}
+  const op=id==='decimal-add'?'add':'subtract';if(op==='subtract'&&operation('subtract',A.r,B.r).n<0){const t=A;A=B;B=t;}const den=Math.max(A.den,B.den),a=A.n*(den/A.den),b=B.n*(den/B.den),result=operation(op,A.r,B.r),unit=den===10?'десятых':den===100?'сотых':'тысячных';
   task.prompt='Вычисли: '+A.text+(op==='add'?' + ':' − ')+B.text+'. Запиши десятичную дробь.';step('Вырази '+A.text+' в '+unit+'. Запиши количество этих долей.',a,'Умножь число на '+den+'.');step('Вырази '+B.text+' в '+unit+'. Запиши количество этих долей.',b,'Считаем доли одинакового размера.');step('Сколько '+unit+' получится после '+(op==='add'?'сложения':'вычитания')+'?',op==='add'?a+b:a-b,'Выполни действие с целыми количествами долей.');done(op,A.r,B.r,result);task.answer=decimal(result);task.answerFormat='decimal';task.explanation=A.text+(op==='add'?' + ':' − ')+B.text+' = '+decimal(result)+'. Запятая отделяет целые от долей.';
  }else if(id==='decimal-multiply'){
   const A=D(),B=D(),result=operation('multiply',A.r,B.r);task.prompt='Вычисли: '+A.text+' · '+B.text+'. Запиши десятичную дробь.';step('Умножь числа без запятых: '+A.n+' · '+B.n+'.',A.n*B.n,'Сначала умножаем как натуральные числа.');step('Сколько всего цифр после запятых в двух множителях?',A.places+B.places,'Сложи число знаков после запятой в первом и втором множителях.');done('multiply',A.r,B.r,result);task.answer=decimal(result);task.answerFormat='decimal';task.explanation='В произведении '+A.n*B.n+' отделяем справа '+(A.places+B.places)+' знаков: '+decimal(result)+'. При необходимости дописываем нули слева.';

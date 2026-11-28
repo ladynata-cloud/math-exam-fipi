@@ -1,0 +1,30 @@
+name: Board platform — manifest evolution preflight
+on:
+  pull_request:
+    paths:
+      - 'trainers/**'
+      - 'board-server/**'
+      - 'tools/board-platform-preflight*'
+      - 'tools/fixtures/board-registry-transitions.json'
+      - '.github/workflows/board-platform-preflight.yml'
+permissions:
+  contents: read
+concurrency:
+  group: board-platform-preflight-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  board-platform-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Test positive and negative capability transitions
+        run: node --test tools/board-platform-preflight.test.cjs
+      - name: Verify actual merge candidate against first parent
+        run: node tools/board-platform-preflight.cjs "$(git rev-parse HEAD^1)"

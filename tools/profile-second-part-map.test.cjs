@@ -5,11 +5,20 @@ const storage=values=>({getItem(key){return Object.hasOwn(values,key)?JSON.strin
 const rawStorage=raw=>({getItem(){return raw;},setItem(){throw Error('read-only');}});
 const work=(solved,extra={})=>({schema:1,step:solved.length,solved,answers:{},helps:[],errors:0,...extra});
 
-test('project 2027 has all seven second-part learning routes and retained resources',()=>{
- assert.deepEqual(M.items.map(x=>x.number),[14,15,16,17,18,19,20]);
- assert.deepEqual(M.items.map(x=>x.legacyNumber??null),[13,14,15,null,17,18,19]);
- for(const item of M.items){assert.equal(item.href,'/ege-profil/part-two/index.html#exam/'+item.number);assert.match(item.coverage,/6 учебных тем.*36 задач/);assert.ok(item.resources.length>=1);}
- for(const x of M.items){assert.ok(x.title&&x.goal&&x.coverage&&x.href);assert.ok(Array.isArray(x.resources));}
+test('approved 2027 map has seven official second-part routes and extra optimization',()=>{
+ assert.deepEqual(M.items.map(x=>x.number),[13,14,15,16,17,18,19]);
+ assert.deepEqual(M.items.map(x=>x.legacyPartTwo),[14,15,16,null,18,19,20]);
+ for(const item of M.items){
+  assert.equal(item.href,'/ege-profil/'+(item.number===16?'start':'part-two')+'/#fipi/2027/'+item.number);
+  if(item.number===16)assert.match(item.coverage,/16 тем.*96 подготовительных числовых задач/);
+  else if(item.number===13)assert.match(item.coverage,/6 учебных тем.*48 задач/);
+  else assert.match(item.coverage,/6 учебных тем.*36 задач/);
+  assert.ok(item.resources.length>=1);assert.ok(item.title&&item.goal&&item.coverage);
+ }
+ assert.deepEqual(M.extras.map(x=>x.id),['optimization']);
+ assert.equal(M.extras[0].number,null);assert.equal(M.extras[0].legacyPartTwo,17);
+ assert.match(M.extras[0].href,/#topic\/optimization$/);
+ assert.match(M.items.find(x=>x.number===16).coverage,/Письменное решение.*не проверяются/);
 });
 
 test('every external destination exists and internal routes resolve to known topics',()=>{
@@ -19,8 +28,9 @@ test('every external destination exists and internal routes resolve to known top
  for(const x of M.items)for(const href of [x.href,...x.resources.map(y=>y.href)]){
   if(href.startsWith('#lesson/'))assert.ok(lessons.has(href.slice(8)),href);
   else if(href.startsWith('#calm/'))assert.ok(ctx.ProfileCalmData.exams.some(x=>x.number===Number(href.slice(6))),href);
+  else if(href.startsWith('#fipi/2027/'))assert.ok(require('../ege-profil/exam-map.js').get(href.split('/').at(-1)),href);
   else if(href.startsWith('#'))assert.equal(href,'#exam/16');
-  else{assert.ok(href.startsWith('/'));assert.ok(fs.statSync(path.join(root,href.split(/[?#]/)[0])).isFile(),href);}
+  else{assert.ok(href.startsWith('/'));const target=href.split(/[?#]/)[0];assert.ok(fs.statSync(path.join(root,target+(target.endsWith('/')?'index.html':''))).isFile(),href);}
  }
 });
 
@@ -63,4 +73,13 @@ test('stereometry route denominator is the unique curriculum units, not visits',
  const units=Object.fromEntries(ids.map(id=>[id,{guided:true}]));
  assert.equal(M.progress(15,storage({'mathExamStereo.v1':{version:1,units}})).done,ids.length);
  assert.match(M.progress(15,storage({'mathExamStereo.v1':{version:1,units}})).detail,/с опорой/);
+});
+
+
+test('current display items read the original collection counters, with finance kept as preparation',()=>{
+ const s=storage({'ep_progress_v1':{xp:{eq:5}}});
+ assert.equal(M.progress(M.items.find(item=>item.number===13),s).done,5);
+ assert.equal(M.progress(M.items.find(item=>item.number===16),s).kind,'preparation');
+ assert.equal(M.progress(M.items.find(item=>item.number===16),s).done,null);
+ assert.equal(M.progress(M.extras[0],s).kind,'preparation');
 });

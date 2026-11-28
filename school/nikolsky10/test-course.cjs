@@ -12,5 +12,14 @@ for(const l of D.lessons){
  }
 }
 assert.equal(C.check('0,5',{answer:'1/2'}),true);assert(C.check('2π/3',{kind:'text',answer:'2pi/3'}));assert(C.check('3;1',{kind:'set',answer:'1;3'}));assert(!C.check('1;1',{kind:'set',answer:'1;3'}));assert(!C.check('Infinity',{answer:'0'}));
+const periodic=D.lessons[0].tasks[1];
+for(const target of [periodic,periodic.steps.at(-1)]){
+ assert(C.check('3/11',target));
+ assert(!C.check('27/99',target));
+}
+const trigInterval=D.lessons.find(l=>l.section==='11.7').tasks[1];
+assert(C.check('(-2π/12;3π/18)',trigInterval));
+assert(!C.check('[-2π/12;3π/18)',trigInterval));
+assert(!C.check('(-2π/12;3π/12)',trigInterval));
 const all=JSON.stringify(D.lessons);assert(!all.includes('TODO'));assert(!all.includes('undefined'));assert(!all.includes('Алимов'));assert(!all.includes('Макарычев'));
 console.log(JSON.stringify({gate:'NIKOLSKY10_CONTENT_OK',topics:D.lessons.length,tasks,steps,sourceTasks}));

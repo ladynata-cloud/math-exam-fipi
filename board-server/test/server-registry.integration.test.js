@@ -11,6 +11,8 @@ const { io: createSocketClient } = require('socket.io-client');
 
 const serverDir = path.resolve(__dirname, '..');
 const manifestPath = path.resolve(serverDir, '../trainers/board-compat.json');
+const {expectedMirrors, expectedDigest} = require('../../tools/fixtures/board-registry-expectations.cjs');
+const committedManifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
 async function freePort() {
   const server = net.createServer();
@@ -176,11 +178,8 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   const registry = await endpoint.json();
   assert.equal(registry.schemaVersion, 1);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
-  assert.equal(registry.trainers.length, 63);
-  assert.deepEqual(
-    registry.trainers.map(entry => entry.trainerId),
-    ['atanasyan-grade7', 'geometry7-practice', 'geometry7-control-work', 'geometry7-rebuild', 'atanasyan-7-9', 'college-functions', 'college-logarithms', 'vpr-math', 'vilenkin6-percent', 'ege-baza-11', 'ege-baza-13', 'ege-methods', 'ege-profile-circle', 'ege-profile-log-trig', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'sections-from-zero', 'stereo-literacy-atanasyan', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example'].concat(require('../../tools/fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort()
-  );
+  assert.deepEqual(registry.trainers, expectedMirrors(committedManifest));
+  assert.equal(registry.digest, expectedDigest(committedManifest));
 
   const localhostCors = await fetch(`${server.baseUrl}/api/trainer-registry`, {
     headers: { Origin: 'http://localhost:5173' },
@@ -202,7 +201,7 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   assert.equal(health.registrySchemaVersion, 1);
   assert.equal(health.registryDigest, registry.digest);
   assert.equal(health.registrySource, 'bundled-default');
-  assert.equal(health.registryEntryCount, 63);
+  assert.equal(health.registryEntryCount, expectedMirrors(committedManifest).length);
   assert.equal(health.registryError, null);
 
   const roomResponse = await fetch(`${server.baseUrl}/api/rooms`, { method: 'POST' });
@@ -322,7 +321,11 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     const health = await (await fetch(`${server.baseUrl}/health`, { cache: 'no-store' })).json();
     assert.equal(health.registryLoaded, true);
     assert.equal(health.registrySource, 'bundled-default');
-    assert.equal(health.registryEntryCount, 63);
+    assert.equal(health.registryEntryCount, expectedMirrors(committedManifest).length);
+    const packagedRegistry = await (await fetch(`${server.baseUrl}/api/trainer-registry`, { cache: 'no-store' })).json();
+    assert.deepEqual(packagedRegistry.trainers, expectedMirrors(committedManifest));
+    assert.equal(packagedRegistry.digest, expectedDigest(committedManifest));
+    assert.equal(health.registryDigest, packagedRegistry.digest);
     const cabinet = await fetch(`${server.baseUrl}/learning/`, { cache: 'no-store' });
     assert.equal(cabinet.status, 200);
     assert.match(cabinet.headers.get('content-security-policy'), /frame-ancestors 'none'/);
@@ -753,4 +756,43 @@ test('removing a manifest entry revokes bridge and legacy authorization', async 
       await server.stop();
     }
   });
+});
+
+test('Peterson roll-out preserves a v1 room under either manifest and isolates the three-part course', async t => {
+  const combined = JSON.parse(fs.readFileSync(manifestPath,'utf8'));
+  for (const fullAvailable of [false,true]) {
+    const manifest = structuredClone(combined);
+    if (!fullAvailable) manifest.trainers = manifest.trainers.filter(row=>row.trainerId!=='peterson6-complete');
+    await temporaryFile(JSON.stringify(manifest), async file => {
+      const server = await startServer(file);
+      const clients=[];
+      try {
+        const registry = await (await fetch(server.baseUrl+'/api/trainer-registry')).json();
+        const legacy=registry.trainers.find(row=>row.trainerId==='peterson6');
+        assert.equal(legacy.version,'1.1.0');
+        assert.equal(registry.trainers.some(row=>row.trainerId==='peterson6-complete'),fullAvailable);
+        const room=await createRoom(server.baseUrl);
+        const teacher=await connectParticipant(server.baseUrl,room,'teacher');clients.push(teacher.socket);
+        const student=await connectParticipant(server.baseUrl,room,'student');clients.push(student.socket);
+        const change=waitForSocketEvent(student.socket,'board:trainer-url-change');
+        teacher.socket.emit('board:trainer-url-change',authPayload(room,teacher,{trainerUrl:'/trainers/peterson6.html#lesson/p08/0'}));await change;
+        const saved={route:'#lesson/p08/0',work:{tasks:{'p08-t01':{note:'Проверяем знаменатель',value:'5/12'}}}};
+        const ack=waitForSocketEvent(student.socket,'board:trainer-state-change');
+        teacher.socket.emit('board:trainer-state-change',bridgeState(room,teacher,'peterson6',saved,{trainerVersion:'1.1.0'}));
+        assert.deepEqual((await ack).state,saved);
+        await expectNoSocketEvent(student.socket,'board:trainer-state-change',()=>{
+          teacher.socket.emit('board:trainer-state-change',bridgeState(room,teacher,'peterson6-complete',{route:'#lesson/p58/0'}));
+        });
+        const resume=waitForSocketEvent(teacher.socket,'room:state');teacher.socket.emit('room:state');
+        assert.deepEqual((await resume).state.latestTrainerState.state,saved);
+        if (fullAvailable) {
+          const next=waitForSocketEvent(student.socket,'board:trainer-url-change');
+          teacher.socket.emit('board:trainer-url-change',authPayload(room,teacher,{trainerUrl:'/trainers/peterson6-complete.html#lesson/p58/0'}));await next;
+          const full=waitForSocketEvent(student.socket,'board:trainer-state-change');
+          teacher.socket.emit('board:trainer-state-change',bridgeState(room,teacher,'peterson6-complete',{route:'#lesson/p58/0'}));
+          assert.equal((await full).trainerId,'peterson6-complete');
+        }
+      } finally { for (const socket of clients) socket.disconnect();await server.stop(); }
+    });
+  }
 });

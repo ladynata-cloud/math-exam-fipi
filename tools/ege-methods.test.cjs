@@ -38,6 +38,14 @@ test('all modelled guided steps and fresh tasks match independent calculations',
 
   const teams = range(1, 12).filter(n => sums([5, 6, 7], n).includes(46));
   assert.deepEqual(steps('double-inequality'), ['bounds', teams[0], teams.at(-1), 46 - 5 * 7 - 5]);
+  const boundsQuestion = by('double-inequality').steps[0].field;
+  const fits = (left, sign, right) => sign === '≤' ? left <= right : left < right;
+  for (const [key, label] of boundsQuestion.options) {
+    const [, low, left, right, high] = /^(\d+)n ([<≤]) 46 ([<≤]) (\d+)n$/.exec(label);
+    const acceptedTeams = range(1, 12).filter(n => fits(low * n, left, 46) && fits(46, right, high * n));
+    if (key === boundsQuestion.answer) assert.deepEqual(acceptedTeams, teams);
+    else assert.notDeepEqual(acceptedTeams, teams, 'Equivalent choice: ' + label);
+  }
   const groups = range(1, 12).filter(n => sums([8, 9], n).includes(67));
   assert.deepEqual(groups, [8]);
   assert.deepEqual(answers('double-inequality'), [groups[0], range(0, 8).find(k => 9 * k + 8 * (8 - k) === 67)]);
@@ -226,7 +234,7 @@ test('transfer destinations target the existing profile and base banks', () => {
   for (const lesson of lessons) {
     for (const link of lesson.links) {
       const url = new URL(link.href, 'https://mathexam.space');
-      if (link.title.startsWith('Профиль №20')) assert(profile.includes("add('" + url.hash.split('/').at(-1) + "',20,"));
+      if (link.title.startsWith('Профиль №19')) assert(profile.includes("add('" + url.hash.split('/').at(-1) + "',20,"));
       else assert(base.replace(/,\s+/g, ',').includes("add('" + url.hash.split('practice-').at(-1) + "',21,"));
     }
   }

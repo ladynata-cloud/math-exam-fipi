@@ -11,7 +11,7 @@ const routes={inequalities:'trainers/oge13-inequalities-series.html',lesson:'oge
 const source=key=>fs.readFileSync(path.join(root,routes[key]),'utf8');
 const navigatorScripts=['assets/assistant/navigator-data.js?v=20261105-site1','assets/assistant/navigator-widget.js?v=20261105-site1'];
 const externalScripts={
- inequalities:['assets/oge-wayfinding.js',...navigatorScripts,'trainers/oge-course-shared-mode.js','trainers/oge-course-reference.js','trainers/oge-course-algebra-reference.js','trainers/oge-course-reference-entry.js','trainers/board-bridge.js','trainers/oge-native-10-14-board.js'],
+ inequalities:['assets/oge-wayfinding.js',...navigatorScripts,'assets/download-adaptation.js','trainers/oge-course-shared-mode.js','trainers/oge-course-reference.js','trainers/oge-course-algebra-reference.js','trainers/oge-course-reference-entry.js','trainers/board-bridge.js','trainers/oge-native-10-14-board.js'],
  lesson:['assets/oge-wayfinding.js',...navigatorScripts,'trainers/task19-textbook-data.js','trainers/task19-reference.js','trainers/oge-course-reference.js','trainers/oge-course-geometry.js'],
  variant:['assets/oge-wayfinding.js',...navigatorScripts]
 };

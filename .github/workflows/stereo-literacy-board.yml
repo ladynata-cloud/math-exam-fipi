@@ -6,6 +6,9 @@ on:
       - 'stereo-course/textbook/data/course.json'
       - 'stereo-course/assets/task-scene*'
       - 'trainers/stereo-literacy-atanasyan.html'
+      - 'trainers/atanasyan-stereo-textbook.html'
+      - 'stereo-course/textbook/assets/board-session.js'
+      - 'tools/atanasyan-stereo-board.browser.cjs'
       - 'trainers/board-*'
       - 'trainers/trainer-board.html'
       - 'learning/course-program.js'
@@ -17,6 +20,9 @@ on:
       - 'stereo-course/literacy/**'
       - 'stereo-course/textbook/data/course.json'
       - 'trainers/stereo-literacy-atanasyan.html'
+      - 'trainers/atanasyan-stereo-textbook.html'
+      - 'stereo-course/textbook/assets/board-session.js'
+      - 'tools/atanasyan-stereo-board.browser.cjs'
       - 'trainers/board-*'
       - 'trainers/trainer-board.html'
       - 'learning/course-program.js'
@@ -54,4 +60,6 @@ jobs:
           node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
       - name: Verify first screens and a two-participant board room
         run: node tools/stereo-literacy-board.browser.cjs
+      - name: Verify numbered textbook on the shared board
+        run: node tools/atanasyan-stereo-board.browser.cjs
       - run: git diff --check

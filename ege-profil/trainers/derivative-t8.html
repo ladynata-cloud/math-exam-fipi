@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Задание 9 · Производная по графику</title>
+<title>Задание 8 · Производная по графику</title>
 <link rel="canonical" href="https://mathexam.space/ege-profil/trainers/derivative-t8.html">
 <style>
   :root{
@@ -82,18 +83,21 @@
   .ladder-note{margin:0 0 4px}
   .ladder-done{margin:8px 0 10px;font-weight:600;color:var(--ink-strong)}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261115-fipi-map"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="derivative-graph"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="derivative-graph"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <div class="wrap">
   <a class="back" href="../index.html">← Курс</a>
-  <p class="eyebrow">задание 9 курса · краткий ответ · производная и первообразная</p>
+  <p class="eyebrow">№8 · производная и первообразная по графику</p>
   <h1>Производная по графику</h1>
   <p class="lede">Сначала определите, что изображено на рисунке: функция или её производная. Затем связывайте наклон, знак производной и точки экстремума.</p>
 
@@ -190,20 +194,22 @@ var T8 = (function(){
   function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
   /* Кусочно-линейная «производная»: узлы x = -6..6, значения целые.
-     Нули — только в выбранных узлах, между нулями знак постоянен и чередуется.
-     Значит: каждый ноль — строгая смена знака, все экстремумы f — в целых точках. */
+     Нули находятся в выбранных узлах. Между соседними нулями знак постоянен.
+     В части примеров один нуль — касание оси без смены знака. */
   function buildSigned(){
     var zeros = [];
     var x = rnd(-5,-3);
     while (x <= 5){ zeros.push(x); x += rnd(2,4); }
     if (zeros.length < 2){ return buildSigned(); }
     var sign = pick([1,-1]);
+    var touch = pick([true, false]) ? pick(zeros) : null;
+    var s = sign;
     var vals = {};
     zeros.forEach(function(z){ vals[z] = 0; });
     var bounds = [-6].concat(zeros, [6]);
     for (var r = 0; r < bounds.length-1; r++){
       var L = bounds[r], R = bounds[r+1];
-      var s = (r % 2 === 0) ? sign : -sign;
+      if (r > 0 && L !== touch) s = -s;
       for (var xi = L; xi <= R; xi++){
         if (vals[xi] === 0) continue;
         var dl = (r === 0) ? 99 : xi - L;               // край слева — без «нуля»
@@ -222,8 +228,11 @@ var T8 = (function(){
   function signLeft(g, z){ return valAt(g, z - 1) > 0 ? 1 : -1; }
   function maxima(g){ return g.zeros.filter(function(z){ return signLeft(g,z) > 0 && signRight(g,z) < 0; }); }
   function minima(g){ return g.zeros.filter(function(z){ return signLeft(g,z) < 0 && signRight(g,z) > 0; }); }
-  /* в buildSigned каждый нуль — строгая смена знака, поэтому нуль — либо максимум, либо минимум */
-  function kindAt(g, z){ return (signLeft(g,z) > 0 && signRight(g,z) < 0) ? "max" : "min"; }
+  function kindAt(g, z){
+    var left = signLeft(g, z), right = signRight(g, z);
+    if (left === right) return null;
+    return left > 0 ? "max" : "min";
+  }
   function zerosIn(g, a, b){ return g.zeros.filter(function(z){ return z >= a && z <= b; }); }
   /* целые точки отрезка [a;b] с нужным знаком f′ (нули не входят) */
   function intsWithSign(g, a, b, positive){
@@ -291,15 +300,14 @@ var T8 = (function(){
     return s.replace(".", ",").replace("-", "−");
   }
   function parseAns(s){
-    if (s == null) return NaN;
-    s = String(s).trim().replace(",", ".").replace("−", "-").replace(/\s+/g,"");
-    if (!s) return NaN;
-    return Number(s);
+    var parts = String(s == null ? "" : s).trim().replace(/−/g, "-").replace(/,/g, ".").split("/");
+    if (parts.length > 2 || !parts.every(function(part){ return /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(part.trim()); })) return NaN;
+    var n = Number(parts[0]), d = parts.length === 2 ? Number(parts[1]) : 1;
+    return Number.isFinite(n) && Number.isFinite(d) && d !== 0 && Number.isFinite(n/d) ? n/d : NaN;
   }
   function eq(user, right){
     var u = parseAns(user);
-    if (isNaN(u)) return false;
-    return Math.abs(u - right) < 1e-6;
+    return u === right || Math.abs(u - right) <= Number.EPSILON * Math.max(1, Math.abs(right));
   }
   return { rnd:rnd, pick:pick, buildSigned:buildSigned, valAt:valAt, maxima:maxima, minima:minima,
            kindAt:kindAt, zerosIn:zerosIn, intsWithSign:intsWithSign, signRuns:signRuns,
@@ -561,7 +569,12 @@ if (typeof module !== "undefined") module.exports = T8;
   /* смена знака в нуле z — словами, как пишут в тетради;
      fn — имя функции на чертеже (f′ или f), F — чьи это экстремумы */
   function changeLine(g, z, fn, F){
-    var mx = T8.kindAt(g, z) === "max";
+    var kind = T8.kindAt(g, z);
+    if (!kind) {
+      var side = T8.valAt(g, z - 1) > 0 ? "выше" : "ниже";
+      return "x = " + T8.fmt(z) + ": по обе стороны от нуля график " + fn + " " + side + " оси x. Знак сохраняется, экстремума у " + F + " здесь нет";
+    }
+    var mx = kind === "max";
     return "x = " + T8.fmt(z) + ": слева " + fn + (mx ? " > 0, справа " + fn + " < 0 — точка максимума " : " < 0, справа " + fn + " > 0 — точка минимума ") + F;
   }
   function runsText(g, r, positive){
@@ -579,12 +592,14 @@ if (typeof module !== "undefined") module.exports = T8;
         mx = zin.filter(function(z){ return T8.kindAt(g, z) === "max"; });
         mn = zin.filter(function(z){ return T8.kindAt(g, z) === "min"; });
         list = kind === "max" ? mx : kind === "min" ? mn : mx.concat(mn).sort(function(a,b){ return a-b; });
-      } while (list.length < 1);
+      } while (zin.length < 1);
       var word = kind === "max" ? "точек максимума" : kind === "min" ? "точек минимума" : "точек экстремума";
-      var last = kind === "max" ? "Точек максимума — " + mx.length + ": " + listX(mx) + "."
+      var last = !list.length ? "Таких точек на выделенном отрезке нет. Ответ равен нулю."
+        : kind === "max" ? "Точек максимума — " + mx.length + ": " + listX(mx) + "."
         : kind === "min" ? "Точек минимума — " + mn.length + ": " + listX(mn) + "."
         : "Точек максимума " + mx.length + ", точек минимума " + mn.length + "; всего точек экстремума " + list.length + ".";
       return {
+        zeroCount: kind === "all" && zin.length > list.length ? zin.length : null,
         text: "На рисунке изображён график y = f′(x) — производной функции f, определённой на интервале (−7; 7). Найдите количество " + word + " функции f на отрезке " + seg(r) + ".",
         draw: function(host){ drawPoly(host, g, { band: r }); },
         answer: list.length,
@@ -595,8 +610,8 @@ if (typeof module !== "undefined") module.exports = T8;
             a: "Дан график производной f′. Найти нужно " + word.replace("точек", "количество точек") + " самой функции f — о них будем судить по знаку производной." },
           { q: "Как по графику f′ узнать точки экстремума функции f?",
             a: "Точка экстремума — это нуль производной, в котором f′ меняет знак: с «+» на «−» — точка максимума, с «−» на «+» — точка минимума. Нуль без смены знака экстремумом не является." },
-          { q: "Найдите нули f′ на отрезке " + seg(r) + " — точки, где график пересекает ось x.",
-            a: (zin.length === 1 ? "На отрезке график пересекает ось в одной точке: " : "На отрезке график пересекает ось в точках ") + listX(zin) + "." },
+          { q: "При каких x из отрезка " + seg(r) + " график f′ находится на оси x?",
+            a: "График f′ находится на оси x при " + listX(zin) + "." },
           { q: "Определите, как меняется знак f′ в каждой из этих точек.",
             a: zin.map(function(z){ return changeLine(g, z, "f′", "f"); }).join("; ") + "." },
           { q: "Сколько " + word + " получилось?", a: last }
@@ -645,9 +660,8 @@ if (typeof module !== "undefined") module.exports = T8;
       var n = pts.length;
       if (n === 0) return GEN.intpoints();
       var w = positive ? "положительна" : "отрицательна";
-      var w2 = positive ? "возрастания" : "убывания";
       return {
-        text: "На рисунке изображён график y = f′(x) — производной функции f. Найдите количество целых точек отрезка " + seg(r) + ", в которых производная " + w + " (то есть целых точек, входящих в промежутки " + w2 + " функции f).",
+        text: "На рисунке изображён график y = f′(x) — производной функции f. Найдите количество целых точек отрезка " + seg(r) + ", в которых производная " + w + ".",
         draw: function(host){ drawPoly(host, g, { band: r }); },
         answer: n,
         hint: "Целые точки — это узлы сетки. Считаем те, где график f′ " + (positive ? "выше" : "ниже") + " оси x. Нули не считаются.",
@@ -682,7 +696,7 @@ if (typeof module !== "undefined") module.exports = T8;
           text: "На рисунке изображён график функции y = f(x). На нём отмечены точки x₁ … x₆. В какой из них значение производной наибольшее? В ответе укажите эту точку (её абсциссу).",
           draw: function(host){ drawSmooth(host, g, { marks: marks }); },
           answer: best,
-          hint: "Производная наибольшая там, где график круче всего идёт вверх.",
+          hint: "Сравните наклоны касательных слева направо. Любой подъём даёт больший наклон, чем спуск. Из двух спусков выберите более пологий.",
           params: { vals: g.vals.slice(), marks: marks.slice(), mode: mode },
           steps: [
             { q: "Что изображено на рисунке? Что означает значение производной в точке геометрически?",
@@ -692,7 +706,7 @@ if (typeof module !== "undefined") module.exports = T8;
             { q: "В какой точке производная наибольшая?",
               a: bv > 0
                 ? "Среди точек возрастания круче всего график поднимается в точке " + markName(best, marks) + ": касательная там наклонена сильнее всего, значит f′ в ней наибольшая."
-                : "Ни в одной отмеченной точке функция не возрастает, поэтому наибольшее значение производной — там, где " + (bv === 0 ? "касательная горизонтальна" : "график убывает наиболее полого") + ": " + markName(best, marks) + "." }
+                : "Все отмеченные касательные горизонтальны или наклонены вниз. Наибольшая производная там, где " + (bv === 0 ? "касательная горизонтальна" : "график убывает наиболее полого") + ": " + markName(best, marks) + "." }
           ]
         };
       }
@@ -830,14 +844,16 @@ if (typeof module !== "undefined") module.exports = T8;
       };
     },
     antider: function(){
-      var g, r, chg;
+      var g, r, zeros;
       do {
         g = T8.buildSigned(); r = subRange(g);
-        chg = T8.zerosIn(g, r[0], r[1]);
-      } while (chg.length < 1);
+        zeros = T8.zerosIn(g, r[0], r[1]);
+      } while (zeros.length < 1);
       var mode = T8.pick(["extr","int"]);
       if (mode === "extr"){
+        var chg = zeros.filter(function(z){ return T8.kindAt(g, z) !== null; });
         return {
+          zeroCount: zeros.length > chg.length ? zeros.length : null,
           text: "На рисунке изображён график функции y = f(x). F(x) — одна из первообразных функции f. Найдите количество точек экстремума функции F на отрезке " + seg(r) + ".",
           draw: function(host){ drawPoly(host, g, { band: r, label: "y = f(x)" }); },
           answer: chg.length,
@@ -849,10 +865,10 @@ if (typeof module !== "undefined") module.exports = T8;
             { q: "Как найти точки экстремума F по графику f?",
               a: "Точки экстремума F — нули F′ = f, в которых f меняет знак: там, где график f пересекает ось x, переходя с одной стороны на другую." },
             { q: "Найдите нули f на отрезке " + seg(r) + ".",
-              a: (chg.length === 1 ? "На отрезке один нуль: " : "На отрезке нули: ") + listX(chg) + "." },
-            { q: "Проверьте смену знака f в " + (chg.length === 1 ? "этой точке." : "каждой из них."),
-              a: chg.map(function(z){ return changeLine(g, z, "f", "функции F"); }).join("; ") + "." },
-            { q: "Сколько точек экстремума у F на отрезке?", a: "Знак меняется в " + (chg.length === 1 ? "единственном нуле" : "каждом из " + chg.length + " нулей") + ", всего точек экстремума " + chg.length + "." }
+              a: (zeros.length === 1 ? "На отрезке один нуль: " : "На отрезке нули: ") + listX(zeros) + "." },
+            { q: "Проверьте смену знака f в " + (zeros.length === 1 ? "этой точке." : "каждой из них."),
+              a: zeros.map(function(z){ return changeLine(g, z, "f", "F"); }).join("; ") + "." },
+            { q: "Сколько точек экстремума у F на отрезке?", a: chg.length ? "Смена знака происходит при " + listX(chg) + ". Всего точек экстремума: " + chg.length + "." : "Ни в одном нуле знак не меняется. Точек экстремума нет." }
           ]
         };
       }
@@ -861,15 +877,15 @@ if (typeof module !== "undefined") module.exports = T8;
       var n = pts.length;
       if (n === 0) return GEN.antider();
       return {
-        text: "На рисунке изображён график функции y = f(x). F(x) — одна из первообразных f. Найдите количество целых точек отрезка " + seg(r) + ", входящих в промежутки " + (positive ? "возрастания" : "убывания") + " функции F.",
+        text: "На рисунке изображён график функции y = f(x). F(x) — одна из первообразных f. Найдите количество целых точек отрезка " + seg(r) + ", в которых производная F′ " + (positive ? "положительна" : "отрицательна") + ".",
         draw: function(host){ drawPoly(host, g, { band: r, label: "y = f(x)" }); },
         answer: n,
         hint: "F возрастает там, где F′ = f > 0" + (positive ? "." : "; убывает — где f < 0."),
         params: { vals: g.vals.slice(), r: r.slice(), mode: mode, positive: positive },
         steps: [
           { q: "Что изображено на рисунке и как связаны F и f?",
-            a: "Дан график функции f, а F — её первообразная: F′ = f. Промежутки " + (positive ? "возрастания" : "убывания") + " F ищем по знаку её производной, то есть по знаку f." },
-          { q: "Где на отрезке " + seg(r) + " функция F " + (positive ? "возрастает" : "убывает") + "?",
+            a: "Дан график функции f, а F — её первообразная: F′ = f. Знак F′ в каждой точке совпадает со знаком f." },
+          { q: "Где на отрезке " + seg(r) + " производная F′ " + (positive ? "положительна" : "отрицательна") + "?",
             a: "Там, где F′ = f " + (positive ? "> 0 — график f выше оси x" : "< 0 — график f ниже оси x") + ": на " + runsText(g, r, positive) + "." },
           { q: "Какие целые точки лежат в этих промежутках? (Нули f не подходят: там F′ = 0.)",
             a: "Это точки " + listX(pts) + "." },
@@ -979,7 +995,7 @@ if (typeof module !== "undefined") module.exports = T8;
     var raw = document.getElementById("taskAnswer").value;
     if (isNaN(T8.parseAns(raw))){
       fb.className = "feedback on hint";
-      fb.textContent = "Впишите ответ числом: например, 3, −2 или 0,5.";
+      fb.textContent = "Введите число или дробь, например 3, −2, 0,5 или 1/2.";
       return;
     }
     var ok = T8.eq(raw, currentTask.answer);
@@ -1004,7 +1020,9 @@ if (typeof module !== "undefined") module.exports = T8;
         fb.textContent = "Неверно. Ответ уже открыт на последней ступени разбора — сверьте запись числа (знак и запятая в дроби).";
         return;
       }
-      fb.textContent = "Пока нет. Проверьте себя по опоре трека, возьмите подсказку или пройдите разбор по шагам.";
+      fb.textContent = currentTask.zeroCount != null && T8.eq(raw, currentTask.zeroCount)
+        ? "Вы посчитали все нули. У каждого сравните знак слева и справа. Что происходит там, где график лишь касается оси?"
+        : "Пока нет. Проверьте себя по опоре трека, возьмите подсказку или пройдите разбор по шагам.";
     }
   });
   document.getElementById("taskAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("taskCheck").click(); });
@@ -1147,7 +1165,7 @@ if (typeof module !== "undefined") module.exports = T8;
         document.getElementById("examDone").style.display = "block";
         document.getElementById("examScore").textContent = EX.score + " / 10";
         document.getElementById("examVerdict").textContent = passed
-          ? "Зачёт сдан. Задание 9 курса читается уверенно."
+          ? "Зачёт сдан. Задание 8 курса читается уверенно."
           : "Зачёт не сдан: нужно 8 верных. Вернитесь в «Распознавание» и слабые треки.";
       }, 650);
     } else {
@@ -1276,5 +1294,28 @@ if (typeof module !== "undefined") module.exports = T8;
   }
 })();
 </script>
+<!-- download-panel:start:ege-profil-derivative -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-derivative">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-derivative/ege-profil-derivative.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-derivative/ege-profil-derivative-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-derivative/ege-profil-derivative-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь отдельный авторский пример GEN.tangent: A(1; −2), B(3; 1), точка касания x₀ = 2. Найти f′(2); сохранить остальные задачи."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-derivative">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-derivative -->
 </body>
 </html>

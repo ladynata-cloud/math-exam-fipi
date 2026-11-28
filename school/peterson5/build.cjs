@@ -1,5 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),root=__dirname;
+const practiceSkills=new Set(require('./math.js').skills.map(skill=>skill.id));
 const read=n=>JSON.parse(fs.readFileSync(path.join(root,n),'utf8'));
 const meta=read('theory.json'),parts=[read('source-part1.json'),read('source-part2.json')];
 const topics=parts.flatMap((p,i)=>p.topics.map(t=>({...t,part:i+1})));
@@ -15,6 +16,11 @@ const lessons=topics.map((t,i)=>{
    const shift=(i+j)%x.choices.length;x.choices=x.choices.slice(shift).concat(x.choices.slice(0,shift));}
   const f=format(q);if(f)x.answerFormat=f;
   if(q.calculation)x.calculation=q.calculation;
+  if(q.transfer){
+   const {skill,level}=q.transfer;
+   if(!practiceSkills.has(skill)||![1,2,3].includes(level))throw Error('Unknown transfer exercise for '+x.id);
+   x.transfer={skill,level};
+  }
   return x;
  });
  return {...l,title:t.title,order:i+1,sourceRange:tasks.map(x=>x.source.number).join('; '),tasks};

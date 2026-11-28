@@ -67,13 +67,35 @@ case 'homothety':return T('Гомотетия с центром O(0;0), коэф
 case 'similarity-method':return T('Гомотетия с центром C и коэффициентом 1/2 переводит A в M и B в N. AB = '+(2*x)+' см. Найди MN.',x,[S('Во сколько раз уменьшаются расстояния?',2,'Коэффициент 1/2 уменьшает каждое расстояние вдвое.'),S('Найди длину образа AB.',x,'M и N — середины CA и CB; получили теорему о средней линии другим методом.')]);
 default:throw Error('Unknown task kind: '+kind);
 }}
-function number(value){let s=String(value).toLowerCase().replace(/\s/g,'').replace(/,/g,'.').replace(/[−–]/g,'-').replace(/π/g,'pi').replace(/√/g,'sqrt');if(s.length>120)throw Error('Слишком длинная запись.');const tok=s.match(/sqrt|pi|\d+(?:\.\d+)?|[()+\-*/^]/g)||[];if(tok.join('')!==s)throw Error('Используй числа, дроби, sqrt(...) или pi.');let i=0,depth=0;
- function atom(){if(++depth>20)throw Error('Слишком сложная запись.');let v,t=tok[i++];if(t==='-')v=-atom();else if(t==='+')v=atom();else if(t==='pi')v=Math.PI;else if(t==='sqrt'){if(tok[i++]!=='(')throw Error('После sqrt нужны скобки.');v=Math.sqrt(expr());if(tok[i++]!==')')throw Error('Закрой скобку.');}else if(t==='('){v=expr();if(tok[i++]!==')')throw Error('Закрой скобку.');}else if(t&&/^\d/.test(t))v=Number(t);else throw Error('Неполная запись.');depth--;if(tok[i]==='^'){i++;const power=atom();if(Math.abs(power)>12)throw Error('Слишком большая степень.');v=Math.pow(v,power);}return v;}
- function term(){let v=atom();while(tok[i]==='*'||tok[i]==='/'){const t=tok[i++],w=atom();v=t==='*'?v*w:v/w;}return v;}
- function expr(){let v=term();while(tok[i]==='+'||tok[i]==='-'){const t=tok[i++],w=term();v=t==='+'?v+w:v-w;}return v;}
- const out=expr();if(i!==tok.length||!Number.isFinite(out)||Math.abs(out)>1e12)throw Error('Проверь запись числа.');return out;}
-function equal(value,a){if(Array.isArray(a)){const p=String(value).split(';');return p.length===a.length&&p.every((x,i)=>equal(x,a[i]));}if(typeof a==='string')return String(value).trim().toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ')===a.toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ');try{const n=number(value);return Math.abs(n-a)<= (Number.isInteger(a)?1e-8:0.00051);}catch(_){return false;}}
+// Parse a small, explicit real-number language. Validate every intermediate operation.
+function number(value){
+ const failure=(kind,message)=>{const e=new Error(message);e.kind=kind;throw e;};
+ const finite=v=>{if(!Number.isFinite(v)||Math.abs(v)>1e12)failure('domain','На этом шаге выражение не задаёт допустимое конечное число.');return v;};
+ const s=String(value).toLowerCase().replace(/\s/g,'').replace(/,/g,'.').replace(/[−–]/g,'-').replace(/π/g,'pi').replace(/√/g,'sqrt').replace(/[×·∙]/g,'*').replace(/[÷:]/g,'/');
+ if(!s)failure('empty','Сначала введи ответ.');if(s.length>120)failure('format','Слишком длинная запись.');
+ const tok=s.match(/sqrt|pi|(?:\d+(?:\.\d*)?|\.\d+)|[()+\-*/^]/g)||[];
+ if(tok.join('')!==s)failure('format','Используй числа, дроби, sqrt(...) или pi.');let i=0,depth=0;
+ function atom(){if(++depth>20)failure('format','Слишком сложная запись.');let v,t=tok[i++];
+  if(t==='pi')v=Math.PI;
+  else if(t==='sqrt'){if(tok[i++]!=='(')failure('format','После sqrt нужны скобки.');const rad=expr();if(tok[i++]!==')')failure('format','Закрой скобку.');if(rad<0)failure('domain','Под квадратным корнем должно быть неотрицательное число.');v=Math.sqrt(rad);}
+  else if(t==='('){v=expr();if(tok[i++]!==')')failure('format','Закрой скобку.');}
+  else if(t&&/^(?:\d|\.)/.test(t))v=finite(Number(t));else failure('format','Запись не закончена. Проверь числа и скобки.');
+  depth--;return finite(v);
+ }
+ function power(){let v=atom();if(tok[i]==='^'){i++;const w=unary();if(Math.abs(w)>12)failure('format','Показатель степени должен быть от −12 до 12.');if(v===0&&w<=0)failure('domain','Нельзя возводить ноль в нулевую или отрицательную степень.');if(v<0&&!Number.isInteger(w))failure('domain','Для отрицательного основания здесь нужен целый показатель степени.');v=finite(Math.pow(v,w));}return v;}
+ function unary(){if(tok[i]==='+'||tok[i]==='-'){const sign=tok[i++];return finite((sign==='-'?-1:1)*unary());}return power();}
+ function term(){let v=unary();while(tok[i]==='*'||tok[i]==='/'){const op=tok[i++],w=unary();if(op==='/'&&w===0)failure('domain','Деление на ноль не определено.');v=finite(op==='*'?v*w:v/w);}return v;}
+ function expr(){let v=term();while(tok[i]==='+'||tok[i]==='-'){const op=tok[i++],w=term();v=finite(op==='+'?v+w:v-w);}return v;}
+ const out=expr();if(i!==tok.length)failure('format','Проверь порядок действий и скобки.');return finite(out);
+}
+function check(value,a){
+ const raw=String(value).trim();if(!raw)return {status:'empty',message:'Сначала введи ответ.'};
+ if(Array.isArray(a)){const parts=raw.split(';');if(parts.length!==a.length)return {status:'format',message:'Раздели координаты точкой с запятой: например, 2; −3.'};const results=parts.map((x,i)=>check(x,a[i]));return results.find(x=>!['correct','wrong'].includes(x.status))||{status:results.every(x=>x.status==='correct')?'correct':'wrong'};}
+ if(typeof a==='string'){const norm=x=>String(x).trim().toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ');const n=norm(value),wanted=norm(a);if(['да','нет'].includes(wanted)&&!['да','нет'].includes(n))return {status:'format',message:'Ответь «да» или «нет».'};return {status:n===wanted?'correct':'wrong'};}
+ try{const n=number(raw);return {status:Math.abs(n-a)<=(Number.isInteger(a)?1e-8:0.00051)?'correct':'wrong',value:n};}catch(e){return {status:e.kind||'format',message:e.message};}
+}
+function equal(value,a){return check(value,a).status==='correct';}
 function format(a){return Array.isArray(a)?a.map(format).join('; '):typeof a==='number'?(Number.isInteger(a)?String(a):String(Number(a.toFixed(6)))):a;}
 function fingerprint(t){return JSON.stringify([t.question,t.answer]);}
-const api={task,number,equal,format,fingerprint};root.GeoTasks=api;if(typeof module!=='undefined')module.exports=api;
+const api={task,number,equal,check,format,fingerprint};root.GeoTasks=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

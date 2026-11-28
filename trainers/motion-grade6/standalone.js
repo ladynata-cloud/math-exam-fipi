@@ -34,4 +34,9 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-river-help]')&&
 document.addEventListener('submit',e=>{if(e.target.id==='answerForm'){e.preventDefault();check()}});document.addEventListener('change',e=>{if(e.target.id==='help'){help=e.target.checked;passed=0;finished=false;if(help)assisted=true;work()}});document.addEventListener('input',e=>{if(e.target.id==='scrub'){stop();modelTime=+e.target.value/1000*q.duration;draw()}});document.addEventListener('toggle',e=>{if(e.target.id==='modelDetails'&&e.target.open&&tab==='train')assisted=true},true);
 render();
 
+if (window.self === window.top) {
+ const modelEntry = document.createElement('script');
+ modelEntry.src = 'model-entry.js';
+ document.body.append(modelEntry);
+}
 })();

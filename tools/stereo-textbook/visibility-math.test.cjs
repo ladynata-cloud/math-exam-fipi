@@ -210,6 +210,31 @@ fixture('coincident-hidden',model({A:[-1,1,-1],B:[1,1,-1],C:[1,1,1],D:[-1,1,1],U
 });
 fixture('planar-never-hidden',{...screen,planar:true});
 fixture('no-faces',model({A:[0,0,0],B:[1,1,1]},[],[['A','B']]));
+// Four rounded vertices from the surface of revolution in exercise 467.
+const rim = {
+  A: [.875, .9354143467, 0], B: [1, 1, 0],
+  C: [1, .9659258263, -.2588190451], D: [.875, .9035408758, -.242103048]
+};
+const grazing = {yaw: 1.13, pitch: -.31};
+const ownFace = ['D', 'C', 'B', 'A'];
+fixture('rounded-incident-face', model(rim, [ownFace], [['A', 'B']], {
+  arrows: [['B', 'A']], views: {neutral: {segments: [['A', 'B']]}}
+}), grazing, groups => {
+  for (const key of ['edge|A-B', 'vector|B-A', 'segment|A-B']) {
+    assert(groups.get(key).every(part => !part.hidden), 'a face cannot obscure its own edge ' + key);
+  }
+});
+const towardsCamera = [
+  Math.sin(grazing.yaw) * Math.cos(grazing.pitch),
+  Math.cos(grazing.yaw) * Math.cos(grazing.pitch),
+  Math.sin(grazing.pitch)
+];
+const inFront = Object.fromEntries(Object.entries(rim).map(([name, point]) =>
+  [name + '1', point.map((v, i) => v + .2 * towardsCamera[i])]));
+fixture('rounded-edge-under-separate-face', model({...rim, ...inFront},
+  [ownFace, ownFace.map(name => name + '1')], [['A', 'B']]), grazing, groups => {
+  assert(groups.get('edge|A-B').every(part => part.hidden), 'another face in front still obscures the boundary');
+});
 fixture('edge-on-plane',model({A:[-1,-1,0],B:[1,-1,0],C:[1,1,0],D:[-1,1,0],U:[-2,0,0],V:[2,0,0]},[['A','B','C','D']],[['U','V']]));
 const concave=model({A:[0,1,0],B:[3,1,0],C:[3,1,1],D:[1,1,1],E:[1,1,3],F:[0,1,3],U:[.5,0,2],V:[2.5,0,2]},[['A','B','C','D','E','F']],[['U','V']]);
 fixture('concave-open-face',concave,straight,g=>{const p=states(g,'edge|U-V');assert.deepEqual(p.map(p=>p[2]),[true,false]);assert(Math.abs(p[0][1]-.25)<1e-6);});
@@ -262,10 +287,16 @@ if(!process.argv.includes('--fixtures-only')){
     // effective surface configuration. Do not synthesize a new model signature:
     // that would accidentally bypass the profile used in production.
     if(!source.planar){
-      const selected=[],covered=new Set();
-      for(const view of Object.keys(source.views||{neutral:{}})){
-        const geometry=oracle.surfaces(view).identity,keys=[geometry+'|surface',...[...expectedLines(source,view).keys()].map(k=>geometry+'|'+k)];
-        if(keys.some(k=>!covered.has(k))){selected.push(view);keys.forEach(k=>covered.add(k));}
+      const selected = [], coveredBySurface = new Map();
+      for (const view of Object.keys(source.views || {neutral: {}})) {
+        const geometry = oracle.surfaces(view).identity;
+        const lines = [...expectedLines(source, view).keys()];
+        const covered = coveredBySurface.get(geometry);
+        if (covered && lines.every(line => covered.has(line))) continue;
+        selected.push(view);
+        const known = covered || new Set();
+        for (const line of lines) known.add(line);
+        coveredBySurface.set(geometry, known);
       }
       for(const camera of rotations){const rotated=mount(source,camera);for(const view of selected){rotated.setView(view);inspect(oracle,rotated.getState(),view,lesson.id+'/rotated/'+camera.yaw+'/'+view);stats.rotatedViews++;}rotated.destroy();stats.rotatedModels++;}
     }

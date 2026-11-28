@@ -5,7 +5,7 @@ const Labs=require('../ege-profil/part-two/models.js');
 function storage(initial={}){const values=new Map(Object.entries(initial)),writes=[];return{getItem:k=>values.has(k)?values.get(k):null,setItem(k,v){writes.push(k);values.set(k,v);},values,writes};}
 const key=n=>'mathexam.profilePartTwoLab.v1.'+n;
 
-test('seven optional explorations cover the seven exam lines without course-credit writes',()=>{
+test('seven optional explorations retain their legacy topic keys without course-credit writes',()=>{
   assert.deepEqual(Object.keys(Labs.labs).map(Number),[14,15,16,17,18,19,20]);
   for(const n of [14,15,16,17,18,19,20]){
     const l=Labs.labs[n];assert.ok(l.question&&l.explanation&&l.transfer&&l.target);assert.ok(l.choices.includes(l.answer));

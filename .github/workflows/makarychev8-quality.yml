@@ -15,8 +15,8 @@ permissions:
 jobs:
   course:
     runs-on: ubuntu-latest
-    # Four full source-block browser suites plus all 722 DOM journeys.
-    timeout-minutes: 20
+    # Includes the new chapter and every earlier worked solution.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,6 +32,16 @@ jobs:
           python school/makarychev8/test-exercises-25-54.py
           python school/makarychev8/test-exercises-55-74.py
           python school/makarychev8/test-exercises-75-109.py
+          python school/makarychev8/test-roots-source.py
+          python school/makarychev8/test-exercises-110-133.py
+          python school/makarychev8/test-exercises-134-149.py
+          python school/makarychev8/test-exercises-150-180.py
+          python school/makarychev8/test-exercises-181-200.py
+          python school/makarychev8/test-exercises-201-211.py
+          python school/makarychev8/test-exercises-212-214.py
+          python school/makarychev8/test-exercises-215-220.py
+          python school/makarychev8/test-exercises-221-230.py
+          python school/makarychev8/test-exercises-231-267.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -51,9 +61,17 @@ jobs:
           node "$RUNNER_TEMP/makarychev-qa/node_modules/playwright/cli.js" install --with-deps chromium
       - name: Every worked solution and saved-work journey
         run: |
-          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-ui.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --max-old-space-size=1024 school/makarychev8/test-ui.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-import.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-audit-learning.cjs
+      - name: Square roots and two board participants
+        run: |
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-roots-engine.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-board.cjs
+      - name: Numbered fractions, self-drawn graphs and saved notes
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-fractions.cjs
+      - name: Square roots, accepted work and narrow screens
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-roots.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction

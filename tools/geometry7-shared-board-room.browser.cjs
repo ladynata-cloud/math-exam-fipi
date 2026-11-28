@@ -97,13 +97,14 @@ async function run(browser,origin,serverOrigin,errors){
  await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin));await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
  await teacher.waitForFunction(()=>document.querySelector('#shareStatus')?.textContent==='подключено'&&document.querySelector('#studentLink')?.value.includes('role=student'));
  const link=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(link);
- const nativeFiles=process.argv.includes('--control-work-only')?[]:['atanasyan-grade7.html','geometry7-rebuild.html','geometry7-practice.html'];
- for(const file of nativeFiles){
-  phase=file;
-  await teacher.locator('#chooseTrainer').click();if(!await teacher.locator('#manualTrainerEntry').evaluate(e=>e.open))await teacher.locator('#manualTrainerEntry summary').click();await teacher.locator('#trainerUrl').fill('/trainers/'+file);await teacher.locator('#openTrainer').click();if(await teacher.locator('#pickerClose').isVisible())await teacher.locator('#pickerClose').click();
+ const nativeFiles=process.argv.includes('--control-work-only')?[]:['atanasyan-grade7.html','geometry7-rebuild.html','geometry7-practice.html','atanasyan-grade7.html?scope=book'];
+ for(const route of nativeFiles){
+  const file=route.split('?')[0], wholeBook=route.endsWith('?scope=book');
+  phase=route;
+  await teacher.locator('#chooseTrainer').click();if(!await teacher.locator('#manualTrainerEntry').evaluate(e=>e.open))await teacher.locator('#manualTrainerEntry summary').click();await teacher.locator('#trainerUrl').fill('/trainers/'+route);await teacher.locator('#openTrainer').click();if(await teacher.locator('#pickerClose').isVisible())await teacher.locator('#pickerClose').click();
   await Promise.all([connected(teacher),connected(student)]);let t=await frameFor(teacher,file),s=await frameFor(student,file);await sync(t,s,file+' initial');
   if(file==='atanasyan-grade7.html'){
-   await t.locator('#catalog-search').fill('161');await t.locator('[data-lesson]').first().click();await t.locator('#final-answer').fill('Синтетическое доказательство параллельности.');await t.locator('[data-main-help]>summary').click();await t.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();await t.getByRole('button',{name:'Увеличить чертёж',exact:true}).click();
+   await t.locator('#catalog-search').fill(wholeBook?'841':'161');await t.locator('[data-lesson]').first().click();await t.locator('#final-answer').fill('Синтетическое доказательство параллельности.');await t.locator('[data-main-help]>summary').click();await t.getByRole('button',{name:'Разобрать по шагам',exact:true}).click();await t.getByRole('button',{name:'Увеличить чертёж',exact:true}).click();
   }else if(file==='geometry7-rebuild.html'){
    await t.locator('a[href^="#lesson="]').first().click();await t.locator('#answer').fill('123');await t.locator('#taskHelp>summary').click();await t.locator('#taskModel>summary').click();await t.waitForFunction(()=>__bazaBoard.getState().work.ui.model!==null);await t.locator('[data-geometry-select]').first().click();await t.locator('[data-geometry-next]').click();
   }else{

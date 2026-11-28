@@ -37,7 +37,9 @@ function requestCourseHelp(w) {
 
 test('derivative reference preserves the visible model and states the x³ exception correctly', t => {
   const { w, d, html } = page(t, 'derivative-t8.html');
-  assert.match(d.title, /Задание 9/);
+  assert.match(d.title, /Задание 8/);
+  assert.match(d.querySelector('.eyebrow').textContent, /№8.*производная и первообразная/);
+  assert.equal(d.querySelector('#trackChips').lastElementChild.textContent, 'Первообразная');
   assert.equal(d.querySelector('#derivativeReference').open, false);
   assert.equal(d.querySelector('#heroFig').closest('details'), null);
   assert.equal(d.querySelector('#heroX').closest('details'), null);
@@ -109,6 +111,21 @@ test('a completed derivative result is saved before its delayed result screen', 
   assert.equal(timers.size, 0);
   assert.equal(read(w, 'mathExamCourseProgress.v1')['derivative-t8'].passed, true);
   assert.equal(read(w, 'mathExamCourseProgress.v1')['derivative-t8'].best, 10);
+});
+
+test('bridge classifies quadrants and their axes consistently with the coordinates', t => {
+  const { w, d } = page(t, 'trigonometry.html');
+  const slider = d.getElementById('brAng'), caption = d.getElementById('brMsg');
+  for (const [degrees, text] of [[0,'оси Ox'],[45,'I четверть'],[90,'оси Oy'],[135,'II четверть'],
+                                 [180,'оси Ox'],[225,'III четверть'],[270,'оси Oy'],[315,'IV четверть'],[360,'оси Ox']]) {
+    slider.value = degrees;
+    slider.dispatchEvent(new w.Event('input'));
+    assert.ok(caption.textContent.includes(text), degrees + '°');
+    if (degrees % 90 === 0) {
+      assert.ok(caption.textContent.includes('cos α = ' + Math.round(Math.cos(degrees * Math.PI / 180))));
+      assert.ok(caption.textContent.includes('sin α = ' + Math.round(Math.sin(degrees * Math.PI / 180))));
+    }
+  }
 });
 
 test('a wrong introductory quiz answer reveals its explanation only on request', t => {
@@ -208,4 +225,36 @@ test('selected course help excludes only the current trig practice and exam succ
   click(d, '#epExNext'); d.querySelector('#epExInput').value = '7'; click(d, '#epExCheck');
   const result = read(w, 'ep_progress_v1');
   assert.equal(result.exam.ok, 7); assert.equal(result.exam.best, 5); assert.equal(result.xp.rad, 3);
+});
+
+test('a touch of the axis is a zero but not an extremum, including for an antiderivative', t => {
+  const { w, d } = page(t, 'derivative-t8.html');
+  // The graph touches the axis at −2 from above and crosses from + to − at 2.
+  const graph = { vals: [2, 2, 2, 1, 0, 1, 2, 1, 0, -1, -2, -2, -2], zeros: [-2, 2] };
+  w.T8.buildSigned = () => graph;
+  w.T8.rnd = (a, b) => a < 0 ? -6 : 6;
+  w.T8.pick = choices => choices.includes('all') ? 'all' : choices[0];
+  const chips = [...d.querySelectorAll('#trackChips .chip')];
+  for (const label of ['Экстремумы по f′', 'Первообразная']) {
+    chips.find(chip => chip.textContent === label).click();
+    d.querySelector('#taskAnswer').value = '2';
+    click(d, '#taskCheck');
+    assert.match(d.querySelector('#taskFb').textContent, /все нули/);
+    d.querySelector('#taskAnswer').value = '1';
+    click(d, '#taskCheck');
+    assert.match(d.querySelector('#taskFb').textContent, /Верно/);
+    click(d, '#taskSol');
+    const next = d.querySelector('#taskSolBox .ladder-btn');
+    while (!next.disabled) next.click();
+    const explanation = d.querySelector('#taskSolBox').textContent;
+    assert.match(explanation, /−2: по обе стороны.*выше оси x/);
+    assert.match(explanation, /2: слева .* > 0, справа .* < 0/);
+  }
+});
+
+test('derivative answers allow a fractional slope without accepting a broken number', t => {
+  const { w } = page(t, 'derivative-t8.html');
+  for (const right of ['−1 / 2', '-0,5', '-.5']) assert.ok(w.T8.eq(right, -0.5));
+  for (const invalid of ['1 2', '0x10', '1/0', '', 'Infinity']) assert.ok(Number.isNaN(w.T8.parseAns(invalid)));
+  assert.equal(w.T8.eq('0.0000001', 0), false);
 });

@@ -193,3 +193,11 @@ body:has(.focused-practice) .breadcrumb{margin-bottom:14px}
 @media(max-width:600px){.task-help-entry .hint-box{padding:17px 14px}.task-help-entry .short-hint{font-size:19px}}
 
 .course-menu{position:relative}.course-menu summary{cursor:pointer;min-height:32px}.course-menu>div{position:absolute;z-index:5;right:0;top:100%;display:grid;gap:14px;min-width:220px;padding:18px;background:white;border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 20px #153d2614}.course-menu>div a{min-height:28px}
+
+.lesson-research{margin:16px 0 20px}
+.research-prediction{margin:0 0 8px}
+.lesson-research #explore-lab{margin:0;padding:10px 16px;border-color:#b9d2c7;background:#f5faf7}
+.lesson-research #explore-lab>summary{padding:8px 0;color:#194e3c;font-weight:700}
+.research-instructions{margin:0 0 12px}
+.research-instructions p{margin:0 0 6px}
+.lesson-research #research-demo{max-width:640px;margin:0 0 16px}

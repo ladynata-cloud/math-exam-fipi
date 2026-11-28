@@ -81,7 +81,13 @@
             !fields(value, ['version', 'courseId', 'route', 'lessonId', 'work', 'catalog', 'ui']) ||
             value.version !== 1 || value.courseId !== ID || value.route !== 'lessons') return false;
         const lesson = lessons.get(value.lessonId), w = value.work, c = value.catalog, u = value.ui;
-        if (!lesson || !fields(w, WORK_FIELDS) || !BOOLEAN_FIELDS.every(key => typeof w[key] === 'boolean')) return false;
+        const recall = w?.recall;
+        if (recall !== undefined && (lesson?.id !== 'starter-18' || !fields(recall, ['open','variant','point','face','hint']) ||
+            typeof recall.open !== 'boolean' || typeof recall.hint !== 'boolean' || ![0,1].includes(recall.variant) ||
+            !(recall.variant ? ['', 'N','P','Q'] : ['', 'M','P','Q']).includes(recall.point) ||
+            !['','AEFB','BFGC','CGHD','DHEA'].includes(recall.face) ||
+            (recall.face && !(recall.variant ? ['N','Q'].includes(recall.point) : recall.point==='P')))) return false;
+        if (!lesson || !fields(w, recall === undefined ? WORK_FIELDS : [...WORK_FIELDS,'recall']) || !BOOLEAN_FIELDS.every(key => typeof w[key] === 'boolean')) return false;
         const count = lesson.steps.length, calculations = (lesson.calculationSteps || []).length;
         if (!['choose', 'study', 'practice'].includes(w.mode) || !integer(w.revealed, 0, count) ||
             !integer(w.viewCount, 0, w.revealed) || !integer(w.calculationRevealed, 0, calculations) ||

@@ -194,6 +194,7 @@ test('all figures remain finite; only earned answers appear and instructional re
   for (const task of tasks) {
     let helps = 0;
     const dispose = window.ProfileTaskModels[task.id](container, task, { mode: 'independent', step: 0, solved: false, onHelp() { helps++; } });
+    const initialBoardState = dispose.getBoardState();
     const svg = container.querySelector('svg'); assert.ok(svg, task.id);
     assert.equal(svg.dataset.focus, 'neutral'); assert.doesNotMatch(svg.outerHTML, /NaN|Infinity|undefined/);
     assert.equal(container.querySelector('[data-target] td').textContent, '?', task.id + ': no unearned answer');
@@ -206,8 +207,20 @@ test('all figures remain finite; only earned answers appear and instructional re
     assert.equal(helps, 1); assert.equal(explain.getAttribute('aria-expanded'), 'true');
     assert.ok(container.textContent.includes(task.diagram.help));
     assert.equal(container.querySelector('[data-target] td').textContent, '?');
+    const sharedState = dispose.getBoardState();
+    assert.equal(window.ProfileTaskModels[task.id].validateBoardState(sharedState), true);
     explain.click(); assert.equal(helps, 1); assert.equal(explain.getAttribute('aria-expanded'), 'false');
+    dispose.applyBoardState(initialBoardState);
+    assert.equal(highlight.getAttribute('aria-pressed'), 'false');
+    dispose.applyBoardState(sharedState);
+    assert.equal(highlight.getAttribute('aria-pressed'), 'true');
+    assert.equal(explain.getAttribute('aria-expanded'), 'true');
+    assert.equal(helps, 1, task.id + ': receiving a shared hint does not charge personal help');
+    const wrongTask = window.JSON.parse(window.JSON.stringify(sharedState));
+    wrongTask.taskId += '-other';
+    assert.throws(() => dispose.applyBoardState(wrongTask), /Invalid applied model board state/);
     dispose(); highlight.click(); explain.click(); assert.equal(helps, 1, task.id + ': cleanup removes listeners');
+    assert.throws(() => dispose.applyBoardState(sharedState), /Invalid applied model board state/);
     const done = window.ProfileTaskModels[task.id](container, task, { mode: 'independent', solved: true, onHelp() { helps++; } });
     close(Number(container.querySelector('[data-target] td').textContent.replace(',', '.').replace('−', '-')), task.answer, task.id + ': earned answer');
     container.querySelector('[data-model-action="explain"]').click(); assert.equal(helps, 1, task.id + ': post-answer help preserves earned credit'); done();

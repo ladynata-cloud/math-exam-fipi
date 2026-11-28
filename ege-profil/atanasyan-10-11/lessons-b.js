@@ -7,9 +7,9 @@
     id, label, kind: 'choice', correct,
     options: options.map(([optionId, html]) => ({ id: optionId, html }))
   });
-  const step = (title, phase, body, field, hint, record, modelView) => ({
+  const step = (title, phase, body, field, hint, record, modelView, promptView) => ({
     title, phase: phase === 'proof' ? 'а) Доказательство' : 'б) Вычисление',
-    body, fields: [field], hint, record, modelView
+    body, fields: [field], hint, record, modelView, ...(promptView ? { promptView } : {})
   });
 
   function boxModel(a, b, h) {
@@ -69,7 +69,7 @@
           'Числа −a и a уничтожают друг друга.',
           '<p>n · BD = −a + a = 0, поэтому направления AC₁ и BD перпендикулярны.</p>', 'plane'),
         step('Проверяем второе направление', 'proof',
-          '<p>В той же плоскости возьмём BA₁ = (−a; 0; a). Оно пересекает BD в точке B.</p><p>Вычисли n · BA₁ = −a + 0 + a.</p>',
+          '<p>В той же плоскости прямые BA₁ и BD пересекаются в B. Вектор BA₁ имеет координаты (−a; 0; a).</p><p>Вычисли n · BA₁ = −a + 0 + a.</p>',
           n('dot-ba1', 'Значение скалярного произведения', 0),
           'Снова складываются два противоположных числа.',
           '<p>BA₁ = (−a; 0; a), поэтому n · BA₁ = −a + 0 + a = 0. Значит, направления AC₁ и BA₁ перпендикулярны.</p>', 'plane'),
@@ -245,7 +245,7 @@
           '<p>Для расстояния нужен отрезок с одним концом на AB и другим на CC₁.</p><p>Какая пара точек удовлетворяет этому условию?</p>',
           c('endpoints', 'Концы будущего перпендикуляра', 'bc', [['ad', 'A и D'], ['bc', 'B и C'], ['cd', 'C и D']]),
           'Точка B лежит на AB. Точка C лежит на CC₁.',
-          '<p>B ∈ AB, C ∈ CC₁. Поэтому отрезок BC соединяет точки данных прямых.</p>', 'perpendicular'),
+          '<p>B ∈ AB, C ∈ CC₁. Поэтому отрезок BC соединяет точки данных прямых.</p>', 'perpendicular', 'lines'),
         step('Первый прямой угол', 'proof',
           '<p>Основание ABCD — прямоугольник. Рёбра BA и BC — соседние стороны этого прямоугольника.</p><p>Чему равен угол ABC в градусах?</p>',
           n('first-right-angle', 'Угол ABC, градусы', 90),

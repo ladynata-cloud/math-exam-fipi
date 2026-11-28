@@ -7,7 +7,7 @@ const test = require('node:test');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const sourcePath = '/school/peterson6/index.html';
-const wrapperPath = '/trainers/peterson6.html';
+const wrapperPath = '/trainers/peterson6-complete.html';
 
 function picker(origin = 'https://mathexam.space') {
   const sandbox = { window: {}, location: new URL(origin + '/trainers/trainer-board.html'), URL };
@@ -25,7 +25,7 @@ test('canonical Peterson entries resolve to the bounded registered wrapper on th
   for (const source of [sourcePath, '/school/peterson6/', 'https://mathexam.space' + sourcePath,
     'https://mathexam.space:443' + sourcePath, '//mathexam.space' + sourcePath,
     'mathexam.space' + sourcePath]) {
-    for (const hash of ['', '#home', '#skills', '#progress']) {
+    for (const hash of ['', '#home', '#skills', '#progress', '#diagnostic']) {
       assert.equal(normalize(source + hash), wrapperPath + hash, source + hash);
     }
   }
@@ -34,9 +34,9 @@ test('canonical Peterson entries resolve to the bounded registered wrapper on th
   }
 });
 
-test('all 224 authored tasks and all 60 practice choices receive exact aliases', () => {
+test('all 58 topics and every practice/check choice receive exact aliases', () => {
   const { normalize } = picker(), data = course();
-  assert.equal(data.lessons.length, 14);
+  assert.equal(data.lessons.length, 58);
   let tasks = 0;
   for (const lesson of data.lessons) {
     assert.equal(normalize(sourcePath + '#lesson/' + lesson.id), wrapperPath + '#lesson/' + lesson.id);
@@ -49,17 +49,18 @@ test('all 224 authored tasks and all 60 practice choices receive exact aliases',
       assert.equal(normalize(sourcePath + hash), sourcePath + hash, hash);
     }
   }
-  assert.equal(tasks, 224);
+  assert.equal(tasks, data.lessons.reduce((n,l)=>n+l.tasks.length,0));
+  assert.equal(data.lessons.slice(0,14).reduce((n,l)=>n+l.tasks.length,0),224,'old subset retained');
   const math = require('../school/peterson6/math.js');
-  assert.equal(math.skills.length, 20);
-  for (const skill of math.skills) for (const level of [1, 2, 3]) {
-    const hash = '#practice/' + skill.id + '/' + level;
+  assert.equal(math.courseSkills.length, 43);
+  for (const skill of math.courseSkills) for (const level of [1, 2, 3]) for(const mode of ['practice','check']) {
+    const hash = '#'+mode+'/' + skill.id + '/' + level;
     assert.equal(normalize(sourcePath + hash), wrapperPath + hash, hash);
   }
-  for (const hash of ['#lesson/p00', '#lesson/p15', '#lesson/P01', '#lesson/p01/0/extra',
+  for (const hash of ['#lesson/p00', '#lesson/p59', '#lesson/P01', '#lesson/p01/0/extra',
     '#lesson/p01/', '#lesson/p01/9007199254740992', '#practice/fraction-multiply',
     '#practice/unknown/1', '#practice/fraction-multiply/0', '#practice/fraction-multiply/4',
-    '#practice/fraction-multiply/01', '#skills/extra', '#%68ome', '#home/', '#main']) {
+    '#practice/fraction-multiply/01', '#check/unknown/1', '#check/fraction-multiply/4', '#check/fraction-multiply/01', '#check/fraction-multiply/1/extra', '#diagnostic/extra', '#skills/extra', '#%68ome', '#home/', '#main']) {
     assert.equal(normalize(sourcePath + hash), sourcePath + hash, hash);
   }
 });
@@ -101,17 +102,20 @@ test('the wrapper is a thin copy of the canonical shell and uses the exact commo
   const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(m => m[1]);
   const home = '/assets/assistant/home-link.js?v=20261110';
+  const adaptation = '/assets/download-adaptation.js';
   const homeTag = '<script defer src="' + home + '"></script>';
-  // The one new public shell is shared by both documents and suppressed in an
-  // iframe. Require its exact URL, deferred tag, count and trailing position;
-  // it must not relax the original common learning-runtime parity below.
-  for (const html of [canonical, wrapper]) {
+  const adaptationTag = '<script defer src="' + adaptation + '"></script>';
+  assert.equal(canonical.split(adaptationTag).length, 2);
+  assert(!wrapper.includes(adaptation) && !wrapper.includes('data-trainer-download'));
+  const personalCourse = canonical.replace(adaptationTag, '');
+  // Compare the complete common course runtime without the standalone download UI.
+  for (const html of [personalCourse, wrapper]) {
     assert.deepEqual(scripts(html).filter(src => src.includes('home-link.js')), [home]);
     assert.equal(html.split(homeTag).length, 2);
     assert.equal(scripts(html).at(-1), home);
   }
-  assert.deepEqual(scripts(canonical).filter(src => src.startsWith('/')), [home]);
-  const canonicalScripts = scripts(canonical).map(src => src === home ? src : '/school/peterson6/' + src);
+  assert.deepEqual(scripts(personalCourse).filter(src => src.startsWith('/')), [home]);
+  const canonicalScripts = scripts(personalCourse).map(src => src === home ? src : '/school/peterson6/' + src);
   const wrapperScripts = scripts(wrapper);
   const pathname = src => new URL(src, 'https://mathexam.space').pathname;
   const bridge = '/trainers/board-bridge.js', adapter = '/school/peterson6/board-session.js';
@@ -134,20 +138,36 @@ test('one searchable course entry has an exact mirror declaration without a pers
   const catalog = JSON.parse(fs.readFileSync(path.join(root, 'trainers/board-picker-data.json'), 'utf8'));
   const entries = catalog.entries.filter(entry => canonical(entry.href) === wrapperPath + '#home');
   assert.equal(entries.length, 1);
-  assert.match(entries[0].title, /Петерсон.*6 класс.*часть 1.*дроби.*тренировка/);
+  assert.match(entries[0].title, /Петерсон.*6 класс.*части 1–3.*58 тем.*дроби.*43 тренировки/);
   const { canonicalTrainerFile, loadTrainerRegistry } = require('../board-server/trainer-registry');
   assert.equal(canonicalTrainerFile(sourcePath.slice(1)), null);
   const registry = loadTrainerRegistry({ env: {} });
   assert.deepEqual(registry.getByTrainerUrl(wrapperPath + '#skills'), {
-    trainerId: 'peterson6', file: wrapperPath.slice(1), version: '1.1.0',
+    trainerId: 'peterson6-complete', file: wrapperPath.slice(1), version: '1.0.0',
     stateSchemaVersion: 1, bridgeProtocolVersion: 1, allowLegacyHtml: false
   });
   assert.equal(registry.getByTrainerUrl(sourcePath + '#skills'), null);
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'trainers/board-compat.json'), 'utf8'));
-  const declaration = manifest.trainers.find(entry => entry.trainerId === 'peterson6');
+  const declaration = manifest.trainers.find(entry => entry.trainerId === 'peterson6-complete');
   assert.equal(declaration.supportsBoardMirror, true);
   assert.equal(declaration.supportsSeed, false);
   assert.notEqual(declaration.supportsProgressTracking, true);
   assert.equal(registry.getByTrainerUrl('/trainers/ege-profile-expressions.html#exam/8').trainerId, 'ege-profile-expressions');
   assert.equal(registry.getByTrainerUrl('/trainers/ege-profile-stereometry.html#exam/3').trainerId, 'ege-profile-stereometry');
+});
+
+test('explicit opening follows server capabilities and never redirects existing legacy rooms', () => {
+  const {normalize,petersonSelection}=picker();
+  const origin='https://mathexam.space',old=id=>id==='peterson6',both=id=>old(id)||id==='peterson6-complete';
+  const select=(raw,available)=>petersonSelection(normalize(raw),available,origin);
+  const p1='/school/peterson6/#lesson/p08/0',p2='/school/peterson6/#lesson/p15/0';
+  assert.equal(select(p1,old),'/trainers/peterson6.html#lesson/p08/0');
+  assert.equal(select(p1,both),'/trainers/peterson6-complete.html#lesson/p08/0');
+  assert.equal(select(p2,both),'/trainers/peterson6-complete.html#lesson/p15/0');
+  for(const url of [p2,'/school/peterson6/#check/ratio/1','/school/peterson6/#diagnostic']){
+    assert.throws(()=>select(url,old),/Текущее занятие сохранено/);
+  }
+  for(const available of [old,both,()=>false]){
+    assert.equal(select('/trainers/peterson6.html#lesson/p08/0',available),'/trainers/peterson6.html#lesson/p08/0');
+  }
 });

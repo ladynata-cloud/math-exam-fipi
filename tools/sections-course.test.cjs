@@ -122,6 +122,36 @@ test('previous explanations, draft, camera and help survive navigation and a fre
   } finally { await reloaded?.close(); await f.close(); }
 });
 
+test('a delayed result toggle from a detached longer lesson cannot change the next lesson scene or saved work', async () => {
+  const previous = course.lessons.find(lesson => lesson.id === 'auth-method-04');
+  const next = course.lessons.find(lesson => lesson.id === 'auth-metric-09');
+  assert(previous.steps.length > next.steps.length, 'the regression crosses from eight steps to five');
+  const f = boot({hash:'#' + previous.id,storage:{[course.storageKey]:JSON.stringify({version:1,current:previous.id,tasks:{
+    [previous.id]:{mode:'study',revealed:previous.steps.length,viewCount:previous.steps.length,
+      calculationRevealed:(previous.calculationSteps || []).length,showResult:true,draft:'Сохранённое объяснение предыдущего построения.'}
+  }})}});
+  try {
+    await tick();
+    const detached = f.doc.querySelector('.result-details'); assert(detached?.open);
+    f.open(next.id); await tick();
+    assert.equal(detached.isConnected, false);
+    const before = f.state(), saved = f.saved(), drawing = f.doc.querySelector('.course-main .model-svg').outerHTML;
+    // Browsers can deliver a queued native toggle after the old card has been
+    // replaced. Exercise both its opening and closing callbacks explicitly.
+    detached.dispatchEvent(new f.w.Event('toggle'));
+    detached.open = false; detached.dispatchEvent(new f.w.Event('toggle')); await tick();
+    assert.deepEqual(f.state(), before, 'stale events do not alter either lesson or its help/result history');
+    assert.deepEqual(f.saved(), saved, 'stale events cannot save work from a replaced disclosure');
+    assert.equal(f.doc.querySelector('.course-main .model-svg').outerHTML, drawing);
+    assert.equal(f.current().revealed, 0);
+    click(f, '[data-action="start-study"]'); construct(f, 1);
+    const camera = f.current().camera;
+    click(f, '[aria-label="Повернуть вправо"]'); assert.notDeepEqual(f.current().camera, camera);
+    click(f, '.plane-toggle'); assert.equal(f.current().planeView, true);
+    assert.equal(f.current().revealed, 1, 'the actual next lesson still constructs and changes views normally');
+  } finally { try { await f.close(); } finally { f.w.close(); } }
+});
+
 test('a known direct link opens its actual card instead of a hidden learning portal', async () => {
   const f = boot({ hash: '#auth-method-04' });
   try {
@@ -359,4 +389,106 @@ test('an untouched legacy catalog record starts new evidence while old work stay
     click(f, '[data-view="map"]');
     assert.equal(f.doc.querySelector('[data-path-stage="begin-01"]').closest('li').dataset.stageProgress, 'checked');
   } finally { await original.close(); if (f) await f.close(); }
+});
+
+test('section sides follow their supporting faces when the solid turns and in a flat view', async () => {
+  const f = boot();
+  try {
+    const lab = f.w.SECTION_ACTIVITIES.makeLab('cube-horizontal', 0.5);
+    const frame = f.doc.createElement('div'); f.doc.body.append(frame);
+    const scene = f.w.SECTIONS_APP.createScene(frame, lab);
+    const face = lab.steps.find(step => step.plane === 'DD1A1A'); // y = 0.
+    const {a, b} = face.segments[0];
+    const side = attr => frame.querySelector('[' + attr + '="' + a + '-' + b + '"],[' + attr + '="' + b + '-' + a + '"]');
+    const update = (yaw, planeView = false, viewCount = lab.steps.length) => scene.update({
+      viewCount, planeId:face.plane, planeView, camera:{yaw, pitch:.2}, showHelpers:true, showResult:true
+    });
+    update(0);
+    assert.equal(side('data-segment').dataset.hidden, 'true');
+    assert.equal(side('data-final-side'), null, 'a solid outline cannot cover dashes');
+    update(Math.PI);
+    assert.equal(side('data-segment').dataset.hidden, 'false');
+    update(0, true);
+    assert.equal(side('data-segment').dataset.hidden, 'false');
+    update(0, false, 0);
+    assert.equal(side('data-final-side').dataset.hidden, 'true', 'final-only contour also respects the camera');
+    scene.destroy();
+  } finally { await f.close(); }
+});
+
+test('written controls supply a blank figure and keep the explanation until submission', async () => {
+  const f = boot();
+  try {
+    for (const id of ['basic','metric','research','final']) {
+      const {written, proof} = f.w.SECTION_ACTIVITIES.makeExam(id, 0);
+      assert.equal(written.prompt, proof);
+      assert.equal(written.scene.steps.length, 0);
+      assert.equal(written.scene.result, undefined);
+      assert(!/выбери.*задачу|из главы|из лаборатории/i.test(proof));
+      assert(written.solution);
+      assert.notEqual(f.w.SECTION_ACTIVITIES.makeExam(id, 1).proof, proof);
+    }
+    click(f, '[data-view="control"]');
+    const picker = f.doc.querySelector('select[aria-label="Самостоятельная работа"]');
+    picker.value = 'final'; picker.dispatchEvent(new f.w.Event('change'));
+    click(f, '[data-action="exam-start"]');
+    const exam = f.w.SECTION_ACTIVITIES.makeExam('final');
+    const proofPanel = f.doc.querySelector('#exam-proof').parentElement;
+    assert(proofPanel.textContent.includes(exam.proof));
+    assert(proofPanel.querySelector('[data-label="M"]'));
+    assert.equal(proofPanel.querySelector('[data-label="R"]'), null, 'missing vertex remains for the learner');
+    assert(!proofPanel.textContent.includes(exam.written.solution));
+    input(f, '#exam-proof', 'Строю четвёртую вершину на BC.');
+    for (const [i, q] of exam.questions.entries()) {
+      if (q.kind === 'choice') click(f, '[data-exam-option="' + q.answer + '"]');
+      else input(f, '#exam-answer', String(q.answer));
+      if (i < exam.questions.length - 1) {
+        [...f.doc.querySelectorAll('.exam-question button')].find(b => b.textContent === 'Следующее →').click();
+      }
+    }
+    click(f, '[data-action="exam-finish"]');
+    const report = f.doc.querySelector('#master-portal');
+    assert(report.textContent.includes('5 из 5'));
+    assert(report.textContent.includes(exam.written.solution));
+    assert.equal(f.w.SECTIONS_MASTER.getState().exams.final.assisted, false);
+    assert.equal(f.w.SECTIONS_MASTER.getState().exams.final.proof, 'Строю четвёртую вершину на BC.');
+    const legacy = boot({storage:{'mathexam.sections.master.activities.v1':JSON.stringify({
+      view:'control', examId:'final', exams:{final:{started:true, finished:false, run:0, answers:{}, proof:'Моя прежняя работа', history:[]}}
+    })}});
+    try {
+      assert(legacy.doc.querySelector('#master-portal').textContent.includes('Построй новую задачу из главы'));
+      assert.equal(legacy.doc.querySelector('#exam-proof').value, 'Моя прежняя работа');
+    } finally { await legacy.close(); }
+  } finally { await f.close(); }
+});
+
+test('an active face and oppositely directed strokes leave the same gaps on a hidden edge', async () => {
+  const f = boot();
+  try {
+    const sheet = f.doc.createElement('style');
+    sheet.textContent = fs.readFileSync(path.join(ROOT, 'stereo-course/sections/assets/style.css'), 'utf8');
+    f.doc.head.append(sheet);
+    const frame = f.doc.createElement('div'); f.doc.body.append(frame);
+    const lesson = f.w.COURSE.lessons.find(item => item.id === 'ii-self-1');
+    const scene = f.w.SECTIONS_APP.createScene(frame, lesson);
+    scene.update({viewCount:lesson.steps.length, planeId:'ABCD', planeView:false,
+      camera:{yaw:.2, pitch:.27}, showHelpers:true, showResult:true});
+    const face = frame.querySelector('[data-active-plane="ABCD"]');
+    assert.equal(f.w.getComputedStyle(face).stroke, 'none', 'a face fill cannot paint over hidden edge gaps');
+    const edge = frame.querySelector('[data-edge="D-A"]');
+    const side = frame.querySelector('[data-segment="A-D"]');
+    for (const stroke of [edge, side]) {
+      assert.equal(stroke.dataset.hidden, 'true');
+      assert.equal(f.w.getComputedStyle(stroke).strokeDasharray, '6 5');
+    }
+    const coordinates = (line, end) => ['x','y'].map(axis => Number(line.getAttribute(axis + end)));
+    const ends = [coordinates(edge, 1), coordinates(edge, 2)];
+    assert.deepEqual(ends, [coordinates(side, 2), coordinates(side, 1)]);
+    const distance = Math.hypot(ends[1][0] - ends[0][0], ends[1][1] - ends[0][1]);
+    const phase = (line, offset) => ((Number(line.getAttribute('stroke-dashoffset')) + offset) % 11 + 11) % 11;
+    for (let t = .137; t < distance; t += .67) {
+      assert.equal(phase(edge, t) < 6, phase(side, distance - t) < 6, 'same physical point in the same dash or gap');
+    }
+    scene.destroy();
+  } finally { await f.close(); }
 });

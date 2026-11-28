@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "public_retrieval_manifest",
+  "files": [
+    {
+      "card_id": "kb-math-decimal_divide-d2",
+      "path": "kb-math-decimal_divide-d2.json",
+      "sha256": "f540b42d13e2291d8bd1c2273551129e53b7bc968d089bf079c975d6d2752db5"
+    },
+    {
+      "card_id": "kb-math-fraction_add-d1",
+      "path": "kb-math-fraction_add-d1.json",
+      "sha256": "fc06b02f479bd956371029670e2914448acba3975a6955644b938b100c37a07e"
+    },
+    {
+      "card_id": "kb-math-inequality-d4",
+      "path": "kb-math-inequality-d4.json",
+      "sha256": "24245cd6701e2a9d636ab10f5d69aeaa322be5999463a269b39e2f65629ea222"
+    },
+    {
+      "card_id": "kb-math-quadratic-d3",
+      "path": "kb-math-quadratic-d3.json",
+      "sha256": "2989f341ad06fea0bf84472b35aa85b1add9f45b07b399531395c6f5c0b3d358"
+    },
+    {
+      "card_id": "kb-math-vector-d1",
+      "path": "kb-math-vector-d1.json",
+      "sha256": "3e33d173a8c31ff8fbc3b7e47e2bf99cb9e1f8137d77427fe956f39bef6a7159"
+    },
+    {
+      "card_id": "kb-reader-doctor-opening-after",
+      "path": "kb-reader-doctor-opening-after.json",
+      "sha256": "ec744fa3d8c97a8973a41eeecbb98b5a084b7d91f21e1e496f7b8283b38d6ed0"
+    },
+    {
+      "card_id": "kb-reader-shinel-opening-after",
+      "path": "kb-reader-shinel-opening-after.json",
+      "sha256": "361678fc6899289fe6a913043096a7b9784a66c06b557ab70de759dc33697645"
+    },
+    {
+      "card_id": "kb-reader-student-opening-before",
+      "path": "kb-reader-student-opening-before.json",
+      "sha256": "93be25fa474c7ed453ca93bb8d5b04fb43ec99daca9a5eda06ed30aa7b62e8a8"
+    },
+    {
+      "card_id": "kb-reader-vorona-full-during",
+      "path": "kb-reader-vorona-full-during.json",
+      "sha256": "b01c01e7870da1ce88c74b42b0291676a257cc27eeb2fb0fb19733badeb02100"
+    }
+  ],
+  "count": 9
+}

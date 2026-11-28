@@ -5,6 +5,12 @@ w.eval(fs.readFileSync(root+'/stereo-course/assets/math-text.js','utf8'));
 const samples=[['1/3',1,'1','3'],['4π/3',1,'4π','3'],['(x² − 36)/(x + 6)',1,'(x² − 36)','(x + 6)'],['r/√(a²+b²)',1,'r','√(a²+b²)'],['12/3.',1,'12','3'],['6 м/с',0],['a/b/c',0],['sin(x)/2',0],['1/x²',1,'1','x²'],['1/(x)^2',0],['https://example.com/a',0],['текст/пример',0],['PA/PB',1,'PA','PB'],['BD/DC',1,'BD','DC'],['AF/FB',1,'AF','FB'],['km/h',0]];
 function originalText(node){const copy=node.cloneNode(true);Array.from(copy.querySelectorAll('.stereo-fraction')).reverse().forEach(f=>f.replaceWith(f.querySelector('.stereo-numerator').textContent+'/'+f.querySelector('.stereo-denominator').textContent));return copy.textContent;}
 for(const [text,count,numerator,denominator]of samples){el.textContent=text;w.StereoMath.formatFractions(el);assert.equal(el.querySelectorAll('.stereo-fraction').length,count,text);if(count){const f=el.querySelector('.stereo-fraction');assert.equal(f.children[0].textContent,numerator);assert.equal(f.children[1].textContent,denominator);assert.equal(f.getAttribute('role'),'math');}else assert.equal(el.textContent,text);assert.equal(originalText(el),text);}
+// Preserve the author's exact characters in either branch of the fraction renderer.
+for(const text of ['8 / 2', '8/ 2', '8 /2', '8\u00a0/\u202f2', '2 1 / 3', '√(9 / 4)']){
+ el.textContent=text;w.StereoMath.formatFractions(el);
+ assert.equal(el.querySelectorAll('.stereo-fraction').length,1,text);
+ assert.equal(originalText(el),text);
+}
 // Render the complete authored denominator, while preserving unsupported
 // function-numerator scope instead of guessing whether it means sin(x/2).
 for(const [text,numerator,denominator]of [

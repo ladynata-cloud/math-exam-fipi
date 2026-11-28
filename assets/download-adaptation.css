@@ -1,0 +1,53 @@
+.download-panel[data-trainer-download] > details > summary {
+  display: list-item;
+  min-height: 44px;
+  padding: 8px 0;
+  color: #22304a;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.download-panel .download-prompt {
+  margin-top: 16px;
+  max-width: 47rem;
+}
+
+.download-panel .download-prompt textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 6px 0 10px;
+  padding: 8px;
+  border: 1px solid #687894;
+  border-radius: 6px;
+  background: #fff;
+  color: #22304a;
+  font: inherit;
+  resize: vertical;
+}
+
+.download-panel .download-prompt [hidden] { display: none; }
+
+.download-panel .download-copy {
+  min-height: 44px;
+  max-width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #687894;
+  border-radius: 8px;
+  background: #fff;
+  color: #2348a4;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.download-panel .download-copy-status:empty { display: none; }
+
+.download-panel[data-trainer-download] :focus-visible {
+  outline: 3px solid #80540f;
+  outline-offset: 3px;
+}
+
+.learning-managed > .download-panel[data-trainer-download],
+.course-help > body > .download-panel[data-trainer-download] { display: none; }

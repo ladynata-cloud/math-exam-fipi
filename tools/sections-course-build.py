@@ -34,6 +34,23 @@ def outputs() -> dict[Path, str]:
     html = restore_public_navigator(
         "stereo-course/sections/index.html", (COURSE / "index.html").read_bytes()
     ).decode("utf-8")
+    # The site's download panel serves ZIP, HTML and the prompt. The original
+    # double-click edition must remain usable without this public UI.
+    html, panel_count = re.subn(
+        r"<!-- download-panel:start:ege-profil-sections-from-zero -->\n.*?"
+        r"<!-- download-panel:end:ege-profil-sections-from-zero -->\n",
+        "", html, flags=re.S,
+    )
+    if panel_count:
+        tags = (
+            '<link rel="stylesheet" href="/assets/download-panel.css">\n',
+            '<link rel="stylesheet" href="/assets/download-adaptation.css">\n',
+            '<script defer src="/assets/download-adaptation.js"></script>\n',
+        )
+        if panel_count != 1 or any(html.count(tag) != 1 for tag in tags):
+            raise ValueError("Unexpected sections download panel or assets")
+        for tag in tags:
+            html = html.replace(tag, "")
     css = (COURSE / "assets" / "style.css").read_text(encoding="utf-8")
     app = (COURSE / "assets" / "app.js").read_text(encoding="utf-8")
     replacements = {

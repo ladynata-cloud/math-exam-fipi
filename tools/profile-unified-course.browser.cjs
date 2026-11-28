@@ -21,8 +21,9 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
       const errors=[];page.on('pageerror',error=>errors.push({url:page.url(),message:error.message}));
       await page.goto(origin+course.entry+'#calm');
       await page.locator('[data-course-extra="16"]').waitFor();
-      assert.deepEqual(await page.locator('.exam-grid .exam-number').allTextContents(),Array.from({length:20},(_,i)=>String(i+1)));
-      assert.equal(await page.locator('.exam-grid .exam-card').count(),20);
+      assert.deepEqual(await page.locator('.exam-grid .exam-number').allTextContents(),Array.from({length:19},(_,i)=>String(i+1)));
+      assert.equal(await page.locator('.exam-grid .exam-card').count(),21);
+      assert.equal(await page.locator('[data-extra-topic]').count(),2);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'catalog fits mobile');
       for(let number=1;number<=13;number++){
         await page.goto(origin+course.entry+'#calm/'+number);
@@ -93,6 +94,6 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
       assert.deepEqual(errors,[],'no page errors');
       await context.close();
     }
-    console.log('PROFILE_UNIFIED_COURSE_OK',JSON.stringify({menu:Array.from({length:20},(_,i)=>i+1),banks:course.banks.length,helpPanels:panels,widths:[360,1280],draftReturn:true}));
+    console.log('PROFILE_UNIFIED_COURSE_OK',JSON.stringify({menu:Array.from({length:19},(_,i)=>i+1),banks:course.banks.length,helpPanels:panels,widths:[360,1280],draftReturn:true}));
   }finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});

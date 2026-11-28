@@ -1,0 +1,62 @@
+name: Peterson 6 first-volume exercise companion
+on:
+  pull_request:
+    paths:
+      - 'school/peterson6/textbook/**'
+      - 'school/peterson6/math.js'
+      - 'trainers/peterson6-workshop/**'
+      - 'trainers/peterson6-textbook.html'
+      - 'trainers/peterson6-workshop.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'board-server/index.js'
+      - 'board-server/trainer-registry.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker.js'
+      - 'trainers/board-picker-data.json'
+      - 'tools/peterson6-complete*'
+      - 'tools/peterson6-workshop-oracle.py'
+      - '.github/workflows/peterson6-volume-1-workbook.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'school/peterson6/textbook/**'
+      - 'school/peterson6/math.js'
+      - 'trainers/peterson6-workshop/**'
+      - 'trainers/peterson6-textbook.html'
+      - 'trainers/peterson6-workshop.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'board-server/index.js'
+      - 'board-server/trainer-registry.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker.js'
+      - 'trainers/board-picker-data.json'
+      - 'tools/peterson6-complete*'
+      - 'tools/peterson6-workshop-oracle.py'
+      - '.github/workflows/peterson6-volume-1-workbook.yml'
+permissions:
+  contents: read
+jobs:
+  workbook:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+      - name: Install workbook test tools and board server
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/companion-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/companion-qa/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/companion-qa/node_modules" >> "$GITHUB_ENV"
+      - run: |
+          node --test tools/peterson6-complete.test.cjs tools/peterson6-complete.dom.cjs
+          python3 tools/peterson6-complete-math.py
+          python3 tools/peterson6-workshop-oracle.py
+      - name: Verify both classrooms with teacher and pupil in Chromium
+        run: node tools/peterson6-complete-board.browser.cjs

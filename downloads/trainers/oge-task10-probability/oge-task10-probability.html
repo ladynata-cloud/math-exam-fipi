@@ -1,0 +1,2184 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:">
+<script data-offline-runtime>
+(/* Inlined only in the downloaded HTML. */
+(function standaloneTrainer(config) {
+  'use strict';
+  const source = new URL(config.source);
+  const current = new URL(location.href);
+  const indexPath = source.pathname.endsWith('/index.html') ? source.pathname.slice(0, -'index.html'.length) : null;
+
+  function link(href) {
+    if (!href || href.startsWith('#') || /^(?:mailto:|tel:|data:|blob:)/i.test(href)) return href;
+    const url = new URL(href, source);
+    // Some course helpers have already resolved site paths using the file URL.
+    if (url.protocol === 'file:') {
+      if (url.pathname === current.pathname) return href;
+      url.href = new URL(url.pathname + url.search + url.hash, source.origin).href;
+    }
+    if (url.origin !== source.origin) return href;
+    if (url.pathname === source.pathname || url.pathname === indexPath) {
+      const local = new URL(current.href);
+      local.search = url.search;
+      local.hash = url.hash;
+      return local.href;
+    }
+    return url.href;
+  }
+
+  function update(anchor) {
+    if (anchor.namespaceURI !== 'http://www.w3.org/1999/xhtml') return;
+    const href = anchor.getAttribute('href');
+    const fixed = link(href);
+    if (fixed !== href) anchor.setAttribute('href', fixed);
+  }
+
+  window.MathExamTrainerOffline = Object.freeze({
+    origin: source.origin,
+    media: pathname => config.media[pathname] || pathname
+  });
+
+  // Practice views create and replace links as the learner switches tasks.
+  const anchors = 'a[href]';
+  new MutationObserver(records => {
+    for (const record of records) {
+      if (record.type === 'attributes' && record.target.matches(anchors)) update(record.target);
+      for (const node of record.addedNodes) {
+        if (node.nodeType !== Node.ELEMENT_NODE) continue;
+        if (node.matches(anchors)) update(node);
+        node.querySelectorAll(anchors).forEach(update);
+      }
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+})
+)({"source":"https://mathexam.space/trainers/oge-task10-probability.html","media":{}});
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ. Задание 10: вероятность — тренажёр</title>
+<link rel="canonical" href="https://mathexam.space/trainers/oge-task10-probability.html">
+<style>
+:root{
+  --ink:#20324b;        /* чернила */
+  --pen:#1b4fa0;        /* синяя ручка */
+  --green:#1e7a34;      /* зелёная ручка — верно */
+  --red:#c22f2f;        /* красная ручка — показанное */
+  --paper:#fdfcf7;      /* бумага */
+  --cell:#dfe9f2;       /* клетка */
+  --margin:#e88;        /* поля */
+  --hl:#ffe9a8;         /* подсветка листьев B */
+  --cA:rgba(80,140,220,.18);
+  --cB:rgba(230,170,60,.20);
+  --card:#ffffff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--ink);
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:17px; line-height:1.5;
+  background:
+    linear-gradient(to right, transparent 0 44px, var(--margin) 44px 45.5px, transparent 45.5px),
+    repeating-linear-gradient(var(--paper) 0 23px, var(--cell) 23px 24px),
+    repeating-linear-gradient(90deg, var(--paper) 0 23px, var(--cell) 23px 24px),
+    var(--paper);
+}
+.wrap{max-width:880px;margin:0 auto;padding:10px 14px 60px 56px}
+h1{
+  font-family:'Segoe Print','Comic Sans MS',cursive;
+  font-size:1.35em;color:var(--pen);margin:8px 0 2px;
+}
+.sub{font-size:.92em;color:#5a6b83;margin-bottom:8px}
+
+nav.tabs{display:flex;gap:6px;position:sticky;top:0;z-index:5;background:var(--paper);padding:6px 0;border-bottom:2px solid var(--cell);flex-wrap:wrap}
+nav.tabs button{
+  font-family:'Segoe Print','Comic Sans MS',cursive;
+  font-size:1em;padding:7px 16px;border:2px solid var(--pen);border-radius:14px 14px 4px 4px;
+  background:#eef4fc;color:var(--pen);cursor:pointer;
+}
+nav.tabs button.on{background:var(--pen);color:#fff}
+section.tab{display:none;padding-top:14px}
+section.tab.on{display:block}
+
+.card{background:var(--card);border:1.5px solid #cdd9e6;border-radius:10px;padding:14px 16px;margin:12px 0;box-shadow:2px 3px 0 rgba(90,110,140,.12)}
+.tnum{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--pen);font-weight:bold}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{
+  font-family:Georgia,serif;font-size:.92em;padding:6px 12px;border:1.5px solid var(--pen);
+  border-radius:16px;background:#fff;color:var(--pen);cursor:pointer;
+}
+.chip.on{background:var(--pen);color:#fff}
+.chip.q{border-color:#7d8aa0;color:#3d4a60}
+.chip.q.good{background:#e3f3e6;border-color:var(--green);color:var(--green)}
+
+button.act{
+  font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.95em;
+  padding:7px 14px;border-radius:8px;cursor:pointer;margin:4px 6px 4px 0;
+  border:2px solid var(--pen);background:var(--pen);color:#fff;
+}
+button.act.ghost{background:#fff;color:var(--pen)}
+button.act.show{border-color:var(--red);background:#fff;color:var(--red)}
+button.act:disabled{opacity:.45;cursor:default}
+
+input.aw-dec,input.aw-one{
+  font-family:Georgia,serif;font-size:1.05em;width:120px;padding:6px 8px;
+  border:none;border-bottom:2px solid var(--pen);background:transparent;color:var(--pen);
+  outline:none;text-align:center;
+}
+.aw{display:inline-flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+.aw-decwrap,.aw-frwrap{display:inline-flex;align-items:baseline;gap:8px}
+.aw-frwrap[hidden],.aw-decwrap[hidden]{display:none}
+.aw-tog{
+  background:none;border:none;padding:2px 2px;cursor:pointer;
+  font-family:Georgia,serif;font-size:.82em;color:#6a7a90;
+  text-decoration:underline dotted;text-underline-offset:3px;
+}
+.aw-tog:hover{color:var(--pen);text-decoration:underline solid}
+.aw-fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;gap:3px}
+.aw-cell{
+  font-family:Georgia,serif;font-size:1.05em;width:74px;height:32px;text-align:center;padding:0;
+  border:1.6px dashed #9fb6d1;border-radius:5px;background:#eef4fb;color:var(--pen);outline:none;
+}
+.aw-cell:focus{border-style:solid;border-color:var(--pen);background:#fff}
+.aw-bar{width:82px;height:3px;background:var(--ink);border-radius:2px}
+.fb{font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.95em;display:block;margin-top:6px;min-height:1.3em}
+.fb.ok{color:var(--green)}
+.fb.no{color:#8a5a20}
+.fb.warn{color:#7a6a3a}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15}
+.frac .tt{border-bottom:1.6px solid currentColor;padding:0 5px}
+.frac .bb{padding:0 5px}
+.mnum{padding:0 2px}
+
+.hintbox{background:#fdf7e3;border:1.5px dashed #d8b74a;border-radius:8px;padding:8px 12px;margin:8px 0;font-size:.95em}
+.razbor{background:#fff5f5;border:1.5px solid #eec3c3;border-radius:8px;padding:10px 14px;margin:10px 0}
+.razbor .rz-t{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--red);margin-bottom:4px}
+.okline{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--green)}
+.redink{color:var(--red)}
+.greenink{color:var(--green)}
+
+.step{border-left:3px solid var(--cell);padding:6px 0 6px 14px;margin:10px 0}
+.step.done-ok{border-left-color:var(--green)}
+.step.done-show{border-left-color:var(--red)}
+.step .q{margin-bottom:6px}
+
+.figure{display:block;max-width:420px;width:100%;height:auto;margin:10px auto;background:#fff;border:1px solid #dde5ee;border-radius:8px}
+/* интерактивное дерево: маркерные ленты вдоль рёбер */
+.mk-band{stroke:#ffd24d;stroke-width:11;stroke-linecap:round;opacity:0;transition:opacity .25s ease}
+.mk-band.mk-on-ok{opacity:.85;stroke:#7bd493}     /* решил верно — обведено зелёным маркером */
+.mk-band.mk-on-shown{opacity:.7;stroke:#cfd6e0}   /* посмотрел шаг — серый маркер */
+.mk-band.mk-wink{animation:mkwink 1.05s ease-in-out infinite}
+@keyframes mkwink{0%,100%{opacity:0}50%{opacity:.55}}
+.svgt{font-family:Georgia,serif;font-size:17px;fill:var(--ink);text-anchor:middle}
+.svgb{font-weight:bold;font-style:italic}
+
+table.dice{border-collapse:collapse;margin:8px auto;font-size:.85em}
+table.dice td,table.dice th{border:1px solid #b9c8d8;width:2em;height:2em;text-align:center}
+table.dice th{background:#eef4fc;color:var(--pen)}
+table.dice td.hl{background:var(--hl)}
+
+.statbar{font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.9em;background:#eef4fc;border:1.5px solid #c6d6ec;border-radius:8px;padding:8px 12px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.statbar b{color:var(--pen)}
+details.bytype{font-size:.9em;margin-top:6px}
+details.bytype table{border-collapse:collapse}
+details.bytype td,details.bytype th{border:1px solid #cdd9e6;padding:3px 10px;font-size:.92em}
+
+.theory-p{margin:14px 0}
+.theory-p .pn{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--pen);font-size:1.05em}
+.mini{background:#f6f9fd;border:1.5px solid #d5e2f0;border-radius:8px;padding:10px 12px;margin-top:8px}
+.mini .mq{font-size:.96em}
+.note{font-size:.9em;color:#5a6b83}
+.formula{background:#eef4fc;border-radius:8px;padding:8px 14px;display:inline-block;margin:6px 0;font-size:1.05em}
+
+@media (max-width:560px){
+  body{font-size:16px;background:
+    linear-gradient(to right, transparent 0 20px, var(--margin) 20px 21.5px, transparent 21.5px),
+    repeating-linear-gradient(var(--paper) 0 23px, var(--cell) 23px 24px),
+    repeating-linear-gradient(90deg, var(--paper) 0 23px, var(--cell) 23px 24px),
+    var(--paper);}
+  .wrap{padding:8px 10px 60px 30px}
+  nav.tabs button{font-size:.9em;padding:6px 10px}
+  input.aw-dec,input.aw-one{width:96px}
+  .aw-cell{width:64px;height:30px}
+  .aw-bar{width:72px}
+  button.act{font-size:.9em;padding:7px 10px}
+  .card{padding:12px 12px}
+}
+/* доступность (курс ОГЭ, задача 03D): кнопки и поля не ниже 44 px, контрастный фокус */
+nav.tabs button,button.act,.chip,.aw-tog,input.aw-dec,input.aw-one{min-height:44px}
+.aw-cell{height:44px}
+details.bytype summary{padding:12px 0;line-height:20px;cursor:pointer}
+/* на телефоне вкладки в две строки — не прилипают к верху, чтобы не закрывать задачу */
+@media (max-width:560px){ nav.tabs{position:static} }
+.crumbs{display:inline-flex;align-items:center;min-height:44px;font-size:.9em;color:var(--pen);text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+button:focus-visible,input:focus-visible,.chip:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}
+  .mk-band.mk-wink{opacity:.55}}
+@media print{
+  body{background:#fff}
+  .crumbs,nav.tabs,.chips,button,.fb,.statbar,.aw-tog{display:none !important}
+  section.tab{display:none !important}
+  section.tab.on{display:block !important}
+  .card{box-shadow:none}
+}
+
+/* Minimal task-first course presentation. Math and progress stay in their existing engines. */
+:root{--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--accent:#216342;--green:#216342;--blue:#216342;--line:#dbe1da;--ui:system-ui,-apple-system,"Segoe UI",sans-serif;--hand:var(--ui)}
+body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:18px;line-height:1.75}.margin-line{display:none}.wrap,body>main,body>header{max-width:860px;margin-left:auto;margin-right:auto;padding-left:20px;padding-right:20px}body>header{background:transparent;border:0;box-shadow:none;padding-top:24px}header,h1,h2,h3,.hand{font-family:var(--ui)!important}header{margin-bottom:24px}h1{font-size:25px!important;line-height:1.4;margin:10px 0 22px!important}.crumbs{font:15px/1.6 var(--ui);color:#216342}.card,.task-card,.mtask,.panel{background:#fff!important;border:1px solid #dbe1da!important;border-radius:14px;box-shadow:none!important;padding:28px!important;margin-bottom:22px}.card:before,.card:after{display:none!important}.card p,.task-card p,.mtask p{line-height:1.8}.taskline,.task-text,.task-q,.story{font-size:19px!important;line-height:1.8!important}.taskline{margin:16px 0}.svgbox,svg{max-width:100%}.expr,.formula-box{margin:24px 0;font-size:27px;overflow-x:auto}.btn,.act,.btn-check,button.primary{background:#216342!important;color:white!important;border-color:#216342!important;font-family:var(--ui)!important;font-size:16px;min-height:46px}.ghost,.btn.ghost,.btn-ghost,.act.sec,.act.ghost,.btn.show,.btn-hint{background:#fff!important;color:#216342!important;border-color:#b9cbbb!important}button,input,select,summary{font-family:var(--ui);min-height:44px}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}input.ans,.ansfield input,.field input{font-size:21px!important;max-width:100%;border-radius:7px}.btnrow,.btn-row,.mrow,.steprow,.answer-row{gap:12px;margin-top:18px!important}.tabs{display:flex;flex-wrap:wrap;gap:9px;border:0}.tabs button,.chip,.pill,.fchip,#modes button,#types button{background:white;color:#216342;border:1px solid #dbe1da;min-height:44px;padding:9px 13px;font-size:15px}.tabs .active,.tabs .on,.chip.active,.chip.on,.pill.on,.fchip.on,#modes .active,#types .active{background:#216342!important;color:#fff!important}.minimal-settings,.minimal-options{margin:24px 0;border-top:1px solid #dbe1da;padding:18px 2px}.minimal-settings>summary,.minimal-options>summary{color:#216342;cursor:pointer;font-size:16px;padding:5px 0}.minimal-settings>summary+*,.minimal-options>summary+*{margin-top:18px}.minimal-settings .card{padding:18px!important}.minimal-settings .sub,.minimal-settings .subtitle{font-size:15px;line-height:1.75}.minimal-hint{margin:24px 0!important}.minimal-hint-panel{margin:20px 0;padding:20px;background:#f0f5ee;border-radius:12px}.minimal-task-nav{margin:20px 0}.minimal-task-nav label{display:block;font-size:15px}.minimal-task-nav select{max-width:100%;padding:8px;border:1px solid #b9cbbb;border-radius:8px;background:white;font-size:17px}.minimal-task-nav .minimal-next{display:block;margin-top:18px}.mgrid{display:block!important}.score{position:static!important;background:transparent!important;box-shadow:none!important;padding:12px!important}.minimal-meta{font-size:14px;color:#626b63}.minimal-task-title{font-size:20px;margin:0 0 24px}.minimal-task-nav [hidden],[hidden]{display:none!important}@media(max-width:560px){.wrap,body>main,body>header{padding-left:12px;padding-right:12px}.card,.task-card,.mtask,.panel{padding:22px 16px!important}h1{font-size:22px!important}.taskline,.task-text,.task-q,.story{font-size:18px!important}.minimal-hint-panel{padding:16px 12px}.expr,.formula-box{font-size:24px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+<style data-inline-source="/trainers/oge-course-reference.css">
+.ocr-card{margin:20px 0;padding:0;border-top:1px solid #d6dfd5;font-size:17px;line-height:1.8;overflow-wrap:anywhere}.ocr-card>summary{cursor:pointer;min-height:48px;padding:12px 0;color:#216342;font-size:17px;font-weight:600}.ocr-card[open]>summary{margin-bottom:8px}.ocr-card p{margin:14px 0}.ocr-topic{padding:8px 0}.ocr-topic h4{font-size:18px;line-height:1.6;margin:8px 0}.ocr-topic ul{padding-left:22px}.ocr-topic li{margin:14px 0}.ocr-card a{color:#176747;text-decoration:underline;text-underline-offset:3px}.ocr-edition,.ocr-note{display:block;font-size:15px!important;line-height:1.75;color:#58645b}.ocr-card img{display:block;max-width:100%;height:auto;background:white}.ocr-card figure{margin:18px 0}.ocr-card figcaption{font-size:17px;margin-bottom:12px}.ocr-card .ocr-close{min-height:44px;padding:8px 14px;margin:10px 0;border:1px solid #aac4b3;border-radius:8px;color:#176747;background:#fff;font-size:17px;cursor:pointer}.ocr-card :focus-visible{outline:3px solid #77a488;outline-offset:3px}.ocr-full-sheet img{width:100%;max-width:850px}.ocr-card .ocr-card{margin-left:0}@media(max-width:540px){.ocr-card{font-size:17px}.ocr-close{width:100%}}
+.ocr-sheet-pan{max-width:100%;overflow:auto;overscroll-behavior:contain}.ocr-sheet-pan.ocr-zoomed img{width:1100px;max-width:none}.ocr-sheet-pan:focus-visible{outline:3px solid #77a488;outline-offset:3px}
+
+</style>
+<style data-inline-source="/trainers/oge-course-algebra.css">
+.oca-instruction{font-size:18px;line-height:1.8;margin:20px 0;color:#34483b}.oca-help{padding:20px;border:1px solid #c9d9ce;border-radius:12px;background:#f3f7f2;margin:18px 0}.oca-help[hidden],.oca-owned [hidden]{display:none!important}.oca-details{margin:18px 0;border-top:1px solid #ccd8cc;padding-top:12px}.oca-details>summary{color:#216342;cursor:pointer;font:600 18px/1.7 system-ui,sans-serif;min-height:44px}.oca-details p,.oca-details li{font:18px/1.8 system-ui,sans-serif}.oca-button{border:1px solid #a7bfae;border-radius:8px;padding:9px 15px;background:white;color:#216342;font:600 17px/1.5 system-ui,sans-serif;min-height:44px;cursor:pointer;max-width:100%;white-space:normal}.oca-button:disabled{cursor:default;opacity:.7}.oca-details>.oca-button{margin-top:16px}.oca-control{display:grid;grid-template-columns:minmax(150px,1fr) minmax(100px,1.5fr) 45px;align-items:center;gap:12px;margin:15px 0;font-size:17px;line-height:1.5}.oca-control input[type=range]{width:100%;min-width:0;accent-color:#216342;min-height:44px}.oca-control select{grid-column:2 / 4;width:100%;font-size:17px;min-height:44px}.oca-control output{font-weight:700}.oca-observation{font:600 19px/1.8 system-ui,sans-serif;margin:18px 0}.oca-figure{overflow-x:auto;max-width:100%;padding:8px 0;background:white;border-radius:8px}.oca-figure svg{display:block;width:100%;min-width:600px;height:auto;max-height:none;max-width:none}.oca-figure text{fill:#24382b;font-family:system-ui,sans-serif}.oca-factors{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:20px}.oca-factor{padding:5px 10px;border-radius:6px;background:#dcebdd;color:#173f28}.oca-factor-group{display:inline-flex;gap:4px;align-items:center;border:1px solid #b1c9b6;border-radius:6px;padding:5px}.oca-square{display:grid;gap:2px;width:190px;height:190px}.oca-square>span{background:#b9d5bf;border:1px solid #216342}.oca-outcomes{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:8px}.oca-outcomes.oca-dice{grid-template-columns:repeat(6,minmax(44px,1fr));overflow-x:auto}.oca-outcomes .oca-button{padding:8px 3px;min-width:44px;font-size:16px}.oca-outcomes .oca-button[aria-pressed=true]{background:#216342;color:white}.oca-fraction{display:inline-flex;flex-direction:column;align-items:stretch;text-align:center;vertical-align:middle;line-height:1.3;margin:0 .3em}.oca-fraction>span:first-child{border-bottom:1.5px solid;padding:0 .18em .1em}.oca-fraction>span:last-child{padding:.1em .18em 0}.oca-choices{display:flex;flex-wrap:wrap;gap:10px}.oca-work{margin:24px 0;padding:20px 0;border-top:1px solid #d7dfd6;border-bottom:1px solid #d7dfd6}.oca-work>label{display:block;font:600 19px/1.6 system-ui,sans-serif;margin-bottom:10px}.oca-work textarea{box-sizing:border-box;display:block;width:100%;min-height:180px;resize:vertical;border:1px solid #9fb9a6;border-radius:8px;background:white;padding:14px;color:#202d24;font:18px/1.85 system-ui,sans-serif}.oca-work textarea::placeholder{color:#69766b;opacity:1}.oca-note,.oca-save-status{font:16px/1.7 system-ui,sans-serif;color:#536459}.oca-check{display:flex;gap:12px;align-items:flex-start;margin:12px 0;font-size:17px;line-height:1.7}.oca-check input{width:22px;height:22px;flex:none;accent-color:#216342;margin-top:4px}.oca-table-scroll{overflow-x:auto}.oca-table-scroll table{border-collapse:collapse;width:100%;min-width:580px}.oca-table-scroll th,.oca-table-scroll td{border:1px solid #cad6ca;padding:10px;font-size:17px;white-space:normal}.oca-table-scroll input{width:100%;min-width:130px;box-sizing:border-box;min-height:44px;font-size:18px}.oca-saved-entry{margin:14px 0}.oca-saved-entry pre{white-space:pre-wrap;overflow-wrap:anywhere;font:17px/1.8 system-ui,sans-serif;background:#f3f6f0;padding:12px}.oca-owned :is(button,input,textarea,select,summary):focus-visible,.oca-figure:focus-visible{outline:3px solid #68a27d;outline-offset:3px}@media(max-width:540px){.oca-help{padding:12px}.oca-control{grid-template-columns:minmax(0,1fr) 45px}.oca-control>span{grid-column:1 / -1}.oca-control input[type=range]{grid-column:1}.oca-control select{grid-column:1 / -1}.oca-work textarea{padding:10px}.oca-outcomes.oca-dice{gap:5px}.oca-details .oca-details{padding-left:0;padding-right:0}}@media print{.oca-help,.oca-exploration,.oca-reference,.oca-work details{display:none!important}.oca-work textarea{border:1px solid #777;min-height:240px}.oca-work{break-inside:avoid}}
+.oca-native-line{max-width:100%;overflow-x:auto;padding:8px 0}.oca-native-line svg{display:block;width:var(--oca-line-width)!important;min-width:var(--oca-line-width);height:var(--oca-line-height)!important;max-width:none!important}.oca-line-note{margin:8px 0 18px}.oca-outcome-scroll{max-width:100%;min-width:0;overflow-x:auto;padding:4px 0 10px}.oca-outcome-scroll .oca-outcomes{min-width:252px}.oca-outcome-scroll .oca-outcomes.oca-dice{min-width:352px;overflow:visible}.oca-native-line:focus-visible,.oca-outcome-scroll:focus-visible{outline:3px solid #68a27d;outline-offset:3px}.oca-assisted-notice{padding:12px;background:white;border-left:3px solid #a7bfae}.oca-graph-count{margin:12px 0 0}
+
+</style>
+<style data-inline-source="/assets/oge-wayfinding.css">
+/* Ordinary links remain usable without JavaScript, history or saved state. */
+nav.oge-wayfinding{box-sizing:border-box;display:flex!important;position:relative;flex:0 0 auto;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:4px 16px;width:100%;max-width:1100px;margin:0 auto!important;padding:6px 16px!important;background:#f6f7f2!important;border:0!important;border-bottom:1px solid #d8e0d6!important;border-radius:0!important;box-shadow:none!important;font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif!important;text-align:left!important;z-index:1}
+nav.oge-wayfinding a{box-sizing:border-box;display:inline-flex!important;align-items:center;min-height:44px;max-width:100%;margin:0!important;padding:4px 8px!important;color:#216342!important;background:transparent!important;border:0!important;border-radius:4px;font:inherit!important;font-weight:600!important;text-decoration:underline!important;text-underline-offset:3px;white-space:normal!important;overflow-wrap:anywhere}
+nav.oge-wayfinding a:focus-visible{outline:3px solid #216342;outline-offset:2px}
+nav.oge-wayfinding[hidden]{display:none!important}
+@media print{nav.oge-wayfinding{display:none!important}}
+
+</style>
+
+</head>
+<body>
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
+
+<div class="wrap">
+<a class="crumbs" href="../oge/">← Курс ОГЭ</a>
+<h1>ОГЭ по математике. Задание 10: вероятность</h1>
+<div class="sub">Четыре режима: сначала <b>учимся</b>, потом решаем <b>по шагам</b>, затем — <b>марафон</b> и <b>зачёт</b> из 10 задач. Не сходится — пробуй снова: тренажёр подскажет, где ошибка. Подсказки ничего не отнимают. Ответ вводим десятичной дробью (0,25) или, нажав «ввести дробью», обыкновенной.</div>
+
+<nav class="tabs" role="tablist">
+<button id="tabb-uch" class="on" role="tab" aria-selected="true" onclick="showTab('uch')">Учимся</button>
+<button id="tabb-step" role="tab" aria-selected="false" onclick="userActed=true;showTab('step')">Пошагово</button>
+<button id="tabb-mar" role="tab" aria-selected="false" onclick="userActed=true;showTab('mar')">Марафон</button>
+<button id="tabb-quiz" role="tab" aria-selected="false" onclick="userActed=true;showTab('quiz')">Зачёт</button>
+</nav>
+
+<section class="tab on" id="tab-uch"><div id="uch-root"></div></section>
+<section class="tab" id="tab-step">
+  <div class="hintbox" id="review-box" aria-live="polite" hidden></div>
+  <div class="card">
+    <div><b>Выбери тип задачи:</b></div>
+    <div class="chips" id="step-chips"></div>
+  </div>
+  <div id="step-root"></div>
+</section>
+<section class="tab" id="tab-mar">
+  <div class="statbar" id="mar-stats"></div>
+  <div class="card">
+    <div><b>Какие задачи решаем:</b></div>
+    <div class="chips" id="mar-chips"></div>
+  </div>
+  <div id="mar-root"></div>
+</section>
+<section class="tab" id="tab-quiz"><div id="quiz-root"></div></section>
+</div>
+<script data-inline-source="/trainers/oge-course-shared-mode.js">
+/* Decide before native stores initialize: a shared room owns no personal work. */
+(function (root) {
+  'use strict';
+  let embedded = false;
+  try { embedded = root.parent !== root && root.parent.location.origin === root.location.origin && /\/(?:trainer-board|group-board)\.html$/.test(root.parent.location.pathname); } catch (_) {}
+  root.OgeCourseSharedMode = root.MathExamLearning?.managed === true || embedded || new URLSearchParams(root.location.search).get('board') === '1';
+})(window);
+
+</script>
+<script>
+
+/* Presentation helpers only: nodes are moved, never cloned, so their handlers and progress survive. */
+const OGEMinimal={
+  group(root,nodes,label,cls){
+    if(!root||typeof root.appendChild!=="function")return null;
+    nodes=nodes.filter(Boolean);if(!nodes.length)return null;
+    const details=document.createElement('details');details.className=cls||'minimal-options';
+    const summary=document.createElement('summary');summary.textContent=label;details.appendChild(summary);
+    nodes.forEach(node=>details.appendChild(node));root.appendChild(details);return details;
+  },
+  shell(root,selectors,title){
+    if(!root||!document.body||!document.body.querySelector)return;
+    const heading=document.querySelector('h1');if(heading)heading.textContent=title;
+    const nodes=selectors.map(s=>document.querySelector(s)).filter(Boolean);
+    this.group(root,nodes,'Темы, режимы и результаты','minimal-settings');
+  },
+  paginate(grid,selector){
+    if(!grid||!grid.querySelectorAll)return;
+    const cards=Array.from(grid.querySelectorAll(selector));if(!cards.length)return;
+    const old=grid.nextElementSibling;if(old&&old.classList.contains('minimal-task-nav'))old.remove();
+    const nav=document.createElement('div');nav.className='minimal-task-nav';
+    const next=document.createElement('button');next.type='button';next.className='btn minimal-next';next.textContent='Другое задание →';nav.appendChild(next);
+    const options=document.createElement('details');options.className='minimal-options';
+    const summary=document.createElement('summary');summary.textContent='Выбрать задание';options.appendChild(summary);
+    const label=document.createElement('label');label.textContent='Задание ';const select=document.createElement('select');select.setAttribute('aria-label','Выбрать задание');label.appendChild(select);options.appendChild(label);nav.appendChild(options);
+    cards.forEach((card,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=String(i+1)+' из '+cards.length;select.appendChild(option);});
+    let current=0;const activate=i=>{current=i;cards.forEach((card,j)=>{card.hidden=j!==i;});select.value=String(i);};
+    select.onchange=()=>activate(Number(select.value));next.onclick=()=>activate((current+1)%cards.length);activate(0);grid.after(nav);
+  }
+};
+
+/* ===== ЯДРО: точная арифметика и парсер ответов ===== */
+function gcdB(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a;}
+function F(n,d){ // дробь n/d, BigInt, нормализованная
+  n=BigInt(n); d=BigInt(d===undefined?1:d);
+  if(d===0n) throw new Error('den=0');
+  if(d<0n){n=-n;d=-d;}
+  const g=gcdB(n,d)||1n;
+  return {n:n/(g||1n), d:d/(g||1n)};
+}
+function fAdd(a,b){return F(a.n*b.d+b.n*a.d, a.d*b.d);}
+function fMul(a,b){return F(a.n*b.n, a.d*b.d);}
+function fSub(a,b){return F(a.n*b.d-b.n*a.d, a.d*b.d);}
+function fEq(a,b){return a.n===b.n && a.d===b.d;}
+function fCmp(a,b){const l=a.n*b.d, r=b.n*a.d; return l<r?-1:(l>r?1:0);}
+// десятичная запись, если знаменатель вида 2^a*5^b; иначе null
+function fToDec(f){
+  let d=f.d, t2=0n, t5=0n;
+  while(d%2n===0n){d/=2n;t2++;}
+  while(d%5n===0n){d/=5n;t5++;}
+  if(d!==1n) return null;
+  const k=t2>t5?t2:t5;
+  const scale=10n**k;
+  let v=f.n*scale/f.d;
+  const neg=v<0n; if(neg)v=-v;
+  let s=v.toString().padStart(Number(k)+1,'0');
+  const kk=Number(k);
+  let out = kk===0 ? s : s.slice(0,s.length-kk)+','+s.slice(s.length-kk);
+  if(kk>0) out=out.replace(/,?0+$/,'').replace(/,$/,'');
+  return (neg?'\u2212':'')+out;
+}
+// округление до 10^-p, возвращает дробь
+function fRound(f,p){
+  const scale=10n**BigInt(p);
+  const num=f.n*scale*2n, den=f.d*2n; // округление half-up для положительных
+  let q=num/den, r=num%den;
+  if(r*2n>=den) q+=1n;
+  // q = round(f*scale) при f>=0 (у нас вероятности >=0)
+  const exact=f.n*scale, fl=exact/f.d, rem=exact%f.d;
+  q=fl; if(rem*2n>=f.d) q+=1n;
+  return F(q,scale);
+}
+function fIsTerm(f){return fToDec(f)!==null;}
+// строка вида "0,25" | "0.25" | "3/8" | "5" -> дробь или null
+function parseAns(s){
+  if(s==null) return null;
+  s=String(s).trim().replace(/\u2212/g,'-').replace(/\s+/g,'');
+  if(!s) return null;
+  let m=s.match(/^(-?\d+)\/(\d+)$/);
+  if(m){ if(BigInt(m[2])===0n) return null; return F(m[1],m[2]); }
+  m=s.match(/^(-?)(\d+)(?:[.,](\d+))?$/);
+  if(m){
+    const sign=m[1]==='-'?-1n:1n;
+    const ip=BigInt(m[2]), fp=m[3]||'';
+    const den=10n**BigInt(fp.length);
+    return F(sign*(ip*den+BigInt(fp||'0')), den);
+  }
+  return null;
+}
+// две части этажного ввода -> дробь
+function parsePair(numS,denS){
+  numS=String(numS||'').trim(); denS=String(denS||'').trim();
+  if(!/^\d+$/.test(numS)||!/^\d+$/.test(denS)) return null;
+  if(BigInt(denS)===0n) return null;
+  return F(numS,denS);
+}
+/* ГСЧ с сидом (mulberry32) — для фазз-тестов воспроизводимо */
+function RNG(seed){
+  let a=seed>>>0;
+  return function(){
+    a|=0; a=(a+0x6D2B79F5)|0;
+    let t=Math.imul(a^(a>>>15),1|a);
+    t=(t+Math.imul(t^(t>>>7),61|t))^t;
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
+}
+function makePick(rnd){
+  return {
+    ri:(a,b)=>a+Math.floor(rnd()*(b-a+1)),
+    of:(arr)=>arr[Math.floor(rnd()*arr.length)],
+    shuf:(arr)=>{const c=arr.slice();for(let i=c.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}
+  };
+}
+/* HTML этажной дроби */
+function fracHTML(f){
+  if(f.d===1n) return '<span class="mnum">'+f.n.toString()+'</span>';
+  return '<span class="frac"><span class="tt">'+f.n.toString()+'</span><span class="bb">'+f.d.toString()+'</span></span>';
+}
+function fracHTMLraw(n,d){
+  return '<span class="frac"><span class="tt">'+n+'</span><span class="bb">'+d+'</span></span>';
+}
+/* красивое представление ответа: десятичная (если есть) и дробь */
+function ansHTML(f){
+  const dec=fToDec(f);
+  if(dec!==null && f.d!==1n) return dec+' (или '+fracHTMLcopy(f)+')';
+  if(dec!==null) return dec;
+  return fracHTMLcopy(f);
+}
+function fracHTMLcopy(f){return fracHTML(f);}
+/* ===== КОНТРАКТ ПРОГРЕССА КУРСА ОГЭ ===== */
+const TID="oge-t10-veroyatnost";
+const TYPE_IDS=["10_1","10_2","10_3","10_4","10_5","10_6","10_7"];
+const OLD_KEY="oge10_progress_v1";   // прежний ключ тренажёра: переносится один раз (§6 контракта), не удаляется
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+/* контракт прогресса курса ОГЭ (docs/OGE_PROGRESS_CONTRACT.md): ядро, журнал, повтор;
+   миграция своего старого ключа (§6), сброс только своей ветки, поле ext для панели тренажёра */
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    if (window.OgeCourseSharedMode) return {};
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO || window.OgeCourseSharedMode) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO || window.OgeCourseSharedMode) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
+     migratedFrom; старый ключ не удаляется и не переписывается */
+  function migrate(fn){
+    if (RO || window.OgeCourseSharedMode) return;
+    try {
+      var raw = localStorage.getItem(OLD_KEY);
+      if (raw === null) return;
+      var cur = readAll()[TID];
+      if (isObj(cur) && typeof cur.migratedFrom === "string") return;
+      var old = null;
+      try { old = JSON.parse(raw); } catch (e) {}
+      saveRec(function(rec){
+        if (isObj(old)) { try { fn(old, rec); } catch (e) {} }
+        rec.migratedFrom = OLD_KEY;
+      });
+    } catch (e) {}
+  }
+  /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
+     отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
+  function resetOwn(){
+    if (RO || window.OgeCourseSharedMode) return;
+    try {
+      var all = readAll(), rec = all[TID];
+      if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
+      else delete all[TID];
+      if (isObj(all.mistakes)) for (var k in all.mistakes)
+        if (Object.prototype.hasOwnProperty.call(all.mistakes, k) && k.indexOf(TID + "|") === 0) delete all.mistakes[k];
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  /* своя статистика панели тренажёра — поле ext ветки (адаптер курса его не читает) */
+  function ext(){ var r = readAll()[TID]; return isObj(r) && isObj(r.ext) ? r.ext : {}; }
+  function saveExt(fn){ saveRec(function(rec){ if (!isObj(rec.ext)) rec.ext = {}; fn(rec.ext); }); }
+  var REVIEW = !window.OgeCourseSharedMode && /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, KEY:KEY, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes,
+    migrate:migrate, resetOwn:resetOwn, ext:ext, saveExt:saveExt };
+})();
+
+/* ===== ГЕНЕРАТОРЫ ЗАДАНИЯ 10 (вероятность) =====
+   Каждый генератор: (pick) -> task
+   task = {code, name, text, svg?, answer(Frac), needRound?, meta, hints[2], steps[], razbor}
+   step = {q, ans(Frac), show}  — вопросы про приём, ответы точные      */
+
+const NICE_DEN=[10,20,25,40,50]; // знаменатели с конечной десятичной записью
+const ONE=F(1), ZERO=F(0);
+
+function pStep(q,ans,show,chk,traps){return {q,ans,show,chk:chk||'',traps:traps||[]};}
+/* «очко / очка / очков» по последнему числу */
+function pointsW(n){const t=n%100,u=n%10;if(t>=11&&t<=14)return 'очков';if(u===1)return 'очко';if(u>=2&&u<=4)return 'очка';return 'очков';}
+function probStepText(){return 'Раздели число благоприятных исходов на число всех исходов.';}
+
+/* --- 10.1 равновозможные исходы --- */
+function gen101(pk){
+  const N=pk.of([10,20,25,40,50,80]);
+  let k; do{ k=pk.ri(1,N-1); }while(2*k===N);   // при k = N/2 «противоположное событие» даёт тот же ответ
+  const ans=F(k,N);
+  const text=`В случайном опыте ровно <b>${N}</b> равновозможных элементарных событий. Событию <i>A</i> благоприятствуют <b>${k}</b> из них. Найдите вероятность события <i>A</i>.`;
+  return {
+    code:'10.1', name:'Равновозможные исходы', text, answer:ans,
+    meta:{N,k},
+    hints:[
+      'Вероятность — это доля благоприятных исходов среди всех. Что здесь «все исходы», а что «благоприятные»?',
+      'P(A) = N(A) : N — благоприятные делим на все. Оба числа есть в условии.'
+    ],
+    steps:[
+      pStep('Сколько всего равновозможных исходов в опыте?',F(N),`Всего исходов N = ${N} — это число прямо названо в условии.`,'число всех исходов в условии'),
+      pStep('Сколько исходов благоприятствуют событию A?',F(k),`Благоприятных исходов N(A) = ${k}.`,'число благоприятных исходов'),
+      pStep('Найди вероятность: '+probStepText(),ans,`P(A) = ${k} : ${N}.`,'деление благоприятных исходов на все')
+    ],
+    razbor:`Все ${N} исходов равновозможны, благоприятных — ${k}. Значит P(A)&nbsp;=&nbsp;${fracHTMLraw(k,N)}&nbsp;=&nbsp;${fracHTML(ans)}${fToDec(ans)!==null?'&nbsp;=&nbsp;'+fToDec(ans):''}.`
+  };
+}
+
+/* --- 10.2 один выбор предмета --- */
+const OBJ102=[
+  {what:'значков', one:'значок', verb:'Покупатель наугад берёт один значок'},
+  {what:'магнитов', one:'магнит', verb:'Продавец наугад достаёт один магнит'},
+  {what:'брелоков', one:'брелок', verb:'Ученик наугад вытягивает один брелок'},
+  {what:'леденцов', one:'леденец', verb:'Ребёнок не глядя берёт один леденец'},
+  {what:'воздушных шариков', one:'шарик', verb:'Аниматор наугад берёт один шарик'}
+];
+const COLORS=[['красных','красным'],['синих','синим'],['зелёных','зелёным'],['жёлтых','жёлтым'],['оранжевых','оранжевым'],['фиолетовых','фиолетовым']];
+function gen102(pk){
+  const obj=pk.of(OBJ102);
+  const [c1,c2]=pk.shuf(COLORS).slice(0,2);
+  const total=pk.of(NICE_DEN);
+  let a; do{ a=pk.ri(2,total-2); }while(2*a===total);   // при a = b «не тот цвет» даёт тот же ответ
+  const b=total-a;
+  const askFirst=pk.ri(0,1)===0;
+  const fav=askFirst?a:b, cAsk=askFirst?c1:c2;
+  const ans=F(fav,total);
+  const text=`В коробке лежат <b>${a}</b> ${c1[0]} и <b>${b}</b> ${c2[0]} ${obj.what}. ${obj.verb}. Найдите вероятность того, что он окажется ${cAsk[1]}.`;
+  return {
+    code:'10.2', name:'Один выбор предмета', text, answer:ans,
+    meta:{a,b,total,fav},
+    hints:[
+      `Сначала посчитай, сколько всего ${obj.what} в коробке — и лишь потом дели.`,
+      `Сначала все предметы: ${a}&nbsp;+&nbsp;${b}. Потом те, про которые спрашивают, — и дели.`
+    ],
+    steps:[
+      pStep(`Сколько всего ${obj.what} в коробке?`,F(total),`Всего: ${a} + ${b} = ${total}.`,'сумму всех предметов'),
+      pStep(`Сколько из них ${cAsk[0]} (благоприятные исходы)?`,F(fav),`Благоприятных: ${fav}.`,'сколько предметов того цвета, про который спрашивают'),
+      pStep('Найди вероятность: '+probStepText(),ans,`P = ${fav} : ${total}.`,'деление нужных на все')
+    ],
+    razbor:`Всего предметов: ${a}&nbsp;+&nbsp;${b}&nbsp;=&nbsp;${total}. Благоприятных (${cAsk[0]}): ${fav}. P&nbsp;=&nbsp;${fracHTMLraw(fav,total)}&nbsp;=&nbsp;${fToDec(ans)}.`
+  };
+}
+
+/* --- 10.3 два выбора без возвращения, первый известен --- */
+function gen103(pk){
+  const obj=pk.of([['фишек','фишка','фишки'],['пуговиц','пуговица','пуговицы'],['бусин','бусина','бусины']]);
+  const cc=pk.shuf([['оранжевых','оранжевой','оранжевая'],['фиолетовых','фиолетовой','фиолетовая'],['голубых','голубой','голубая'],['розовых','розовой','розовая']]).slice(0,2);
+  const totalAfter=pk.of([10,20,25,50]); // всего минус один — красивый знаменатель
+  const total=totalAfter+1;
+  let g; do{ g=pk.ri(2,total-2); }while(2*g===total+1);   // нужного цвета, ≥ 2; при g = (T+1)/2 «другой цвет» даёт тот же ответ
+  const y=total-g;
+  const ans=F(g-1,totalAfter);
+  const [cG,cY]=cc;
+  const text=`В мешочке лежат <b>${g}</b> ${cG[0]} и <b>${y}</b> ${cY[0]} ${obj[0]}. Наугад, не глядя, по очереди достают две ${obj[2]}. Известно, что первая ${obj[1]} оказалась ${cG[1]}. Найдите вероятность того, что вторая ${obj[1]} тоже окажется ${cG[1]}.`;
+  return {
+    code:'10.3', name:'Выбор без возвращения', text, answer:ans,
+    meta:{g,y,total,acc:obj[1].replace('а','у')},
+    hints:[
+      `Одну ${cG[2].replace('ая','ую')} ${obj[1].replace('а','у')} уже достали. Пересчитай, что осталось в мешочке.`,
+      `Осталось всего ${total}&nbsp;−&nbsp;1, а нужного цвета — на одну меньше, чем было. Дели одно на другое.`
+    ],
+    steps:[
+      pStep(`Сколько всего ${obj[0]} осталось в мешочке после первого извлечения?`,F(totalAfter),`Было ${total}, одну достали: ${total} − 1 = ${totalAfter}.`,'сколько предметов осталось в мешочке',[{v:F(total),m:'Первую уже достали и не вернули: всего стало на один меньше.'}]),
+      pStep(`Сколько среди оставшихся ${cG[0]} ${obj[0]}?`,F(g-1),`Было ${g}, одну ${cG[2].replace('ая','ую')} уже достали: ${g} − 1 = ${g-1}.`,'сколько осталось предметов нужного цвета',[{v:F(g),m:'Одну нужного цвета уже достали — их тоже стало на одну меньше.'}]),
+      pStep('Найди вероятность для второго извлечения: '+probStepText(),ans,`P = ${g-1} : ${totalAfter}.`,'деление оставшихся нужных на всех оставшихся')
+    ],
+    razbor:`Первая ${obj[1]} уже вынута, назад её не возвращают. Осталось ${total}&nbsp;−&nbsp;1&nbsp;=&nbsp;${totalAfter} ${obj[0]}, из них нужного цвета ${g}&nbsp;−&nbsp;1&nbsp;=&nbsp;${g-1}. P&nbsp;=&nbsp;${fracHTMLraw(g-1,totalAfter)}&nbsp;=&nbsp;${fToDec(ans)}. Главное — уменьшить <b>оба</b> числа: и нужные, и общее.`
+  };
+}
+
+/* --- 10.4 монета: известны частоты --- */
+function gen104(pk){
+  const N=pk.of([10,20,25,50]);
+  let h; do{ h=pk.ri(3,N-3); }while(2*h===N);   // при h = N/2 ответ ½ — «монета не помнит» стал бы верным
+  const t=N-h;
+  const k=pk.ri(2,N-1);
+  const ans=F(t,N);
+  const ord=k===2?'втором':k===3?'третьем':k+'-м';
+  const text=`Монету бросили <b>${N}</b> раз. Известно, что орёл выпал ровно <b>${h}</b> раз. Найдите вероятность того, что при <b>${ord}</b> броске выпала решка.`;
+  return {
+    code:'10.4', name:'Монета и частоты', text, answer:ans,
+    meta:{N,h,t},
+    hints:[
+      'Ответ «одна вторая» здесь не подходит: количество орлов уже известно. Сколько тогда было решек?',
+      `Решек столько, сколько бросков без орлов: ${N}&nbsp;−&nbsp;${h}. Все ${N} позиций равновозможны.`
+    ],
+    steps:[
+      pStep('Сколько раз выпала решка?',F(t),`Решек: ${N} − ${h} = ${t}.`,'число решек',[{v:F(h),m:'Это орлы. Спрашивают про решку.'}]),
+      pStep('Сколько всего было бросков (позиций)?',F(N),`Всего бросков: ${N}. Номер броска на ответ не влияет — все позиции равноправны.`,'число всех бросков'),
+      pStep('Найди вероятность: '+probStepText(),ans,`P = ${t} : ${N}.`,'деление решек на все броски')
+    ],
+    razbor:`Раз орлов ${h}, то решек ${N}&nbsp;−&nbsp;${h}&nbsp;=&nbsp;${t}. При известном числе решек каждая из ${N} позиций одинаково «претендует» на решку, поэтому P&nbsp;=&nbsp;${fracHTMLraw(t,N)}&nbsp;=&nbsp;${fToDec(ans)}. Типичная ловушка — автоматически ответить 0,5.`
+  };
+}
+
+/* --- 10.5 две игральные кости --- */
+function countPairs(pred){let c=0;for(let a=1;a<=6;a++)for(let b=1;b<=6;b++)if(pred(a,b))c++;return c;}
+function gen105(pk){
+  const kind=pk.of(['eq','set','range','even']);
+  let condText, pred, condShort, sums;
+  if(kind==='eq'){
+    const s=pk.ri(4,10);
+    condText=`в сумме выпадет <b>${s}</b> ${pointsW(s)}`; condShort=`сумма = ${s}`;
+    pred=(a,b)=>a+b===s; sums=[s];
+  }else if(kind==='set'){
+    const s=pk.ri(3,8);
+    condText=`в сумме выпадет <b>${s}</b>, <b>${s+1}</b> или <b>${s+2}</b> ${pointsW(s+2)}`; condShort=`сумма ${s}, ${s+1} или ${s+2}`;
+    pred=(a,b)=>a+b>=s&&a+b<=s+2; sums=[s,s+1,s+2];
+  }else if(kind==='range'){
+    const lo=pk.ri(4,6), hi=lo+pk.ri(2,3);
+    condText=`сумма очков будет не меньше <b>${lo}</b> и не больше <b>${hi}</b>`; condShort=`${lo} ≤ сумма ≤ ${hi}`;
+    pred=(a,b)=>a+b>=lo&&a+b<=hi; sums=[]; for(let x=lo;x<=hi;x++)sums.push(x);
+  }else{
+    const even=pk.ri(0,1)===0;
+    condText=`сумма очков окажется ${even?'чётной':'нечётной'}`; condShort=`сумма ${even?'чётная':'нечётная'}`;
+    pred=(a,b)=>((a+b)%2===0)===even; sums=[]; for(let x=2;x<=12;x++)if((x%2===0)===even)sums.push(x);
+  }
+  const cnt=countPairs(pred);
+  const ans=F(cnt,36);
+  const needRound=!fIsTerm(ans);
+  const text=`Игральный кубик бросают дважды. Найдите вероятность того, что ${condText}.`+(needRound?' Результат округлите до сотых.':'');
+  const rounded=needRound?fRound(ans,2):null;
+  return {
+    code:'10.5', name:'Две игральные кости', text, answer:ans, needRound, rounded,
+    meta:{kind,cnt,condShort,pred,sums},
+    hints:[
+      'Исход опыта — упорядоченная пара (первый бросок; второй бросок). Сколько всего таких пар?',
+      `Всего пар 6&nbsp;·&nbsp;6&nbsp;=&nbsp;36. Пересчитай по таблице пары, где ${condShort}, и дели на 36.`
+    ],
+    steps:[
+      pStep('Сколько всего равновозможных пар (первый бросок; второй бросок)?',F(36),'Каждый бросок даёт 6 вариантов: 6 · 6 = 36 пар. Считать 11 «сумм» нельзя — они не равновозможны!','число упорядоченных пар',
+        [{v:F(11),m:'Считать 11 возможных сумм нельзя — они не равновозможны. Равновозможны пары (первый бросок; второй бросок), их 6 · 6.'},
+         {v:F(21),m:'Пары (2; 5) и (5; 2) — разные исходы. Упорядоченных пар 36, а не 21.'},
+         {v:F(12),m:'Не 6 + 6, а 6 · 6: каждому результату первого броска отвечают шесть результатов второго.'}]),
+      pStep(`Сколько пар благоприятных (${condShort})? Переберите по таблице 6×6.`,F(cnt),`Благоприятных пар: ${cnt}.`,'число подходящих пар в таблице'),
+      pStep('Найди вероятность'+(needRound?' и округли до сотых':'')+': '+probStepText(),ans,`P = ${cnt} : 36`+(needRound?` ≈ ${fToDec(rounded)}`:'')+'.','деление'+(needRound?' и округление до сотых':''))
+    ],
+    razbor:`Всего исходов 6&nbsp;·&nbsp;6&nbsp;=&nbsp;36 пар. Благоприятных (${condShort}): ${cnt}. P&nbsp;=&nbsp;${fracHTMLraw(cnt,36)}&nbsp;=&nbsp;${fracHTML(ans)}${needRound?'&nbsp;≈&nbsp;'+fToDec(rounded):(fToDec(ans)!==null?'&nbsp;=&nbsp;'+fToDec(ans):'')}. Помни: пары (2;&nbsp;5) и (5;&nbsp;2) — разные исходы.`
+  };
+}
+
+/* --- 10.6 дерево случайного опыта --- */
+function decF(t){return F(t,10);} // десятые
+function gen106(pk){
+  /* по одному листу B из каждой ветви первого уровня — иначе ответ читается с ребра без дерева (D29);
+     ответ ½ не берём: «1 − ответ» совпал бы с ним (D28) */
+  let p1,q1,q2,P1,P2,Q1,Q1c,Q2,Q2c,leafP,idx,ans;
+  do{
+    p1=pk.ri(1,9);                 // левая ветвь 1 уровня, в десятых
+    q1=pk.ri(1,9); q2=pk.ri(1,9);  // «верхние» ветви 2 уровня
+    P1=decF(p1); P2=decF(10-p1); Q1=decF(q1); Q1c=decF(10-q1); Q2=decF(q2); Q2c=decF(10-q2);
+    leafP=[fMul(P1,Q1),fMul(P1,Q1c),fMul(P2,Q2),fMul(P2,Q2c)];
+    idx=[pk.ri(0,1),pk.ri(2,3)];   // событие B: лист верхней ветви и лист нижней
+    ans=fAdd(leafP[idx[0]],leafP[idx[1]]);
+  }while(fEq(ans,F(1,2)));
+  const leafLbl=[0,1,2,3].map(i=>idx.includes(i)?'B':pk.of(['C','D','K','M']));
+  // подстрахуемся от совпадений подписей не-B листьев — не критично, но сделаем разными
+  const others=['C','D','K','M'];let oi=0;
+  for(let i=0;i<4;i++) if(!idx.includes(i)) leafLbl[i]=others[oi++];
+  const edges=[fToDec(P1),fToDec(P2),fToDec(Q1),fToDec(Q1c),fToDec(Q2),fToDec(Q2c)];
+  const svg=treeInteractiveSVG(edges,leafLbl);
+  const pathSum=i=>fAdd(i<2?P1:P2,[Q1,Q1c,Q2,Q2c][i]);
+  const pathTxt=i=>{
+    const first=i<2?fToDec(P1):fToDec(P2);
+    const second=[fToDec(Q1),fToDec(Q1c),fToDec(Q2),fToDec(Q2c)][i];
+    return `${first} · ${second}`;
+  };
+  const text=`На рисунке показано дерево некоторого случайного опыта. Событию <i>B</i> благоприятствуют исходы, листья которых отмечены буквой <i>B</i>. Найдите вероятность события <i>B</i>.`;
+  const leafPdec=leafP.map(f=>fToDec(f));
+  const pA=fToDec(leafP[idx[0]]), pB=fToDec(leafP[idx[1]]);
+  return {
+    code:'10.6', name:'Дерево вероятностей', text, svg, answer:ans,
+    meta:{edges,idx,leafP:leafPdec,lbl:leafLbl,paths:[pathSum(idx[0]),pathSum(idx[1])],lf:[leafP[idx[0]],leafP[idx[1]]]},
+    razborSVG:treeSolveSVG(edges,leafLbl,idx,leafPdec,fToDec(ans)),
+    hints:[
+      'Вдоль пути от корня к листу вероятности перемножают, а вероятности разных благоприятных листьев складывают.',
+      `Листья B: P&nbsp;=&nbsp;${pathTxt(idx[0])}&nbsp;+&nbsp;${pathTxt(idx[1])}.`
+    ],
+    steps:[
+      pStep(`Найди вероятность первого листа B: перемножь вероятности на рёбрах пути (${pathTxt(idx[0])}).`,leafP[idx[0]],`${pathTxt(idx[0])} = ${fToDec(leafP[idx[0]])}. По пути — умножаем, а не складываем!`,'произведение вероятностей вдоль первого пути',[{v:pathSum(idx[0]),m:'Вдоль пути вероятности перемножают, а не складывают.'}]),
+      pStep(`Найди вероятность второго листа B (${pathTxt(idx[1])}).`,leafP[idx[1]],`${pathTxt(idx[1])} = ${fToDec(leafP[idx[1]])}.`,'произведение вероятностей вдоль второго пути',[{v:pathSum(idx[1]),m:'Вдоль пути вероятности перемножают, а не складывают.'}]),
+      pStep('Сложи вероятности всех листьев B.',ans,`${fToDec(leafP[idx[0]])} + ${fToDec(leafP[idx[1]])} = ${fToDec(ans)}.`,'сумму двух листьев B')
+    ],
+    razbor:`Смотри на выделенные зелёным пути к листьям B. <b>Шаг 1 — умножаем вдоль каждого пути:</b> верхний лист B — ${pathTxt(idx[0])}&nbsp;=&nbsp;${pA}; второй лист B — ${pathTxt(idx[1])}&nbsp;=&nbsp;${pB}. <b>Шаг 2 — складываем листья B:</b> P(B)&nbsp;=&nbsp;${pA}&nbsp;+&nbsp;${pB}&nbsp;=&nbsp;<b>${fToDec(ans)}</b>.`
+  };
+}
+function treeSVG(edges,lbl){
+  // корень (40,110) -> узлы (170,50)/(170,170) -> листья (320, 15/85/135/205)
+  const B='var(--ink)';
+  const leafY=[16,88,136,208];
+  let s=`<svg viewBox="0 0 400 230" class="figure" role="img" aria-label="Дерево случайного опыта">`;
+  const line=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${B}" stroke-width="1.6"/>`;
+  const node=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="var(--paper)" stroke="${B}" stroke-width="1.6"/>`;
+  const txt=(x,y,t,cls)=>`<text x="${x}" y="${y}" class="${cls||'svgt'}">${t}</text>`;
+  s+=line(46,110,164,52)+line(46,110,164,168);
+  s+=line(176,50,312,leafY[0])+line(176,50,312,leafY[1]);
+  s+=line(176,170,312,leafY[2])+line(176,170,312,leafY[3]);
+  s+=node(40,110,7)+node(170,50,7)+node(170,170,7);
+  for(let i=0;i<4;i++){
+    const isB=lbl[i]==='B';
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${isB?'var(--hl)':'var(--paper)'}" stroke="${B}" stroke-width="1.6"/>`;
+    s+=txt(320,leafY[i]+5,lbl[i],'svgt svgb');
+  }
+  s+=txt(96,66,edges[0])+txt(96,158,edges[1]);
+  s+=txt(240,18,edges[2])+txt(240,86,edges[3]);
+  s+=txt(240,140,edges[4])+txt(240,212,edges[5]);
+  return s+'</svg>';
+}
+/* дерево-решение: пути к листьям B подсвечены, у каждого — произведение, снизу — сумма */
+function treeSolveSVG(edges,lbl,bIdx,leafPdec,sumDec){
+  const INK='var(--ink)', HL='var(--green)', DIM='#c3cee0';
+  const leafY=[16,88,136,208];
+  const secondEdge=[2,3,4,5];
+  const isB=i=>bIdx.indexOf(i)>=0;
+  const L=(x1,y1,x2,y2,hl)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${hl?HL:DIM}" stroke-width="${hl?4:1.6}" stroke-linecap="round"/>`;
+  const T=(x,y,t)=>`<text x="${x}" y="${y}" class="svgt">${t}</text>`;
+  let s=`<svg viewBox="0 0 470 272" class="figure" role="img" aria-label="Дерево: выделены пути к листьям B, показаны произведения и сумма">`;
+  // тусклые базовые рёбра
+  s+=L(46,110,164,52,false)+L(46,110,164,168,false);
+  s+=L(176,50,312,leafY[0],false)+L(176,50,312,leafY[1],false);
+  s+=L(176,170,312,leafY[2],false)+L(176,170,312,leafY[3],false);
+  // подсвеченные пути к листьям B (умножаем вдоль них)
+  for(const i of bIdx){
+    if(i<2){s+=L(46,110,164,52,true)+L(176,50,312,leafY[i],true);}
+    else{s+=L(46,110,164,168,true)+L(176,170,312,leafY[i],true);}
+  }
+  const topHL=isB(0)||isB(1), botHL=isB(2)||isB(3);
+  const N=(x,y,hl)=>`<circle cx="${x}" cy="${y}" r="7" fill="var(--paper)" stroke="${hl?HL:INK}" stroke-width="${hl?2.6:1.6}"/>`;
+  s+=N(40,110,bIdx.length>0)+N(170,50,topHL)+N(170,170,botHL);
+  for(let i=0;i<4;i++){
+    const hl=isB(i);
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${hl?'var(--hl)':'var(--paper)'}" stroke="${hl?HL:INK}" stroke-width="${hl?2.6:1.6}"/>`;
+    s+=`<text x="320" y="${leafY[i]+5}" class="svgt svgb">${lbl[i]}</text>`;
+  }
+  s+=T(96,66,edges[0])+T(96,158,edges[1]);
+  s+=T(240,18,edges[2])+T(240,86,edges[3]);
+  s+=T(240,140,edges[4])+T(240,212,edges[5]);
+  // произведения вдоль путей — рядом с листьями B
+  for(const i of bIdx){
+    const first=i<2?edges[0]:edges[1];
+    const second=edges[secondEdge[i]];
+    s+=`<text x="341" y="${leafY[i]+5}" class="svgt" style="text-anchor:start;font-size:13px;fill:${HL}">${first}\u00b7${second}=${leafPdec[i]}</text>`;
+  }
+  // сумма благоприятных листьев — внизу
+  const parts=bIdx.map(i=>leafPdec[i]).join(' + ');
+  s+=`<text x="235" y="258" class="svgt svgb" style="fill:${HL}">P(B) = ${parts} = ${sumDec}</text>`;
+  return s+'</svg>';
+}
+/* интерактивное дерево (вопрос): под каждым ребром — скрытая маркерная лента mk-<key> */
+function treeInteractiveSVG(edges,lbl){
+  const INK='var(--ink)';
+  const leafY=[16,88,136,208];
+  const bands=[
+    ['r0',46,110,164,52],['r1',46,110,164,168],
+    ['0',176,50,312,leafY[0]],['1',176,50,312,leafY[1]],
+    ['2',176,170,312,leafY[2]],['3',176,170,312,leafY[3]]
+  ];
+  let s=`<svg viewBox="0 0 400 230" class="figure" role="img" aria-label="Дерево случайного опыта">`;
+  for(const [k,x1,y1,x2,y2] of bands) s+=`<line class="mk-band mk-${k}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+  const line=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${INK}" stroke-width="1.6"/>`;
+  for(const [,x1,y1,x2,y2] of bands) s+=line(x1,y1,x2,y2);
+  const node=(x,y)=>`<circle cx="${x}" cy="${y}" r="7" fill="var(--paper)" stroke="${INK}" stroke-width="1.6"/>`;
+  s+=node(40,110)+node(170,50)+node(170,170);
+  for(let i=0;i<4;i++){
+    const isB=lbl[i]==='B';
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${isB?'var(--hl)':'var(--paper)'}" stroke="${INK}" stroke-width="1.6"/>`;
+    s+=`<text x="320" y="${leafY[i]+5}" class="svgt svgb">${lbl[i]}</text>`;
+  }
+  const T=(x,y,t)=>`<text x="${x}" y="${y}" class="svgt">${t}</text>`;
+  s+=T(96,66,edges[0])+T(96,158,edges[1]);
+  s+=T(240,18,edges[2])+T(240,86,edges[3]);
+  s+=T(240,140,edges[4])+T(240,212,edges[5]);
+  return s+'</svg>';
+}
+function treeEdgeKeysForLeaf(i){ return [(i<2?'r0':'r1'), String(i)]; }
+const TREE_KEYS=['r0','r1','0','1','2','3'];
+function gen107(pk){
+  const mode=pk.of(['counts','probs']);
+  let onlyA,inter,onlyB,outside,total,answer,evKey,evText,fav,areaHTML,metaExtra;
+  const EVENTS=[
+    ['A','произойдёт событие <i>A</i>', r=>r.onlyA+r.inter],
+    ['B','произойдёт событие <i>B</i>', r=>r.onlyB+r.inter],
+    ['AiB','события <i>A</i> и <i>B</i> произойдут одновременно', r=>r.inter],
+    ['AuB','произойдёт хотя бы одно из событий <i>A</i>, <i>B</i>', r=>r.onlyA+r.inter+r.onlyB],
+    ['AnotB','произойдёт событие <i>A</i>, но не произойдёт <i>B</i>', r=>r.onlyA]
+  ];
+  const ev=pk.of(EVENTS);
+  if(mode==='counts'){
+    total=pk.of([20,25,50]);
+    // разбиение total на 4 положительные части
+    do{
+      onlyA=pk.ri(2,total-6); inter=pk.ri(1,total-onlyA-4);
+      onlyB=pk.ri(2,total-onlyA-inter-1); outside=total-onlyA-inter-onlyB;
+    }while(outside<1);
+    const r={onlyA,inter,onlyB,outside};
+    fav=ev[2](r);
+    answer=F(fav,total);
+    evKey=ev[0]; evText=ev[1];
+    metaExtra={mode,onlyA,inter,onlyB,outside,total,fav,evKey};
+  }else{
+    // вероятности в сотых, сумма 1
+    total=100;
+    do{
+      onlyA=pk.ri(5,55); inter=pk.ri(5,Math.min(40,95-onlyA));
+      onlyB=pk.ri(5,Math.max(5,99-onlyA-inter)); outside=100-onlyA-inter-onlyB;
+    }while(outside<1||onlyB<1);
+    const r={onlyA,inter,onlyB,outside};
+    fav=ev[2](r);
+    answer=F(fav,100);
+    evKey=ev[0]; evText=ev[1];
+    metaExtra={mode,onlyA,inter,onlyB,outside,total:100,fav,evKey};
+  }
+  const show=v=>mode==='counts'?String(v):fToDec(F(v,100));
+  const svg=eulerSVG(show(onlyA),show(inter),show(onlyB),show(outside));
+  const text= mode==='counts'
+    ? `На диаграмме Эйлера показаны события <i>A</i> и <i>B</i>. В каждой области указано число равновозможных элементарных исходов, которые в неё входят. Найдите вероятность того, что ${evText}.`
+    : `На диаграмме Эйлера показаны события <i>A</i> и <i>B</i>. В каждой области указана её вероятность. Найдите вероятность того, что ${evText}.`;
+  const zoneNames={A:'обе части круга A (включая пересечение)',B:'обе части круга B (включая пересечение)',AiB:'только пересечение кругов',AuB:'все три области внутри кругов',AnotB:'часть круга A без пересечения'};
+  const regCount={A:2,B:2,AiB:1,AuB:3,AnotB:1}[evKey]; // из скольких областей состоит событие
+  const oneReg=regCount===1;
+  const steps= mode==='counts' ? [
+    pStep(`Сколько исходов входит в нужное событие? Нужные области: ${zoneNames[evKey]}.`,F(fav),`Благоприятных исходов: ${fav}.`,'сумму нужных областей'),
+    pStep('Сколько всего элементарных исходов (сложи ВСЕ четыре области, включая внешнюю)?',F(total),`Всего: ${onlyA} + ${inter} + ${onlyB} + ${outside} = ${total}.`,'сумму всех четырёх областей',[{v:F(total-outside),m:'Внешнюю область тоже считаем: она входит в общее число исходов.'}]),
+    pStep('Найди вероятность: '+probStepText(),answer,`P = ${fav} : ${total} = ${fToDec(answer)}.`,'деление благоприятных исходов на все')
+  ] : [
+    oneReg
+      ? pStep(`Сколько областей входит в событие? Всего одна — ${zoneNames[evKey]}. Её вероятность указана на диаграмме; запиши её.`,answer,`Область одна (${zoneNames[evKey]}), складывать нечего — просто списываем её вероятность: ${fToDec(answer)}.`,'вероятность нужной области')
+      : pStep(`Какие области входят в событие? (${zoneNames[evKey]}.) Сложи их вероятности.`,answer,`Сумма вероятностей нужных областей: ${fToDec(answer)}.`,'сумму вероятностей нужных областей')
+  ];
+  return {
+    code:'10.7', name:'Диаграмма Эйлера', text, svg, answer,
+    meta:metaExtra,
+    hints:[
+      evKey==='AiB'?'Пересечение — это «и то, и другое»: центральная линза диаграммы.':
+      evKey==='AuB'?'«Хотя бы одно» — это объединение: закрась мысленно оба круга целиком.':
+      'Круг A — это ВСЁ внутри левой окружности, включая пересечение с B. Не забудь про линзу в середине.',
+      mode==='counts'
+        ? `Нужные области: ${zoneNames[evKey]}. Их сумма — благоприятные исходы; дели на общее число исходов ${total} (внешнюю область тоже считаем в общее!).`
+        : (oneReg
+            ? `Событию отвечает ровно одна область — ${zoneNames[evKey]}. Её вероятность прямо написана на диаграмме: её и надо записать. Складывать и делить ничего не нужно.`
+            : `Нужные области: ${zoneNames[evKey]}. Здесь указаны сразу вероятности — просто сложи их, делить ни на что не нужно.`)
+    ],
+    steps,
+    razbor: mode==='counts'
+      ? `Событие («${evKey==='AiB'?'A и B':evKey==='AuB'?'A или B':evKey==='AnotB'?'A без B':evKey}») занимает области: ${zoneNames[evKey]} — всего ${fav} исходов. Общее число исходов: ${onlyA}&nbsp;+&nbsp;${inter}&nbsp;+&nbsp;${onlyB}&nbsp;+&nbsp;${outside}&nbsp;=&nbsp;${total}. P&nbsp;=&nbsp;${fracHTMLraw(fav,total)}&nbsp;=&nbsp;${fToDec(answer)}.`
+      : (oneReg
+          ? `На диаграмме сразу даны вероятности областей. Событие занимает ровно одну область — ${zoneNames[evKey]}, поэтому P&nbsp;=&nbsp;${fToDec(answer)} — это просто её вероятность. Складывать нечего, делить не нужно: сумма всех четырёх областей и так равна 1.`
+          : `На диаграмме уже даны вероятности областей. Нужные области: ${zoneNames[evKey]}. Складываем их: P&nbsp;=&nbsp;${fToDec(answer)}. Делить на что-либо не нужно — сумма всех четырёх областей и так равна 1.`)
+  };
+}
+function eulerSVG(a,i,b,out){
+  return `<svg viewBox="0 0 400 210" class="figure" role="img" aria-label="Диаграмма Эйлера">
+<rect x="8" y="8" width="384" height="194" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+<circle cx="160" cy="105" r="72" fill="var(--cA)" stroke="var(--ink)" stroke-width="1.6"/>
+<circle cx="240" cy="105" r="72" fill="var(--cB)" stroke="var(--ink)" stroke-width="1.6"/>
+<text x="98" y="40" class="svgt svgb"><tspan font-style="italic">A</tspan></text>
+<text x="302" y="40" class="svgt svgb"><tspan font-style="italic">B</tspan></text>
+<text x="122" y="112" class="svgt">${a}</text>
+<text x="200" y="112" class="svgt">${i}</text>
+<text x="278" y="112" class="svgt">${b}</text>
+<text x="360" y="192" class="svgt">${out}</text>
+</svg>`;
+}
+
+const GENS={'10.1':gen101,'10.2':gen102,'10.3':gen103,'10.4':gen104,'10.5':gen105,'10.6':gen106,'10.7':gen107};
+const TYPE_LIST=[
+  ['10.1','Равновозможные исходы'],
+  ['10.2','Один выбор предмета'],
+  ['10.3','Без возвращения'],
+  ['10.4','Монета и частоты'],
+  ['10.5','Две кости'],
+  ['10.6','Дерево вероятностей'],
+  ['10.7','Диаграмма Эйлера']
+];
+/* тип задачи в контракте прогресса: «10.3» → «10_3» (как в oge/registry.js) */
+function typeOf(code){return String(code).replace('.','_');}
+
+/* ===== ЛОВУШКИ ИТОГОВОГО ОТВЕТА (решения D27, D28) =====
+   Каждая ловушка — типичный неверный ход и адресное сообщение. Сравнение точное;
+   только в 10.5, где просят округлить, ученик вводит округлённое значение ловушки. */
+function unorderedCount(pred){let c=0;for(let a=1;a<=6;a++)for(let b=a;b<=6;b++)if(pred(a,b))c++;return c;}
+function fTrunc(f,p){const sc=10n**BigInt(p);return F(f.n*sc/f.d,sc);}   // вероятности неотрицательны
+function trapsRaw10(t){
+  const m=t.meta, c=t.code, T=[];
+  const add=(v,msg)=>{ if(v&&v.d>0n) T.push({v,m:msg}); };
+  if(c==='10.1'){
+    add(F(m.N,m.k),'Дробь перевёрнута: все исходы разделены на благоприятные. Вероятность — благоприятные, делённые на все.');
+    add(F(m.N-m.k,m.N),'Это вероятность того, что A не произойдёт. Спрашивают про само событие A.');
+    add(F(m.k,m.N-m.k),'Благоприятные разделены на неблагоприятные. Делить нужно на все исходы — их '+m.N+'.');
+  }else if(c==='10.2'){
+    add(F(m.total,m.fav),'Дробь перевёрнута: все предметы разделены на нужные.');
+    add(F(m.total-m.fav,m.total),'Это вероятность другого цвета. Перечитай вопрос: про какой цвет спрашивают?');
+    add(F(m.fav,m.total-m.fav),'Нужные разделены на ненужные. В знаменателе — все предметы: сложи оба числа.');
+  }else if(c==='10.3'){
+    const T3=m.total, g=m.g, y=m.y;
+    add(F(g,T3),'Так было бы, если бы первую '+m.acc+' вернули в мешочек. Её не вернули — пересчитай, что осталось.');
+    add(F(g-1,T3),'Нужных стало на одну меньше — верно, но и всего предметов тоже стало на один меньше.');
+    add(F(g,T3-1),'Всего стало на один меньше — верно, но одну нужного цвета уже достали: нужных тоже на одну меньше.');
+    add(F(y,T3-1),'Это доля другого цвета среди оставшихся. Спрашивают про тот же цвет, что у первой.');
+    add(F(T3-1,g-1),'Дробь перевёрнута: оставшиеся всего разделены на оставшиеся нужные.');
+  }else if(c==='10.4'){
+    add(F(1,2),'Ответ «одна вторая» здесь не подходит: сколько выпало орлов, уже известно — значит, известно и сколько решек.');
+    add(F(m.h,m.N),'Это доля орлов. Спрашивают про решку: сколько раз выпала она?');
+    add(F(m.N,m.t),'Дробь перевёрнута: все броски разделены на число решек.');
+    add(F(m.t,m.h),'Решки разделены на орлов. Делить нужно на все броски — их '+m.N+'.');
+  }else if(c==='10.5'){
+    add(F(m.sums.length,11),'Считать 11 возможных сумм нельзя — они не равновозможны. Равновозможны пары (первый бросок; второй бросок), их 6 · 6.');
+    add(F(unorderedCount(m.pred),21),'Пары (2; 5) и (5; 2) — разные исходы. Упорядоченных пар 36, а не 21.');
+    add(F(m.cnt,12),'В знаменателе не 6 + 6, а 6 · 6: каждому результату первого броска отвечают шесть результатов второго.');
+    if(t.needRound){ const tr=fTrunc(t.answer,2); if(!fEq(tr,t.rounded)) add(tr,'Пары посчитаны верно, но округлять до сотых нужно по правилу, а не отбрасывать лишние знаки.'); }
+  }else if(c==='10.6'){
+    add(fAdd(m.paths[0],m.paths[1]),'Вдоль пути вероятности перемножают, а не складывают.');
+    add(fMul(m.lf[0],m.lf[1]),'Разные листья B складывают, а не перемножают. Умножают только вдоль одного пути.');
+    add(m.lf[0],'Это вероятность только одного листа B. Листьев B два — сложи оба.');
+    add(m.lf[1],'Это вероятность только одного листа B. Листьев B два — сложи оба.');
+    add(fSub(ONE,t.answer),'Это вероятность того, что B не произойдёт. Спрашивают про B.');
+  }else if(c==='10.7'){
+    const counts=m.mode==='counts', P=v=>counts?F(v,m.total):F(v,100);
+    const other={A:m.onlyB+m.inter,B:m.onlyA+m.inter,AnotB:m.onlyB}[m.evKey];
+    if(other!==undefined) add(P(other),'Это вероятность другого события. Перечитай, какое событие спрашивают и какие области ему отвечают.');
+    if(counts) add(F(m.fav,m.total-m.outside),'В общее число исходов входит и внешняя область — исходы, не попавшие ни в A, ни в B.');
+    if(m.evKey==='AuB'){
+      add(P(m.onlyA+2*m.inter+m.onlyB),'Пересечение посчитано два раза: оно входит и в круг A, и в круг B, но это одна область.');
+      add(P(m.inter),'«Хотя бы одно» — это оба круга целиком, а не только пересечение.');
+    }
+    if(m.evKey==='AiB') add(P(m.onlyA+m.inter+m.onlyB),'«A и B одновременно» — только пересечение, средняя линза, а не оба круга целиком.');
+    add(fSub(ONE,t.answer),'Это вероятность того, что событие не произойдёт.');
+  }
+  return T;
+}
+/* ключ сравнения: в 10.5 ученик вводит округлённое значение бесконечной дроби */
+function tkey(t,v){ return (t.code==='10.5'&&!fIsTerm(v))?fRound(v,2):v; }
+function ansKey(t){ return t.needRound?t.rounded:t.answer; }
+/* ловушки без совпадений: разные сообщения не ловят одно значение, ни одна не равна ответу */
+function trapsClean(t){
+  const T=trapsRaw10(t), ak=ansKey(t);
+  for(let i=0;i<T.length;i++){
+    const ki=tkey(t,T[i].v);
+    if(fEq(ki,ak)) return false;
+    for(let j=i+1;j<T.length;j++) if(T[j].m!==T[i].m&&fEq(ki,tkey(t,T[j].v))) return false;
+  }
+  return true;
+}
+/* ловушки задачи: равная ответу снимается всегда, повтор значения — одно сообщение */
+function finalTraps10(t){
+  const ak=ansKey(t), out=[];
+  for(const x of trapsRaw10(t)){
+    const k=tkey(t,x.v);
+    if(fEq(k,ak)||out.some(o=>fEq(tkey(t,o.v),k))) continue;
+    out.push(x);
+  }
+  return out;
+}
+function matchTrap(t,v){
+  return finalTraps10(t).find(x=>fEq(v,x.v)||(t.code==='10.5'&&!fIsTerm(x.v)&&fEq(v,fRound(x.v,2))))||null;
+}
+let TASK_UID=0;
+/* задача с перевыбором параметров, пока ловушки совпадают (D28); не больше 40 попыток */
+function genTask(code,pk){
+  let t;
+  for(let i=0;i<40;i++){ t=GENS[code](pk); if(trapsClean(t)) break; }
+  t.uid=++TASK_UID;
+  return t;
+}
+function genRandom(pk){return genTask(pk.of(TYPE_LIST.map(t=>t[0])),pk);}
+
+/* проверка пользовательского ответа против задачи (честные варианты) */
+function checkAnswer(task,userF){
+  if(!userF) return false;
+  if(fEq(userF,task.answer)) return true;
+  if(task.needRound && task.rounded && fEq(userF,task.rounded)) return true;
+  return false;
+}
+
+/* ===== ФАЗЗ-ПРОВЕРКА (часть ?selftest=1) ===== */
+function fuzz10(itersPerType){
+  let checks=0;
+  const fail=(m)=>{throw new Error('selfTest: '+m);};
+  for(const [code] of TYPE_LIST){
+    for(let it=0;it<itersPerType;it++){
+      const pk=makePick(RNG(code.charCodeAt(3)*100000+it*7+1));
+      const t=genTask(code,pk);
+      const A=t.answer;
+      if(!(A.n>0n||code==='10.5')) fail(code+' P<=0');
+      if(fCmp(A,ONE)>0) fail(code+' P>1');
+      if(fCmp(A,ZERO)<0) fail(code+' P<0');
+      checks+=3;
+      // последний шаг = ответ
+      if(!fEq(t.steps[t.steps.length-1].ans,A)) fail(code+' last step != answer'); checks++;
+      // независимая перепроверка по meta
+      const m=t.meta;
+      if(code==='10.1'){ if(!fEq(A,F(m.k,m.N))) fail('10.1 key'); }
+      if(code==='10.2'){ if(m.a+m.b!==m.total) fail('10.2 sum'); if(!fEq(A,F(m.fav,m.total))) fail('10.2 key'); }
+      if(code==='10.3'){ if(!fEq(A,F(m.g-1,m.total-1))) fail('10.3 key'); if(m.g<2) fail('10.3 g<2'); }
+      if(code==='10.4'){ if(!fEq(A,F(m.t,m.N))) fail('10.4 key'); if(m.h+m.t!==m.N) fail('10.4 sum'); }
+      if(code==='10.5'){
+        let c=0;for(let x=1;x<=6;x++)for(let y=1;y<=6;y++)if(m.pred(x,y))c++;
+        if(c!==m.cnt) fail('10.5 recount'); if(!fEq(A,F(c,36))) fail('10.5 key');
+        if(t.needRound){ const r=fRound(A,2); if(!fEq(r,t.rounded)) fail('10.5 round'); }
+      }
+      if(code==='10.6'){
+        const s=t.meta.leafP.map(x=>parseAns(x)).reduce((u,v)=>fAdd(u,v),ZERO);
+        if(!fEq(s,ONE)) fail('10.6 leaves sum != 1');
+        const bsum=t.meta.idx.map(i=>parseAns(t.meta.leafP[i])).reduce((u,v)=>fAdd(u,v),ZERO);
+        if(!fEq(bsum,A)) fail('10.6 key');
+      }
+      if(code==='10.7'){
+        const r=m; const map={A:r.onlyA+r.inter,B:r.onlyB+r.inter,AiB:r.inter,AuB:r.onlyA+r.inter+r.onlyB,AnotB:r.onlyA};
+        if(r.onlyA+r.inter+r.onlyB+r.outside!==r.total) fail('10.7 partition');
+        if(!fEq(A,F(r.fav,r.total))) fail('10.7 key');
+      }
+      checks+=2;
+      // округлость десятичной записи там, где нет округления
+      if(!t.needRound && fToDec(A)===null) fail(code+' non-terminating without rounding'); checks++;
+      // парсер: десятичная запись и дробь принимаются
+      const dec=t.needRound?fToDec(t.rounded):fToDec(A);
+      if(dec!==null && !checkAnswer(t,parseAns(dec))) fail(code+' dec not accepted'); checks++;
+      if(!checkAnswer(t,F(A.n,A.d))) fail(code+' frac not accepted'); checks++;
+      // хвостовой ноль
+      if(dec!==null && dec.includes(',') && !checkAnswer(t,parseAns(dec+'0'))) fail(code+' trailing zero'); checks++;
+      // шаги: ответы шагов конечны в десятичной записи или дробь (для ввода)
+      for(const st of t.steps){ if(fCmp(st.ans,ZERO)<0) fail(code+' step<0'); checks++; }
+    }
+  }
+  return checks;
+}
+/* ===== ДВИЖОК ИНТЕРФЕЙСА ===== */
+function el(id){return document.getElementById(id);}
+const RT=(function(){ // рабочий ГСЧ
+  const r=Math.random;
+  return {ri:(a,b)=>a+Math.floor(r()*(b-a+1)),of:(arr)=>arr[Math.floor(r()*arr.length)],
+    shuf:(arr)=>{const c=arr.slice();for(let i=c.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}};
+})();
+let UID=0;
+let userActed=false;   // фокус в поле — только после действия ученика, не при загрузке
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* --- виджет ответа: ОДНО поле за раз, переключатель десятичная ⇄ дробь --- */
+function awHTML(id,intOnly){
+  if(intOnly) return `<input id="${id}-dec" class="aw-one" inputmode="numeric" autocomplete="off" aria-label="ответ — целое число">`;
+  return `<span class="aw" id="${id}-aw">
+    <span class="aw-decwrap">
+      <input id="${id}-dec" class="aw-dec" inputmode="decimal" placeholder="0,25" autocomplete="off" aria-label="ответ десятичной дробью">
+      <button type="button" class="aw-tog" id="${id}-tofrac">ввести дробью</button>
+    </span>
+    <span class="aw-frwrap" hidden>
+      <span class="aw-fr" title="обыкновенная дробь">
+        <input id="${id}-n" inputmode="numeric" class="aw-cell aw-n" autocomplete="off" aria-label="числитель">
+        <span class="aw-bar" aria-hidden="true"></span>
+        <input id="${id}-d" inputmode="numeric" class="aw-cell aw-d" autocomplete="off" aria-label="знаменатель">
+      </span>
+      <button type="button" class="aw-tog" id="${id}-todec">ввести десятичной</button>
+    </span>
+  </span>`;
+}
+function awMode(id){const aw=el(id+'-aw');return aw&&aw.classList.contains('fr-mode')?'fr':'dec';}
+function awRead(id){
+  if(awMode(id)==='fr'){const n=el(id+'-n'),d=el(id+'-d');return parsePair(n&&n.value,d&&d.value);}
+  const dec=el(id+'-dec');
+  if(dec&&dec.value.trim()!=='') return parseAns(dec.value);
+  return null;
+}
+function awLock(id){['-dec','-n','-d','-tofrac','-todec','-ck','-sh'].forEach(s=>{const e=el(id+s);if(e)e.disabled=true;});}
+function awFocus(id){if(!userActed)return;const f=el(id+'-dec');if(f&&!f.disabled)try{f.focus({preventScroll:true});}catch(e){}}
+function setFB(id,cls,html){const f=el(id+'-fb');if(!f)return;f.className='fb'+(cls?' '+cls:'');f.innerHTML=html;}
+function bindEnter(id,fn){['-dec','-n','-d'].forEach(s=>{const e=el(id+s);if(e)e.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();fn();}});});}
+const MSG_EMPTY='Введи ответ: десятичной дробью (например 0,25) или этажной дробью справа.';
+const MSG_WRONG='Пока неверно — попробуй ещё раз.';
+const OVER1=' И проверь себя: вероятность не бывает больше 1.';
+/* строка над лестницей до первого нажатия (решения D3, D21) */
+const LADDER_NOTE='Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
+
+/* сообщение на неверный итоговый ответ: адресное по ловушке, иначе общее (D27) */
+function wrongMsg(t,v){
+  const tr=matchTrap(t,v);
+  let m=tr?tr.m:(MSG_WRONG+(t.needRound?' Не забудь про округление до сотых (точную дробь тоже приму).':''));
+  if(fCmp(v,ONE)>0) m+=OVER1;
+  return m;
+}
+
+/* --- проверка шага (последний шаг уважает округление задачи) --- */
+function stepOK(task,s,isLast,v){
+  if(!v) return false;
+  if(fEq(v,s.ans)) return true;
+  if(isLast&&task.needRound&&task.rounded&&fEq(v,task.rounded)) return true;
+  return false;
+}
+
+/* --- учёт задачи в прогрессе курса (решения D1, D26): промах — сразу и один раз;
+   решено — без показанных шагов; повторное открытие той же задачи второй раз не считается --- */
+const RECS=new Map();
+function recOf(t){let r=RECS.get(t.uid);if(!r){r={missed:false,shown:false,done:false};RECS.set(t.uid,r);}return r;}
+function taskMiss(t){const r=recOf(t);if(r.missed||r.shown||r.done)return;r.missed=true;CP.mlog(typeOf(t.code),false);}
+function taskShown(t){recOf(t).shown=true;}
+function taskDone(t){
+  const r=recOf(t);if(r.done)return null;
+  r.done=true;const ok=!r.shown;
+  if(ok){CP.solvedOne(typeOf(t.code));if(!r.missed)CP.mlog(typeOf(t.code),true);}
+  CP.saveExt(e=>{
+    if(!CP.isObj(e.byType))e.byType={};
+    const b=CP.isObj(e.byType[t.code])?e.byType[t.code]:{};
+    e.byType[t.code]={correct:CP.num(b.correct)+(ok?1:0),shown:CP.num(b.shown)+(ok?0:1)};
+    e.streak=ok?CP.num(e.streak)+1:0;
+    e.bestStreak=Math.max(CP.num(e.bestStreak),e.streak);
+  });
+  renderStats();
+  return ok;
+}
+
+/* --- пошаговый раннер (общий для «Пошагово» и марафона) --- */
+function mountSteps(root,task,onDone,hooks){
+  const st={shown:false,i:0};
+  const note=document.createElement('p');note.className='note';note.textContent=LADDER_NOTE;root.appendChild(note);
+  function renderStep(){
+    if(st.i>=task.steps.length){onDone(st);return;}
+    hooks&&hooks.onActive&&hooks.onActive(st.i);
+    const s=task.steps[st.i], isLast=st.i===task.steps.length-1;
+    const id='w'+(++UID);
+    const div=document.createElement('div');
+    div.className='step';
+    div.innerHTML=`<div class="q"><span class="tnum">Шаг ${st.i+1}.</span> ${s.q}</div>`
+      +awHTML(id, s.ans.d===1n)
+      +` <button class="act" id="${id}-ck">Проверить</button>`
+      +`<button class="act show" id="${id}-sh">Показать шаг</button>`
+      +`<span class="fb" aria-live="polite" id="${id}-fb"></span>`;
+    root.appendChild(div);
+    let resolved=false;
+    const check=()=>{
+      if(resolved||(hooks&&hooks.isClosed&&hooks.isClosed()))return;
+      const v=awRead(id);
+      if(!v){setFB(id,'warn',MSG_EMPTY);return;}
+      if(stepOK(task,s,isLast,v)){
+        resolved=true;
+        setFB(id,'ok','Верно!');awLock(id);div.classList.add('done-ok');
+        hooks&&hooks.onResolved&&hooks.onResolved(st.i,true);st.i++;renderStep();
+      } else {
+        task.onMiss&&task.onMiss();
+        const tr=(s.traps||[]).find(x=>fEq(x.v,v));
+        const m=tr?tr.m:(isLast?wrongMsg(task,v):'Пока не сходится: проверь '+(s.chk||'этот шаг')+'.');
+        setFB(id,'no',m);
+      }
+    };
+    el(id+'-ck').onclick=check;
+    bindEnter(id,check);
+    el(id+'-sh').onclick=()=>{
+      if(resolved||(hooks&&hooks.isClosed&&hooks.isClosed()))return;
+      resolved=true;
+      st.shown=true;task.onShow&&task.onShow();
+      setFB(id,'', '<span class="redink">'+s.show+' Ответ: '+ansHTML(s.ans)+'</span>');
+      awLock(id);div.classList.add('done-show');
+      hooks&&hooks.onResolved&&hooks.onResolved(st.i,false);st.i++;renderStep();
+    };
+    awFocus(id);
+  }
+  renderStep();
+  return st;
+}
+/* подмигивание и обводка маркером рёбер дерева */
+function treeWink(svgEl,keys,on){
+  if(!svgEl)return;
+  keys.forEach(k=>svgEl.querySelectorAll('.mk-'+k).forEach(b=>{
+    if(on){ if(!b.classList.contains('mk-on-ok')&&!b.classList.contains('mk-on-shown')) b.classList.add('mk-wink'); }
+    else b.classList.remove('mk-wink');
+  }));
+}
+function treeMark(svgEl,keys,kind){
+  if(!svgEl)return;
+  keys.forEach(k=>svgEl.querySelectorAll('.mk-'+k).forEach(b=>{
+    b.classList.remove('mk-wink','mk-on-ok','mk-on-shown');b.classList.add('mk-on-'+kind);
+  }));
+}
+function treeStepHooks(svgEl,idxArr){
+  const paths=[treeEdgeKeysForLeaf(idxArr[0]),treeEdgeKeysForLeaf(idxArr[1]),[]];
+  return {
+    onActive:(i)=>{treeWink(svgEl,TREE_KEYS,false);const p=paths[i];if(p&&p.length)treeWink(svgEl,p,true);},
+    onResolved:(i,ok)=>{const p=paths[i];if(p&&p.length){treeWink(svgEl,p,false);treeMark(svgEl,p,ok?'ok':'shown');}}
+  };
+}
+
+function taskHead(t){
+  return `<div class="tnum">${t.code} · ${t.name}</div><div style="margin:6px 0">${t.text}</div>${t.svg||''}`;
+}
+function razborHTML(t){
+  return `<div class="razbor"><div class="rz-t">Разбор</div>${t.razborSVG||''}${t.razbor}<div style="margin-top:6px"><b>Ответ:</b> ${t.needRound?fToDec(t.rounded)+' (точно: '+fracHTMLraw(t.answer.n,t.answer.d)+')':ansHTML(t.answer)}</div></div>`;
+}
+/* учёт задачи: промахи и показ пишутся в прогресс курса */
+function attach(t){t.onMiss=()=>taskMiss(t);t.onShow=()=>taskShown(t);return t;}
+
+/* ===== ВКЛАДКА «ПОШАГОВО» ===== */
+let stepType='10.1';
+let reviewOn=false;   // ?mode=review: задачи только открытых в журнале типов (решение D22)
+function stepChips(){
+  const box=el('step-chips');box.innerHTML='';
+  TYPE_LIST.forEach(([code,name])=>{
+    const b=document.createElement('button');
+    b.className='chip'+(code===stepType&&!reviewOn?' on':'');b.textContent=code+' '+name;
+    b.onclick=()=>{userActed=true;if(reviewOn){reviewOn=false;reviewBanner('');}stepType=code;stepChips();stepNew();};
+    box.appendChild(b);
+  });
+  const r=document.createElement('button');
+  r.className='chip'+(stepType==='rnd'&&!reviewOn?' on':'');r.textContent='Случайный тип';
+  r.onclick=()=>{userActed=true;if(reviewOn){reviewOn=false;reviewBanner('');}stepType='rnd';stepChips();stepNew();};
+  box.appendChild(r);
+}
+function reviewBanner(html){const b=el('review-box');if(!b)return;b.hidden=!html;b.innerHTML=html;}
+/* задача повтора: тип — из открытых в журнале */
+function reviewTask(){
+  const open=CP.openTypes();
+  const codes=TYPE_LIST.map(t=>t[0]).filter(c=>open.indexOf(typeOf(c))>=0);
+  return codes.length?genTask(RT.of(codes),RT):null;
+}
+function stepNew(presetTask){
+  const root=el('step-root');root.innerHTML='';
+  let t=presetTask||null;
+  if(!t&&reviewOn){
+    t=reviewTask();
+    if(!t){reviewOn=false;reviewBanner('<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип ниже.');stepChips();}
+  }
+  if(!t) t=stepType==='rnd'?genRandom(RT):genTask(stepType,RT);
+  attach(t);
+  const card=document.createElement('div');card.className='card';
+  card.innerHTML=taskHead(t);
+  root.appendChild(card);
+  const treeSvgEl = t.code==='10.6' ? card.querySelector('svg') : null;
+  const hooks = t.code==='10.6' ? treeStepHooks(treeSvgEl, t.meta.idx) : null;
+  const stepsBox=document.createElement('div');card.appendChild(stepsBox);
+  mountSteps(stepsBox,t,(st)=>{
+    if(treeSvgEl) treeWink(treeSvgEl,TREE_KEYS,false);
+    taskDone(t);   // повторно открытая та же задача второй раз не считается
+    const fin=document.createElement('div');
+    fin.innerHTML= st.shown
+      ? '<p><span class="redink">Были показанные шаги — эта задача в счёт решённых не идёт (промахом это не считается).</span> Посмотри разбор и возьми новую задачу этого типа.</p>'
+      : '<p class="okline">Задача разобрана полностью самостоятельно — отлично!</p>';
+    fin.innerHTML+=razborHTML(t)+'<button class="act" id="step-next">Новая задача</button>';
+    card.appendChild(fin);
+    el('step-next').onclick=()=>{userActed=true;stepNew();};
+  }, hooks);
+}
+
+/* ===== ВКЛАДКА «МАРАФОН» ===== */
+/* своя статистика — поле ext ветки курса (решение D17); мусор отбрасывается */
+function marStats(){
+  const e=CP.ext(), bt=CP.isObj(e.byType)?e.byType:{}, s={correct:0,shown:0,streak:CP.num(e.streak),best:CP.num(e.bestStreak),byType:{}};
+  TYPE_LIST.forEach(([c])=>{const b=bt[c];if(!CP.isObj(b))return;const x={correct:CP.num(b.correct),shown:CP.num(b.shown)};if(x.correct||x.shown){s.byType[c]=x;s.correct+=x.correct;s.shown+=x.shown;}});
+  return s;
+}
+function renderStats(){
+  const box=el('mar-stats');if(!box)return;
+  const s=marStats();
+  let rows='';TYPE_LIST.forEach(([c,n])=>{const b=s.byType[c];if(b)rows+=`<tr><td>${c} ${n}</td><td>${b.correct}</td><td>${b.shown}</td></tr>`;});
+  box.innerHTML=
+    `<span>Решено верно: <b>${s.correct}</b></span><span>С показанными шагами: <b>${s.shown}</b></span>`+
+    `<span>Серия: <b>${s.streak}</b> (лучшая ${s.best})</span>`+
+    `<button class="act ghost" id="mar-reset" style="margin:0">Сбросить прогресс</button>`+
+    (rows?`<details class="bytype" style="flex-basis:100%"><summary>по типам</summary><table><tr><th>тип</th><th>верно</th><th>с показом</th></tr>${rows}</table></details>`:'')+
+    `<div id="mar-confirm" style="flex-basis:100%" aria-live="polite"></div>`;
+  el('mar-reset').onclick=()=>{   // подтверждение на странице, сброс только своей ветки (решение D18)
+    el('mar-confirm').innerHTML='<div class="hintbox">Сбросить прогресс по заданию 10? Записи других тренажёров курса не тронутся. '+
+      '<button class="act" id="mar-yes">Да, сбросить</button><button class="act ghost" id="mar-no">Отмена</button></div>';
+    el('mar-yes').onclick=()=>{CP.resetOwn();renderStats();};
+    el('mar-no').onclick=()=>{el('mar-confirm').innerHTML='';};
+  };
+}
+let marFilter='all';
+function marChips(){
+  const box=el('mar-chips');box.innerHTML='';
+  const all=document.createElement('button');
+  all.className='chip'+(marFilter==='all'?' on':'');all.textContent='Все типы вперемешку';
+  all.onclick=()=>{userActed=true;marFilter='all';marChips();marNew();};
+  box.appendChild(all);
+  TYPE_LIST.forEach(([code,name])=>{
+    const b=document.createElement('button');
+    b.className='chip'+(code===marFilter?' on':'');b.textContent=code+' '+name;
+    b.onclick=()=>{userActed=true;marFilter=code;marChips();marNew();};
+    box.appendChild(b);
+  });
+}
+function marNew(boardTask){
+  const root=el('mar-root');root.innerHTML='';
+  const t=boardTask||attach(marFilter==='all'?genRandom(RT):genTask(marFilter,RT));
+  let hintN=0, finished=false, stepsMounted=false;
+  const card=document.createElement('div');card.className='card';
+  const id='w'+(++UID);
+  card.innerHTML=taskHead(t)
+    +`<div style="margin:10px 0"><b>Ответ:</b> `+awHTML(id,false)+`</div>`
+    +`<div><button class="act" id="${id}-ck">Проверить</button>`
+    +`<button class="act ghost" id="${id}-hint">Ещё ориентир</button>`
+    +`<button class="act ghost minimal-hint" id="${id}-steps" aria-expanded="false">Хочешь подсказку?</button></div>`
+    +`<div id="${id}-hintbox"></div><span class="fb" aria-live="polite" id="${id}-fb"></span><div id="${id}-after"></div>`;
+  root.appendChild(card);
+  const helpButton=el(id+'-steps');card.insertBefore(helpButton,card.querySelector('.aw').parentElement);
+  const hintPanel=document.createElement('div');hintPanel.id=id+'-help';hintPanel.className='minimal-hint-panel';hintPanel.hidden=true;card.appendChild(hintPanel);
+  helpButton.setAttribute('aria-controls',hintPanel.id);
+  const setHelpOpen=open=>{hintPanel.hidden=!open;helpButton.setAttribute('aria-expanded',String(open));};
+  OGEMinimal.group(card,[card.querySelector('.tnum')],'Об этом задании');
+  hintPanel.appendChild(el(id+'-hint'));hintPanel.appendChild(el(id+'-hintbox'));hintPanel.appendChild(el(id+'-after'));
+  const marTreeSvg = t.code==='10.6' ? card.querySelector('svg') : null;
+  const after=()=>{
+    finished=true;awLock(id);
+    if(marTreeSvg) treeWink(marTreeSvg,TREE_KEYS,false);
+    el(id+'-hint').disabled=true;
+    hintPanel.querySelectorAll('.step input,.step button').forEach(e=>{e.disabled=true;});
+    const b=document.createElement('button');b.className='act';b.id=id+'-next';b.textContent='Следующая задача';
+    b.onclick=()=>{userActed=true;marNew();};
+    card.appendChild(b);
+    if(userActed)try{b.focus({preventScroll:true});}catch(e){}
+  };
+  const check=()=>{
+    if(finished)return;
+    const v=awRead(id);
+    if(!v){setFB(id,'warn',MSG_EMPTY);return;}
+    if(checkAnswer(t,v)){
+      const credited=taskDone(t);
+      setFB(id,'ok',credited===false?'Верно! Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается).':'Верно!');awLock(id);
+      setHelpOpen(true);el(id+'-after').insertAdjacentHTML('beforeend',razborHTML(t));after();
+    } else {
+      taskMiss(t);
+      setFB(id,'no',wrongMsg(t,v));
+    }
+  };
+  el(id+'-ck').onclick=check;bindEnter(id,check);
+  el(id+'-hint').onclick=()=>{   // подсказка ничего не отнимает и итога не называет (D20)
+    if(hintN<2){el(id+'-hintbox').innerHTML+=`<div class="hintbox"><b>Подсказка ${hintN+1}.</b> ${t.hints[hintN]}</div>`;hintN++;}
+    if(hintN>=2)el(id+'-hint').disabled=true;
+  };
+  helpButton.onclick=()=>{
+    const opening=hintPanel.hidden;
+    setHelpOpen(opening);
+    if(!opening||stepsMounted||finished)return;
+    stepsMounted=true;
+    const box=document.createElement('div');el(id+'-after').appendChild(box);
+    const hooks=Object.assign({},marTreeSvg?treeStepHooks(marTreeSvg,t.meta.idx):null,{isClosed:()=>finished});
+    mountSteps(box,t,()=>{
+      if(finished)return;
+      const ok=taskDone(t);
+      if(!ok) el(id+'-after').insertAdjacentHTML('beforeend','<p><span class="redink">Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается).</span></p>'+razborHTML(t));
+      else el(id+'-after').insertAdjacentHTML('beforeend','<p class="okline">Решено по шагам самостоятельно — засчитано!</p>'+razborHTML(t));
+      after();
+    },hooks);
+  };
+  awFocus(id);
+}
+
+/* ===== ВКЛАДКА «ЗАЧЁТ» (решения D15, D25): 10 задач, одна попытка, без подсказок ===== */
+function buildQuiz10(){
+  const codes=['10.1','10.2','10.2','10.3','10.3','10.4','10.5','10.5','10.6','10.7'];
+  return RT.shuf(codes).map(c=>genTask(c,RT));
+}
+function buildQuizTab(){
+  const root=el('quiz-root');root.innerHTML='';
+  const card=document.createElement('div');card.className='card';
+  card.innerHTML='<div class="tnum">Зачёт · '+QUIZ_TOTAL+' задач</div>'+
+    '<p>Все семь типов задания 10 вперемешку: по две задачи на выбор предмета, выбор без возвращения и две кости, по одной — остальные. Одна попытка на задачу, подсказок и разбора нет — как на экзамене. Где просят, округли до сотых (точная дробь тоже принимается). Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'.</p>'+
+    '<button class="act" id="quiz-start">Начать зачёт</button>';
+  root.appendChild(card);
+  el('quiz-start').onclick=()=>{userActed=true;runQuiz();};
+}
+function runQuiz(){
+  const root=el('quiz-root');root.innerHTML='';
+  const quiz=buildQuiz10(),res=[];
+  let idx=0;
+  const card=document.createElement('div');card.className='card';root.appendChild(card);
+  function show(){
+    if(idx>=quiz.length)return finishQuiz10(quiz,res);
+    const t=quiz[idx],id='q'+(++UID);
+    card.innerHTML='<div class="note">Задача '+(idx+1)+' из '+quiz.length+'</div><div style="margin:6px 0">'+t.text+'</div>'+(t.svg||'')+
+      '<div style="margin:10px 0"><b>Ответ:</b> '+awHTML(id,false)+'</div>'+
+      '<button class="act" id="'+id+'-ck">Ответить</button><button class="act ghost" id="'+id+'-next" hidden>'+(idx+1<quiz.length?'Дальше →':'Итоги →')+'</button>'+
+      '<span class="fb" aria-live="polite" id="'+id+'-fb"></span>';
+    let answered=false,moved=false;
+    const answer=()=>{
+      if(answered)return;   // двойное касание — один ответ
+      const v=awRead(id);
+      if(!v){setFB(id,'warn','Введи ответ — попытка не потрачена.');return;}
+      answered=true;
+      const ok=checkAnswer(t,v),tr=ok?null:matchTrap(t,v);
+      res.push({t,v,ok,diag:ok?'':((tr?tr.m:'')+(fCmp(v,ONE)>0?OVER1:'')).trim()});
+      CP.mlog(typeOf(t.code),ok);
+      awLock(id);
+      setFB(id,ok?'ok':'no',ok?'Верно.':'Неверно.');
+      const nb=el(id+'-next');nb.hidden=false;try{nb.focus({preventScroll:true});}catch(e){}
+    };
+    el(id+'-ck').onclick=answer;
+    bindEnter(id,()=>{if(answered)el(id+'-next').click();else answer();});
+    el(id+'-next').onclick=()=>{if(!answered||moved)return;moved=true;idx++;show();};
+    awFocus(id);
+  }
+  show();
+}
+function finishQuiz10(quiz,res){
+  const score=res.filter(r=>r.ok).length;
+  CP.finishQuiz(score,QUIZ_TOTAL);   // passed — только при PASS_AT из QUIZ_TOTAL и не снимается
+  const root=el('quiz-root');root.innerHTML='';
+  const head=document.createElement('div');head.className='card';head.setAttribute('aria-live','polite');
+  head.innerHTML='<div class="tnum" style="font-size:1.3em">'+score+' / '+QUIZ_TOTAL+'</div><p>'+(score>=PASS_AT
+    ?'Зачёт сдан: '+score+' из '+QUIZ_TOTAL+' (нужно '+PASS_AT+').'
+    :'Для зачёта нужно '+PASS_AT+' из '+QUIZ_TOTAL+'. Разбери ошибки ниже — и попробуй ещё раз.')+'</p>';
+  root.appendChild(head);
+  const list=document.createElement('div');list.className='card';
+  list.innerHTML='<div class="tnum">Разбор зачёта</div>'+res.map((r,i)=>
+    '<div class="step'+(r.ok?' done-ok':' done-show')+'"><div>'+(i+1)+'. '+r.t.code+' · '+r.t.name+'</div>'+
+    '<div>'+(r.ok?'✓ верно: ':'✗ твой ответ '+ansHTML(r.v)+'; верный: ')+(r.t.needRound?fToDec(r.t.rounded):ansHTML(r.t.answer))+'</div>'+
+    (r.ok?'':'<div class="note">'+(r.diag||'Разбери такую задачу во вкладке «Пошагово» — тип «'+r.t.code+' '+r.t.name+'».')+'</div>')+'</div>').join('');
+  root.appendChild(list);
+  const again=document.createElement('button');again.className='act';again.textContent='Пройти ещё раз';
+  again.onclick=()=>{userActed=true;runQuiz();};
+  root.appendChild(again);
+}
+
+/* ===== ВКЛАДКА «УЧИМСЯ» ===== */
+function revealAns(spec){
+  return spec.needRound&&spec.rounded ? fToDec(spec.rounded)+' (точно '+fracHTML(spec.ansF)+')' : ansHTML(spec.ansF);
+}
+function mkGenSpec(code){
+  const t=genTask(code,RT);
+  return {html:t.text+(t.svg||''), ansF:t.answer, intOnly:t.answer.d===1n,
+          showHTML:(t.razborSVG||'')+t.razbor, needRound:t.needRound, rounded:t.rounded, typeCode:code};
+}
+function buildMini(box, spec, fixedId){
+  const id=fixedId||('mini'+(++UID));
+  box.innerHTML=`<div class="mq">${spec.html}</div>
+  <div style="margin-top:8px">${awHTML(id,!!spec.intOnly)} <button class="act" id="${id}-ck">Проверить</button><button class="act show" id="${id}-sh">Показать</button>
+  <span class="fb" aria-live="polite" id="${id}-fb"></span></div><div id="${id}-more"></div>`;
+  const accept=(v)=>!!v&&(fEq(v,spec.ansF)||(spec.needRound&&spec.rounded&&fEq(v,spec.rounded)));
+  const more=(pre)=>{
+    el(id+'-more').innerHTML=(pre||'')+`<button class="act ghost" id="${id}-again">Ещё пример этой темы →</button>`;
+    el(id+'-again').onclick=()=>buildMini(box, mkGenSpec(spec.typeCode)); // свежая задача той же темы
+  };
+  const check=()=>{
+    const v=awRead(id);
+    if(v===null){setFB(id,'warn',MSG_EMPTY);return;}
+    if(accept(v)){setFB(id,'ok','Верно!');awLock(id);more();}
+    else setFB(id,'no',MSG_WRONG); // не блокируем — можно сразу пробовать снова
+  };
+  el(id+'-ck').onclick=check;bindEnter(id,check);
+  el(id+'-sh').onclick=()=>{
+    awLock(id);
+    setFB(id,'', '<span class="redink">'+spec.showHTML+' Ответ: '+revealAns(spec)+'</span>');
+    more('<div class="note" style="margin:6px 0 8px">Ответ уже виден — поэтому вот новая похожая задача. Это и есть вторая попытка.</div>');
+  };
+}
+const FIXED_MINIS=[
+ {box:'m1-box', typeCode:'10.1', ansF:F(3,12),
+  html:'Из 12 равновозможных исходов событию благоприятствуют 3. Чему равна вероятность?',
+  showHTML:'P = 3 : 12 = 0,25.'},
+ {box:'m2-box', typeCode:'10.2', ansF:F(16,20),
+  html:'В коробке 4 красных и 16 синих значков. Наугад берут один. Какова вероятность, что он синий?',
+  showHTML:'Всего 4 + 16 = 20, синих 16. P = 16 : 20 = 0,8.'},
+ {box:'m3-box', typeCode:'10.3', ansF:F(4,10),
+  html:'В мешке 5 белых и 6 тёмных пуговиц. Первая вынутая пуговица — белая. Вероятность, что вторая тоже белая?',
+  showHTML:'Осталось 10 пуговиц, белых 4. P = 4 : 10 = 0,4.'},
+ {box:'m4-box', typeCode:'10.4', ansF:F(7,20),
+  html:'Монету бросили 20 раз, орёл выпал 13 раз. Вероятность, что при 5-м броске выпала решка?',
+  showHTML:'Решек 20 − 13 = 7, всего бросков 20. P = 7 : 20 = 0,35.'},
+ {box:'m5-box', typeCode:'10.5', intOnly:true, ansF:F(3),
+  html:'Кубик бросают дважды. Сколько пар дают сумму 10? (Смотри таблицу.)',
+  showHTML:'Пары (4;6), (5;5), (6;4) — всего 3.'},
+ {box:'m6-box', typeCode:'10.6', ansF:F(29,100),
+  html:'Найди P(B) для дерева на рисунке.',
+  showHTML:treeSolveSVG(['0,3','0,7','0,5','0,5','0,2','0,8'],['B','C','B','D'],[0,2],['0,15','0,15','0,14','0,56'],'0,29')
+    +'<b>Шаг 1 — умножаем вдоль путей к B:</b> верхний лист B — 0,3·0,5&nbsp;=&nbsp;0,15; нижний лист B — 0,7·0,2&nbsp;=&nbsp;0,14. <b>Шаг 2 — складываем листья B:</b> P(B)&nbsp;=&nbsp;0,15&nbsp;+&nbsp;0,14&nbsp;=&nbsp;0,29.'},
+ {box:'m7-box', typeCode:'10.7', ansF:F(10,20),
+  html:'На диаграмме указаны количества исходов. Найди вероятность события A.',
+  showHTML:'Круг A: 7 + 3 = 10 исходов. Всего 7 + 3 + 6 + 4 = 20. P(A) = 10 : 20 = 0,5.'}
+];
+function diceTable(hlSum){
+  let h='<table class="dice"><tr><th>+</th>';
+  for(let b=1;b<=6;b++)h+='<th>'+b+'</th>';h+='</tr>';
+  for(let a=1;a<=6;a++){h+='<tr><th>'+a+'</th>';
+    for(let b=1;b<=6;b++)h+='<td'+((a+b)===hlSum?' class="hl"':'')+'>'+(a+b)+'</td>';h+='</tr>';}
+  return h+'</table>';
+}
+function buildUch(){
+  const r=el('uch-root');
+  const treeEx=treeSVG(['0,3','0,7','0,5','0,5','0,2','0,8'],['B','C','B','D']);
+  const eulerEx=eulerSVG('7','3','6','4');
+  r.innerHTML=`
+<div class="card theory-p"><span class="pn">П.1. Что такое вероятность</span>
+<p>Опыт случайный, но все его элементарные исходы <b>равновозможны</b>. Тогда вероятность события — это доля благоприятных исходов:</p>
+<div class="formula">P(A) = ${fracHTMLraw('число благоприятных исходов','число всех исходов')}</div>
+<p>Вероятность — число от 0 до 1. В ответ пишем десятичную дробь (0,25) или обыкновенную; проценты в ответ не пишут.</p>
+<div class="mini" id="m1-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.2. Один выбор предмета (типы 10.1–10.2)</span>
+<p>Классика: предметы двух видов, наугад берут один. Порядок действий: <b>1)</b> сложи ВСЕ предметы; <b>2)</b> найди, сколько «нужных»; <b>3)</b> раздели нужные на все.</p>
+<p class="note">Ловушки: делят нужные на ненужные; забывают сложить все предметы; отвечают не про тот цвет, который спросили.</p>
+<div class="mini" id="m2-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.3. Выбор без возвращения (тип 10.3)</span>
+<p>Достали предмет — назад не вернули. Если известно, что первый оказался «нужным», то перед вторым выбором <b>пересчитай остаток</b>: и нужных стало на 1 меньше, и всего стало на 1 меньше.</p>
+<div class="formula">P(второй нужный) = ${fracHTMLraw('нужных − 1','всего − 1')}</div>
+<div class="mini" id="m3-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.4. Монета: частоты уже известны (тип 10.4)</span>
+<p>«Монету бросили 20 раз, орёл выпал 13 раз. Какова вероятность, что при 5-м броске — решка?» Рефлекс «0,5» здесь <b>не работает</b>: состав серии уже известен! Решек было 20 − 13 = 7, и каждая из 20 позиций равноправна:</p>
+<div class="formula">P = ${fracHTMLraw('число решек','число всех бросков')}</div>
+<div class="mini" id="m4-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.5. Две игральные кости (тип 10.5)</span>
+<p>Исход опыта — <b>упорядоченная пара</b> (первый бросок; второй бросок). Всего пар 6 · 6 = 36, и именно они равновозможны. Суммы (их 11 штук) равновозможными НЕ являются — это ловушка №1.</p>
+<p><b>Школьный способ:</b> таблица 6×6 — выписать, отметить нужные клетки, посчитать. Надёжно всегда.</p>
+<p><b>Способ «отчаянного девятиклассника»:</b> считать пары в уме перебором по первому кубику. Быстрее, но цена — легко потерять пару или посчитать (2; 5) и (5; 2) как одну. На экзамене при сомнении рисуй таблицу.</p>
+${diceTable(10)}
+<p class="note">Подсвечены клетки с суммой 10 — их ровно 3: (4;6), (5;5), (6;4).</p>
+<p>Если дробь вида ${fracHTMLraw('5','36')} не переводится в конечную десятичную — в условии попросят <b>округлить до сотых</b>.</p>
+<div class="mini" id="m5-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.6. Дерево случайного опыта (тип 10.6)</span>
+<p>Два правила: <b>вдоль пути — умножаем</b>, <b>разные благоприятные листья — складываем</b>. Проверка себя: вероятности на ветвях каждой развилки в сумме дают 1, а вероятности всех листьев в сумме дают 1.</p>
+${treeEx}
+<p class="note">На рисунке событию B отвечают два подсвеченных листа: верхний путь 0,3 · 0,5 и нижний путь 0,7 · 0,2.</p>
+<div class="mini" id="m6-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.7. Диаграмма Эйлера (тип 10.7)</span>
+<p>Четыре области: только A, пересечение (и A, и B), только B, снаружи (ни A, ни B). Запомни соответствие слов и областей:</p>
+<p>«произойдёт A» — весь круг A, <b>включая пересечение</b>; «A и B одновременно» — только линза-пересечение; «хотя бы одно из A, B» — всё внутри обоих кругов; «A, но не B» — круг A без линзы.</p>
+<p>Если в областях <b>количества исходов</b> — дели сумму нужных областей на сумму всех четырёх (внешнюю не забудь!). Если в областях уже <b>вероятности</b> — просто складывай нужные, делить не надо.</p>
+${eulerEx}
+<div class="mini" id="m7-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.8. Квиз: определи тип — и реши</span>
+<p>Читай условие, назови тип задачи, а затем реши её по шагам. Так ты учишься первому и главному экзаменационному навыку — узнавать задачу «в лицо».</p>
+<div id="quiz-area"></div>
+<button class="act" id="quiz-new">Новый пример</button>
+</div>`;
+  FIXED_MINIS.forEach(sp=>buildMini(el(sp.box), sp, sp.box.replace('-box','')));
+  el('quiz-new').onclick=quizNew;
+  quizNew();
+}
+let quizTask=null;
+function quizNew(){
+  quizTask=genRandom(RT);
+  const a=el('quiz-area');
+  let chips='';
+  TYPE_LIST.forEach(([code,name])=>{chips+=`<button class="chip q" data-code="${code}">${code} ${name}</button>`;});
+  a.innerHTML=`<div class="card"><div style="margin:6px 0">${quizTask.text}</div>${quizTask.svg||''}
+  <div><b>Какой это тип?</b></div><div class="chips">${chips}</div>
+  <span class="fb" aria-live="polite" id="quiz-fb"></span><div id="quiz-after"></div></div>`;
+  a.querySelectorAll('.chip.q').forEach(b=>{
+    b.onclick=()=>{
+      if(b.dataset.code===quizTask.code){
+        b.classList.add('good');
+        const f=el('quiz-fb');f.className='fb ok';f.textContent='Верно, это «'+quizTask.name+'»!';
+        if(!el('quiz-solve')){
+          el('quiz-after').innerHTML='<button class="act" id="quiz-solve">Решить эту задачу по шагам</button>';
+          el('quiz-solve').onclick=()=>{userActed=true;showTab('step');stepNew(quizTask);};
+        }
+      } else {
+        const f=el('quiz-fb');f.className='fb no';f.textContent='Не совсем. Перечитай: что за опыт описан и что дано на рисунке?';
+      }
+    };
+  });
+}
+
+/* ===== ВКЛАДКИ И СТАРТ ===== */
+function showTab(name){
+  ['uch','step','mar','quiz'].forEach(k=>{
+    el('tab-'+k).classList.toggle('on',k===name);
+    const b=el('tabb-'+k);b.classList.toggle('on',k===name);b.setAttribute('aria-selected',k===name?'true':'false');
+  });
+  window.scrollTo({top:0});
+}
+/* §6 контракта, решение D16: верные по типам → solvedByType; лучшая серия — только в ext */
+function migrate10(){
+  CP.migrate(function(old,rec){
+    const bt=CP.isObj(old.byType)?old.byType:{}, e={byType:{}};
+    TYPE_LIST.forEach(([c])=>{
+      const s=bt[c];if(!CP.isObj(s))return;
+      const ok=CP.num(s.correct), sh=CP.num(s.shown);
+      if(ok)rec.solvedByType[typeOf(c)]=CP.num(rec.solvedByType[typeOf(c)])+ok;
+      if(ok||sh)e.byType[c]={correct:ok,shown:sh};
+    });
+    const b=CP.num(old.best);if(b)e.bestStreak=b;
+    rec.ext=e;
+  });
+}
+function boot(){
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('.aw-tog');
+    if(!b)return;
+    const aw=b.closest('.aw');if(!aw)return;
+    const toFrac=b.id.endsWith('-tofrac');
+    aw.querySelector('.aw-decwrap').hidden=toFrac;
+    aw.querySelector('.aw-frwrap').hidden=!toFrac;
+    aw.classList.toggle('fr-mode',toFrac);
+    const f=toFrac?aw.querySelector('.aw-n'):aw.querySelector('.aw-dec');
+    if(f&&!f.disabled)f.focus();
+  });
+  migrate10();
+  buildUch();
+  if(CP.REVIEW){ // ?mode=review — сразу работа над ошибками во вкладке «Пошагово» (решение D22)
+    const open=TYPE_LIST.filter(([c])=>CP.openTypes().indexOf(typeOf(c))>=0);
+    if(open.length){
+      reviewOn=true;
+      reviewBanner('<b>Работа над ошибками.</b> Задачи только тех типов, где были ошибки: '+open.map(([c,n])=>esc(c+' '+n)).join('; ')+'. Тип закрывается после трёх верных решений подряд. Выбор типа ниже — выход из повтора.');
+    } else reviewBanner('<b>Работа над ошибками.</b> Открытых ошибок нет — выбери любой тип ниже.');
+  }
+  stepChips();stepNew();
+  renderStats();marChips();marNew();
+  buildQuizTab();
+  showTab(CP.REVIEW?'step':'mar');
+  const mar=el('tab-mar');OGEMinimal.group(mar,[el('mar-stats'),mar.querySelector(':scope>.card')],'Выбрать тему · мои результаты');
+  OGEMinimal.shell(document.querySelector('.wrap'),['nav.tabs','.wrap>.sub'],'ОГЭ №10 · Вероятность');
+  if(CP.RO) selftest10();   // ?selftest=1 — маркер OGE10_SELFTEST_OK в консоли
+}
+document.addEventListener('DOMContentLoaded',boot);
+
+/*__ALG_SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 тренажёров алгебры курса ОГЭ (задача
+   OGE_COURSE_03D_ALGEBRA). Блок побайтно одинаков во всех тренажёрах
+   алгебры, где он есть; копии сверяет гейт tools/oge-algebra-contract.test.mjs.
+   Каждая проверка дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const ASTK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи, вариантов и сообщений: нет null, undefined, NaN, Infinity */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|\[object /.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* ловушки {v, m}: ни одна не принимается как ответ, разные сообщения не ловят
+     одно значение; same — равенство значений, show — запись значения в отчёте */
+  traps:function(list,tag,errs,isAns,same,show){
+    same=same||function(a,b){return a===b;};
+    show=show||function(v){return String(v);};
+    (list||[]).forEach(function(t,i){
+      if(!t||!t.m)errs.push(tag+': ловушка без сообщения');
+      if(isAns(t.v))errs.push(tag+': ловушка '+show(t.v)+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&same(t.v,u.v))errs.push(tag+': две ловушки ловят одно значение '+show(t.v));}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__ALG_SELFTEST_KIT_END__*/
+
+/* ответ задачи стоит в тексте отдельным числом (десятичная запись или дробь a/b) */
+function hasAns(text,t){
+  const s=String(text).replace(/<span class="frac"><span class="tt">(\d+)<\/span><span class="bb">(\d+)<\/span><\/span>/g,'$1/$2').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ');
+  const k=ansKey(t), dec=fToDec(k);
+  const re=x=>new RegExp('(^|[^\\d,/])'+x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![\\d]|,\\d|\\s?/\\s?\\d)');
+  return (dec!==null&&re(dec).test(s))||(k.d!==1n&&re(k.n+'/'+k.d).test(s.replace(/\s*\/\s*/g,'/')));
+}
+/* ?selftest=1: генераторы, ловушки, ступени, чертежи, зачёт; ничего не пишет (CP.RO) */
+function selftest10(){
+  const errs=[];
+  try{ fuzz10(60); }catch(e){ errs.push(String(e&&e.message||e)); }
+  for(const [code] of TYPE_LIST){
+    let full=0;
+    for(let it=0;it<300;it++){
+      const t=genTask(code,makePick(RNG(code.charCodeAt(3)*7919+it*31+5)));
+      const tag=code+' #'+it;
+      if(TYPE_IDS.indexOf(typeOf(code))<0)errs.push(tag+': тип не из TYPE_IDS');
+      ASTK.text(t.text,tag+' условие',errs);ASTK.text(t.razbor,tag+' разбор',errs);
+      t.hints.forEach(h=>ASTK.text(h,tag+' подсказка',errs));
+      t.steps.forEach(s=>{ASTK.text(s.q,tag+' ступень',errs);ASTK.text(s.show,tag+' ступень',errs);});
+      if(t.svg)ASTK.svg(t.svg,tag+' чертёж',errs);
+      if(t.razborSVG)ASTK.svg(t.razborSVG,tag+' чертёж разбора',errs);
+      /* ловушки: не ответ, разные сообщения не ловят одно значение (в 10.5 — и после округления) */
+      const tr=finalTraps10(t);
+      tr.forEach(o=>ASTK.text(o.m,tag+' ловушка',errs));
+      ASTK.traps(tr,tag,errs,v=>fEq(tkey(t,v),ansKey(t)),(a,b)=>fEq(tkey(t,a),tkey(t,b)),v=>v.n+'/'+v.d);
+      if(trapsClean(t))full++;
+      /* подсказки и сообщения ловушек не называют ответ (D20), если это не данное число условия или чертежа */
+      if(!hasAns(t.text+' '+(t.svg||''),t)){
+        t.hints.forEach(h=>{if(hasAns(h,t))errs.push(tag+': подсказка называет ответ');});
+        tr.forEach(o=>{if(hasAns(o.m,t))errs.push(tag+': ловушка называет ответ');});
+      }
+      /* ступени: есть «что проверяет», ловушка ступени не равна её ответу */
+      t.steps.forEach((s,i)=>{
+        if(!s.chk)errs.push(tag+': у ступени '+(i+1)+' нет «что проверяет»');
+        else if(/^[а-яё]+а(\s|$)/i.test(s.chk))errs.push(tag+': «проверь '+s.chk+'» — не винительный падеж');
+        (s.traps||[]).forEach(x=>{if(fEq(x.v,s.ans))errs.push(tag+': ловушка ступени '+(i+1)+' = её ответу');});
+      });
+      if(code==='10.6'&&!(t.meta.idx[0]<2&&t.meta.idx[1]>=2))errs.push(tag+': листья B не из разных ветвей');
+      if(code==='10.4'&&2*t.meta.h===t.meta.N)errs.push(tag+': орлов ровно половина — «0,5 не подходит» ложно');
+    }
+    if(full<300*0.95)errs.push(code+': задач без совпавших ловушек только '+full+' из 300');
+  }
+  const q=buildQuiz10().map(t=>t.code).sort().join(',');
+  if(q!=='10.1,10.2,10.2,10.3,10.3,10.4,10.5,10.5,10.6,10.7')errs.push('зачёт: состав '+q);
+  ASTK.done('OGE10',errs);
+  return errs;
+}
+</script>
+<script data-inline-source="/trainers/oge-course-reference.js">
+/* Same-page theory sources. Mathematical notes are authored paraphrases, not quotations. */
+(function(root){
+'use strict';
+const element=(d,tag,text,cls)=>{const e=d.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;return e;};
+function disclosure(host,label,cls){const d=host.ownerDocument,box=element(d,'details',null,'ocr-card '+(cls||'')),summary=element(d,'summary',label);box.append(summary);host.append(box);return box;}
+function link(d,url,label){try{const u=new URL(url);if(u.protocol!=='https:')return null;const a=element(d,'a',label);a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';return a;}catch(_){return null;}}
+function close(box){const b=element(box.ownerDocument,'button','Убрать подсказку','ocr-close');b.type='button';b.onclick=()=>{box.open=false;box.querySelector('summary').focus();};box.append(b);}
+const extraTopics={triangle_congruence_asa:{title:'Равенство по стороне и двум прилежащим углам',explanation:'Укажи равную сторону и обе пары равных углов при её концах. Эти три условия задают равные треугольники; соблюдай соответствие вершин.',passages:[{bookId:'atanasyan2010',section:'п. 19, второй признак равенства треугольников',printedPage:'38',url:'https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=40'},{bookId:'merzlyak7_2015',section:'§ 8, теорема 8.3 — распознанный текст издания',url:'https://my-uchebnik.ru/book/geometry/5/geometry-00000035.htm#:~:text=Теорема%208.3'}]}};
+const atanPdf='https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf';
+const merzOriginal='https://ru.scribd.com/document/884064962/merzlyak-a-geometriya-9-klass-11-49-33';
+Object.assign(extraTopics,{
+ segment_lengths:{title:'Середина отрезка и сложение длин',explanation:'Если C лежит на отрезке AB, то AB = AC + CB. Середина делит отрезок на две равные части. Перед сложением или вычитанием длин проверь порядок точек.',passages:[{bookId:'atanasyan2010',section:'п. 6, середина отрезка',printedPage:'11',url:atanPdf+'#page=13'},{bookId:'atanasyan2010',section:'п. 7, длина отрезка',printedPage:'13–14',url:atanPdf+'#page=15'},{bookId:'merzlyak7_2015',section:'§ 2, основное свойство длины и середина отрезка',url:'https://my-uchebnik.ru/book/geometry/5/geometry-00000035.htm#:~:text=Серединой%20отрезка'}]},
+ angle_measure:{title:'Сложение и вычитание углов',explanation:'Если луч проходит внутри угла, градусная мера целого угла равна сумме двух частей. Чтобы вычесть часть, сначала укажи, какой луч лежит внутри и какой угол является целым.',passages:[{bookId:'atanasyan2010',section:'п. 9, градусная мера угла',printedPage:'18–19',url:atanPdf+'#page=20'},{bookId:'merzlyak7_2015',section:'§ 3, луч, угол и измерение углов',printedPage:'20',url:'https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=21'}]},
+ sine_law:{title:'Теорема синусов и длина хорды',explanation:'Стороне a против угла A соответствует равенство a = 2R·sin A. R — радиус окружности, описанной именно около этого треугольника. Для хорды выбери вписанный угол, опирающийся на неё.',passages:[{bookId:'atanasyan2010',section:'п. 97, теорема и замечание о 2R',printedPage:'256–257',url:atanPdf+'#page=258'},{bookId:'merzlyak9_2022',section:'§ 3, лемма о хорде и теорема 3.1 — текст издания',url:merzOriginal+'#:~:text=Теорема%203.1'}]},
+ cosine_law:{title:'Теорема косинусов',explanation:'Для стороны a напротив угла A: a² = b² + c² − 2bc·cos A. Проверь, что b и c — стороны, образующие именно угол A.',passages:[{bookId:'atanasyan2010',section:'п. 98',printedPage:'257–258',url:atanPdf+'#page=259'},{bookId:'merzlyak9_2022',section:'§ 2, теорема 2.1 — текст издания',printedPage:'11',url:merzOriginal+'#:~:text=Теорема%202.1'}]},
+ trig_sum_identity:{title:'Откуда берётся косинус суммы или разности?',explanation:'Авторский вывод через скалярное произведение. Возьми единичные векторы u = (cos α, sin α), v = (cos β, sin β). Их произведение по углу равно cos(α − β), а по координатам — cos α·cos β + sin α·sin β. Для суммы замени v на (cos β, −sin β): получишь знак минус. Ссылки ниже содержат основания этого вывода.',derived:true,passages:[{bookId:'atanasyan2010',section:'пп. 102–103, скалярное произведение и координаты',printedPage:'264–267',url:atanPdf+'#page=266'},{bookId:'merzlyak9_2022',section:'§ 16, определение и теорема 16.2 — текст издания',url:merzOriginal+'#:~:text=Теорема%2016.2'}]},
+ trig_reduction:{title:'Как преобразовать тригонометрическое выражение?',explanation:'Для острого угла sin² α + cos² α = 1 следует из теоремы Пифагора после деления на квадрат гипотенузы. Для произвольного угла это равенство координат единичной окружности. Отражение точки относительно осей объясняет знаки: sin(x − 90°) = −cos x; cos(360° − x) = cos x.',derived:true,passages:[{bookId:'atanasyan2010',section:'пп. 93–94, тригонометрические функции и формулы приведения',printedPage:'252–254',url:atanPdf+'#page=254'},{bookId:'merzlyak9_2022',section:'§ 1, синус, косинус и тангенс угла от 0° до 180° — текст издания',url:merzOriginal}]},
+ inscribed_angle_converse:{title:'Когда равенство углов доказывает принадлежность окружности?',explanation:'Точки A и D находятся с одной стороны прямой BC. Если ∠BAC = ∠BDC, то A, B, C, D лежат на одной окружности. Это обратный признак, а не прямое свойство вписанного угла. Его можно вывести, построив окружность через A, B, C и используя теорему о внешнем угле: точка с тем же углом в данной полуплоскости не может лежать внутри или вне этой окружности. Ниже — теоремы, на которых основан этот вывод.',derived:true,parents:['inscribed_angles','circumcircle','triangle_exterior']},
+ diameter_locus:{title:'Почему вершина прямого угла лежит на окружности?',explanation:'Если ∠APB = 90°, середина O гипотенузы AB равноудалена от A, P и B. Значит OP = OA = OB: точка P лежит на окружности с центром O и диаметром AB. Прямой и обратный переходы обоснованы отдельно.',derived:true,parents:['median_hypotenuse','circle_definition']},
+ median_length:{title:'Как получить формулу длины медианы?',explanation:'Пусть AM — медиана, BM = CM = a/2, AB = c, AC = b. Запиши теорему косинусов для ABM и ACM. Углы при M смежные, поэтому слагаемые с косинусами при сложении сократятся: b² + c² = 2AM² + a²/2. Вырази AM².',derived:true,parents:['triangle_parts','cosine_law','adjacent_vertical']},
+ bisector_length:{title:'Как обосновать длину биссектрисы?',explanation:'Пусть BE — биссектриса в ABC. Отношение AE:EC = AB:BC получается из отношения площадей ABE и CBE: используй общую высоту к AC и формулу площади через синус угла. Затем запиши теорему косинусов в ABE и CBE и исключи косинусы смежных углов при E. Получится BE² = AB·BC − AE·EC.',derived:true,parents:['angle_bisector','triangle_area','triangle_sine_area','cosine_law']},
+ heron_formula:{title:'Формула Герона',explanation:'Обозначь полупериметр p = (a + b + c)/2. Формула S² = p(p − a)(p − b)(p − c) получается из S = ab·sin C/2 и теоремы косинусов: замени sin² C на 1 − cos² C, затем разложи разность квадратов. Это авторская схема вывода из указанных теорем.',derived:true,parents:['triangle_sine_area','cosine_law','trig_reduction']},
+ incircle_area:{title:'Площадь через вписанную и вневписанную окружность',explanation:'Для инцентра разбей треугольник на три с общей высотой r к его сторонам: S = r(a + b + c)/2 = rp. Для центра вневписанной окружности против стороны a складывай две площади и вычитай третью: S = rₐ(b + c − a)/2 = rₐ(p − a). Ниже — свойства касательной и формула площади, которые обосновывают вывод.',derived:true,parents:['incircle','tangent','triangle_area']}
+});
+function getTopic(id,seen=new Set()){if(seen.has(id))return null;seen.add(id);const topic=extraTopics[id]||root.Task19TextbookData?.topics?.[id];if(!topic)return null;if(!topic.parents)return topic;return {...topic,passages:[...new Map(topic.parents.flatMap(p=>getTopic(p,new Set(seen))?.passages||[]).map(p=>[p.bookId+'|'+p.section,p])).values()]};}
+function topicCards(host,ids,options={}){
+ const data=root.Task19TextbookData,topics=[...new Set(ids||[])].map(id=>({id,...getTopic(id)})).filter(x=>x.title);if(!topics.length)return null;
+ const d=host.ownerDocument,box=disclosure(host,options.label||'Для ценителей строгости и точности','ocr-theory');
+ box.append(element(d,'p','Краткое объяснение составлено для тренажёра. По ссылкам — соответствующие определения и теоремы в указанных изданиях учебников.','ocr-note'));
+ for(const topic of topics){const section=element(d,'section',null,'ocr-topic');section.dataset.topic=topic.id;section.append(element(d,'h4',topic.title),element(d,'p',topic.explanation));if(topic.derived)section.append(element(d,'p','Авторский вывод. Ссылки — на определения и теоремы, использованные в обосновании.','ocr-note'));const list=element(d,'ul');
+  for(const p of topic.passages){const book=data.books[p.bookId];if(!book)continue;const a=link(d,p.url,(book.authors.includes('Атанасян')?'Атанасян и др.':'Мерзляк и др.')+' · '+book.title+' · '+p.section+(p.printedPage?' · с. '+p.printedPage:''));if(!a)continue;const li=element(d,'li');li.append(a,element(d,'span',book.edition+' · '+(p.hostNote||(new URL(p.url).hostname.endsWith('scribd.com')?'Текст издания во внешнем архиве Scribd. Это не сайт издательства.':book.hostNote)||''),'ocr-edition'));list.append(li);}
+  section.append(list);box.append(section);
+ }
+ close(box);return box;
+}
+function sheetCards(host,ids,options={}){
+ const media=root.MathExamTrainerOffline?.media||(file=>file);
+ const sources={...(root.Task19Reference?.crops||{}),...(options.crops||{})},d=host.ownerDocument,items=[...new Set(ids||[])].map(id=>({id,...sources[id]})).filter(c=>c.file);if(!items.length&&!options.pages?.length)return null;
+ const box=disclosure(host,options.label||'Где это в справочных материалах ОГЭ?','ocr-sheet');box.append(element(d,'p','Справочные материалы ФИПИ, проект ОГЭ 2027. Формула помогает вычислить величину; применимость формулы нужно обосновать.','ocr-note'));
+ for(const c of items){const figure=element(d,'figure'),img=element(d,'img');img.src=media(c.file);img.alt=c.alt;img.width=c.width;img.height=c.height;img.loading='lazy';figure.append(element(d,'figcaption',c.title),img);box.append(figure);}
+ const pages=[...new Set([...(options.pages||[]),...items.map(c=>c.printedPage)])].filter(n=>[3,4,5,6].includes(+n));
+ for(const page of pages){const full=disclosure(box,'Показать весь справочный лист: страница '+page,'ocr-full-sheet'),img=element(d,'img'),pan=element(d,'div',null,'ocr-sheet-pan'),zoom=element(d,'button','Увеличить лист','ocr-close ocr-zoom');img.src=media('/trainers/task19-reference/fipi-oge-2027-page-0'+page+'.png');img.alt='Полная страница '+page+' справочных материалов ОГЭ, проект 2027';img.loading='lazy';zoom.type='button';zoom.setAttribute('aria-pressed','false');pan.tabIndex=0;pan.setAttribute('role','region');pan.setAttribute('aria-label','Справочный лист: после увеличения прокручивай в стороны');zoom.onclick=()=>{const large=pan.classList.toggle('ocr-zoomed');zoom.setAttribute('aria-pressed',String(large));zoom.textContent=large?'Уменьшить лист':'Увеличить лист';};pan.append(img);full.append(zoom,element(d,'p','Лист откроется здесь. После увеличения прокручивай его в стороны.','ocr-note'),pan);}
+ const p=element(d,'p');p.append(link(d,'https://mathexam.space/trainers/task19-reference/source-demo-2027.pdf','Открыть оригинал PDF'),d.createTextNode(' · '),link(d,'https://fipi.ru/oge/demoversii-specifikacii-kodifikatory','Источник — ФИПИ'));box.append(p);close(box);return box;
+}
+const api={topicCards,sheetCards,getTopic};root.OgeCourseReference=api;if(typeof module==='object'&&module.exports)module.exports=api;
+})(typeof window==='object'?window:globalThis);
+
+</script>
+<script data-inline-source="/trainers/oge-course-algebra.js" data-oge-task="10">
+/* Optional exploration and working notes. Native tasks, graders and progress remain authoritative. */
+(function () {
+  'use strict';
+  const script = document.currentScript;
+  const number = Number(script && script.dataset.ogeTask);
+  const routes = {
+    7: ['#mode-mar.active #marTask', '.taskline'],
+    8: ['#view-mar.on #marGrid > .mtask:not([hidden])', '.expr'],
+    10: ['#tab-mar.on #mar-root > .card', '.qtext,.task-text,.statement,.task'],
+    12: ['#taskArea > .card', '.story'],
+    14: ['#page-marathon.active #m-task > .card', '.task-text'],
+    20: ['#body .qbox', '.prompt'],
+    21: ['#content > .card', '.problem'],
+    22: ['.panel:not(.hidden) .mode-host[data-mode="marathon"]', '.statement']
+  };
+  if (!routes[number] || /[?&]selftest=1(?:&|$)/.test(location.search)) return;
+  const d = document, cards = new WeakMap(), buttonStates = new WeakMap(), labBuilders = new WeakMap();
+  const shared = window.OgeCourseSharedMode === true;
+  let serial = 0, scheduled = false;
+  const node = (tag, text, cls) => { const e = d.createElement(tag); if (text !== undefined) e.textContent = text; if (cls) e.className = cls; return e; };
+  const safe = fn => { try { return fn(); } catch (_) { return null; } };
+  const clean = s => String(s || '').replace(/\s+/g, ' ').trim();
+  const fmt = v => String(Number(Number(v).toFixed(6))).replace('.', ',');
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const id = () => 'oca-' + number + '-' + (++serial);
+  function action(text, fn) { const b = node('button', text, 'oca-button'); b.type = 'button'; b.onclick = fn; return b; }
+  function details(host, title) {
+    const box = node('details', undefined, 'oca-details'), summary = node('summary', title);
+    box.append(summary); host.append(box); return box;
+  }
+  function close(box, button) {
+    const b = action(button ? 'Вернуться к заданию' : 'Свернуть это объяснение', () => {
+      if (button) { box.hidden = true; button.setAttribute('aria-expanded', 'false'); button.textContent = 'Хочешь подсказку?'; button.focus(); }
+      else { box.open = false; box.querySelector('summary').focus(); }
+    });
+    box.append(b);
+  }
+  function control(host, text, lo, hi, value, step, oninput) {
+    const wrap = node('label', undefined, 'oca-control'), caption = node('span', text), input = node('input');
+    const output = node('output'); input.type = 'range'; input.min = lo; input.max = hi; input.step = step || 1; input.value = value;
+    input.id = id(); output.htmlFor = input.id; output.textContent = fmt(value);
+    input.setAttribute('aria-label', text);
+    input.oninput = () => { output.textContent = fmt(input.value); oninput(Number(input.value)); };
+    wrap.append(caption, input, output); host.append(wrap); return input;
+  }
+  function fraction(n, den) { return '<span class="oca-fraction" role="math" aria-label="' + esc(n) + ' разделить на ' + esc(den) + '"><span>' + esc(n) + '</span><span>' + esc(den) + '</span></span>'; }
+  function svgHost(host, label) {
+    const wrap = node('div', undefined, 'oca-figure'); wrap.tabIndex = 0; wrap.setAttribute('aria-label', label + '. На узком экране рисунок можно прокрутить по горизонтали.');
+    const svg = d.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox', '0 0 600 190'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', label); wrap.append(svg); host.append(wrap,node('p','Рисунок можно прокручивать влево и вправо.','oca-note')); return svg;
+  }
+  function numberLine(host) {
+    host.append(node('p', 'Передвинь точки A и B. Какая точка правее? Какая дальше от нуля? Это отдельный опыт: числа в твоём задании остаются прежними.'));
+    let a = -2, b = 1; const controls = node('div'); host.append(controls);
+    const svg = svgHost(host, 'Две точки на координатной прямой'), out = node('p', undefined, 'oca-observation'); out.setAttribute('aria-live', 'polite'); host.append(out);
+    const x = value => 300 + value * 55;
+    function draw() {
+      let s = '<path d="M45 112H555M546 106L555 112L546 118" fill="none" stroke="#293d32" stroke-width="2"/>';
+      for (let k = -4; k <= 4; k++) s += '<path d="M' + x(k) + ' 106v12" stroke="#293d32"/><text x="' + x(k) + '" y="143" text-anchor="middle" font-size="19">' + k + '</text>';
+      s += '<path d="M300 80H' + x(a) + '" stroke="#b56422" stroke-width="5"/><circle cx="' + x(a) + '" cy="112" r="7" fill="#216342"/><text x="' + x(a) + '" y="49" text-anchor="middle" font-size="21">A (' + fmt(a) + ')</text>';
+      s += '<circle cx="' + x(b) + '" cy="112" r="6" fill="#265e9d"/><text x="' + x(b) + '" y="174" text-anchor="middle" font-size="21">B (' + fmt(b) + ')</text>';
+      svg.innerHTML = s;
+      out.textContent = (a === b ? 'Точки совпали: a = b.' : a > b ? 'A правее B: a > b.' : 'B правее A: a < b.') + ' Расстояние от A до нуля равно ' + fmt(Math.abs(a)) + ': |a| = ' + fmt(Math.abs(a)) + '.';
+    }
+    control(controls, 'Координата A', -4, 4, a, .25, v => { a = v; draw(); });
+    control(controls, 'Координата B', -4, 4, b, .25, v => { b = v; draw(); }); draw();
+  }
+  function powers(host) {
+    host.append(node('p', 'Измени показатели. Посчитай одинаковые множители и сравни две записи. Это опыт с отдельными числами.'));
+    const modeLabel = node('label', 'Что исследуем? ', 'oca-control'), mode = node('select');
+    for (const [value, label] of [['product','Произведение степеней'],['power','Степень степени'],['square','Квадрат и квадратный корень']]) { const option = node('option', label); option.value = value; mode.append(option); }
+    modeLabel.append(mode); host.append(modeLabel);
+    let n = 2, m = 3; const controls = node('div'); host.append(controls);
+    const out = node('div', undefined, 'oca-observation'), visual = node('div', undefined, 'oca-factors'); host.append(out, visual);
+    function draw() {
+      const factors = k => Array.from({length:k}, () => '<span class="oca-factor">2</span>').join('<span>·</span>');
+      if (mode.value === 'product') { out.innerHTML = '2<sup>' + n + '</sup> · 2<sup>' + m + '</sup> = 2<sup>' + (n + m) + '</sup>'; visual.innerHTML = factors(n) + '<b> · </b>' + factors(m); }
+      else if (mode.value === 'power') { out.innerHTML = '(2<sup>' + n + '</sup>)<sup>' + m + '</sup> = 2<sup>' + (n*m) + '</sup>'; visual.innerHTML = Array.from({length:m}, () => '<span class="oca-factor-group">' + factors(n) + '</span>').join('<span>·</span>'); }
+      else { out.textContent = 'Квадрат со стороной ' + n + ': ' + n + '² = ' + (n*n) + '. Значит, √' + (n*n) + ' = ' + n + '.'; visual.innerHTML = '<div class="oca-square" style="grid-template-columns:repeat(' + n + ',1fr)">' + '<span></span>'.repeat(n*n) + '</div>'; }
+    }
+    control(controls, 'Первый показатель (в опыте с квадратом — сторона)', 1, 4, n, 1, v => { n = v; draw(); });
+    const second = control(controls, 'Второй показатель', 1, 4, m, 1, v => { m = v; draw(); });
+    mode.onchange = () => { second.closest('label').hidden = mode.value === 'square'; draw(); }; draw();
+  }
+  function probability(host) {
+    host.append(node('p', 'Каждая карточка — один равновозможный исход. Нажми на подходящие исходы: доля выделенных карточек и есть вероятность события. Числа этого опыта не подставляются в ответ задачи.'));
+    const label = node('label', 'Модель исходов ', 'oca-control'), select = node('select');
+    [['ten','10 равновозможных карточек'],['dice','Два броска игральной кости']].forEach(([value,text]) => { const o=node('option',text);o.value=value;select.append(o); }); label.append(select);host.append(label);
+    const grid=node('div',undefined,'oca-outcomes'), scroll=node('div',undefined,'oca-outcome-scroll'), out=node('p',undefined,'oca-observation');out.setAttribute('aria-live','polite');scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','Исходы опыта: прокрутка влево и вправо');scroll.append(grid);host.append(scroll,node('p','Если крайние карточки не видны, прокрути карточки влево и вправо.','oca-note'),out);
+    let marked=new Set();
+    function result(){const total=select.value==='dice'?36:10;out.innerHTML='Подходит '+marked.size+' из '+total+'. P = '+fraction(marked.size,total)+'.';}
+    function draw(){marked=new Set();grid.replaceChildren();grid.classList.toggle('oca-dice',select.value==='dice');const total=select.value==='dice'?36:10;
+      for(let i=0;i<total;i++){const text=select.value==='dice'?(Math.floor(i/6)+1)+'; '+(i%6+1):String(i+1),b=action(text,()=>{marked.has(i)?marked.delete(i):marked.add(i);b.setAttribute('aria-pressed',String(marked.has(i)));result();});b.setAttribute('aria-label',select.value==='dice'?'Первый бросок '+(Math.floor(i/6)+1)+', второй '+(i%6+1):'Карточка '+text);b.setAttribute('aria-pressed','false');grid.append(b);}result();}
+    select.onchange=draw;draw();const more=details(host,'Почему при двух бросках 36 исходов?');more.append(node('p','У каждого из шести результатов первого броска есть шесть возможных результатов второго. Пары (1; 2) и (2; 1) — разные исходы. При выборе предметов без возвращения состав оставшихся предметов меняется: это другой опыт, его разбираем в шагах твоей задачи.'));close(more);
+  }
+  function formula(host) {
+    const task=safe(()=>cur);if(!task||!Array.isArray(task.letters))return;
+    host.append(node('p','Найди в последнем предложении вопрос. Нажми на букву величины, которую нужно получить. Затем найди остальные буквы в данной формуле.'));
+    const choices=node('div',undefined,'oca-choices'),fb=node('p',undefined,'oca-observation');fb.setAttribute('aria-live','polite');
+    for(const [index,letter] of task.letters.entries()){const label=node('span');label.innerHTML=letter.lab||letter.n;const b=action(letter.n+' — '+clean(label.textContent).replace(/\s*\(это ищем\)/,''),()=>{choices.dataset.ocaChoice=String(index);fb.textContent=letter.n===task.target?'Да, ищем '+task.target+'. Для остальных величин перенеси числа и единицы из условия.':letter.n+' — другая величина. Снова прочитай, что требуется найти.';});choices.append(b);}
+    host.append(choices,fb);const table=details(host,'Как аккуратно подставить числа?');table.append(node('p','Сначала выпиши обозначение, затем известное значение вместе с единицей. В одной формуле единицы должны согласовываться. Если нужная буква ещё не выражена, открой шаги решения ниже.'));close(table);
+  }
+  function sequence(host) {
+    const task=safe(()=>window.__M.task);if(task&&task.hint1)host.append(node('p',task.hint1));
+    host.append(node('p','Ниже отдельная последовательность. Меняй число членов и следи: между первым и n-м членами всегда n − 1 переходов.'));
+    const label=node('label','Тип последовательности ','oca-control'), select=node('select');
+    [['ap','Прибавляем одно число'],['gp','Умножаем на одно число']].forEach(([v,t])=>{const o=node('option',t);o.value=v;select.append(o);});select.value=task&&task.gp?'gp':'ap';label.append(select);host.append(label);
+    let n=4, start=2, delta=2;const controls=node('div');host.append(controls);const svg=svgHost(host,'Последовательность и переходы между её членами'),out=node('p',undefined,'oca-observation');host.append(out);
+    function draw(){const vals=Array.from({length:n},(_,i)=>select.value==='ap'?start+i*delta:start*Math.pow(delta,i));const min=Math.min(0,...vals),max=Math.max(1,...vals),span=max-min||1;let s='';for(let i=0;i<n;i++){const x=50+i*500/6,y=135-(vals[i]-min)/span*75;if(i){const px=50+(i-1)*500/6,py=135-(vals[i-1]-min)/span*75;s+='<path d="M'+px+' '+py+'L'+x+' '+y+'" stroke="#88a593" stroke-width="3"/>'; }s+='<circle cx="'+x+'" cy="'+y+'" r="6" fill="#216342"/><text x="'+x+'" y="'+(y-16)+'" text-anchor="middle" font-size="19">'+fmt(vals[i])+'</text><text x="'+x+'" y="172" text-anchor="middle" font-size="19">№'+(i+1)+'</text>'; }svg.innerHTML=s;out.textContent=n+' членов; '+(n-1)+' переходов. '+(select.value==='ap'?'При каждом переходе прибавляем ':'При каждом переходе умножаем на ')+fmt(delta)+'.';}
+    control(controls,'Количество членов n',1,7,n,1,v=>{n=v;draw();});control(controls,'Первый член',1,4,start,1,v=>{start=v;draw();});control(controls,'Число для каждого перехода',1,3,delta,1,v=>{delta=v;draw();});select.onchange=draw;draw();
+  }
+  function equality(host) {
+    host.append(node('p','Отдельный опыт: выполни одно действие с обеими частями равенства 3 + 2 = 5. Равенство сохранится. В своём решении указывай, какое действие выполняешь.'));
+    let add=0;const out=node('p',undefined,'oca-observation');control(host,'Прибавить к обеим частям',-5,5,0,1,v=>{add=v;draw();});host.append(out);
+    function draw(){out.textContent='(3 + 2) '+(add<0?'− '+Math.abs(add):'+ '+add)+' = 5 '+(add<0?'− '+Math.abs(add):'+ '+add)+'; обе части равны '+(5+add)+'.';}draw();
+    const more=details(host,'А что меняется у неравенства?');let factor=-1;const example=node('p',undefined,'oca-observation');control(more,'Умножить обе части 2 < 5 на число',-3,3,-1,1,v=>{factor=v;ineq();});more.append(example);
+    function ineq(){example.textContent=factor===0?'При умножении на 0 получаем 0 = 0 и теряем исходное сравнение. Так решать неравенство нельзя.':fmt(2*factor)+(factor<0?' > ':' < ')+fmt(5*factor)+(factor<0?'. Отрицательный множитель меняет знак неравенства.':'. Положительный множитель сохраняет знак.');}ineq();close(more);
+  }
+  const labs={7:['Как читать точки на прямой?',numberLine],8:['Почему так работают степени и корни?',powers],10:['Что считать подходящими исходами?',probability],12:['Какую букву здесь нужно найти?',formula],14:['Почему переходов на один меньше?',sequence],20:['Что можно делать с обеими частями?',equality]};
+  function addLab(panel) {
+    if(panel.querySelector(':scope > .oca-exploration'))return;
+    const cfg=labs[number];if(!cfg)return;
+    const holder=node('div',undefined,'oca-exploration oca-owned'),box=details(holder,cfg[0]);let built=false;
+    const build=()=>{if(!built){built=true;cfg[1](box);close(box);}};
+    labBuilders.set(holder,build);box.addEventListener('toggle',()=>{if(box.open)build();});panel.prepend(holder);
+  }
+  function addReference(panel) {
+    if(panel.querySelector(':scope > .oca-reference')||!window.OgeCourseReference)return;
+    const lineType=number===7?safe(()=>typeOf(BANK[marIdx])):'';
+    const pages=number===7&&String(lineType).includes('root')?[4]:number===8?[3,4]:[14,20,22].includes(number)?[3]:[];if(!pages.length)return;
+    const host=node('div',undefined,'oca-reference oca-owned');panel.append(host);window.OgeCourseReference.sheetCards(host,[],{pages});
+  }
+  function makeReversible(card,button) {
+    if(buttonStates.has(button)){button.disabled=false;return buttonStates.get(button).panel;}
+    const original=button.onclick;if(typeof original!=='function')return null;
+    const panel=node('section',undefined,'oca-help minimal-hint-panel oca-owned');panel.id=id();panel.hidden=true;panel.setAttribute('aria-label','Помощь к текущему заданию');button.after(panel);button.setAttribute('aria-controls',panel.id);
+    const info=node('p',number===14?'Сначала можно исследовать последовательность. Для решения этой же задачи открой шаги ниже.':'Сначала исследуй прямую, затем вернись к выбору ответа или открой шаги этой задачи.');panel.append(info);
+    let begun=false;
+    const start=action('Разобрать эту задачу по шагам',()=>{
+      if(begun)return;begun=true;
+      original.call(button);button.disabled=false;button.setAttribute('aria-expanded','true');button.textContent='Убрать подсказку';
+      const native=number===14?card.querySelector('#m-after > .minimal-hint-panel'):[...card.querySelectorAll('.minimal-hint-panel')].find(n=>n!==panel&&!n.closest('.oca-exploration'));
+      if(native)panel.insertBefore(native,back);start.disabled=true;start.textContent='Шаги решения открыты ниже';
+      if(number===14){info.textContent='Идём по шагам этой задачи. Введённый основной ответ сохранён; проверка выполняется в шагах. Панель можно закрыть и открыть снова.';}
+    });panel.append(start);const back=action('Вернуться к заданию',()=>{panel.hidden=true;button.setAttribute('aria-expanded','false');button.textContent='Хочешь подсказку?';button.focus();});panel.append(back);
+    button.onclick=()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));button.textContent=panel.hidden?'Хочешь подсказку?':'Убрать подсказку';};
+    buttonStates.set(button,{panel});return panel;
+  }
+  function helpPanel(card) {
+    if(number===7||number===14){const b=card.querySelector(number===14?'#m-solve':'button.minimal-hint');return b?makeReversible(card,b):null;}
+    return card.querySelector('.minimal-hint-panel,.minimal-help');
+  }
+  function syncHelp(card,panel) {
+    const button=(panel.id&&card.querySelector('button[aria-controls="'+panel.id+'"]'))||card.querySelector('.bs,button.minimal-hint,.minimal-hint > button');
+    if(!button)return;
+    if(!panel.id)panel.id=id();
+    const open=String(!panel.hidden),title=panel.hidden?'Хочешь подсказку?':'Убрать подсказку';
+    if(button.getAttribute('aria-controls')!==panel.id)button.setAttribute('aria-controls',panel.id);
+    if(button.getAttribute('aria-expanded')!==open)button.setAttribute('aria-expanded',open);
+    if(button.textContent!==title)button.textContent=title;
+    if(number>=20){const row=button.closest('div.minimal-hint'),notes=card.querySelector('.oca-work');if(row&&notes&&row.nextElementSibling!==notes)row.after(notes);}
+  }
+  function readableNativeModels(card,panel) {
+    if(number===7){
+      for(const wrap of card.querySelectorAll('.svgbox')){
+        const svg=wrap.querySelector('svg');if(!svg||wrap.dataset.ocaReadable)continue;
+        const view=String(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number);if(!(view[2]>0&&view[3]>0))continue;
+        wrap.dataset.ocaReadable='1';wrap.classList.add('oca-native-line');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Координатная прямая: прокрутка влево и вправо');
+        svg.style.setProperty('--oca-line-width',Math.ceil(view[2]*1.6)+'px');svg.style.setProperty('--oca-line-height',Math.ceil(view[3]*1.6)+'px');
+        wrap.after(node('p','Координатную прямую можно прокручивать влево и вправо.','oca-line-note oca-note'));
+      }
+    }
+    if(number===21&&panel){
+      const models=panel.querySelectorAll('.vizcard');
+      if(models.length&&!panel.querySelector('.oca-assisted-notice'))panel.prepend(node('p','В модели есть промежуточные результаты. Решение с этой подсказкой не считается самостоятельным.','oca-assisted-notice oca-note'));
+      for(const caption of panel.querySelectorAll('.vizsub')){const text=caption.textContent.replace(/\s*Встреча через\s+[^.]+\s+ч\./,'');if(caption.textContent!==text)caption.textContent=text;}
+      for(const caption of panel.querySelectorAll('.vcap'))if(/^Двигай ползунок к /.test(caption.textContent))caption.textContent='Двигай ползунок времени. В какой момент участники встретятся?';
+      if(!card.dataset.ocaModelListener){card.dataset.ocaModelListener='1';card.addEventListener('input',()=>readableNativeModels(card,helpPanel(card)));}
+    }
+    if(number===22&&panel){
+      for(const graph of panel.querySelectorAll('.gview')){const badge=graph.querySelector('.badge-t2');if(!badge)continue;let count=graph.querySelector('.oca-graph-count');if(!count){count=node('p',undefined,'oca-graph-count oca-observation');count.setAttribute('aria-live','polite');graph.append(count);}const text='Общих точек сейчас: '+badge.textContent+'.';if(count.textContent!==text)count.textContent=text;}
+    }
+  }
+  function inputGuidance(card) {
+    const main = number===7?'Выбери один вариант ответа под условием.':number===8?'Вычисли значение выражения и запиши его в поле ответа.':number===10?'Найди вероятность события из вопроса. Запиши число от 0 до 1 или обыкновенную дробь.':number===12?(safe(()=>cur.target)?'Найди '+cur.target+' — величину из вопроса. Единицу ответа возьми из условия.':'Найди величину, которую спрашивают в последнем предложении условия.'):number===14?'Найди величину из вопроса и запиши её в указанных единицах.':number===20?'Запиши ход решения ниже, затем введи ответ в соответствующие поля.':number===21?'Обозначь неизвестное и составь уравнение. Запиши решение ниже, затем введи найденную величину.':'Построй график и обоснуй число общих точек. В ответе укажи все подходящие значения или промежутки параметра.';
+    let p=card.querySelector('.oca-instruction');if(!p){p=node('p',main,'oca-instruction oca-owned');const anchor=statementOf(card);if(anchor)anchor.after(p);else card.prepend(p);}else if(p.textContent!==main)p.textContent=main;
+    if(!p.id)p.id=id();
+    for(const input of card.querySelectorAll('input:not([type=range]):not([type=checkbox]):not([type=radio])')){
+      if(input.closest('.oca-owned'))continue;
+      const prompt=input.closest('.step,.sstep,.step-card,.stepcard,.step-cur,.scard,.minimal-step-current')?.querySelector('.sq,.step-prompt,.stepq,.prompt,.q,.step-q,.st-q');
+      const text=clean(prompt&&prompt.textContent);
+      if(text){if(!prompt.id)prompt.id=id();input.setAttribute('aria-describedby',prompt.id);}else if(!input.hasAttribute('aria-describedby'))input.setAttribute('aria-describedby',p.id);
+    }
+  }
+  const noteKey='mathexam.oge.algebra-notes.v1';
+  const readNotes=()=>{if(shared)return {};const value=safe(()=>JSON.parse(localStorage.getItem(noteKey)||'{}'));return value&&typeof value==='object'&&!Array.isArray(value)?value:{};};
+  let memory=readNotes();
+  function hash(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619);}return(h>>>0).toString(16);}
+  function work(card,statement,key) {
+    if(number<20)return;
+    const existing=card.querySelector('.oca-work');if(existing&&existing.dataset.problem===key)return;if(existing)existing.remove();
+    const question=clean(statement.textContent),storageId=number+':'+hash(key),saved=memory[storageId]&&memory[storageId].questionKey===key?memory[storageId]:{};
+    const box=node('section',undefined,'oca-work oca-owned');box.dataset.problem=key;box.setAttribute('aria-label','Моё развёрнутое решение');
+    const label=node('label','Моё решение'),textarea=node('textarea');textarea.id=id();textarea.rows=6;textarea.maxLength=shared?6000:20000;textarea.value=saved.text||'';label.htmlFor=textarea.id;
+    const prompts=number===20?['Укажи ограничения, если есть знаменатели или корни.','Запиши преобразования по строкам и поясни используемое правило.','Проверь найденные значения в исходном условии.']:number===21?['Обозначь неизвестное и укажи его единицу.','Вырази остальные величины и составь уравнение по условию.','Реши уравнение и проверь смысл найденного значения.']:['Укажи область определения и построй каждую часть графика.','Отметь выколотые точки, вершины и другие важные точки.','Объясни, при каких значениях параметра получается нужное число общих точек.'];
+    textarea.placeholder=prompts.join('\n');const note=node('p','Здесь сохраняется твоя запись. Кнопка проверки ответа не оценивает правильность доказательства.','oca-note');const status=node('p',shared?'Запись видна участникам этой комнаты. Личный зачёт не изменяется.':saved.text?'Запись восстановлена.':'','oca-save-status');status.setAttribute('aria-live','polite');box.append(label,textarea,note);
+    const plan=details(box,'Что написать в решении?');const list=node('ol');prompts.forEach(t=>list.append(node('li',t)));plan.append(list);close(plan);
+    const check=details(box,'Проверить оформление самостоятельно');const checks=prompts.map((_,i)=>{const lab=node('label',undefined,'oca-check'),input=node('input');input.type='checkbox';input.checked=!!saved.checks?.[i];lab.append(input,node('span',['Обозначения и ограничения понятны.','Каждый переход объяснён.','Ответ проверен и соответствует вопросу.'][i]));check.append(lab);return input;});
+    const table=number===21?details(box,'Разложить данные задачи в таблицу'):null;const fields=[];
+    if(table){table.append(node('p','Впиши свои обозначения. В каждом столбце укажи, что означает число или выражение; единицы запиши рядом.'));
+      const scroll=node('div',undefined,'oca-table-scroll'),t=node('table'),head=node('tr');['Величина / участник','Что известно','Как выразить через неизвестное'].forEach(s=>head.append(node('th',s)));t.append(head);
+      for(let r=0;r<3;r++){const row=node('tr');for(let c=0;c<3;c++){const td=node('td'),input=node('input');input.type='text';input.maxLength=200;input.setAttribute('aria-label',['Величина или участник','Известное значение и единица','Выражение через неизвестное'][c]+', строка '+(r+1));input.value=saved.fields?.[r*3+c]||'';fields.push(input);td.append(input);row.append(td);}t.append(row);}scroll.append(t);table.append(scroll);close(table);}
+    function save(){if(shared){const clean=(v,max)=>v.replace(/</g,'＜').replace(/>/g,'＞').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').slice(0,max);textarea.value=clean(textarea.value,6000);fields.forEach(x=>{x.value=clean(x.value,200);});}Object.assign(memory,readNotes());memory[storageId]={question,questionKey:key,text:textarea.value,checks:checks.map(x=>x.checked),fields:fields.map(x=>x.value),updated:Date.now(),number};if(shared){status.textContent='Запись видна участникам этой комнаты. Личный зачёт не изменяется.';return;}try{localStorage.setItem(noteKey,JSON.stringify(memory));status.textContent='Запись сохранена.';}catch(_){status.textContent='Запись сохранена на этой странице. Хранилище браузера сейчас недоступно.';}}
+    textarea.addEventListener('input',save);checks.forEach(x=>x.addEventListener('change',save));fields.forEach(x=>x.addEventListener('input',save));box.append(status);
+    const archive=details(box,'Мои записи к другим задачам');archive.addEventListener('toggle',()=>{if(!archive.open)return;Object.assign(memory,readNotes());archive.querySelectorAll('.oca-saved-entry').forEach(n=>n.remove());const entries=Object.values(memory).filter(x=>x&&x.number===number&&typeof x.question==='string'&&x.questionKey!==key&&(typeof x.text==='string'&&x.text||Array.isArray(x.fields)&&x.fields.some(Boolean))).sort((a,b)=>b.updated-a.updated);if(!entries.length)archive.append(node('p','Пока других записей нет.','oca-saved-entry'));for(const entry of entries){const item=node('details',undefined,'oca-saved-entry');item.append(node('summary',entry.question.slice(0,100)+(entry.question.length>100?'…':'')),node('p',entry.question),node('pre',entry.text||'(Заполнена таблица)'));if(Array.isArray(entry.fields)&&entry.fields.some(Boolean)){const p=node('p');p.textContent=entry.fields.filter(Boolean).join(' · ');item.append(p);}archive.append(item);}});
+    if(shared)archive.hidden=true;
+    const anchor=card.querySelector('.oca-instruction')||statement;anchor.after(box);
+  }
+  function statementOf(card){let s=card.querySelector(routes[number][1]);if(s)return s;return [...card.children].find(n=>!n.classList.contains('oca-owned')&&!n.matches('details,button,.minimal-hint'))||card.firstElementChild;}
+  function enhanceCard(card){
+      const statement=statementOf(card);if(!statement)return;const key=clean(statement.innerHTML);if(!key)return;
+      const previous=cards.get(card);if(previous&&previous!==key){card.querySelectorAll('.oca-work,.oca-instruction,.oca-exploration,.oca-reference').forEach(n=>n.remove());}
+      cards.set(card,key);inputGuidance(card);work(card,statement,key);
+      const panel=helpPanel(card);if(panel){syncHelp(card,panel);addLab(panel);addReference(panel);if(!panel.querySelector(':scope > .oca-return')&&number!==7&&number!==14){const back=action('Вернуться к заданию',()=>{const toggle=card.querySelector('[aria-controls="'+panel.id+'"]')||card.querySelector('.bs,button.minimal-hint');if(toggle&&toggle.tagName==='BUTTON'){toggle.click();toggle.focus();}else{panel.hidden=true;}});back.classList.add('oca-return');panel.append(back);}}
+      readableNativeModels(card,panel);
+  }
+  function scan(){
+    scheduled=false;
+    for(const card of d.querySelectorAll(routes[number][0]))enhanceCard(card);
+    if(number>=20)d.querySelectorAll('.minimal-proof-note').forEach(n=>{const text='Проверяется ответ. Развёрнутое решение можно записать выше или в тетради.';if(n.textContent!==text)n.textContent=text;});
+  }
+// Bounded semantic state of the optional laboratories and notebook. Native
+  // task/answer/step state remains the responsibility of each trainer adapter.
+  function exactState(value,keys){
+    if(!value||typeof value!=='object'||Array.isArray(value)||![Object.prototype,null].includes(Object.getPrototypeOf(value))||Reflect.ownKeys(value).length!==keys.length)return false;
+    return keys.every(k=>{const p=Object.getOwnPropertyDescriptor(value,k);return p&&p.enumerable&&Object.prototype.hasOwnProperty.call(p,'value');});
+  }
+  function arrayState(value,max,test){
+    if(!Array.isArray(value)||Object.getPrototypeOf(value)!==Array.prototype||value.length>max||Reflect.ownKeys(value).length!==value.length+1)return false;
+    return Array.from({length:value.length},(_,i)=>{const p=Object.getOwnPropertyDescriptor(value,String(i));return p&&p.enumerable&&Object.prototype.hasOwnProperty.call(p,'value')&&test(p.value,i);}).every(Boolean);
+  }
+  const boolState=v=>typeof v==='boolean';
+  const stringState=(v,max)=>typeof v==='string'&&v.length<=max&&!/[<>\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(v);
+  const rangeLimits={7:[[-4,4,.25],[-4,4,.25]],8:[[1,4,1],[1,4,1]],10:[],12:[],14:[[1,7,1],[1,4,1],[1,3,1]],20:[[-5,5,1],[-3,3,1]]};
+  const selectValues={7:[null],8:['product','power','square'],10:['ten','dice'],12:[null],14:['ap','gp'],20:[null]};
+  function sharedCards(scope){return scope?[scope]:Array.from(d.querySelectorAll(routes[number][0]));}
+  function controls(card,build=false){
+    const lab=card.querySelector('.oca-exploration');
+    if(build&&lab)labBuilders.get(lab)?.();
+    const ref=card.querySelector('.oca-reference'),work=card.querySelector('.oca-work');
+    return {lab,labDetails:lab?Array.from(lab.querySelectorAll('details')):[],ranges:lab?Array.from(lab.querySelectorAll('input[type=range]')):[],
+      select:lab?.querySelector('select')||null,marks:lab?Array.from(lab.querySelectorAll('.oca-outcomes button')):[],
+      choices:lab?.querySelector('.oca-choices')||null,referenceDetails:ref?Array.from(ref.querySelectorAll('details')):[],
+      zoom:ref?Array.from(ref.querySelectorAll('.ocr-zoom')):[],work,textarea:work?.querySelector('textarea')||null,
+      checks:work?Array.from(work.querySelectorAll('input[type=checkbox]')):[],fields:work?Array.from(work.querySelectorAll('.oca-table-scroll input')):[],
+      workDetails:work?Array.from(work.querySelectorAll(':scope > details:not([hidden])')):[]};
+  }
+  function getState(scope){
+    const list=sharedCards(scope);if(list.length>16)throw new TypeError('Too many shared algebra cards');
+    return {version:1,task:number,cards:list.map(card=>{
+      enhanceCard(card);const c=controls(card,true);
+      return {lab:c.lab?{select:c.select?.value||null,ranges:c.ranges.map(x=>Number(x.value)),
+        marks:c.marks.flatMap((x,i)=>x.getAttribute('aria-pressed')==='true'?[i]:[]),
+        choice:c.choices?.hasAttribute('data-oca-choice')?Number(c.choices.dataset.ocaChoice):null,details:c.labDetails.map(x=>x.open)}:null,
+        reference:{details:c.referenceDetails.map(x=>x.open),zoom:c.zoom.map(x=>x.getAttribute('aria-pressed')==='true')},
+        work:c.work?{text:c.textarea.value,checks:c.checks.map(x=>x.checked),fields:c.fields.map(x=>x.value),details:c.workDetails.map(x=>x.open)}:null};
+    })};
+  }
+  function validateState(state,scope){
+    const fail=()=>{throw new TypeError('Invalid algebra workspace state');};
+    if(!exactState(state,['version','task','cards'])||state.version!==1||state.task!==number||!arrayState(state.cards,16,card=>{
+      if(!exactState(card,['lab','reference','work'])||!exactState(card.reference,['details','zoom'])||!arrayState(card.reference.details,40,boolState)||!arrayState(card.reference.zoom,20,boolState))return false;
+      if(card.lab!==null){
+        const v=card.lab,limits=rangeLimits[number];
+        if(!limits||!exactState(v,['select','ranges','marks','choice','details'])||!selectValues[number].includes(v.select)||!arrayState(v.ranges,3,(x,i)=>typeof x==='number'&&Number.isFinite(x)&&!!limits[i]&&x>=limits[i][0]&&x<=limits[i][1]&&Math.abs((x-limits[i][0])/limits[i][2]-Math.round((x-limits[i][0])/limits[i][2]))<1e-8)||v.ranges.length!==limits.length||!arrayState(v.details,8,boolState)||!arrayState(v.marks,36,(x,i)=>Number.isInteger(x)&&x>=0&&x<(v.select==='dice'?36:10)&&(i===0||x>v.marks[i-1]))||!(v.choice===null||number===12&&Number.isInteger(v.choice)&&v.choice>=0&&v.choice<12))return false;
+        if(number!==10&&v.marks.length||number!==12&&v.choice!==null)return false;
+      }
+      if(card.work!==null){const w=card.work;if(number<20||!exactState(w,['text','checks','fields','details'])||!stringState(w.text,6000)||!arrayState(w.checks,3,boolState)||w.checks.length!==3||!arrayState(w.fields,9,x=>stringState(x,200))||w.fields.length!==(number===21?9:0)||!arrayState(w.details,4,boolState))return false;}
+      return true;
+    }))fail();
+    if(scope){
+      const list=sharedCards(scope);if(list.length!==state.cards.length)fail();
+      list.forEach((card,i)=>{const v=state.cards[i],c=controls(card);
+        if(!!c.lab!==(v.lab!==null)||!!c.work!==(v.work!==null)||c.referenceDetails.length!==v.reference.details.length||c.zoom.length!==v.reference.zoom.length)fail();
+        if(c.lab&&(c.ranges.length!==v.lab.ranges.length||c.labDetails.length!==v.lab.details.length||(v.lab.choice!==null&&(!c.choices||v.lab.choice>=c.choices.children.length))))fail();
+        if(c.work&&(c.workDetails.length!==v.work.details.length||c.checks.length!==v.work.checks.length||c.fields.length!==v.work.fields.length))fail();
+      });
+    }
+    return true;
+  }
+  function applyState(state,scope){
+    validateState(state);const list=sharedCards(scope);
+    if(list.length!==state.cards.length)throw new TypeError('Algebra workspace does not match this task');
+    list.forEach(card=>{enhanceCard(card);controls(card,true);});
+    // Validate the entire destination before changing its first control.
+    list.forEach((card,i)=>validateState({version:1,task:number,cards:[state.cards[i]]},card));
+    list.forEach((card,i)=>{
+      const v=state.cards[i];let c=controls(card);
+      if(v.lab){
+        if(c.select&&c.select.value!==v.lab.select){c.select.value=v.lab.select;c.select.dispatchEvent(new Event('change',{bubbles:true}));}
+        c=controls(card);
+        c.ranges.forEach((x,j)=>{x.value=String(v.lab.ranges[j]);x.dispatchEvent(new Event('input',{bubbles:true}));});
+        c.marks.forEach((x,j)=>{if((x.getAttribute('aria-pressed')==='true')!==v.lab.marks.includes(j))x.click();});
+        if(v.lab.choice!==null)c.choices.children[v.lab.choice].click();
+        else if(c.choices){delete c.choices.dataset.ocaChoice;const feedback=c.choices.nextElementSibling;if(feedback?.classList.contains('oca-observation'))feedback.textContent='';}
+        c.labDetails.forEach((x,j)=>{x.open=v.lab.details[j];});
+      }
+      c.referenceDetails.forEach((x,j)=>{x.open=v.reference.details[j];});
+      c.zoom.forEach((x,j)=>{if((x.getAttribute('aria-pressed')==='true')!==v.reference.zoom[j])x.click();});
+      if(v.work){
+        c.textarea.value=v.work.text;c.textarea.dispatchEvent(new Event('input',{bubbles:true}));
+        c.checks.forEach((x,j)=>{x.checked=v.work.checks[j];x.dispatchEvent(new Event('change',{bubbles:true}));});
+        c.fields.forEach((x,j)=>{x.value=v.work.fields[j];x.dispatchEvent(new Event('input',{bubbles:true}));});
+        c.workDetails.forEach((x,j)=>{x.open=v.work.details[j];});
+      }
+    });
+  }
+  window.OgeCourseAlgebraShared={enhanceCard,scan,getState,validateState,applyState};
+  function schedule(){if(scheduled)return;scheduled=true;setTimeout(scan,0);}
+  const observer=new MutationObserver(schedule);observer.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','hidden']});scan();
+  d.documentElement.dataset.ogeAlgebraExperience='ready';
+})();
+
+</script>
+
+
+<script data-inline-source="/assets/oge-wayfinding.js">
+/* The board/cabinet owns navigation inside its embedded trainer. */
+(function(){
+  'use strict';
+  const nav=document.querySelector('nav.oge-wayfinding');
+  if(nav&&(window.self!==window.top||new URLSearchParams(location.search).get('board')==='1'))nav.hidden=true;
+})();
+
+</script>
+</body>
+</html>

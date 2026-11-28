@@ -1,10 +1,10 @@
 point,chapter,printed_page,source_title,unit,lesson,practice_type,proof_argument
-1,1,5,"Точки, прямые, отрезки",segments,atlas/segments.html,segment,segment
-2,1,7,Провешивание прямой на местности,segments,atlas/segments.html,segment,segment
-3,1,9,Луч,angles,atlas/angles.html,angle,angles
-4,1,10,Угол,angles,atlas/angles.html,angle,angles
-5,1,11,Равенство геометрических фигур,equality,atlas/equality.html,compare,segment
-6,1,12,Сравнение отрезков и углов,equality,atlas/equality.html,compare,segment
+1,1,5,"Точки, прямые, отрезки",segments,atlas/segments.html,segment,line-uniqueness
+2,1,7,Провешивание прямой на местности,segments,atlas/segments.html,segment,line-uniqueness
+3,1,9,Луч,angles,atlas/angles.html,angle,angle-name
+4,1,10,Угол,angles,atlas/angles.html,angle,angle-name
+5,1,11,Равенство геометрических фигур,equality,atlas/equality.html,compare,rigid-equality
+6,1,12,Сравнение отрезков и углов,equality,atlas/equality.html,compare,rigid-equality
 7,1,14,Длина отрезка,length,atlas/length.html,length,segment
 8,1,16,Единицы измерения. Измерительные инструменты,length,atlas/length.html,length,segment
 9,1,19,Градусная мера угла,measure-angle,atlas/measure-angle.html,angle-sum,angles
@@ -74,9 +74,9 @@ point,chapter,printed_page,source_title,unit,lesson,practice_type,proof_argument
 73,8,176,Подобие в измерительных работах на местности,similarity-measure,atlas/similarity-measure.html,shadow,shadow
 74,8,181,"Синус, косинус и тангенс острого угла",trig-right,atlas/trig-right.html,trig,trig
 75,8,182,"Значения синуса, косинуса и тангенса углов 30°, 45°, 60°",trig-right,atlas/trig-right.html,trig,trig
-76,9,189,Взаимное расположение прямой и окружности,circle-position,atlas/circle-position.html,circle-position,tangent
-77,9,191,Взаимное расположение двух окружностей,circle-position,atlas/circle-position.html,circle-position,tangent
-78,9,195,Общие касательные к двум окружностям,circle-position,atlas/circle-position.html,circle-position,tangent
+76,9,189,Взаимное расположение прямой и окружности,circle-position,atlas/circle-position.html,circle-position,circles-intersection
+77,9,191,Взаимное расположение двух окружностей,circle-position,atlas/circle-position.html,circle-position,circles-intersection
+78,9,195,Общие касательные к двум окружностям,circle-position,atlas/circle-position.html,circle-position,circles-intersection
 79,9,199,Градусная мера дуги окружности,inscribed,atlas/inscribed.html,inscribed,inscribed
 80,9,201,Теорема о вписанном угле,inscribed,atlas/inscribed.html,inscribed,inscribed
 81,9,202,"Углы между хордами, касательными и секущими",chord-angles,atlas/chord-angles.html,chord-angle,chords
@@ -91,8 +91,8 @@ point,chapter,printed_page,source_title,unit,lesson,practice_type,proof_argument
 90,10,233,Вычитание векторов,vector-add,atlas/vector-add.html,vector-add,vector-sum
 91,10,237,Умножение вектора на число,vector-scale,atlas/vector-scale.html,vector-scale,vector-midline
 92,10,239,Применение векторов к решению задач,vector-scale,atlas/vector-scale.html,vector-scale,vector-midline
-93,11,246,Разложение вектора по двум неколлинеарным векторам,vector-basis,atlas/vector-basis.html,basis,vectors
-94,11,248,Координаты вектора,vector-basis,atlas/vector-basis.html,basis,vectors
+93,11,246,Разложение вектора по двум неколлинеарным векторам,vector-basis,atlas/vector-basis.html,basis,basis-unique
+94,11,248,Координаты вектора,vector-basis,atlas/vector-basis.html,basis,basis-unique
 95,11,252,Вектор и координаты его начала и конца,coordinates,atlas/coordinates.html,coordinates,coordinate-midpoint
 96,11,254,Простейшие задачи в координатах,coordinates,atlas/coordinates.html,coordinates,coordinate-midpoint
 97,11,260,Уравнение линии на плоскости,line-circle-equations,atlas/line-circle-equations.html,circle-equation,equation-locus
@@ -105,8 +105,8 @@ point,chapter,printed_page,source_title,unit,lesson,practice_type,proof_argument
 104,12,276,Площадь треугольника через синус угла,area-sine,atlas/area-sine.html,area-sine,area-sine
 105,12,277,Теорема синусов,sine-rule,atlas/sine-rule.html,sine-rule,sine-rule
 106,12,278,Теорема косинусов,cosine-rule,atlas/cosine-rule.html,cosine-rule,cosine-rule
-107,12,278,Решение треугольников,solve-triangle,atlas/solve-triangle.html,solve-triangle,shadow
-108,12,280,Измерительные работы на местности,solve-triangle,atlas/solve-triangle.html,solve-triangle,shadow
+107,12,278,Решение треугольников,solve-triangle,atlas/solve-triangle.html,solve-triangle,triangle-solvability
+108,12,280,Измерительные работы на местности,solve-triangle,atlas/solve-triangle.html,solve-triangle,triangle-solvability
 109,12,283,Угол между векторами,dot-product,atlas/dot-product.html,dot,dot
 110,12,284,Скалярное произведение векторов,dot-product,atlas/dot-product.html,dot,dot
 111,12,285,Скалярное произведение в координатах,dot-product,atlas/dot-product.html,dot,dot
@@ -128,9 +128,9 @@ point,chapter,printed_page,source_title,unit,lesson,practice_type,proof_argument
 127,14,323,Понятие симметрии фигур,symmetry-method,atlas/symmetry-method.html,reflection-path,reflection-path
 128,14,324,Практические приложения симметрии,symmetry-method,atlas/symmetry-method.html,reflection-path,reflection-path
 129,14,326,Применение движений к решению задач,symmetry-method,atlas/symmetry-method.html,reflection-path,reflection-path
-130,15,332,Представление о подобных фигурах,polygon-similarity,atlas/polygon-similarity.html,scale-area,similarity
-131,15,333,Подобные многоугольники,polygon-similarity,atlas/polygon-similarity.html,scale-area,similarity
-132,15,336,Периметры и площади подобных многоугольников,polygon-similarity,atlas/polygon-similarity.html,scale-area,similarity
+130,15,332,Представление о подобных фигурах,polygon-similarity,atlas/polygon-similarity.html,scale-area,polygon-scale
+131,15,333,Подобные многоугольники,polygon-similarity,atlas/polygon-similarity.html,scale-area,polygon-scale
+132,15,336,Периметры и площади подобных многоугольников,polygon-similarity,atlas/polygon-similarity.html,scale-area,polygon-scale
 133,15,340,Гомотетия,homothety,atlas/homothety.html,homothety,homothety
 134,15,341,Свойства гомотетии,homothety,atlas/homothety.html,homothety,homothety
 135,15,342,Подобие произвольных фигур,homothety,atlas/homothety.html,homothety,homothety

@@ -23,9 +23,19 @@
     return path?'#public-practice='+encodeURIComponent(path)+'&return='+encodeURIComponent(returnRoute(back)):'';
   }
   const launches='[data-program-course="sections-from-zero"] a[data-program-open],a[data-plan-course-open],a[data-plan-course-practice],a[data-plan-course-board],a[data-focus-practice],a[data-attached-course-open],a[data-attached-course-board],a[data-lesson-practice],.prep-task .actions a[href]';
+  const profileLaunches=['a[data-profile-exam-start]','a[data-profile-vector-basics]','a[data-profile-full-course]',
+    '[data-profile-second-part] a[href]','[data-profile-extra-topics] a[href]'].map(value=>'[data-profile-course] '+value).join(',');
+  function openProfilePractice(event){
+    if(event.defaultPrevented||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+    const link=event.target.closest?.(profileLaunches);
+    if(!link||!publicPath(link.href).startsWith('/ege-profil/'))return;
+    const next=href(link.href);
+    event.preventDefault();
+    root.location.hash=next;
+  }
   function enhance(host){
     for(const link of host.querySelectorAll(launches)){
-      if(link.closest('[data-public-workspace], [data-peterson-workspace]'))continue;
+      if(link.hasAttribute('data-personal-study-tab')||link.closest('[data-public-workspace], [data-peterson-workspace]'))continue;
       const raw=link.getAttribute('href');
       if(!raw.startsWith(publicOrigin+'/'))continue;
       const next=href(raw);
@@ -40,7 +50,8 @@
     enhance(host);
     const observer=new MutationObserver(()=>enhance(host));
     observer.observe(host,{childList:true,subtree:true});
-    return ()=>observer.disconnect();
+    host.addEventListener('click',openProfilePractice);
+    return ()=>{observer.disconnect();host.removeEventListener('click',openProfilePractice);};
   }
   function mount(host,route){
     const params=new URLSearchParams(route),path=publicPath(params.get('public-practice')||'');
@@ -53,8 +64,19 @@
       host.innerHTML='<section class="empty"><h1>Не удалось открыть тренажёр</h1><p>Вернись в кабинет и выбери задание ещё раз.</p><a class="button primary" href="'+E(back)+'">← В кабинет</a></section>';
       return ()=>{};
     }
-    const title=path.startsWith('/trainers/trainer-board.html')?'Общая доска':'Тренажёр';
-    host.innerHTML=`<section class="public-practice-workspace" data-public-workspace><header class="public-practice-toolbar"><a class="button primary" data-cabinet-return href="${E(back)}">← В кабинет</a><h1>${title}</h1><details><summary>О результатах</summary><p>Это отдельная практика. Она не добавляет выполненное домашнее задание в отчёт кабинета. Уже сохранённые работы кабинета остаются на месте.<br><a class="button" data-public-home-return href="${publicOrigin}/" target="_self">← На главную</a></p></details></header><div class="public-practice-stage"><p class="public-practice-loading" role="status">Открываем задание… Кнопка «В кабинет» всегда сверху.</p></div></section>`;
+    const profile=path.startsWith('/ege-profil/');
+    const title=profile?'Профильный ЕГЭ':path.startsWith('/trainers/trainer-board.html')?'Общая доска':'Тренажёр';
+    const homepage=`<a class="button" data-public-home-return href="${publicOrigin}/" target="_self">← На главную</a>`;
+    const resultNote=profile?'Профильные решения сохраняются в этом браузере. Выданные преподавателем задания выполняются в кабинете.':
+      'Это отдельная практика. Она не добавляет выполненное домашнее задание в отчёт кабинета. Уже сохранённые работы кабинета остаются на месте.';
+    host.innerHTML=`<section class="public-practice-workspace${profile?' profile-practice-workspace':''}" data-public-workspace>
+      <header class="public-practice-toolbar${profile?' profile-practice-toolbar':''}">
+        <a class="button primary" data-cabinet-return href="${E(back)}">← В кабинет</a>
+        <h1>${title}</h1>${profile?homepage:''}
+        <details><summary>О результатах</summary><p>${resultNote}${profile?'':'<br>'+homepage}</p></details>
+      </header>
+      <div class="public-practice-stage"><p class="public-practice-loading" role="status">Открываем задание… Кнопка «В кабинет» всегда сверху.</p></div>
+    </section>`;
     const frame=document.createElement('iframe');
     frame.title=title;
     frame.referrerPolicy='no-referrer';

@@ -147,7 +147,10 @@ async function main() {
       await page.evaluate(()=>localStorage.clear());
       await page.reload();
       await page.screenshot({path:path.join(artifacts,'01-question-mobile.png'),fullPage:true});
-      await page.locator('#hintToggle').click();
+      // The SVG comparison checks restored geometry with the pointer outside the model.
+      await page.mouse.move(0,0);
+      const hintToggle=page.locator('#hintToggle');
+      await hintToggle.press('Enter');
       const slider = page.locator('#visualHost input[type=range]').last();
       assert(await slider.count(),'Rhombus offers an experiment');
       const value = await slider.inputValue();
@@ -165,7 +168,7 @@ async function main() {
       const modelState=(await savedState(page)).current.modelState;
       assert.equal(modelState.measured,true,'Deliberate measurement is persisted');
       assert(Object.keys(modelState.params).length>0,'Editable parameters are persisted');
-      await page.locator('#hintToggle').click();await page.locator('#hintToggle').click();
+      await hintToggle.press('Enter');await hintToggle.press('Enter');
       assert.equal(await slider.inputValue(),changedValue,'Closing a hint keeps the chosen parameter');
       assert.equal(await readout(page).innerText(),measuredText,'Closing a hint keeps its measurement');
       await page.reload();

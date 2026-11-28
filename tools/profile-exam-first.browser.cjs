@@ -12,6 +12,7 @@ const lessons = ['geometry', 'algebra', 'stereo', 'probability', 'equations', 'f
   .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
 const byId = new Map(lessons.map(lesson => [lesson.id, lesson]));
 const { exams } = require('../ege-profil/start/calm-data.js');
+const currentEntries=['geo-right','vec-coordinates','stereo-box','prob-count','prob-independent','eq-linear','expr-powers','calc-tangent','applied-formula','applied-work','fn-line','calc-extreme'];
 const vectorStarters = require('../ege-profil/start/vector-basics-data.js');
 const entries = ['geo-right', 'vec-coordinates', 'stereo-box', 'prob-count', 'prob-independent',
   'prob-distribution', 'eq-linear', 'expr-powers', 'calc-tangent', 'applied-formula', 'applied-work', 'fn-line', 'applied-percent'];
@@ -66,12 +67,12 @@ async function accept(page, value) {
       return { context, page };
     }
     async function catalog(page, hash = '#calm') {
-      await page.goto(base + hash); await page.locator('[data-calm-exam="13"]').waitFor();
-      assert.equal(await page.locator('[data-calm-exam]').count(), 13);
-      const expected = entries.map(id => '#practice/' + id + '/independent');
+      await page.goto(base + hash); await page.locator('[data-calm-exam="12"]').waitFor();
+      assert.equal(await page.locator('[data-calm-exam]').count(), 12);
+      const expected = currentEntries.map(id => '#practice/' + id + '/independent');
       if (!(await saved(page))?.sessions['vec-coordinates:independent']?.wrong) expected[1] = '#practice/vec-basics-reading/guided';
       assert.deepEqual(await page.locator('[data-exam-start]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))), expected);
-      assert.deepEqual(await page.locator('.second-part-grid [data-course-extra]').evaluateAll(nodes => nodes.map(node => Number(node.dataset.courseExtra))), [14, 15, 16, 17, 18, 19, 20], 'All seven second-part lines are represented');
+      assert.deepEqual(await page.locator('.second-part-grid [data-course-extra]').evaluateAll(nodes => nodes.map(node => Number(node.dataset.courseExtra))), [13, 14, 15, 16, 17, 18, 19], 'All seven second-part lines are represented');
       assert.equal(await page.locator('.journey-tabs a[href="#calm/first"]').count(), 1);
       assert.equal(await page.locator('.journey-tabs a[href="#calm/second"]').count(), 1);
       assert.equal(await page.locator('.journey-tabs a[href="#readiness"]').count(), 1, 'Foundation remains an optional navigation choice');
@@ -90,7 +91,7 @@ async function accept(page, value) {
     await noOverflow(page, 'second-part tab');
     await page.locator('.journey-tabs a[href="#calm/first"]').click();
     await page.locator('.journey-tabs a[href="#calm/first"][aria-current="page"]').waitFor();
-    assert.equal(await page.locator('[data-calm-exam]').count(), 13);
+    assert.equal(await page.locator('[data-calm-exam]').count(), 12);
     assert.equal(await page.locator('.second-part-grid [data-course-extra]').count(), 0, 'First-part tab focuses its own map');
     assert.equal(await page.evaluate(key => localStorage.getItem(key), KEY), beforeTabs, 'Changing map tabs neither opens tasks nor alters learning evidence');
     await catalog(page);
@@ -106,7 +107,11 @@ async function accept(page, value) {
         await noOverflow(page, 'desktop vector entrance');
         assert.equal(await page.locator('[data-vector-exam-practice]').count(), 0);
         await page.goto(base + '#practice/vec-coordinates/independent');
-      } else await page.locator('[data-exam-start="' + (index + 1) + '"]').click();
+      } else {
+        // Legacy routes still choose the same original entry lesson.
+        await page.goto(base+'#calm/'+(index+1));
+        await page.locator('.lesson-head [data-exam-start]').click();
+      }
       await practice(page);
       assert.equal(new URL(page.url()).hash, '#practice/' + id + '/independent');
       const before = await session(page, id), lesson = byId.get(id), task = lesson.tasks.find(task => task.id === before.taskId);
@@ -124,7 +129,7 @@ async function accept(page, value) {
       assert.equal(await page.locator('#difficulty-help').isVisible(), true);
       assert.equal(new URL(page.url()).hash, '#practice/' + id + '/independent', 'A mistake offers help without forcing navigation');
       const links = await page.locator('#difficulty-help .prerequisite-link').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')));
-      assert.deepEqual(links, expectedHelp[index].map(id => '#lesson/' + id), 'Targeted help for exam position ' + (index + 1));
+      assert.deepEqual(links, expectedHelp[index].map(id => '#lesson/' + id), 'Targeted help for legacy group ' + (index + 1));
       for (const link of links) assert(byId.has(link.replace('#lesson/', '')), 'No dead prerequisite link');
       assert.equal(await page.locator('#difficulty-help a[href*=grade7]').count(), 0);
       assert.equal((await record(page, id)).independent.length, 0);
@@ -134,7 +139,7 @@ async function accept(page, value) {
 
     const vectors = await learner(320), vectorPage = vectors.page;
     await vectorPage.goto(origin + '/ege-profil/');
-    await vectorPage.getByRole('link', { name: /^2\. Векторы с нуля/ }).click();
+    await vectorPage.getByRole('link', { name: /^2\. Векторы/ }).click();
     const vectorEntry = vectorPage.locator('[data-vector-basics-entry]');
     await vectorEntry.waitFor();
     assert.equal(await vectorEntry.getByRole('link', { name: 'Начать с основ' }).count(), 1);
@@ -222,7 +227,7 @@ async function accept(page, value) {
 
     // Trigonometry is reached from its actual exam type, never a compulsory
     // preliminary course. Its additional prerequisite keeps the exam return link.
-    await catalog(pupil); await pupil.locator('a[href="#calm/8"]').click();
+    await catalog(pupil); await pupil.locator('a[href="#fipi/2027/7"]').click();
     await pupil.locator('a[href="#practice/algebra-cosine/independent"]').click(); await practice(pupil);
     await answer(pupil, '7/9'); const trig = await session(pupil, 'algebra-cosine');
     assert.deepEqual(await pupil.locator('#difficulty-help .prerequisite-link').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))), ['#lesson/trig-coordinates', '#lesson/bridge-roots']);
@@ -251,6 +256,6 @@ async function accept(page, value) {
     await noOverflow(pupil, 'guided return');
     await mobile.context.close();
     assert.deepEqual(errors, []); assert.deepEqual(requests, []);
-    console.log('PROFILE_EXAM_FIRST_BROWSER_OK: 13 entries, all 27 guided vector basics before exam practice, seven second-part lines, targeted repairs and preserved drafts; desktop/mobile');
+    console.log('PROFILE_EXAM_FIRST_BROWSER_OK: 12 official entries, 13 compatible legacy groups, all 27 guided vector basics before exam practice, seven second-part lines, targeted repairs and preserved drafts; desktop/mobile');
   } finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); }
 })().catch(error => { console.error(error.stack || error); process.exitCode = 1; });

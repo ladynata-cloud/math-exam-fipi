@@ -3,6 +3,10 @@ on:
   pull_request:
     paths:
       - 'school/peterson5/**'
+      - 'trainers/peterson5.html'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker.js'
+      - 'tools/build-peterson5-animations.py'
       - '.github/workflows/peterson5-quality.yml'
       - 'docs/tasks/PETERSON5_TEXTBOOK_COURSE.md'
       - 'courses/index.html'
@@ -12,6 +16,10 @@ on:
     branches: [main]
     paths:
       - 'school/peterson5/**'
+      - 'trainers/peterson5.html'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker.js'
+      - 'tools/build-peterson5-animations.py'
       - '.github/workflows/peterson5-quality.yml'
 permissions:
   contents: read
@@ -28,8 +36,16 @@ jobs:
           node --check school/peterson5/app.js
           node --check school/peterson5/math.js
           node --check school/peterson5/models.js
+          node --check school/peterson5/workshop.js
+          node --check school/peterson5/board-runtime.js
+          node school/peterson5/test-board-session.cjs
           node school/peterson5/build.cjs --check
+          node school/peterson5/build-workshop.cjs --check
           node school/peterson5/test-math.cjs
+      - name: Validate exact mathematical animation assets
+        run: |
+          python3 -m pip install Pillow==13.0.0
+          python3 tools/build-peterson5-animations.py --check
       - name: Install in-memory DOM
         run: npm install --prefix "$RUNNER_TEMP/peterson5-qa" --no-audit --no-fund jsdom@26.1.0
       - name: Saved work and all course journeys
@@ -37,7 +53,58 @@ jobs:
           export NODE_PATH="$RUNNER_TEMP/peterson5-qa/node_modules"
           node school/peterson5/test-runtime.cjs
           node school/peterson5/test-course.cjs
+          node school/peterson5/test-workshop.cjs
+          node school/peterson5/test-board-runtime.cjs
       - name: Sitemap and patch whitespace
         run: |
           python3 tools/build-sitemap.py --check
           git diff --check
+  workshop-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install isolated Chromium tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/peterson5-browser" --no-audit --no-fund playwright@1.62.1
+          "$RUNNER_TEMP/peterson5-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Real learner journeys, multiple tabs and responsive layouts
+        env:
+          NODE_PATH: ${{ runner.temp }}/peterson5-browser/node_modules
+        run: node school/peterson5/test-workshop-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: peterson5-workshop-visuals
+          path: artifacts/peterson5-workshop
+          if-no-files-found: error
+          retention-days: 14
+
+  shared-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install locked server and browser
+        run: |
+          npm --prefix board-server ci --include=optional
+          npm install --prefix "$RUNNER_TEMP/peterson5-board" --no-audit --no-fund playwright@1.62.1
+          "$RUNNER_TEMP/peterson5-board/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Two participants, shared tasks and handwriting
+        env:
+          NODE_PATH: ${{ runner.temp }}/peterson5-board/node_modules
+          PETERSON5_BOARD_SHOTS: artifacts/peterson5-board
+        run: node school/peterson5/test-peterson5-board.browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: peterson5-board-visuals
+          path: artifacts/peterson5-board
+          if-no-files-found: warn
+          retention-days: 14

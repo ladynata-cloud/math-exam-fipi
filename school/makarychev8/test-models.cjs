@@ -71,3 +71,22 @@ test('scientific notation mantissa and exponent reconstruct large and small numb
     assert.ok(Math.abs(s.mantissa * Math.pow(10, s.exponent) / value - 1) < 1e-12);
   }
 });
+
+test('rational root sets accept a plus-minus pair and reject malformed lists', () => {
+  const {check}=require('./check.js');
+  const roots=answer=>({kind:'set',answer});
+  for(const input of ['±0,7','+/-7/10','{± 0.7}'])assert(check(input,roots('-0.7;0.7')),input);
+  assert(check('±0',roots('0')));
+  assert(check('0;±3',roots('-3;0;3')));
+  assert(!check('±3',roots('-2;6')));
+  for(const input of ['−6;;6','{−6;6;}','–6;6','—6;6','- 6;6'])assert(check(input,roots('-6;6')),input);
+  for(const input of ['±','±1/0','{−6};{6}','±6;6',';;'])
+    assert(!check(input,roots('-6;6')),input);
+  assert(!check('1 1;13',roots('11;13')));
+  assert(check('±1 1/3',roots('−4/3;4/3')));
+  assert(!check('±√1 01',roots('−√101;√101')));
+  assert(!check('√1 01;√102',roots('√101;√102')));
+  assert(!check('1 1/3;5',roots('11/3;5')));
+  assert(check('1 1/3;5',roots('4/3;5')));
+  assert(!check('±6',{kind:'number',answer:'6'}));
+});

@@ -65,14 +65,15 @@
       ['', 'good', 'bad'].includes(value.feedbackKind) && ['helpOpen', 'modelOpen', 'stepsOpen', 'whyOpen', 'noteOpen'].every(key => typeof value[key] === 'boolean') &&
       (value.model === null || plain(value.model) && JSON.stringify(value.model).length <= 16000);
   }
+  const roundVersionValid = (value, id) => value.roundVersion === undefined || id === 'round' && value.roundVersion === 2;
   function lessonValid(value, id) {
-    if (!plain(value) || !integer(value.seed) || !integer(value.stage, 4) || !integer(value.step, 20) || !integer(value.independent) || !integer(value.guided) ||
+    if (!plain(value) || !roundVersionValid(value, id) || !integer(value.seed) || !integer(value.stage, 4) || !integer(value.step, 20) || !integer(value.independent) || !integer(value.guided) ||
       !string(value.note) || !string(value.draft) || typeof value.help !== 'boolean' || typeof value.attempted !== 'boolean' ||
       !Array.isArray(value.checks) || value.checks.length > 100 || value.done !== undefined && typeof value.done !== 'boolean' || !taskFirstValid(value.taskFirst)) return false;
     try {
       // The writer keeps done/checks when a pupil edits the input after success.
       // This editable draft is not the historical answer that earned the count.
-      const task = root.PathData.task(id, value.seed);
+      const task = value.roundVersion === 2 ? root.PathData.roundPractice(value.seed) : root.PathData.task(id, value.seed);
       return value.step <= task.steps.length;
     } catch (error) { return false; }
   }
@@ -98,14 +99,14 @@
     const known = id => { if (!knownIds.has(id)) unverified = true; return typeof id === 'string'; };
     // path/app.js loads the complete document or rejects it. A readable EGE
     // row alone cannot promise resume if a sibling would make that loader fail.
-    const lessonShape = row => plain(row) && integer(row.seed) && integer(row.stage, 4) && integer(row.step, 20) &&
+    const lessonShape = (row, id) => plain(row) && roundVersionValid(row, id) && integer(row.seed) && integer(row.stage, 4) && integer(row.step, 20) &&
       integer(row.independent) && integer(row.guided) && string(row.note) && string(row.draft) && typeof row.help === 'boolean' &&
       typeof row.attempted === 'boolean' && Array.isArray(row.checks) && taskFirstValid(row.taskFirst);
     const runShape = run => plain(run) && ['exam', 'diagnostic'].includes(run.kind) && Array.isArray(run.ids) && run.ids.length === 21 &&
       run.ids.every(known) && Array.isArray(run.answers) && run.answers.length <= 21 && run.answers.every(answer => plain(answer) &&
         known(answer.id) && integer(answer.seed) && typeof answer.value === 'string' && answer.value.length < 10000 && typeof answer.correct === 'boolean') &&
       integer(run.seed) && integer(run.i, 21) && Number.isFinite(run.start) && (run.draft === undefined || string(run.draft));
-    if (!Object.entries(value.lessons).every(([id, row]) => known(id) && lessonShape(row)) || !value.runs.every(runShape) || value.active && !runShape(value.active)) return 'rejected';
+    if (!Object.entries(value.lessons).every(([id, row]) => known(id) && lessonShape(row, id)) || !value.runs.every(runShape) || value.active && !runShape(value.active)) return 'rejected';
     // The lightweight home catalog intentionally excludes other school courses.
     // Their readable records remain visible through EGE projection, but without
     // the full catalog we cannot establish that every foreign ID is supported.
@@ -207,19 +208,32 @@
     Object.assign(exam, counts(checkItems), { items: checkItems, groups: [], status: checksUnknown ? 'unreadable' : path.status,
       completed: checksUnknown ? null : checkItems.filter(item => item.completed).length, completionTotal: 2 });
     const canResume = compatibility === 'compatible' && ['saved', 'empty'].includes(path.status);
-    const recovery = line => ({ href: line.href, label: 'Посмотреть доступные результаты', title: line.title,
-      reason: 'Часть сохранения недоступна для проверки. Точное продолжение сейчас не гарантировано; читаемые результаты остаются на карте.', kind: 'recovery' });
-    if (!canResume) for (const line of lines) for (const item of line.items) if (item.source === 'path') item.resume = false;
+    function recovery(line) {
+      const lessons = line.id === 'm07' ? [] : line.groups[0].items;
+      const known = lessons.find(item => item.resume) || lessons.find(item => item.started === true);
+      const item = known || lessons[0];
+      if (!item) return { href: '/ege-baza/index.html#map', label: 'Выбрать задание', title: line.title,
+        reason: 'Выбери номер ЕГЭ для тренировки.', kind: 'recovery', resultsHref: line.href };
+      const previous = known ? rows[item.id].seed : null;
+      return { title: item.title, href: '/ege-baza/path/index.html?practice=recovery#practice=' + item.id +
+          (integer(previous) ? '&previous=' + previous : ''), label: 'Открыть отдельный пример',
+        reason: known ? 'Тема известна, но точный шаг восстановить не удалось. Можно решить другой пример по этой теме.' :
+          'Выбери эту задачу для тренировки или открой все номера ЕГЭ.',
+        resultsHref: line.href, kind: 'recovery' };
+    }
+    // Use only the lesson identity from a readable row. Its old draft is never presented as resumable.
+    const unfinishedLine = !canResume && lines.slice(0, 6).find(line => line.groups[0].items.some(item => item.resume));
     for (const line of lines) {
+      const alternative = !canResume && recovery(line);
+      if (!canResume) for (const item of line.items) if (item.source === 'path') item.resume = false;
       const legacyCheck = legacy[line.id]?.checks[0];
       const pending = line.items.find(item => item.resume), review = line.items.find(item => item.status === 'need-review');
       const untouched = line.items.find(item => item.source === 'path' && item.status === 'unstarted');
       const practice = line.items.find(item => item.source === 'path' && item.independent === false && item.status !== 'unknown');
       line.next = legacyCheck || (pending ? action(pending, 'resume', 'Сохранены незавершённая работа или ответы. Продолжение сохранит текущее условие.') :
         review ? action(review, 'review', 'В повторной проверке возникли затруднения. Вернитесь к этому навыку.', 'Повторить навык') :
-        !canResume ? recovery(line) :
-        untouched || practice ? action(untouched || practice, 'learn', 'Следующая доступная тема этой учебной линии.') :
-        { href: line.href, label: 'Выбрать тему', title: line.title, reason: 'Выберите тему для нового самостоятельного решения.', kind: 'choose' });
+        alternative || (untouched || practice ? action(untouched || practice, 'learn', 'Следующая доступная тема этой учебной линии.') :
+        { href: line.href, label: 'Выбрать тему', title: line.title, reason: 'Выберите тему для нового самостоятельного решения.', kind: 'choose' }));
     }
     const activeCheck = active && !checksUnknown && canResume ? { href: checkHref(active.kind), label: 'Продолжить проверку',
       title: active.kind === 'exam' ? 'Пробная работа' : 'Стартовая диагностика', reason: 'Сохранена незавершённая проверка: ' + active.i + ' из 21 ответов.', kind: 'resume-check' } : null;
@@ -227,8 +241,7 @@
     const pendingLine = lines.find(line => line.next.kind === 'resume');
     const reviewLine = lines.find(line => line.next.kind === 'review');
     const learnedLine = lines.slice(0, 6).find(line => line.items.some(item => item.started === true));
-    const recommendation = activeCheck || oldCheck || pendingLine?.next || reviewLine?.next || learnedLine?.next ||
-      (!canResume ? recovery(lines[0]) : lines[0].next);
+    const recommendation = activeCheck || oldCheck || pendingLine?.next || reviewLine?.next || unfinishedLine?.next || learnedLine?.next || lines[0].next;
     return { status: sourceStatus(Object.values(sources).map(value => value.status)), lines, recommendation,
       sources: Object.fromEntries(Object.entries(sources).map(([key, value]) => [key, { status: value.status,
         ...(key === 'path' ? { resumeCompatible: canResume, resumeStatus: compatibility === 'compatible' && !canResume ? 'unverified' : compatibility } : {}) }])),

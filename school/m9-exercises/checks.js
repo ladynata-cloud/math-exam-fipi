@@ -5,8 +5,16 @@
 function number(source){
  function fraction(n,d){if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d)||!d)return null;let a=Math.abs(n),b=Math.abs(d);while(b){const t=a%b;a=b;b=t;}return {n:n/a*(d<0?-1:1),d:Math.abs(d)/a};}
  function calc(a,b,op){if(!a||!b)return null;return op==='+'?fraction(a.n*b.d+b.n*a.d,a.d*b.d):op==='-'?fraction(a.n*b.d-b.n*a.d,a.d*b.d):op==='*'?fraction(a.n*b.n,a.d*b.d):fraction(a.n*b.d,a.d*b.n);}
- const s=String(source).replace(/−/g,'-').replace(/,/g,'.').replace(/\s/g,'').replace(/π/g,'pi').replace(/√/g,'sqrt');
- if(!s||s.length>160)throw Error('Введите число.');
+ const input=String(source).trim().replace(/−/g,'-').replace(/,/g,'.');
+ if(!input||input.length>160)throw Error('Введите число.');
+ // Keep a leading minus outside the whole mixed numeral, including in expressions.
+ const written=input.replace(/\b(\d+)\s+(\d+)\s*\/\s*(\d+)\b/g,(_,whole,n,d)=>{
+  if(BigInt(d)===0n)throw Error('На нуль делить нельзя.');
+  if(BigInt(n)>=BigInt(d))throw Error('В смешанном числе числитель должен быть меньше знаменателя.');
+  return '('+whole+'+'+n+'/'+d+')';
+ });
+ if(/\d\s+\d/.test(written))throw Error('Уточните запись числа: между цифрами можно отделить целую часть от дроби.');
+ const s=written.replace(/\s/g,'').replace(/π/g,'pi').replace(/√/g,'sqrt');
  const periodic=s.match(/^([+-]?)(\d*)\.(\d*)\((\d{1,12})\)$/);
  if(periodic){const [,sign,a,b,c]=periodic,p=10**b.length,q=10**c.length-1;return {value:(sign==='-'?-1:1)*(Number(a||0)+Number(b||0)/p+Number(c)/(p*q)),rational:true,fraction:fraction((sign==='-'?-1:1)*((Number(a||0)*p+Number(b||0))*q+Number(c)),p*q)};}
  let i=0,operations=0;
@@ -19,8 +27,21 @@ function number(source){
 }
  const close=(a,b,t=1e-10)=>Math.abs(a-b)<=t*Math.max(1e-10,Math.abs(b));
 function values(s){return String(s).split(';').map(x=>number(x.trim()));}
+// Keep all digits when the requested answer is an exact repeating decimal.
+function periodicFraction(raw){
+ const text=String(raw??'').trim().replace(/−/g,'-');
+ if(text.length>160)return null;
+ const match=/^([+-]?)(\d*)[.,](\d*)\s*\((\d+)\)$/.exec(text);
+ if(!match)return null;
+ const [,sign,whole,prefix,period]=match;
+ const cycle=10n**BigInt(period.length)-1n;
+ const denominator=10n**BigInt(prefix.length)*cycle;
+ const numerator=BigInt(whole||0)*denominator+BigInt(prefix||0)*cycle+BigInt(period);
+ return {numerator:sign==='-'?-numerator:numerator,denominator};
+}
 function formatIssue(step,raw){
  const type=step.rule.type;
+ if(type==='period')return periodicFraction(raw)?'':'Запишите десятичную дробь. После запятой заключите повторяющиеся цифры в скобки, например 0,1(6).';
  if(['choice','oneof'].includes(type))return !Array.isArray(raw)||!raw.length?'Сначала выберите ответ.':'';
  if(type==='order'||type==='interval')return '';
  let entries=[];
@@ -40,7 +61,10 @@ function check(step,raw){try{
 
  const r=step.rule;let ok=false;
  if(r.type==='number')ok=close(number(raw).value,r.value,r.tolerance||1e-9);
- else if(r.type==='period')ok=/\([^()]+\)/.test(raw)&&close(number(raw).value,r.value,1e-12);
+ else if(r.type==='period'){
+  const answer=periodicFraction(raw),target=periodicFraction(step.example);
+  ok=target!==null&&answer.numerator*target.denominator===target.numerator*answer.denominator;
+ }
  else if(r.type==='oneof')ok=Array.isArray(raw)&&raw.length===1&&r.answer.includes(raw[0]);
  else if(r.type==='pairs'){
   const pairs=String(raw).split('|').map(x=>values(x.trim().replace(/^\(([^()]*)\)$/, '$1')).map(x=>x.value));
@@ -80,7 +104,11 @@ function check(step,raw){try{
   let uncertain=false;ok=v.every(a=>{if(a.rational===null||(['square','nonsquare'].includes(r.nature)&&!a.fraction)){uncertain=true;return false;}const n=r.nature==='integer'?Number.isInteger(a.value):r.nature==='natural'?Number.isInteger(a.value)&&a.value>0:r.nature==='rational-noninteger'?a.rational===true&&!Number.isInteger(a.value):r.nature==='integer-not-natural'?Number.isInteger(a.value)&&a.value<=0:r.nature==='rational-not-natural'?a.rational===true&&!(Number.isInteger(a.value)&&a.value>0):r.nature==='square'?a.value>=0&&a.fraction&&Number.isInteger(Math.sqrt(a.fraction.n))&&Number.isInteger(Math.sqrt(a.fraction.d)):r.nature==='nonsquare'?a.value>0&&a.fraction&&!(Number.isInteger(Math.sqrt(a.fraction.n))&&Number.isInteger(Math.sqrt(a.fraction.d))):r.nature==='irrational'?a.rational===false:a.rational===true;return n&&(r.min===undefined||a.value>r.min)&&(r.max===undefined||a.value<r.max);});
   if(uncertain)return {ok:false,unsupported:true,message:'Эту форму записи проверка пока не умеет обосновывать. Это не означает ошибку. Для корня используйте sqrt(целое число), при необходимости разделите его на целое число; либо обсудите запись с учителем.'};
  }
- else if(r.type==='point')ok=Math.abs(number(raw).value-r.value)<=(r.tolerance||0.02);
+ else if(r.type==='point'){
+  const coordinate=number(raw).value;
+  const rounding=Number.EPSILON*Math.max(1,Math.abs(coordinate),Math.abs(r.value));
+  ok=Math.abs(coordinate-r.value)<=(r.tolerance??0.02)+rounding;
+ }
  else if(r.type==='angle'){if(!raw||!Number.isFinite(raw.angle)||raw.angle<=r.min||raw.angle>=r.max)return {ok:false,message:'Постройте именно острый угол: больше 0° и меньше 90°.'};ok=Math.abs(number(raw.reading).value-raw.angle)<=.5;}
  else if(r.type==='interval')ok=raw&&raw.low===r.low&&raw.high===r.high&&raw.left===r.left&&raw.right===r.right;
  else throw Error('Неизвестный формат проверки.');

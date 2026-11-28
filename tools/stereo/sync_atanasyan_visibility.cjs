@@ -9,7 +9,7 @@ const sourcePath = 'stereo-course/assets/task-scene-viewer.js';
 const targetPath = 'ege-profil/atanasyan-10-11/model.js';
 const sections = [
   ['VISIBILITY CORE', '  // BEGIN SHARED VISIBILITY CORE\n', '  // END SHARED VISIBILITY CORE'],
-  ['SURFACE PREPARATION', '  function prepare(source) {', '  function mount(container, source, options = {}) {'],
+  ['SURFACE PREPARATION', '  function prepare(source, textbookMarks = {}) {', '  function mount(container, source, options = {}) {'],
   ['LINE DRAWING', "      const defs = element('defs'", '      const focused = new Set(']
 ];
 function extract(text, start, end, includeStart = true) {

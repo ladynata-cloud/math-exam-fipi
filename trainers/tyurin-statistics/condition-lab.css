@@ -1,0 +1,170 @@
+#condition-entry {
+  margin: 1rem 0;
+}
+
+#condition-lab {
+  margin: 1.25rem 0;
+  background: #fff;
+  border: 1px solid #a9c9be;
+  border-radius: 1rem;
+  overflow-wrap: anywhere;
+}
+
+#condition-lab > summary {
+  padding: .9rem 1.15rem;
+  color: var(--dark);
+}
+
+#condition-lab[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+
+#condition-work {
+  padding: clamp(.8rem, 3vw, 1.5rem);
+}
+
+#condition-work fieldset {
+  min-width: 0;
+  margin: 1rem 0;
+  border: 1px solid var(--line);
+  border-radius: .6rem;
+}
+
+#condition-work legend {
+  max-width: 100%;
+  font-weight: 650;
+}
+
+#condition-work form > label {
+  display: block;
+  margin: .8rem 0 .2rem;
+}
+
+#condition-work form > button {
+  display: flex;
+  margin-top: .8rem;
+}
+
+#condition-work fieldset label {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+
+#condition-work input[type="radio"] {
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+
+.condition-legend, .condition-storage {
+  color: var(--muted);
+  font-size: .93rem;
+}
+
+.condition-step > p, .condition-step form {
+  max-width: 68ch;
+}
+
+.condition-links {
+  margin: 1rem 0;
+}
+
+.condition-storage:empty, .condition-result:empty {
+  margin: 0;
+}
+
+.condition-deck {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: .35rem;
+  max-width: 36rem;
+  margin: .75rem 0;
+}
+
+.condition-card {
+  display: grid;
+  place-content: center;
+  min-height: 2.5rem;
+  border: 1px solid #9cafa6;
+  border-radius: .4rem;
+  color: #364b41;
+  background: var(--paper);
+  font-weight: 650;
+  text-align: center;
+}
+
+.condition-card[data-geometry="true"] {
+  color: #104d3c;
+  border-color: #548a77;
+  background: #e0f1e7;
+}
+
+.condition-card[data-star="true"] {
+  border-bottom: .22rem solid #926718;
+}
+
+.condition-card[data-muted="true"] {
+  border-style: dashed;
+  border-color: #bac3bc;
+  background: #f5f5f3;
+  color: #626b65;
+}
+
+.condition-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin: .75rem 0;
+}
+
+#condition-work button {
+  max-width: 100%;
+  white-space: normal;
+}
+
+.condition-table {
+  margin: .9rem 0 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.condition-table caption {
+  text-align: left;
+  font-weight: 650;
+}
+
+.condition-table th,
+.condition-table td {
+  padding: .45rem .35rem;
+  overflow-wrap: normal;
+}
+
+.condition-formula, .condition-result:not(:empty) {
+  padding: .65rem .85rem;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--soft);
+}
+
+@media (max-width: 440px) {
+  .condition-deck {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: .25rem;
+  }
+
+  #condition-work fieldset {
+    padding: .7rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .condition-table {
+    font-size: .82rem;
+  }
+
+  .condition-table td,
+  .condition-table th {
+    padding-inline: .12rem;
+  }
+}

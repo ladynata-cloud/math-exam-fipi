@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Планиметрия · задание 1 — тренажёр по Ященко-2026</title>
@@ -114,13 +115,16 @@
   .wrap,header.top>div,.controls>div{min-width:0;max-width:100%}
   html.board .trainer-reference:not(.topic-picker){display:none}
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261115-fipi-map"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="planimetry-yashchenko"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="planimetry-yashchenko"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -1506,12 +1510,30 @@ function renderExamResult(){
 }
 
 /* ---------- проверка ---------- */
+function answerRatio(raw){
+  const value = String(raw ?? '').trim().replace(/−/g, '-').replace(/,/g, '.');
+  if (value.length > 120) return null;
+  const parts = value.split('/').map(part => part.trim());
+  if (parts.length > 2 || parts.some(part => !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(part))) return null;
+  function decimal(part){
+    const [whole, digits = ''] = part.replace(/^[+-]/, '').split('.');
+    const numerator = BigInt(whole + digits) * (part.startsWith('-') ? -1n : 1n);
+    return [numerator, 10n ** BigInt(digits.length)];
+  }
+  const [top, scale] = decimal(parts[0]);
+  if (parts.length === 1) return [top, scale];
+  const [bottom, divisorScale] = decimal(parts[1]);
+  return bottom === 0n ? null : [top * divisorScale, scale * bottom];
+}
 function parseNum(str){
-  let s = String(str == null ? '' : str).trim().replace(/\s+/g, '').replace(',', '.').replace('\u2212', '-');
-  if (!s) return NaN;
-  const m = s.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
-  if (m) return Number(m[1]) / Number(m[2]);
-  return /^-?\d+(?:\.\d+)?$/.test(s) ? Number(s) : NaN;
+  const value = answerRatio(str);
+  return value ? Number(value[0]) / Number(value[1]) : NaN;
+}
+function matchesAnswer(raw, expected){
+  const value = answerRatio(raw);
+  // Both generators display finite decimals with at most six places.
+  const key = answerRatio(expected.toFixed(6));
+  return !!(value && key && value[0] * key[1] === key[0] * value[1]);
 }
 const EPS = 1e-6;
 function diagnose(x, t){
@@ -1525,7 +1547,7 @@ function checkTrain(){
   inp.classList.remove('ok', 'bad');
   if (isNaN(x)){ inp.classList.add('bad'); state.fb = { type: 'hint', html: 'Введите число: с запятой (0,5), с точкой или обыкновенной дробью (1/2).' }; return renderTrainCard(); }
   const s = tstat(t.id);
-  if (Math.abs(x - t.ans) < EPS){
+  if (matchesAnswer(inp.value, t.ans)){
     state.finished = true;
     if (!state.counted){
       state.counted = true; s.solved++;
@@ -1554,7 +1576,7 @@ function examCheck(){
   const inp = $('#taskArea input.num');
   const x = parseNum(inp.value);
   if (isNaN(x)){ state.fb = { type: 'hint', html: 'Введите число — иначе ответ не засчитается.' }; return renderExam(); }
-  const mathematicallyCorrect = Math.abs(x - t.ans) < EPS;
+  const mathematicallyCorrect = matchesAnswer(inp.value, t.ans);
   const okAns = mathematicallyCorrect&&!z.assisted?.[z.i];
   z.marks[z.i] = okAns; z.answers[z.i] = inp.value.trim();
   if(!z.assisted?.[z.i]||!mathematicallyCorrect)mlog(t.id, mathematicallyCorrect);
@@ -1638,5 +1660,28 @@ if (typeof document !== 'undefined') document.addEventListener('DOMContentLoaded
 if (typeof module !== 'undefined'){ module.exports = { parseNum, diagnose, GROUPS, TYPE_IDS }; }
 
 </script>
+<!-- download-panel:start:ege-profil-planimetry-yashchenko -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-planimetry-yashchenko">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь задачу на вписанный угол, опирающийся на дугу 108°. На чертеже вершина угла лежит вне этой дуги."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-geometry">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-planimetry-yashchenko -->
 </body>
 </html>

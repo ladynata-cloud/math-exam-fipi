@@ -9,6 +9,37 @@ function intersections(a,b){
  const d=dist(a.o,b.o);if(d<EPS||d>a.r+b.r+EPS||d<Math.abs(a.r-b.r)-EPS)return [];
  const x=(a.r*a.r-b.r*b.r+d*d)/(2*d),h=Math.sqrt(Math.max(0,a.r*a.r-x*x)),u=unit(sub(b.o,a.o)),m=add(a.o,mul(u,x));return h<EPS?[m]:[add(m,mul(rot(u),h)),add(m,mul(rot(u),-h))];
 }
+// Parameter along AB, clipped to the part of the line shown to the pupil.
+function nearestOnObject(point, line){
+ const direction=sub(line.q,line.p), lengthSquared=dot(direction,direction);
+ if(lengthSquared<EPS)return null;
+ let t=dot(sub(point,line.p),direction)/lengthSquared;
+ if(line.extent==='ray'||line.extent==='segment')t=Math.max(0,t);
+ if(line.extent==='segment')t=Math.min(1,t);
+ return add(line.p,mul(direction,t));
+}
+function onObject(point, object){
+ if(object.type==='circle')return true; // intersections() already used its radius.
+ const nearest=nearestOnObject(point,object);
+ return nearest!==null&&dist(point,nearest)<EPS;
+}
+function objectCandidates(a,b){
+ const hits=intersections(a,b);
+ if(hits.length||a.type!=='line'||b.type!=='line')return hits;
+ // A pair of collinear finite objects can have a single common endpoint.
+ const u=sub(a.q,a.p),v=sub(b.q,b.p),length=norm(u);
+ if(length<EPS||norm(v)<EPS||Math.abs(cross(u,sub(b.p,a.p)))/length>EPS)return [];
+ const axis=unit(u),project=p=>dot(sub(p,a.p),axis);
+ function interval(line){
+  const start=project(line.p),end=project(line.q);
+  if(line.extent==='segment')return [Math.min(start,end),Math.max(start,end)];
+  if(line.extent==='ray')return start<end?[start,Infinity]:[-Infinity,start];
+  return [-Infinity,Infinity];
+ }
+ const [aMin,aMax]=interval(a),[bMin,bMax]=interval(b);
+ const first=Math.max(aMin,bMin),last=Math.min(aMax,bMax);
+ return Number.isFinite(first)&&Math.abs(first-last)<EPS?[add(a.p,mul(axis,first))]:[];
+}
 class Board{
  constructor(spec){this.spec=JSON.parse(JSON.stringify(spec));this.points=[];this.objects=[];this.history=[];this.reset();}
  reset(){this.points=JSON.parse(JSON.stringify(this.spec.points||[]));this.objects=JSON.parse(JSON.stringify(this.spec.objects||[]));this.history=[];this.update();}
@@ -19,7 +50,33 @@ class Board{
  object(id){return this.objects.find(o=>o.id===id);}
  pointName(){for(const n of 'MNPQHDEFGIJKLSTUVWXYZ'.split(''))if(!this.point(n))return n;return 'P'+(this.points.length+1);}
  objName(){return 'o'+(this.objects.length+1);}
- geometry(o){if(typeof o==='string')o=this.object(o);if(!o)return null;const p=this.point(o.a),q=this.point(o.b);if(!p||!q||p.valid===false||q.valid===false)return null;if(o.type==='circle')return {type:'circle',o:p,r:dist(p,q)};return {type:'line',p,q};}
+ geometry(o){
+  if(typeof o==='string')o=this.object(o);
+  if(!o)return null;
+  const p=this.point(o.a),q=this.point(o.b);
+  if(!p||!q||p.valid===false||q.valid===false)return null;
+  if(o.added&&o.type==='line'&&o.extent==='line'&&q.a===p.id&&['foot','normal'].includes(q.kind)&&dist(p,q)<EPS){
+   // The foot still lies on AB when C reaches it. The constructed line
+   // through C keeps its direction, which is determined by AB alone.
+   const a=this.point(q.b),b=this.point(q.c);
+   if(!a||!b||a.valid===false||b.valid===false||dist(a,b)<EPS)return null;
+   return {type:'line',p,q:add(p,rot(sub(b,a))),extent:o.extent};
+  }
+  if(dist(p,q)<EPS)return null;
+  if(o.type==='circle')return {type:'circle',o:p,r:dist(p,q)};
+  return {type:'line',p,q,extent:o.extent};
+ }
+ perpendicularThrough(id,a,b){
+  for(const o of this.objects){
+   if(o.type!=='line'||o.extent!=='line'||!o.added||o.a!==id)continue;
+   const q=this.point(o.b);
+   if(q?.a===id&&['foot','normal'].includes(q.kind)&&((q.b===a&&q.c===b)||(q.b===b&&q.c===a))){
+    const line=this.geometry(o);
+    if(line&&dist(line.p,line.q)>EPS)return line;
+   }
+  }
+  return null;
+ }
  update(){for(const p of this.points){p.valid=true;if(!p.kind||p.kind==='free')continue;const a=this.point(p.a),b=this.point(p.b),c=this.point(p.c);let v=null;
   if(p.kind==='midpoint'&&a&&b)v=mul(add(a,b),.5);
   if(p.kind==='sum'&&a&&b&&c)v=add(b,sub(c,a));
@@ -34,7 +91,11 @@ class Board{
   if(p.kind==='bisector'&&a&&b&&c){const u=add(unit(sub(a,b)),unit(sub(c,b)));if(norm(u)>EPS)v=add(b,mul(unit(u),100));}
   if(p.kind==='affine'&&a&&b)v=add(a,mul(sub(b,a),p.k));
   if(p.kind==='reflection'&&a&&b&&c){const h=foot(a,b,c);if(h)v=sub(mul(h,2),a);}
-  if(p.kind==='intersection'){const g=this.geometry(p.o1),h=this.geometry(p.o2);if(g&&h)v=intersections(g,h)[p.branch||0];}
+  if(p.kind==='intersection'){const g=this.geometry(p.o1),h=this.geometry(p.o2);if(g&&h){
+    const candidate=(p.bounded?objectCandidates(g,h):intersections(g,h))[p.branch||0];
+    // Previous saved points used the two complete supporting lines.
+    if(candidate&&(!p.bounded||(onObject(candidate,g)&&onObject(candidate,h))))v=candidate;
+   }}
   if(!v||!Number.isFinite(v.x+v.y)){p.valid=false;continue;}p.x=v.x;p.y=v.y;
   if([a,b,c].some(x=>x&&x.valid===false))p.valid=false;
  }return this;}
@@ -44,7 +105,14 @@ class Board{
  else if(p.kind==='rightArc'&&p.draggable){const u=sub(b,a),m=mul(add(a,b),.5),w=sub({x,y},m);p.t=Math.atan2(cross(u,w),dot(u,w));if(Math.abs(Math.sin(p.t))<.12)p.t=p.t<0?-.12:.12;}
  else if(['equalarm','onCircle'].includes(p.kind)&&p.draggable)p.t=Math.atan2(y-a.y,x-a.x);else return false;this.update();return true;}
  make(tool,ids){const need={point:0,segment:2,line:2,circle:2,midpoint:2,perpendicular:3,parallel:3,bisector:3,reflection:3,intersection:2}[tool];if(ids.length!==need)throw Error('Выбери '+need+' разных '+(tool==='intersection'?'объекта.':'точки в указанном порядке.'));if(new Set(ids).size!==ids.length)throw Error('Нужны разные точки или объекты.');
-  if(tool==='intersection'){const a=this.geometry(ids[0]),b=this.geometry(ids[1]);if(!a||!b)throw Error('Объект сейчас не определён.');const hits=intersections(a,b);if(!hits.length)throw Error('У этих объектов сейчас нет отдельных точек пересечения.');this.remember();const out=[];hits.forEach((q,i)=>{const p={id:this.pointName(),kind:'intersection',o1:ids[0],o2:ids[1],branch:i,x:q.x,y:q.y};this.points.push(p);out.push(p.id);});return out;}
+  if(tool==='intersection'){const a=this.geometry(ids[0]),b=this.geometry(ids[1]);if(!a||!b)throw Error('Объект сейчас не определён.');const hits=objectCandidates(a,b).map((point,branch)=>({point,branch}))
+   .filter(({point})=>onObject(point,a)&&onObject(point,b));
+   if(!hits.length)throw Error('Выбранные объекты не имеют отдельной общей точки. Для пересечения продолжений сначала построй прямые через концы отрезков.');
+   if(this.points.length+hits.length>150)throw Error('На поле уже много точек. Отмени лишние построения.');
+   this.remember();const out=[];for(const {point,branch} of hits){
+    const p={id:this.pointName(),kind:'intersection',o1:ids[0],o2:ids[1],bounded:true,branch,x:point.x,y:point.y};
+    this.points.push(p);out.push(p.id);
+   }return out;}
   if(this.points.length>145||this.objects.length>175)throw Error('На поле уже много объектов. Отмени лишние построения или начни заново.');
   const ps=ids.map(x=>this.point(x));if(ps.some(p=>!p||p.valid===false))throw Error('Точка не определена.');if(need>1&&dist(ps[0],ps[1])<1)throw Error('Точки почти совпали: сначала раздвинь их.');this.remember();let p,o;
   if(['line','segment','circle'].includes(tool)){o={id:this.objName(),type:tool==='circle'?'circle':'line',extent:tool==='segment'?'segment':'line',a:ids[0],b:ids[1],added:true};this.objects.push(o);return [o.id];}
@@ -59,12 +127,22 @@ class Board{
  }
  addPoint(x,y){if(this.points.length>=150)throw Error('На поле уже 150 точек. Отмени лишние построения.');if(!Number.isFinite(x+y))throw Error('Координаты должны быть конечными.');x=Math.max(25,Math.min(615,x));y=Math.max(30,Math.min(385,y));this.remember();const id=this.pointName();this.points.push({id,kind:'free',x,y,added:true});return id;}
  goal(kind){const P=this.point.bind(this),O=this.objects,derived=this.points.filter(p=>p.valid!==false),same=(p,a,b)=>p.a===a&&p.b===b||p.a===b&&p.b===a,lineThrough=(a,b)=>O.some(o=>o.added&&o.type==='line'&&same(o,a,b));
-  const A=P('A'),B=P('B'),C=P('C');if(A&&B&&dist(A,B)<1)return {ok:false,message:'A и B почти совпали. Раздвинь точки: отрезок и его направление должны быть определены.'};if(['median','altitude','midline','bisector','diagonal'].includes(kind)&&A&&B&&C&&Math.abs(cross(sub(B,A),sub(C,A)))<1)return {ok:false,message:'Основные точки лежат на одной прямой. Для этой задачи восстанови невырожденную фигуру.'};
+  const A=P('A'),B=P('B'),C=P('C');if(A&&B&&dist(A,B)<1)return {ok:false,message:'A и B почти совпали. Раздвинь точки: отрезок и его направление должны быть определены.'};if(['median','congruence-median','altitude','midline','bisector','diagonal','sss-reflection'].includes(kind)&&A&&B&&C&&Math.abs(cross(sub(B,A),sub(C,A)))<1)return {ok:false,message:'Основные точки лежат на одной прямой. Для этой задачи восстанови невырожденную фигуру.'};
   if(kind==='explore')return {ok:false,message:'Измени положение точек и запиши наблюдение. Опыт сам по себе не является доказательством.'};
+  if(kind==='line-ab')return {ok:O.some(o=>o.added&&o.type==='line'&&o.extent==='line'&&same(o,'A','B')),message:'Выбери «Прямая», затем точки A и B. Линия должна продолжаться в обе стороны.'};
+  if(kind==='sss-reflection'){
+   const reflected=derived.filter(p=>{
+    if(p.kind!=='intersection'||dist(p,C)<EPS)return false;
+    const circles=[this.object(p.o1),this.object(p.o2)];
+    return ['A','B'].every(center=>circles.some(o=>o?.type==='circle'&&o.a===center&&o.b==='C'));
+   });
+   const segmentTo=(v,p)=>O.some(o=>o.added&&o.type==='line'&&o.extent==='segment'&&same(o,v,p.id));
+   return {ok:reflected.some(p=>segmentTo('A',p)&&segmentTo('B',p)),message:'Построй окружности с центрами A и B через C. Найди их пересечения и соедини вторую точку отрезками с A и B.'};
+  }
   if(kind==='diagonal')return {ok:lineThrough('A','C')||lineThrough('B','D'),message:'Проведи диагональ: она соединяет несоседние вершины и создаёт два треугольника.'};
   if(kind==='midpoint')return {ok:derived.some(p=>p.kind==='midpoint'&&same(p,'A','B')),message:'Построй середину AB как зависимую точку. Точка, поставленная на глаз, не сохраняет равенство при движении.'};
-  if(kind==='median'){const m=derived.find(p=>p.kind==='midpoint'&&same(p,'A','B'));return {ok:!!m&&lineThrough('C',m.id),message:'Сначала построй середину AB, затем соедини её с C.'};}
-  if(kind==='perpendicular')return {ok:derived.some(p=>['foot','normal'].includes(p.kind)&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'))&&lineThrough('C',p.id)&&dist(C,p)>EPS),message:'Нужен перпендикуляр через C к прямой AB: выбери C, затем A и B (или B и A).'};
+  if(kind==='median'||kind==='congruence-median'){const hasMedian=derived.some(p=>p.kind==='midpoint'&&same(p,'A','B')&&lineThrough('C',p.id));return {ok:hasMedian,message:'Сначала построй середину AB, затем соедини её с C.'};}
+  if(kind==='perpendicular')return {ok:!!this.perpendicularThrough('C','A','B'),message:'Нужен перпендикуляр через C к прямой AB: выбери C, затем A и B (или B и A).'};
   if(kind==='altitude'){return {ok:derived.some(p=>p.kind==='foot'&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'))),message:'Нужен перпендикуляр из C к прямой AB. Основание может оказаться на продолжении стороны.'};}
   if(kind==='bisector')return {ok:derived.some(p=>p.kind==='bisector'&&p.b==='C'&&((p.a==='A'&&p.c==='B')||(p.a==='B'&&p.c==='A'))),message:'Построй биссектрису угла ACB. Вершину C выбирают второй.'};
   if(kind==='reflection')return {ok:derived.some(p=>p.kind==='reflection'&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.a==='B'&&p.c==='A'))),message:'Отрази C относительно прямой AB. Затем двигай C и проверь расстояния до оси.'};
@@ -79,7 +157,9 @@ class Board{
  }
 }
 function scene(type){const P=(id,x,y,extra)=>Object.assign({id,x,y,kind:'free'},extra||{}),L=(a,b)=>({id:a+b,type:'line',extent:'segment',a,b});let points=[P('A',140,300),P('B',500,300),P('C',270,85)],objects=[L('A','B'),L('B','C'),L('C','A')];
+ if(type==='sss-triangle')points=[P('A',160,210),P('B',490,210),P('C',275,120)];
  if(type==='angle'){points=[P('A',500,290),P('B',350,70),P('C',170,290)];objects=[{...L('C','A'),extent:'ray'},{...L('C','B'),extent:'ray'}];}
+ if(type==='perpendicular-base')objects=[{...L('A','B'),extent:'line'}];
  if(type==='segment'){points=[P('A',140,235),P('B',500,235),P('C',305,115)];objects=[L('A','B')];}
  if(type==='iso')points[2]=P('C',0,0,{kind:'iso',a:'A',b:'B',k:-.6,draggable:true});
  if(type==='right')points[2]=P('C',0,0,{kind:'rightArc',a:'A',b:'B',t:-1.85,draggable:true});
@@ -88,5 +168,5 @@ function scene(type){const P=(id,x,y,extra)=>Object.assign({id,x,y,kind:'free'},
  if(['circle','two-circles'].includes(type)){points=[P('O',320,220),P('A',470,220),P('B',0,0,{kind:'onCircle',a:'O',b:'A',t:2.8,draggable:true}),P('C',0,0,{kind:'onCircle',a:'O',b:'A',t:-1.3,draggable:true})];objects=[{id:'circle',type:'circle',a:'O',b:'A'},L('A','B'),L('B','C'),L('C','A')];if(type==='two-circles'){points.push(P('D',450,220),P('E',555,220));objects.push({id:'circle2',type:'circle',a:'D',b:'E'});}}
  return {type,points,objects};
 }
-const api={EPS,add,sub,mul,dot,cross,norm,dist,unit,rot,foot,angle,intersections,Board,scene};root.GeoMath=api;if(typeof module!=='undefined')module.exports=api;
+const api={EPS,add,sub,mul,dot,cross,norm,dist,unit,rot,foot,angle,nearestOnObject,intersections,Board,scene};root.GeoMath=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

@@ -4,6 +4,7 @@
   const items = root.MathExamCourseExampleData || [], byId = new Map(items.map(t => [t.id, t]));
   const escape = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const math = s => escape(s).replace(/(?<![\w/])(\([^()]+\)|\d+)\/(\([^()]+\)|\d+)(?![\w/])/g, (_,a,b) => '<span class="ce-fraction" role="math" aria-label="'+a+' разделить на '+b+'"><span>'+a+'</span><span>'+b+'</span></span>');
+  const media = root.MathExamTrainerOffline?.media || (file => file);
   let playing = null;
   function stop(finalFrame) {
     if (!playing) return;
@@ -22,20 +23,20 @@
     let step = 0;
     function frame(n) {
       step = Math.max(0,Math.min(4,n));
-      img.src = '/assets/course-examples/'+item.id+'-'+step+'.png';
+      img.src = media('/assets/course-examples/'+item.id+'-'+step+'.png');
       img.alt = item.steps[step]; caption.innerHTML = 'Шаг '+(step+1)+' из 5. '+math(item.steps[step]);
       el.querySelector('[data-ce-counter]').textContent = 'Кадр '+(step+1)+' / 5'; prev.disabled = step===0; next.disabled = step===4;
     }
     button.onclick = () => {
       const same = playing?.button === button; stop(); if (same) return;
-      playing = {el,img,button,frame,index:()=>step,timer:null};
+      playing = {el,img,button,frame,index:()=>step,timer:null,gif:media('/assets/course-examples/'+item.id+'.gif')};
       button.textContent = '■ Остановить'; button.setAttribute('aria-pressed','true');
       img.alt = 'Наглядный разбор: '+item.short+'. Текст всех шагов расположен ниже.';
       caption.textContent = 'Идёт разбор из пяти шагов. Можно остановить и перейти по кадрам стрелками.';
-      img.src = '/assets/course-examples/'+item.id+'.gif';
+      img.src = playing.gif;
     };
     img.addEventListener('load', () => {
-      if (playing?.img !== img || !img.src.endsWith('.gif')) return;
+      if (playing?.img !== img || img.getAttribute('src') !== playing.gif) return;
       const current=playing; clearTimeout(current.timer);
       current.timer = setTimeout(()=>{if(playing===current)stop(true);},11000);
     });
@@ -78,7 +79,7 @@
   function mount(anchor,course,lesson,onHelp) {
     const t=items.find(x=>x.course===course&&x.lesson===lesson);if(!anchor||!t)return null;
     const details=document.createElement('details');details.className='ce-help';details.dataset.ceNative=t.id;
-    details.innerHTML='<summary>Наглядный пример: '+escape(t.short)+'</summary><p>Это объяснение способа на отдельном примере. Открытие считается помощью к текущей задаче; твой ответ остаётся на месте.</p><p>'+math(t.question)+'</p><div class="ce-example" data-course-example="'+t.id+'"><figure><img src="/assets/course-examples/'+t.id+'-0.png" width="720" height="420" loading="lazy" alt="'+escape(t.steps[0])+'"><figcaption data-ce-caption>Шаг 1 из 5. '+math(t.steps[0])+'</figcaption></figure><div class="ce-controls" hidden><button type="button" data-ce-action="play" aria-pressed="false">▶ Смотреть GIF</button><button type="button" data-ce-action="prev" aria-label="Предыдущий кадр" disabled>←</button><button type="button" data-ce-action="next" aria-label="Следующий кадр">→</button><span data-ce-counter>Кадр 1 / 5</span></div><ol class="ce-steps">'+t.steps.map(s=>'<li>'+math(s)+'</li>').join('')+'</ol></div><button type="button" data-ce-return>Вернуться к своей задаче</button>';
+    details.innerHTML='<summary>Наглядный пример: '+escape(t.short)+'</summary><p>Это объяснение способа на отдельном примере. Открытие считается помощью к текущей задаче; твой ответ остаётся на месте.</p><p>'+math(t.question)+'</p><div class="ce-example" data-course-example="'+t.id+'"><figure><img src="'+media('/assets/course-examples/'+t.id+'-0.png')+'" width="720" height="420" loading="lazy" alt="'+escape(t.steps[0])+'"><figcaption data-ce-caption>Шаг 1 из 5. '+math(t.steps[0])+'</figcaption></figure><div class="ce-controls" hidden><button type="button" data-ce-action="play" aria-pressed="false">▶ Смотреть GIF</button><button type="button" data-ce-action="prev" aria-label="Предыдущий кадр" disabled>←</button><button type="button" data-ce-action="next" aria-label="Следующий кадр">→</button><span data-ce-counter>Кадр 1 / 5</span></div><ol class="ce-steps">'+t.steps.map(s=>'<li>'+math(s)+'</li>').join('')+'</ol></div><button type="button" data-ce-return>Вернуться к своей задаче</button>';
     let marked=false;
     function mark(){if(marked||!details.isConnected)return;onHelp?.();marked=true;}
     // Record before the disclosure opens, including a rapid submit after a click.

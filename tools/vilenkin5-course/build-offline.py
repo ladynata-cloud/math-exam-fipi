@@ -11,7 +11,7 @@ original=restore_public_navigator('courses/vilenkin-5-part-1/index.html', raw)
 assert original != raw, 'The offline course requires the reviewed public source binding'
 html=original.decode('utf-8')
 data={'lessons':[json.loads((p/f'data/lessons-{i}.json').read_text()) for i in range(1,6)],'book':json.loads((p/'data/textbook-index.json').read_text())}
-for css in ['styles.css','practice.css']:
+for css in ['styles.css','practice.css','../../assets/grade5-course-entry.css']:
     html=html.replace(f'<link rel="stylesheet" href="{css}">','<style>'+(p/css).read_text()+'</style>')
 html=re.sub(r'<script defer src="[^"]+"></script>','',html)
 scripts='<script>window.VILENKIN_DATA='+json.dumps(data,ensure_ascii=False).replace('</','<\\/')+';</script>'

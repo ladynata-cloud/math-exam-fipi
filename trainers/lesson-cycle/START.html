@@ -1,0 +1,182 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>MathExam — учебный цикл (пилот)</title><style>
+:root{color-scheme:light;--ink:#1d2939;--muted:#546478;--navy:#173b63;--accent:#146f68;--line:#d9e2e9;--bg:#f3f6f9}*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,sans-serif;color:var(--ink);background:var(--bg)}header{background:var(--navy);color:white;padding:20px 0}main,.wrap{max-width:940px;margin:auto;padding:0 18px}header p{margin:0;color:#e4edf5}h1{font-size:clamp(23px,4vw,32px);line-height:1.2;margin:6px 0}h2{font-size:23px;line-height:1.25;margin:0 0 12px}h3{font-size:18px}section,.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0}label{display:block;font-weight:600}select,textarea,button,a.action{font:inherit}select,textarea{width:100%;border:1px solid #8293a3;border-radius:8px;padding:11px;background:#fff;color:var(--ink)}textarea{min-height:96px;resize:vertical;margin:7px 0 14px}textarea:read-only{background:#f3f6f9}button,a.action{display:inline-block;border:1px solid var(--navy);border-radius:8px;background:white;color:var(--navy);padding:9px 13px;cursor:pointer;text-decoration:none;margin:4px 4px 4px 0;line-height:1.4}button.primary,a.primary{background:var(--navy);color:white}#home-return{display:inline-flex;align-items:center;min-height:48px}button:disabled{opacity:.55;cursor:default}button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #e9ae44;outline-offset:2px}a{color:#164a79;overflow-wrap:anywhere}.muted{color:var(--muted);font-size:14px}.stepnav{display:flex;gap:6px;flex-wrap:wrap}.stepnav button{font-size:14px;padding:7px 10px;margin:0}.stepnav button[aria-current=step]{background:var(--navy);color:white}.stepnav button.done:not([aria-current]){border-color:var(--accent);color:var(--accent)}.note{border-left:4px solid #52888e;background:#f0f7f6;padding:10px 14px}.warn{border-left-color:#b78030;background:#fff7e9}.row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.meter{height:8px;border-radius:4px;background:#e4ebf1;overflow:hidden;margin:12px 0}.meter span{display:block;height:100%;background:var(--accent)}.question{white-space:pre-wrap;font-weight:500;margin:14px 0 3px}.hidden,[hidden]{display:none!important}footer{padding:8px 0 30px}.tag{font-size:14px;color:var(--accent);font-weight:700}pre{white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:420px){main,.wrap{padding:0 10px}section,.panel{padding:13px}.stepnav button{flex:1 1 44%}button,a.action{max-width:100%}}@media print{header{background:white;color:#222}header p{color:#333}.stepnav,button,.meter,footer,select{display:none!important}body{background:white}section,.panel{border:0;padding:0}}
+</style></head><body><header><div class="wrap"><p>MathExam · методический пилот · версия 2</p><h1>Урок: от первой попытки к переносу</h1><p>55 минут + домашняя работа + повторная проверка</p></div></header><main><section><p><a id="home-return" class="action" data-mathexam-home-link href="/" target="_self">← На главную</a></p><label for="topic">Выбери тему занятия</label><select id="topic"></select><p id="level" class="muted"></p><p class="muted">Открывай на своём устройстве. Не указывай ФИО, контакты и другие личные сведения. Черновики сохраняются только в этом браузере, если доступны локальное хранилище и эксклюзивные Web Locks. Если нет — работай в одной вкладке и выгружай JSON. Для передачи преподавателю выгрузи запись вручную.</p><p id="storage" class="muted" role="status"></p><nav class="stepnav" id="nav" aria-label="Этапы урока"></nav><div class="meter" aria-hidden="true"><span id="bar"></span></div><div id="progress" class="muted"></div></section><section id="screen" aria-live="polite"></section><footer><button id="export">Выгрузить запись (JSON)</button><button id="import">Восстановить из резервного JSON</button><input type="file" id="import-file" accept=".json,application/json" hidden><button id="reload" hidden>Загрузить сохранённую запись</button><p id="import-status" role="status" class="muted"></p><button id="reset">Начать заново только эту тему</button><p class="muted">Отметки прохождения не являются оценкой. Письменные ответы проверяет преподаватель. В этом пилоте нет отправки данных, кабинета, автоматического зачёта и синхронизации с доской.</p></footer></main><script>
+const DATA=[
+  {
+    "id": "area",
+    "title": "Доказательства через площади",
+    "level": "8–9 класс · геометрия, ОГЭ",
+    "url": "https://mathexam.space/trainers/oge-written-practice.html#area-workshop",
+    "homework": "01_area_proofs_homework.pdf",
+    "example": "В треугольнике ABC точка M — середина BC, P лежит внутри AM. Проведи BP и CP. У ABM и ACM равны основания и общая высота из A; у PBM и PCM — те же равные основания и общая высота из P. Вычти равные площади: S(ABP)=S(ACP).",
+    "experiment": "В мастерской пройди шаги от чертежа до исправления ошибки. Объясни, почему недостаточно одного равенства оснований. Без сайта: нарисуй два треугольника с общим основанием и разными высотами, затем с одинаковыми высотами.",
+    "practice": "В треугольнике ABC точка M — середина BC. Точка Q лежит на продолжении AM за M. Докажи, что S(ABQ)=S(ACQ). Построй чертёж и запиши обоснование.",
+    "a": [
+      "1. У двух треугольников основания равны 10 см, а высоты к ним равны 4 и 6 см. Найди площади. Достаточно ли равенства оснований для равенства площадей?",
+      "2. Точки C и D лежат по одну сторону прямой AB. AB = 8 см, S(ABC) = S(ABD) = 20 см². Найди высоты к AB и объясни, почему CD ∥ AB. Считай C и D различными.",
+      "3. В треугольнике KLM точка N — середина LM, точка T лежит внутри KN. Докажи, что S(KLT) = S(KMT). Сделай чертёж, укажи равные площади и объясни переход."
+    ],
+    "b": [
+      "1. У двух треугольников основания равны 12 см, а высоты к ним равны 3 и 5 см. Найди площади. Достаточно ли равенства оснований для равенства площадей?",
+      "2. Точки R и S лежат по одну сторону прямой PQ. PQ = 10 см, S(PQR) = S(PQS) = 35 см². Найди высоты к PQ и объясни, почему RS ∥ PQ. Считай R и S различными.",
+      "3. В треугольнике XYZ точка H — середина YZ, точка U лежит внутри XH. Докажи, что S(XYU) = S(XZU). Сделай чертёж, укажи равные площади и объясни переход."
+    ],
+    "transfer": "В треугольнике ABC точка D — середина AB, а M — середина BC. Докажи, что S(ADM) = S(DCM). Сделай собственный чертёж."
+  },
+  {
+    "id": "prob",
+    "title": "Условная вероятность и независимость",
+    "level": "9–11 класс · теория вероятностей",
+    "url": "https://mathexam.space/trainers/tyurin-statistics/?lab=condition#lesson/114-10",
+    "homework": "02_conditional_probability_homework.pdf",
+    "example": "В колоде 24 равновозможные карточки, 9 с геометрией (A), 8 со звездой (B), 6 с обоими признаками. P(A)=9/24, P(A∩B)=6/24, P(A|B)=6/8. После условия B в знаменателе 8, а не 24.",
+    "experiment": "Сначала спрогнозируй результат фильтра по звезде. Затем переставляй звёзды при неизменных 9 и 8. Найди независимость и несовместность. Без сайта: нарисуй таблицу 2×2 и переставь звёзды на бумаге.",
+    "practice": "Из 40 равновозможных карточек 16 отмечены A, 15 отмечены B, 9 отмечены обеими буквами. Вычисли P(A), P(A∩B), P(A|B), P(B|A). Независимы ли события? Обоснуй.",
+    "a": [
+      "1. В коробке 20 равновозможных карточек: 8 с рисунком (A), 5 с меткой (B), 3 с обоими признаками. Найди P(A ∩ B) и P(A | B). Объясни знаменатель второй дроби.",
+      "2. Из 24 карточек 12 с буквой A, 8 с буквой B, 4 имеют обе буквы. Независимы ли события «есть A» и «есть B»? Обоснуй равенством вероятностей.",
+      "3. В классе 25 учеников. Семь занимаются только плаванием, пять — только теннисом; никто не занимается обоими видами. A — выбран пловец, B — выбран теннисист. Выбор равновозможный. Совместны ли A и B? Независимы ли? Объясни."
+    ],
+    "b": [
+      "1. В коробке 30 равновозможных жетонов: 12 с кругом (A), 10 с полосой (B), 7 с обоими признаками. Найди P(A ∩ B) и P(A | B). Объясни знаменатель второй дроби.",
+      "2. Из 30 карточек 15 с буквой C, 12 с буквой D, 6 имеют обе буквы. Независимы ли события «есть C» и «есть D»? Обоснуй равенством вероятностей.",
+      "3. Из 20 равновозможных жетонов 6 красных, 4 синих; ни один не имеет оба цвета. A — выбран красный, B — выбран синий. Совместны ли A и B? Независимы ли? Объясни."
+    ],
+    "transfer": "В мешке 4 белых и 3 чёрных шара. Два шара достают по одному без возвращения. A — первый белый, B — второй чёрный. Найди P(B|A) и P(B); независимы ли события?"
+  },
+  {
+    "id": "rate",
+    "title": "Средняя скорость изменения функции",
+    "level": "9–11 класс · колледж",
+    "url": "https://mathexam.space/trainers/college-functions/#rate-lab",
+    "homework": "03_rate_of_change_homework.pdf",
+    "example": "Для f(x)=x² на [1;2]: Δx=1, Δy=3, k=3. На [2;4]: Δx=2, Δy=12, k=6. Обе дуги возрастают, но среднее изменение за единицу x разное. k=(f(b)−f(a))/(b−a).",
+    "experiment": "На параболе C3 сначала предсказывай знак наклона, затем меняй концы секущей. Найди горизонтальную секущую у непостоянной функции. Без сайта: построй y=x² по точкам и проведи секущую через (−2;4) и (2;4).",
+    "practice": "Для h(x)=x²−2x найди среднюю скорость изменения на [0;1], [1;3] и [0;2]. Объясни, означает ли нулевая средняя скорость постоянство функции.",
+    "a": [
+      "1. Температура в 1 ч равна 18 °C, в 4 ч — 12 °C. Вычисли среднюю скорость изменения температуры на этом интервале. Укажи единицу измерения.",
+      "2. Дана функция f(x)=x². На [−4; −2] вычисли f(−4), f(−2), Δx, Δy и среднюю скорость изменения.",
+      "3. Для f(x)=x² найди среднюю скорость изменения на [−3; 3]. Означает ли результат, что функция на всём интервале постоянна? Приведи контрпример."
+    ],
+    "b": [
+      "1. Уровень воды в 2 мин равен 17 см, в 6 мин — 9 см. Вычисли среднюю скорость изменения уровня на этом интервале. Укажи единицу измерения.",
+      "2. Дана функция g(x)=x²+1. На [−5; −3] вычисли g(−5), g(−3), Δx, Δy и среднюю скорость изменения.",
+      "3. Для g(x)=x²+1 найди среднюю скорость изменения на [−4; 4]. Означает ли результат, что функция на всём интервале постоянна? Приведи контрпример."
+    ],
+    "transfer": "Расстояние до пункта назначения в 0, 2 и 5 часов равно 120, 80 и 20 км. Вычисли среднюю скорость изменения расстояния на [0;2], [2;5] и [0;5]. Доказывает ли совпадение результатов постоянную скорость движения?"
+  },
+  {
+    "id": "motion",
+    "title": "Математическое моделирование движения",
+    "level": "5–7 класс · подготовка к ОГЭ",
+    "url": "https://mathexam.space/trainers/motion-grade6/#model",
+    "homework": "04_motion_modeling_homework.pdf",
+    "example": "Между участниками 10 км, скорости 200 м/мин и 8 км/ч. Перевод: 200 м/мин = 12 км/ч. При встрече промежуток уменьшается на 20 км/ч; при догонке — на 4 км/ч. Время 0,5 ч и 2,5 ч соответственно. Проверь координаты.",
+    "experiment": "В мастерской построй схему или таблицу до вычислений. Сравни встречу и догонку, затем измени момент старта. Без сайта: нарисуй ось, сделай шаг на один час и отметь изменение промежутка.",
+    "practice": "Два велосипедиста со скоростями 12 и 8 км/ч находятся на расстоянии 20 км. Найди время встречи при движении навстречу и время догонки при движении в одну сторону, если быстрый позади. Проверь обе координаты в каждом случае.",
+    "a": [
+      "1. Пешеход идёт со скоростью 100 м/мин. Переведи скорость в км/ч. Какой путь он пройдёт за 30 мин?",
+      "2. Два велосипедиста одновременно выехали навстречу друг другу. Между ними 21 км; скорости 9 и 12 км/ч. Нарисуй схему, найди время встречи и пути обоих.",
+      "3. Два велосипедиста движутся в одном направлении. Быстрый (14 км/ч) находится на 8 км позади медленного (10 км/ч). Нарисуй схему, найди время догонки и проверь координаты обоих от старта быстрого."
+    ],
+    "b": [
+      "1. Пешеход идёт со скоростью 150 м/мин. Переведи скорость в км/ч. Какой путь он пройдёт за 20 мин?",
+      "2. Два велосипедиста одновременно выехали навстречу друг другу. Между ними 25 км; скорости 11 и 14 км/ч. Нарисуй схему, найди время встречи и пути обоих.",
+      "3. Два велосипедиста движутся в одном направлении. Быстрый (18 км/ч) находится на 12 км позади медленного (12 км/ч). Нарисуй схему, найди время догонки и проверь координаты обоих от старта быстрого."
+    ],
+    "transfer": "Два велосипедиста едут в одном направлении. Быстрый (13 км/ч) отстаёт от медленного (9 км/ч) на 18 км. Через сколько часов расстояние между ними впервые станет 6 км? Проверь по координатам."
+  }
+];
+const STAGES=['Вход А','Объяснение','Исследование','Практика','Выход Б','Домашняя работа','Перенос'];
+const TIMES=['0–8 мин','8–20 мин','20–34 мин','34–47 мин','47–55 мин','После урока','Через 2–7 дней'];
+const key=id=>'mathexam:lesson-cycle-pilot:v2:'+id;
+const blank=()=>({version:2,stage:0,done:Array(7).fill(false),drafts:{},locked:{},times:{}});
+const COUNTS=[3,1,2,1,3,1,1], MAX_TEXT=12000;
+// Every field may need six JSON characters per UTF-16 code unit. The
+// immutable first record duplicates the twelve drafts; revision is separate.
+const MAX_JSON=6*MAX_TEXT*(2*COUNTS.reduce((sum,n)=>sum+n,0)+1)+4096;
+// A pretty-printed backup also repeats the record in its human-readable report.
+const MAX_BACKUP_BYTES=2*MAX_JSON+16384;
+const memory=Object.create(null), metadata=Object.create(null), queues=Object.create(null);
+const canLock=()=>typeof navigator.locks?.request==='function';
+let data=DATA[0],state=blank();
+const $=id=>document.getElementById(id);const node=(tag,txt,cls)=>{let e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;if(cls)e.className=cls;return e};
+const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+const validText=x=>typeof x==='string'&&x.length<=MAX_TEXT;
+const validDraftKey=k=>k==='revision'||/^[0-6]:[0-2]$/.test(k)&&Number(k[2])<COUNTS[Number(k[0])];
+function validState(x){
+ if(!object(x)||Object.keys(x).sort().join(',')!=='done,drafts,locked,stage,times,version'||x.version!==2||!Number.isInteger(x.stage)||x.stage<0||x.stage>6||!Array.isArray(x.done)||x.done.length!==7||x.done.some(v=>typeof v!=='boolean')||!object(x.drafts)||!object(x.locked)||!object(x.times))return false;
+ if(x.done.some((v,i)=>v&&!x.done.slice(0,i).every(Boolean))||!x.done.slice(0,x.stage).every(Boolean))return false;
+ if(Object.entries(x.drafts).some(([k,v])=>!validDraftKey(k)||!validText(v)))return false;
+ if(Object.hasOwn(x.drafts,'revision')&&!x.done[3])return false;
+ for(let i=0;i<7;i++){
+  if(x.done[i]){if(!Array.isArray(x.locked[i])||x.locked[i].length!==COUNTS[i]||x.locked[i].some(v=>!validText(v))||typeof x.times[i]!=='string'||x.times[i].length>64||!/^\d{4}-\d{2}-\d{2}T/.test(x.times[i])||!Number.isFinite(Date.parse(x.times[i])))return false;
+   if(x.locked[i].some((v,j)=>v!==(x.drafts[i+':'+j]||'')))return false;
+  }else if(Object.hasOwn(x.locked,i)||Object.hasOwn(x.times,i))return false;
+ }
+ return Object.keys(x.locked).every(k=>/^[0-6]$/.test(k))&&Object.keys(x.times).every(k=>/^[0-6]$/.test(k));
+}
+function decode(raw){if(typeof raw!=='string'||raw.length>MAX_JSON)throw Error('invalid length');const x=JSON.parse(raw);if(!validState(x))throw Error('invalid record');return x;}
+function mode(id){return metadata[id]||{status:'unavailable',expected:null};}
+function updateStorage(){const m=mode(data.id);const messages={ok:'Локальная запись актуальна в момент проверки. Перед закрытием выгрузи резервный JSON.',unavailable:'Безопасное локальное сохранение недоступно: запись в памяти вкладки. Выгрузи JSON перед закрытием.',corrupt:'Сохранённая запись повреждена. Она не перезаписана. Выгрузи текущую работу; повреждённую запись нужно исследовать отдельно.',conflict:'Запись в другой вкладке изменилась. Текущая работа сохранена в памяти, но не перезаписала другую. Сначала выгрузи резервный JSON.'};$('storage').textContent=m.status==='ok'&&m.pending?'Идёт безопасное сохранение. Перед закрытием выгрузи резервный JSON.':messages[m.status];$('reload').hidden=m.status!=='conflict';$('reload').disabled=!!m.pending;}
+function read(id,force=false){
+ if(memory[id]&&!force)return memory[id];
+ let result=blank();let m={expected:null,status:'ok',pending:0};
+ try{const raw=localStorage.getItem(key(id));m.expected=raw;if(raw!==null){try{result=decode(raw)}catch(e){m.status='corrupt'}}}catch(e){m.status='unavailable'}
+ if(m.status==='ok'&&!canLock())m.status='unavailable';
+ memory[id]=result;metadata[id]=m;return result;
+}
+// Serialize writes within a tab, and use an origin-wide Web Lock for the
+// compare-and-write across cooperating tabs. Never write without the lock.
+function save(){
+ const id=data.id;memory[id]=state;const m=mode(id);
+ if(m.status!=='ok'||!canLock()){if(m.status==='ok')m.status='unavailable';updateStorage();return Promise.resolve();}
+ let raw;try{raw=JSON.stringify(state);if(!validState(state)||raw.length>MAX_JSON)throw Error('invalid');}catch(e){m.status='unavailable';updateStorage();return Promise.resolve();}
+ m.pending++;updateStorage();
+ const job=(queues[id]||Promise.resolve()).then(()=>navigator.locks.request(key(id),{mode:'exclusive'},()=>{
+   if(m.status!=='ok'||metadata[id]!==m)return;
+   const current=localStorage.getItem(key(id));
+   if(current!==m.expected){m.status='conflict';return;}
+   if(raw!==current)localStorage.setItem(key(id),raw);
+   m.expected=raw;
+ })).catch(()=>{if(m.status==='ok')m.status='unavailable';}).finally(()=>{
+   m.pending--;if(data.id===id)updateStorage();
+ });
+ queues[id]=job;return job;
+}
+function checkRemote(id){const m=metadata[id];if(!m||m.status!=='ok')return;try{if(localStorage.getItem(key(id))!==m.expected)m.status='conflict'}catch(e){m.status='unavailable'}if(id===data.id)updateStorage();}
+window.addEventListener('storage',e=>{for(const d of DATA)if(e.key===null||e.key===key(d.id))checkRemote(d.id)});
+window.addEventListener('focus',()=>checkRemote(data.id));
+function isBlank(x){return !x.done.some(Boolean)&&Object.values(x.drafts).every(v=>v==='')&&x.stage===0;}
+function reachable(i){return i===0||state.done.slice(0,i).every(Boolean)}
+function complete(i,fields=[]){if(state.done[i])return;state.locked[i]=fields.map((_,j)=>state.drafts[i+':'+j]||'');state.done[i]=true;state.times[i]=new Date().toISOString();if(i<6)state.stage=i+1;save();render();}
+function go(i){if(!reachable(i))return;state.stage=i;save();render();}
+function addButton(parent,text,action,primary=false){const b=node('button',text,primary?'primary':'');b.type='button';b.addEventListener('click',action);parent.append(b);return b}
+function addLink(parent,href,text){const a=node('a',text,'action');a.href=href;a.target='_blank';a.rel='noopener noreferrer';parent.append(a)}
+function fields(parent,i,questions){questions.forEach((q,j)=>{const id='answer-'+i+'-'+j;const lab=node('label',q,'question');lab.htmlFor=id;parent.append(lab);const ta=node('textarea');ta.id=id;ta.maxLength=MAX_TEXT;ta.placeholder='Запиши решение или рассуждение…';ta.value=state.done[i]?(state.locked[i]?.[j]||''):(state.drafts[i+':'+j]||'');ta.readOnly=state.done[i];ta.addEventListener('input',()=>{state.drafts[i+':'+j]=ta.value;save()});parent.append(ta)});}
+function note(p,t,warning=false){p.append(node('p',t,warning?'note warn':'note'))}
+function render(){ $('topic').value=data.id;$('level').textContent=data.level;const nav=$('nav');nav.replaceChildren();STAGES.forEach((s,i)=>{const b=addButton(nav,(state.done[i]?'✓ ':'')+(i+1)+'. '+s,()=>go(i));if(state.done[i])b.classList.add('done');b.disabled=!reachable(i);if(i===state.stage)b.setAttribute('aria-current','step')});const n=state.done.filter(Boolean).length;$('bar').style.width=100*n/7+'%';$('progress').textContent=n+' из 7 этапов отмечено · не оценка знаний';const s=$('screen');s.replaceChildren();const i=state.stage;s.append(node('p',TIMES[i],'tag'),node('h2',STAGES[i]));let q=[];
+if(i===0||i===4){note(s,'Работай 8 минут без подсказок, тренажёра и просмотра образцов. Если не успеваешь, оставь незавершённое решение.');q=i===0?data.a:data.b;fields(s,i,q);}
+if(i===1){s.append(node('p','Разбор с преподавателем: сначала объясни смысл, затем сделай запись.'),node('p',data.example,'note'));q=['Что в этом примере было главным? Объясни своими словами.'];fields(s,i,q)}
+if(i===2){s.append(node('p',data.experiment));addLink(s,data.url,'Открыть существующий практикум MathExam ↗');note(s,'При отсутствии сети используй описанный бумажный вариант. Новый модуль может быть недоступен, если публикация сайта отстаёт от main.');q=['Прогноз до исследования','Что получилось и почему?'];fields(s,i,q)}
+if(i===3){note(s,'Сначала реши без помощи. После фиксации первой записи можно обсудить ошибки с преподавателем; исходная запись сохраняется.');q=[data.practice];fields(s,i,q)}
+if(i===5){s.append(node('p','Выполни домашнюю работу на бумаге, запиши полный ход решения. Ответы остаются у преподавателя.'));addLink(s,'materials/'+data.homework,'Открыть PDF домашней работы ↗');note(s,'Эта отметка означает назначение/получение работы, а не её выполнение. Следующий этап рекомендуется через 2–7 дней.');q=['Что нужно повторить перед домашней работой? (необязательно)'];fields(s,i,q)}
+if(i===6){const t=state.times[4];if(t){const d=new Date(t);if(Number.isFinite(d.getTime())){const a=new Date(d),b=new Date(d);a.setDate(a.getDate()+2);b.setDate(b.getDate()+7);note(s,'Рекомендуемое окно: '+a.toLocaleDateString('ru-RU')+' — '+b.toLocaleDateString('ru-RU')+'. Не открывай задачу до повторного занятия.');}}if(!state.done[6]&&!state.drafts['6:0']&&!sessionRevealed.has(data.id)){addButton(s,'Начать повторную проверку',()=>{sessionRevealed.add(data.id);render()},true);return}q=[data.transfer];fields(s,i,q)}
+if(state.done[i]){note(s,'Первая запись зафиксирована. Это не подтверждение правильности решения.');if(i<6)addButton(s,'Следующий этап',()=>go(i+1),true);if(i===3){const lab=node('label','Исправление после обсуждения (отдельно от первой записи)');lab.htmlFor='revision';const a=node('textarea');a.id='revision';a.maxLength=MAX_TEXT;a.value=state.drafts.revision||'';a.addEventListener('input',()=>{state.drafts.revision=a.value;save()});s.append(lab,a)}}else{const label=i===5?'Отметить получение задания':i===6?'Зафиксировать повторную попытку':i===0||i===3||i===4?'Зафиксировать первую запись':'Завершить этап';addButton(s,label,()=>{if((i===0||i===3||i===4||i===6)&&!confirm('Зафиксировать запись без возможности её изменить? Незавершённые ответы допустимы.'))return;complete(i,q)},true)}
+}
+if(location.protocol==='file:'){$('home-return').href='https://mathexam.space/';$('home-return').textContent='← На главную сайта (интернет)';}
+$('home-return').addEventListener('click',event=>{if(Object.entries(metadata).some(([id,m])=>m.pending||(m.status!=='ok'&&memory[id]&&!isBlank(memory[id])))&&!confirm('Не все записи сохранены в браузере. Лучше сначала выгрузить резервный JSON. Всё равно перейти на главную?'))event.preventDefault();});
+const sessionRevealed=new Set();DATA.forEach(d=>{const o=node('option',d.title);o.value=d.id;$('topic').append(o)});const requested=new URLSearchParams(location.search).get('topic');data=DATA.find(d=>d.id===requested)||DATA[0];state=read(data.id);updateStorage();render();$('topic').addEventListener('change',e=>{data=DATA.find(d=>d.id===e.target.value);state=read(data.id);checkRemote(data.id);updateStorage();render()});$('export').addEventListener('click',()=>{const payload={schema:'mathexam-lesson-cycle-pilot-v2',backupState:state,module:data.id,title:data.title,exportedAt:new Date().toISOString(),stages:STAGES.map((name,i)=>({name,completed:state.done[i],recordedAt:state.times[i]||null,firstRecord:state.locked[i]||null,draft:Object.fromEntries(Object.entries(state.drafts).filter(([k])=>k.startsWith(i+':')))})),practiceRevision:state.drafts.revision||'',assessment:'manual'};const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='mathexam-'+data.id+'-attempt.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});$('reset').addEventListener('click',()=>{checkRemote(data.id);if(mode(data.id).status==='conflict'||mode(data.id).status==='corrupt'){$('import-status').textContent='Сброс заблокирован: другая или повреждённая запись не будет перезаписана.';return}if(!confirm('Удалить записи только этой темы на этом устройстве? Сначала можно выгрузить JSON.'))return;state=blank();sessionRevealed.delete(data.id);save();render()});
+$('reload').addEventListener('click',()=>{if(mode(data.id).pending)return;if(!confirm('Ты выгрузил текущую работу в JSON? При загрузке сохранённой записи черновик из этой вкладки будет заменён.'))return;state=read(data.id,true);sessionRevealed.delete(data.id);updateStorage();render()});
+$('import').addEventListener('click',()=>{$('import-file').click()});
+$('import-file').addEventListener('change',async e=>{const f=e.target.files?.[0];e.target.value='';if(!f)return;const target=data.id;try{
+ if(f.size>MAX_BACKUP_BYTES)throw Error('Файл слишком большой.');const raw=await f.text();const payload=JSON.parse(raw);
+ if(payload?.schema!=='mathexam-lesson-cycle-pilot-v2')throw Error('Нужна резервная запись версии 2. Версия 1 остаётся отдельным архивом преподавателя.');
+ if(payload.module!==target||data.id!==target)throw Error('Выбери соответствующую тему и повтори импорт.');
+ if(!validState(payload.backupState))throw Error('Формат резервной записи неверен.');
+ checkRemote(target);if(!isBlank(state))throw Error('В теме уже есть работа. Сначала выгрузи её; импорт возможен только в пустую тему.');
+ if(['conflict','corrupt'].includes(mode(target).status))throw Error('Нельзя заменить чужую или повреждённую запись. Используй пустой браузерный профиль.');
+ state=decode(JSON.stringify(payload.backupState));const pending=save();render();await pending;if(data.id===target)$('import-status').textContent='Резервная запись восстановлена. Проверь статус сохранения выше.';
+ }catch(err){$('import-status').textContent='Импорт отклонён: '+(err instanceof SyntaxError?'неверный JSON.':err.message);}});
+
+</script></body></html>

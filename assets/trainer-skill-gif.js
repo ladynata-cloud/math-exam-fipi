@@ -15,7 +15,7 @@
 
   function manifest() {
     if (!manifestRequest) {
-      manifestRequest = root.fetch(assetPath + 'index.json?v=20261112').then(response => {
+      manifestRequest = root.fetch(assetPath + 'index.json?v=20261115-finance').then(response => {
         if (!response.ok) throw new Error('GIF examples unavailable');
         return response.json();
       }).catch(error => {
@@ -26,7 +26,7 @@
     return manifestRequest;
   }
 
-  function render(details, slug, example) {
+  function render(details, slug, example, directory) {
     const { title, steps } = example;
     const panel = element('div', '', { class: 'trainer-skill-gif-panel' });
     const viewport = element('div', '', { class: 'trainer-skill-gif-viewport' });
@@ -48,8 +48,8 @@
     details.querySelector('[data-trainer-gif-status]')?.remove();
     details.append(panel);
 
-    const framesPath = `${assetPath}${slug}.png`;
-    const gifPath = `${assetPath}${slug}.gif`;
+    const framesPath = `${directory}${slug}.png`;
+    const gifPath = `${directory}${slug}.gif`;
     let frame = 0;
     let playing = false;
 
@@ -91,17 +91,35 @@
     showFrame();
   }
 
-  async function mount(details, slug) {
-    const data = await manifest();
-    const example = data[slug];
+  async function mount(details, slug, source) {
+    const example = source?.example || (await manifest())[slug];
     if (!example || typeof example.title !== 'string' || !Array.isArray(example.steps)) {
       throw new Error('GIF example missing');
     }
-    if (details.isConnected) render(details, slug, example);
+    if (details.isConnected) render(details, slug, example, source?.directory || assetPath);
   }
 
   root.addEventListener('pagehide', () => stopPlaying?.());
   root.addEventListener('hashchange', () => stopPlaying?.());
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopPlaying?.(); });
+  root.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change', event => {
+    if (event.matches) stopPlaying?.();
+  });
   root.MathExamTrainerSkillGif = { mount };
+
+  // Static pages keep their written steps available before JavaScript loads.
+  for (const details of document.querySelectorAll('details[data-trainer-gif]')) {
+    const start = () => {
+      if (!details.open) return;
+      details.removeEventListener('toggle', start);
+      mount(details, details.dataset.trainerGif).then(() => {
+        details.querySelector('[data-trainer-gif-fallback]')?.remove();
+      }).catch(() => {
+        const status = details.querySelector('[data-trainer-gif-status]');
+        if (status) status.textContent = 'Изображение не загрузилось. Все шаги доступны ниже.';
+      });
+    };
+    details.addEventListener('toggle', start);
+    start();
+  }
 })(window);

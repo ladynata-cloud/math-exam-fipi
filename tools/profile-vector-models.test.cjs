@@ -90,6 +90,13 @@ const add = (a, b) => [a[0] + b[0], a[1] + b[1]];
 const subtract = (a, b) => [a[0] - b[0], a[1] - b[1]];
 assert.deepEqual(starters.map(lesson => lesson.id), vectorsExam.starterIds);
 assert.equal(new Set(starters.flatMap(lesson => lesson.tasks.map(task => task.id))).size, 54);
+const oppositeLesson = starters[1];
+assert.equal(starters[0].id, 'vec-basics-reading');
+assert.equal(oppositeLesson.id, 'vec-basics-equality');
+assert.match(oppositeLesson.title, /противоположные векторы/i);
+assert.match(oppositeLesson.intro, /длина одинакова.*BA = −AB/);
+assert.match(oppositeLesson.tasks.find(task => task.id === 'vec-basics-parallel-opposite').explanation, /Длины равны, направления противоположны/);
+assert.deepEqual(starters.slice(2, 5).map(lesson => lesson.id), ['vec-basics-triangle', 'vec-basics-parallelogram', 'vec-basics-difference']);
 for (const lesson of starters) {
   assert.equal(lesson.tasks.length, 6);
   assert.equal(typeof lesson.position, 'string');

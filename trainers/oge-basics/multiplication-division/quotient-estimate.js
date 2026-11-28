@@ -1,11 +1,15 @@
 (function(){
 'use strict';
 if(window.MathExamRemediationManaged)return;
-const core=window.QuotientEstimate,D=window.DivisionLab,S=window.LearningScaffolds,key='mathExamBasics.quotientEstimate.v1';
+const core=window.QuotientEstimate,D=window.DivisionLab,S=window.LearningScaffolds;
+const hundreds=new URLSearchParams(window.location.search).get('round')==='hundreds';
+const currentVersion=hundreds?3:2;
+const key=hundreds?'mathExamBasics.quotientEstimate.hundreds.v1':'mathExamBasics.quotientEstimate.v1';
 const $=id=>document.getElementById(id);
 const fresh=()=>({answers:[],answer:'',help:false,feedback:null});
-const make=(seed,version)=>({...((version===1?core.make:core.makeV2)(seed)),contentId:core.id});
-let seed=1,generatorVersion=2,source=make(seed,generatorVersion),state=fresh(),storage,blocked=false,warning='';
+const generators=[null,core.make,core.makeV2,window.QuotientEstimateHundreds?.make];
+const make=(seed,version)=>({...generators[version](seed),contentId:core.id});
+let seed=1,generatorVersion=currentVersion,source=make(seed,generatorVersion),state=fresh(),storage,blocked=false,warning='';
 let contextualHelp=null,contextualHost=null,contextualContent=null;
 function updateHelp(q){
  if(!window.MathExamBasicsHelp)return;
@@ -22,7 +26,8 @@ try{
  const raw=storage.getItem(key);
  if(raw!==null){
   const saved=JSON.parse(raw),version=saved?.generatorVersion===undefined?1:saved.generatorVersion;
-  if(!saved||Array.isArray(saved)||!Number.isInteger(saved.seed)||saved.seed<0||saved.seed>4294967295||![1,2].includes(version))throw Error('format');
+  const compatible=hundreds?version===3:[1,2].includes(version);
+  if(!saved||Array.isArray(saved)||!Number.isInteger(saved.seed)||saved.seed<0||saved.seed>4294967295||!compatible)throw Error('format');
   const candidate=make(saved.seed,version),s=saved.state;
   if(!s||Array.isArray(s)||!Array.isArray(s.answers)||s.answers.length>candidate.steps.length||!s.answers.every((a,i)=>typeof a==='string'&&a.length<=30&&D.check(a,candidate.steps[i]))||typeof s.answer!=='string'||s.answer.length>30||typeof s.help!=='boolean')throw Error('state');
   if(s.feedback!==null&&s.feedback!==undefined&&(!s.feedback||typeof s.feedback!=='object'||Array.isArray(s.feedback)||!['incorrect','hint','solution'].includes(s.feedback.kind)||(s.feedback.text!==undefined&&(typeof s.feedback.text!=='string'||s.feedback.text.length>4000))))throw Error('feedback');
@@ -52,6 +57,7 @@ function render(focus){
  source.steps.slice(0,i).forEach((step,n)=>{const p=document.createElement('p');p.textContent='✓ '+step.record;if(n===i-1)p.className='latest';trail.append(p);});
  $('estimate-form').hidden=done;$('estimate-hint').hidden=done;$('estimate-solution').hidden=done;
  $('estimate-new').textContent=done?'Следующий пример →':'Другой пример';
+ const apply=$('estimate-apply');if(apply)apply.hidden=!done;
  const f=$('estimate-feedback'),help=$('estimate-help'),kind=state.feedback?.kind;
  const html=q&&['hint','solution'].includes(kind)?S?.render(source,q,{scope:'step',step:i,level:kind==='solution'?3:2})||'':'';
  // render() escapes its canonical numbers and text. Raw drafts and stored
@@ -76,11 +82,12 @@ $('estimate-solution').onclick=()=>showHelp('solution');
 $('estimate-new').onclick=()=>{
  let nextSeed=seed,next;
  for(let attempt=0;attempt<64;attempt++){
-  nextSeed=(nextSeed+1)>>>0;next=make(nextSeed,2);
-  if(next.task.prompt!==source.task.prompt){seed=nextSeed;generatorVersion=2;source=next;state=fresh();save();render(true);return;}
+  nextSeed=(nextSeed+1)>>>0;next=make(nextSeed,currentVersion);
+  if(next.task.prompt!==source.task.prompt){seed=nextSeed;generatorVersion=currentVersion;source=next;state=fresh();save();render(true);return;}
  }
  warning='Не удалось выбрать другой пример. Попробуй открыть тренировку снова.';notice();
 };
 window.addEventListener('mathexam-basics-help-ready',()=>render());
+$(hundreds?'estimate-hundreds':'estimate-tens')?.setAttribute('aria-current','true');
 $('view-practice').hidden=false;$('practice').hidden=true;render();
 })();

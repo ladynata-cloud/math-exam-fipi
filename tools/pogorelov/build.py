@@ -143,6 +143,14 @@ for u in units:
         'geometry.js', 'lab.js', 'experiments.js', 'extra-models.js', 'tasks.js',
         'extra-tasks.js', 'space.js', 'viewer.js', 'store.js', 'lesson.js',
     ], '../')
+    if u.get('topicQuestion'):
+        code = code.replace('<script src="../assets/lesson.js"></script>',
+            '<script src="../assets/topic-labs.js"></script><script src="../assets/lesson.js"></script>')
+    if lesson_id == 'pogorelov-base-9-107':
+        code = (ROOT/'tools/geometry-inscribed-angle/proof.html').read_text(encoding='utf-8') + code
+    if lesson_id == 'pogorelov-base-9-126':
+        code = code.replace('<script src="../assets/lesson.js"></script>',
+            '<script src="../../geometry-course/assets/area-triangle-proof.js?v=20261118"></script><script src="../assets/lesson.js?v=20261118-triangle-area"></script>')
     if lesson_id == MIDLINE:
         code = code.replace('<script src="../assets/lesson.js"></script>',
             '<script src="/geometry-course/assets/midline-diagram.js?v=20261114"></script><script src="../assets/lesson.js?v=20261114-midline"></script>')

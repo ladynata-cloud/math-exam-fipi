@@ -1,6 +1,13 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom'),M=require('./math.js');
 const lessons=[{id:'p01',part:1,order:1,page:3,title:'Числовые выражения',chapter:'Язык',theory:[{title:'Правило',text:'Сначала скобки.'}],skills:['fraction-add'],tasks:[{id:'p01-t01',title:'№ 8',prompt:'Вычисли 1/2 + 1/4.',kind:'number',answer:'3/4',answerFormat:'reduced-fraction',finalLabel:'Чему равна сумма?',hint:'Приведи к знаменателю 4.',steps:[{prompt:'Найди общий знаменатель.',answer:'4',hint:'Он делится на 2 и 4.',answerFormat:'integer'},'1/2 = 2/4.','2/4 + 1/4 = 3/4.'],skills:['fraction-add'],source:{type:'textbook',number:8,reference:'№ 8',part:1,page:4}},{id:'p01-t02',title:'Доказательство',prompt:'Докажи утверждение.',kind:'manual',answer:'',steps:['Начни с определения.','Сделай вывод.'],hint:'Вспомни определение.',source:{type:'textbook',number:9,reference:'№ 9',part:1,page:4}}]},{id:'p25',part:2,order:25,page:4,title:'Обыкновенные дроби',chapter:'Дроби',theory:[],skills:['fraction-multiply'],tasks:[{id:'p25-t01',title:'№ 8 а',prompt:'Выбери дробь, равную 0,5.',kind:'choice',choices:['1/2','1/3','2/3'],answer:'1/2',steps:[],hint:'Одна половина.',source:{type:'textbook',number:8,reference:'№ 8 а',part:2,page:5}}]}];
+const published={window:{}};
+require('node:vm').runInNewContext(fs.readFileSync(__dirname+'/data.js','utf8'),published);
+for(const [lessonId,index] of [['p01',0],['p28',1],['p40',1]]){
+ const card=published.window.PetersonCourse.lessons.find(lesson=>lesson.id===lessonId).tasks[index];
+ const lesson=lessons.find(item=>item.part===card.source.part);
+ lesson.tasks.push({...card,id:'fixture-'+card.transfer.skill});
+}
 function runtime(initial=null,hash='#home'){
  const dom=new JSDOM('<header><nav><a href="#home">Курс</a><a href="#skills">Тренировка</a><a href="#progress">Результаты</a></nav></header><div id="storage-warning" hidden></div><main id="main"></main>',{url:'https://example.test/school/peterson5/'+hash,runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window;w.scrollTo=()=>{};w.PetersonCourse={lessons};w.PetersonMath=M;w.PetersonModels={mount(el,l,t,o){el.innerHTML='<button id="model-change">Модель</button>';el.querySelector('button').onclick=()=>o.onChange({n:3});return ()=>{};}};if(initial)w.localStorage.setItem('mathexam.peterson5.v1',JSON.stringify(initial));w.eval(fs.readFileSync(__dirname+'/app.js','utf8'));
@@ -18,7 +25,67 @@ for(const sample of ['4/5: пояснение','42/□','18/□','506/□']){con
 for(const sample of ['Decimal/Fraction','8 : 2','https://example.test/a/b','https://example.test/1/2','https://a/b','(Decimal)/(Fraction)'])assert.equal(r.api.format(sample),sample,'Non-math text preserved: '+sample);
 for(const sample of ['<img src=x onerror=alert(1)> a/b','(3 + <svg onload=alert(1)>)/6','{{mathfrac:<img src=x>:1}}']){const box=r.d.createElement('div');box.innerHTML=r.api.format(sample);assert.equal(box.querySelectorAll('img,svg,script').length,0,'Formatting stays escaped');}
 const bad=JSON.parse('{"version":1,"tasks":{"__proto__":{},"constructor":{}},"practice":{}}');assert.equal(Object.keys(r.api.validateState(bad).tasks).length,0);r.close();
+async function testCachedAssets(stale,failFirst){
+ const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://example.test/school/peterson5/#lesson/p28/1',runScripts:'outside-only',pretendToBeVisual:true});
+ const w=dom.window,doc=w.document;
+ w.scrollTo=()=>{};
+ const read=file=>fs.readFileSync(__dirname+'/'+file,'utf8');
+ const key='mathexam.peterson5.v1',saved=JSON.stringify({version:1,practice:{},tasks:{'p28-t02':{note:'Черновик до обновления'}}});
+ w.localStorage.setItem(key,saved);
+ const get=w.Storage.prototype.getItem;
+ const accesses=[];
+ for(const operation of ['getItem','setItem','removeItem','clear']){
+  const original=w.Storage.prototype[operation];
+  w.Storage.prototype[operation]=function(...args){accesses.push(operation);return original.apply(this,args);};
+ }
+ for(const file of ['math.js','models.js','data.js'])w.eval(read(file));
+ if(stale.includes('math.js'))w.PetersonMath.skills=w.PetersonMath.skills.filter(skill=>skill.id!=='letter-product');
+ if(stale.includes('data.js'))for(const lesson of w.PetersonCourse.lessons)for(const task of lesson.tasks){
+  if(task.transfer?.skill==='decimal-place-subtract')delete task.transfer;
+ }
+ const asks=[],append=doc.head.appendChild.bind(doc.head);
+ doc.head.appendChild=function(node){if(node.tagName==='SCRIPT')asks.push(node);return append(node);};
+ let hashListeners=0;
+ const listen=w.addEventListener.bind(w);
+ w.addEventListener=function(name,...args){if(name==='hashchange')hashListeners++;return listen(name,...args);};
+ const checkUnopened=()=>{
+  assert.equal(w.PetersonApp,undefined);assert.deepEqual(accesses,[]);assert.equal(hashListeners,0);
+  assert.equal(get.call(w.localStorage,key),saved);
+ };
+ const filename=script=>new URL(script.src).pathname.split('/').pop();
+ const failures=new Set(failFirst?['data.js']:[]);
+ async function settle(expected){
+  const scripts=asks.splice(0);
+  assert.deepEqual(scripts.map(filename).sort(),[...expected].sort());
+  for(const script of scripts){
+   checkUnopened();
+   const file=filename(script);
+   assert.equal(script.getAttribute('src'),file+'?v=p5-transfer-20261118');
+   if(failures.has(file))script.dispatchEvent(new w.Event('error'));
+   else{w.eval(read(file));script.dispatchEvent(new w.Event('load'));}
+  }
+  await new Promise(resolve=>setImmediate(resolve));
+ }
+ try{
+  w.eval(read('app.js'));
+  if(stale.length)await settle(stale);else assert.deepEqual(asks,[]);
+  if(failFirst){
+   checkUnopened();
+   assert.match(doc.querySelector('main').textContent,/подключение|интернет/i);
+   const retry=doc.querySelector('#retry-course-assets');assert(retry);
+   failures.clear();retry.click();retry.click();await settle(['data.js']);
+  }
+  assert.equal(hashListeners,1,'exactly one course navigation handler');
+  assert.equal(w.PetersonApp.getState().tasks['p28-t02'].note,'Черновик до обновления');
+  doc.querySelector('[data-action="hint"]').click();
+  assert(w.PetersonApp.getState().tasks['p28-t02'].hint,'one click opens help once');
+  doc.querySelector('[data-action="independent-check"]').click();
+  assert.equal(w.location.hash,'#practice/unlike-fraction-subtract/1');
+ }finally{dom.window.close();}
+}
 (async()=>{
+ for(const stale of [[],['math.js'],['data.js'],['math.js','data.js']])await testCachedAssets(stale,false);
+ await testCachedAssets(['math.js','data.js'],true);
  const current=runtime(null,'#lesson/p01/0');current.input('#final-answer','2/4');current.input('#notebook','Сохранить мой черновик');current.click('guided');current.input('[data-step-input="0"]','4');current.submit('[data-step-form="0"]');current.click('continue-step');current.d.querySelector('#model-change').click();
  const before=JSON.parse(JSON.stringify(current.state().tasks['p01-t01'])),incoming=current.state();incoming.tasks['p01-t01']={value:'3/4',correct:true,independent:true,attempts:1,note:'Чужая версия черновика',completion:{attempts:1,assisted:false,independent:true}};incoming.tasks['p25-t01']={value:'1/2',correct:true,independent:true,attempts:1,completion:{attempts:1,assisted:false,independent:true}};
  current.go('#progress');const payload=JSON.stringify({course:'peterson5',state:incoming});await current.d.querySelector('#import-file').onchange({target:{files:[{size:payload.length,text:async()=>payload}]}});

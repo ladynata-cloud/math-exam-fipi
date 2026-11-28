@@ -226,3 +226,22 @@ Scope deviations:
 Recommendation:
 Next user decision:
 ```
+
+## Integration after the first-part board release
+
+Task `POWERS_AND_HINT_CONTEXT_20261115` belongs to [PR #607](https://github.com/ladynata-cloud/math-exam-fipi/pull/607). Its original base is `c6d0643c05962be5065f531a5910b81fe3d4262d` and the reviewed teaching delta comes from `7cbb5abf3b58084b12aa5e388c2fe4e663655ca7`. The integration base for the first-part board is `901bf101286c403cb1b1f07fcbbd965115666725` (#779). Review level is MEDIUM for the bounded shared rendering and content changes.
+
+## Reported problem and correction
+
+For `(4^3 × 4^2) / 4^3`, the old hint only described adding powers with the same base. Multiplication in the numerator adds the exponents. Division by a power with the same nonzero base subtracts its exponent. The answer is `4^(3 + 2 − 3) = 16`. Use the two operation-specific rules across the six authored power tasks and supply a hint for the full task in independent and plan modes.
+
+When a task relies on its first step for help, show that step’s question with its hint. In the rational and radical examples this gives meaning to an excluded value or a domain boundary. In the extrema example the question identifies the zero of the derivative. Guided practice continues to show the hint for the current step. State, scoring, authored answers and board messages retain their existing formats.
+
+Limit the zero-exponent wording change to the three active explanations in the functions prerequisites and the college trainer. Two further instances occur in dated OGE book editions v1 and v2. Those editions are immutable under [ADR 0012](../adr/0012-fixed-oge-book-editions.md) and are outside this integration.
+
+## Acceptance
+
+- Exercise the reported task and all six authored sets of step answers. `16` and `4^(3+2-3)` must pass. `65536` and `4^(3+2+3)` must fail.
+- Cover `expr-powers-4`, `eq-rational-4`, `expr-fractions-4`, `eq-root-4` and `calc-extreme-5` in both independent and plan modes. Opening help must retain the draft, task identity and previous work, and record assisted credit.
+- Exercise guided hint progression, the existing opposite-vector cases, and the visible help at 320 and 1280 CSS pixels with the DOM and Chromium `profile-task-first` tests. Check the three active nonzero-base explanations with `profile-equations.test.cjs`.
+- On the public START page and all 14 current board wrappers, version the changed `app.js`, `equations-data.js` and `functions-data.js` with fresh cache keys. Retain the #779 keys on its other board modules. Check returning pupils, direct board entries and progress isolation, and rebuild and verify the offline START package and navigator receipts on the composed tree.

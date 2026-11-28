@@ -9,6 +9,7 @@ const { createServer } = require('node:http');
 const { createServer: createNetServer } = require('node:net');
 const { extname, join, resolve, sep } = require('node:path');
 const { chromium } = require('playwright');
+const examMap = require('../ege-profil/exam-map.js');
 const ROOT = resolve(__dirname, '..');
 const SHOTS = process.env.PROFILE_ADDED_BOARD_SHOTS;
 const CONFIGS = [
@@ -308,7 +309,7 @@ async function dragLab(page, controller, observer, label) {
 }
 
 async function canonicalEntries(browser, siteOrigin, boardOrigin) {
-  stage('five canonical START links and registered board aliases');
+  stage('five legacy/current START link pairs and registered board aliases');
   const entry = await contextFor(browser, siteOrigin, boardOrigin, 'entry');
   for (const config of CONFIGS) {
     const canonical = '/ege-profil/start/index.html#exam/' + config.number;
@@ -317,15 +318,52 @@ async function canonicalEntries(browser, siteOrigin, boardOrigin) {
     assert.equal(await entry.page.locator('#exam-start').getAttribute('href'), '#practice/' + config.entry + '/guided', 'standalone resumes the synthetic personal attempt');
     assert.equal(await entry.page.evaluate(key => typeof window[key], config.api), 'undefined', 'standalone does not activate a board session');
     const link = new URL(await entry.page.locator('.board-link').getAttribute('href'), siteOrigin);
-    assert.equal(link.searchParams.get('trainer'), canonical); link.searchParams.set('server', boardOrigin);
-    await entry.page.goto(link.href, { waitUntil: 'domcontentloaded' }); const frame = await profileFrame(entry.page, config);
-    assert.equal(new URL(frame.url()).pathname, '/trainers/' + config.wrapper);
-    assert.equal(new URL(frame.url()).hash, '#exam/' + config.number);
-    assert.equal(await frame.locator('.exam-topic').count(), config.lessons.length);
-    assert.equal(await frame.locator('#exam-start').getAttribute('href'), '#practice/' + config.entry + '/independent', 'board never reads the personal ongoing attempt');
-    await personalStorage(entry);
+    assert.equal(link.searchParams.get('trainer'), canonical);
+    const current = '/ege-profil/start/index.html' + examMap.hash(examMap.fromLegacyStart(config.number));
+    let originalTask;
+    for (const source of [canonical, current]) {
+      link.searchParams.set('trainer', source); link.searchParams.set('server', boardOrigin);
+      await entry.page.goto(link.href, { waitUntil: 'domcontentloaded' }); const frame = await profileFrame(entry.page, config);
+      assert.equal(new URL(frame.url()).pathname, '/trainers/' + config.wrapper, source + ': same registered wrapper');
+      assert.equal(new URL(frame.url()).hash, '#exam/' + config.number, source + ': stable registered route');
+      assert.equal(await frame.locator('.exam-topic').count(), config.lessons.length);
+      assert.equal(await frame.locator('#exam-start').getAttribute('href'), '#practice/' + config.entry + '/independent', 'board never reads the personal ongoing attempt');
+      await frame.locator('#exam-start').click(); await frame.locator('#answer-form').waitFor();
+      const selected = await frame.evaluate(({ id, api }) => {
+        const state = window[api].getState(), lesson = ProfileLessons.find(item => item.id === id);
+        const session = state.progress.sessions[id + ':independent'];
+        return { route: state.route, lessonId: lesson.id, position: lesson.position, taskId: session.taskId,
+          task: lesson.tasks.find(item => item.id === session.taskId), assisted: session.assisted, draft: session.draft };
+      }, { id: config.entry, api: config.api });
+      assert.equal(selected.route, '#practice/' + config.entry + '/independent');
+      assert.notEqual(selected.taskId, config.personalTask, 'board task is independent of the seeded personal task');
+      assert.equal(selected.assisted, false); assert.equal(selected.draft, '');
+      if (source === canonical) originalTask = selected;
+      else assert.deepEqual(selected, originalTask, config.id + ': legacy and current entrances select identical lesson/task payloads');
+      await personalStorage(entry);
+    }
   }
   await entry.context.close();
+}
+async function canonicalRoomAlias(teacherSession, studentSession, config, t, s) {
+  stage(config.id + ': current alias synchronizes and survives observer reload');
+  const before = await synchronized(t, s, 'legacy route before current alias');
+  const hash = examMap.hash(examMap.fromLegacyStart(config.number));
+  await t.evaluate(value => { location.hash = value; }, hash);
+  await t.waitForFunction(value => location.hash === value && document.querySelector('.lesson-head [data-exam-start]'), hash);
+  const current = await synchronized(t, s, 'current official/extra alias');
+  assert.equal(current.route, hash);
+  assert.deepEqual(current.progress, before.progress, 'opening the current alias creates no task or learning credit');
+  const actualIds = await t.locator('section.panel > .readiness-card a[href^="#practice/"]').evaluateAll(links => links.map(link => link.hash.split('/')[1]).sort());
+  assert.deepEqual(actualIds, config.lessons.slice().sort(), 'current alias retains the complete registered topic inventory');
+  await studentSession.page.reload({ waitUntil: 'domcontentloaded' }); await connected(studentSession.page);
+  s = await profileFrame(studentSession.page, config);
+  await waitSnapshot(s, current, 'current alias after observer reload');
+  await synchronized(t, s, 'current alias renders identically after reload');
+  await overview(t, config);
+  const restored = await synchronized(t, s, 'return to legacy overview');
+  assert.deepEqual(restored.progress, before.progress, 'legacy/current navigation preserves the original shared payload');
+  return { t, s };
 }
 async function deepJourney(teacherSession, studentSession, config) {
   const teacher = teacherSession.page, student = studentSession.page;
@@ -444,7 +482,9 @@ async function run(browser, siteOrigin, boardOrigin) {
     stage(config.id + ': registered entry and isolated initial state');
     await teacher.locator('#trainerQuick option[value="' + config.wrapper + '"]').waitFor({ state: 'attached' });
     await teacher.locator('#chooseTrainer').click(); await teacher.locator('#pickerSearch').fill(config.id);
-    await teacher.locator('#pickerResults .picker-item').filter({ hasText: 'ЕГЭ профиль №' + config.number }).click();
+    const entry = examMap.fromLegacyStart(config.number);
+    const label = entry.number ? 'ЕГЭ профиль №' + entry.number : 'ЕГЭ профиль · дополнительная тема';
+    await teacher.locator('#pickerResults .picker-item').filter({ hasText: label }).click();
     await Promise.all([connected(teacher), connected(student)]);
     let t = await profileFrame(teacher, config), s = await profileFrame(student, config);
     await synchronized(t, s, 'registered default route');
@@ -458,6 +498,7 @@ async function run(browser, siteOrigin, boardOrigin) {
     await teacher.setViewportSize({ width: 1440, height: 1000 });
     if (await t.locator('#calm-toggle').getAttribute('aria-pressed') === 'false') await t.locator('#calm-toggle').click();
     await synchronized(t, s, 'shared Calm preference');
+    ({ t, s } = await canonicalRoomAlias(teacherSession, studentSession, config, t, s));
     ({ t, s } = await deepJourney(teacherSession, studentSession, config));
     ({ t, s } = await familyCoverage(teacherSession, studentSession, config, t, s));
 
@@ -481,19 +522,19 @@ async function run(browser, siteOrigin, boardOrigin) {
   }
   assert.deepEqual([...covered].sort(), CONFIGS.flatMap(config => config.lessons).sort(), 'all 22 topic families exercised');
   assert.deepEqual(failures, [], 'no browser errors, failed local assets or production requests');
-  console.log('PROFILE_ADDED_BOARD_BROWSER_OK: 5 registered wrappers; 22 topic families / 132 authored tasks; natural task and model actions; accepted history; real grant/revoke; both reload directions; per-wrapper late join; four personal stores isolated; no echo');
+  console.log('PROFILE_ADDED_BOARD_BROWSER_OK: 5 registered wrappers; 5 legacy/current entrance pairs with identical task payloads; 5 current aliases synchronized and reloaded; 22 topic families / 132 authored tasks; natural task and model actions; accepted history; real grant/revoke; both reload directions; per-wrapper late join; four personal stores isolated; no echo');
 }
 async function diagnostics() {
   for (const session of sessions) {
     if (session.page.isClosed()) continue;
     const data = await session.page.evaluate(() => ({ share: document.querySelector('#shareStatus')?.textContent, connected: typeof shared === 'object' && shared.connected, hydrated: typeof roomStateReceived === 'boolean' && roomStateReceived, mirror: document.querySelector('#mirrorStatus')?.dataset.mirrorStatus, writer: document.body.classList.contains('control-owner'), messages: window.__profileGateMessages })).catch(() => null);
-    const frame = session.page.frames().find(item => /\/trainers\/ege-profile-(planimetry|vectors|probability|random-variables|equations)\.html/.test(item.url()));
+    const frame = session.page.frames().find(item => new URL(item.url()).pathname.startsWith('/trainers/ege-profile-'));
     const work = frame ? await frame.evaluate(() => ({ state: window.__profileGateApi?.getState(), route: location.hash, text: document.querySelector('#main')?.innerText.slice(0, 3000) })).catch(() => null) : null;
     console.error('DIAGNOSTIC ' + session.tag + ' ' + JSON.stringify({ ...data, work }));
     if (SHOTS) await session.page.screenshot({ path: join(SHOTS, 'failure-' + session.tag + '.png'), timeout: 3000 }).catch(() => {});
   }
 }
-(async () => {
+async function withLocalBoard(scenario) {
   if (SHOTS) mkdirSync(SHOTS, { recursive: true });
   const server = staticServer(); let browser, child, watchdog, serverErrors = '';
   try {
@@ -507,7 +548,8 @@ async function diagnostics() {
         child.stderr.on('data', chunk => { serverErrors = (serverErrors + String(chunk)).slice(-4000); });
         await healthy(boardOrigin, child, () => serverErrors);
         browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH || process.env.BROWSER_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
-        await run(browser, siteOrigin, boardOrigin);
+        await scenario(browser, siteOrigin, boardOrigin);
+        assert.deepEqual(failures, [], 'no failed local assets, page errors or external requests');
       })(),
       new Promise((_, reject) => { watchdog = setTimeout(() => reject(new Error('Browser gate exceeded 240 seconds at ' + phase)), 240000); })
     ]);
@@ -516,4 +558,6 @@ async function diagnostics() {
     clearTimeout(watchdog); await browser?.close(); if (child && child.exitCode === null) child.kill('SIGTERM');
     if (server.listening) await new Promise(yes => server.close(yes));
   }
-})().catch(error => { console.error('PROFILE_ADDED_BOARD_BROWSER_FAILED at ' + phase + '\n' + (error.stack || error)); process.exitCode = 1; });
+}
+module.exports = { withLocalBoard, contextFor, connected, profileFrame, snapshot, synchronized, changedModel, handoff, personalStorage };
+if (require.main === module) withLocalBoard(run).catch(error => { console.error('PROFILE_ADDED_BOARD_BROWSER_FAILED at ' + phase + '\n' + (error.stack || error)); process.exitCode = 1; });

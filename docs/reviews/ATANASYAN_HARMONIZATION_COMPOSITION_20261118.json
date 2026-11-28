@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "review": "ATANASYAN_HARMONIZATION_COMPOSITION_20261118",
+  "reviewer": "Independent Codex agent /root/oge_finish",
+  "kind": "Independent internal technical review; no external provider audit",
+  "reviewedAt": "2026-11-18T09:57:40.601176+00:00",
+  "pullRequest": "https://github.com/ladynata-cloud/math-exam-fipi/pull/623",
+  "snapshot": {
+    "workingTreeCheckpoint": "5408f09208c2d97881570c4f11d39e068329fdce",
+    "scope": "The exact working-tree file hashes below, after conflict resolution. This is not an exact remote-head or whole-repository release approval.",
+    "harmonizationParent": "99b3bfb9c231d5fd3b5cdda2c543231171a57618",
+    "geometryCompositionParent": "5439d927feb3b7f9a29a9c0d7b764f6d340864f2",
+    "reviewedAmendmentSource": "5d58b20a9aad26fbddc479f038d7df0faa62c68a",
+    "historicalPreservationBase": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+    "inspectedFilesSHA256": {
+      "ege-profil/atanasyan-10-11/course.js": "d0c7bbb95b5c12d9cccd7ab4eba569129024d501f6ea0b65db92ffd3a8b2a0ff",
+      "ege-profil/atanasyan-10-11/lesson-model.js": "ee54410f0965cb2b5e7e8cd829b8ff434e62de90714148865b54107e846643c9",
+      "ege-profil/atanasyan-10-11/lesson.html": "2b64087a1659d4c953b21f0ca61298f84b3af0e34f3f525d07b57a2587d4a4cc",
+      "ege-profil/atanasyan-10-11/lesson.js": "51936dc4efab390d39a9beeb170bd3444101bdb29a2773405f2f16d6893c163c",
+      "ege-profil/atanasyan-10-11/lessons-a.js": "2212a4a66d53034af140c7a9f723d3ea6243da7865d46e856113b0448dd5e6c6",
+      "ege-profil/atanasyan-10-11/lessons-b.js": "5642d8da271447d3153ea49c5670a18fd97a2955c89e58dc2bbfa953ce68e4bc",
+      "ege-profil/atanasyan-10-11/lessons.js": "d2c22b1b2acb69bfaf24da3f5d146fa047ea76f1c31217b405758778f6566448",
+      "geometry-course/assets/angle-notation.js": "b5966d9f2baec768e915527b7548e12ab6c05f90c145a5b1f3e5d0c1806e198a",
+      "geometry-course/textbook/assets/engine.js": "50d8ef944320f6c5f135597caf39899e1c75906e25e01453871ef75714ad6959",
+      "geometry-course/textbook/assets/grade7-board-engine.js": "a3a6d5cb1a39e2b189a648ef7085e174b184f510f7bc66b85181c2fdf675e4dd",
+      "stereo-course/literacy/app.js": "facfd8b46159c7a43abda61e7c013dbb51d47166258f3209769f2e428a231e64",
+      "stereo-course/textbook/assets/engine.js": "aded83bf7166a6c083bac6fa683b661db50af988bb8e1fe7dd16783b2f95ec62",
+      "tools/atanasyan-harmonization/preservation-baseline.json": "ce5c9ad984f40f487fbf059282e0ffe453850ca6885176b016990ce2e814527f",
+      "tools/atanasyan-harmonization/preservation-supplement-658.json": "c1fa53b37dc80433680b0798e9c1b28503d87a07d02c5c1e946ef431ab4815f5",
+      "tools/atanasyan-harmonization/preservation.test.cjs": "f24e6a2ae88d70a39cb05a860e2ff74a5f4b1c682fb4e850fc65886a505d2dc1",
+      "tools/geometry/build_site.py": "07ea738e63429295b2a7960b72fa3c6d04383c445618f43b79f0fd1e817c3498",
+      "tools/geometry/harmonization-state-dom.test.cjs": "786a09df2054bd9b3229b2ee39a98d79935913c8533fb80f0c4a03be2a393c74",
+      "tools/stereo-textbook/catalog-return-composition.cjs": "176821e71580438811c35781c012f6d095a85640ddda0e91964be3248a9fec3a",
+      "tools/stereo-textbook/catalog-return-composition.json": "d1cedfb9dde97d8ea3a66aae95e315b992d44e9cc6c17bc3cee3deacff8ff79a",
+      "tools/stereo-textbook/catalog-return-migration.json": "78db535f160a2cade40d6bd356f8abc9ee402e1cea54699070ea587321d81cbb",
+      "tools/stereo-textbook/harmonization-input-migration.cjs": "afe3da0283ca04e3e0823eed22c36f67f0a2cb81a6355dfd41c198f36b3436ff",
+      "tools/stereo-textbook/harmonization-input-migration.json": "c2f378de53ce8296f462d13556298441f0fd5853256120cf4deb29a33a920cce",
+      "tools/stereo-textbook/mobile-layout-migration.cjs": "7651163d9caa1069f5914f9f0a63cdc0fad77b122376d12192d5c26a9f2ad934"
+    }
+  },
+  "verdict": "PASS_WITH_STATED_LIMITS",
+  "blockingFindings": [],
+  "findings": [
+    "The composed stereo textbook engine contains exactly the four catalog-return amendments; reversing each unique span yields every byte of the original harmonization parent engine.",
+    "The original harmonization inverse then yields SHA-256 14cb7f4c44b7e6aa78da563503592cd97a8f62ae7d6e57dc23942565a7d3a413; historicalRead yields the original layout fixture SHA-256 9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74.",
+    "The original 878-path preservation inventory remains intact: 868 unchanged files and ten exact prior amendments, all byte-identical to both source 5d58b20a and composed parent 5439d927. The supplement validates each current full hash before substituting its original full hash into the unchanged historical aggregate.",
+    "The ten amendments are bounded to two planar textbook runtimes, the literacy runtime, and seven EGE bridge files. Source banks, first steps, and legacy trainer bytes remain protected by the original gate.",
+    "The angle-notation integration repair uses the same scoped normalization for equal and classified check, preserves reverse and Cyrillic angle names and degree suffixes, and retains earlier written proof work.",
+    "The builder conflict resolution combines the harmonized lesson assets with the angle mini-lesson, retains the scoped --lesson build mode, keeps retained trainers read-only, and emits canonical/navigator metadata via the existing publishing path."
+  ],
+  "executedChecks": [
+    {
+      "check": "Protected inventory independently compared byte-for-byte to historical base and both amendment commits",
+      "result": "PASS",
+      "protectedFiles": 878,
+      "unchangedFiles": 868,
+      "exactReviewedAmendments": 10
+    },
+    {
+      "command": "node tools/atanasyan-harmonization/preservation.test.cjs",
+      "result": "PASS",
+      "negativeControls": 12,
+      "geometryCards": 1425,
+      "stereoCards": 674,
+      "firstSteps": 255,
+      "literacyCards": 36,
+      "legacyTrainers": 70
+    },
+    {
+      "check": "Direct beforeHarmonization and historicalRead assertions on the combined engine",
+      "result": "PASS",
+      "mutationNegativeControls": 2,
+      "mutations": [
+        "Additional unreviewed trailing bytes",
+        "Changed catalog-return span"
+      ]
+    },
+    {
+      "command": "node --test --test-name-pattern='current angle notation survives' tools/geometry/harmonization-state-dom.test.cjs",
+      "result": "PASS",
+      "tests": 1,
+      "dependency": "jsdom via an existing isolated test dependency directory"
+    },
+    {
+      "check": "Original preservation baseline, mobile-layout gate and harmonization input manifest remain byte-identical to the original #623 parent",
+      "result": "PASS"
+    }
+  ],
+  "notPerformed": [
+    "A full independent rerun of every reported mathematics, browser, packaging, transport, or CI gate.",
+    "Live browser rendering, production deployment verification, real-pupil pilot, or external provider audit.",
+    "Final remote PR head/base verification and release authorization decision."
+  ],
+  "reviewBoundary": "No source edits were made by this reviewer. Only this record was written. A later change to an inspected file requires relevant renewed review. Final head/base, bindings, ZIP parity and CI remain the release agent responsibility; existing task-specific release limits remain in force."
+}

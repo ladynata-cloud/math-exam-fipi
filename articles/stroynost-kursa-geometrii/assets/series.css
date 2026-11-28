@@ -100,3 +100,15 @@
     white-space:normal;
   }
 }
+
+/* Учитель может показывать условие и рисунок до открытия разбора. */
+.lesson-case { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.lesson-case .practice-diagram { max-width: 340px; margin: 8px 0; padding: 0; border: 0; box-shadow: none; }
+.lesson-case summary { width: fit-content; max-width: 100%; padding: 8px 0; cursor: pointer; font-weight: 700; color: var(--pen); }
+.lesson-case details p { margin-top: 6px; }
+@media print { .lesson-case details > * { display: block; } }
+.lesson-case { scroll-margin-top: 6rem; }
+@media screen and (max-width: 700px) {
+  .site-header { position: static; }
+  .lesson-case { scroll-margin-top: .5rem; }
+}

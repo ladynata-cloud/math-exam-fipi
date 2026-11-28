@@ -380,7 +380,7 @@
       if (id === 'geo-similarity-perimeter') { d.label(p.A, p.B, '5', 23); d.label(p.D, p.E, '12', 23); d.text(mix(p.C, mix(p.A, p.B, .5), .50), 'P = 24', 0, 0, green, 22); d.text(mix(p.F, mix(p.D, p.E, .5), .5), 'P = ?', 0, 0, amber); }
       if (id === 'geo-similarity-area') { d.label(p.A, p.B, '2 доли', 23); d.label(p.D, p.E, '5 долей', 23); d.text(mix(p.C, mix(p.A, p.B, .5), .5), 'S = 12', 0, 0, green, 22); d.text(mix(p.F, mix(p.D, p.E, .5), .5), 'S = ?', 0, 0, amber); }
       if (id === 'geo-similarity-from-area') { d.label(p.A, p.B, '6', 23); d.label(p.D, p.E, '?', 23, amber); d.text(mix(p.C, mix(p.A, p.B, .5), .5), 'S = 16', 0, 0, green, 22); d.text(mix(p.F, mix(p.D, p.E, .5), .5), 'S = 100', 0, 0, green); }
-      d.toggle('Выделить соответствующие стороны', () => { d.line(p.A, p.B, amber, false, 5); d.line(p.D, p.E, amber, false, 5); d.line(p.B, p.C, green, true, 4); d.line(p.E, p.F, green, true, 4); }, 'Сплошные цветные стороны соответствуют друг другу. Пунктирные — тоже. Сохраняй один порядок: большая сторона / малая сторона.');
+      d.toggle('Выделить соответствующие стороны', () => { d.line(p.A, p.B, amber, false, 5); d.line(p.D, p.E, amber, false, 5); d.line(p.B, p.C, green, true, 4); d.line(p.E, p.F, green, true, 4); }, 'Сплошные стороны образуют одну пару, пунктирные — другую. Чтобы составить пропорцию, поставь в числители обеих дробей стороны одного треугольника, а в знаменатели — соответствующие стороны другого.');
     });
   });
   register(['geo-similarity-parallel', 'geo-similarity-split'], (container, task, context) => {

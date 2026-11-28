@@ -1,0 +1,45 @@
+/* Mathematical quantities are DOM nodes, never baked into an illustration. */
+.arz-art-ready .arz-adventure .adv-token {
+  background-image: url('arzhenikov-object-atlas.png');
+  background-size: 600% 800%;
+  background-position: var(--token-x) var(--token-y);
+  background-repeat: no-repeat;
+  color: transparent;
+  text-shadow: none;
+  font-size: 0;
+}
+.arz-adventure :is(.ws-token,.hb-token):is(.adv-token,.adv-peach-token) {
+  display: inline-block; width: 34px; height: 34px;
+  min-width: 34px; min-height: 34px; flex: 0 0 34px;
+  vertical-align: middle; border-radius: 0;
+}
+.arz-peach-ready .arz-adventure .adv-peach-token {
+  background: url('arzhenikov-peach.png') center / contain no-repeat;
+  color: transparent; text-shadow: none; font-size: 0;
+}
+.arz-art-ready .arz-adventure .adv-token:is([data-token="🔵"],[data-token="●"]) {
+  /* Remove a neighboring atlas cell's edge; the bead starts below this gutter. */
+  clip-path: inset(6% 0 0);
+}
+.arz-art-ready .arz-adventure .hb-slot .hb-token.adv-token {
+  width: 100%; height: 100%; min-width: 0; min-height: 0; flex-basis: auto;
+}
+.arz-adventure .adv-mascot {
+  display: block; width: 88px; height: 88px; flex: 0 0 auto;
+  font-size: 3.8rem; text-align: center; line-height: 88px;
+}
+.arz-art-ready .arz-adventure .adv-mascot { filter: none; transform: none; }
+.arz-art-ready .arz-adventure .adv-companion {
+  display: inline-block; width: 44px; height: 44px; flex: 0 0 44px;
+}
+@media (max-width:760px) {
+  .arz-adventure .adv-mascot { width: 58px; height: 58px; line-height: 58px; font-size: 2.8rem; }
+}
+@media (max-width:480px) {
+  .arz-adventure .adv-mascot { width: 46px; height: 46px; line-height: 46px; font-size: 2.2rem; }
+  .arz-adventure :is(.ws-token,.hb-token):is(.adv-token,.adv-peach-token) { width: 30px; height: 30px; min-width: 30px; min-height: 30px; flex-basis: 30px; }
+  .arz-art-ready .arz-adventure .hb-slot .hb-token.adv-token { width: 100%; height: 100%; min-width: 0; min-height: 0; flex-basis: auto; }
+}
+@media (forced-colors:active) {
+  .arz-art-ready .arz-adventure .adv-token { forced-color-adjust: none; }
+}

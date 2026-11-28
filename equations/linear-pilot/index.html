@@ -8,7 +8,11 @@
 <title>Линейные уравнения · MathExam</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="basics.css">
+<link rel="stylesheet" href="fraction-bridge.css?v=20261124-1">
 <link rel="canonical" href="https://mathexam.space/equations/linear-pilot/">
+
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 </head>
 
 <body>
@@ -25,7 +29,7 @@
   </div>
 </header>
 <div class="wrap">
-  <div class="backlinks"><a href="/equations/">← Курс уравнений</a><a href="/trainers/oge-course/">Все темы ОГЭ</a></div>
+  <div class="backlinks"><a href="/equations/">← Курс уравнений</a><a href="/trainers/oge-course/">Все темы ОГЭ</a><a href="#fraction-bridge">Дроби → уравнения</a></div>
   <nav class="basics-routes" aria-label="Уровень урока">
     <button id="basics-route" type="button" class="secondary" aria-pressed="true" aria-controls="basics-content">С самого начала <small id="basics-count"></small></button>
     <button id="advanced-route" type="button" class="secondary" aria-pressed="false" aria-controls="advanced-content">Уже знаю основы <small id="advanced-count"></small></button>
@@ -42,8 +46,21 @@
   <details id="teacher"><summary>Отчёт ученика и преподавателя</summary><p>Числовые ответы проверяет программа. Объяснения и равносильные записи проверяет преподаватель; автоматической оценки текста нет. Самостоятельность здесь означает отсутствие зарегистрированной помощи, а не наблюдение за учеником.</p><button id="report-button">Показать отчёт</button> <button id="download-button">Скачать отчёт</button><pre id="report"></pre></details>
   </div>
   </main>
+  <details id="fraction-bridge" class="card" aria-labelledby="fraction-bridge-label">
+    <summary id="fraction-bridge-label">Дроби → уравнения: пройти связанный маршрут</summary>
+    <p>Дополнительный бесплатный маршрут внутри курса: сначала своё решение, при затруднении — короткая проверка возможной основы, затем возвращение к той же задаче и новое условие.</p>
+    <p class="muted">Восемь пар заданий. Если задача уже знакома, отметь это; повтор не считается новой независимой проверкой. Основной курс и его записи не меняются.</p>
+    <p id="fraction-bridge-storage" class="muted" role="status"></p>
+    <div id="fraction-bridge-app" hidden></div>
+    <div id="fraction-bridge-fallback">
+      <p>Для интерактивного маршрута нужен JavaScript. Можно сразу открыть существующие занятия:</p>
+      <ul><li><a href="/trainers/oge-basics/fraction-meaning.html">Смысл дроби</a></li><li><a href="/trainers/oge-basics/multiplication-division/arzhenikov-map.html#course-c-quotient">Дробь — результат деления</a></li><li><a href="/trainers/simple-equations-stepwise.html">Простые уравнения по шагам</a></li></ul>
+    </div>
+  </details>
 </div>
 <script src="data.js"></script><script src="store.js"></script><script src="app.js"></script>
 <script src="basics-data.js"></script><script src="basics.js"></script>
+<script defer src="fraction-bridge-core.js?v=20261124-1"></script>
+<script defer src="fraction-bridge.js?v=20261124-1"></script>
 <script defer src="/assets/assistant/home-link.js?v=20261110"></script>
 </body></html>

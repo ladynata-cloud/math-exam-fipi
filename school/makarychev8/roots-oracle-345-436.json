@@ -1,0 +1,2969 @@
+{
+  "range": [
+    345,
+    436
+  ],
+  "counts": {
+    "345": 2,
+    "346": 2,
+    "347": 1,
+    "348": 7,
+    "349": 8,
+    "350": 4,
+    "351": 4,
+    "352": 1,
+    "353": 8,
+    "354": 1,
+    "355": 3,
+    "356": 9,
+    "357": 9,
+    "358": 2,
+    "359": 6,
+    "360": 4,
+    "361": 4,
+    "362": 6,
+    "363": 6,
+    "364": 4,
+    "365": 4,
+    "366": 4,
+    "367": 8,
+    "368": 4,
+    "369": 6,
+    "370": 6,
+    "371": 4,
+    "372": 4,
+    "373": 2,
+    "374": 1,
+    "375": 4,
+    "376": 8,
+    "377": 4,
+    "378": 8,
+    "379": 5,
+    "380": 8,
+    "381": 1,
+    "382": 6,
+    "383": 6,
+    "384": 1,
+    "385": 2,
+    "386": 9,
+    "387": 8,
+    "388": 5,
+    "389": 8,
+    "390": 2,
+    "391": 2,
+    "392": 2,
+    "393": 4,
+    "394": 8,
+    "395": 9,
+    "396": 4,
+    "397": 3,
+    "398": 3,
+    "399": 1,
+    "400": 8,
+    "401": 6,
+    "402": 8,
+    "403": 11,
+    "404": 12,
+    "405": 9,
+    "406": 6,
+    "407": 6,
+    "408": 4,
+    "409": 4,
+    "410": 5,
+    "411": 3,
+    "412": 1,
+    "413": 2,
+    "414": 5,
+    "415": 6,
+    "416": 8,
+    "417": 6,
+    "418": 2,
+    "419": 8,
+    "420": 6,
+    "421": 8,
+    "422": 6,
+    "423": 6,
+    "424": 9,
+    "425": 6,
+    "426": 7,
+    "427": 2,
+    "428": 4,
+    "429": 8,
+    "430": 2,
+    "431": 2,
+    "432": 2,
+    "433": 1,
+    "434": 2,
+    "435": 1,
+    "436": 2
+  },
+  "checks": [
+    {
+      "taskId": "roots-345-a",
+      "answer": "√(S/π)",
+      "reason": "Solve area equations for the positive length.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-345-b",
+      "answer": "2√(S/π)",
+      "reason": "Solve area equations for the positive length.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-346-a",
+      "answer": "6a²",
+      "reason": "Six square faces; solve 6a²=S for nonnegative a.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-346-b",
+      "answer": "√(S/6)",
+      "reason": "Six square faces; solve 6a²=S for nonnegative a.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-347-a",
+      "answer": "√(S/(4π))",
+      "reason": "Solve S=4πR² with nonnegative R.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-348-a1",
+      "answer": "1.6",
+      "reason": "y=√x, inverse x=y²; decimal half-up rounding to tenths.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-348-a2",
+      "answer": "2.3",
+      "reason": "y=√x, inverse x=y²; decimal half-up rounding to tenths.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-348-a3",
+      "answer": "2.8",
+      "reason": "y=√x, inverse x=y²; decimal half-up rounding to tenths.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-348-a4",
+      "answer": "2.0",
+      "reason": "y=√x, inverse x=y²; decimal half-up rounding to tenths.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-348-b1",
+      "answer": "1.4",
+      "reason": "y=√x, inverse x=y²; decimal half-up rounding to tenths.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-348-b2",
+      "answer": "2.9",
+      "reason": "y=√x, inverse x=y²; decimal half-up rounding to tenths.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-348-b3",
+      "answer": "6.3",
+      "reason": "y=√x, inverse x=y²; decimal half-up rounding to tenths.",
+      "sourcePage": 83
+    },
+    {
+      "taskId": "roots-349-a1",
+      "answer": "0.7",
+      "reason": "Root and inverse square, to tenths.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-349-a2",
+      "answer": "1.2",
+      "reason": "Root and inverse square, to tenths.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-349-a3",
+      "answer": "2.5",
+      "reason": "Root and inverse square, to tenths.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-349-a4",
+      "answer": "2.7",
+      "reason": "Root and inverse square, to tenths.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-349-b1",
+      "answer": "0.3",
+      "reason": "Root and inverse square, to tenths.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-349-b2",
+      "answer": "2.3",
+      "reason": "Root and inverse square, to tenths.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-349-b3",
+      "answer": "3.2",
+      "reason": "Root and inverse square, to tenths.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-349-b4",
+      "answer": "5.3",
+      "reason": "Root and inverse square, to tenths.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "p14-t01",
+      "answer": "Да",
+      "reason": "Point requires x≥0 and nonnegative y with y²=x.",
+      "sourcePage": 84,
+      "rejects": [
+        "Нет"
+      ]
+    },
+    {
+      "taskId": "roots-350-b",
+      "answer": "Да",
+      "reason": "Point requires x≥0 and nonnegative y with y²=x.",
+      "sourcePage": 84,
+      "rejects": [
+        "Нет"
+      ]
+    },
+    {
+      "taskId": "roots-350-c",
+      "answer": "Нет",
+      "reason": "Point requires x≥0 and nonnegative y with y²=x.",
+      "sourcePage": 84,
+      "rejects": [
+        "Да"
+      ]
+    },
+    {
+      "taskId": "p14-t02",
+      "answer": "Нет",
+      "reason": "Point requires x≥0 and nonnegative y with y²=x.",
+      "sourcePage": 84,
+      "rejects": [
+        "Да"
+      ]
+    },
+    {
+      "taskId": "roots-351-a",
+      "answer": "1;1",
+      "reason": "Horizontal y=c intersects exactly at (c²,c) for c≥0.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-351-b",
+      "answer": "100;10",
+      "reason": "Horizontal y=c intersects exactly at (c²,c) for c≥0.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-351-c",
+      "answer": "10000;100",
+      "reason": "Horizontal y=c intersects exactly at (c²,c) for c≥0.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-351-d",
+      "answer": "нет",
+      "reason": "Horizontal y=c intersects exactly at (c²,c) for c≥0.",
+      "sourcePage": 84,
+      "rejects": [
+        "10000;-100",
+        "10000;100"
+      ]
+    },
+    {
+      "taskId": "roots-352-a",
+      "answer": "(t-1/2)²+1/4",
+      "reason": "t²−t+1/2=(t−1/2)²+1/4>0.",
+      "sourcePage": 84,
+      "rejects": [
+        "(t-1/2)²",
+        "(t-1/2)²-1/4"
+      ]
+    },
+    {
+      "taskId": "roots-353-plot",
+      "answer": "0;1;2;3",
+      "reason": "Solve √x=kx+b with t=√x≥0. Examples have 0,1,2 intersections.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-353-a",
+      "answer": "0;0;1;1",
+      "reason": "Solve √x=kx+b with t=√x≥0. Examples have 0,1,2 intersections.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-353-b",
+      "answer": "1000000;1000",
+      "reason": "Solve √x=kx+b with t=√x≥0. Examples have 0,1,2 intersections.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-353-c",
+      "answer": "нет",
+      "reason": "Solve √x=kx+b with t=√x≥0. Examples have 0,1,2 intersections.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-353-d",
+      "answer": "0.7;0.8",
+      "reason": "Solve √x=kx+b with t=√x≥0. Examples have 0,1,2 intersections.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-353-e",
+      "answer": "-1;-1",
+      "reason": "Solve √x=kx+b with t=√x≥0. Examples have 0,1,2 intersections.",
+      "sourcePage": 84,
+      "rejects": [
+        "1;0",
+        "-1;0"
+      ]
+    },
+    {
+      "taskId": "roots-353-f",
+      "answer": "-1;0",
+      "reason": "Solve √x=kx+b with t=√x≥0. Examples have 0,1,2 intersections.",
+      "sourcePage": 84,
+      "rejects": [
+        "1;0",
+        "1;1"
+      ]
+    },
+    {
+      "taskId": "roots-353-g",
+      "answer": "1;0",
+      "reason": "Solve √x=kx+b with t=√x≥0. Examples have 0,1,2 intersections.",
+      "sourcePage": 84,
+      "rejects": [
+        "-1;0",
+        "1;1"
+      ]
+    },
+    {
+      "taskId": "roots-354-a",
+      "answer": "4",
+      "reason": "Only y=−x−0.1 stays strictly negative for x≥0.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-355-a",
+      "answer": "4",
+      "reason": "t²+t−6=0 gives t=2; t³=4 gives x≈2.51984; −x−5<0 for x≥0.",
+      "sourcePage": 84,
+      "rejects": [
+        "2",
+        "-3"
+      ]
+    },
+    {
+      "taskId": "roots-355-b",
+      "answer": "2.52",
+      "reason": "t²+t−6=0 gives t=2; t³=4 gives x≈2.51984; −x−5<0 for x≥0.",
+      "sourcePage": 84,
+      "rejects": [
+        "4",
+        "2.51"
+      ]
+    },
+    {
+      "taskId": "roots-355-c",
+      "answer": "нет",
+      "reason": "t²+t−6=0 gives t=2; t³=4 gives x≈2.51984; −x−5<0 for x≥0.",
+      "sourcePage": 84,
+      "rejects": [
+        "25",
+        "-5"
+      ]
+    },
+    {
+      "taskId": "roots-356-a",
+      "answer": "√11",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-356-b",
+      "answer": "√0.15",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-356-c",
+      "answer": "√60",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-356-d",
+      "answer": "√50",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-356-e",
+      "answer": "8",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-356-f",
+      "answer": "√2",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-356-g",
+      "answer": "1.8",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-356-h",
+      "answer": "√28",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-356-i",
+      "answer": "√95",
+      "reason": "Compare nonnegative squares.",
+      "sourcePage": 84
+    },
+    {
+      "taskId": "roots-357-a",
+      "answer": "<",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-357-b",
+      "answer": "<",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-357-c",
+      "answer": "<",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-357-d",
+      "answer": "=",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-357-e",
+      "answer": ">",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-357-f",
+      "answer": "<",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-357-g",
+      "answer": ">",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-357-h",
+      "answer": "<",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-357-i",
+      "answer": "<",
+      "reason": "Compare radicands or squares; 4/5<5/6 and 3.5<11/3.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-358-a",
+      "answer": "√0.07;√0.6;√2.3;√16.4;√19.5",
+      "reason": "Order nonnegative squares; 1/81<1/3<1/2<19/9<225/49.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-358-b",
+      "answer": "1/9;√(1/3);√0.5;√(2 1/9);2 1/7",
+      "reason": "Order nonnegative squares; 1/81<1/3<1/2<19/9<225/49.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-359-a",
+      "answer": "2.8",
+      "reason": "Compute exact root values before multiplication and subtraction.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-359-b",
+      "answer": "-5",
+      "reason": "Compute exact root values before multiplication and subtraction.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-359-c",
+      "answer": "12",
+      "reason": "Compute exact root values before multiplication and subtraction.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-359-d",
+      "answer": "36",
+      "reason": "Compute exact root values before multiplication and subtraction.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-359-e",
+      "answer": "-21/11",
+      "reason": "Compute exact root values before multiplication and subtraction.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-359-f",
+      "answer": "3.6",
+      "reason": "Compute exact root values before multiplication and subtraction.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-360-a",
+      "answer": "9",
+      "reason": "An external minus survives; √(−9) is undefined over reals.",
+      "sourcePage": 85,
+      "rejects": [
+        "-9"
+      ]
+    },
+    {
+      "taskId": "roots-360-b",
+      "answer": "нет",
+      "reason": "An external minus survives; √(−9) is undefined over reals.",
+      "sourcePage": 85,
+      "rejects": [
+        "9",
+        "-9"
+      ]
+    },
+    {
+      "taskId": "roots-360-c",
+      "answer": "-9",
+      "reason": "An external minus survives; √(−9) is undefined over reals.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-360-d",
+      "answer": "-9",
+      "reason": "An external minus survives; √(−9) is undefined over reals.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-361-a1",
+      "answer": "-√11;√11",
+      "reason": "Distinguish x² equations from principal-root equations.",
+      "sourcePage": 85,
+      "rejects": [
+        "√11"
+      ]
+    },
+    {
+      "taskId": "roots-361-a2",
+      "answer": "121",
+      "reason": "Distinguish x² equations from principal-root equations.",
+      "sourcePage": 85,
+      "rejects": [
+        "-121;121"
+      ]
+    },
+    {
+      "taskId": "roots-361-b1",
+      "answer": "-1/2;1/2",
+      "reason": "Distinguish x² equations from principal-root equations.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "roots-361-b2",
+      "answer": "1/16",
+      "reason": "Distinguish x² equations from principal-root equations.",
+      "sourcePage": 85
+    },
+    {
+      "taskId": "p15-t01",
+      "answer": "70",
+      "reason": "Square root of product of perfect squares.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-362-b",
+      "answer": "180",
+      "reason": "Square root of product of perfect squares.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-362-c",
+      "answer": "88",
+      "reason": "Square root of product of perfect squares.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-362-d",
+      "answer": "6",
+      "reason": "Square root of product of perfect squares.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-362-e",
+      "answer": "1.3",
+      "reason": "Square root of product of perfect squares.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-362-f",
+      "answer": ".3",
+      "reason": "Square root of product of perfect squares.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "p15-t02",
+      "answer": "3/8",
+      "reason": "Convert mixed fractions then take positive roots of numerator and denominator.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-363-b",
+      "answer": "6/5",
+      "reason": "Convert mixed fractions then take positive roots of numerator and denominator.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-363-c",
+      "answer": "11/5",
+      "reason": "Convert mixed fractions then take positive roots of numerator and denominator.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-363-d",
+      "answer": "5/4",
+      "reason": "Convert mixed fractions then take positive roots of numerator and denominator.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-363-e",
+      "answer": "13/9",
+      "reason": "Convert mixed fractions then take positive roots of numerator and denominator.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-363-f",
+      "answer": "9/4",
+      "reason": "Convert mixed fractions then take positive roots of numerator and denominator.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-364-a",
+      "answer": "270",
+      "reason": "Roots of 72900,17.64,49/4,169/16.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-364-b",
+      "answer": "4.2",
+      "reason": "Roots of 72900,17.64,49/4,169/16.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-364-c",
+      "answer": "7/2",
+      "reason": "Roots of 72900,17.64,49/4,169/16.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-364-d",
+      "answer": "13/4",
+      "reason": "Roots of 72900,17.64,49/4,169/16.",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-365-a",
+      "answer": "12",
+      "reason": "Factorwise exact roots:3·8·.5;1.1·.3·.01;(5/9)(4/7)(14/3);(9/4)(14/9).",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-365-b",
+      "answer": ".0033",
+      "reason": "Factorwise exact roots:3·8·.5;1.1·.3·.01;(5/9)(4/7)(14/3);(9/4)(14/9).",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-365-c",
+      "answer": "40/27",
+      "reason": "Factorwise exact roots:3·8·.5;1.1·.3·.01;(5/9)(4/7)(14/3);(9/4)(14/9).",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-365-d",
+      "answer": "7/2",
+      "reason": "Factorwise exact roots:3·8·.5;1.1·.3·.01;(5/9)(4/7)(14/3);(9/4)(14/9).",
+      "sourcePage": 88
+    },
+    {
+      "taskId": "roots-366-a",
+      "answer": "9",
+      "reason": "Factorwise exact positive roots.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-366-b",
+      "answer": ".24",
+      "reason": "Factorwise exact positive roots.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-366-c",
+      "answer": "8/15",
+      "reason": "Factorwise exact positive roots.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-366-d",
+      "answer": "11/8",
+      "reason": "Factorwise exact positive roots.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-367-a",
+      "answer": "180",
+      "reason": "Exact products under one square root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-367-b",
+      "answer": "50",
+      "reason": "Exact products under one square root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-367-c",
+      "answer": "48",
+      "reason": "Exact products under one square root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-367-d",
+      "answer": "28",
+      "reason": "Exact products under one square root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-367-e",
+      "answer": "30",
+      "reason": "Exact products under one square root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-367-f",
+      "answer": "6",
+      "reason": "Exact products under one square root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-367-g",
+      "answer": "24",
+      "reason": "Exact products under one square root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-367-h",
+      "answer": "2.6",
+      "reason": "Exact products under one square root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-368-a",
+      "answer": "60",
+      "reason": "Products3600,3600,1764,1024.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-368-b",
+      "answer": "60",
+      "reason": "Products3600,3600,1764,1024.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-368-c",
+      "answer": "42",
+      "reason": "Products3600,3600,1764,1024.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-368-d",
+      "answer": "32",
+      "reason": "Products3600,3600,1764,1024.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-369-a",
+      "answer": "5",
+      "reason": "Differences of squares factored; positive root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-369-b",
+      "answer": "10",
+      "reason": "Differences of squares factored; positive root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-369-c",
+      "answer": "25",
+      "reason": "Differences of squares factored; positive root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-369-d",
+      "answer": "120",
+      "reason": "Differences of squares factored; positive root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-369-e",
+      "answer": "12",
+      "reason": "Differences of squares factored; positive root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-369-f",
+      "answer": "12",
+      "reason": "Differences of squares factored; positive root.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-370-a",
+      "answer": "15",
+      "reason": "Radicands225,25,6400,2025,36,225/256.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-370-b",
+      "answer": "5",
+      "reason": "Radicands225,25,6400,2025,36,225/256.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-370-c",
+      "answer": "80",
+      "reason": "Radicands225,25,6400,2025,36,225/256.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-370-d",
+      "answer": "45",
+      "reason": "Radicands225,25,6400,2025,36,225/256.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-370-e",
+      "answer": "6",
+      "reason": "Radicands225,25,6400,2025,36,225/256.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-370-f",
+      "answer": "15/16",
+      "reason": "Radicands225,25,6400,2025,36,225/256.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-371-a",
+      "answer": "√3·√5",
+      "reason": "Separate nonnegative factors; a,c≥0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-371-b",
+      "answer": "√3·√7",
+      "reason": "Separate nonnegative factors; a,c≥0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-371-c",
+      "answer": "√7·√a",
+      "reason": "Separate nonnegative factors; a,c≥0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-371-d",
+      "answer": "√3·√c",
+      "reason": "Separate nonnegative factors; a,c≥0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-372-a",
+      "answer": "√2/√7",
+      "reason": "Denominator root must be positive; a>0,b≥0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-372-b",
+      "answer": "√3/√10",
+      "reason": "Denominator root must be positive; a>0,b≥0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-372-c",
+      "answer": "√5/√a",
+      "reason": "Denominator root must be positive; a>0,b≥0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-372-d",
+      "answer": "√b/√3",
+      "reason": "Denominator root must be positive; a>0,b≥0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-373-a",
+      "answer": "10;1;0",
+      "reason": "√100=10, scale factor1; both sides0 at a=0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-373-b",
+      "answer": "10;1;0",
+      "reason": "√100=10, scale factor1; both sides0 at a=0.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-374-a",
+      "answer": "10;14;38",
+      "reason": "(n−m)(n+m)=75 with positive odd pairs(5,15),(3,25),(1,75).",
+      "sourcePage": 89,
+      "rejects": [
+        "10;14",
+        "38",
+        "5;11;37"
+      ]
+    },
+    {
+      "taskId": "roots-375-a",
+      "answer": "87",
+      "reason": "Rescale supplied approximation√75≈8.7 by10,100,1/10,1/100.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-375-b",
+      "answer": "870",
+      "reason": "Rescale supplied approximation√75≈8.7 by10,100,1/10,1/100.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-375-c",
+      "answer": ".87",
+      "reason": "Rescale supplied approximation√75≈8.7 by10,100,1/10,1/100.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-375-d",
+      "answer": ".087",
+      "reason": "Rescale supplied approximation√75≈8.7 by10,100,1/10,1/100.",
+      "sourcePage": 89
+    },
+    {
+      "taskId": "roots-376-a",
+      "answer": "240",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-376-b",
+      "answer": "480",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-376-c",
+      "answer": "390",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-376-d",
+      "answer": "360",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-376-e",
+      "answer": "4.5",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-376-f",
+      "answer": "3.1",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-376-g",
+      "answer": ".22",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-376-h",
+      "answer": ".58",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-377-a",
+      "answer": "210",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-377-b",
+      "answer": "660",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-377-c",
+      "answer": ".27",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-377-d",
+      "answer": "3.9",
+      "reason": "Each answer squared is the radicand.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-378-a",
+      "answer": "4",
+      "reason": "Products under the root16,81,196,64,676,441,225,4.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-378-b",
+      "answer": "9",
+      "reason": "Products under the root16,81,196,64,676,441,225,4.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-378-c",
+      "answer": "14",
+      "reason": "Products under the root16,81,196,64,676,441,225,4.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-378-d",
+      "answer": "8",
+      "reason": "Products under the root16,81,196,64,676,441,225,4.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-378-e",
+      "answer": "26",
+      "reason": "Products under the root16,81,196,64,676,441,225,4.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-378-f",
+      "answer": "21",
+      "reason": "Products under the root16,81,196,64,676,441,225,4.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-378-g",
+      "answer": "15",
+      "reason": "Products under the root16,81,196,64,676,441,225,4.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-378-h",
+      "answer": "2",
+      "reason": "Products under the root16,81,196,64,676,441,225,4.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-379-a",
+      "answer": "1/3",
+      "reason": "Ratios under root1/9,1/100,4/9,25,25.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-379-b",
+      "answer": "1/10",
+      "reason": "Ratios under root1/9,1/100,4/9,25,25.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-379-c",
+      "answer": "2/3",
+      "reason": "Ratios under root1/9,1/100,4/9,25,25.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-379-d",
+      "answer": "5",
+      "reason": "Ratios under root1/9,1/100,4/9,25,25.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-379-e",
+      "answer": "5",
+      "reason": "Ratios under root1/9,1/100,4/9,25,25.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-380-a",
+      "answer": "20",
+      "reason": "Multiply/divide radicands exactly before root.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-380-b",
+      "answer": "6",
+      "reason": "Multiply/divide radicands exactly before root.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-380-c",
+      "answer": "18",
+      "reason": "Multiply/divide radicands exactly before root.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-380-d",
+      "answer": "1/2",
+      "reason": "Multiply/divide radicands exactly before root.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-380-e",
+      "answer": "22",
+      "reason": "Multiply/divide radicands exactly before root.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-380-f",
+      "answer": "3/5",
+      "reason": "Multiply/divide radicands exactly before root.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-380-g",
+      "answer": "3",
+      "reason": "Multiply/divide radicands exactly before root.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-380-h",
+      "answer": "1/7",
+      "reason": "Multiply/divide radicands exactly before root.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-381-a",
+      "answer": "2.449490",
+      "reason": "Both methods compute√6; rounded to6 decimal digits.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-382-a1",
+      "answer": "4",
+      "reason": "√x²=|x|; domain all reals.",
+      "sourcePage": 90,
+      "rejects": [
+        "-4"
+      ]
+    },
+    {
+      "taskId": "roots-382-a2",
+      "answer": "3",
+      "reason": "√x²=|x|; domain all reals.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-382-a3",
+      "answer": "0",
+      "reason": "√x²=|x|; domain all reals.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-382-a4",
+      "answer": "9",
+      "reason": "√x²=|x|; domain all reals.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-382-a5",
+      "answer": "20",
+      "reason": "√x²=|x|; domain all reals.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-382-b",
+      "answer": "все действительные x",
+      "reason": "√x²=|x|; domain all reals.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-383-a",
+      "answer": "(a²)²",
+      "reason": "Halve every exponent inside the square; denominators nonzero.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-383-b",
+      "answer": "(a³)²",
+      "reason": "Halve every exponent inside the square; denominators nonzero.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-383-c",
+      "answer": "(a⁹)²",
+      "reason": "Halve every exponent inside the square; denominators nonzero.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-383-d",
+      "answer": "(1/a⁵)²",
+      "reason": "Halve every exponent inside the square; denominators nonzero.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-383-e",
+      "answer": "(ab⁴)²",
+      "reason": "Halve every exponent inside the square; denominators nonzero.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-383-f",
+      "answer": "(a³/b⁶)²",
+      "reason": "Halve every exponent inside the square; denominators nonzero.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-384-a",
+      "answer": "√(V/b)",
+      "reason": "Volume V=a²b, physical lengths/volume positive.",
+      "sourcePage": 90
+    },
+    {
+      "taskId": "roots-385-a",
+      "answer": "130",
+      "reason": "Clear denominators30/60 and solve the resulting linear equation.",
+      "sourcePage": 91
+    },
+    {
+      "taskId": "roots-385-b",
+      "answer": "7",
+      "reason": "Clear denominators30/60 and solve the resulting linear equation.",
+      "sourcePage": 91
+    },
+    {
+      "taskId": "roots-386-a",
+      "answer": ".1",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "p16-t01",
+      "answer": ".4",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-386-c",
+      "answer": ".8",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-386-d",
+      "answer": "1.7",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-386-e",
+      "answer": "19",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-386-f",
+      "answer": "24",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-386-g",
+      "answer": "46",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-386-h",
+      "answer": "260",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-386-i",
+      "answer": "12.2",
+      "reason": "√u²=|u|; apply external coefficient.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-387-a1",
+      "answer": "22",
+      "reason": "Substitute into absolute value before multiplying.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-387-a2",
+      "answer": "35",
+      "reason": "Substitute into absolute value before multiplying.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-387-a3",
+      "answer": "5/3",
+      "reason": "Substitute into absolute value before multiplying.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-387-a4",
+      "answer": "0",
+      "reason": "Substitute into absolute value before multiplying.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-387-b1",
+      "answer": "14",
+      "reason": "Substitute into absolute value before multiplying.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-387-b2",
+      "answer": "24",
+      "reason": "Substitute into absolute value before multiplying.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-387-c1",
+      "answer": "1.5",
+      "reason": "Substitute into absolute value before multiplying.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-387-c2",
+      "answer": "2.7",
+      "reason": "Substitute into absolute value before multiplying.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-388-a",
+      "answer": "p⁴",
+      "reason": "Even fourth power nonnegative; arbitrary first power needs modulus.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-388-b",
+      "answer": "|y|",
+      "reason": "Even fourth power nonnegative; arbitrary first power needs modulus.",
+      "sourcePage": 92,
+      "rejects": [
+        "y"
+      ]
+    },
+    {
+      "taskId": "roots-388-c",
+      "answer": "3|b|",
+      "reason": "Even fourth power nonnegative; arbitrary first power needs modulus.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-388-d",
+      "answer": "-0.2|x|",
+      "reason": "Even fourth power nonnegative; arbitrary first power needs modulus.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-388-e",
+      "answer": "5|a|",
+      "reason": "Even fourth power nonnegative; arbitrary first power needs modulus.",
+      "sourcePage": 92
+    },
+    {
+      "taskId": "roots-389-a",
+      "answer": "a",
+      "reason": "Resolve modulus with the explicitly supplied sign condition.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "p16-t02",
+      "answer": "-n",
+      "reason": "Resolve modulus with the explicitly supplied sign condition.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-389-c",
+      "answer": "3c",
+      "reason": "Resolve modulus with the explicitly supplied sign condition.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-389-d",
+      "answer": "-5y",
+      "reason": "Resolve modulus with the explicitly supplied sign condition.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-389-e",
+      "answer": "-6x",
+      "reason": "Resolve modulus with the explicitly supplied sign condition.",
+      "sourcePage": 93,
+      "rejects": [
+        "6x"
+      ]
+    },
+    {
+      "taskId": "roots-389-f",
+      "answer": "3y",
+      "reason": "Resolve modulus with the explicitly supplied sign condition.",
+      "sourcePage": 93,
+      "rejects": [
+        "-3y"
+      ]
+    },
+    {
+      "taskId": "roots-389-g",
+      "answer": "-10x",
+      "reason": "Resolve modulus with the explicitly supplied sign condition.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-389-h",
+      "answer": "-2a",
+      "reason": "Resolve modulus with the explicitly supplied sign condition.",
+      "sourcePage": 93,
+      "rejects": [
+        "2a"
+      ]
+    },
+    {
+      "taskId": "roots-390-a",
+      "answer": "2-a",
+      "reason": "√(a−2)²=|a−2| with the two supplied intervals.",
+      "sourcePage": 93,
+      "rejects": [
+        "a-2"
+      ]
+    },
+    {
+      "taskId": "roots-390-b",
+      "answer": "a-2",
+      "reason": "√(a−2)²=|a−2| with the two supplied intervals.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-391-a",
+      "answer": "1.353792",
+      "reason": "√(9−6√x+x)=|3−√x|, rounded6 digits.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-391-b",
+      "answer": "0.552464",
+      "reason": "√(9−6√x+x)=|3−√x|, rounded6 digits.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-392-a",
+      "answer": "Да",
+      "reason": "First RHS positive correct; second RHS2−√5<0 contradicts nonnegative root.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-392-b",
+      "answer": "Нет",
+      "reason": "First RHS positive correct; second RHS2−√5<0 contradicts nonnegative root.",
+      "sourcePage": 93,
+      "rejects": [
+        "Да"
+      ]
+    },
+    {
+      "taskId": "roots-393-a",
+      "answer": "2+√3",
+      "reason": "Squares equal radicands and all four chosen expressions positive.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-393-b",
+      "answer": "√5-1",
+      "reason": "Squares equal radicands and all four chosen expressions positive.",
+      "sourcePage": 93,
+      "rejects": [
+        "1-√5"
+      ]
+    },
+    {
+      "taskId": "roots-393-c",
+      "answer": "√3+√2",
+      "reason": "Squares equal radicands and all four chosen expressions positive.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-393-d",
+      "answer": "√2-1",
+      "reason": "Squares equal radicands and all four chosen expressions positive.",
+      "sourcePage": 93,
+      "rejects": [
+        "1-√2"
+      ]
+    },
+    {
+      "taskId": "roots-394-a",
+      "answer": "4",
+      "reason": "Halve even powers; principal root is nonnegative.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-394-b",
+      "answer": "9",
+      "reason": "Halve even powers; principal root is nonnegative.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-394-c",
+      "answer": "8",
+      "reason": "Halve even powers; principal root is nonnegative.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-394-d",
+      "answer": "10000",
+      "reason": "Halve even powers; principal root is nonnegative.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-394-e",
+      "answer": "25",
+      "reason": "Halve even powers; principal root is nonnegative.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-394-f",
+      "answer": "16",
+      "reason": "Halve even powers; principal root is nonnegative.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-394-g",
+      "answer": "45",
+      "reason": "Halve even powers; principal root is nonnegative.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-394-h",
+      "answer": "392",
+      "reason": "Halve even powers; principal root is nonnegative.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-a",
+      "answer": "121",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-b",
+      "answer": "64",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-c",
+      "answer": "27",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-d",
+      "answer": "36",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-e",
+      "answer": "48",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-f",
+      "answer": "1125",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-g",
+      "answer": "112",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-h",
+      "answer": "675",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-395-i",
+      "answer": "8000",
+      "reason": "Halve powers with absolute values for negative bases.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-396-a",
+      "answer": "144",
+      "reason": "Exact integer square roots, verified by squaring.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-396-b",
+      "answer": "225",
+      "reason": "Exact integer square roots, verified by squaring.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-396-c",
+      "answer": "168",
+      "reason": "Exact integer square roots, verified by squaring.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-396-d",
+      "answer": "825",
+      "reason": "Exact integer square roots, verified by squaring.",
+      "sourcePage": 93
+    },
+    {
+      "taskId": "roots-397-a",
+      "answer": "48",
+      "reason": "48²=2304;135²=18225;504²=254016.",
+      "sourcePage": 94
+    },
+    {
+      "taskId": "roots-397-b",
+      "answer": "135",
+      "reason": "48²=2304;135²=18225;504²=254016.",
+      "sourcePage": 94
+    },
+    {
+      "taskId": "roots-397-c",
+      "answer": "504",
+      "reason": "48²=2304;135²=18225;504²=254016.",
+      "sourcePage": 94
+    },
+    {
+      "taskId": "roots-398-a",
+      "answer": "a",
+      "reason": "Source figure20: rising a through(0,2); shallow descending c through(0,−3); steep descending b through(0,2).",
+      "sourcePage": 94
+    },
+    {
+      "taskId": "roots-398-b",
+      "answer": "c",
+      "reason": "Source figure20: rising a through(0,2); shallow descending c through(0,−3); steep descending b through(0,2).",
+      "sourcePage": 94
+    },
+    {
+      "taskId": "roots-398-c",
+      "answer": "b",
+      "reason": "Source figure20: rising a through(0,2); shallow descending c through(0,−3); steep descending b through(0,2).",
+      "sourcePage": 94
+    },
+    {
+      "taskId": "roots-399-a",
+      "answer": "√(V/(πH))",
+      "reason": "V=πR²H with positive dimensions, so choose positive root.",
+      "sourcePage": 94
+    },
+    {
+      "taskId": "p17-t01",
+      "answer": "2√3",
+      "reason": "Extract maximal square factor, including84500=16900·5.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-400-b",
+      "answer": "3√2",
+      "reason": "Extract maximal square factor, including84500=16900·5.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-400-c",
+      "answer": "4√5",
+      "reason": "Extract maximal square factor, including84500=16900·5.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-400-d",
+      "answer": "4√3",
+      "reason": "Extract maximal square factor, including84500=16900·5.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-400-e",
+      "answer": "5√5",
+      "reason": "Extract maximal square factor, including84500=16900·5.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-400-f",
+      "answer": "6√3",
+      "reason": "Extract maximal square factor, including84500=16900·5.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-400-g",
+      "answer": "11√3",
+      "reason": "Extract maximal square factor, including84500=16900·5.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-400-h",
+      "answer": "130√5",
+      "reason": "Extract maximal square factor, including84500=16900·5.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-401-a",
+      "answer": "√6",
+      "reason": "Extract square factor then multiply exact rational coefficient.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-401-b",
+      "answer": "2√5",
+      "reason": "Extract square factor then multiply exact rational coefficient.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-401-c",
+      "answer": "-√3",
+      "reason": "Extract square factor then multiply exact rational coefficient.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-401-d",
+      "answer": "-√11",
+      "reason": "Extract square factor then multiply exact rational coefficient.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-401-e",
+      "answer": "10√2",
+      "reason": "Extract square factor then multiply exact rational coefficient.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-401-f",
+      "answer": "-6√2",
+      "reason": "Extract square factor then multiply exact rational coefficient.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-402-a",
+      "answer": "2√5",
+      "reason": "Extract square factors and retain coefficient signs.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-402-b",
+      "answer": "7√2",
+      "reason": "Extract square factors and retain coefficient signs.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-402-c",
+      "answer": "10√2",
+      "reason": "Extract square factors and retain coefficient signs.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-402-d",
+      "answer": "4√10",
+      "reason": "Extract square factors and retain coefficient signs.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-402-e",
+      "answer": "√3",
+      "reason": "Extract square factors and retain coefficient signs.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-402-f",
+      "answer": "7√3",
+      "reason": "Extract square factors and retain coefficient signs.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-402-g",
+      "answer": "-√3",
+      "reason": "Extract square factors and retain coefficient signs.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-402-h",
+      "answer": "-5√2",
+      "reason": "Extract square factors and retain coefficient signs.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-a",
+      "answer": "√490",
+      "reason": "7²·10=490.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "p17-t02",
+      "answer": "√75",
+      "reason": "5²·3=75.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-c",
+      "answer": "√(36x)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-d",
+      "answer": "√(100y)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-e",
+      "answer": "√(18a)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-f",
+      "answer": "√(75b)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-g1",
+      "answer": "√(a²x²)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-g2",
+      "answer": "-√(a²x²)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96,
+      "rejects": [
+        "√(a²x²)"
+      ]
+    },
+    {
+      "taskId": "roots-403-h",
+      "answer": "√(m⁷)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-i1",
+      "answer": "√(9x²y⁵)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-403-i2",
+      "answer": "-√(9x²y⁵)",
+      "reason": "Square nonnegative coefficient under root; negative coefficient leaves an external minus. Original domains retained.",
+      "sourcePage": 96,
+      "rejects": [
+        "√(9x²y⁵)"
+      ]
+    },
+    {
+      "taskId": "roots-404-a",
+      "answer": "Да",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-b",
+      "answer": "Да",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-c",
+      "answer": "Нет",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96,
+      "rejects": [
+        "Да"
+      ]
+    },
+    {
+      "taskId": "roots-404-d",
+      "answer": "Да",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-e",
+      "answer": "Нет",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96,
+      "rejects": [
+        "Да"
+      ]
+    },
+    {
+      "taskId": "roots-404-f",
+      "answer": "Да",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-g",
+      "answer": "Да",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-h",
+      "answer": "Нет",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-i",
+      "answer": "Нет",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-j",
+      "answer": "Да",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-k",
+      "answer": "Нет",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96
+    },
+    {
+      "taskId": "roots-404-l",
+      "answer": "Да",
+      "reason": "Compare inner nonnegative terms by squaring; last radicand is exactly0.",
+      "sourcePage": 96,
+      "rejects": [
+        "Нет"
+      ]
+    },
+    {
+      "taskId": "roots-405-a",
+      "answer": "√3",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-405-b",
+      "answer": "√3",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-405-c",
+      "answer": "√2",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-405-d",
+      "answer": "-√2",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97,
+      "rejects": [
+        "√2"
+      ]
+    },
+    {
+      "taskId": "roots-405-e",
+      "answer": "√(5a)",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-405-f",
+      "answer": "-√(3x)",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-405-g",
+      "answer": "-√(0.012a)",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-405-h",
+      "answer": "-√(0.1a)",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-405-i",
+      "answer": "-√(216b)",
+      "reason": "Square coefficient under radical while preserving outside negative sign.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-406-a",
+      "answer": "√8",
+      "reason": "Coefficient squares4,25,49,36,1/9,.01 times source radicand.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-406-b",
+      "answer": "√(25y)",
+      "reason": "Coefficient squares4,25,49,36,1/9,.01 times source radicand.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-406-c",
+      "answer": "-√147",
+      "reason": "Coefficient squares4,25,49,36,1/9,.01 times source radicand.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-406-d",
+      "answer": "-√(72a)",
+      "reason": "Coefficient squares4,25,49,36,1/9,.01 times source radicand.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-406-e",
+      "answer": "√(2b)",
+      "reason": "Coefficient squares4,25,49,36,1/9,.01 times source radicand.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-406-f",
+      "answer": "-√(2c)",
+      "reason": "Coefficient squares4,25,49,36,1/9,.01 times source radicand.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-407-a",
+      "answer": ">",
+      "reason": "Compare squares; reverse comparison for two negative numbers.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-407-b",
+      "answer": "<",
+      "reason": "Compare squares; reverse comparison for two negative numbers.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-407-c",
+      "answer": ">",
+      "reason": "Compare squares; reverse comparison for two negative numbers.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-407-d",
+      "answer": ">",
+      "reason": "Compare squares; reverse comparison for two negative numbers.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-407-e",
+      "answer": ">",
+      "reason": "Compare squares; reverse comparison for two negative numbers.",
+      "sourcePage": 97,
+      "rejects": [
+        "<"
+      ]
+    },
+    {
+      "taskId": "roots-407-f",
+      "answer": "<",
+      "reason": "Compare squares; reverse comparison for two negative numbers.",
+      "sourcePage": 97,
+      "rejects": [
+        ">"
+      ]
+    },
+    {
+      "taskId": "roots-408-a",
+      "answer": "<",
+      "reason": "Square pairs(39,47),(6,6),(24,24),(32,98/3).",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-408-b",
+      "answer": "=",
+      "reason": "Square pairs(39,47),(6,6),(24,24),(32,98/3).",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-408-c",
+      "answer": "=",
+      "reason": "Square pairs(39,47),(6,6),(24,24),(32,98/3).",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-408-d",
+      "answer": "<",
+      "reason": "Square pairs(39,47),(6,6),(24,24),(32,98/3).",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-409-a",
+      "answer": "2√6;3√3;√29;4√2;2√11",
+      "reason": "Order positive radicands; negative values have reversed order of absolute values.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-409-b",
+      "answer": "2√14;√58;3√7;6√2;5√3",
+      "reason": "Order positive radicands; negative values have reversed order of absolute values.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-409-c",
+      "answer": "-√51;-2√6;-2√5;-√11;√2",
+      "reason": "Order positive radicands; negative values have reversed order of absolute values.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-409-d",
+      "answer": "-5√8;-9√2;-√83;-√17;-(1/3)√18",
+      "reason": "Order positive radicands; negative values have reversed order of absolute values.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-410-a",
+      "answer": "Да",
+      "reason": "Squaring and multiplying by b gives ab+a=a³; a>0 hence b=a²−1, a≥2.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-410-b",
+      "answer": "Да",
+      "reason": "Squaring and multiplying by b gives ab+a=a³; a>0 hence b=a²−1, a≥2.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-410-c",
+      "answer": "Да",
+      "reason": "Squaring and multiplying by b gives ab+a=a³; a>0 hence b=a²−1, a≥2.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-410-d",
+      "answer": "a²-1",
+      "reason": "Squaring and multiplying by b gives ab+a=a³; a>0 hence b=a²−1, a≥2.",
+      "sourcePage": 97,
+      "rejects": [
+        "a-1",
+        "a²+1"
+      ]
+    },
+    {
+      "taskId": "roots-410-e",
+      "answer": "24",
+      "reason": "Squaring and multiplying by b gives ab+a=a³; a>0 hence b=a²−1, a≥2.",
+      "sourcePage": 97
+    },
+    {
+      "taskId": "roots-411-a",
+      "answer": "4√455",
+      "reason": "Heron radicands7280 and38115; doubling four lengths under root multiplies area by√16=4.",
+      "sourcePage": 98
+    },
+    {
+      "taskId": "roots-411-b",
+      "answer": "33√35",
+      "reason": "Heron radicands7280 and38115; doubling four lengths under root multiplies area by√16=4.",
+      "sourcePage": 98
+    },
+    {
+      "taskId": "roots-411-c",
+      "answer": "4",
+      "reason": "Heron radicands7280 and38115; doubling four lengths under root multiplies area by√16=4.",
+      "sourcePage": 98,
+      "rejects": [
+        "2",
+        "8",
+        "16"
+      ]
+    },
+    {
+      "taskId": "roots-412-a",
+      "answer": "36;48;60",
+      "reason": "First-two total84; third60; difference12 splits84 into36 and48.",
+      "sourcePage": 98
+    },
+    {
+      "taskId": "roots-413-a",
+      "answer": "-5/2",
+      "reason": "Clearing denominators gives16x=−40 and−10x=72.",
+      "sourcePage": 98
+    },
+    {
+      "taskId": "roots-413-b",
+      "answer": "-36/5",
+      "reason": "Clearing denominators gives16x=−40 and−10x=72.",
+      "sourcePage": 98
+    },
+    {
+      "taskId": "p18-t01",
+      "answer": "-√3",
+      "reason": "Extract square factors and combine integer coefficients.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-414-b",
+      "answer": "7√2",
+      "reason": "Extract square factors and combine integer coefficients.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-414-c",
+      "answer": "3√2",
+      "reason": "Extract square factors and combine integer coefficients.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-414-d",
+      "answer": "√3",
+      "reason": "Extract square factors and combine integer coefficients.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-414-e",
+      "answer": "2√2",
+      "reason": "Extract square factors and combine integer coefficients.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-415-a",
+      "answer": "4√(2p)",
+      "reason": "Combine coefficients2−1+3;4+4−9;15−16−4;3−2+5;3+4−10;12−5−4.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-415-b",
+      "answer": "-√(10c)",
+      "reason": "Combine coefficients2−1+3;4+4−9;15−16−4;3−2+5;3+4−10;12−5−4.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-415-c",
+      "answer": "-5√(3m)",
+      "reason": "Combine coefficients2−1+3;4+4−9;15−16−4;3−2+5;3+4−10;12−5−4.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-415-d",
+      "answer": "6√6",
+      "reason": "Combine coefficients2−1+3;4+4−9;15−16−4;3−2+5;3+4−10;12−5−4.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-415-e",
+      "answer": "-3√2",
+      "reason": "Combine coefficients2−1+3;4+4−9;15−16−4;3−2+5;3+4−10;12−5−4.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-415-f",
+      "answer": "3√2",
+      "reason": "Combine coefficients2−1+3;4+4−9;15−16−4;3−2+5;3+4−10;12−5−4.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-416-a",
+      "answer": "x²-y",
+      "reason": "Difference of squares and square of a sum/difference, all original radicals defined.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-416-b",
+      "answer": "a-b",
+      "reason": "Difference of squares and square of a sum/difference, all original radicals defined.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-416-c",
+      "answer": "2",
+      "reason": "Difference of squares and square of a sum/difference, all original radicals defined.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-416-d",
+      "answer": "-3",
+      "reason": "Difference of squares and square of a sum/difference, all original radicals defined.",
+      "sourcePage": 100,
+      "rejects": [
+        "3"
+      ]
+    },
+    {
+      "taskId": "roots-416-e",
+      "answer": "a+2√(ab)+b",
+      "reason": "Difference of squares and square of a sum/difference, all original radicals defined.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-416-f",
+      "answer": "m-2√(mn)+n",
+      "reason": "Difference of squares and square of a sum/difference, all original radicals defined.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-416-g",
+      "answer": "11+6√2",
+      "reason": "Difference of squares and square of a sum/difference, all original radicals defined.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-416-h",
+      "answer": "7-2√10",
+      "reason": "Difference of squares and square of a sum/difference, all original radicals defined.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "p18-t02",
+      "answer": "19",
+      "reason": "Apply exact binomial identities.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-417-b",
+      "answer": "162",
+      "reason": "Apply exact binomial identities.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-417-c",
+      "answer": "6",
+      "reason": "Apply exact binomial identities.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-417-d",
+      "answer": "46+6√5",
+      "reason": "Apply exact binomial identities.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-417-e",
+      "answer": "61-28√3",
+      "reason": "Apply exact binomial identities.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-417-f",
+      "answer": "42-8√5",
+      "reason": "Apply exact binomial identities.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-418-a",
+      "answer": "14",
+      "reason": "First8+2√(16−7)=14; second10−2√(25−24)=8.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-418-b",
+      "answer": "8",
+      "reason": "First8+2√(16−7)=14; second10−2√(25−24)=8.",
+      "sourcePage": 100,
+      "rejects": [
+        "12"
+      ]
+    },
+    {
+      "taskId": "roots-419-a",
+      "answer": "x-1",
+      "reason": "Binomial identities; irrational terms cancel in g.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-419-b",
+      "answer": "x-a",
+      "reason": "Binomial identities; irrational terms cancel in g.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-419-c",
+      "answer": "m+2√(2m)+2",
+      "reason": "Binomial identities; irrational terms cancel in g.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-419-d",
+      "answer": "3-2√(3x)+x",
+      "reason": "Binomial identities; irrational terms cancel in g.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-419-e",
+      "answer": "6",
+      "reason": "Binomial identities; irrational terms cancel in g.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-419-f",
+      "answer": "-19",
+      "reason": "Binomial identities; irrational terms cancel in g.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-419-g",
+      "answer": "38",
+      "reason": "Binomial identities; irrational terms cancel in g.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-419-h",
+      "answer": "2",
+      "reason": "Binomial identities; irrational terms cancel in g.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-420-a",
+      "answer": "(x-√7)(x+√7)",
+      "reason": "Factored difference of two squares with stated root domains.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-420-b",
+      "answer": "(√5-c)(√5+c)",
+      "reason": "Factored difference of two squares with stated root domains.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-420-c",
+      "answer": "(2a-√3)(2a+√3)",
+      "reason": "Factored difference of two squares with stated root domains.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-420-d",
+      "answer": "(√11-4b)(√11+4b)",
+      "reason": "Factored difference of two squares with stated root domains.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-420-e",
+      "answer": "(√y-√3)(√y+√3)",
+      "reason": "Factored difference of two squares with stated root domains.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-420-f",
+      "answer": "(√x-√y)(√x+√y)",
+      "reason": "Factored difference of two squares with stated root domains.",
+      "sourcePage": 100
+    },
+    {
+      "taskId": "roots-421-a",
+      "answer": "√3(√3+1)",
+      "reason": "Common radical factors; expanding reconstructs source expression.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-421-b",
+      "answer": "√10(√10-2)",
+      "reason": "Common radical factors; expanding reconstructs source expression.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-421-c",
+      "answer": "√x(1+√x)",
+      "reason": "Common radical factors; expanding reconstructs source expression.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-421-d",
+      "answer": "√a(√a-5)",
+      "reason": "Common radical factors; expanding reconstructs source expression.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-421-e",
+      "answer": "√a(1-√2)",
+      "reason": "Common radical factors; expanding reconstructs source expression.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-421-f",
+      "answer": "√m(√3+√5)",
+      "reason": "Common radical factors; expanding reconstructs source expression.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-421-g",
+      "answer": "√7(√2-1)",
+      "reason": "Common radical factors; expanding reconstructs source expression.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-421-h",
+      "answer": "√11(√3+√2)",
+      "reason": "Common radical factors; expanding reconstructs source expression.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-422-a",
+      "answer": "b+√5",
+      "reason": "Cancel common factor only on original domain; two sign reversals in b/c handled.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-422-b",
+      "answer": "1/(√6-m)",
+      "reason": "Cancel common factor only on original domain; two sign reversals in b/c handled.",
+      "sourcePage": 101,
+      "rejects": [
+        "1/(m-√6)"
+      ]
+    },
+    {
+      "taskId": "roots-422-c",
+      "answer": "-1/(√x+2)",
+      "reason": "Cancel common factor only on original domain; two sign reversals in b/c handled.",
+      "sourcePage": 101,
+      "rejects": [
+        "1/(√x+2)"
+      ]
+    },
+    {
+      "taskId": "roots-422-d",
+      "answer": "√b-3",
+      "reason": "Cancel common factor only on original domain; two sign reversals in b/c handled.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-422-e",
+      "answer": "√a-√b",
+      "reason": "Cancel common factor only on original domain; two sign reversals in b/c handled.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-422-f",
+      "answer": "1/(2√x+3√y)",
+      "reason": "Cancel common factor only on original domain; two sign reversals in b/c handled.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-423-a",
+      "answer": "x-√2",
+      "reason": "Factor differences of squares, preserve excluded denominator zeros.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-423-b",
+      "answer": "1/(√5+a)",
+      "reason": "Factor differences of squares, preserve excluded denominator zeros.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-423-c",
+      "answer": "-1/(√x+5)",
+      "reason": "Factor differences of squares, preserve excluded denominator zeros.",
+      "sourcePage": 101,
+      "rejects": [
+        "1/(√x+5)"
+      ]
+    },
+    {
+      "taskId": "roots-423-d",
+      "answer": "1+√2",
+      "reason": "Factor differences of squares, preserve excluded denominator zeros.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-423-e",
+      "answer": "1+√10/2",
+      "reason": "Factor differences of squares, preserve excluded denominator zeros.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-423-f",
+      "answer": "(2-√3)/5",
+      "reason": "Factor differences of squares, preserve excluded denominator zeros.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-a",
+      "answer": "x√5/5",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-b",
+      "answer": "3√b/b",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-c",
+      "answer": "2√y/(7y)",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-d",
+      "answer": "a√b/b²",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-e",
+      "answer": "4√(a+b)/(a+b)",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-f",
+      "answer": "√(a-b)/(a-b)",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-g",
+      "answer": "5√3/6",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-h",
+      "answer": "4√2/3",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-424-i",
+      "answer": "3√10/10",
+      "reason": "Multiply numerator and denominator by denominator radical; radicand strictly positive.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-425-a",
+      "answer": "m√x/x",
+      "reason": "Rationalize and reduce numeric factors.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-425-b",
+      "answer": "√2/2",
+      "reason": "Rationalize and reduce numeric factors.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-425-c",
+      "answer": "3√c/(5c)",
+      "reason": "Rationalize and reduce numeric factors.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-425-d",
+      "answer": "a√3/6",
+      "reason": "Rationalize and reduce numeric factors.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-425-e",
+      "answer": "√3/2",
+      "reason": "Rationalize and reduce numeric factors.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-425-f",
+      "answer": "√15/12",
+      "reason": "Rationalize and reduce numeric factors.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-426-a",
+      "answer": "2√3-2",
+      "reason": "Conjugates and difference of squares; a=b>0 treated separately.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-426-b",
+      "answer": "-1-√2",
+      "reason": "Conjugates and difference of squares; a=b>0 treated separately.",
+      "sourcePage": 101,
+      "rejects": [
+        "1+√2"
+      ]
+    },
+    {
+      "taskId": "roots-426-c",
+      "answer": "(√x+√y)/(x-y)",
+      "reason": "Conjugates and difference of squares; a=b>0 treated separately.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-426-d1",
+      "answer": "a(√a-√b)/(a-b)",
+      "reason": "Conjugates and difference of squares; a=b>0 treated separately.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-426-e",
+      "answer": "(21+9√3)/2",
+      "reason": "Conjugates and difference of squares; a=b>0 treated separately.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-426-f",
+      "answer": "15-6√5",
+      "reason": "Conjugates and difference of squares; a=b>0 treated separately.",
+      "sourcePage": 101
+    },
+    {
+      "taskId": "roots-426-d2",
+      "answer": "√a/2",
+      "reason": "Conjugates and difference of squares; a=b>0 treated separately.",
+      "sourcePage": 101,
+      "rejects": [
+        "√a",
+        "0"
+      ]
+    },
+    {
+      "taskId": "roots-427-a",
+      "answer": "8/11",
+      "reason": "Denominators27−16=11 and25−24=1; numerators8 and4√6.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-427-b",
+      "answer": "4√6",
+      "reason": "Denominators27−16=11 and25−24=1; numerators8 and4√6.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-428-a",
+      "answer": "4;5",
+      "reason": "Expressions equal2+√5,√5+√3,√10−√7,1+√3 respectively.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-428-b",
+      "answer": "3;4",
+      "reason": "Expressions equal2+√5,√5+√3,√10−√7,1+√3 respectively.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-428-c",
+      "answer": "0;1",
+      "reason": "Expressions equal2+√5,√5+√3,√10−√7,1+√3 respectively.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-428-d",
+      "answer": "2;3",
+      "reason": "Expressions equal2+√5,√5+√3,√10−√7,1+√3 respectively.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-429-a1",
+      "answer": "x(x-√y)/(x²-y)",
+      "reason": "Conjugates; source numerator in д is9 (visually verified), not6; exceptional zero-conjugate cases handled.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-429-b1",
+      "answer": "b(a+√b)/(a²-b)",
+      "reason": "Conjugates; source numerator in д is9 (visually verified), not6; exceptional zero-conjugate cases handled.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-429-c",
+      "answer": "(√10+√2)/2",
+      "reason": "Conjugates; source numerator in д is9 (visually verified), not6; exceptional zero-conjugate cases handled.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-429-d",
+      "answer": "4√6-4√3",
+      "reason": "Conjugates; source numerator in д is9 (visually verified), not6; exceptional zero-conjugate cases handled.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-429-e",
+      "answer": "27+18√2",
+      "reason": "Conjugates; source numerator in д is9 (visually verified), not6; exceptional zero-conjugate cases handled.",
+      "sourcePage": 102,
+      "rejects": [
+        "18+12√2",
+        "27-18√2"
+      ]
+    },
+    {
+      "taskId": "roots-429-f",
+      "answer": "(10√2-2)/7",
+      "reason": "Conjugates; source numerator in д is9 (visually verified), not6; exceptional zero-conjugate cases handled.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-429-a2",
+      "answer": "1/2",
+      "reason": "Conjugates; source numerator in д is9 (visually verified), not6; exceptional zero-conjugate cases handled.",
+      "sourcePage": 102,
+      "rejects": [
+        "1",
+        "0"
+      ]
+    },
+    {
+      "taskId": "roots-429-b2",
+      "answer": "-√b/2",
+      "reason": "Conjugates; source numerator in д is9 (visually verified), not6; exceptional zero-conjugate cases handled.",
+      "sourcePage": 102,
+      "rejects": [
+        "√b/2"
+      ]
+    },
+    {
+      "taskId": "roots-430-a",
+      "answer": "3/5",
+      "reason": "Square the nonnegative RHS and simplify exactly; a>0.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-430-b",
+      "answer": "2/a",
+      "reason": "Square the nonnegative RHS and simplify exactly; a>0.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-431-a",
+      "answer": "1",
+      "reason": "(2−√3)(2+√3)=1; rationalizing second fraction gives5−2√6, opposite first.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-431-b",
+      "answer": "0",
+      "reason": "(2−√3)(2+√3)=1; rationalizing second fraction gives5−2√6, opposite first.",
+      "sourcePage": 102,
+      "rejects": [
+        "1"
+      ]
+    },
+    {
+      "taskId": "roots-432-a",
+      "answer": "1;6",
+      "reason": "√675−√32=15√3−4√2; √80−5√3=−(√75−4√5).",
+      "sourcePage": 102,
+      "rejects": [
+        "2;5"
+      ]
+    },
+    {
+      "taskId": "roots-432-b",
+      "answer": "3;4",
+      "reason": "√675−√32=15√3−4√2; √80−5√3=−(√75−4√5).",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-433-a",
+      "answer": "20",
+      "reason": "Simplified form−4x/(x+3), x≠0,−3; at−2.5 gives20.",
+      "sourcePage": 102,
+      "rejects": [
+        "-20",
+        "10"
+      ]
+    },
+    {
+      "taskId": "roots-434-a",
+      "answer": "-1",
+      "reason": "Clear denominators:7x+7=0 and8y=65.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-434-b",
+      "answer": "65/8",
+      "reason": "Clear denominators:7x+7=0 and8y=65.",
+      "sourcePage": 102
+    },
+    {
+      "taskId": "roots-435-a",
+      "answer": "√(S/π+r²)",
+      "reason": "R²=S/π+r² and geometric radius nonnegative.",
+      "sourcePage": 103
+    },
+    {
+      "taskId": "roots-436-a",
+      "answer": "y=x/5-2",
+      "reason": "Source figure21 reread at200dpi: a through(0,−2),(10,0); b through(0,1),(1,−1).",
+      "sourcePage": 103,
+      "rejects": [
+        "y=x/2-2"
+      ]
+    },
+    {
+      "taskId": "roots-436-b",
+      "answer": "y=-2x+1",
+      "reason": "Source figure21 reread at200dpi: a through(0,−2),(10,0); b through(0,1),(1,−1).",
+      "sourcePage": 103,
+      "rejects": [
+        "y=-2x",
+        "y=-2x+2"
+      ]
+    }
+  ],
+  "reviewedFileSha256": "3af0a4f7a704d1e0f4c0b66631df59a8773eb36bd1eebfd91e34787aa3023f0f"
+}

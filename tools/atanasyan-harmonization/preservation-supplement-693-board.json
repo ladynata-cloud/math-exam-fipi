@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "sourceCommit": "a76fbb4399ab2ded2516d1a018cfe6ebd681801b",
+  "task": "ATANASYAN_79_BOOK_BOARD_20261121",
+  "files": {
+    "geometry-course/textbook/assets/grade7-board-session.js": {
+      "beforeSHA256": "ad13e7da4bd50d416564640eb1683a2ddddedf30c27862fce21fe9364a901a20",
+      "afterSHA256": "ee1bffb713e7bd8f513bd98f66da1f76f01cf005ee79e037d72e7cf6b1e17bbc"
+    }
+  }
+}

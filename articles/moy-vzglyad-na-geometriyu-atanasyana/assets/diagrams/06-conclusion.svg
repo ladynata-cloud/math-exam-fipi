@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 308" role="img" aria-labelledby="title desc">
+<title id="title">После доказательства</title>
+<desc id="desc">Углы при B и C отмечены одинаковыми дугами, BD и DC двойными штрихами, прямой угол у D квадратиком. AD была проведена как биссектриса.</desc>
+<style>text{font:21px Arial,sans-serif;fill:#213f49}.pt{font:italic 24px Georgia,serif}.side{fill:none;stroke:#213f49;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.aux{fill:none;stroke:#a44d38;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.known{fill:none;stroke:#16695e;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.guide{fill:none;stroke:#637b7d;stroke-width:2;stroke-dasharray:7 6}.small{font:18px Arial,sans-serif}</style>
+<rect width="560" height="308" rx="18" fill="#f5f6ef"/>
+<path class="side" d="M90 257 L280 57 L470 257 Z M182 150 l10 10 M371 160 l10 -10"/>
+<text class="pt" x="271" y="45">A</text><text class="pt" x="73" y="284">B</text><text class="pt" x="472" y="284">C</text>
+<path class="aux" d="M280 57 V257"/>
+<path class="known" d="M256.03 82.51 A35 35 0 0 0 280 92 M280 92 A35 35 0 0 0 303.97 82.51"/>
+<path class="known" d="M129 257 A39 39 0 0 0 116.86 228.73 M138 257 A48 48 0 0 0 123.06 222.21 M431 257 A39 39 0 0 1 443.14 228.73 M422 257 A48 48 0 0 1 436.94 222.21"/>
+<path class="known" d="M182 249 V265 M188 249 V265 M372 249 V265 M378 249 V265 M280 237 H300 V257"/>
+<text class="pt" x="272" y="289">D</text>
+</svg>

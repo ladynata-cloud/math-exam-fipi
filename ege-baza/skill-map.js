@@ -57,6 +57,8 @@
           (target.id === options.lessonId && options.onSteps ? 'Решать по шагам' : 'Тренировать: ' + esc(target.title)) + '</a>').join('') +
           (targets.length > 2 ? '<details class="esm-more"><summary>Ещё упражнения: ' + (targets.length - 2) + '</summary>' + targets.slice(2).map(target =>
             '<a href="' + esc(target.href) + '" data-skill-practice="' + esc(target.id) + '">' + esc(target.title) + '</a>').join('') + '</details>' : '') + '</div>' : '') +
+        (skill.foundationPractice ? '<div class="esm-practice-links"><a target="_blank" rel="noopener" href="' +
+          esc(safeHref(skill.foundationPractice.href)) + '">' + esc(skill.foundationPractice.title) + '</a></div>' : '') +
         evidenceMarkup(skill, rows) + '</div></li>';
     }).join('') + '</ol>';
   }

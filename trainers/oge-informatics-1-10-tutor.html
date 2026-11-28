@@ -37,7 +37,7 @@
     .wrap{max-width:1220px;margin:0 auto;padding:24px}
     header.hero{
       display:grid;
-      grid-template-columns: 1.35fr .65fr;
+      grid-template-columns: minmax(0,1.35fr) minmax(0,.65fr);
       gap:20px;
       align-items:stretch;
       margin-bottom:20px;
@@ -64,7 +64,7 @@
     .small-muted{font-size:13px;color:var(--muted)}
     .progressbar{height:12px;background:#edf1f7;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
     .progressbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:.25s}
-    .layout{display:grid;grid-template-columns: 280px 1fr;gap:20px;align-items:start}
+    .layout{display:grid;grid-template-columns: 280px minmax(0,1fr);gap:20px;align-items:start}
     nav.panel{position:sticky;top:18px;display:flex;flex-direction:column;gap:14px}
     .nav-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
     .nav-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:900}
@@ -95,7 +95,7 @@
     .meta-chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:var(--soft2);color:#09745d;font-weight:900;font-size:13px;padding:8px 12px}
     .timer-chip{background:#fff7e6;color:#8b5a00}
     h2{margin:0 0 10px;font-size:28px;letter-spacing:-.02em}
-    .task-text{font-size:17px;color:#1d2a42}
+    .task-text{overflow-x:auto;font-size:17px;color:#1d2a42}
     .task-text p{margin:10px 0}
     .answer-row{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;margin-top:22px;align-items:center}
     input.answer{
@@ -125,13 +125,13 @@
     .variant-card{padding:22px;display:none}
     .variant-card.show{display:block}
     .variant-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-    .variant-grid{display:grid;gap:14px}
+    .variant-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
     .mini-task{border:1px solid var(--line);border-radius:18px;background:#fff;padding:16px}
     .mini-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px;font-weight:950}
     .mini-task .task-text{font-size:15px}
     .mini-answer-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-top:12px}
     .mini-answer-row input{border:2px solid var(--line);border-radius:14px;padding:11px 12px;font-weight:800;font-size:16px;outline:none}
-    .mini-result{font-weight:900;padding:8px 10px;border-radius:999px;background:#f1f4fa;color:#56627a}
+    .mini-result{overflow-wrap:anywhere;font-weight:900;padding:8px 10px;border-radius:999px;background:#f1f4fa;color:#56627a}
     .mini-result.ok{background:#eafaf5;color:#067259}
     .mini-result.no{background:#fff1f1;color:#b92525}
     .cheats{display:grid;gap:8px}
@@ -218,20 +218,21 @@
       font-size:13px;border:1px dashed var(--line);margin-top:10px;display:none;
     }
     .tutor-locked.show{display:block}
-    .stats-extra{margin-top:10px;font-size:13px;color:var(--muted)}
+    .stats-extra{overflow-x:auto;margin-top:10px;font-size:13px;color:var(--muted)}
     .stats-extra b{color:var(--ink)}
     .stats-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}
     .stats-table th, .stats-table td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left}
     .stats-table th{color:var(--muted);font-weight:800;text-transform:uppercase;font-size:11px;letter-spacing:.04em}
     .stats-table td.num{text-align:right;font-variant-numeric:tabular-nums}
     .weak-row{background:#fff5f5}
-    .answer-row.has-tutor{grid-template-columns:1fr auto auto auto auto}
+    .answer-row.has-tutor{grid-template-columns:minmax(0,1fr) auto auto auto auto}
+    .variant-actions{grid-template-columns:1fr auto auto}
     @media (max-width:560px){
       .answer-row.has-tutor{grid-template-columns:1fr}
       .answer-row.has-tutor button{width:100%}
     }
     @media (max-width:900px){
-      header.hero,.layout{grid-template-columns:1fr}
+      header.hero,.layout{grid-template-columns:minmax(0,1fr)}
       nav.panel{position:static}
       .topic-grid{grid-template-columns:repeat(2,1fr)}
       .answer-row{grid-template-columns:1fr}
@@ -241,7 +242,9 @@
       .wrap{padding:14px}
       .hero-card,.task-card,.variant-card{padding:18px}
       .topic-grid{grid-template-columns:1fr}
-      .mini-answer-row{grid-template-columns:1fr}
+      .mini-answer-row,.tutor-input-row{grid-template-columns:minmax(0,1fr)}
+      .mini-head{flex-wrap:wrap}
+      .solution-box,.tutor-box,.hint-box{overflow-wrap:anywhere}
       .score-big{font-size:34px}
     }
     @media print{
@@ -268,11 +271,11 @@
       </section>
       <aside class="side-card">
         <div>
-          <div class="small-muted">Твой результат в этом браузере</div>
+          <div class="small-muted">Твой результат в этом браузере. В новых заданиях учитывается первая проверка ответа.</div>
           <div class="score-big" id="scoreBig">0%</div>
         </div>
         <div class="progressbar"><span id="scoreBar"></span></div>
-        <div class="small-muted" id="scoreText">Пока нет попыток. Погнали с одного задания — и уже будет статистика.</div>
+        <div class="small-muted" id="scoreText">Пока нет попыток. Проверь ответ в любом задании.</div>
         <div>
           <div class="mode-row" role="group" aria-label="Режим тренировки">
             <span class="mode-label">Режим:</span>
@@ -298,8 +301,8 @@
           <button class="ghost" id="printBtn">Распечатать вариант</button>
           <button class="danger" id="resetBtn">Сбросить прогресс</button>
         </section>
-        <section class="nav-card">
-          <div class="nav-title">Шпаргалка без воды</div>
+        <section class="nav-card" id="cheatCard">
+          <div class="nav-title">Шпаргалка по номерам</div>
           <div class="cheats" id="cheats"></div>
         </section>
       </nav>
@@ -319,7 +322,7 @@
             <button class="ghost" id="solutionBtn">Решение</button>
             <button class="tutor-open-btn" id="tutorOpenBtn" type="button">Разобрать по шагам</button>
           </div>
-          <div class="feedback" id="feedback"></div>
+          <div class="feedback" id="feedback" aria-live="polite"></div>
           <div class="tutor-locked" id="tutorLocked">В режиме «Экзамен» пошаговый разбор открывается после проверки задания или варианта. Сначала попробуй сам.</div>
           <div class="hint-box" id="hintBox"></div>
           <div class="solution-box" id="solutionBox"></div>
@@ -338,7 +341,7 @@
             </div>
           </div>
           <div class="variant-grid" id="variantGrid"></div>
-          <div class="answer-row" style="grid-template-columns:1fr auto auto;">
+          <div class="answer-row variant-actions">
             <div class="small-muted">Ответы можно проверять по одному или весь вариант сразу.</div>
             <button class="primary" id="checkVariantBtn">Проверить вариант</button>
             <button class="ghost" id="newVariantBtn">Новый вариант</button>
@@ -353,7 +356,7 @@
 <script>
 (() => {
   const TOPICS = [
-    {n:1, name:'Информационный объём', cheat:'В Unicode 16 бит = 2 байта на символ. Если удалили слово, запятую и пробел, то разница = (длина слова + 2) × байт на символ.'},
+    {n:1, name:'Информационный объём', cheat:'Посмотри в условии, сколько бит занимает один символ. Раздели это число на 8, чтобы получить байты. Если удалили слово, запятую и пробел, то разница = (длина слова + 2) × байт на символ.'},
     {n:2, name:'Кодирование сообщений', cheat:'Идём слева направо: подбираем код буквы, отрезаем его от радиограммы, повторяем. Если сомневаешься — выпиши дерево вариантов.'},
     {n:3, name:'Логика и неравенства', cheat:'НЕ меняет истину на ложь. Для “ложно A ИЛИ B” нужно, чтобы оба куска были ложными. Часто быстрее проверить x = 1, 2, 3…'},
     {n:4, name:'Кратчайший путь', cheat:'Положительные веса: перебирай короткие маршруты без повторов или веди таблицу расстояний. Не забывай, что прямой путь не всегда лучший.'},
@@ -380,13 +383,15 @@
   let variantTimer = null;
   let variantSeconds = 30 * 60;
   let variantChecked = false;
-  let currentMode = loadMode();
+  const checkedTasks = new WeakSet();
 
   const MODES = {
     learn:    {label:'Учусь',     hint:'Кнопка «Разобрать по шагам» открыта сразу. Подсказки доступны без штрафа.'},
     practice: {label:'Закрепляю', hint:'Сначала пробуй сам. После ошибки появится приглашение разобрать по шагам.'},
     exam:     {label:'Экзамен',   hint:'Без подсказок и шагов. Разбор откроется только после проверки задания или варианта.'}
   };
+
+  let currentMode = loadMode();
 
   function loadMode(){
     try{
@@ -445,13 +450,13 @@
     $('scoreBig').textContent = pct + '%';
     $('scoreBar').style.width = pct + '%';
     if(!stats.attempts){
-      $('scoreText').textContent = 'Пока нет попыток. Погнали с одного задания — и уже будет статистика.';
+      $('scoreText').textContent = 'Пока нет попыток. Проверь ответ в любом задании.';
     }else{
       const weak = TOPICS
         .map(t => ({...t, s: stats.byTask[t.n] || defaultTaskStat()}))
-        .filter(x => x.s.attempts >= 2)
+        .filter(x => x.s.attempts >= 2 && x.s.correct / x.s.attempts < .7)
         .sort((a,b) => (a.s.correct/a.s.attempts) - (b.s.correct/b.s.attempts))[0];
-      $('scoreText').textContent = `${stats.correct} верно из ${stats.attempts}. ${weak ? 'Слабое место сейчас: №' + weak.n + ' — ' + weak.name + '.' : 'Сделай ещё пару задач, и покажу слабые места.'}`;
+      $('scoreText').textContent = `${stats.correct} верно из ${stats.attempts}. ${weak ? 'Слабое место сейчас: №' + weak.n + ' — ' + weak.name + '.' : 'Попробуй ещё одну задачу самостоятельно.'}`;
     }
     // расширенный блок
     const extra = $('statsExtra');
@@ -481,33 +486,27 @@
     const mh = $('modeHint');
     if(mh) mh.textContent = MODES[currentMode].hint;
     // применить ограничения к текущей задаче
+    $('cheatCard').hidden = currentMode === 'exam';
     applyModeToTask();
+    variantTasks.forEach((_, idx) => {
+      const locked = currentMode === 'exam' && !variantChecked;
+      $('miniTutorBtn'+idx).style.display = locked ? 'none' : '';
+      document.querySelector('[data-mini-hint="'+idx+'"]').disabled = locked;
+      if(locked) $('miniHint'+idx).classList.remove('show');
+    });
+    if(currentMode === 'exam' && !variantChecked && tutorState.host === 'mini') closeTutor();
   }
   function applyModeToTask(){
     if(!currentTask) return;
-    const tutorBtn = $('tutorOpenBtn');
-    const tutorBox = $('tutorBox');
-    const hintBtn = $('hintBtn');
-    const solBtn = $('solutionBtn');
-    const locked = $('tutorLocked');
-    if(currentMode === 'learn'){
-      if(tutorBtn) tutorBtn.style.display = '';
-      if(hintBtn) hintBtn.disabled = false;
-      if(solBtn) solBtn.disabled = false;
-      if(locked) locked.classList.remove('show');
-    }else if(currentMode === 'practice'){
-      // показываем кнопку (мы хотим разрешить добровольный разбор), но подсказку и решение
-      // показываем как обычно
-      if(tutorBtn) tutorBtn.style.display = '';
-      if(hintBtn) hintBtn.disabled = false;
-      if(solBtn) solBtn.disabled = false;
-      if(locked) locked.classList.remove('show');
-    }else{ // exam
-      if(tutorBtn) tutorBtn.style.display = 'none';
-      if(hintBtn) hintBtn.disabled = true;
-      if(solBtn) solBtn.disabled = true;
-      if(tutorBox) tutorBox.classList.remove('show');
-      if(locked) locked.classList.add('show');
+    const locked = currentMode === 'exam' && !checkedTasks.has(currentTask);
+    $('tutorOpenBtn').style.display = locked ? 'none' : '';
+    $('hintBtn').disabled = locked;
+    $('solutionBtn').disabled = locked;
+    $('tutorLocked').classList.toggle('show', locked);
+    if(locked){
+      $('hintBox').classList.remove('show');
+      $('solutionBox').classList.remove('show');
+      if(tutorState.host === 'single') closeTutor();
     }
   }
 
@@ -558,29 +557,28 @@
     const expected = Array.isArray(task.answer) ? task.answer.map(normalize) : [normalize(task.answer)];
     return expected.includes(normalize(input));
   }
-  function showFeedback(ok, task, input, shouldRecord=true){
+  function recordFirstAnswer(task, ok){
+    if(checkedTasks.has(task)) return;
+    checkedTasks.add(task);
+    record(task.num, ok);
+  }
+
+  function checkCurrentAnswer(){
+    const input = $('answerInput');
     const fb = $('feedback');
-    fb.className = 'feedback ' + (ok ? 'good' : 'bad');
-    if(ok){
-      fb.innerHTML = 'Верно. Вот это темп 👌';
-    }else{
-      // В режиме экзамен — после проверки разрешаем разбор; в practice — предлагаем
-      let extra = '';
-      if(currentMode !== 'learn' && task.steps && task.steps.length){
-        extra = ` <button class="tutor-open-btn mini" type="button" id="fbTutorBtn" style="margin-left:8px">Разобрать по шагам</button>`;
-      }
-      fb.innerHTML = `Пока нет. Правильный ответ: <span class="mono">${esc(task.displayAnswer ?? task.answer)}</span>${extra}`;
-      // в экзамене после проверки также снимаем блокировку tutor
-      if(currentMode === 'exam'){
-        const tb = $('tutorOpenBtn');
-        if(tb) tb.style.display = '';
-        const lk = $('tutorLocked');
-        if(lk) lk.classList.remove('show');
-      }
-      const fbBtn = $('fbTutorBtn');
-      if(fbBtn) fbBtn.addEventListener('click', () => startTutor(currentTask, $('tutorBox'), {host:'single'}));
+    if(!input.value.trim()){
+      fb.className = 'feedback neutral';
+      fb.textContent = 'Сначала введи свой ответ.';
+      input.focus();
+      return;
     }
-    if(shouldRecord) record(task.num, ok);
+    const ok = checkTask(currentTask, input.value);
+    recordFirstAnswer(currentTask, ok);
+    applyModeToTask();
+    fb.className = 'feedback ' + (ok ? 'good' : 'bad');
+    fb.textContent = ok
+      ? 'Верно. Нажми «Новое задание», чтобы проверить себя на другом примере.'
+      : 'Пока не сходится. Проверь свой ответ ещё раз или открой подсказку.';
   }
 
   function gen1(){
@@ -637,7 +635,7 @@
           expected:String(item.length),
           normalize:'number',
           hint:'Кроме самого названия удалили ещё запятую и пробел: это 2 символа.',
-          explanation:`${totalCharsDeleted} − 2 = ${item.length}. Значит, в названии ${item.length} букв.`,
+          explanation:`${totalCharsDeleted} − 2 = ${item.length}. Длина названия в символах — ${item.length}.`,
           mistake:'Похоже, не вычел запятую и пробел: их всегда два лишних символа.'
         },
         {
@@ -723,7 +721,7 @@
           normalize:'text',
           hint:'Радиограмму всегда читают так же, как обычный текст — от первой точки/тире.',
           explanation:'Начинаем слева: подбираем код, совпадающий с самым началом строки.',
-          mistake:'Похоже, начал не с того конца. Двигаемся слева направо, отрезая распознанные буквы.'
+          mistake:'Похоже, выбрал другой порядок. Здесь двигаемся слева направо, отрезая распознанные буквы.'
         },
         {
           title:'Первая буква',
@@ -753,9 +751,9 @@
           question:`После отрезания первого кода остаётся «${afterFirst.split('').join(' ')}». Какая буква стоит дальше?`,
           expected:secondLetter,
           normalize:'text',
-          hint:`Снова смотри на самый начало остатка. Подбери код буквы.`,
+          hint:`Снова смотри на начало остатка. Подбери код буквы.`,
           explanation:`Дальше идёт код «${secondCode}» — это буква «${secondLetter}».`,
-          mistake:'Похоже, опять не от начала. Каждый раз отрезаем уже найденную часть и смотрим на новый «начало».'
+          mistake:'Похоже, опять не от начала. Каждый раз отрезаем уже найденную часть и смотрим на начало остатка.'
         },
         {
           title:'Собираем слово',
@@ -808,7 +806,7 @@
           normalize:'text',
           hint:'Достаточно одной истинной части, чтобы ИЛИ было истинным.',
           explanation:'A ИЛИ B ложно только когда обе части ложны.',
-          mistake:'Похоже, спутал с правилом для И. Для ИЛИ ложным нужно одновременно ложить обе части.'
+          mistake:'Похоже, спутал с правилом для И. Чтобы ИЛИ было ложным, обе части должны быть ложными.'
         },
         {
           title:'Раскрываем первую часть',
@@ -1213,26 +1211,22 @@
   }
 
   function gen6(){
-    let K, pairs, qual, m, ans;
-    for(let tries=0; tries<500; tries++){
-      K = rnd(8,14);
-      pairs = [];
-      const used = new Set();
-      while(pairs.length < 9){
-        const s = rnd(-12,18), t = rnd(-10,18);
-        const key = s+','+t;
-        if(!used.has(key)){ used.add(key); pairs.push([s,t]); }
-      }
-      qual = [...new Set(pairs.filter(p => p[1] <= K).map(p => p[0]))].sort((a,b)=>a-b);
-      if(qual.length >= 4){
-        m = rnd(2, qual.length-1);
-        ans = qual[m] - 1;
-        const count = pairs.filter(([s,t]) => t <= K && s <= ans).length;
-        const countNext = pairs.filter(([s,t]) => t <= K && s <= ans+1).length;
-        if(count === m && countNext > m) break;
-      }
+    const K = rnd(8,14);
+    // Три различных подходящих s гарантируют хотя бы один внутренний порог.
+    const values = shuffle(Array.from({length:31}, (_, i) => i-12));
+    const pairs = values.slice(0,3).map(s => [s,rnd(-10,K)]);
+    while(pairs.length < 9){
+      const s = rnd(-12,18), t = rnd(-10,18);
+      if(!pairs.some(([a,b]) => a === s && b === t)) pairs.push([s,t]);
     }
-    const pairsText = pairs.map(p => `(${p[0]}, ${p[1]})`).join('; ');
+    const qual = pairs.filter(([,t]) => t <= K).map(([s]) => s).sort((a,b) => a-b);
+    const cuts = [];
+    for(let i = 2; i < qual.length; i++){
+      if(qual[i-1] < qual[i]) cuts.push(i);
+    }
+    const m = pick(cuts);
+    const ans = qual[m] - 1;
+    const pairsText = shuffle(pairs).map(p => `(${p[0]}, ${p[1]})`).join('; ');
     const filteredByT = pairs.filter(p => p[1] <= K);
     const filteredCount = filteredByT.length;
     const qualText = qual.join(', ');
@@ -1284,17 +1278,16 @@ else:
         {
           title:'Значения s, которые останутся',
           goal:'Выписать s-значения подходящих пар, отсортированные по возрастанию.',
-          question:`Какие значения s остаются у пар с t ≤ ${K}? Перечисли через запятую в порядке возрастания, без повторов.`,
+          question:`Какие значения s остаются у пар с t ≤ ${K}? Перечисли через запятую от меньшего к большему. Запиши число по одному разу для каждого запуска, где оно встретилось.`,
           expected:qualText,
           customCheck:(input)=>{
-            const parts = String(input).replace(/\s+/g,'').split(/[,;]+/).filter(Boolean).map(x=>x.replace(/[^\-\d]/g,'')).filter(Boolean).map(Number);
-            const uniqSorted = [...new Set(parts)].sort((a,b)=>a-b);
-            return {ok: uniqSorted.length===qual.length && uniqSorted.every((v,i)=>v===qual[i])};
+            const parts = String(input).trim().replace(/−/g,'-').split(/[,;]/).map(x => x.trim());
+            return {ok: parts.length === qual.length && parts.every((x,i) => /^[+-]?\d+$/.test(x) && Number(x) === qual[i])};
           },
           normalize:'text',
-          hint:'Выпиши все s из отфильтрованных пар, убери повторы и упорядочь по возрастанию.',
-          explanation:`Уникальные s: <b>${qualText}</b>.`,
-          mistake:'Похоже, забыл убрать дубль или взял пару с большим t.'
+          hint:'Выпиши все s из отфильтрованных пар, расположи их по порядку. Два запуска с одинаковым s дают две записи.',
+          explanation:`По одной записи s на каждый подходящий запуск: <b>${qualText}</b>.`,
+          mistake:'Для каждой подходящей пары запиши её s. Сверь число записей с числом оставшихся пар.'
         },
         {
           title:'Подбираем порог A',
@@ -1304,7 +1297,7 @@ else:
           normalize:'number',
           hint:`Возьми ${m}-е по возрастанию значение и следующее за ним. A должно быть на 1 меньше следующего.`,
           explanation:`Первые ${m} значений: ${qual.slice(0,m).join(', ')}. Следующее — ${qual[m]}. Наибольшее A = ${qual[m]} − 1 = <b>${ans}</b>.`,
-          mistake:`Похоже, дал A = ${qual[m]} (тогда подойдёт ${m+1} пар) или A = ${qual[m-1]} − 1. Чтобы было ровно ${m}, A должно «доходить» до ${m}-го значения, но не достигать (${m}+1)-го.`,
+          mistake:`Похоже, дал A = ${qual[m]} (тогда подойдёт больше ${m} пар) или A = ${qual[m-1]} − 1. Чтобы было ровно ${m}, A должно «доходить» до ${m}-го значения, но не достигать (${m}+1)-го.`,
           revealFinal:true
         }
       ]
@@ -1727,6 +1720,7 @@ else:
       mount.classList.add('show');
       return;
     }
+    closeTutor();
     tutorState = {
       task,
       mount,
@@ -1755,11 +1749,11 @@ else:
     const i = t.stepIndex;
     const step = steps[i];
     const total = steps.length;
-    const pct = Math.round(((i + (t.solvedSteps[i]?1:0)) / total) * 100);
+    const pct = Math.round(t.solvedSteps.filter(Boolean).length / total * 100);
     const allSolved = t.solvedSteps.every(Boolean);
     const idPref = (t.host === 'mini' ? `m${t.miniIdx}_` : 's_');
     const finalHint = allSolved
-      ? `<div class="tutor-final show">Готово! Теперь запиши финальный ответ в формате ОГЭ: <b>${esc(t.task.displayAnswer ?? t.task.answer)}</b>.</div>`
+      ? '<div class="tutor-final show">Все шаги пройдены. Проверь итоговый ответ, а затем попробуй новое задание.</div>'
       : '';
     const stepBadge = `Шаг ${i+1} из ${total}${t.solvedSteps[i]?' · решено':''}`;
     t.mount.innerHTML = `
@@ -1772,7 +1766,7 @@ else:
       ${step.goal ? `<div class="tutor-goal">${esc(step.goal)}</div>` : ''}
       <div class="tutor-question">${esc(step.question)}</div>
       <div class="tutor-input-row">
-        <input class="tutor-input" id="${idPref}tutorInput" autocomplete="off" placeholder="Ответ на шаг" ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''} value="${t.solvedSteps[i] || t.revealed[i] ? esc(step.expected) : ''}">
+        <input class="tutor-input" id="${idPref}tutorInput" autocomplete="off" placeholder="Ответ на шаг" ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''} value="${esc(t.solvedSteps[i] || (t.revealed[i] ? step.expected : ''))}">
         <button class="tutor-check-btn" type="button" data-tutor-check ${t.solvedSteps[i] || t.revealed[i] ? 'disabled' : ''}>Проверить шаг</button>
       </div>
       <div class="tutor-controls">
@@ -1826,7 +1820,7 @@ else:
     }
     const ok = stepIsCorrect(step, val);
     if(ok){
-      t.solvedSteps[t.stepIndex] = true;
+      t.solvedSteps[t.stepIndex] = val.trim();
       recordTutorUsage(t.task.num, 'stepCorrect');
       if(fb){ fb.className = 'tutor-fb good'; fb.innerHTML = '✓ Верно. ' + (step.explanation || ''); }
       if(inp) inp.disabled = true;
@@ -1838,17 +1832,10 @@ else:
       if(nextBtn && t.stepIndex < t.task.steps.length - 1){
         nextBtn.focus();
       }else if(t.stepIndex === t.task.steps.length - 1){
-        // дошли до конца — фокус на финальный input
-        setTimeout(() => {
-          if(t.host === 'single'){
-            const aInput = $('answerInput');
-            if(aInput) { aInput.focus(); aInput.value = step.revealFinal ? (t.task.displayAnswer ?? t.task.answer) : aInput.value; }
-          }else if(t.host === 'mini' && t.miniIdx !== null){
-            const aInput = $('miniAnswer'+t.miniIdx);
-            if(aInput){ aInput.focus(); if(step.revealFinal) aInput.value = t.task.displayAnswer ?? t.task.answer; }
-          }
-        }, 50);
+        const answerInput = t.host === 'single' ? $('answerInput') : $('miniAnswer'+t.miniIdx);
+        if(step.revealFinal && !answerInput.readOnly) answerInput.value = val.trim();
         renderTutor();
+        answerInput.focus();
       }
     }else{
       recordTutorUsage(t.task.num, 'stepAttempt');
@@ -1857,9 +1844,6 @@ else:
         const diagnostic = step.mistake || 'Не совсем. Попробуй ещё раз.';
         fb.innerHTML = '✗ ' + esc(diagnostic) + ' <span style="opacity:.8">Попробуй заново или открой подсказку.</span>';
       }
-      // авто-показ подсказки
-      const hb = t.mount.querySelector('[data-tutor-hint-box]');
-      if(hb && step.hint) hb.classList.add('show');
     }
   }
 
@@ -1891,6 +1875,9 @@ else:
   function makeVariant(){
     variantTasks = TOPICS.map(t => generators[t.n]());
     variantChecked = false;
+    if(tutorState.host === 'mini') closeTutor();
+    $('variantScore').textContent = 'ещё не проверено';
+    $('checkVariantBtn').disabled = false;
     $('variantCard').classList.add('show');
     renderVariant();
     startVariantTimer();
@@ -1904,10 +1891,10 @@ else:
       const tutorHidden = inExam && !variantChecked ? 'style="display:none"' : '';
       return `
       <div class="mini-task" data-idx="${idx}">
-        <div class="mini-head"><span>№${task.num}. ${esc(task.title)}</span><span class="mini-result" id="miniResult${idx}">—</span></div>
+        <div class="mini-head"><span>№${task.num}. ${esc(task.title)}</span><span class="mini-result" id="miniResult${idx}" aria-live="polite">—</span></div>
         <div class="task-text">${task.html}</div>
         <div class="mini-answer-row">
-          <input id="miniAnswer${idx}" placeholder="Ответ" autocomplete="off">
+          <input id="miniAnswer${idx}" aria-label="Ответ на задание №${task.num}" placeholder="Ответ" autocomplete="off">
           <button class="ghost" data-mini-hint="${idx}" ${hintDisabled}>Подсказка</button>
           <button class="primary" data-mini-check="${idx}">Проверить</button>
         </div>
@@ -1917,7 +1904,7 @@ else:
         <div class="solution-box" id="miniSolution${idx}">${task.solution}</div>
       </div>`;
     }).join('');
-    [...document.querySelectorAll('[data-mini-check]')].forEach(btn => btn.addEventListener('click', () => checkMini(Number(btn.dataset.miniCheck), true)));
+    [...document.querySelectorAll('[data-mini-check]')].forEach(btn => btn.addEventListener('click', () => checkMini(Number(btn.dataset.miniCheck))));
     [...document.querySelectorAll('[data-mini-hint]')].forEach(btn => btn.addEventListener('click', () => {
       if(btn.disabled) return;
       $('miniHint'+btn.dataset.miniHint).classList.toggle('show');
@@ -1927,34 +1914,37 @@ else:
       startTutor(variantTasks[i], $('miniTutor'+i), {host:'mini', miniIdx:i});
     }));
   }
-  function checkMini(idx, shouldRecord=false){
+  function checkMini(idx){
     const task = variantTasks[idx];
-    const input = $('miniAnswer'+idx).value;
-    const ok = checkTask(task, input);
+    const input = $('miniAnswer'+idx);
     const badge = $('miniResult'+idx);
-    badge.textContent = ok ? 'верно' : `ответ: ${task.displayAnswer ?? task.answer}`;
-    badge.className = 'mini-result ' + (ok ? 'ok' : 'no');
-    // В режиме «Экзамен» одиночная проверка не раскрывает решение раньше времени —
-    // решения откроются после общей проверки варианта.
-    if(currentMode !== 'exam' || variantChecked){
-      $('miniSolution'+idx).classList.add('show');
+    if(!input.value.trim()){
+      badge.textContent = variantChecked ? 'пропущено' : 'введи ответ';
+      badge.className = 'mini-result';
+      if(!variantChecked) input.focus();
+      return false;
     }
-    if(shouldRecord) record(task.num, ok);
+    const ok = checkTask(task, input.value);
+    badge.textContent = ok ? 'верно' : (variantChecked ? 'ошибка' : 'попробуй ещё раз');
+    badge.className = 'mini-result ' + (ok ? 'ok' : 'no');
+    recordFirstAnswer(task, ok);
     return ok;
   }
   function checkVariant(){
-    if(!variantTasks.length) return;
+    if(!variantTasks.length || variantChecked) return;
     variantChecked = true;
+    clearInterval(variantTimer);
     let okCount = 0;
-    variantTasks.forEach((_, idx) => { if(checkMini(idx, true)) okCount += 1; });
-    // открыть все решения и кнопки разбора по шагам
     variantTasks.forEach((_, idx) => {
+      if(checkMini(idx)) okCount++;
+      $('miniAnswer'+idx).readOnly = true;
+      document.querySelector('[data-mini-check="'+idx+'"]').disabled = true;
       $('miniSolution'+idx).classList.add('show');
-      const tb = $('miniTutorBtn'+idx);
-      if(tb) tb.style.display = '';
     });
+    renderModeBar();
+    $('checkVariantBtn').disabled = true;
     $('variantScore').textContent = `${okCount}/10 верно`;
-    toast(okCount >= 8 ? `Сильно! ${okCount}/10 — уже пахнет уверенной первой частью.` : `${okCount}/10. Нормальная разминка: посмотри решения и добей слабые номера.`);
+    toast('Вариант проверен. Разбери трудные задания, затем попробуй новый вариант.');
   }
   function startVariantTimer(){
     if(variantTimer) clearInterval(variantTimer);
@@ -1977,14 +1967,7 @@ else:
   }
 
   $('newTaskBtn').addEventListener('click', () => newTask(currentTopic));
-  $('checkBtn').addEventListener('click', () => {
-    const ok = checkTask(currentTask, $('answerInput').value);
-    showFeedback(ok, currentTask, $('answerInput').value, true);
-    // В «Учусь» / «Закрепляю» — поведение как раньше: показать решение при ошибке.
-    // В «Экзамен» — решение не раскрываем автоматически: пусть ученик сам решит,
-    // открыть ли «Разобрать по шагам» или «Показать решение».
-    if(!ok && currentMode !== 'exam') $('solutionBox').classList.add('show');
-  });
+  $('checkBtn').addEventListener('click', checkCurrentAnswer);
   $('hintBtn').addEventListener('click', showHint);
   $('solutionBtn').addEventListener('click', showSolution);
   $('variantBtn').addEventListener('click', makeVariant);
@@ -2008,19 +1991,6 @@ else:
     currentMode = btn.dataset.mode;
     saveMode();
     renderModeBar();
-    // Если открыт мини-вариант — перерисуем, чтобы применить ограничения режима
-    if(variantTasks.length){
-      const wasChecked = variantChecked;
-      renderVariant();
-      if(wasChecked){
-        // восстановить «открытое» состояние после проверки
-        variantTasks.forEach((_, idx) => {
-          $('miniSolution'+idx).classList.add('show');
-          const tb = $('miniTutorBtn'+idx);
-          if(tb) tb.style.display = '';
-        });
-      }
-    }
     toast(`Режим: ${MODES[currentMode].label}. ${MODES[currentMode].hint}`);
   }));
 

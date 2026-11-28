@@ -1,0 +1,19 @@
+{
+  "file": "stereo-course/textbook/assets/engine.js",
+  "afterSHA256": "8b233b55bd72852274fcd6b2eb6a6cd8b0d66e3e0ffb23998be0e27c19f9dc54",
+  "changes": [
+    {
+      "added": " let catalogReturn=null;\n"
+    },
+    {
+      "added": "  if(!current&&view.querySelector('.catalog-filters')){\n   const content=doc.createDocumentFragment();\n   const button=view.querySelector('[data-lesson=\"'+lesson.id+'\"]');\n   content.append(...view.childNodes);\n   catalogReturn={content,button};\n  }\n"
+    },
+    {
+      "added": "\n  if(catalogReturn){\n   const {content,button}=catalogReturn;\n   catalogReturn=null;\n   view.append(content);\n   button?.focus();\n   return;\n  }\n  "
+    },
+    {
+      "added": "destroyed=true;catalogReturn=null;destroyScene();",
+      "previous": "destroyed=true;destroyScene();"
+    }
+  ]
+}

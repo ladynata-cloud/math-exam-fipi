@@ -35,17 +35,21 @@ test('additional banks are requested explicitly, and every bank/prerequisite exi
  }
  for(const bank of course.banks)for(const id of bank.help)assert(lessons.some(l=>l.id===id),bank.path+' prerequisite '+id);
 });
-test('all twenty entries and the earlier catalogue are visible; board links retain their registered number',()=>{
+test('nineteen official entries, two extra topics and the earlier catalogue are visible; board numbers stay stable',()=>{
  const dom=doc('ege-profil/index.html'),d=dom.window.document;
- const entries=[...d.querySelectorAll('#profile-2027 .first-three-link')];
- assert.deepEqual(entries.map(a=>a.getAttribute('href')),Array.from({length:20},(_,i)=>i<13?'start/index.html#calm/'+(i+1):'part-two/index.html#exam/'+(i+1)));
+ const entries=[...d.querySelectorAll('#profile-2027 .first-three-link[data-exam-number]')];
+ assert.deepEqual(entries.map(a=>a.getAttribute('href')),Array.from({length:19},(_,i)=>(i<12||i===15?'start':'part-two')+'/index.html#fipi/2027/'+(i+1)));
+ assert.deepEqual(entries.map(a=>Number(a.dataset.examNumber)),Array.from({length:19},(_,i)=>i+1));
  for(const link of entries)assert.equal(link.closest('details:not([open])'),null,'each current number is directly available');
+ const extras=[...d.querySelectorAll('#profile-2027 .first-three-link:not([data-exam-number])')];
+ assert.deepEqual(extras.map(a=>a.getAttribute('href')),['start/index.html#topic/random-variables','part-two/index.html#topic/optimization']);
+ for(const link of extras)assert.equal(link.closest('details:not([open])'),null,'every additional topic remains directly available');
  const board=[...d.querySelectorAll('a[href*="trainer-board.html"]')].map(a=>new URL(a.href).searchParams.get('trainer'));
  assert.deepEqual(board,['/ege-profil/start/index.html#exam/1','/ege-profil/start/index.html#exam/2','/ege-profil/start/index.html#exam/3']);
  assert.equal(d.querySelector('#legacy-course').open,true,'earlier courses remain expanded');
  assert.equal(d.querySelectorAll('#route li.line').length,19,'retain the separately labelled 2026 catalogue');
  for(const link of d.querySelectorAll('#legacy-course a[href]'))assert.equal(link.closest('details:not([open])'),null,'earlier links remain directly available');
- assert.match(d.querySelector('header').textContent,/проекту ФИПИ 2027/);
+ assert.match(d.querySelector('header').textContent,/спецификации ФИПИ 2027/);
  dom.window.close();
 });
 test('archived 2026 links select the correct topic without being renumbered as 2027',()=>{

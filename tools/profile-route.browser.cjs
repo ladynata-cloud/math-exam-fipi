@@ -30,6 +30,51 @@ await svg.focus();await page.keyboard.press('Home');p=xy(0);await page.mouse.mov
 await page.locator('[data-angle-snap]').selectOption('0');p=xy(-2.0777);await page.mouse.move(p.x,p.y);await page.mouse.down();await page.mouse.up();assert.match(await page.locator('[data-angle-input]').inputValue(),/,\d+π/);
 await page.locator('[data-angle-snap]').selectOption('12');assert(!((await page.locator('[data-angle-input]').inputValue()).includes(',')));
 await page.locator('[data-angle-input]').fill('π/7');await page.locator('[data-angle-input]').press('Enter');assert.equal(await page.locator('[data-angle-input]').inputValue(),'π/7');await page.locator('[data-angle-range]').focus();await page.keyboard.press('ArrowRight');assert(!((await page.locator('[data-angle-input]').inputValue()).includes(',')));
+// Follow the school report into real part-two tasks without awarding progress for a probe.
+await page.evaluate(key => {
+ const saved = JSON.parse(localStorage.getItem(key));
+ saved.records['m5-6-b'] = {practised:true, afterError:true, afterHelp:true};
+ saved.records['m5-6-v'] = {practised:true, independent:true};
+ localStorage.setItem(key, JSON.stringify(saved));
+}, mk);
+await page.goto(origin+D.routes.trigonometry.path+'#report');
+const earlierWork = page.locator('.report .route-card').filter({hasText:'Контрольный подпункт №5.6 (б)'});
+assert.match(await earlierWork.innerText(), /№5.6 \(б\).*с подсказкой, исправлено после ошибки/);
+assert.match(await earlierWork.innerText(), /№5.6 \(в\) — решено самостоятельно с первой попытки/);
+const downloadSchoolReport = page.waitForEvent('download');
+await page.locator('#export-text').click();
+assert.match(fs.readFileSync(await (await downloadSchoolReport).path(),'utf8'), /№5.6 \(в\) — решено самостоятельно с первой попытки/);
+const priorSchoolWork = await page.evaluate(([a,b]) => [localStorage.getItem(a),localStorage.getItem(b)], [mk,pk]);
+await page.locator('a[href="#equations"]').click();
+await page.locator('#equations-title:focus').waitFor();
+const sequence = page.locator('#equations');
+const review = sequence.locator('details');
+assert.equal(await review.getAttribute('open'), null);
+await page.setViewportSize({width:360,height:900});
+const schoolEntry = sequence.getByRole('link',{name:'Начать маршрут из 10 шагов',exact:true});
+await schoolEntry.click();
+assert.equal(page.url(), origin + '/ege-profil/part-two/#fipi/2027/13/school');
+await page.getByRole('heading',{name:'От тригонометрического круга к уравнению №13',exact:true}).waitFor();
+assert.equal(await page.locator('[data-school-step] option').count(),10);
+assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+await page.goBack();
+await review.locator('summary').click();
+assert.equal(await review.locator('ol > li').count(),6);
+assert.equal(await sequence.locator('#feedback-substitution').innerText(),'');
+await sequence.locator('#probe-substitution').selectOption({label:'Оба уравнения'});
+assert.doesNotMatch(await sequence.locator('#feedback-substitution').innerText(),/Верно/);
+await sequence.locator('#probe-selection').selectOption({label:'0 и −1'});
+assert.match(await sequence.locator('#feedback-selection').innerText(),/−7π\/6 и π\/6/);
+assert.deepEqual(await page.evaluate(([a,b]) => [localStorage.getItem(a),localStorage.getItem(b)], [mk,pk]),priorSchoolWork);
+for(const label of ['Решить первое условие','Решить другое условие']){
+ await sequence.getByRole('link',{name:label}).click();
+ await page.locator('#final-0').waitFor();
+ assert.equal(await page.locator('#final-1').inputValue(),'');
+ assert.match(new URL(page.url()).hash,/^#task\/p14-.*\/independent$/);
+ await page.goBack();
+ await sequence.waitFor();
+ if (await review.getAttribute('open') === null) await review.locator('summary').click();
+}
 // Responsive dashboards, context ribbon and 200% zoom.
 for(const url of [D.routes.lesson.path,D.routes.homework.path,D.routes.trigonometry.path,R.link('homework','before-radians')])for(const width of [360,768,1280]){await page.setViewportSize({width,height:900});await page.goto(origin+url);await page.locator('h1').waitFor();assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'overflow '+url+' '+width);}
 await page.setViewportSize({width:360,height:900});await page.goto(origin+D.routes.lesson.path);await page.evaluate(()=>document.body.style.zoom='2');if(!(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)))console.log(await page.locator('body *').evaluateAll(es=>es.filter(e=>e.getBoundingClientRect().right>innerWidth+1).map(e=>({tag:e.tagName,cls:e.className,w:e.getBoundingClientRect().width,text:e.textContent.slice(0,70)}))));assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.evaluate(()=>document.body.style.zoom='1');

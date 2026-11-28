@@ -49,10 +49,12 @@ class Edition:
 TEXT = {".html", ".js", ".css", ".json", ".svg"}
 REMOVED = {
     "assets/lesson-funnel.js", "assets/download-panel.css",
+    "assets/download-adaptation.css", "assets/download-adaptation.js",
     # The live-site navigator is optional public navigation, not a fixed-book dependency.
     "assets/assistant/navigator-data.js",
     "assets/assistant/navigator-widget.js",
     "assets/assistant/widget.css",
+    "assets/oge-fractions-return.js",
     # Live prerequisite detours may leave the fixed inventory. They are public
     # navigation, like the navigator above; the original in-trainer help stays.
     "trainers/oge-basics/skill-support.js",

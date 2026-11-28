@@ -167,6 +167,9 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body data-oge-foundation="7">
 <nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
@@ -176,6 +179,7 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 <header class="top">
   <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
   <h1>Задание 7 ОГЭ. Координатная прямая</h1>
+  <p><a href="./oge-basics/negative-number-line.html" target="_blank" rel="noopener">Повторить сравнение чисел на прямой и противоположные числа ↗</a></p>
   <p class="subtitle">Числа на прямой: читаем рисунок, оцениваем дроби и корни, находим точки. Сначала учимся, потом решаем по шагам, потом марафон по реальному банку и зачёт.</p>
   <div class="tabs">
     <button class="tab active" data-t="learn">&#128214; Учимся</button>
@@ -3244,5 +3248,28 @@ const ASTK={
 <script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="7"></script>
 <script src="board-bridge.js"></script>
 <script src="oge-foundation-board.js?v=20261025"></script>
+<!-- download-panel:start:oge-task7-number-line -->
+<section class="download-panel" id="download" data-trainer-download="oge-task7-number-line">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/oge-task7-number-line/oge-task7-number-line.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/oge-task7-number-line/oge-task7-number-line-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/oge-task7-number-line/oge-task7-number-line-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь две задачи на сравнение отрицательных чисел по рисунку."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:oge-task7-number-line -->
 </body>
 </html>

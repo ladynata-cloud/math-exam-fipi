@@ -216,12 +216,16 @@ const multiplication=Object.freeze([
  navigationStage('course-column-mixed','Разные столбики вперемешку','Числа разной длины, с нулями и без нулей.','Считай по одной цифре.'),
  stageFor('multiplication-division/course-multiply-bridge')
 ]);
+const roundingModes=Object.freeze([
+ Object.freeze({publicUrl:'/trainers/rounding-stepwise.html?place=1&from=division',action:'Округление до десятков'}),
+ Object.freeze({publicUrl:'/trainers/rounding-stepwise.html?place=2&from=division',action:'Округление до сотен'})
+]);
 const roundingPreparation=Object.freeze({
  id:'rounding-stepwise',
  title:'Сначала потренируем округление',
  goal:'До десятков, сотен, тысяч и дальше. Новые примеры без ограничения попыток.',
- publicUrl:'/trainers/rounding-stepwise.html?place=1&from=division',
- action:'Потренировать округление',
+ ...roundingModes[0],
+ modes:roundingModes,
  returnNote:'Откроется в новой вкладке. После тренировки вернись сюда к прикидке.'
 });
 // Preparation is a separate public exercise, never a cabinet stage or progress item.

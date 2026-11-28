@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Формулы и текстовые задачи · ЕГЭ профиль</title>
@@ -101,13 +102,16 @@
     table.tbl th{-webkit-hyphens:manual;hyphens:manual}
   }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261115-fipi-map"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
-<script defer src="../skill-map-data.js?v=20261111-skills"></script>
-<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="10 11" data-profile-skill-topics="formulas=10 text=11"></script>
+<script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
+<script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="10 11" data-profile-skill-topics="formulas=10 text=11"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -116,7 +120,7 @@
   <h1>Формулы и текстовые задачи</h1>
   <p class="lede">В задачах с формулой нужно подставить данные и найти неизвестное. В текстовых задачах сначала составляем модель. Начните с условия и текущего действия; справку и разбор можно открыть отдельно.</p>
 
-  <p class="small muted">№9–10 по материалам ЕГЭ-2026; в проекте ЕГЭ-2027 — №10–11. Проект не является утверждёнными требованиями 2027 года.</p>
+  <p class="small muted">ФИПИ-2027: №9 — прикладные формулы, №10 — текстовые задачи. Тренажёр помогает отработать эти темы; условия авторские.</p>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="false" data-view="idea">Идея</button>
     <button class="tab" role="tab" aria-selected="true" data-view="drill">Тренажёр</button>
@@ -140,8 +144,8 @@
     </div>
     <div class="card">
       <h2>Что спрашивают в каждой линии</h2>
-      <details class="support"><summary>Формулы (№9 в 2026 году) — формула уже дана</summary><p>В условии написана формула из физики или экономики и значения всех величин, кроме одной. Работа механическая: подставить и решить уравнение. Три ловушки — единицы измерения (минуты против часов), отбор корня по смыслу (время положительно) и вопрос «наибольшее/наименьшее значение», требующий взять нужный конец промежутка.</p></details>
-      <details class="support"><summary>Текстовые задачи (№10 в 2026 году) — уравнение надо составить</summary><p>Обозначьте буквой то, что спрашивают, и заполните таблицу: для движения это «расстояние — скорость — время», для работы «объём — производительность — время», для смесей «масса — доля — масса вещества». Уравнение возникает из последнего неиспользованного условия: «на час меньше», «встретились», «вместе за».</p></details>
+      <details class="support"><summary>Формулы (№9) — формула уже дана</summary><p>В условии написана формула из физики или экономики и значения всех величин, кроме одной. Работа механическая: подставить и решить уравнение. Три ловушки — единицы измерения (минуты против часов), отбор корня по смыслу (время положительно) и вопрос «наибольшее/наименьшее значение», требующий взять нужный конец промежутка.</p></details>
+      <details class="support"><summary>Текстовые задачи (№10) — уравнение надо составить</summary><p>Обозначьте буквой то, что спрашивают, и заполните таблицу: для движения это «расстояние — скорость — время», для работы «объём — производительность — время», для смесей «масса — доля — масса вещества». Уравнение возникает из последнего неиспользованного условия: «на час меньше», «встретились», «вместе за».</p></details>
       <details class="support"><summary>Три типовые таблицы</summary><p>Движение: t = s/v, при встречном движении скорости складываются, при движении по течению прибавляется скорость течения. Работа: производительность = 1/время, при совместной работе производительности складываются. Смеси: масса вещества = масса раствора × долю.</p></details>
       <details class="support"><summary>Проверка ответа</summary><p>Всегда подставляйте найденное обратно в условие: скорость 60 и 80, время 4 и 3, разница час — сходится. Эта проверка занимает двадцать секунд и ловит почти все ошибки знака и потерянного корня.</p></details>
     </div>
@@ -576,5 +580,28 @@ if (typeof module !== "undefined") module.exports = AP;
   zDots();
 })();
 </script>
+<!-- download-panel:start:ege-profil-applied -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-applied">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-applied/ege-profil-applied.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-applied/ege-profil-applied-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-applied/ege-profil-applied-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь авторский пример на совместную работу: первый выполняет работу за 6 часов, второй за 12 часов; найти время совместной работы."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-applied -->
 </body>
 </html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Семь занятий по стереометрии для колледжа с интерактивными чертежами, проверкой ответов и домашними заданиями. От точек и плоскостей до правильных многогранников и сечений.">
+  <title>Стереометрия для колледжа · Семь уроков | MathExam</title>
+  <link rel="canonical" href="https://mathexam.space/trainers/college-stereometry/">
+  <link rel="stylesheet" href="pyramids/lesson.css?v=1">
+  <style>
+    .course-intro { padding-bottom: 25px; }
+    .course-intro p:last-child { max-width: 64ch; font-size: 1.03rem; color: var(--muted); }
+    .course-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .course-card { display: grid; grid-template-rows: auto 1fr auto; gap: 8px; height: 100%; padding: 17px; color: var(--ink); border: 1px solid var(--border); background: #fff; border-radius: 14px; text-decoration: none; }
+    .course-card:hover { border-color: var(--accent); }
+    .course-card p { color: var(--muted); font-size: .92rem; }
+    .course-card h2 { margin-top: 4px; font-size: 1.22rem; line-height: 1.22; }
+    .course-card .open { color: var(--accent); font-weight: 700; }
+    .course-card.latest { background: #e5f4ec; border-color: #9ebfb2; }
+    @media (max-width: 850px) { .course-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 520px) { .course-list { grid-template-columns: 1fr; gap: 8px; } .course-card { padding: 12px; } }
+  </style>
+
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/" target="_self" data-mathexam-home-link aria-label="На главную MathExam"><span class="brand-mark" aria-hidden="true">M</span> MathExam</a>
+      <nav aria-label="Навигация MathExam"><a href="../">Все тренажёры</a></nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="intro course-intro">
+      <h1>Стереометрия для колледжа</h1>
+      <p>Семь занятий с интерактивными чертежами, разбором с преподавателем и домашней работой.</p>
+    </div>
+    <ol class="course-list">
+      <li><a class="course-card" href="lessons/#lesson-1"><div><span class="eyebrow">Урок 1</span><h2>Основы стереометрии</h2></div><p>Точки, прямые, плоскости и первые доказательства.</p><span class="open" aria-hidden="true">Открыть →</span></a></li>
+      <li><a class="course-card" href="lessons/#lesson-2"><div><span class="eyebrow">Урок 2</span><h2>Параллельные плоскости</h2></div><p>Признак параллельности и линии пересечения с третьей плоскостью.</p><span class="open" aria-hidden="true">Открыть →</span></a></li>
+      <li><a class="course-card" href="lessons/#lesson-3"><div><span class="eyebrow">Урок 3</span><h2>Перпендикуляр и наклонная</h2></div><p>Проекции и теорема о трёх перпендикулярах.</p><span class="open" aria-hidden="true">Открыть →</span></a></li>
+      <li><a class="course-card" href="lessons/#lesson-4"><div><span class="eyebrow">Урок 4</span><h2>Двугранный угол</h2></div><p>Линейный угол, перпендикулярные плоскости и построения.</p><span class="open" aria-hidden="true">Открыть →</span></a></li>
+      <li><a class="course-card" href="lessons/#lesson-5"><div><span class="eyebrow">Урок 5</span><h2>Многогранники и призмы</h2></div><p>Грани, рёбра, сечения, развёртки и площадь поверхности призмы.</p><span class="open" aria-hidden="true">Открыть →</span></a></li>
+      <li><a class="course-card" href="pyramids/"><div><span class="eyebrow">Урок 6</span><h2>Пирамиды и усечённые пирамиды</h2></div><p>Параллельное сечение, апофема, боковая площадь и задача №239.</p><span class="open" aria-hidden="true">Открыть →</span></a></li>
+      <li><a class="course-card latest" href="polyhedra-sections/"><div><span class="eyebrow">Урок 7</span><h2>Правильные многогранники и сечения</h2></div><p>Сечения куба, призмы и тетраэдра, симметрия, 36 учебных карточек и домашняя работа.</p><span class="open" aria-hidden="true">Открыть →</span></a></li>
+    </ol>
+    <footer class="footer"><a href="/">На главную</a><a href="../">Все тренажёры</a></footer>
+  </main>
+</body>
+</html>

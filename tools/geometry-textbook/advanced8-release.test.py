@@ -48,10 +48,10 @@ class Advanced8Release(unittest.TestCase):
             target = course / name
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(COURSE / name, target)
-            if name == 'index.html':
-                # The review fixture represents the original textbook page, before the public navigator.
-                from layout_amendment import historical_bytes
-                target.write_bytes(historical_bytes(COURSE / name))
+            if name in ('index.html', 'assets/engine.js'):
+                # Recreate the page and engine bytes inspected by the original reviewer.
+                from layout_amendment import advanced8_binding_bytes
+                target.write_bytes(advanced8_binding_bytes(COURSE / name))
         for name in IMPLEMENTATION + (MATH_EVIDENCE, NUMERIC_EVIDENCE):
             target = root / name
             target.parent.mkdir(parents=True, exist_ok=True)

@@ -16,11 +16,11 @@ const clone = value => JSON.parse(JSON.stringify(value));
 const own = 'mathExamBasics.fraction-meaning.v1';
 const tick = () => new Promise(resolve => setImmediate(resolve));
 
-function mount(t, storage = {}, enhanced = true) {
+function mount(t, storage = {}, enhanced = true, filename = 'fraction-meaning.html') {
   const errors = [], vc = new VirtualConsole();
   vc.on('jsdomError', error => errors.push(String(error)));
-  const dom = new JSDOM(source('fraction-meaning.html'), {
-    url:'https://mathexam.space/trainers/oge-basics/fraction-meaning.html',
+  const dom = new JSDOM(source(filename), {
+    url:'https://mathexam.space/trainers/oge-basics/' + filename,
     runScripts:'outside-only', virtualConsole:vc
   });
   const w = dom.window, d = w.document;
@@ -156,6 +156,102 @@ test('practice and checkpoint Enter submissions run once, including composition 
   const restored = mount(t, {[own]:saved});
   assert.equal(restored.state().best, 5);
   assert.equal(restored.state().independent, before + 1);
+});
+
+const common = 'fraction-common-denominator.html';
+const meaning = 'fraction-meaning.html';
+
+test('a zero checkpoint remains a recorded score alongside past best and independent practice', t => {
+  for (const filename of [meaning, common]) {
+    const key = 'mathExamBasics.' + filename.replace('.html', '.v1');
+    const old = JSON.stringify({best:4, independent:3, learnDone:[true]});
+    const f = mount(t, {[key]:old}, true, filename);
+    f.$('[data-route="home"]').click();
+    assert.equal(f.$('#homePct').textContent, '—', 'Old best alone gives no most recent score');
+    assert.equal(f.$('#statBest').textContent, '4/5');
+    f.$('[data-route="check"]').click();
+    for (const task of f.state().check.tasks) {
+      const box = f.$('#checkAnswer');
+      if (task.kind === 'choice') {
+        pointerClick(f, [...box.querySelectorAll('.choice')].find(button => button.dataset.id !== task.answer));
+      } else box.querySelector('input').value = '9999';
+      f.$('#checkNext').click();
+    }
+    assert.equal(f.$('#resultScore').textContent, '0/5');
+    const saved = f.w.localStorage.getItem(key);
+    const reloaded = mount(t, {[key]:saved}, true, filename);
+    reloaded.$('[data-route="home"]').click();
+    assert.equal(reloaded.$('#homePct').textContent, '0/5');
+    assert.equal(reloaded.$('#statBest').textContent, '4/5');
+    assert.equal(reloaded.$('#statIndependent').textContent, '3');
+    assert.match(reloaded.$('#homeRec').textContent, /Повторите действия/);
+  }
+});
+
+test('choice review shows fractions and numbers rather than internal option ids', t => {
+  const f = mount(t);
+  f.$('[data-route="check"]').click();
+  const choices = [];
+  for (const task of f.state().check.tasks) {
+    if (task.kind === 'choice') {
+      const wrong = task.options.find(option => option.id !== task.answer);
+      pointerClick(f, f.$('#checkAnswer [data-id="' + wrong.id + '"]'));
+      choices.push({
+        prompt:task.prompt.replace(/<[^>]+>/g, ''),
+        answer:task.options.find(option => option.id === task.answer).html,
+        wrong:wrong.html,
+      });
+    } else answer(f, task, f.$('#checkAnswer'));
+    f.$('#checkNext').click();
+  }
+  const wrongItems = [...f.d.querySelectorAll('#reviewList .bad')];
+  assert.equal(wrongItems.length, 3);
+  for (const [index, item] of wrongItems.entries()) {
+    const expected = choices[index];
+    assert.equal(item.querySelector('p').textContent, expected.prompt);
+    assert.equal(item.querySelector('p:nth-of-type(2)').textContent,
+      'Ваш ответ ' + expected.wrong + '. Верный ответ ' + expected.answer + '.');
+  }
+});
+
+test('every fraction checkpoint covers its actions and the reduction exercise needs reduction', t => {
+  const basic = mount(t, {}, false, meaning).w.__trainerDebug;
+  const denominator = mount(t, {}, false, common).w.__trainerDebug;
+  const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+  for (let sample = 0; sample < 100; sample++) {
+    const meaningTasks = Array.from(basic.makeCheckSet());
+    assert.deepEqual(meaningTasks.map(task => task.skill), ['parts','parts','equal','simplify','compare']);
+    assert.notEqual(meaningTasks[0].options[1].html, meaningTasks[1].options[1].html);
+    assert.equal(meaningTasks[0].answer, 'd');
+    assert.equal(meaningTasks[1].answer, 'n');
+    const commonTasks = Array.from(denominator.makeCheckSet());
+    assert.deepEqual(commonTasks.map(task => task.skill), ['lcm','expand','add','reduce-sum','subtract']);
+    for (const task of commonTasks.slice(2)) {
+      const [[a,b],[c,d]] = [...task.prompt.matchAll(/(\d+)\/(\d+)/g)].map(match => match.slice(1).map(Number));
+      const lcm = b / gcd(b, d) * d;
+      const numerator = a * (lcm / b) + (task.skill === 'subtract' ? -c : c) * (lcm / d);
+      assert.equal(task.answer.n * lcm, task.answer.d * numerator);
+      assert.equal(gcd(task.answer.n, task.answer.d), 1);
+      if (task.skill === 'reduce-sum') assert(gcd(numerator, lcm) > 1);
+      if (task.skill === 'add') assert.equal(gcd(numerator, lcm), 1);
+    }
+  }
+});
+
+test('least common denominator help also works when the product is the answer', t => {
+  const f = mount(t, {}, false, common);
+  f.w.Math.random = () => 0.16;
+  f.$('[data-route="practice"]').click();
+  const task = f.state().current;
+  assert.equal(task.answer, 10);
+  assert.match(task.prompt, /1\/2.*1\/5/);
+  const entry = f.$('#practiceAnswer input');
+  entry.value = '11';
+  f.$('#checkTask').click();
+  assert.match(f.$('#practiceFeedback').textContent, /кратные 5.*делится и на 2/);
+  entry.value = '10';
+  f.$('#checkTask').click();
+  assert.match(f.$('#practiceFeedback').textContent, /Получилось с поддержкой/);
 });
 
 test('native lesson and practice controls work if optional enhancement fails to load', t => {

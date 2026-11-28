@@ -59,7 +59,11 @@ window.PetersonCourse = {
             "x12",
             "12 + x",
             "12 : x"
-          ]
+          ],
+          "transfer": {
+            "skill": "letter-product",
+            "level": 1
+          }
         },
         {
           "id": "p01-t02",
@@ -92,7 +96,11 @@ window.PetersonCourse = {
             "7(a + c)",
             "a + c + 7",
             "7ac"
-          ]
+          ],
+          "transfer": {
+            "skill": "letter-product",
+            "level": 2
+          }
         },
         {
           "id": "p01-t03",
@@ -3640,7 +3648,11 @@ window.PetersonCourse = {
             "note": "Краткая учебная формулировка; для полного условия открой учебник."
           },
           "answerFormat": "reduced-fraction",
-          "calculation": "1/4-1/5"
+          "calculation": "1/4-1/5",
+          "transfer": {
+            "skill": "unlike-fraction-subtract",
+            "level": 1
+          }
         },
         {
           "id": "p28-t03",
@@ -5314,7 +5326,11 @@ window.PetersonCourse = {
             "verified": true,
             "note": "Краткая учебная формулировка; для полного условия открой учебник."
           },
-          "answerFormat": "decimal"
+          "answerFormat": "decimal",
+          "transfer": {
+            "skill": "decimal-place-subtract",
+            "level": 1
+          }
         },
         {
           "id": "p40-t03",
@@ -5349,7 +5365,11 @@ window.PetersonCourse = {
             "verified": true,
             "note": "Краткая учебная формулировка; для полного условия открой учебник."
           },
-          "answerFormat": "decimal"
+          "answerFormat": "decimal",
+          "transfer": {
+            "skill": "decimal-place-subtract",
+            "level": 2
+          }
         }
       ]
     },

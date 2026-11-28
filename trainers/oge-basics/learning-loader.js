@@ -25,6 +25,79 @@
   root.MathExamFractionMeaningText = text;
 })(typeof window === 'undefined' ? globalThis : window);
 
+/* Shared by the standalone mini-checkpoints. Cabinet tasks keep their own bank. */
+(function (root) {
+  'use strict';
+  const size = 5;
+
+  function makeSet(makeTask, required, { key = task => task.skill, random = Math.random } = {}) {
+    const firstBySkill = new Map();
+    const extra = [];
+    const seen = new Set();
+    for (let attempt = 0; attempt < 200; attempt++) {
+      const task = makeTask();
+      const skill = key(task);
+      const signature = task.prompt + '|' + (task.options?.map(option => option.html).join('|') || '');
+      if (seen.has(signature)) continue;
+      seen.add(signature);
+      if (required.includes(skill) && !firstBySkill.has(skill)) {
+        firstBySkill.set(skill, task);
+      } else {
+        extra.push(task);
+      }
+      if (firstBySkill.size === required.length && firstBySkill.size + extra.length >= size) break;
+    }
+    if (firstBySkill.size !== required.length || firstBySkill.size + extra.length < size) return null;
+
+    const tasks = [...firstBySkill.values(), ...extra.slice(0, size - firstBySkill.size)];
+    for (let i = tasks.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [tasks[i], tasks[j]] = [tasks[j], tasks[i]];
+    }
+    return tasks;
+  }
+
+  function lastScore(state) {
+    const value = state.lastCheck;
+    return Number.isInteger(value) && value >= 0 && value <= size ? value : null;
+  }
+
+  function checkAdvice(state, last, practiceGoal, requiredScore) {
+    if (last !== null) {
+      return last >= requiredScore
+        ? 'По результату последнего мини-зачёта можно переходить дальше.'
+        : 'Повторите действия, в которых были ошибки, и попробуйте ещё раз.';
+    }
+    if (state.best > 0) return 'Из прежних попыток сохранён лучший балл. Пройдите мини-зачёт ещё раз.';
+    if (state.independent >= practiceGoal) return 'Попробуйте мини-зачёт без подсказок.';
+    return 'Начните с короткого объяснения или продолжите тренировку.';
+  }
+
+  function renderSummary(state, { practiceGoal = 3, requiredScore = 4 } = {}) {
+    const last = lastScore(state);
+    const $ = id => root.document.getElementById(id);
+    $('homeRing').style.setProperty('--p', ((last ?? 0) / size * 100) + '%');
+    $('homePct').textContent = last === null ? '—' : last + '/' + size;
+    $('homePct').setAttribute('aria-label', last === null ? 'Последний результат не записан' : last + ' из ' + size);
+    $('statBest').textContent = last !== null || state.best > 0 ? state.best + '/' + size : '—';
+    $('homeRec').textContent = checkAdvice(state, last, practiceGoal, requiredScore);
+  }
+
+  function answerLabel(task, format) {
+    if (task.kind === 'choice') {
+      const option = task.options.find(candidate => candidate.id === task.answer);
+      if (option) {
+        const template = root.document.createElement('template');
+        template.innerHTML = option.html;
+        return template.content.textContent;
+      }
+    }
+    return task.displayAnswer ?? format(task.answer);
+  }
+
+  root.MathExamBasicsCheckpoint = { makeSet, lastScore, renderSummary, answerLabel };
+})(typeof window === 'undefined' ? globalThis : window);
+
 /* Remediation loader: the display adapter above is synchronous in both modes. */
 (function(){
 'use strict';
@@ -45,7 +118,7 @@ if(!managed){
  (async()=>{await ready;try{
   await contextualHelp();
   style('basics-standalone.css?v=fraction-controls-20261114');
-  await script('basics-standalone.js?v=basics-context-20261020');
+  await script('basics-standalone.js?v=standalone-checkpoint-20261118');
  }catch(_){} })();
  return;
 }
@@ -66,4 +139,16 @@ const hide=document.createElement('style');hide.textContent='html.learning-remed
  }
  catch(error){main.textContent='Тренажёр не загрузился. Обновите страницу: сохранённая работа останется в кабинете.';}
 })();
+})();
+
+// The room link belongs to the live site. Fixed books use the standalone loader above.
+(function () {
+  'use strict';
+  if (window.MathExamRemediationManaged || window.MathExamBookEdition) return;
+  if (!/\/multiplication-division\/(?:long-division-one-digit|long-division-from-simple-to-decimals|decimal-division-natural|decimal-divisor-shift)\.html$/.test(location.pathname)) return;
+  const loader = document.currentScript;
+  if (!loader?.src) return;
+  const adapter = document.createElement('script');
+  adapter.src = new URL('../long-division-entry.js?v=20261127-classroom', loader.src).href;
+  document.head.append(adapter);
 })();

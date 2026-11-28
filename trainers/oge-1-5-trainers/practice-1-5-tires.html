@@ -1050,6 +1050,7 @@ function renderTask1(){
 /* ===== RENDER: TASK 2 (H, from table) ===== */
 function renderTask2(){
   const sec=document.getElementById('section-3'); const t=VD.t2;
+  const heightHint=`Ширина этой шины — ${t.B} мм. Высота боковины составляет ${t.p}% от ширины. Умножь ${t.B} мм на ${t.p}/100.`;
   sec.innerHTML=`<div class="card">
     <div class="card-header"><span class="card-tag blue">Задача 2</span><h2>Высота <em>боковины</em></h2></div>
     <p class="card-intro">Сколько миллиметров составляет высота боковины шины <b>${t.m}</b>?</p>
@@ -1057,17 +1058,19 @@ function renderTask2(){
     <div class="task-body" style="display:none">
       ${refMini('твоя таблица · нужная строка подсвечена',[t.id])}
       <p style="font-size:14px;color:var(--ink-soft);margin-bottom:2px">Высота боковины — это столбец <b>H</b>. Найди строку ${t.m} и возьми готовое значение.</p>
-      ${subHTML('t2-H','=',`Высота боковины H шины ${t.m}`,`H = B · p / 100 = <span class="math">${t.B} · ${t.p} / 100</span> = ?`,'мм',`${t.B} · ${t.p} / 100 = ${fmt(t.H)}. Это же число стоит в столбце H таблицы.`,false)}
+      ${subHTML('t2-H','=',`Высота боковины H шины ${t.m}`,`H = B · p / 100 = <span class="math">${t.B} · ${t.p} / 100</span> = ?`,'мм',heightHint,false)}
       <div class="teacher-block"><div class="label">Решение задачи 2</div>
         <div class="step">Столбец H таблицы для шины ${t.m}.</div>
         <div class="step">H = ${t.B} · ${t.p} / 100 = <b>${fmt(t.H)} мм</b></div>
         <span class="answer-display">Ответ: ${fmt(t.H)}</span>
-        <div class="note">В процентах пишут именно p; чтобы получить мм, обязательно делят на 100.</div>
+        <div class="note">За 100% берут ширину шины. Число ${t.p}/100 показывает, какую долю ширины составляет боковина. Умножая ширину в миллиметрах на эту долю, получаем высоту в миллиметрах.</div>
       </div>
     </div>
     ${navRow(2,'Задача 1',4,'Задача 3')}
   </div>`;
-  CHECKS['t2-H']={correct:t.H,tol:0.05,stepIdx:3,isFinal:true,hint:v=>{ if(Math.abs(v-t.p)<0.5) return `${t.p} — это процент, не мм. H = ${t.B} · ${t.p} / 100.`; if(Math.abs(v-t.B*t.p)<1) return `Забыл ÷100: ${t.B*t.p} / 100 = ?`; return `H = ${t.B} · ${t.p} / 100 = ${fmt(t.H)}.`; }};
+  CHECKS['t2-H']={correct:t.H,tol:0.05,stepIdx:3,isFinal:true,hint:v=>Math.abs(v-t.B*t.p)<1
+    ? `Ты умножил ширину на ${t.p}. Чтобы получить ${t.p}% ширины, раздели произведение ${fmt(t.B*t.p)} на 100.`
+    : heightHint};
 }
 
 /* ===== RENDER: TASK 3 (D factory, from table) ===== */
@@ -1154,6 +1157,10 @@ function renderTask4Radius(){
 function renderTask5(){
   const sec=document.getElementById('section-6'); const f=VD.factory, t=VD.t5, dir=VD.dir5, x=VD.ans.t5x, ansP=VD.ans.t5;
   const dirWord=dir==='inc'?'увеличится':'уменьшится';
+  const percentHint=`За 100% принят пробег на заводском колесе. Раздели диаметр нового колеса (${fmt(t.D)} мм) на заводской диаметр (${fmt(f.D)} мм) и умножь на 100.`;
+  const changeHint=dir==='inc'
+    ? `Новый пробег составляет ${fmt(x)}% прежнего. Чтобы найти прирост в процентах, вычти 100 из ${fmt(x)}.`
+    : `Новый пробег составляет ${fmt(x)}% прежнего. Чтобы найти уменьшение в процентах, вычти ${fmt(x)} из 100.`;
   sec.innerHTML=`<div class="card">
     <div class="card-header"><span class="card-tag blue">Задача 5</span><h2>Пробег за оборот <em>и проценты</em></h2></div>
     <p class="card-intro">На сколько процентов <b>${dirWord}</b> пробег автомобиля при одном обороте колеса, если заменить заводские шины (<b>${f.m}</b>) шинами <b>${t.m}</b>? Результат округли до десятых.</p>
@@ -1178,21 +1185,25 @@ function renderTask5(){
     <div class="task-body" style="display:none">
       ${refMini('твоя таблица · старое и новое колесо',[f.id,t.id])}
       <p style="font-size:14px;color:var(--ink-soft);margin-bottom:2px">За <b>100%</b> берём то, с чем сравниваем — <b>старое</b> заводское колесо (D₁ = ${fmt(f.D)}). Новое — D₂ = ${fmt(t.D)}.</p>
-      ${subHTML('t5-prop','1','Процент нового относительно старого',`x = D₂ · 100 / D₁ = <span class="math">${fmt(t.D)} · 100 / ${fmt(f.D)}</span> = ?  (округли до десятых)`,'%',`${fmt(t.D)} · 100 / ${fmt(f.D)} ≈ ${fmt(x)}. Это размер нового пробега относительно старого.`,false,true)}
-      ${subHTML('t5-final','=',`На сколько ${dirWord}?`,`x = ${fmt(x)}% — это весь новый пробег относительно старого. А «на сколько процентов ${dirWord}» = ?`,'%',dir==='inc'?`${fmt(x)} − 100 = ${fmt(ansP)}.`:`100 − ${fmt(x)} = ${fmt(ansP)}.`,true)}
+      ${subHTML('t5-prop','1','Сколько процентов от заводского пробега составляет новый?',`x = D₂ · 100 / D₁ = <span class="math">${fmt(t.D)} · 100 / ${fmt(f.D)}</span> = ? (округли до десятых)`,'%',percentHint,false,true)}
+      ${subHTML('t5-final','=',`На сколько процентов ${dirWord} пробег?`,`До замены пробег за оборот составлял 100%, после замены — ${fmt(x)}%. На сколько процентов ${dirWord} пробег?`,'%',changeHint,true)}
       <div class="teacher-block"><div class="label">Решение задачи 5</div>
         <div class="step">Пробег за оборот = длина окружности C = π·D. Отношение: C₂/C₁ = π·D₂ / π·D₁ = D₂/D₁ — π сокращается.</div>
         <div class="step">Из таблицы: D₁ = ${fmt(f.D)}, D₂ = ${fmt(t.D)}.</div>
         <div class="step">x = D₂·100/D₁ = ${fmt(t.D)}·100/${fmt(f.D)} ≈ ${fmt(x)} %</div>
         <div class="step">На сколько ${dirWord}: ${dir==='inc'?`${fmt(x)} − 100`:`100 − ${fmt(x)}`} = <b>${fmt(ansP)} %</b></div>
         <span class="answer-display">Ответ: ${fmt(ansP)}</span>
-        <div class="note">Частая ошибка — написать в ответе ${fmt(x)} вместо ${fmt(ansP)}: это «процент от», а спрашивают «на сколько процентов». Разница ровно на 100.</div>
+        <div class="note">После замены колесо проезжает за оборот ${fmt(x)}% прежнего расстояния. Пробег ${dir==='inc'?'увеличился':'уменьшился'} на ${fmt(ansP)}%.</div>
       </div>
     </div>
     ${navRow(5,'Задача 4',null,'')}
   </div>`;
-  CHECKS['t5-prop']={correct:x,tol:0.1,stepIdx:6,hint:v=>{ if(Math.abs(v-f.D*100/t.D)<0.2) return 'Перевернул пропорцию: x = D₂·100/D₁, большее (или новое) — сверху.'; if(Math.abs(v-100)<0.2) return 'Колёса разного размера, значит x ≠ 100.'; if(Math.abs(v-ansP)<0.2) return `Это уже «на сколько». Сначала весь процент: ${fmt(t.D)}·100/${fmt(f.D)} ≈ ${fmt(x)}.`; return `${fmt(t.D)} · 100 / ${fmt(f.D)} ≈ ${fmt(x)}.`; }};
-  CHECKS['t5-final']={correct:ansP,tol:0.05,stepIdx:6,isFinal:true,hint:v=>{ if(Math.abs(v-x)<0.2) return `Это процент нового относительно старого. Вопрос — на сколько ${dirWord}: ${dir==='inc'?`${fmt(x)} − 100`:`100 − ${fmt(x)}`} = ${fmt(ansP)}.`; return dir==='inc'?`${fmt(x)} − 100 = ${fmt(ansP)}.`:`100 − ${fmt(x)} = ${fmt(ansP)}.`; }};
+  CHECKS['t5-prop']={correct:x,tol:0.1,stepIdx:6,hint:v=>{
+    if(Math.abs(v-f.D*100/t.D)<0.2) return 'Похоже, диаметры в дроби поменялись местами. '+percentHint;
+    if(Math.abs(v-ansP)<0.2) return 'Это изменение пробега. Сейчас нужен весь новый пробег в процентах от заводского. '+percentHint;
+    return percentHint;
+  }};
+  CHECKS['t5-final']={correct:ansP,tol:0.05,stepIdx:6,isFinal:true,hint:()=>changeHint};
   // wire animation buttons + initial scene
   const rb=sec.querySelector('#btn-roll'), rr=sec.querySelector('#btn-roll-reset');
   if(rb) rb.addEventListener('click',rollAnim);

@@ -46,6 +46,14 @@ function make(id,seed=0){
 }
 function parse(s){const m=String(s).trim().replace(/−/g,'-').replace(',','.').match(/^([+-]?(?:\d+(?:\.\d*)?|\.\d+))(?:\s*\/\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)))?$/);if(!m||m[2]!==undefined&&+m[2]===0)return null;let n=+m[1]/(m[2]===undefined?1:+m[2]);return Number.isFinite(n)?n:null;}
 function correct(value,answer){let n=parse(value);return n!==null&&Math.abs(n-answer)<1e-5*Math.max(1,Math.abs(answer));}
-function feedback(t,value){const n=parse(value),m=t.model;if(n===null)return 'Введи число или дробь, например 4/3. Делить на ноль нельзя.';if(t.id==='joint'&&(n===m.a+m.b||n===(m.a+m.b)/2))return 'Времена не складывают и не усредняют. Сложи то, что каждый успевает сделать за один час.';if(t.id==='minimum'&&n!==Math.ceil(n))return 'В ответе нужны целые люди. Проверь, хватит ли ближайшего меньшего целого числа.';if(['delay','leave'].includes(t.id)&&correct(value,t.answer-(m.delay||m.leave)))return 'Это время только второго этапа. В условии спрашивается время от самого начала.';return 'Проверь, что получилось: работа, работа за час или время? Сверь единицы и все этапы.';}
-const api={kinds,make,f,frac,gcd,lcm,parse,correct,feedback};root.WorkRate=api;if(typeof module!=='undefined')module.exports=api;
+function correctTask(t,value){
+ const count=t.id==='minimum'||(t.id==='gardens'&&t.model.complete);
+ return count?parse(value)===t.answer:correct(value,t.answer);
+}
+function feedback(t,value){const n=parse(value),m=t.model;if(n===null)return 'Введи число или дробь, например 4/3. Делить на ноль нельзя.';if(t.id==='joint'&&(n===m.a+m.b||n===(m.a+m.b)/2))return 'Времена не складывают и не усредняют. Сложи то, что каждый успевает сделать за один час.';if(t.id==='gardens'&&m.complete){
+ const volume=m.hours/m.a+m.hours/m.b;
+ if(!Number.isInteger(n)||n===Math.floor(volume))return 'Подсчитай целые огороды каждого работника отдельно. Две незаконченные части разных огородов не дают ещё одного готового огорода.';
+}
+if(t.id==='minimum'&&n!==Math.ceil(n))return 'В ответе нужны целые люди. Проверь, хватит ли ближайшего меньшего целого числа.';if(['delay','leave'].includes(t.id)&&correct(value,t.answer-(m.delay||m.leave)))return 'Это время только второго этапа. В условии спрашивается время от самого начала.';return 'Проверь, что получилось: работа, работа за час или время? Сверь единицы и все этапы.';}
+const api={kinds,make,f,frac,gcd,lcm,parse,correct,correctTask,feedback};root.WorkRate=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

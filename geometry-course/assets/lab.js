@@ -95,17 +95,69 @@ function mount(el,spec,onChange){
  });
  el.querySelector('.point-select').addEventListener('change',e=>{selectedPoint=e.target.value;syncFields();draw();});
  function text(p,t){ctx.font='600 16px system-ui';ctx.lineWidth=5;ctx.strokeStyle='#fffdf7';ctx.strokeText(t,p.x,p.y);ctx.fillStyle='#17233c';ctx.fillText(t,p.x,p.y);}
+ // A square belongs to a named construction or given figure. Its sides
+ // follow the current rays after a point is dragged or the view is fitted.
+ function drawRightAngles() {
+  const drawn = new Set();
+  function square(vertex, a, b) {
+   if (![vertex, a, b].every(p => p && p.valid !== false)) return;
+   const va = G.sub(a, vertex), vb = G.sub(b, vertex);
+   const la = G.norm(va), lb = G.norm(vb);
+   if (Math.min(la, lb) < 1 || Math.abs(G.dot(va, vb)) > 1e-7 * la * lb) return;
+   const size = Math.min(13, la / 4, lb / 4);
+   const u = G.mul(va, size / la), v = G.mul(vb, size / lb);
+   ctx.beginPath();
+   ctx.moveTo(vertex.x + u.x, vertex.y + u.y);
+   ctx.lineTo(vertex.x + u.x + v.x, vertex.y + u.y + v.y);
+   ctx.lineTo(vertex.x + v.x, vertex.y + v.y);
+   ctx.strokeStyle = '#196a56';
+   ctx.lineWidth = 2;
+   ctx.stroke();
+   if (a.id && b.id) drawn.add([vertex.id, ...[a.id, b.id].sort()].join(' '));
+  }
+  const point = id => board.point(id);
+  const shape = spec.scene?.type || spec.figure;
+  if (shape === 'right') square(point('C'), point('A'), point('B'));
+  if (shape === 'square' || shape === 'rectangle') {
+   const corners = ['A', 'B', 'C', 'D'];
+   corners.forEach((v, i) => square(point(v), point(corners[(i + 3) % 4]), point(corners[(i + 1) % 4])));
+  }
+  for (const construction of board.objects) {
+   const end = point(construction.b);
+   if (construction.construction !== 'perpendicular' || !end || !board.geometry(construction)) continue;
+   const source = point(end.a), a = point(end.b), b = point(end.c);
+   if (![source, a, b].every(p => p && p.valid !== false)) continue;
+   const foot = G.foot(source, a, b);
+   if (!foot) continue;
+   const base = board.objects.find(o => o.type === 'line' &&
+    ((o.a === a.id && o.b === b.id) || (o.a === b.id && o.b === a.id)));
+   if (!base) continue;
+   const toward = G.dist(source, foot) > 1 ? source : G.add(foot, G.rot(G.sub(b, a)));
+   const farther = G.dist(foot, a) > G.dist(foot, b) ? a : b;
+   // Extend a finite base up to an exterior foot, as in an obtuse triangle.
+   const start = point(base.a), finish = point(base.b), direction = G.sub(finish, start);
+   const t = G.dot(G.sub(foot, start), direction) / G.dot(direction, direction);
+   if (base.extent !== 'line' && (t < 0 || (base.extent === 'segment' && t > 1))) {
+    const nearest = t < 0 ? start : finish;
+    ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = '#58706b'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(nearest.x, nearest.y); ctx.lineTo(foot.x, foot.y); ctx.stroke(); ctx.restore();
+   }
+   square(foot, toward, farther);
+  }
+  return drawn;
+ }
  function draw(){board.update();ctx.clearRect(0,0,640,420);ctx.save();ctx.translate(view.x,view.y);ctx.scale(view.k,view.k);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,640,420);ctx.fillStyle='#e3e4df';for(let x=15;x<640;x+=25)for(let y=15;y<420;y+=25){ctx.beginPath();ctx.arc(x,y,1,0,7);ctx.fill();}
   ctx.save();ctx.beginPath();ctx.rect(-view.x/view.k,-view.y/view.k,640/view.k,420/view.k);ctx.clip();
   const poly=['A','B','C','D'].map(id=>board.point(id)).filter(Boolean);if(poly.length>=3&&spec.figure!=='angle'&&spec.figure!=='segment'){ctx.beginPath();poly.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle='#2d70b317';ctx.fill();}
   for(const o of board.objects){const g=board.geometry(o);if(!g)continue;ctx.strokeStyle=highlight.includes(o.a+o.b)||highlight.includes(o.b+o.a)?'#ca6224':o.added?'#118469':'#294564';ctx.lineWidth=highlight.includes(o.a+o.b)?5:o.added?2.6:2.3;ctx.setLineDash(o.added?[7,4]:[]);ctx.beginPath();if(g.type==='circle')ctx.arc(g.o.x,g.o.y,g.r,0,Math.PI*2);else{let p=g.p,q=g.q;if(o.extent!=='segment'){const u=G.unit(G.sub(q,p));q=G.add(p,G.mul(u,1800));if(o.extent==='line')p=G.add(p,G.mul(u,-1800));}ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);}ctx.stroke();}
   ctx.setLineDash([]);
+  const rightAngles = drawRightAngles();
   const a=board.point('A'),b=board.point('B'),c=board.point('C');let report=[];
   if(a&&b){report.push('AB = '+(G.dist(a,b)/50).toFixed(2));}
-  if(a&&b&&c&&spec.figure!=='segment'&&!['perpendicular','parallel','reflection'].includes(spec.goal)){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
+  if(a&&b&&c&&spec.figure!=='segment'&&!['perpendicular','parallel','reflection'].includes(spec.goal)){const ang=G.angle(a,c,b);report.push('∠ACB = '+(ang===null?'не определён':ang.toFixed(1)+'°'));report.push('S△ABC = '+(Math.abs(G.cross(G.sub(b,a),G.sub(c,a)))/5000).toFixed(2));if(ang!==null&&!rightAngles.has('C A B')){let s=Math.atan2(a.y-c.y,a.x-c.x),t=Math.atan2(b.y-c.y,b.x-c.x),delta=(t-s+Math.PI*3)%(Math.PI*2)-Math.PI;ctx.strokeStyle='#bd6b27';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,Math.min(29,G.dist(a,c)/3,G.dist(b,c)/3),s,s+delta,delta<0);ctx.stroke();}}
   ctx.restore();
   if(a&&b){const m=midpoint('A','B');if(m)report.push('A'+m.id+' = '+(G.dist(a,m)/50).toFixed(2),' '+m.id+'B = '+(G.dist(m,b)/50).toFixed(2));}
-  if(['perpendicular','altitude'].includes(spec.goal)&&a&&b&&c){const o=board.objects.find(o=>{const p=board.point(o.b);return o.construction==='perpendicular'&&o.a==='C'&&p&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'));}),g=o&&board.geometry(o);if(g){const v=G.sub(g.q,g.p),base=G.sub(b,a);const deg=Math.acos(Math.max(-1,Math.min(1,G.dot(v,base)/(G.norm(v)*G.norm(base)))))*180/Math.PI;report.push('Угол с AB = '+deg.toFixed(1)+'°');const h=G.foot(c,a,b);if(h){ctx.beginPath();const u=G.unit(base),w=G.unit(v);[G.add(h,G.mul(u,12)),G.add(G.add(h,G.mul(u,12)),G.mul(w,12)),G.add(h,G.mul(w,12))].forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.strokeStyle='#118469';ctx.stroke();}}}
+  if(['perpendicular','altitude'].includes(spec.goal)&&a&&b&&c){const o=board.objects.find(o=>{const p=board.point(o.b);return o.construction==='perpendicular'&&o.a==='C'&&p&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'));}),g=o&&board.geometry(o);if(g){const v=G.sub(g.q,g.p),base=G.sub(b,a);const deg=Math.acos(Math.max(-1,Math.min(1,G.dot(v,base)/(G.norm(v)*G.norm(base)))))*180/Math.PI;report.push('Угол с AB = '+deg.toFixed(1)+'°');}}
   if(spec.goal==='bisector'&&a&&b&&c){const p=board.points.find(p=>p.kind==='bisector'&&p.b==='C'&&p.valid!==false);if(p){const left=G.angle(a,c,p),right=G.angle(p,c,b);if(left!==null&&right!==null)report.push('∠AC'+p.id+' = '+left.toFixed(1)+'°','∠'+p.id+'CB = '+right.toFixed(1)+'°');}}
   for(const p of board.points){if(p.valid===false)continue;if(selected.includes(p.id)){ctx.beginPath();ctx.arc(p.x,p.y,12,0,7);ctx.strokeStyle='#c06c2a';ctx.lineWidth=3;ctx.stroke();}ctx.beginPath();ctx.arc(p.x,p.y,selectedPoint===p.id?7:5,0,7);ctx.fillStyle=movable(p)?'#2d70b3':'#118469';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();text({x:p.x+10,y:p.y-10},p.id);}
   ctx.restore();

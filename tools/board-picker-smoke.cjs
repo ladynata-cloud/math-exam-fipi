@@ -23,6 +23,8 @@ try{
    assert.ok(f.y<205,'trainer begins near the top at '+width);
    if(width>1050)assert.ok(c.y<225,'canvas begins near the top');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal overflow '+width);
+   assert.equal(await page.locator('.toolbar #clear').isVisible(),true,'clear is visible at '+width);
+   assert.equal(await page.locator('#clear').isEnabled(),true,'local teacher can clear at '+width);
    await page.locator('#openShare').click();assert.equal(await page.locator('#createRoom').isVisible(),true);if(width===1280&&process.env.BOARD_SHARE_SCREENSHOT)await page.screenshot({path:process.env.BOARD_SHARE_SCREENSHOT});assert.equal(await page.locator('#serverUrl').isVisible(),false);
    await page.locator('.connection-settings summary').click();assert.equal(await page.locator('#serverUrl').isVisible(),true);await page.locator('.connection-settings summary').click();
    await page.keyboard.press('Escape');assert.equal(await page.locator('#openShare').evaluate(e=>e===document.activeElement),true);

@@ -131,7 +131,9 @@ test('applied query routes pick the requested existing group and preserve histor
       assert.equal(progress(w,'applied-t910').best, 8);
       assert.equal(progress(w,'applied-t910').passed, true);
       assert.deepEqual(JSON.parse(w.localStorage.getItem(KEY)).foreign, saved.foreign);
-      assert.match(w.document.body.textContent, /Проект не является утверждёнными требованиями/);
+      const sourceNote = w.document.querySelector('.wrap > .small.muted').textContent;
+      assert.match(sourceNote, /ФИПИ-2027: №9 — прикладные формулы, №10 — текстовые задачи/);
+      assert.match(sourceNote, /условия авторские/);
     } finally {p.close();}
   }
 });

@@ -1,0 +1,119 @@
+name: Lesson cycle v2 - native acceptance
+on:
+  pull_request:
+    paths:
+      - 'trainers/lesson-cycle/**'
+      - 'tools/lesson-cycle/**'
+      - 'trainers/oge-written-practice.html'
+      - 'trainers/tyurin-statistics/**'
+      - 'trainers/college-functions/**'
+      - 'trainers/motion-grade6/**'
+      - '.github/workflows/lesson-cycle-v2-native-acceptance.yml'
+permissions:
+  contents: read
+jobs:
+  native-acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Candidate identity and isolated regressions
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git rev-parse HEAD
+          git diff --check "$BASE_SHA" HEAD
+          node tools/lesson-cycle/entry.test.cjs
+          node tools/lesson-cycle/hooks.test.cjs
+          node tools/lesson-cycle/race.test.cjs
+      - name: Install pinned browser test dependency
+        run: |
+          python3 -m venv "$RUNNER_TEMP/lesson-cycle-venv"
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" -m pip install --disable-pip-version-check playwright==1.57.0
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" -m playwright install --with-deps chromium
+      - name: Complete lesson routes and recovery
+        run: |
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" tools/lesson-cycle/cycle.py
+      - name: Actual origin, persistent profile, home and file navigation, four host integrations
+        run: |
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" tools/lesson-cycle/native.py
+      # PR #767 is now published. Verify the real composed checkout, not a
+      # second virtual application of its patch. Keep all prior regressions.
+      - name: Verify the exact composition with published probability bridges
+        if: github.event.pull_request.number == 768
+        env:
+          BRIDGE_RELEASE: 0dc629ff055f99fa0409b363ecbc24148807a05f
+          FRACTION_RELEASE: b876a19a78910663aa6a976b4b3b781d7987a6d8
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          LESSON_HEAD: 546d27c444571293b68d54ab98cdf10a7e56364b
+          ORIGINAL_BASE: cdcd6d0e86ddbd457dfd89b0a2aeef1b2a9ab3d3
+        run: |
+          candidate="$(git rev-parse HEAD)"
+          test "$PR_BASE" = "$FRACTION_RELEASE"
+          test "$(git merge-base "$candidate" "$FRACTION_RELEASE")" = "$FRACTION_RELEASE"
+          test "$(git merge-base "$FRACTION_RELEASE" "$BRIDGE_RELEASE")" = "$BRIDGE_RELEASE"
+          test "$(git merge-base "$candidate" "$BRIDGE_RELEASE")" = "$BRIDGE_RELEASE"
+          test "$(git merge-base "$candidate" "$LESSON_HEAD")" = "$LESSON_HEAD"
+          test "$(git merge-base "$LESSON_HEAD" "$BRIDGE_RELEASE")" = "$ORIGINAL_BASE"
+          git diff --check "$BRIDGE_RELEASE" "$candidate"
+          export CANDIDATE="$candidate"
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          a,b,l,base,c = (os.environ[k] for k in ("CANDIDATE","BRIDGE_RELEASE","LESSON_HEAD","ORIGINAL_BASE","FRACTION_RELEASE"))
+          shared = "trainers/tyurin-statistics/condition-lab.js"
+          workflow = ".github/workflows/lesson-cycle-v2-native-acceptance.yml"
+          expected = {shared, "trainers/tyurin-statistics/discrete-lab.html", "trainers/tyurin-statistics/sum-dependence-lab.html", "tools/tyurin-probability-bridges.test.cjs", "docs/tasks/TYURIN_PROBABILITY_BRIDGES_20261126.md", "assets/assistant/page-rollout.json", "assets/assistant/pages.json", "sitemap.xml", "tools/seo-public-pages.json"}
+          def git(*args): return subprocess.check_output(["git", *args])
+          def blob(ref,p): return git("show", f"{ref}:{p}")
+          def paths(x,y): return set(filter(None,git("diff","--name-only","-z",x,y).decode().split("\0")))
+          assert paths(base,b) == expected
+          lesson_paths = paths(base,l)
+          assert len(lesson_paths) == 18 and lesson_paths & expected == {shared}
+          fraction_paths = {".github/workflows/linear-learning-pilot.yml", "assets/assistant/page-rollout.json", "docs/tasks/LINEAR_FRACTION_BRIDGE_20261124.md", "equations/linear-pilot/fraction-bridge-core.js", "equations/linear-pilot/fraction-bridge.css", "equations/linear-pilot/fraction-bridge.js", "equations/linear-pilot/index.html", "tools/equations/linear-pilot-fraction-bridge.browser.cjs", "tools/equations/linear-pilot-fraction-bridge.test.cjs"}
+          assert paths(b,c) == fraction_paths and not (fraction_paths & lesson_paths), "unexpected released fraction delta"
+          assert paths(c,a) == lesson_paths, "unexpected candidate delta"
+          assert paths(b,a) == lesson_paths | fraction_paths, "unexpected combined delta"
+          for p in fraction_paths: assert blob(a,p) == blob(c,p), p
+          original, bridge, own = blob(base,shared),blob(b,shared),blob(l,shared)
+          assert bridge.startswith(original), "bridge prefix changed"
+          suffix = bridge[len(original):]
+          assert suffix and b"WORK-12" in suffix
+          assert blob(a,shared) == own + suffix, "both implementations must be preserved exactly"
+          rollout = "assets/assistant/page-rollout.json"
+          binding = "equations/linear-pilot/index.html"
+          assert expected & fraction_paths == {rollout}
+          assert blob(a,rollout) == blob(c,rollout)
+          before = json.loads(blob(b,rollout))
+          after = json.loads(blob(c,rollout))
+          assert before["addedPages"][binding] != after["addedPages"][binding]
+          # Exactly the already released fraction binding may differ.
+          # Restore it to prove every probability binding and receipt survived.
+          after["addedPages"][binding] = before["addedPages"][binding]
+          assert after == before, "unexpected shared manifest drift"
+          for p in expected - {shared,rollout}: assert blob(a,p) == blob(b,p), p
+          for p in lesson_paths - {shared,workflow}: assert blob(a,p) == blob(l,p), p
+          for p in expected | lesson_paths | fraction_paths: assert Path(p).read_bytes() == blob(a,p), p
+          print("PASS exact published composition: 9 probability bridge files, 9 fraction paths, 18 lesson paths, both implementations and PDF blobs preserved")
+          PY
+          node tools/lesson-cycle/hooks.test.cjs
+          node tools/lesson-cycle/entry.test.cjs
+          node tools/tyurin-probability-bridges.test.cjs
+          node tools/tyurin-condition.test.cjs
+          "$RUNNER_TEMP/lesson-cycle-venv/bin/python" tools/lesson-cycle/native.py
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        if: github.event.pull_request.number == 768
+        with:
+          node-version: '24.21.0'
+      - name: Existing Tyurin course and shared board on the isolated composition
+        if: github.event.pull_request.number == 768
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/lesson-cycle-tyurin" --no-save --no-package-lock --ignore-scripts playwright@1.57.0 jsdom@26.1.0
+          export NODE_PATH="$RUNNER_TEMP/lesson-cycle-tyurin/node_modules"
+          node tools/tyurin-statistics.test.cjs
+          node tools/tyurin-condition.browser.cjs
+          node tools/tyurin-statistics.board.browser.cjs

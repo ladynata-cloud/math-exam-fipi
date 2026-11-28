@@ -66,7 +66,7 @@ test('the eight authored stereometry lessons and all complete supported routes a
   assert.equal(routes.length, 90);
   for (const hash of routes) assert.equal(normalize(sourcePath + hash), wrapperPath + hash, hash);
   for (const hash of [
-    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/5', '#exam/15', '#calm/9',
+    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/0', '#exam/15', '#calm/9',
     '#lesson/geo-unknown', '#lesson/stereo-t14', '#example/stereo-other', '#repair-task/stereo-box',
     '#practice/stereo-box', '#practice/stereo-box/other', '#practice/stereo-box/guided/extra',
     '#lesson/stereo-box/extra', '#example/stereo-box/guided', '#pause/stereo-box',
@@ -131,7 +131,7 @@ test('the stereometry wrapper reuses canonical assets and the existing bridge wi
     .map(src => '/ege-profil/start/' + src);
   const wrapperScripts = scripts(wrapper);
   const bridge = '/trainers/board-bridge.js';
-  const adapter = '/ege-profil/start/board-session.js?v=20261101-trainer-repair';
+  const adapter = '/ege-profil/start/board-session.js?v=20261128-first-part';
   const home = '/assets/assistant/home-link.js?v=20261110';
   assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), [...canonicalScripts, home]);
   assert.equal(wrapperScripts.at(-1), home, 'Only the exact standalone home script follows the canonical assets');

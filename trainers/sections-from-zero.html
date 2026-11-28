@@ -8,16 +8,58 @@
   <title>Сечения с нуля · совместная работа на доске</title>
   <link rel="canonical" href="https://mathexam.space/stereo-course/sections/">
   <link rel="stylesheet" href="/stereo-course/sections/assets/style.css">
+  <style>
+    body[data-sections-board] .layout{display:block;padding:.4rem .65rem 1rem}
+    body[data-sections-board] .layout>.catalog{position:static;margin:1rem 0}
+    body[data-sections-board] .lesson-header{padding:.65rem .8rem}
+    body[data-sections-board] .lesson-header h2{font-size:1.2rem;margin:0 0 .45rem}
+    body[data-sections-board] .lesson-condition{line-height:1.45;margin:0}
+    body[data-sections-board] .model-svg{height:clamp(180px,42vh,360px)}
+    body[data-sections-board] .board-cube .lesson-topbar, body[data-sections-board] .board-cube .starter-phase{display:none}
+    body[data-sections-board] .board-cube .lesson-header{padding:.5rem .65rem}
+    body[data-sections-board] .board-cube .lesson-header h2{font-size:1.1rem}
+    body[data-sections-board] .board-cube .lesson-condition{font-size:1rem;line-height:1.35}
+    body[data-sections-board] .board-cube .workbench{padding:.25rem}
+    body[data-sections-board] .board-cube .model-panel{padding:0}
+    body[data-sections-board] .board-cube .model-frame{margin:0}
+    body[data-sections-board] .board-cube .model-svg{height:clamp(164px,39vh,300px)}
+    body[data-sections-board] .board-cube .model-caption{min-height:0;line-height:1.2;padding:.2rem .45rem}
+    @media(max-width:420px){
+      body[data-sections-board] .board-cube .lesson-condition{font-size:16px}
+      body[data-sections-board] .board-cube .model-svg{height:180px}
+    }
+  </style>
 </head>
 <body data-sections-board="true">
   <a class="skip-link" href="#lesson-title">К заданию</a>
-  <p class="sections-board-note">Общий разбор · личный прогресс сохраняется отдельно.</p>
   <div id="sections-app"><p>Открываем общий разбор…</p></div>
   <noscript><p>Для совместной работы нужен JavaScript.</p></noscript>
   <script src="/stereo-course/sections/assets/course-data.js"></script>
   <script src="/trainers/board-bridge.js"></script>
   <script src="/stereo-course/sections/assets/board-session.js"></script>
+  <script>
+    window.addEventListener('sections:lesson', event => {
+      const cube = event.detail.id === 'starter-18';
+      const main = document.querySelector('.course-main');
+      main.classList.toggle('board-cube', cube);
+      if (!cube) return;
+      const condition = main.querySelector('.lesson-condition');
+      condition.textContent = 'Построй сечение. Точки M, N, P, Q на рёбрах AE, BF, CG, DH лежат в одной плоскости. Начни с грани, где лежат M и N.';
+      const glossary = main.querySelector('.lesson-header details');
+      if (glossary) main.querySelector('.model-panel').append(glossary);
+    });
+  </script>
   <script src="/stereo-course/sections/assets/app.js"></script>
+  <script>
+    // The shared room opens on the lesson. Keep the catalogue and the rule reachable after it.
+    const course = document.getElementById('sections-app');
+    const lessonLayout = course.querySelector('.layout');
+    if (lessonLayout) {
+      course.querySelector('.app-header').classList.add('sr-only');
+      lessonLayout.append(lessonLayout.querySelector('.catalog'));
+      lessonLayout.after(course.querySelector('.principle'));
+    }
+  </script>
   <script defer src="/assets/assistant/home-link.js?v=20261110"></script>
 </body>
 </html>

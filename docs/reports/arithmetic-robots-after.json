@@ -6,9 +6,9 @@
   "mode": "after",
   "runtime": "jsdom",
   "source": {
-    "commit": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
+    "commit": "64ce01049377b4289f46979c52f2c50daf84b92f",
     "trainers/oge-basics/learning-managed.js": "14310f6c77a2d6022f918b47ce6412123a2dc6882d217697b6c5b6b1e307eac3",
-    "trainers/oge-basics/learning-scaffolds.js": "57f8b897071250d96e2bfbc8931427405c38d868ea9b1f5d8a9c93fe605f1f32",
+    "trainers/oge-basics/learning-scaffolds.js": "6cd33b0b37a3faf6b8e666dab1f4dc6806ebe73476b8ff8e746106f05445d2ae",
     "trainers/oge-basics/multiplication-division/multiplication-column-core.js": "e0279cf2b8a0b8ce05d8396fe52e9e91e14fb8d9b56dbce70874325539869f9b",
     "trainers/oge-basics/multiplication-division/division-course-core.js": "304556eb1e7d5f8171294392aff931960799ed0e3f13f0169dbe917fdc4f0f47",
     "trainers/oge-basics/multiplication-division/quotient-estimate-core.js": "17520095fd05d6dd1216dcd1cff15d47ed235b3cb3bca387ee83d1123c466216"

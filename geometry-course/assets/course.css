@@ -2,3 +2,37 @@
 
 /* Construction controls and next action stay together above the drawing. */
 .lab-mission{padding:10px 14px;background:#e8f2ed;border-left:4px solid #147c78;border-radius:10px;font-weight:650;font-size:.9rem}.lab-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}.lab-primary{margin:0;flex:1}.lab-controls>[data-act=undo]{font-size:.78rem;padding:.5rem .7rem}.tool-instruction{margin:8px 0;min-height:42px}.lab-feedback:empty{display:none}.object-panel select{max-width:100%}.object-panel label{max-width:100%;min-width:0}.canvas-wrap{margin-top:8px}.extra-tools summary{font-size:.85rem}.lab-readout{overflow-wrap:anywhere}.construction-active .lesson-head{padding-bottom:8px}.construction-active .lesson-head h1{font-size:1.7rem}.construction-active #lesson>h2{font-size:1.35rem}.construction-active .canvas-wrap{max-width:640px;margin-left:auto;margin-right:auto}.construction-active #lesson{padding:18px}.construction-active #lesson>.step-label{margin:0}.construction-active .stage-nav{padding-bottom:8px}@media(max-width:480px){.lab-controls>[data-act=undo]{width:100%}.lab-mission{font-size:.83rem;padding:8px 10px}.construction-active .container{padding-top:12px}.construction-active .lesson-head h1{font-size:1.35rem}.construction-active #lesson{padding:12px}.tool-instruction{font-size:.8rem}.lab-controls button{min-height:44px}}
+
+/* Research first: one question, one exact figure, then a recorded prediction. */
+.topic-investigation h2{font-size:1.25rem;line-height:1.3;margin:0 0 10px}.research-svg{display:block;width:100%;max-height:230px;background:#f3f7f5;border-radius:10px;margin:8px 0}.research-predict{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.research-predict label{flex:1;min-width:160px}.research-predict select{width:100%;font-size:.84rem}.research-predict button{font-size:.83rem}.research-feedback:empty{display:none}.research-feedback{font-size:.82rem;padding:5px 0;margin:4px 0}.research-controls{border-top:1px solid var(--line);padding-top:8px}.research-controls>label{margin:8px 0;font-size:.84rem}.research-controls input[type=range]{width:100%;padding:0;min-height:36px;accent-color:var(--teal)}.research-controls select{width:100%}.research-action,.research-limit{font-size:.82rem;line-height:1.45}.research-readout{padding:8px 12px;background:var(--soft);border-left:3px solid var(--teal);border-radius:8px;font-size:.85rem}.research-readout p{margin:5px 0}.research-conclusion p{font-size:.9rem}.topic-investigation textarea{min-height:90px}.retained-work .report-note{white-space:pre-wrap}.manual-research>p{font-size:.85rem}.lesson-figure{max-width:520px!important}.lesson-figure svg{max-height:240px}.lesson-figure figcaption{font-size:14px!important}.construction-active .lesson-head h1{font-size:1.5rem}.construction-active .lesson-head .pill{display:none}.construction-active .lesson-head{padding:4px 0 8px}.construction-active .lesson-head .eyebrow{margin:0}.construction-active .topbar{padding-top:9px;padding-bottom:9px}.construction-active .toplinks{gap:.6rem}.construction-active #lesson>.step-label{font-size:.72rem;margin:0 0 6px}.research-controls output{display:inline;font-variant-numeric:tabular-nums}.proof-list{margin-top:8px}.proof-list li{padding:10px 12px}.task-question{font-size:1rem;line-height:1.45}.callout{margin:12px 0;padding:12px 15px}.callout p{font-size:.93rem;margin:4px 0}
+@media(max-width:480px){.construction-active .topbar{padding:7px 10px;gap:5px}.construction-active .brand{font-size:.93rem}.construction-active .toplinks{gap:8px}.construction-active .toplinks button{min-height:34px;padding:4px 7px}.construction-active .container{padding:8px 10px 40px}.construction-active .lesson-head h1{font-size:1.15rem;line-height:1.2;margin:3px 0 5px}.construction-active .lesson-head .eyebrow{font-size:.62rem}.construction-active .stage-nav{padding-bottom:6px}.construction-active .stage-nav button{font-size:.72rem;min-height:36px;padding:7px 9px}.topic-investigation h2{font-size:1.05rem}.research-svg{max-height:170px}.research-predict{display:block}.research-predict select{font-size:.78rem}.research-predict button{margin-top:7px;width:100%;min-height:40px}.research-predict label{font-size:.79rem}.lesson-figure svg{max-height:190px}.lesson-figure figcaption{font-size:14px!important}.proof-options button{padding:10px 12px}.panel h2{font-size:1.22rem}.callout{padding:9px 12px}.callout p{font-size:.85rem}.step-label{font-size:.7rem}.task-question{font-size:.9rem}}
+
+/* A consistent compact header leaves the condition and the next action together. */
+.thematic-lesson .lesson-head h1{font-size:1.5rem}.thematic-lesson .lesson-head .pill{display:none}.thematic-lesson .lesson-head{padding:4px 0 8px}.thematic-lesson .lesson-head .eyebrow{margin:0}.thematic-lesson .topbar{padding-top:9px;padding-bottom:9px}.thematic-lesson #lesson{padding:18px}.thematic-lesson #lesson>.step-label{font-size:.72rem;margin:0 0 6px}.thematic-lesson .stage-nav{padding-bottom:8px}.thematic-lesson .midline-diagram.midline-computing{max-width:245px}.thematic-lesson .midline-diagram figcaption{font-size:14px;line-height:1.35}
+@media(max-width:480px){.thematic-lesson .topbar{padding:7px 10px;gap:5px}.thematic-lesson .brand{font-size:.93rem}.thematic-lesson .toplinks{gap:8px}.thematic-lesson .toplinks button{min-height:34px;padding:4px 7px}.thematic-lesson .container{padding:8px 10px 40px}.thematic-lesson .lesson-head h1{font-size:1.15rem;line-height:1.2;margin:3px 0 5px}.thematic-lesson .lesson-head .eyebrow{font-size:.62rem}.thematic-lesson #lesson,.thematic-lesson.midline-lesson #lesson{padding:12px}.thematic-lesson .stage-nav{padding-bottom:6px}.thematic-lesson .stage-nav button{font-size:.72rem;min-height:36px;padding:7px 9px}.thematic-lesson #lesson h2{font-size:1.05rem;line-height:1.25}.thematic-lesson .midline-diagram.midline-computing{max-width:245px}}
+
+/* Keep a complete condition, a readable diagram and the first answer together.
+   Empty progress lists and repeated instructions must not occupy the first screen. */
+.progress-compact{display:none}
+.thematic-lesson #lesson>h2{margin:0 0 8px}
+.thematic-lesson .proof-list:empty{display:none}
+.thematic-lesson .proof-condition{margin:8px 0;padding:8px 12px}
+.thematic-lesson .proof-condition p{margin:3px 0;line-height:1.4}
+.thematic-lesson .proof-prompt{font-size:.9rem;line-height:1.4;margin:6px 0}
+.thematic-lesson .proof-options{margin:8px 0}
+.thematic-lesson .guided-step{margin:8px 0;padding:8px 12px}
+.thematic-lesson .guided-step p{margin:0;line-height:1.4}
+.thematic-lesson .midline-diagram:not(.midline-computing){max-width:320px}
+.thematic-lesson .answer-row{margin:6px 0 10px}
+@media(max-width:480px){
+ .thematic-lesson .topbar{display:block;position:relative;padding:7px 10px}
+ .thematic-lesson .brand{display:flex;align-items:center;gap:3px;width:max-content;max-width:calc(100% - 96px);min-height:34px;font-size:.85rem;line-height:1.6;white-space:nowrap}
+ .thematic-lesson .toplinks{margin-top:5px}
+ .thematic-lesson #export-progress{position:absolute;top:7px;right:10px;min-height:34px;font-size:.72rem;padding:4px 7px}
+ .thematic-lesson .progress-full{display:none}
+ .thematic-lesson .progress-compact{display:inline}
+ .thematic-lesson .proof-options button{font-size:.9rem;line-height:1.35;padding:8px 10px}
+ .thematic-lesson .answer-row{flex-wrap:nowrap;gap:8px}
+ .thematic-lesson .answer-row input{min-width:0;width:0;font-size:16px}
+ .thematic-lesson .answer-row button{width:auto;flex:0 0 auto;min-height:44px;font-size:.88rem;padding:8px 10px}
+}

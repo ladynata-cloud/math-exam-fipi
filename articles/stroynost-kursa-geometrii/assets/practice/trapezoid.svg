@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="180" viewBox="0 0 340 180" role="img" aria-labelledby="title">
+<title id="title">Равнобедренная трапеция ABCD с проведёнными диагоналями AC и BD</title>
+<style>
+ .edge,.aux,.dash,.mark {fill:none;stroke:#243b50;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+ .aux,.dash {stroke:#216282} .dash {stroke-dasharray:5 5} .mark {stroke:#a33a35}
+ circle {fill:#243b50} text {font:italic 18px Georgia,serif; fill:#122f42}
+</style>
+<path d="M40 33v122" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M80 33v122" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M120 33v122" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M160 33v122" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M200 33v122" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M240 33v122" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M280 33v122" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M28 54h266" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M28 94h266" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<path d="M28 134h266" stroke="#c5ced5" fill="none" stroke-width="0.8"/>
+<polyline class="edge" points="40,134 280,134 240,54 80,54 40,134"/>
+<polyline class="aux" points="40,134 240,54"/>
+<polyline class="aux" points="280,134 80,54"/>
+<circle cx="40" cy="134" r="3"/><text x="24" y="142">A</text>
+<circle cx="280" cy="134" r="3"/><text x="286" y="142">B</text>
+<circle cx="240" cy="54" r="3"/><text x="245" y="48">C</text>
+<circle cx="80" cy="54" r="3"/><text x="64" y="49">D</text>
+</svg>

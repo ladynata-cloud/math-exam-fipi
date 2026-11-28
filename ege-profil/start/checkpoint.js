@@ -1,28 +1,38 @@
 (function(root){'use strict';
-// A small, untimed sample across the 13 course numbers. This is not an exam
-// forecast or an authentication boundary: its separate local record is editable.
+// A small, untimed sample of the official first-part lines. Earlier rounds
+// retain their 13 legacy groups, task identities and unchanged storage key.
 const KEY='mathexam.profileCheckpoint.v1';
 const ORDER=[4,7,1,2,8,3,10,5,12,9,6,11,13];
-function create(lessons,storage,learningState){
+const FIPI_ORDER=[4,6,1,2,7,3,9,5,11,8,10,12];
+// Every saved round already stores its entire fixed-size item array, including
+// unopened rows. Twelve and thirteen rows identify the two formats unambiguously.
+const isCurrentRound=round=>Array.isArray(round?.items)&&round.items.length===FIPI_ORDER.length;
+function create(lessons,storage,learningState,examMap){
  const known=new Map(lessons.map(l=>[l.id,l]));
  const pools=new Map(ORDER.map(number=>[number,lessons.filter(l=>l.position===number).flatMap(lesson=>lesson.tasks.slice(-3).map(task=>({lesson,task})))]));
+ const currentPools=examMap?new Map(FIPI_ORDER.map(number=>[number,lessons.filter(lesson=>examMap.get(number).lessonIds.includes(lesson.id)).flatMap(lesson=>lesson.tasks.slice(-3).map(task=>({lesson,task})))])):null;
+ const defaultOrder=examMap?FIPI_ORDER:ORDER;
+ const orderFor=round=>isCurrentRound(round)?FIPI_ORDER:ORDER;
+ const currentPool=(round,number)=>(isCurrentRound(round)?currentPools:pools)?.get(number)||[];
  let data={version:1,round:null,history:[]},raw='',blocked=false,warning='';
  const clone=value=>JSON.parse(JSON.stringify(value));
  const bool=value=>typeof value==='boolean';
  const text=value=>typeof value==='string'&&value.length<=200;
  function empty(number){return {number,lessonId:null,taskId:null,draft:'',submitted:false,correct:false,assisted:false,unavailable:false};}
  function validateRound(round){
-  if(!round||typeof round!=='object'||typeof round.id!=='string'||!round.id||round.id.length>100||!text(round.started)||!text(round.finished)||!bool(round.complete)||!Number.isInteger(round.index)||round.index<0||round.index>ORDER.length||round.complete!==(round.index===ORDER.length)||!Array.isArray(round.items)||round.items.length!==ORDER.length)throw Error('round');
+  if(isCurrentRound(round)&&!currentPools)throw Error('map unavailable');
+  const order=orderFor(round);
+  if(!round||typeof round!=='object'||typeof round.id!=='string'||!round.id||round.id.length>100||!text(round.started)||!text(round.finished)||!bool(round.complete)||!Number.isInteger(round.index)||round.index<0||round.index>order.length||round.complete!==(round.index===order.length)||!Array.isArray(round.items)||round.items.length!==order.length)throw Error('round');
   const ids=new Set();
   const items=round.items.map((item,index)=>{
-   if(!item||item.number!==ORDER[index]||!text(item.draft)||!['submitted','correct','assisted','unavailable'].every(key=>bool(item[key])))throw Error('item');
+   if(!item||item.number!==order[index]||!text(item.draft)||!['submitted','correct','assisted','unavailable'].every(key=>bool(item[key])))throw Error('item');
    if(Object.prototype.hasOwnProperty.call(item,'familiar')&&item.familiar!==false)throw Error('familiar condition');
    const clean={number:item.number,lessonId:item.lessonId,taskId:item.taskId,draft:item.draft,submitted:item.submitted,correct:item.correct,assisted:item.assisted,unavailable:item.unavailable};
    if(item.taskId===null&&item.lessonId===null){
     if(item.submitted||item.correct||item.assisted||item.draft)throw Error('empty item');
    }else{
     const lesson=known.get(item.lessonId);
-    if(item.unavailable||!lesson||lesson.position!==item.number||!lesson.tasks.slice(-3).some(t=>t.id===item.taskId)||ids.has(item.taskId)||(!item.submitted&&item.correct)||(item.submitted&&!item.draft.trim()))throw Error('task');
+    if(item.unavailable||!lesson||!currentPool(round,item.number).some(value=>value.lesson.id===item.lessonId&&value.task.id===item.taskId)||ids.has(item.taskId)||(!item.submitted&&item.correct)||(item.submitted&&!item.draft.trim()))throw Error('task');
     ids.add(item.taskId);
    }
    if(index<round.index&&!item.submitted&&!item.unavailable)throw Error('skipped item');
@@ -76,7 +86,7 @@ function create(lessons,storage,learningState){
  function context(){const r=data.round;return r?[r.id,r.index,r.items[r.index]?.taskId||''].join(':'):'';}
  function prepare(expectedToken){const before=context();read();return (expectedToken===undefined?before:expectedToken)===context();}
  function makeRound(){
-  return {id:'round-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12),index:0,complete:false,items:ORDER.map(empty),started:new Date().toISOString(),finished:''};
+  return {id:'round-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12),index:0,complete:false,items:defaultOrder.map(empty),started:new Date().toISOString(),finished:''};
  }
  function reserve(){
   const round=data.round;
@@ -96,7 +106,7 @@ function create(lessons,storage,learningState){
   // ProfileState.persist merges seen task IDs from other tabs before selection.
   // Exposure stays shared; a correct first answer is credited to its lesson.
   try{learningState.persist();}catch(_){}
-  const found=pools.get(item.number).find(({task})=>!learningState.data.seen[task.id]);
+  const found=currentPool(round,item.number).find(({task})=>!learningState.data.seen[task.id]);
   if(found){
    item.lessonId=found.lesson.id;item.taskId=found.task.id;
    learningState.data.seen[found.task.id]=(learningState.data.seen[found.task.id]||0)+1;
@@ -105,11 +115,11 @@ function create(lessons,storage,learningState){
   write();
  }
  function view(){
-  const round=data.round;
-  if(!round)return {token:context(),number:ORDER[0],lesson:null,task:null,draft:'',submitted:false,correct:false,assisted:false,position:0,total:ORDER.length,complete:false,unavailable:false};
-  if(round.complete)return {token:context(),number:null,lesson:null,task:null,draft:'',submitted:false,correct:false,assisted:false,position:ORDER.length,total:ORDER.length,complete:true,unavailable:false};
+  const round=data.round,total=round?orderFor(round).length:defaultOrder.length;
+  if(!round)return {token:context(),number:defaultOrder[0],lesson:null,task:null,draft:'',submitted:false,correct:false,assisted:false,position:0,total,complete:false,unavailable:false};
+  if(round.complete)return {token:context(),number:null,lesson:null,task:null,draft:'',submitted:false,correct:false,assisted:false,position:total,total,complete:true,unavailable:false};
   const item=round.items[round.index],lesson=known.get(item.lessonId)||null;
-  return {token:context(),number:item.number,lesson,task:lesson?.tasks.find(t=>t.id===item.taskId)||null,draft:item.draft,submitted:item.submitted,correct:item.correct,assisted:item.assisted,position:round.index,total:ORDER.length,complete:false,unavailable:item.unavailable};
+  return {token:context(),number:item.number,lesson,task:lesson?.tasks.find(t=>t.id===item.taskId)||null,draft:item.draft,submitted:item.submitted,correct:item.correct,assisted:item.assisted,position:round.index,total,complete:false,unavailable:item.unavailable,legacy:!isCurrentRound(round)};
  }
  function current(){read();if(!data.round){data.round=makeRound();write();}reserve();return view();}
  function startRound(fresh=false){
@@ -164,15 +174,15 @@ function create(lessons,storage,learningState){
   if(expectedToken!==undefined&&shown.token!==expectedToken)return shown;
   if(shown.complete||(!shown.submitted&&!shown.unavailable))return shown;
   const round=data.round;round.index++;
-  if(round.index===ORDER.length){
+  if(round.index===orderFor(round).length){
    round.complete=true;round.finished=new Date().toISOString();
    data.history=data.history.filter(r=>r.id!==round.id).concat(clone(round)).slice(-20);
   }
   write();return current();
  }
  function summary(round){
-  const items=round?.items||[];
-  return {attempted:items.filter(i=>i.submitted).length,independent:items.filter(i=>i.submitted&&i.correct&&!i.assisted&&!i.unavailable).length,assisted:items.filter(i=>i.assisted).length,unavailable:items.filter(i=>i.unavailable).length,total:ORDER.length};
+  const items=round?.items||[],total=round?orderFor(round).length:defaultOrder.length;
+  return {attempted:items.filter(i=>i.submitted).length,independent:items.filter(i=>i.submitted&&i.correct&&!i.assisted&&!i.unavailable).length,assisted:items.filter(i=>i.assisted).length,unavailable:items.filter(i=>i.unavailable).length,total};
  }
  // v1 has always reserved unseen task IDs and prevented a second submission.
  // Its validated submitted/correct/assisted flags therefore retain enough
@@ -182,5 +192,5 @@ function create(lessons,storage,learningState){
  read();
  return {KEY,startRound,current,submit,help,next,persistDraft,snapshot,get warning(){return warning||learningState.warning||'';},get original(){return blocked?raw:'';},export(){return {kind:'mathexam-profile-checkpoint',exportedAt:new Date().toISOString(),storage:'local-browser',...snapshot()};}};
 }
-const api={KEY,ORDER,create};root.ProfileCheckpoint=api;if(typeof module!=='undefined')module.exports=api;
+const api={KEY,ORDER,FIPI_ORDER,isCurrentRound,create};root.ProfileCheckpoint=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);

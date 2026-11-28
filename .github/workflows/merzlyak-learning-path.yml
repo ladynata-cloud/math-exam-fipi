@@ -29,6 +29,7 @@ jobs:
           node tools/merzlyak/trainer-feedback.test.cjs
           node tools/merzlyak/similarity.test.cjs
           node tools/merzlyak/check.cjs
+          python3 tools/merzlyak/build-output.test.py
       - name: Existing lesson journeys and narrow mobile layout
         run: node tools/merzlyak/browser.cjs
       - name: Real task interactions and learning path on phone and desktop

@@ -11,9 +11,11 @@
 <div id="textbook-app"><h1>Курс к учебнику Атанасяна и соавторов · Геометрия 7–9</h1><p>Базовый уровень, 14-е переработанное издание, 2023. Авторские тренажёры к задачам и объяснения к параграфам и главам учебника.</p><p>Загружаем материалы курса…</p></div>
 <noscript>Для интерактивных чертежей нужен JavaScript.</noscript>
 <script src="assets/math-text.js"></script><script src="assets/planar-viewer.js"></script><script src="assets/engine.js"></script>
+<script src="/assets/geometry-step-views.js"></script>
+<script src="assets/additional-lessons.js"></script>
 <script>
 'use strict';
-fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(bundle=>{
- window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),bundle);
+fetch('data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Не удалось загрузить курс');return response.json();}).then(GeometryAdditionalLessons.forCourse).then(bundle=>{
+ window.textbookApp=GeometryTextbook.createApp(document.getElementById('textbook-app'),GeometryStepViews.prepare(bundle));
 }).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});
 </script></body></html>

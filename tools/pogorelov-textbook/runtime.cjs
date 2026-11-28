@@ -45,6 +45,23 @@ for(const u of C.units)for(const t of u.tasks){
   const restored=M.restore(JSON.stringify(p),t);assert.equal(restored.done,t.steps.length);
   journeys++;
 }
+// Comparing given configurations keeps the pupil's answer and independence.
+for(const id of ['p5-n11','p7-n4','p12-n2']){
+  const instance=make({},'#task/'+id), win=instance.window, doc=win.document;
+  const select=doc.querySelector('#model-case'), drawing=()=>doc.querySelector('#drawing').innerHTML;
+  const first=drawing(), input=doc.querySelector('#answer-0');
+  input.value='2+';input.dispatchEvent(new win.Event('input',{bubbles:true}));
+  select.value='1';select.dispatchEvent(new win.Event('change'));
+  assert.notEqual(drawing(),first);
+  assert.equal(input.value,'2+');
+  assert.equal(JSON.parse(win.localStorage.getItem(key({id}))).assisted,false);
+  doc.querySelector('[data-line]').dispatchEvent(new win.MouseEvent('click',{bubbles:true}));
+  assert.ok(doc.querySelector('.geo-selected'));
+  doc.querySelector('#guided').click();assert.equal(doc.querySelector('#model-case').value,'1');
+  doc.querySelector('#model-case').value='0';doc.querySelector('#model-case').dispatchEvent(new win.Event('change'));
+  assert.equal(drawing(),first);
+  win.close();
+}
 // A wrong choice never advances, and a revealed step always records assistance.
 nav('p3-n2');
 click('.skip');assert.equal(w.location.hash,'#task/p3-n2');assert.equal(d.activeElement.id,'main');

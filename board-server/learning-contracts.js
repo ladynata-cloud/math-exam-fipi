@@ -143,8 +143,11 @@ function questionIdentity(taskSpec) {
   const task = taskSpec.task || {};
   const choices = taskSpec.trainerId === 'ege-path' && meta.get(taskSpec.contentId)?.geometryRebuild
     ? task.choices?.map(choice => choice.label).sort() : task.choices;
+  // The wording of these two notebook exercises changed after results had been saved.
+  const notebookTask = taskSpec.trainerId === 'ege-path' && ['round', 'practice-change'].includes(taskSpec.contentId);
+  const prompt = (notebookTask && task.progressKey) || task.q || task.prompt;
   return crypto.createHash('sha256').update(JSON.stringify({ trainerId: taskSpec.trainerId,
-    contentId: taskSpec.contentId, prompt: task.q || task.prompt, choices,
+    contentId: taskSpec.contentId, prompt, choices,
     labels: task.labels, display: task.display, model: task.model, divisionTask: taskSpec.divisionTask })).digest('hex');
 }
 

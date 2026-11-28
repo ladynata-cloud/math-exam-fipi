@@ -188,6 +188,35 @@ function recordPdfHelp(event){
  const note=$('#examHelpNote');if(note)note.textContent='Открыто повторение: результат будет отмечен как работа с помощью. Ответы и разбор появятся после всех пяти заданий.';
 }
 function render(){if(cleanup){cleanup();cleanup=null}route=parseRoute();markOpenExamHelp(route);document.body.classList.toggle('focus-mode',store.focus);$('#focusToggle').textContent=store.focus?'Обычный вид':'На уроке';$('#focusToggle').setAttribute('aria-pressed',String(store.focus));({home,lesson:renderLesson,progress,book})[route.view]();document.title=route.view==='lesson'?`${lesson(route.id).title} · Виленкин 5`:'Виленкин · 5 класс · Часть 1'}
-async function init(){try{const files=window.VILENKIN_DATA?.lessons||await Promise.all([1,2,3,4,5].map(n=>fetch(`data/lessons-${n}.json`).then(r=>{if(!r.ok)throw Error(r.status);return r.json()})));DATA=files.flat().sort((a,b)=>a.id-b.id);const rawBook=window.VILENKIN_DATA?.book||await fetch('data/textbook-index.json').then(r=>{if(!r.ok)throw Error(r.status);return r.json()});BOOK={...rawBook,exercises:(rawBook.exercises||[]).concat(rawBook.checks||[])};if(DATA.length!==29||new Set(DATA.map(l=>l.id)).size!==29||!Array.from({length:29},(_,i)=>i).every(id=>lesson(id)))throw Error('incomplete course');load();render();$('#openArithmetic').onclick=()=>openArithmetic();document.addEventListener('click',recordPdfHelp);document.addEventListener('auxclick',recordPdfHelp);window.addEventListener('hashchange',()=>{render();window.scrollTo({top:0})});$('#focusToggle').onclick=()=>{store.focus=!store.focus;save();render()};$('#closeHelp').onclick=()=>$('#helpDialog').close();$('.skip').onclick=e=>{e.preventDefault();$('#main').focus();$('#main').scrollIntoView({block:'start'})};}catch(e){$('#main').innerHTML='<h1>Курс не загрузился</h1><p>Проверь соединение и обнови страницу. Сохранённые результаты остаются в браузере.</p><button onclick="location.reload()">Повторить загрузку</button>';console.error(e)}}
+async function init(){try{const files=window.VILENKIN_DATA?.lessons||await Promise.all([1,2,3,4,5].map(n=>fetch(`data/lessons-${n}.json`).then(r=>{if(!r.ok)throw Error(r.status);return r.json()})));DATA=files.flat().sort((a,b)=>a.id-b.id);const rawBook=window.VILENKIN_DATA?.book||await fetch('data/textbook-index.json').then(r=>{if(!r.ok)throw Error(r.status);return r.json()});BOOK={...rawBook,exercises:(rawBook.exercises||[]).concat(rawBook.checks||[])};if(DATA.length!==29||new Set(DATA.map(l=>l.id)).size!==29||!Array.from({length:29},(_,i)=>i).every(id=>lesson(id)))throw Error('incomplete course');load();render();$('#openArithmetic').onclick=()=>openArithmetic();document.addEventListener('click',recordPdfHelp);document.addEventListener('auxclick',recordPdfHelp);window.addEventListener('hashchange',()=>{render();window.scrollTo({top:0})});$('#focusToggle').onclick=()=>{store.focus=!store.focus;save();render()};$('#closeHelp').onclick=()=>$('#helpDialog').close();$('.skip').onclick=e=>{e.preventDefault();$('#main').focus();$('#main').scrollIntoView({block:'start'})};}catch(e){
+ const notice=document.createElement('div');notice.setAttribute('role','alert');
+ notice.innerHTML='<p>Задания не загрузились. Проверь соединение и попробуй ещё раз. Сохранённые результаты остаются в браузере.</p><button type="button">Повторить загрузку</button>';
+ notice.querySelector('button').onclick=()=>location.reload();
+ const entry=$('.grade5-entry');
+ if(entry)entry.querySelector('.entry-start').replaceWith(notice);
+ else $('#main').replaceChildren(notice);
+ console.error(e);
+}}
 init();
+
+// Keep the existing site's navigation button in the course menu as on Peterson 5.
+// The dialogue stays positioned relative to the viewport inside the same shadow root.
+function placeVilenkinNavigator() {
+  const host = document.getElementById('maxexam-public-assistant');
+  const menu = document.querySelector('header.top nav');
+  if (!host?.shadowRoot || !menu) return;
+  const style = document.createElement('style');
+  style.textContent = `
+    :host { display: inline-flex !important; position: static !important; contain: none !important; min-height: 0 !important; }
+    .launcher { position: static; width: auto; height: auto; min-height: 44px; padding: 6px 10px; gap: 6px; border-radius: 10px; box-shadow: none; }
+    .launcher-mark { width: 22px; height: 22px; font-size: 18px; }
+    .launcher-label { display: block; position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; }
+    .launcher-label strong { font-size: 15px; }
+    .launcher-label > span { display: none; }
+  `;
+  host.shadowRoot.append(style);
+  menu.append(host);
+}
+if (document.readyState === 'complete') placeVilenkinNavigator();
+else window.addEventListener('DOMContentLoaded', placeVilenkinNavigator, {once: true});
 })();

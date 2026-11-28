@@ -37,6 +37,17 @@ for(const axis of ['x','y'])for(const c of [-1.5,-1,-.9,-Math.SQRT1_2,-.5,0,.5,M
  }
  assert.equal(result.closed,relation.includes('='));
 }
+// Equality produces isolated intersections, including tangencies and empty sets.
+for (const axis of ['x', 'y']) {
+ for (const threshold of [-1.5, -1, -.5, 0, .5, 1, 1.5]) {
+  const section = math.sliceIntervals(axis, threshold, '=');
+  assert.equal(section.closed, true);
+  assert.deepEqual(section.intervals, []);
+  assert.equal(section.roots.length, Math.abs(threshold) > 1 ? 0 : Math.abs(threshold) === 1 ? 1 : 2);
+  for (const t of section.roots) assert.ok(math.belongs(math.values(t)[axis], threshold, '='));
+ }
+ assert.equal(math.belongs(.75, .5, '='), false);
+}
 assert.deepEqual(math.sliceIntervals('x',1,'>=').intervals,[]);
 assert.deepEqual(math.sliceIntervals('x',1,'>=').roots,[0]);
 assert.equal(math.belongs(1,1,'>='),true);assert.equal(math.belongs(1,1,'>'),false);

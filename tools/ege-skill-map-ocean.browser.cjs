@@ -5,6 +5,7 @@ const fs = require('node:fs/promises');
 const http = require('node:http');
 const path = require('node:path');
 const { chromium } = require('playwright');
+const examMap = require('../ege-profil/exam-map.js');
 
 const root = path.resolve(__dirname, '..');
 const mediaTypes = {
@@ -47,7 +48,11 @@ async function checkProfileRoutes(page, origin) {
     const route = number <= 13 ? `start/#calm/${number}` : `part-two/#exam/${number}`;
     await page.goto(`${origin}/ege-profil/${route}`);
     const map = await openSkillMap(page);
-    assert.match(await map.locator('.profile-skill-subtitle').innerText(), new RegExp(`^№${number}(?:\\s|$)`));
+    const entry = number <= 13 ? examMap.fromLegacyStart(number) : examMap.fromLegacyPartTwo(number);
+    const subtitle = await map.locator('.profile-skill-subtitle').innerText();
+    if (number === 9) assert.match(subtitle, /^Производная и первообразная · №8; экстремумы · №12$/);
+    else if (entry.number) assert.match(subtitle, new RegExp(`^№\\s*${entry.number}(?:\\s|$)`));
+    else assert.match(subtitle, /^Дополнительная тема/, 'legacy topic is retained outside official numbering');
     assert(await map.locator(challenge).first().isVisible(), `creative exercise for profile number ${number}`);
     await page.keyboard.press('Escape');
     await map.waitFor({ state: 'hidden' });
@@ -141,8 +146,8 @@ async function checkParameterPlane(page, origin) {
   await page.getByRole('button', { name: 'Проверить', exact: true }).click();
   await page.getByRole('button', { name: 'Завершить', exact: true }).click();
   await page.getByRole('heading', { name: 'Самостоятельная проверка пройдена' }).waitFor();
-  await page.getByRole('link', { name: 'К экзаменационным задачам №19' }).click();
-  assert.match(page.url(), /#exam\/19$/);
+  await page.getByRole('link', { name: /^К подготовке: №\s*18$/ }).click();
+  assert.match(page.url(), /#fipi\/2027\/18$/);
 }
 
 async function checkOcean(page, origin) {

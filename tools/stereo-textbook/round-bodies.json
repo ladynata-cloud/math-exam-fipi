@@ -1,0 +1,557 @@
+{
+  "parts": {
+    "433": [
+      null
+    ],
+    "434": [
+      null
+    ],
+    "435": [
+      null
+    ],
+    "436": [
+      "а",
+      "б",
+      "в"
+    ],
+    "437": [
+      null
+    ],
+    "438": [
+      null
+    ],
+    "439": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "previousCatalog": {
+    "433": {
+      "id": "source-main-0433",
+      "kind": "exercise",
+      "title": "Задача № 433",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "433",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "434": {
+      "id": "source-main-0434",
+      "kind": "exercise",
+      "title": "Задача № 434",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "434",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "435": {
+      "id": "source-main-0435",
+      "kind": "exercise",
+      "title": "Задача № 435",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "435",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "436": {
+      "id": "source-main-0436",
+      "kind": "exercise",
+      "title": "Задача № 436",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "436",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "437": {
+      "id": "source-main-0437",
+      "kind": "exercise",
+      "title": "Задача № 437",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "437",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "438": {
+      "id": "source-main-0438",
+      "kind": "exercise",
+      "title": "Задача № 438",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "438",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "439": {
+      "id": "source-main-0439",
+      "kind": "exercise",
+      "title": "Задача № 439",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "439",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0433": {
+      "raw": "aeabc41b389379d76c68523397b55054577a520b06c82f76805a63a28d5398eb",
+      "authored": "f6b26c4b5743f0b3c000bf3eec57f354b7ef8c8f50a734177ce8040867f6bdce",
+      "integrated": "a27efb6c33762426668188dc65351a20f9d4861066fded576a8d8bd4d04f3bab"
+    },
+    "ex-main-0434": {
+      "raw": "81b9985e70c041aa93c25793b69d07ef24e488c971ab541a384e11dba1c31943",
+      "authored": "b3633f7084e71b033f02ca6fbb50eaa95fde7307574e58e85a0cc1742ae86d0e",
+      "integrated": "756f0de06f06f99b40642d6cf340ba767f4f88f6c5d2916962f1bb46c397e848"
+    },
+    "ex-main-0435": {
+      "raw": "54addf8b53230e0d2ae94b31e5bb460b1b7c09ae9272f61b3037cb66c8d85547",
+      "authored": "e433aa5d5781956ba9aad03385d729f87774680cf0cb198340ceef1149d717ea",
+      "integrated": "6f60c14850036e20770df6160f79b556451c3c6b657371dc2e52360a8af68117"
+    },
+    "ex-main-0436-a": {
+      "raw": "1fd7f7859c80240c26d6147a9ff1b507ec227d976b30e698244b551e8be3bf81",
+      "authored": "cb116a8a214fd03d799c5ef58813bfcc064e6bcbe89a01025111e744952e2984",
+      "integrated": "996dd5644d0a0ee6b0facae6e13b4a9490e2a75d5215594631f36c099470d1c1"
+    },
+    "ex-main-0436-b": {
+      "raw": "d5dc7b0f9ce70b75fe00203e78906de8cce9933aea8d866397ac1f57d3d3b49a",
+      "authored": "2c61bc4487324adda0be229656d230b1b3eade9502a7452475eac42d0b862fde",
+      "integrated": "ad67dae18a893ec51db50dc0e39f2b713646a2edc3c2b2e78371ac8a84d114c8"
+    },
+    "ex-main-0436-c": {
+      "raw": "bf971111bf93c0fea4b80f5d0e34074528aba4eec751434804128631320d39c1",
+      "authored": "ad0af59e9369bec7152be3ab5806f9b347567bb8a10a2b6af0a98ef7654e3d56",
+      "integrated": "a5ebc70dfc5501b1162595f87f1e979c6d71bd21cdebad2ce8040695e026282a"
+    },
+    "ex-main-0437": {
+      "raw": "80c16df02ada4e5dfed19ae66e253c60493225726a8fa7d81e13256198a4e285",
+      "authored": "6336108991e33b1dfb67e3aeacdac1f7ceb13bf975b606e505f7377814805d52",
+      "integrated": "2bfba5de4dd32e303da733192974c92650f5e7aa1b6be56b4a26710f7c25b5db"
+    },
+    "ex-main-0438": {
+      "raw": "34ed82b9906b6587050633618dbb667548a319dcacbebe9a33a9f944824d0068",
+      "authored": "8bde31d46dc99094711e2d5b2ca69e1b669fa1139b951d3985d96e75f5edbbe4",
+      "integrated": "7ef6993dc70277223313b9234542acc10404a12bb8bded88d328445e2540e4c8"
+    },
+    "ex-main-0439-a": {
+      "raw": "d0f16cc4c4bf9025c98b8d9ad646b072f135e6f3a5255d185657421dd119eb27",
+      "authored": "aba661d03d3f4254bb870f5789a08f18b93e12cd05b98d64fb5c6d411d17d172",
+      "integrated": "f6a4aac0a91a385d67328370bb5b2168ef1410dd38c22afefc84898e8f0ddfe1"
+    },
+    "ex-main-0439-b": {
+      "raw": "2a4d61553573205b44273fc996d972da5ec5344021765baaa151a87eba45298a",
+      "authored": "ea1adb2c9faccfd43509aa669981784e5f002b4779485e486d167ed5bd10ed79",
+      "integrated": "500d50567173bdf59d08a01e6bd46d7ce18860f0aa9d5a6935262864f5a90031"
+    },
+    "ex-main-0439-c": {
+      "raw": "20f927edba2f08f4aeedb39129f574518148e739f8e45ff46019606cfa82b3e6",
+      "authored": "2efa1b4b88a73a13a4f46ebc7620b3b6953246678d11300415fcf3403c507777",
+      "integrated": "e56bd88d0ffa094e33bb9ea1760cb27261108f92de79264524a201e0ad28a9da"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0433|condition",
+      "round-body-ex-main-0433-condition"
+    ],
+    [
+      "ex-main-0433|help:h1",
+      "round-body-ex-main-0433-help-h1"
+    ],
+    [
+      "ex-main-0433|help:h2",
+      "round-body-ex-main-0433-help-h2"
+    ],
+    [
+      "ex-main-0433|step-1",
+      "round-body-ex-main-0433-step-1"
+    ],
+    [
+      "ex-main-0433|step-2",
+      "round-body-ex-main-0433-step-2"
+    ],
+    [
+      "ex-main-0433|step-3",
+      "round-body-ex-main-0433-step-3"
+    ],
+    [
+      "ex-main-0433|step-4",
+      "round-body-ex-main-0433-step-4"
+    ],
+    [
+      "ex-main-0434|condition",
+      "round-body-ex-main-0434-condition"
+    ],
+    [
+      "ex-main-0434|help:h1",
+      "round-body-ex-main-0434-help-h1"
+    ],
+    [
+      "ex-main-0434|help:h2",
+      "round-body-ex-main-0434-help-h2"
+    ],
+    [
+      "ex-main-0434|step-1",
+      "round-body-ex-main-0434-step-1"
+    ],
+    [
+      "ex-main-0434|step-2",
+      "round-body-ex-main-0434-step-2"
+    ],
+    [
+      "ex-main-0434|step-3",
+      "round-body-ex-main-0434-step-3"
+    ],
+    [
+      "ex-main-0434|step-4",
+      "round-body-ex-main-0434-step-4"
+    ],
+    [
+      "ex-main-0435|condition",
+      "round-body-ex-main-0435-condition"
+    ],
+    [
+      "ex-main-0435|help:h1",
+      "round-body-ex-main-0435-help-h1"
+    ],
+    [
+      "ex-main-0435|help:h2",
+      "round-body-ex-main-0435-help-h2"
+    ],
+    [
+      "ex-main-0435|step-1",
+      "round-body-ex-main-0435-step-1"
+    ],
+    [
+      "ex-main-0435|step-2",
+      "round-body-ex-main-0435-step-2"
+    ],
+    [
+      "ex-main-0435|step-3",
+      "round-body-ex-main-0435-step-3"
+    ],
+    [
+      "ex-main-0435|step-4",
+      "round-body-ex-main-0435-step-4"
+    ],
+    [
+      "ex-main-0436-a|condition",
+      "round-body-ex-main-0436-a-condition"
+    ],
+    [
+      "ex-main-0436-a|help:h1",
+      "round-body-ex-main-0436-a-help-h1"
+    ],
+    [
+      "ex-main-0436-a|help:h2",
+      "round-body-ex-main-0436-a-help-h2"
+    ],
+    [
+      "ex-main-0436-a|step-1",
+      "round-body-ex-main-0436-a-step-1"
+    ],
+    [
+      "ex-main-0436-a|step-2",
+      "round-body-ex-main-0436-a-step-2"
+    ],
+    [
+      "ex-main-0436-a|step-3",
+      "round-body-ex-main-0436-a-step-3"
+    ],
+    [
+      "ex-main-0436-a|step-4",
+      "round-body-ex-main-0436-a-step-4"
+    ],
+    [
+      "ex-main-0436-b|condition",
+      "round-body-ex-main-0436-b-condition"
+    ],
+    [
+      "ex-main-0436-b|help:h1",
+      "round-body-ex-main-0436-b-help-h1"
+    ],
+    [
+      "ex-main-0436-b|help:h2",
+      "round-body-ex-main-0436-b-help-h2"
+    ],
+    [
+      "ex-main-0436-b|step-1",
+      "round-body-ex-main-0436-b-step-1"
+    ],
+    [
+      "ex-main-0436-b|step-2",
+      "round-body-ex-main-0436-b-step-2"
+    ],
+    [
+      "ex-main-0436-b|step-3",
+      "round-body-ex-main-0436-b-step-3"
+    ],
+    [
+      "ex-main-0436-b|step-4",
+      "round-body-ex-main-0436-b-step-4"
+    ],
+    [
+      "ex-main-0436-c|condition",
+      "round-body-ex-main-0436-c-condition"
+    ],
+    [
+      "ex-main-0436-c|help:h1",
+      "round-body-ex-main-0436-c-help-h1"
+    ],
+    [
+      "ex-main-0436-c|help:h2",
+      "round-body-ex-main-0436-c-help-h2"
+    ],
+    [
+      "ex-main-0436-c|step-1",
+      "round-body-ex-main-0436-c-step-1"
+    ],
+    [
+      "ex-main-0436-c|step-2",
+      "round-body-ex-main-0436-c-step-2"
+    ],
+    [
+      "ex-main-0436-c|step-3",
+      "round-body-ex-main-0436-c-step-3"
+    ],
+    [
+      "ex-main-0436-c|step-4",
+      "round-body-ex-main-0436-c-step-4"
+    ],
+    [
+      "ex-main-0436-c|step-5",
+      "round-body-ex-main-0436-c-step-5"
+    ],
+    [
+      "ex-main-0437|condition",
+      "round-body-ex-main-0437-condition"
+    ],
+    [
+      "ex-main-0437|help:h1",
+      "round-body-ex-main-0437-help-h1"
+    ],
+    [
+      "ex-main-0437|help:h2",
+      "round-body-ex-main-0437-help-h2"
+    ],
+    [
+      "ex-main-0437|step-1",
+      "round-body-ex-main-0437-step-1"
+    ],
+    [
+      "ex-main-0437|step-2",
+      "round-body-ex-main-0437-step-2"
+    ],
+    [
+      "ex-main-0437|step-3",
+      "round-body-ex-main-0437-step-3"
+    ],
+    [
+      "ex-main-0437|step-4",
+      "round-body-ex-main-0437-step-4"
+    ],
+    [
+      "ex-main-0438|condition",
+      "round-body-ex-main-0438-condition"
+    ],
+    [
+      "ex-main-0438|help:h1",
+      "round-body-ex-main-0438-help-h1"
+    ],
+    [
+      "ex-main-0438|help:h2",
+      "round-body-ex-main-0438-help-h2"
+    ],
+    [
+      "ex-main-0438|step-1",
+      "round-body-ex-main-0438-step-1"
+    ],
+    [
+      "ex-main-0438|step-2",
+      "round-body-ex-main-0438-step-2"
+    ],
+    [
+      "ex-main-0438|step-3",
+      "round-body-ex-main-0438-step-3"
+    ],
+    [
+      "ex-main-0438|step-4",
+      "round-body-ex-main-0438-step-4"
+    ],
+    [
+      "ex-main-0439-a|condition",
+      "round-body-ex-main-0439-a-condition"
+    ],
+    [
+      "ex-main-0439-a|help:h1",
+      "round-body-ex-main-0439-a-help-h1"
+    ],
+    [
+      "ex-main-0439-a|help:h2",
+      "round-body-ex-main-0439-a-help-h2"
+    ],
+    [
+      "ex-main-0439-a|step-1",
+      "round-body-ex-main-0439-a-step-1"
+    ],
+    [
+      "ex-main-0439-a|step-2",
+      "round-body-ex-main-0439-a-step-2"
+    ],
+    [
+      "ex-main-0439-a|step-3",
+      "round-body-ex-main-0439-a-step-3"
+    ],
+    [
+      "ex-main-0439-a|step-4",
+      "round-body-ex-main-0439-a-step-4"
+    ],
+    [
+      "ex-main-0439-b|condition",
+      "round-body-ex-main-0439-b-condition"
+    ],
+    [
+      "ex-main-0439-b|help:h1",
+      "round-body-ex-main-0439-b-help-h1"
+    ],
+    [
+      "ex-main-0439-b|help:h2",
+      "round-body-ex-main-0439-b-help-h2"
+    ],
+    [
+      "ex-main-0439-b|step-1",
+      "round-body-ex-main-0439-b-step-1"
+    ],
+    [
+      "ex-main-0439-b|step-2",
+      "round-body-ex-main-0439-b-step-2"
+    ],
+    [
+      "ex-main-0439-b|step-3",
+      "round-body-ex-main-0439-b-step-3"
+    ],
+    [
+      "ex-main-0439-b|step-4",
+      "round-body-ex-main-0439-b-step-4"
+    ],
+    [
+      "ex-main-0439-c|condition",
+      "round-body-ex-main-0439-c-condition"
+    ],
+    [
+      "ex-main-0439-c|help:h1",
+      "round-body-ex-main-0439-c-help-h1"
+    ],
+    [
+      "ex-main-0439-c|help:h2",
+      "round-body-ex-main-0439-c-help-h2"
+    ],
+    [
+      "ex-main-0439-c|step-1",
+      "round-body-ex-main-0439-c-step-1"
+    ],
+    [
+      "ex-main-0439-c|step-2",
+      "round-body-ex-main-0439-c-step-2"
+    ],
+    [
+      "ex-main-0439-c|step-3",
+      "round-body-ex-main-0439-c-step-3"
+    ],
+    [
+      "ex-main-0439-c|step-4",
+      "round-body-ex-main-0439-c-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "705c8ec92afde28e82c7525d4ad7edc877be2397bdc675870378ed68bbbb15a5",
+      "afterSHA256": "76f713ef94e4f1b2040cf7aeeacb129f42a18a32a08a387dd921233077ddf666"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "1b6ce7936b7abe100022c9fdd9c5c3748043a40ab51fa76a8baeba58e0ec1132",
+      "afterSHA256": "b6f251a5b24b961f198a292a0b5a71a54de2f965d79e406d7d8619e1a316db8f"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T06:20:00Z",
+    "scope": "Introduction and chapters I–IV through exercise 432, with 708 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "e2dbac73a6ec6d0cddc950e90b02794e8d4897090e90ace7342319acbea99468",
+    "index": "0021d8e2778ecc3bea5cc5e6e2473f186b4ca4c1337437aec75dbdf220eded33",
+    "registry": "af42c1f7fa90e2922ef3bce3b643d419a1e44a6deac257c54dc7c41a487baa9e",
+    "cases": "c3445a60b7d421d483605681c0ef8fb8c2ceb442d52396bb6aef500abb986bc3"
+  }
+}

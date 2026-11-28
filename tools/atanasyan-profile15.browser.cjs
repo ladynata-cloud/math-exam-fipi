@@ -53,9 +53,9 @@ const server = http.createServer((request, response) => {
     }
   }
 
-  async function highlighted(lesson, step) {
-    const view = lesson.model.views[step.modelView];
-    await page.waitForFunction(key => document.querySelector('#model svg').dataset.view === key, step.modelView);
+  async function highlighted(lesson, key) {
+    const view = lesson.model.views[key];
+    await page.waitForFunction(key => document.querySelector('#model svg').dataset.view === key, key);
     assert.equal(await page.locator('.am-focus').textContent(), view.label);
     assert.equal(await page.locator('[data-highlight="plane"]').count(), view.polygon.length ? 1 : 0);
     // One authored segment may cross an occluding face and produce several
@@ -138,6 +138,11 @@ const server = http.createServer((request, response) => {
       await ready();
       assert.equal(await page.title(), lesson.title + ' · Атанасян 10–11 · MathExam');
       assert.equal((await state()).step, 0, lesson.id + ': isolated initial state');
+      assert.match(await page.locator('.intro > .eyebrow').textContent(), /№14/);
+      if (lesson.family === 'section') {
+        await highlighted(lesson, 'neutral');
+        assert.equal(await page.locator('[data-highlight="plane"]').count(), 0, 'student identifies the common face before it is filled');
+      }
       const originalModel = await page.evaluate(() => JSON.stringify(MathExamGuidedLesson.model));
       const svg = page.locator('#model svg');
       const initialCamera = await svg.getAttribute('data-yaw');
@@ -158,14 +163,20 @@ const server = http.createServer((request, response) => {
         const step = lesson.steps[i];
         assert.equal(await page.locator('#step-title').textContent(), step.title);
         assert.equal(await page.locator('#phase').textContent(), step.phase);
-        await highlighted(lesson, step);
+        const beforeAnswer = step.promptView || step.modelView;
+        await highlighted(lesson, beforeAnswer);
+        if (step.fields[0].id === 'endpoints') {
+          assert.equal(await svg.getAttribute('data-view'), 'lines', 'initial view shows only the two given lines');
+        }
         assert.equal(await svg.getAttribute('data-yaw'), camera, lesson.id + ': step highlighting preserves camera');
         if (i === 0) {
           await page.locator('#check').click();
           assert.equal((await state()).errors, 1, 'an empty answer cannot pass');
           assert.equal((await state()).solved.length, 0);
+          await highlighted(lesson, beforeAnswer);
           await page.locator('#hint').click();
           assert.equal(await page.locator('#hint-text').textContent(), step.hint);
+          await highlighted(lesson, step.modelView);
           assert.equal(await page.locator('#notebook>li').count(), 0, 'a hint does not solve the step');
         }
         await fill(step);
@@ -178,7 +189,7 @@ const server = http.createServer((request, response) => {
           for (const field of step.fields) assert.equal(await page.locator('[data-field="' + field.id + '"]').inputValue(), field.correct.replace('.', ','));
           camera = await svg.getAttribute('data-yaw');
           drafts++;
-          await highlighted(lesson, step);
+          await highlighted(lesson, beforeAnswer);
         }
         await layout(lesson.id + '/' + i);
         if (process.env.ATANASYAN_PREVIEW_DIR && lesson.id === 'volume-1' && i === 6) {
@@ -195,6 +206,7 @@ const server = http.createServer((request, response) => {
         assert.equal(await page.locator('[data-notebook-step="' + i + '"]>div').innerHTML(), step.record);
         assert.ok(await page.locator('#check').isHidden());
         assert.ok(await page.locator('#next').isVisible());
+        await highlighted(lesson, step.modelView);
         if (i === 1) {
           const notebook = await page.locator('#notebook').innerHTML();
           await page.locator('#previous').click();
@@ -209,6 +221,9 @@ const server = http.createServer((request, response) => {
         steps++;
       }
       assert.ok(await page.locator('#completion').isVisible());
+      const practice = page.locator('#section-practice a');
+      if (lesson.family === 'section') assert.equal(await practice.getAttribute('href'), '../../stereo-course/sections/#starter-23');
+      else assert.equal(await practice.count(), 0);
       assert.equal((await state()).step, lesson.steps.length);
       assert.equal(await page.locator('#notebook>li').count(), lesson.steps.length);
       const report = await page.locator('#report').inputValue();
@@ -230,15 +245,20 @@ const server = http.createServer((request, response) => {
     await page.waitForSelector('#modules .module');
     assert.equal(await page.locator('#examples a').filter({ hasText: 'разобран' }).count(), 12, 'catalog reflects real lesson completions');
     const summary = await page.locator('#summary').inputValue();
+    assert.match(summary, /подготовка к №14/);
     for (const lesson of lessons) assert.ok(summary.includes(lesson.title + ': ' + lesson.steps.length + '/' + lesson.steps.length + ' шагов'));
     const completedStorage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage).filter(([key]) => key.startsWith('mathexam.atanasyan15.'))));
 
     // Workshop records are created by its own UI and must survive both old and new deep links.
     await page.goto(origin + '/stereo-course/index.html#sections');
+    await page.waitForSelector('[data-investigation-model] svg');
+    assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.sections.stage), 6, 'fresh workshop entry starts with the investigation');
+    assert.equal(await page.locator('#answer').count(), 0, 'research and numerical task are separate stages');
+    await page.locator('.learning-stages [data-stage="4"]').click();
     await page.waitForSelector('#task-model svg');
-    assert.ok(await page.locator('#answer').isVisible(), 'workshop opens on the task with a visible model');
+    assert.ok(await page.locator('#answer').isVisible(), 'explicit task step opens the answer with a visible model');
     assert.match(await page.locator('#app h1').textContent(), /сечен/i);
-    assert.equal(await page.getByRole('link', { name: '← К маршруту задания №15', exact: true }).count(), 0, 'legacy entry preserves its navigation');
+    assert.equal(await page.getByRole('link', { name: '← К маршруту задания №14', exact: true }).count(), 0, 'legacy entry preserves its navigation');
     await page.locator('.more-sections > summary').click();
     await page.locator('.lesson-actions [data-stage="5"]').click();
     await page.locator('#written').fill('Сохранённое доказательство: точки лежат в одной плоскости.');
@@ -247,7 +267,7 @@ const server = http.createServer((request, response) => {
     await page.goto(origin + '/stereo-course/index.html?route=ege15#sections');
     await page.waitForSelector('#written');
     assert.equal(await page.locator('#written').inputValue(), workshopBefore.written);
-    const back = page.getByRole('link', { name: '← К маршруту задания №15', exact: true });
+    const back = page.getByRole('link', { name: '← К маршруту задания №14', exact: true });
     assert.equal(await back.getAttribute('href'), '../ege-profil/atanasyan-10-11/index.html#route');
     await back.click();
     await page.waitForSelector('#modules .module');

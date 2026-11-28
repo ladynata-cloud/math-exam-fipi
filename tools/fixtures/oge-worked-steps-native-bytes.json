@@ -17,6 +17,11 @@
       "sourceCommit": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
       "sha256": "44d9b6045ddf882c39f1418b13832caa97a6ac92ee701275939b657c36b778a5",
       "taskDoc": "docs/tasks/EXAM_AND_TEXTBOOK_LEARNING_20261114.md"
+    },
+    "trainers/oge-task25-geometry.html": {
+      "sourceCommit": "d26f2e8936a7008ac792671533fcf66cbb21c4a4",
+      "sha256": "7ec3e823a8d7420a3aec2ac5adc976e7410bc9cb8a99df0e4f8874afa3af76a8",
+      "taskDoc": "docs/tasks/GEOMETRY_SEVEN_CONSTRUCTIONS_20261118.md"
     }
   }
 }

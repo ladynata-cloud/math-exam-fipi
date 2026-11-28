@@ -40,13 +40,14 @@ jobs:
         run: |
           node tools/equations/linear-pilot.browser.cjs
           node tools/equations/linear-pilot-basics.browser.cjs
+          node tools/equations/linear-pilot-fraction-bridge.browser.cjs
       - name: Wait for exact published pilot and course resources
         if: github.event_name == 'push' || inputs.target == 'production'
         run: |
           mv artifacts/linear-pilot artifacts/linear-pilot-local
           node <<'NODE'
           const fs=require('node:fs'),crypto=require('node:crypto');
-          const files=['equations/linear-pilot/index.html','equations/linear-pilot/app.js','equations/linear-pilot/store.js','equations/linear-pilot/data.js','equations/linear-pilot/style.css','equations/linear-pilot/basics-data.js','equations/linear-pilot/basics.js','equations/linear-pilot/basics.css','equations/index.html','equations/app.js','equations/data.js','equations/algebra.js','equations/style.css','trainers/oge-course/index.html'];
+          const files=['equations/linear-pilot/index.html','equations/linear-pilot/app.js','equations/linear-pilot/store.js','equations/linear-pilot/data.js','equations/linear-pilot/style.css','equations/linear-pilot/basics-data.js','equations/linear-pilot/basics.js','equations/linear-pilot/basics.css','equations/linear-pilot/fraction-bridge-core.js','equations/linear-pilot/fraction-bridge.js','equations/linear-pilot/fraction-bridge.css','equations/index.html','equations/app.js','equations/data.js','equations/algebra.js','equations/style.css','trainers/oge-course/index.html'];
           const expected=new Map(files.map(file=>[file,fs.readFileSync(file)]));
           (async()=>{
             let failures=[];
@@ -74,6 +75,7 @@ jobs:
         run: |
           node tools/equations/linear-pilot.browser.cjs
           node tools/equations/linear-pilot-basics.browser.cjs
+          node tools/equations/linear-pilot-fraction-bridge.browser.cjs
         env:
           PILOT_BASE_URL: https://mathexam.space
       - name: Browser screenshots

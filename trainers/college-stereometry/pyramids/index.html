@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Интерактивный урок о правильной и усечённой пирамидах. Параллельное сечение, апофема, боковая поверхность и задача №239 о пирамиде над ромбом.">
+  <title>Пирамиды и усечённые пирамиды · Стереометрия для колледжа | MathExam</title>
+  <link rel="canonical" href="https://mathexam.space/trainers/college-stereometry/pyramids/">
+  <link rel="stylesheet" href="../../../stereo-course/assets/task-scenes.css">
+  <link rel="stylesheet" href="lesson.css?v=1">
+  <script defer src="../../../stereo-course/assets/task-scene-viewer.js"></script>
+  <script defer src="content.js?v=1"></script>
+  <script defer src="lesson.js?v=1"></script>
+
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/" target="_self" data-mathexam-home-link aria-label="На главную MathExam">
+        <span class="brand-mark" aria-hidden="true">M</span> MathExam
+      </a>
+      <nav aria-label="Навигация по курсу">
+        <a href="../lessons/#lesson-5">← Урок 5</a>
+        <a href="../">Все 6 уроков</a>
+        <a class="primary" href="/downloads/trainers/college-stereometry-lesson-6/college-stereometry-lesson-6-package.zip" download>Скачать тренажёр (ZIP)</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="intro">
+      <p class="eyebrow">Стереометрия для колледжа · Урок 6</p>
+      <h1>Пирамиды и усечённые пирамиды</h1>
+    </div>
+    <nav class="route" aria-label="Этапы урока">
+      <a href="#research" aria-current="location">Исследование</a>
+      <a href="#rules">Формулы</a>
+      <a href="#practice">Вместе</a>
+      <a href="#homework">Домашняя работа</a>
+    </nav>
+    <noscript><p class="notice">Включи JavaScript для модели и самопроверки. Формулы доступны ниже.</p></noscript>
+
+    <section id="research" class="panel research" aria-labelledby="research-title">
+      <div class="research-heading">
+        <h2 id="research-title" tabindex="-1">Что меняется при параллельном сечении?</h2>
+        <p>Передвинь секущую плоскость вверх. Проследи, как меняются верхнее основание и боковая грань усечённой пирамиды.</p>
+      </div>
+      <figure class="lab">
+        <div class="lab-main">
+          <div class="lab-head"><span>Секущая плоскость</span><button type="button" id="turn-lab">Другой вид</button></div>
+          <svg id="cut-diagram" viewBox="0 0 360 260" role="img" aria-labelledby="cut-title cut-desc">
+            <title id="cut-title">Разрез правильной четырёхугольной пирамиды</title>
+            <desc id="cut-desc">Нижняя часть показана под параллельным сечением. Вершина исходной пирамиды находится над ним.</desc>
+            <g id="cut-shapes" aria-hidden="true"></g>
+          </svg>
+          <figcaption><span class="legend-section">Сечение</span><span class="legend-body">Усечённая пирамида</span></figcaption>
+        </div>
+        <div class="lab-controls">
+          <label for="cut-position">Высота сечения от основания <output id="cut-height" for="cut-position">3 см</output></label>
+          <input id="cut-position" type="range" min="2" max="6" step="1" value="3" aria-valuetext="3 см">
+          <div class="range-labels" aria-hidden="true"><span>2 см</span><span>6 см</span></div>
+          <label class="check-label"><input id="show-measures" type="checkbox"> Показать размеры</label>
+          <p class="measure" id="cut-measures" hidden></p>
+        </div>
+      </figure>
+      <div class="predictions" id="predictions">
+        <fieldset data-explore="section">
+          <legend>Какую фигуру даёт сечение?</legend>
+          <button type="button" data-choice="0" aria-pressed="false">Квадрат</button>
+          <button type="button" data-choice="1" aria-pressed="false">Трапецию</button>
+          <button type="button" data-choice="2" aria-pressed="false">Треугольник</button>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <fieldset data-explore="side">
+          <legend>Плоскость выше. Что со стороной сечения?</legend>
+          <button type="button" data-choice="0" aria-pressed="false">Увеличивается</button>
+          <button type="button" data-choice="1" aria-pressed="false">Уменьшается</button>
+          <button type="button" data-choice="2" aria-pressed="false">Та же длина</button>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <fieldset data-explore="face">
+          <legend>Какую форму имеет боковая грань оставшегося тела?</legend>
+          <button type="button" data-choice="0" aria-pressed="false">Треугольник</button>
+          <button type="button" data-choice="1" aria-pressed="false">Прямоугольник</button>
+          <button type="button" data-choice="2" aria-pressed="false">Равнобедренная трапеция</button>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <a class="primary" href="#rules">Перейти к формулам →</a>
+      </div>
+    </section>
+
+    <section id="rules" class="panel" aria-labelledby="rules-title">
+      <h2 id="rules-title" tabindex="-1">Шпаргалка к уроку</h2>
+      <div class="rule-grid">
+        <article class="rule-card">
+          <h3>Правильная пирамида</h3>
+          <p>В основании лежит правильный многоугольник. Вершина проектируется в его центр.</p>
+          <p><strong>Высота</strong> идёт от вершины перпендикулярно основанию. <strong>Апофема</strong> идёт от вершины к середине стороны основания и служит высотой боковой грани. <strong>Боковое ребро</strong> соединяет две вершины.</p>
+          <p class="formula">S<sub>бок</sub> = Pℓ / 2</p>
+          <p>У треугольной грани с основанием <var>a</var> площадь <var>a</var>ℓ/2. При сложении граней вместо <var>a</var> получается весь периметр <var>P</var>.</p>
+        </article>
+        <article class="rule-card">
+          <h3>Правильная усечённая пирамида</h3>
+          <p>Усечённая пирамида лежит между основанием исходной пирамиды и параллельным сечением. Если исходная пирамида правильная, усечённая тоже правильная. Её основания подобны, а апофема ℓ — высота боковой трапеции.</p>
+          <p class="formula">S<sub>бок</sub> = (P<sub>1</sub> + P<sub>2</sub>)ℓ / 2</p>
+          <p>Площади трапеций складываются. Суммы их нижних и верхних сторон дают периметры <var>P</var><sub>1</sub> и <var>P</var><sub>2</sub>.</p>
+        </article>
+      </div>
+      <details class="rule-extra">
+        <summary>Как найти апофему и полную площадь</summary>
+        <ul>
+          <li>У правильной квадратной пирамиды со стороной <var>a</var> и высотой <var>h</var> апофема равна √(h² + (a/2)²). Катеты идут к центру основания и середине его стороны.</li>
+          <li>У правильной усечённой пирамиды с квадратами <var>a</var> и <var>b</var> (<var>a</var> &gt; <var>b</var>) апофема равна √(h² + ((a − b)/2)²). Горизонтальный катет — разность расстояний от центров оснований до их сторон.</li>
+          <li>Для полной площади прибавь к боковой площади одно основание у пирамиды или оба основания у усечённой пирамиды.</li>
+        </ul>
+      </details>
+      <div class="actions"><a class="primary" href="#practice">Решить вместе →</a><a href="#task-239">Сразу к задаче №239</a></div>
+    </section>
+
+    <section id="work" class="panel" aria-labelledby="work-title" hidden>
+      <h2 id="work-title" tabindex="-1"></h2>
+      <div class="exercise-heading">
+        <h3 id="exercise-title" tabindex="-1"></h3>
+        <p id="exercise-condition"></p>
+      </div>
+      <div class="exercise-grid">
+        <div class="task-scene" id="exercise-figure"></div>
+        <div class="exercise-answer">
+          <form id="answer-form" novalidate></form>
+          <details class="solution" id="solution">
+            <summary>Разбор задачи</summary>
+            <ol id="solution-steps"></ol>
+          </details>
+        </div>
+      </div>
+      <div class="practice-footer">
+        <p id="work-progress"></p>
+        <nav class="exercise-nav" id="exercise-nav" aria-label="Выбор задачи"></nav>
+        <button type="button" id="previous-task">← Предыдущая</button>
+        <button class="primary" type="button" id="next-task">Следующая →</button>
+        <button type="button" id="print-homework" hidden>Распечатать задания</button>
+      </div>
+    </section>
+
+    <section class="print-sheet" id="print-sheet" aria-label="Домашняя работа для печати" hidden>
+      <h2>Стереометрия · Урок 6</h2>
+      <h3>Пирамиды и усечённые пирамиды</h3>
+      <p>Запиши ход решения. Для задач с апофемой или боковыми рёбрами сделай чертёж и отметь прямые углы.</p>
+      <ol id="print-list"></ol>
+    </section>
+    <footer class="footer"><p id="storage-note" role="status" hidden></p><a href="../../../">На главную</a><a href="../../">Все тренажёры</a></footer>
+  </main>
+</body>
+</html>

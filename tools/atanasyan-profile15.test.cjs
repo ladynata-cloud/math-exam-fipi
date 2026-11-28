@@ -13,12 +13,16 @@ const context = { window: {} };
 for (const file of ['lessons-a.js', 'lessons-b.js', 'lessons.js']) {
   vm.runInNewContext(fs.readFileSync(path.join(directory, file), 'utf8'), context, { filename: file });
 }
-const { lessons, families } = JSON.parse(JSON.stringify(context.window.AtanasyanCourse));
+const { lessons, families, sectionPractice } = JSON.parse(JSON.stringify(context.window.AtanasyanCourse));
 const authored = [...require('../ege-profil/atanasyan-10-11/lessons-a.js'), ...require('../ege-profil/atanasyan-10-11/lessons-b.js')];
 const unique = (values, label) => assert.equal(new Set(values).size, values.length, label);
 assert.equal(lessons.length, 12);
 assert.equal(families.length, 6);
 for (const key of ['id', 'storageKey', 'trainerId', 'reportName']) unique(lessons.map(lesson => lesson[key]), key);
+const target = new URL(sectionPractice.href, 'https://mathexam.space/ege-profil/atanasyan-10-11/');
+assert.equal(target.pathname, '/stereo-course/sections/');
+const section = require('../stereo-course/sections/data/course.json').lessons.find(l => l.id === target.hash.slice(1));
+assert.ok(section?.starter.reserve && section.result.polygon.length === 3, 'transfer opens an independent triangular construction');
 const points = new Map(textbook.topics.map(topic => [topic.point, topic]));
 const units = new Map(workshop.units.map(unit => [unit.id, unit]));
 let stepCount = 0, fieldCount = 0, modelViews = 0;
@@ -62,6 +66,7 @@ for (const lesson of lessons) {
     if (step.phase === 'б) Вычисление') computation = true;
     if (computation) assert.equal(step.phase, 'б) Вычисление', lesson.id + ': proof must precede computation');
     assert.ok(lesson.model.views[step.modelView], lesson.id + ': unknown model view ' + step.modelView);
+    if (step.promptView) assert.ok(lesson.model.views[step.promptView], lesson.id + ': missing initial drawing');
     assert.equal(step.fields.length, 1, lesson.id + ': exactly one current question');
     assert.doesNotMatch(step.hint, /<[^>]+>/, 'hints render as plain text');
     for (const field of step.fields) {

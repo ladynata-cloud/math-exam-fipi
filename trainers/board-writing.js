@@ -7,6 +7,7 @@ const inkCanvas = document.createElement('canvas');
 const inkContext = inkCanvas.getContext('2d');
 let camera = { scale: 1, x: 0, y: 0 };
 let fitViewport = false, cameraPageId = null, activePointerId = null;
+let followTeacherWriting = true, followedStroke = null;
 let gestureStart = null, gestureTool = null, gesturePageId = null, panOrigin = null, textStyle = null;
 let renderRequest = 0, sharedRedo = [], historyIdentity = '', pendingHistory = null;
 let historyTimer = null;
@@ -123,10 +124,26 @@ function ownUndoIndex() {
   return page().strokes.findLastIndex(stroke => stroke.authorId === shared.me?.participantId);
 }
 
+function presetWidth(button) {
+  return Number(tool === 'eraser' ? button.dataset.eraserSize : button.dataset.penSize);
+}
+
 function syncPenControls() {
+  const erasing = tool === 'eraser';
   sizeText.textContent = `${size.value} px`;
+  const widths = document.querySelector('.pen-widths');
+  if (widths) {
+    widths.dataset.activeTool = erasing ? 'eraser' : 'drawing';
+    widths.setAttribute('aria-label', erasing ? 'Ширина ластика' : 'Толщина линии');
+  }
+  const label = document.querySelector('label[for="size"]');
+  if (label) label.textContent = erasing ? 'Ширина ластика' : 'Толщина линии';
   document.querySelectorAll('[data-pen-size]').forEach(button => {
-    button.setAttribute('aria-pressed', String(+button.dataset.penSize === +size.value));
+    const width = presetWidth(button);
+    button.dataset.width = String(width);
+    button.setAttribute('aria-pressed', String(width === +size.value));
+    button.setAttribute('aria-label', (erasing ? 'Ластик ' : 'Толщина ') + width + ' пикселей');
+    button.title = (erasing ? 'Ластик ' : 'Толщина ') + width + ' px';
   });
   document.querySelectorAll('[data-pen-color]').forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.penColor === color.value));
@@ -209,6 +226,35 @@ function background(kind) {
   line(56.5, first.y, 56.5, last.y, 'rgba(190,18,60,.35)');
 }
 
+// The sender and observer can have different screen sizes and independent cameras.
+// Follow ink in world coordinates, preserving the observer's scale and stored strokes.
+function followRemoteInk() {
+  if (!followTeacherWriting || shared.role !== 'student' || !shared.connected || canWrite() ||
+      activePointerId !== null || document.querySelector('dialog[open]')) return;
+  const stroke = current || page().strokes.at(-1);
+  if (!stroke) return;
+  const tip = stroke.kind === 'path' ? stroke.points?.at(-1) : stroke.end || stroke;
+  if (!Number.isFinite(tip?.x) || !Number.isFinite(tip?.y)) return;
+  let box = canvas.getBoundingClientRect();
+  if (box.width < 2 || box.height < 2) return;
+  // A thin strip of paper still intersects the viewport, but cannot show a line of writing.
+  const visibleHeight = Math.min(box.bottom, innerHeight) - Math.max(box.top, 0);
+  const lineArea = Math.min(96, box.height, innerHeight / 2);
+  if (stroke !== followedStroke && visibleHeight < lineArea) {
+    canvas.scrollIntoView({ block: 'center', behavior: 'instant' });
+    box = canvas.getBoundingClientRect();
+  }
+  followedStroke = stroke;
+  const left = Math.max(0, -box.left), right = Math.min(view.w, innerWidth - box.left);
+  const top = Math.max(0, -box.top), bottom = Math.min(view.h, innerHeight - box.top);
+  if (right <= left || bottom <= top) return;
+  const point = BoardInk.worldToScreen(tip, camera);
+  // Leave space for the next letters, without moving the page on every pointer event.
+  const insetX = Math.min(16, (right - left) / 4), insetY = Math.min(16, (bottom - top) / 4);
+  if (point.x < left + insetX || point.x > right - insetX) camera.x += (left + right) / 2 - point.x;
+  if (point.y < top + insetY || point.y > bottom - insetY) camera.y += (top + bottom) / 2 - point.y;
+}
+
 function render() {
   if (cameraPageId !== page().id) {
     cameraPageId = page().id;
@@ -216,6 +262,7 @@ function render() {
     fitViewport = false;
   }
   if (fitViewport && !drawing && !current) fitCamera();
+  followRemoteInk();
   background(page().bg);
   ctx.setTransform(dpr * camera.scale, 0, 0, dpr * camera.scale, dpr * camera.x, dpr * camera.y);
   BoardImages.drawImages(ctx, page().strokes, scheduleRender);
@@ -237,6 +284,7 @@ function scheduleRender() {
 function changeView(action) {
   if (activePointerId !== null) return;
   finishText();
+  if (shared.role === 'student' && !canWrite()) followTeacherWriting = false;
   fitViewport = action === 'fit';
   if (action === 'reset') camera = { scale: 1, x: 0, y: 0 };
   else if (action !== 'fit') camera = BoardInk.zoomAt(camera,
@@ -290,6 +338,7 @@ function move(event, final = false) {
   event.preventDefault();
   if (panOrigin) {
     const next = screenPoint(event);
+    if (shared.role === 'student' && !canWrite() && (next.x !== panOrigin.point.x || next.y !== panOrigin.point.y)) followTeacherWriting = false;
     camera = BoardInk.pan(panOrigin.camera, next.x - panOrigin.point.x, next.y - panOrigin.point.y);
     scheduleRender();
     return;
@@ -472,6 +521,11 @@ function buttons() {
   color.disabled = size.disabled = !writable;
   $('undo').disabled = !writable || !!pendingHistory || ownUndoIndex() < 0;
   $('redo').disabled = !writable || !!pendingHistory || (shared.connected ? sharedRedo.length === 0 : page().redo.length === 0);
+  const followButton = $('followWriting');
+  if (followButton) {
+    followButton.hidden = shared.role !== 'student' || !shared.connected || canWrite();
+    followButton.setAttribute('aria-pressed', String(followTeacherWriting));
+  }
   $('clear').disabled = !writable;
   $('addBoardImage').disabled = !writable || importingImage;
 }
@@ -492,7 +546,12 @@ function bindBoardWriting() {
     button.onclick = () => { if (!canWrite()) return; finishText(); color.value = button.dataset.penColor; syncPenControls(); };
   });
   document.querySelectorAll('[data-pen-size]').forEach(button => {
-    button.onclick = () => { if (!canWrite()) return; finishText(); size.value = button.dataset.penSize; toolWidths[tool] = +size.value; syncPenControls(); };
+    button.onclick = () => {
+      if (!canWrite() || activePointerId !== null || pendingHistory) return;
+      const width = presetWidth(button);
+      if (!Number.isFinite(width) || width < +size.min || width > +size.max) return;
+      finishText(); size.value = String(width); toolWidths[tool] = +size.value; syncPenControls();
+    };
   });
   size.oninput = () => { finishText(); toolWidths[tool] = +size.value; syncPenControls(); };
   color.oninput = color.onchange = () => { finishText(); syncPenControls(); };
@@ -504,6 +563,11 @@ function bindBoardWriting() {
   $('zoomOut').onclick = () => changeView('out');
   $('zoomReset').onclick = () => changeView('reset');
   $('fitBoard').onclick = () => changeView('fit');
+  $('followWriting')?.addEventListener('click', () => {
+    followTeacherWriting = !followTeacherWriting;
+    if (followTeacherWriting) { fitViewport = false; followedStroke = null; }
+    render();
+  });
   editor.onblur = finishText;
   editor.onkeydown = event => {
     if (event.key === 'Escape') { event.preventDefault(); closeTextEditor(); canvas.focus(); }

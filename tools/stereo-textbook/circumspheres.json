@@ -1,0 +1,485 @@
+{
+  "parts": {
+    "428": [
+      "а",
+      "б"
+    ],
+    "429": [
+      null
+    ],
+    "430": [
+      "а",
+      "б"
+    ],
+    "431": [
+      "а",
+      "б"
+    ],
+    "432": [
+      "а",
+      "б",
+      "в"
+    ]
+  },
+  "previousCatalog": {
+    "428": {
+      "id": "source-main-0428",
+      "kind": "exercise",
+      "title": "Задача № 428",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "428",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          114
+        ],
+        "pdfPages": [
+          116
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "429": {
+      "id": "source-main-0429",
+      "kind": "exercise",
+      "title": "Задача № 429",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "429",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          114
+        ],
+        "pdfPages": [
+          116
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "430": {
+      "id": "source-main-0430",
+      "kind": "exercise",
+      "title": "Задача № 430",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "430",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          114
+        ],
+        "pdfPages": [
+          116
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "431": {
+      "id": "source-main-0431",
+      "kind": "exercise",
+      "title": "Задача № 431",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "431",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    },
+    "432": {
+      "id": "source-main-0432",
+      "kind": "exercise",
+      "title": "Задача № 432",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "432",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          115
+        ],
+        "pdfPages": [
+          117
+        ]
+      },
+      "revision": 1,
+      "status": "draft"
+    }
+  },
+  "cards": {
+    "ex-main-0428-a": {
+      "raw": "45b72d77454dab0b6652f432d475d289d827d92edefeeaa6a3545de46ceb7d8f",
+      "authored": "19a0e0f8c7b6a6c1219330317f420a5c5962fbd8cd1eb3a5484e709c7f04ac23",
+      "integrated": "3207e7423ad1040f88c561508500129653b8b066a4a11197badafc809b468a15"
+    },
+    "ex-main-0428-b": {
+      "raw": "1d508f9455d0617c5b120ef4db61b3a95a029f0d0a077be4d46aa904e2412089",
+      "authored": "c02b76e1d1b3bb0310d42885dc9d3e6de7a112f269154bcf2b86a4a065e0fc80",
+      "integrated": "8929892fb46c2ce63185e4a8c0710846fc3fc346510b3ac7cc2ae558fcf9c950"
+    },
+    "ex-main-0429": {
+      "raw": "4235d40e423aca190e41e00dca1a1afb955f9a36eff1ea24fadd3ae487842bc7",
+      "authored": "3e8556b4370db36226d130f18b294cd4f35e428f096d5e68d135453d2668bd21",
+      "integrated": "beda5b1e0d29ea51ba887d23b53a97e0299ac05417a9c62e333b95abe4dd1b4d"
+    },
+    "ex-main-0430-a": {
+      "raw": "723ac3a4cef19517e5d1fc35290ffd68f91beba6ade1185e1efed4623505f75d",
+      "authored": "97fd9b7b90408985580b1ece7feee92b70cf3ecad86db1c17f4bb2991a7b56bc",
+      "integrated": "389e7d987a219b494ed674d6c032096898c3ec4b489165e9511986a665a2f2d9"
+    },
+    "ex-main-0430-b": {
+      "raw": "4bacc6a3ad24599174ac679ed4ffbdbf5c2ff8d3d1447f456589cbfbd0cbbdc7",
+      "authored": "420f0335bd3010c26923c6590227cd0eae8b045f21a6d89ccdf1abb6085b57c1",
+      "integrated": "677156ce12d9984b02eb551c36cbddb74de08bc995b50ffd2cf162e979b3e0f8"
+    },
+    "ex-main-0431-a": {
+      "raw": "4cc40ced4a99919bb32314fbf78f0d3b4e5bde22b10cccec171aaa6ebbfb80cd",
+      "authored": "ecced1f0dd012b2324760d5d4614698c4f1c1f922a110fa69ff6ece9dadaf3ec",
+      "integrated": "8735555be2d613b9f82d73a04d15283e99e74798fc5732cbe12658bc325fbd44"
+    },
+    "ex-main-0431-b": {
+      "raw": "4f5233d177e2c8c93b6ee64a7585da7141cf9a6bfecae4b826d96affd152603f",
+      "authored": "2ee9c92ded9ce7d0654e82456e364d0d50bbabbc5903ae94c1a07f3dd13ead07",
+      "integrated": "2ed937ef412d01d589950b00c7ca9d7451b358274d436a77091bba67291ba842"
+    },
+    "ex-main-0432-a": {
+      "raw": "a53c02deb96cbb9e83a3f87b936376e75eb6f43589adfe497a92851b3080615e",
+      "authored": "3f4f9e23939dfba47d2b5dd68ef50fd004c39d210845b9fde2f47087e9257e34",
+      "integrated": "79f052ea97e327eaebe04642dde511561a42cf5a329d99975b99a6821a06788b"
+    },
+    "ex-main-0432-b": {
+      "raw": "73ab4ea0fcb0dbad7413a113c8ec8fe72544ed2a37588b958f648c4c7a967dd6",
+      "authored": "3a8248c75529303be2df125076e93d8c81be178bc2a7a309a3b7d37c8c0d7eed",
+      "integrated": "c9bd38346907bd1040b362cabf48a4ac79a65e840097838323bcb82ce743bae9"
+    },
+    "ex-main-0432-c": {
+      "raw": "825882d2bc1347968074c650a190381ae4c80e551a41825f1af660c70d716ee2",
+      "authored": "c53b0b99378b4d1e5fb7eb23afd0e3424788e74427ca668949166ece3bc134b8",
+      "integrated": "761f1e339b8faa675d9c17b74695f3fedaf8605d04e24f3612771e8a739f27b4"
+    }
+  },
+  "cases": [
+    [
+      "ex-main-0428-a|condition",
+      "circumsphere-ex-main-0428-a-condition"
+    ],
+    [
+      "ex-main-0428-a|help:h1",
+      "circumsphere-ex-main-0428-a-help-h1"
+    ],
+    [
+      "ex-main-0428-a|help:h2",
+      "circumsphere-ex-main-0428-a-help-h2"
+    ],
+    [
+      "ex-main-0428-a|step-1",
+      "circumsphere-ex-main-0428-a-step-1"
+    ],
+    [
+      "ex-main-0428-a|step-2",
+      "circumsphere-ex-main-0428-a-step-2"
+    ],
+    [
+      "ex-main-0428-a|step-3",
+      "circumsphere-ex-main-0428-a-step-3"
+    ],
+    [
+      "ex-main-0428-a|step-4",
+      "circumsphere-ex-main-0428-a-step-4"
+    ],
+    [
+      "ex-main-0428-a|step-5",
+      "circumsphere-ex-main-0428-a-step-5"
+    ],
+    [
+      "ex-main-0428-b|condition",
+      "circumsphere-ex-main-0428-b-condition"
+    ],
+    [
+      "ex-main-0428-b|help:h1",
+      "circumsphere-ex-main-0428-b-help-h1"
+    ],
+    [
+      "ex-main-0428-b|help:h2",
+      "circumsphere-ex-main-0428-b-help-h2"
+    ],
+    [
+      "ex-main-0428-b|step-1",
+      "circumsphere-ex-main-0428-b-step-1"
+    ],
+    [
+      "ex-main-0428-b|step-2",
+      "circumsphere-ex-main-0428-b-step-2"
+    ],
+    [
+      "ex-main-0428-b|step-3",
+      "circumsphere-ex-main-0428-b-step-3"
+    ],
+    [
+      "ex-main-0428-b|step-4",
+      "circumsphere-ex-main-0428-b-step-4"
+    ],
+    [
+      "ex-main-0428-b|step-5",
+      "circumsphere-ex-main-0428-b-step-5"
+    ],
+    [
+      "ex-main-0429|condition",
+      "circumsphere-ex-main-0429-condition"
+    ],
+    [
+      "ex-main-0429|help:h1",
+      "circumsphere-ex-main-0429-help-h1"
+    ],
+    [
+      "ex-main-0429|help:h2",
+      "circumsphere-ex-main-0429-help-h2"
+    ],
+    [
+      "ex-main-0429|step-1",
+      "circumsphere-ex-main-0429-step-1"
+    ],
+    [
+      "ex-main-0429|step-2",
+      "circumsphere-ex-main-0429-step-2"
+    ],
+    [
+      "ex-main-0429|step-3",
+      "circumsphere-ex-main-0429-step-3"
+    ],
+    [
+      "ex-main-0429|step-4",
+      "circumsphere-ex-main-0429-step-4"
+    ],
+    [
+      "ex-main-0430-a|condition",
+      "circumsphere-ex-main-0430-a-condition"
+    ],
+    [
+      "ex-main-0430-a|help:h1",
+      "circumsphere-ex-main-0430-a-help-h1"
+    ],
+    [
+      "ex-main-0430-a|help:h2",
+      "circumsphere-ex-main-0430-a-help-h2"
+    ],
+    [
+      "ex-main-0430-a|step-1",
+      "circumsphere-ex-main-0430-a-step-1"
+    ],
+    [
+      "ex-main-0430-a|step-2",
+      "circumsphere-ex-main-0430-a-step-2"
+    ],
+    [
+      "ex-main-0430-a|step-3",
+      "circumsphere-ex-main-0430-a-step-3"
+    ],
+    [
+      "ex-main-0430-a|step-4",
+      "circumsphere-ex-main-0430-a-step-4"
+    ],
+    [
+      "ex-main-0430-b|condition",
+      "circumsphere-ex-main-0430-b-condition"
+    ],
+    [
+      "ex-main-0430-b|help:h1",
+      "circumsphere-ex-main-0430-b-help-h1"
+    ],
+    [
+      "ex-main-0430-b|help:h2",
+      "circumsphere-ex-main-0430-b-help-h2"
+    ],
+    [
+      "ex-main-0430-b|step-1",
+      "circumsphere-ex-main-0430-b-step-1"
+    ],
+    [
+      "ex-main-0430-b|step-2",
+      "circumsphere-ex-main-0430-b-step-2"
+    ],
+    [
+      "ex-main-0430-b|step-3",
+      "circumsphere-ex-main-0430-b-step-3"
+    ],
+    [
+      "ex-main-0430-b|step-4",
+      "circumsphere-ex-main-0430-b-step-4"
+    ],
+    [
+      "ex-main-0431-a|condition",
+      "circumsphere-ex-main-0431-a-condition"
+    ],
+    [
+      "ex-main-0431-a|help:h1",
+      "circumsphere-ex-main-0431-a-help-h1"
+    ],
+    [
+      "ex-main-0431-a|help:h2",
+      "circumsphere-ex-main-0431-a-help-h2"
+    ],
+    [
+      "ex-main-0431-a|step-1",
+      "circumsphere-ex-main-0431-a-step-1"
+    ],
+    [
+      "ex-main-0431-a|step-2",
+      "circumsphere-ex-main-0431-a-step-2"
+    ],
+    [
+      "ex-main-0431-a|step-3",
+      "circumsphere-ex-main-0431-a-step-3"
+    ],
+    [
+      "ex-main-0431-a|step-4",
+      "circumsphere-ex-main-0431-a-step-4"
+    ],
+    [
+      "ex-main-0431-b|condition",
+      "circumsphere-ex-main-0431-b-condition"
+    ],
+    [
+      "ex-main-0431-b|help:h1",
+      "circumsphere-ex-main-0431-b-help-h1"
+    ],
+    [
+      "ex-main-0431-b|help:h2",
+      "circumsphere-ex-main-0431-b-help-h2"
+    ],
+    [
+      "ex-main-0431-b|step-1",
+      "circumsphere-ex-main-0431-b-step-1"
+    ],
+    [
+      "ex-main-0431-b|step-2",
+      "circumsphere-ex-main-0431-b-step-2"
+    ],
+    [
+      "ex-main-0431-b|step-3",
+      "circumsphere-ex-main-0431-b-step-3"
+    ],
+    [
+      "ex-main-0431-b|step-4",
+      "circumsphere-ex-main-0431-b-step-4"
+    ],
+    [
+      "ex-main-0432-a|condition",
+      "circumsphere-ex-main-0432-a-condition"
+    ],
+    [
+      "ex-main-0432-a|help:h1",
+      "circumsphere-ex-main-0432-a-help-h1"
+    ],
+    [
+      "ex-main-0432-a|help:h2",
+      "circumsphere-ex-main-0432-a-help-h2"
+    ],
+    [
+      "ex-main-0432-a|step-1",
+      "circumsphere-ex-main-0432-a-step-1"
+    ],
+    [
+      "ex-main-0432-a|step-2",
+      "circumsphere-ex-main-0432-a-step-2"
+    ],
+    [
+      "ex-main-0432-a|step-3",
+      "circumsphere-ex-main-0432-a-step-3"
+    ],
+    [
+      "ex-main-0432-a|step-4",
+      "circumsphere-ex-main-0432-a-step-4"
+    ],
+    [
+      "ex-main-0432-b|condition",
+      "circumsphere-ex-main-0432-b-condition"
+    ],
+    [
+      "ex-main-0432-b|help:h1",
+      "circumsphere-ex-main-0432-b-help-h1"
+    ],
+    [
+      "ex-main-0432-b|help:h2",
+      "circumsphere-ex-main-0432-b-help-h2"
+    ],
+    [
+      "ex-main-0432-b|step-1",
+      "circumsphere-ex-main-0432-b-step-1"
+    ],
+    [
+      "ex-main-0432-b|step-2",
+      "circumsphere-ex-main-0432-b-step-2"
+    ],
+    [
+      "ex-main-0432-b|step-3",
+      "circumsphere-ex-main-0432-b-step-3"
+    ],
+    [
+      "ex-main-0432-b|step-4",
+      "circumsphere-ex-main-0432-b-step-4"
+    ],
+    [
+      "ex-main-0432-c|condition",
+      "circumsphere-ex-main-0432-c-condition"
+    ],
+    [
+      "ex-main-0432-c|help:h1",
+      "circumsphere-ex-main-0432-c-help-h1"
+    ],
+    [
+      "ex-main-0432-c|help:h2",
+      "circumsphere-ex-main-0432-c-help-h2"
+    ],
+    [
+      "ex-main-0432-c|step-1",
+      "circumsphere-ex-main-0432-c-step-1"
+    ],
+    [
+      "ex-main-0432-c|step-2",
+      "circumsphere-ex-main-0432-c-step-2"
+    ],
+    [
+      "ex-main-0432-c|step-3",
+      "circumsphere-ex-main-0432-c-step-3"
+    ],
+    [
+      "ex-main-0432-c|step-4",
+      "circumsphere-ex-main-0432-c-step-4"
+    ]
+  ],
+  "files": {
+    "stereo-course/textbook/data/course.json": {
+      "beforeSHA256": "7fa8cde64644987c68205753b5beed17c3fad6c480d18713657b2930de8d1eff",
+      "afterSHA256": "705c8ec92afde28e82c7525d4ad7edc877be2397bdc675870378ed68bbbb15a5"
+    },
+    "stereo-course/textbook/source-index.json": {
+      "beforeSHA256": "092db59a931c918559422bff90701efd6131597e6b549733fa8b0203d776316d",
+      "afterSHA256": "1b6ce7936b7abe100022c9fdd9c5c3748043a40ab51fa76a8baeba58e0ec1132"
+    }
+  },
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-21T06:20:00Z",
+    "scope": "Introduction and chapters I–IV through exercise 427, with 698 reviewed cards. Later exercise positions remain drafts."
+  },
+  "before": {
+    "course": "1b22e1c9d8bfa3227bf8bb4e535b5fe03186dace23a3581cebd2ce6a79c3b642",
+    "index": "07a62b683cbce91ed14035f6c5c862ad13a8865da48159267b9fe5f1a6496e5d",
+    "registry": "5dd2b8a6bd0c398c11f4b04579936396bafda077c5377044376ddc8f92f9d0c8",
+    "cases": "2d6fd0f45b51a1406fd876ce8b0f741dc24f7f965b02dafeab34a103818a6c07"
+  }
+}

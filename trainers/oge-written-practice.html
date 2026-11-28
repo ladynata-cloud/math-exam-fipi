@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Геометрические доказательства · Письменная мастерская MathExam</title><meta name="description" content="Геометрические доказательства от чертежа до самостоятельной записи: мастерская площадей, задача на перенос и шесть письменных задач ОГЭ №24–25."><link rel="canonical" href="https://mathexam.space/trainers/oge-written-practice.html"><style>:root{color-scheme:light;--ink:#203346;--muted:#5e6976;--line:#d7dfe5;--blue:#245d83;--bg:#eef2f4}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:1050px;margin:auto;padding:clamp(12px,3vw,30px)}h1{font-size:clamp(26px,4vw,37px);line-height:1.2;margin:8px 0}h2{font-size:23px;line-height:1.25;margin:3px 0 12px}h3{font-size:18px;margin:0 0 8px}p{margin:8px 0 14px}.eyebrow{font-size:13px;color:var(--blue);font-weight:700;letter-spacing:.04em}.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:clamp(14px,3vw,24px);margin:14px 0}a{color:var(--blue);overflow-wrap:anywhere}button,select,textarea{font:inherit}button{border:1px solid #9bb1c2;border-radius:9px;padding:8px 13px;background:#f5f8fa;color:var(--ink);cursor:pointer;max-width:100%;white-space:normal;text-align:left}button.primary{background:var(--blue);border-color:var(--blue);color:white;font-weight:650}button:disabled{opacity:.48;cursor:default}button:focus-visible,a:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #e2a83b;outline-offset:2px}select,textarea{display:block;width:100%;border:1px solid #9bb1c2;border-radius:8px;background:white;color:var(--ink);padding:10px}textarea{resize:vertical;min-height:150px}label{display:block;font-weight:600;margin:9px 0}label input{margin-right:7px;width:18px;height:18px}svg{display:block;width:min(100%,420px);height:auto;margin:0 auto 12px;background:#fbfcfd;border:1px solid var(--line);border-radius:12px}svg text{font-family:system-ui,sans-serif}.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.muted,small{color:var(--muted);font-size:14px}.support{border-left:3px solid #5795a0;background:#f2f8fa;border-radius:5px;padding:14px;margin-top:12px;overflow-wrap:anywhere}blockquote{margin:10px 0;padding:10px 14px;background:white;border-left:2px solid #9bb1c2}details{margin:14px 0}summary{cursor:pointer;font-weight:600}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f4f6;padding:12px;border-radius:8px}.hintline{min-height:24px;color:#245d83}.navrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between}.links{display:flex;flex-wrap:wrap;gap:16px}.links a[data-mathexam-home-link]{display:inline-flex;align-items:center;min-height:44px;max-width:100%;padding:6px 0}#condition{font-size:18px;font-weight:550}.warning{background:#f7f3e8;padding:10px;border-radius:8px;color:#5e4c2d}footer{font-size:14px;color:var(--muted)}[hidden]{display:none!important}
+.workshop-modes{display:flex;gap:8px;flex-wrap:wrap}.workshop-modes [aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:white}
+#area-workshop button,.workshop-modes button{min-height:44px}
+#area-workshop{max-width:100%;scroll-margin-top:12px}
+#area-statement{font-size:1.08rem;font-weight:600}
+#area-choice{margin:12px 0;padding:8px 12px;border:1px solid var(--line);border-radius:8px;min-width:0}
+#area-choice label,#area-support label{display:flex;align-items:baseline;gap:.55em;font-weight:normal;cursor:pointer}
+#area-choice input,#area-support input{flex-shrink:0}
+#area-support ol,#area-model-text ol,#area-lines ol{padding-left:1.65em}
+#area-feedback{min-height:1.55em;color:var(--blue);font-weight:550}
+#area-input{min-height:96px}
+.area-actions{margin:12px 0}
+#area-transfer-open{margin-top:10px}
+#area-model-text p{margin:.5em 0}
+</style>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+</head><body><main><div class="eyebrow">MathExam · дополнительная самостоятельная практика</div><h1>От чертежа к своему доказательству</h1><p>В мастерской площадей ты достроишь чертёж, проверишь чужое рассуждение и напишешь своё доказательство. В разделе ОГЭ можно сразу попробовать одну из шести письменных задач.</p><nav class="links" aria-label="Навигация по курсу"><a id="home-return" href="/" target="_self" data-mathexam-home-link>На главную MathExam</a><a href="https://mathexam.space/trainers/oge-task24-proofs.html">Вернуться к тренажёру №24</a><a href="https://mathexam.space/trainers/oge-task25-geometry.html">Вернуться к тренажёру №25</a></nav><p class="muted">Дополнительные авторские условия и учебные аналоги; не официальный банк ФИПИ. Свободный текст не проверяется автоматически. Записи не меняют результаты старых тренажёров и не передаются в кабинет.</p><nav class="workshop-modes panel" aria-label="Разделы письменной мастерской">
+  <button type="button" id="classic-open" aria-pressed="true">Шесть задач ОГЭ №24–25</button>
+  <button type="button" id="area-open" aria-pressed="false">Мастерская доказательств · площади</button>
+</nav>
+<section id="classic-workshop" class="panel" data-classic-panel><label for="nav">Выбери задачу</label><select id="nav"></select><p id="count" class="muted"></p><div class="navrow"><button id="prev">← Предыдущая</button><button id="next">Следующая →</button></div></section><section class="panel" data-classic-panel><div id="phase" class="eyebrow"></div><h2 id="title" tabindex="-1"></h2><svg id="figure" viewBox="0 0 300 280" role="img"></svg><p id="condition"></p><p id="returnNote" class="warning" hidden>Оставь эту задачу на следующее подходящее занятие. Если решаешь её сейчас, это не отложенная проверка.</p><label for="writing">Твоё письменное решение</label><textarea id="writing" rows="7" maxlength="6000" placeholder="Запиши, что известно, что следует и почему."></textarea><div class="row"><button id="save" class="primary">Зафиксировать запись</button><button id="unable">Пока не знаю, с чего начать</button></div><p id="notice" role="status" aria-live="polite" class="hintline"></p><p id="status"></p><p id="history" class="muted"></p><details id="first-record"><summary>Посмотреть первую зафиксированную запись</summary><pre id="first"></pre></details><div id="controls" class="row"></div><div id="help"></div></section><section id="area-workshop" class="panel" aria-label="Мастерская доказательств" hidden>
+  <p class="eyebrow" id="area-position"></p>
+  <h2 id="area-step-title" tabindex="-1"></h2>
+  <div id="area-drawing"></div>
+  <label id="area-paper-label"><input type="checkbox" id="area-paper"> Я построил(а) чертёж в тетради</label>
+  <div id="area-lines"></div>
+  <h3 id="area-prompt"></h3>
+  <fieldset id="area-choice" hidden><legend>Выбери одно утверждение</legend><div></div></fieldset>
+  <label id="area-input-label" for="area-input"></label>
+  <textarea id="area-input" maxlength="6000" rows="4"></textarea>
+  <div class="row area-actions">
+    <button type="button" class="primary" id="area-save">Зафиксировать попытку</button>
+    <button type="button" id="area-unable">Пока не знаю, с чего начать</button>
+  </div>
+  <p id="area-feedback" role="status"></p>
+  <div id="area-support"></div>
+  <div class="row area-actions">
+    <button type="button" id="area-hint">Задать себе первый вопрос</button>
+    <button type="button" id="area-rubric">Свериться по вопросам</button>
+    <button type="button" id="area-model">Открыть разбор</button>
+  </div>
+  <div id="area-model-text"></div>
+  <p class="muted" id="area-history"></p>
+  <div class="navrow area-actions">
+    <button type="button" id="area-prev">← Предыдущий шаг</button>
+    <button type="button" class="primary" id="area-next">Следующий шаг →</button>
+  </div>
+  <button type="button" id="area-transfer-open">Открыть другую задачу для самостоятельной пробы</button>
+  <p id="area-cycle-entry" data-mathexam-lesson-cycle="area" hidden><a href="./lesson-cycle/START.html?topic=area" target="_blank" rel="noopener noreferrer">Полное занятие: диагностика, практика и домашняя работа</a> <small>· личный режим, отдельная вкладка</small></p>
+  <details><summary>Как дать самостоятельную пробу на следующем занятии</summary>
+    <p>Отправьте ученику <a id="area-direct" href="#area-transfer">прямую ссылку на задачу о четырёхугольнике</a>. В новой вкладке откроются условие и чистый чертёж. Попросите сохранить первую запись до самопроверки. Сравните с предыдущей работой, где ученик сам выбрал основание для вывода и где понадобился вопрос. История помощи и рисунки есть в скачанном файле.</p>
+  </details>
+</section>
+<section class="panel"><h2>Передать записи преподавателю</h2><p class="warning">Работа хранится только в открытой вкладке. Перед обновлением или закрытием скачай файл. Имена и контакты не нужны.</p><button class="primary" id="export">Скачать записи и историю помощи (JSON)</button><p id="export-notice" role="status"></p><details data-classic-panel><summary>Для преподавателя: 10 минут на обычном уроке</summary><p>1 минута — прочитать условие. 4 минуты — самостоятельная запись и наблюдение. 3 минуты — один адресный вопрос, если нужен. 2 минуты — объяснение ключевого шага. На следующем занятии предложить задачу «Медиана в равнобедренном треугольнике» или другую сопоставимую задачу, без предварительного образца. Отдельно отмечать начальный выбор, обоснование, самокоррекцию и помощь. Сравнение одного ученика не доказывает эффективность курса.</p></details></section><footer>Работа выполняется в браузере. Самопроверка и запись не присваивают экзаменационные баллы.</footer><noscript>Для записи и раскрытия опор необходимо включить JavaScript.</noscript></main><script>
+const areaQuestion = "В разностороннем треугольнике ABC точка M — середина стороны BC. Точка P лежит между A и M. Докажи, что треугольники ABP и ACP имеют равные площади.";
+
+const areaSteps = [
+  {
+    title: "Прочитай и дострой чертёж",
+    prompt: "Построй по условию свой чертёж в тетради или дополни чертёж на экране. Найди обе фигуры из вопроса. Какие отрезки тебе нужны? Запиши, зачем проводишь один из них.",
+    hints: [
+      "Обведи пальцем стороны каждого из двух треугольников. Все ли эти стороны уже видны?",
+      "Найди в условии тройку точек, лежащих на одной прямой внутри треугольника и на его границе. Как показать их расположение одним отрезком?"
+    ]
+  },
+  {
+    title: "Отдели данные от цели",
+    prompt: "Какая запись точно передаёт и условие, и то, что предстоит доказать?",
+    choices: [
+      {text: "BM = MC, AP = PM. Нужно доказать, что площади ABP и ACP равны.", feedback: "Серединой какого именно отрезка названа точка M? Проверь, где в условии сказано о длинах AP и PM."},
+      {text: "BM = MC, точка P лежит внутри AM. Нужно доказать, что площади ABP и ACP равны.", correct: true, feedback: "Верно. Здесь названы равные отрезки, положение точки P и цель доказательства."},
+      {text: "BM = MC, точка P лежит внутри AM. Нужно доказать, что треугольники ABP и ACP равны.", feedback: "Прочитай последнее предложение условия. Достаточно ли сравнить площади или требуется сравнить также стороны и углы?"}
+    ],
+    hints: [
+      "Выпиши отдельно, что сказано о каждой из точек M и P.",
+      "Какое равенство следует из слова «середина»? Для ответа посмотри, к какой точке относится это слово."
+    ]
+  },
+  {
+    title: "Выбери свойство",
+    prompt: "Отметь правило, которым можно обосновать равенство площадей треугольников.",
+    choices: [
+      {text: "Если у двух треугольников равные основания и равные высоты к этим основаниям, то их площади равны.", correct: true, feedback: "Да. Подставь основание и соответствующую ему высоту каждого треугольника в формулу площади."},
+      {text: "Если основания двух треугольников равны, то их площади равны при любом положении вершин.", feedback: "Мысленно отодвинь вершину одного треугольника от прямой основания. Что произойдёт с его площадью?"},
+      {text: "Если равны периметры двух треугольников, то их площади равны.", feedback: "Треугольник из нити можно сделать почти плоским, сохраняя длину нити. Какая величина при этом меняется?"}
+    ],
+    hints: [
+      "Вспомни, какие две длины входят в формулу площади треугольника.",
+      "Для каждого треугольника отметь основание и расстояние от противоположной вершины до прямой этого основания."
+    ]
+  },
+  {
+    title: "Соедини основания и выводы",
+    prompt: "С какого равенства площадей ты можешь начать? Запиши переходы от него к цели. В каждом переходе укажи, какие фигуры сравниваешь и почему.",
+    hints: [
+      "Поищи на рисунке треугольники, за основания которых удобно принять BM и MC.",
+      "Зафиксируй вершину A и сравни два треугольника с этими основаниями. Повтори сравнение с вершиной P. Что останется, если из каждой большой площади вычесть соответствующую малую?"
+    ]
+  },
+  {
+    title: "Найди первый неверный переход",
+    lines: [
+      "M — середина BC, поэтому BM = MC.",
+      "У треугольников ABM и PCM равные основания BM и MC, значит, их площади равны.",
+      "Тогда оба эти треугольника занимают одну и ту же долю треугольника ABC."
+    ],
+    prompt: "Прочитай запись ученика и укажи первую строку, в которой сделан неверный вывод. Запиши исправление: какие треугольники ты сравнишь и почему?",
+    choices: [
+      {text: "Первая строка", feedback: "Сверь утверждение с определением середины отрезка. Эту строку можно обосновать условием."},
+      {text: "Вторая строка", correct: true, feedback: "Ты нашёл пропуск. Основания лежат на одной прямой. Проверь расстояния от двух выбранных вершин до неё и замени сравнение верным."},
+      {text: "Третья строка", feedback: "При равных площадях доли от одной и той же фигуры действительно равны. Проверь строку, из которой ученик получил равенство площадей."}
+    ],
+    hints: [
+      "Проверь каждое «поэтому» и «значит». Из какого именно факта следует новая строка?",
+      "В одном из сравнений вершина находится в A, в другом — в P. Что произойдёт с высотой к прямой BC, если передвинуть вершину от A к M?"
+    ]
+  },
+  {
+    title: "Напиши доказательство целиком",
+    prompt: "Составь связное доказательство, по которому одноклассник сможет восстановить ход мысли. Дай основания для равенств и закончи точным ответом на вопрос задачи.",
+    hints: [
+      "Прочитай свою запись с конца. Какая фраза перед последним выводом делает этот вывод возможным?",
+      "Представь, что одноклассник видит только твой текст. Поймёт ли он, какие две фигуры ты сравниваешь и что даёт их сравнение?"
+    ],
+    rubric: [
+      "Я использовал только данные или уже обоснованные свойства точек и отрезков.",
+      "В каждом сравнении я назвал фигуры и объяснил, откуда берётся равенство их площадей.",
+      "Из моей записи видно, как промежуточные равенства дают равенство площадей ABP и ACP."
+    ],
+    model: [
+      "Обозначим площадь треугольника XYZ через S(XYZ). Так как M — середина BC, основания BM и MC равны и лежат на одной прямой. Высота из A к этой прямой одна и та же для треугольников ABM и ACM. Поэтому S(ABM) = S(ACM).",
+      "Если взять те же основания и вершину P, высота из P также будет общей для треугольников PBM и PCM. Поэтому S(PBM) = S(PCM).",
+      "Точка P лежит между A и M. Отрезок BP делит треугольник ABM на ABP и PBM, а CP делит ACM на ACP и PCM. Получаем S(ABP) = S(ABM) − S(PBM) и S(ACP) = S(ACM) − S(PCM). Большие площади попарно равны, вычитаемые тоже. Следовательно, S(ABP) = S(ACP)."
+    ]
+  }
+];
+
+const areaTransfer = {
+  title: "Четырёхугольник с пересекающимися диагоналями",
+  question: "В выпуклом четырёхугольнике ABCD диагонали AC и BD пересекаются в точке O. Известно, что треугольники AOD и BOC имеют равные площади. Докажи, что AB ∥ CD.",
+  rubric: [
+    "Я точно указал, какие площади равны по условию.",
+    "Я обосновал сравнение выбранных треугольников.",
+    "Если я сравнивал расстояния до AB, то объяснил, по какую сторону от AB лежат C и D. Если использовал подобие, то указал признак и соответствующие углы.",
+    "Я объяснил, почему из полученного факта следует параллельность AB и CD."
+  ],
+  model: [
+    "Диагонали выпуклого четырёхугольника пересекаются внутри него. Прибавим к равным площадям S(AOD) и S(BOC) площадь S(AOB). Слева получаем S(ABD), справа S(ABC). Значит, S(ABD) = S(ABC).",
+    "У этих двух треугольников общее основание AB. По формуле площади высоты из D и C к прямой AB равны. В силу выпуклости C и D лежат по одну сторону от AB. Все точки на таком расстоянии по эту сторону лежат на одной прямой, параллельной AB. На ней лежат и C, и D, поэтому AB ∥ CD.",
+    "Другой способ. Сравним каждую из данных площадей с S(COD). Для AOD и COD высота из D к AC общая, поэтому S(AOD) / S(COD) = AO / CO. Для BOC и DOC высота из C к BD общая, поэтому S(BOC) / S(COD) = BO / DO. Отсюда AO / CO = BO / DO. Углы AOB и COD вертикальные. Треугольники AOB и COD подобны по двум пропорциональным сторонам и углу между ними. Значит, ∠OAB = ∠OCD. Это накрест лежащие углы при секущей AC, следовательно, AB ∥ CD."
+  ]
+};
+
+function renderAreaDrawing(host, kind, edges, onChange, editable, statement) {
+  const triangle = kind === 'triangle';
+  const points = triangle
+    ? { A: [102, 26], B: [36, 202], C: [276, 178], M: [156, 190], P: [123.6, 91.6] }
+    : { A: [36, 201], B: [276, 177], C: [208, 46], D: [88, 58], O: [36 + 172 * 2 / 3, 201 - 155 * 2 / 3] };
+  const offsets = triangle
+    ? { A: [0, -10], B: [-12, 17], C: [12, 9], M: [4, 21], P: [14, -3] }
+    : { A: [-11, 17], B: [12, 17], C: [10, -10], D: [-10, -10], O: [14, -3] };
+  const contour = triangle ? ['AB', 'BC', 'AC'] : ['AB', 'BC', 'CD', 'AD'];
+  const existing = new Set(triangle ? [...contour, 'BM', 'CM'] : contour);
+  const description = triangle
+    ? 'Треугольник ABC. На стороне BC засечками отмечены равные отрезки BM и MC. Точка P лежит между A и M.'
+    : 'Выпуклый четырёхугольник ABCD. Точка O лежит внутри, в месте пересечения диагоналей.';
+  let drawn = edges.slice();
+  let start = '';
+  const doc = host.ownerDocument;
+  function svgElement(name, attrs) {
+    const node = doc.createElementNS('http://www.w3.org/2000/svg', name);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+    return node;
+  }
+  function html(tag, content) {
+    const node = doc.createElement(tag);
+    if (content) node.textContent = content;
+    return node;
+  }
+  function makeButton(label, handler) {
+    const button = html('button', label);
+    button.type = 'button';
+    button.style.minHeight = '44px';
+    button.addEventListener('click', handler);
+    return button;
+  }
+  function line(p, q, attrs = {}) {
+    return svgElement('line', { x1: p[0], y1: p[1], x2: q[0], y2: q[1], ...attrs });
+  }
+
+  const figure = svgElement('svg', { viewBox: '0 0 310 230', role: 'img' });
+  const outline = svgElement('g', { stroke: '#273f54', 'stroke-width': 2.4, fill: 'none' });
+  for (const [a, b] of contour) outline.append(line(points[a], points[b]));
+  if (triangle) {
+    // Both ticks cross BC. Rotation of (10,-1), the direction of BC, gives (1,10).
+    for (const [a, b] of [['B', 'M'], ['M', 'C']]) {
+      const x = (points[a][0] + points[b][0]) / 2, y = (points[a][1] + points[b][1]) / 2;
+      outline.append(line([x - 0.6, y - 6], [x + 0.6, y + 6], { 'data-mark': 'equal' }));
+    }
+  }
+  const additions = svgElement('g', { stroke: '#086b74', 'stroke-width': 2.6, 'stroke-dasharray': '7 3' });
+  figure.append(outline, additions);
+  const selectedPoints = new Map();
+  const pointButtons = html('div');
+  pointButtons.className = 'row';
+  pointButtons.setAttribute('role', 'group');
+  pointButtons.setAttribute('aria-label', 'Концы отрезка');
+  for (const [name, [x, y]] of Object.entries(points)) {
+    const group = svgElement('g', {});
+    const dot = svgElement('circle', { cx: x, cy: y, r: 3.3, fill: '#273f54' });
+    const [dx, dy] = offsets[name];
+    const label = svgElement('text', {
+      x: x + dx, y: y + dy, 'text-anchor': 'middle', 'font-size': 16, 'font-weight': 650,
+      fill: '#203346', stroke: '#fbfcfd', 'stroke-width': 3, 'paint-order': 'stroke fill'
+    });
+    label.textContent = name;
+    group.append(dot, label);
+    if (editable) {
+      const target = svgElement('circle', { cx: x, cy: y, r: 16, fill: 'transparent' });
+      group.append(target);
+      group.style.cursor = 'pointer';
+      group.addEventListener('click', () => choose(name));
+      const button = makeButton(name, () => choose(name));
+      button.dataset.point = name;
+      button.style.minWidth = '44px';
+      button.style.textAlign = 'center';
+      pointButtons.append(button);
+      selectedPoints.set(name, { button, dot });
+    }
+    figure.append(group);
+  }
+  const summary = html('p');
+  summary.className = 'muted';
+  summary.dataset.drawEdges = '';
+  const status = html('p');
+  status.setAttribute('role', 'status');
+  status.dataset.drawStatus = '';
+  const undo = makeButton('Убрать последний отрезок', () => modify(drawn.slice(0, -1), 'Убран отрезок ' + drawn.at(-1) + '.'));
+  undo.dataset.drawUndo = '';
+  function paint() {
+    additions.replaceChildren();
+    for (const edge of drawn) additions.append(line(points[edge[0]], points[edge[1]], { 'data-drawn-edge': edge }));
+    summary.textContent = drawn.length ? 'Твои отрезки: ' + drawn.join(', ') + '.' : 'Дополнительных отрезков пока нет.';
+    figure.setAttribute('aria-label', description + ' ' + summary.textContent);
+    undo.disabled = drawn.length === 0;
+    for (const [name, { button, dot }] of selectedPoints) {
+      const selected = name === start;
+      button.setAttribute('aria-pressed', String(selected));
+      button.classList.toggle('primary', selected);
+      dot.setAttribute('r', selected ? 6 : 3.3);
+    }
+  }
+  function modify(next, message) {
+    drawn = next;
+    start = '';
+    paint();
+    status.textContent = message;
+    onChange(next.slice());
+  }
+  function choose(name) {
+    if (!start || name === start) {
+      start = start ? '' : name;
+      paint();
+      status.textContent = start ? 'Первая точка ' + start + '. Выбери вторую.' : 'Выбор точки снят.';
+      return;
+    }
+    const edge = [start, name].sort().join('');
+    start = '';
+    if (existing.has(edge) || drawn.includes(edge)) {
+      paint();
+      status.textContent = 'Отрезок ' + edge + ' уже есть на чертеже.';
+      return;
+    }
+    modify([...drawn, edge], 'Проведён отрезок ' + edge + '.');
+  }
+  const condition = html('p', statement);
+  condition.id = 'area-statement';
+  host.replaceChildren(figure, condition, summary);
+  if (editable) {
+    const instructions = html('p', 'Чтобы провести отрезок, выбери две точки на рисунке или нажми их буквы. Повторное нажатие на первую точку отменяет выбор.');
+    host.append(instructions, pointButtons, undo, status);
+  }
+  paint();
+}
+
+function createAreaWorkshop() {
+  const $ = id => document.getElementById(id);
+  const transferIndex = areaSteps.length;
+  const lessons = [...areaSteps, areaTransfer];
+  const ids = ['construction', 'given-goal', 'area-property', 'chain', 'repair', 'proof', 'transfer'];
+  const steps = ids.map(id => ({
+    id, visitedAt: null, draft: '', choice: null, onPaper: false, first: null, attempts: [], help: [], checks: [], feedback: ''
+  }));
+  const drawings = { triangle: [], trapezoid: [] };
+  const classicPanels = Array.from(document.querySelectorAll('[data-classic-panel]'));
+  let current = 0;
+  const step = () => steps[current];
+  const lesson = () => lessons[current];
+  const transfer = () => current === transferIndex;
+  const shape = () => transfer() ? 'trapezoid' : 'triangle';
+  const hasHelp = kind => step().help.some(event => event.kind === kind);
+  const now = () => new Date().toISOString();
+  function node(tag, text) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    return element;
+  }
+  function helpEvent(kind) {
+    if (!hasHelp(kind)) step().help.push({kind, at: now()});
+  }
+  function latest() { return step().attempts.at(-1); }
+  function unchanged() {
+    const last = latest();
+    return last && last.text === step().draft && last.choice === step().choice && last.onPaper === step().onPaper &&
+      last.edges.join() === drawings[shape()].join();
+  }
+  function readyForNext() {
+    const last = latest();
+    if (!unchanged() || last.unable) return false;
+    if (lesson().choices && !lesson().choices[last.choice]?.correct) return false;
+    return true;
+  }
+  function updateControls() {
+    const r = step(), t = lesson();
+    const hasWritten = r.attempts.some(attempt => !attempt.unable && attempt.text.trim());
+    $('area-unable').hidden = current >= 5 || Boolean(r.first);
+    $('area-hint').hidden = !t.hints;
+    $('area-hint').disabled = !r.first || hasHelp('hint2');
+    $('area-hint').textContent = hasHelp('hint2') ? 'Оба вопроса открыты' :
+      hasHelp('hint1') ? 'Более точный вопрос' : 'Первый наводящий вопрос';
+    for (const type of ['rubric', 'model']) {
+      const button = $('area-' + type);
+      button.hidden = !t[type];
+      button.disabled = !hasWritten || hasHelp(type);
+    }
+    $('area-next').hidden = transfer();
+    $('area-next').disabled = !readyForNext();
+    $('area-prev').disabled = current === 0;
+    $('area-transfer-open').hidden = transfer();
+    syncLessonCycleEntry();
+  }
+  function report(text) {
+    step().feedback = text;
+    $('area-feedback').textContent = text;
+  }
+  function draw() {
+    renderAreaDrawing($('area-drawing'), shape(), drawings[shape()], edges => {
+      drawings[shape()] = edges;
+      updateControls();
+    }, current === 0 || transfer(), transfer() ? areaTransfer.question : areaQuestion);
+  }
+  function showSupport() {
+    const r = step(), t = lesson(), host = $('area-support');
+    host.replaceChildren();
+    for (const [i, hint] of (t.hints || []).entries()) {
+      if (hasHelp('hint' + (i + 1))) host.append(node('p', hint));
+    }
+    if (hasHelp('rubric')) {
+      host.append(node('h3', 'Самопроверка записи'));
+      t.rubric.forEach((item, i) => {
+        const label = document.createElement('label'), box = document.createElement('input');
+        box.type = 'checkbox';
+        box.checked = r.checks.includes(i);
+        box.addEventListener('change', () => {
+          r.checks = box.checked ? [...r.checks, i] : r.checks.filter(value => value !== i);
+        });
+        label.append(box, document.createTextNode(item));
+        host.append(label);
+      });
+    }
+    const model = $('area-model-text');
+    model.replaceChildren();
+    if (hasHelp('model')) {
+      model.append(node('h3', 'Возможное доказательство'));
+      t.model.forEach(part => model.append(node('p', part)));
+    }
+    $('area-history').textContent = r.first
+      ? 'Попыток на этом шаге: ' + r.attempts.length + '. Первоначальная запись и открытая помощь войдут в файл для преподавателя.'
+      : 'Первая попытка на этом шаге ещё не зафиксирована.';
+  }
+  function render() {
+    const r = step(), t = lesson();
+    if (!r.visitedAt) r.visitedAt = now();
+    $('area-position').textContent = transfer() ? 'Шаг 7 из 7 · самостоятельная проба' :
+      'Шаг ' + (current + 1) + ' из 7 · работа с площадями';
+    $('area-step-title').textContent = t.title;
+    draw();
+    $('area-paper-label').hidden = current !== 0 && !transfer();
+    $('area-paper').checked = r.onPaper;
+    $('area-prompt').textContent = transfer()
+      ? 'Дострой чертёж и запиши своё доказательство. После первой записи можно открыть вопросы для самопроверки.' : t.prompt;
+    const lines = $('area-lines');
+    lines.replaceChildren();
+    if (t.lines) {
+      const list = document.createElement('ol');
+      t.lines.forEach(line => list.append(node('li', line)));
+      lines.append(node('h3', 'Запись ученика'), list);
+    }
+    const field = $('area-choice'), options = field.querySelector('div');
+    field.hidden = !t.choices;
+    options.replaceChildren();
+    (t.choices || []).forEach((item, i) => {
+      const label = document.createElement('label'), radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'area-choice';
+      radio.value = String(i);
+      radio.checked = r.choice === i;
+      radio.addEventListener('change', () => { r.choice = i; updateControls(); });
+      label.append(radio, document.createTextNode(item.text));
+      options.append(label);
+    });
+    $('area-input-label').textContent = current === 4 ? 'Твоё исправление и его основание' :
+      t.choices ? 'Комментарий к выбору (по желанию)' :
+      current === 0 ? 'Зачем тебе это построение?' :
+      current === 3 ? 'Твоя цепочка рассуждений' : 'Твоё доказательство';
+    $('area-input').value = r.draft;
+    $('area-feedback').textContent = r.feedback;
+    $('area-next').textContent = current === 5 ? 'Перейти к новой задаче →' : 'Следующий шаг →';
+    updateControls();
+    showSupport();
+  }
+  function go(index) {
+    current = index;
+    render();
+    $('area-step-title').focus();
+  }
+  function save(unable) {
+    const r = step(), t = lesson();
+    if (unable && (r.first || current >= 5)) return;
+    if (unable && (r.draft.trim() || r.choice !== null)) {
+      report('У тебя уже есть ответ. Сохрани его кнопкой «Зафиксировать попытку».');
+      return;
+    }
+    if (!unable) {
+      if (t.choices && r.choice === null) { report('Сначала выбери утверждение.'); return; }
+      if (!r.draft.trim() && (!t.choices || current === 4)) {
+        report(current === 4 ? 'Добавь своё исправление и объясни его.' : 'Запиши свою мысль перед фиксацией.');
+        return;
+      }
+      if (current === 0 && !drawings.triangle.length && !r.onPaper) {
+        report('Добавь отрезок на экранном чертеже или отметь, что построил чертёж в тетради.');
+        return;
+      }
+    }
+    if (unchanged() && latest().unable === unable) {
+      report('Эта версия уже зафиксирована. Для новой попытки измени свою запись, выбор или построение.');
+      return;
+    }
+    const attempt = {
+      at: now(), text: r.draft, choice: r.choice, onPaper: r.onPaper, unable, edges: [...drawings[shape()]],
+      helpBefore: r.help.map(event => event.kind)
+    };
+    if (transfer()) {
+      attempt.preparationSeen = steps.slice(0, transferIndex).filter(item => item.visitedAt)
+        .map(item => ({id: item.id, help: item.help.map(event => event.kind)}));
+    }
+    r.attempts.push(attempt);
+    if (!r.first) r.first = attempt;
+    if (unable) report('Попытка зафиксирована. Можно открыть наводящий вопрос и попробовать ещё раз.');
+    else if (t.choices) {
+      const option = t.choices[r.choice];
+      helpEvent('feedback-' + r.choice);
+      report(option.feedback + (current === 4 && option.correct ? ' Выбор строки проверен. Текст исправления сохранён для разбора.' : ''));
+    } else report(transfer() ? 'Доказательство сохранено. Проверь каждый переход сам или передай запись преподавателю.' :
+      'Запись сохранена. Можно продолжать или вернуться к ней позже.');
+    updateControls();
+    showSupport();
+  }
+  function openSupport(kind) {
+    if (!unchanged()) {
+      report('Сначала зафиксируй изменения, чтобы сохранить свою версию до помощи.');
+      return;
+    }
+    helpEvent(kind);
+    updateControls();
+    showSupport();
+    report(kind === 'model' ? 'Образец открыт. Первая запись сохранена отдельно.' :
+      kind === 'rubric' ? 'Вопросы для самопроверки открыты.' : 'Открыт наводящий вопрос. Попробуй дополнить свою запись.');
+    const target = kind === 'model' ? $('area-model-text') : $('area-support');
+    target.scrollIntoView({block: 'nearest'});
+  }
+  $('area-paper').addEventListener('change', event => { step().onPaper = event.target.checked; updateControls(); });
+  $('area-input').addEventListener('input', event => { step().draft = event.target.value; updateControls(); });
+  $('area-save').addEventListener('click', () => save(false));
+  $('area-unable').addEventListener('click', () => save(true));
+  $('area-hint').addEventListener('click', () => openSupport(hasHelp('hint1') ? 'hint2' : 'hint1'));
+  $('area-rubric').addEventListener('click', () => openSupport('rubric'));
+  $('area-model').addEventListener('click', () => openSupport('model'));
+  $('area-next').addEventListener('click', () => { if (!transfer() && readyForNext()) go(current + 1); });
+  $('area-prev').addEventListener('click', () => { if (current > 0) go(current - 1); });
+  function syncLessonCycleEntry() {
+    $('area-cycle-entry').hidden = !(window.top === window && /^https?:$/.test(location.protocol) && !['board','learning'].some(key => new URLSearchParams(location.search).get(key) === '1') && location.hash === '#area-workshop' && !transfer());
+  }
+  function setMode(focus) {
+    const active = ['#area-workshop', '#area-transfer'].includes(location.hash);
+    for (const panel of classicPanels) panel.hidden = active;
+    $('area-workshop').hidden = !active;
+    $('classic-open').setAttribute('aria-pressed', String(!active));
+    $('area-open').setAttribute('aria-pressed', String(active));
+    if (active) {
+      if (location.hash === '#area-transfer') current = transferIndex;
+      render();
+      if (focus) $('area-step-title').focus();
+    } else if (focus) $('title').focus();
+    syncLessonCycleEntry();
+  }
+  function switchTo(hash) {
+    if (location.hash === hash) setMode(true);
+    else location.hash = hash;
+  }
+  $('area-open').addEventListener('click', () => switchTo('#area-workshop'));
+  $('classic-open').addEventListener('click', () => switchTo('#classic-workshop'));
+  $('area-transfer-open').addEventListener('click', () => go(transferIndex));
+  $('area-direct').addEventListener('click', () => {
+    if (location.hash === '#area-transfer') go(transferIndex);
+  });
+  window.addEventListener('hashchange', () => setMode(true));
+  setMode(false);
+  return {id: 'written-area-proofs-v1', steps, drawings};
+}
+
+(function app(tasks,newRecord,saveRecord,reveal,status){
+const areaWorkshop = createAreaWorkshop();
+const records=Object.fromEntries(tasks.map(t=>[t.id,newRecord()]));let current=0;
+const $=id=>document.getElementById(id),el=(tag,txt)=>{const n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;return n},S=(tag,attrs)=>{const n=document.createElementNS("http://www.w3.org/2000/svg",tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);return n};
+if(typeof location!=="undefined"&&location.protocol==="file:")$("home-return").href="https://mathexam.space/";
+const helpNames={hint1:"Первый вопрос",hint2:"Вторая подсказка",samples:"Чужие записи",checklist:"Чек-лист",model:"Полный образец"};
+const buttons=[["hint1","Первый вопрос"],["hint2","Следующая подсказка"],["samples","Разобрать чужую запись"],["checklist","Проверить свою запись"],["model","Открыть полный образец"]];
+function draw(t,r){const s=$("figure");s.replaceChildren();s.setAttribute("aria-label","Схематический чертёж: "+t.condition);const pts=t.points;if(t.circle){const [cx,cy,radius]=t.circle;s.append(S("circle",{cx,cy,r:radius,fill:"#e9f5f0",stroke:"#31776b","stroke-width":1.6}))}for(const seg of t.segments){const [a,b]=seg.split("").map(p=>pts[p]);s.append(S("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:"#263d53","stroke-width":2.2,"stroke-linecap":"round"}))}const model=r.help.some(x=>x.kind==="model");const angles=t.right.concat(model?t.established||[]:[]);for(const [a,v,b] of angles){const p=pts[v],q=pts[a],w=pts[b];const u=[q[0]-p[0],q[1]-p[1]],z=[w[0]-p[0],w[1]-p[1]],ul=Math.hypot(...u),zl=Math.hypot(...z),d=11;const p1=[p[0]+u[0]*d/ul,p[1]+u[1]*d/ul],p3=[p[0]+z[0]*d/zl,p[1]+z[1]*d/zl],p2=[p1[0]+p3[0]-p[0],p1[1]+p3[1]-p[1]];s.append(S("polyline",{points:[p1,p2,p3].map(p=>p.join(",")).join(" "),fill:"none",stroke:"#30786a","stroke-width":2}))}for(const [k,[x,y]] of Object.entries(pts)){if((t.hiddenLabel||[]).includes(k)&&!r.help.length)continue;const [dx,dy]=t.labels[k]||[7,-7];s.append(S("circle",{cx:x,cy:y,r:3,fill:"#263d53"}));const lab=S("text",{x:x+dx,y:y+dy,"font-size":15,fill:"#203346","font-weight":"600"});lab.textContent=k;s.append(lab)}}
+function task(){return tasks[current]}
+function rec(){return records[task().id]}
+function msg(text){$("notice").textContent=text}
+function render(){const t=task(),r=rec();$("phase").textContent="ОГЭ №"+t.no+" · "+t.phase;$("title").textContent=t.title;$("condition").textContent=t.condition;draw(t,r);$("writing").value=r.draft;$("status").textContent=status(r);$("count").textContent=Object.values(records).filter(x=>x.first!==null).length+" из "+tasks.length+" первых записей зафиксировано (не оценка знаний)";$("nav").value=t.id;$("prev").disabled=current===0;$("next").disabled=current===tasks.length-1;$("unable").hidden=r.first!==null;$("returnNote").hidden=t.id!=="p24-return";$("first").textContent=r.first?(r.first.unable?"Не смог начать":r.first.text):"Пока нет записи";$("history").textContent=r.attempts.length?"Записей: "+r.attempts.length+". Открытые опоры: "+(r.help.map(x=>helpNames[x.kind]).join(", ")||"нет"):"Сначала попробуй решить сам. Можно честно отметить, что пока не получается.";const host=$("controls");host.replaceChildren();for(const [kind,label] of buttons){const b=el("button",label);b.type="button";b.disabled=r.first===null||(kind==="hint2"&&!r.help.some(x=>x.kind==="hint1"));b.addEventListener("click",()=>{if($("writing").value!==r.attempts.at(-1)?.text){msg("Сначала зафиксируй текущую запись, чтобы не потерять то, что сделал до помощи.");return}if(reveal(r,kind)){render();msg("Открыта опора: "+label+". Исправь свою запись и зафиксируй новую версию.");document.getElementById("help-"+kind)?.scrollIntoView({block:"nearest"})}});if(r.help.some(x=>x.kind===kind)){b.textContent=label+" · открыто";b.disabled=true}host.append(b)}const help=$("help");help.replaceChildren();for(const {kind} of r.help){const box=el("section");box.className="support";box.id="help-"+kind;box.append(el("h3",helpNames[kind]));if(kind==="hint1"||kind==="hint2")box.append(el("p",t.hints[kind==="hint1"?0:1]));if(kind==="samples"){for(const sample of t.sample){box.append(el("blockquote",sample.work));box.append(el("p",sample.question));}}if(kind==="checklist"){box.append(el("p","Отметки — твоя самопроверка, а не автоматическая оценка доказательства."));t.checks.forEach((check,i)=>{const label=el("label"),input=el("input");input.type="checkbox";input.checked=r.checks.includes(i);input.addEventListener("change",()=>{r.checks=input.checked?[...new Set([...r.checks,i])]:r.checks.filter(x=>x!==i)});label.append(input,document.createTextNode(" "+check));box.append(label)})}if(kind==="model")box.append(el("p",t.model));help.append(box)}}
+function move(i){rec().draft=$("writing").value.slice(0,6000);current=i;msg(" ");render();$("title").focus()}
+for(const t of tasks){const option=el("option","№"+t.no+" · "+t.phase+": "+t.title);option.value=t.id;$("nav").append(option)}
+$("nav").addEventListener("change",()=>move(tasks.findIndex(t=>t.id===$("nav").value)));
+$("prev").addEventListener("click",()=>move(current-1));$("next").addEventListener("click",()=>move(current+1));
+$("writing").addEventListener("input",()=>{rec().draft=$("writing").value;});
+$("save").addEventListener("click",()=>{const r=rec();if(saveRecord(r,$("writing").value)){render();msg("Запись зафиксирована. Можно исправить её самостоятельно, открыть помощь или перейти к другой задаче.")}else msg("Введи запись или изменение; если не знаешь, с чего начать, используй отдельную кнопку.")});
+$("unable").addEventListener("click",()=>{if($("writing").value.trim()){msg("У тебя уже есть запись — зафиксируй её обычной кнопкой.");return}if(saveRecord(rec(),"",true)){render();msg("Первая попытка зафиксирована. Теперь доступен направляющий вопрос.")}});
+$("export").addEventListener("click",()=>{rec().draft=$("writing").value;const data={format:"MathExam written practice v1",areaWorkshop,createdAt:new Date().toISOString(),note:"Самостоятельность означает отсутствие открытой опоры в этом модуле, не оценку правильности или авторства. Черновики не отправляются на сервер.",tasks:tasks.map(t=>({id:t.id,no:t.no,condition:t.condition,...records[t.id]}))};const a=el("a");a.download="mathexam-written-practice.json";a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);$("export-notice").textContent="Файл записей подготовлен для скачивания. Передай его преподавателю вручную."});
+render();
+})([{"id":"p24-median-height","no":24,"phase":"Учебная задача","title":"Медиана является высотой","condition":"В треугольнике ABC медиана BM одновременно является высотой. Докажите, что AB = BC.","points":{"A":[38,172],"B":[150,32],"C":[262,172],"M":[150,172]},"segments":["AB","BC","CA","BM"],"right":[["A","M","B"]],"labels":{"A":[-15,16],"B":[-5,-13],"C":[8,16],"M":[-5,23]},"hints":["Какие два треугольника удобно сравнить? Какие сведения даёт каждое из слов «медиана» и «высота»?","Назови два равных катета и объясни происхождение каждого равенства. Затем свяжи равенство треугольников с тем, что надо доказать."],"checks":["Я объяснил, почему AM = MC.","Я указал общую сторону и прямые углы.","Я назвал признак равенства прямоугольных треугольников.","Я сделал вывод о равенстве AB и BC."],"sample":[{"work":"BM — общая сторона, углы при M прямые. Треугольники ABM и CBM равны по двум катетам. Поэтому AB = BC.","question":"Какое равенство второго катета нужно ещё обосновать?"},{"work":"AM = MC, BM — общая, углы при M прямые. Треугольники ABM и CBM равны по двум катетам. Что и требовалось доказать.","question":"Какое равенство соответствующих сторон отвечает на вопрос задачи?"}],"model":"BM — медиана, поэтому AM = MC. BM — высота, поэтому ∠AMB = ∠CMB = 90°. BM — общий катет. Следовательно, прямоугольные треугольники AMB и CMB равны по двум катетам. Их соответствующие гипотенузы AB и CB равны. Что и требовалось доказать."},{"id":"p24-cross-sides","no":24,"phase":"Самостоятельная задача","title":"Два отрезка в треугольнике","condition":"В треугольнике ABC известно, что AB = AC. Точки D и E лежат внутри сторон AB и AC соответственно, BD = CE. Докажите, что BE = CD.","points":{"A":[150,30],"B":[35,175],"C":[265,175],"D":[81,117],"E":[219,117]},"segments":["AB","BC","CA","BE","CD"],"right":[],"labels":{"A":[-5,-12],"B":[-15,18],"C":[7,18],"D":[-17,-3],"E":[9,-3]},"hints":["Какие два треугольника содержат отрезки, равенство которых надо доказать?","Сравни AD и AE через разности длин. Затем укажи угол между соответствующими сторонами."],"checks":["Я объяснил, почему AD = AE.","Я указал треугольники ABE и ACD.","Я объяснил, почему углы BAE и CAD равны.","Я назвал признак и получил BE = CD."],"sample":[{"work":"AB = AC, BD = CE, следовательно, треугольники ABE и ACD равны по двум сторонам и углу между ними.","question":"Какие именно стороны сравниваемых треугольников равны? BD и CE в них не входят как стороны."}],"model":"AD = AB − BD и AE = AC − CE. По условию AB = AC и BD = CE, поэтому AD = AE. В треугольниках ABE и ACD: AB = AC, AE = AD, ∠BAE = ∠CAD (это один угол BAC). Значит, треугольники равны по двум сторонам и углу между ними. Следовательно, BE = CD."},{"id":"p24-cross-diagonals","no":24,"phase":"Изменённая конфигурация","title":"Два пересекающихся отрезка","condition":"Отрезки AC и BD пересекаются в точке O. Известно, что AO = OC и BO = OD. Докажите, что AB = CD.","points":{"A":[40,55],"B":[230,40],"C":[260,155],"D":[70,170],"O":[150,105]},"segments":["AC","BD","AB","CD"],"right":[],"labels":{"A":[-16,-4],"B":[7,-10],"C":[9,11],"D":[-15,19],"O":[8,-7]},"hints":["В каких треугольниках находятся AB и CD? Как связаны углы при пересечении двух прямых?","Рассмотри треугольники AOB и COD. Назови две пары равных сторон и угол между ними."],"checks":["Я выбрал треугольники AOB и COD.","Я использовал два равенства из условия.","Я обосновал равенство вертикальных углов.","Я указал признак и нужные соответствующие стороны."],"sample":[{"work":"AO = OC, BO = OD, ∠AOB = ∠COD. Следовательно, AB = CD.","question":"Какую теорему надо назвать между перечисленными равенствами и итоговым выводом?"}],"model":"AO = OC и BO = OD по условию. ∠AOB = ∠COD как вертикальные. Значит, треугольники AOB и COD равны по двум сторонам и углу между ними. Их соответствующие стороны AB и CD равны."},{"id":"p24-return","no":24,"phase":"Возврат на следующем занятии","title":"Медиана в равнобедренном треугольнике","condition":"В треугольнике ABC известно, что AB = BC. Точка M — середина AC. Докажите, что BM ⟂ AC.","points":{"A":[38,172],"B":[150,32],"C":[262,172],"M":[150,172]},"segments":["AB","BC","CA","BM"],"right":[],"established":[["A","M","B"]],"labels":{"A":[-15,16],"B":[-5,-13],"C":[8,16],"M":[-5,23]},"hints":["Что уже известно о трёх сторонах треугольников ABM и CBM? Не принимай прямой угол за данное.","После равенства треугольников сравни углы AMB и BMC. Сколько градусов составляет их сумма?"],"checks":["Я применил признак по трём сторонам, не предполагая прямой угол.","Я получил равенство углов при M.","Я обосновал, что они смежные и каждый равен 90°.","Я записал требуемую перпендикулярность."],"sample":[{"work":"На рисунке BM — высота, поэтому треугольники равны по двум катетам.","question":"Что именно требуется доказать? Можно ли использовать это как известный факт?"}],"model":"AB = CB по условию, AM = CM, так как M — середина AC, BM — общая сторона. Треугольники ABM и CBM равны по трём сторонам. Поэтому ∠AMB = ∠CMB. Эти углы смежные, их сумма 180°, значит каждый равен 90°. Следовательно, BM ⟂ AC."},{"id":"p25-median-bisector","no":25,"phase":"Многошаговое обоснование","title":"Биссектриса и медиана","condition":"В треугольнике ABC биссектриса BE и медиана AD перпендикулярны и равны: BE = AD = 48. Найдите все стороны треугольника. Обоснуйте вычисления.","points":{"A":[150,40],"B":[42,112],"C":[258,256],"D":[150,184],"E":[186,112],"P":[150,112]},"segments":["AB","BC","CA","AD","BE"],"right":[["A","P","B"]],"hiddenLabel":["P"],"labels":{"A":[-6,-13],"B":[-17,0],"C":[8,12],"D":[-18,17],"E":[9,-6],"P":[-17,17]},"hints":["Назови точку пересечения AD и BE буквой P. Сравни прямоугольные треугольники ABP и DBP. Что можно сказать о длинах AP, PD, AB, BD?","По теореме о биссектрисе AE:EC = 1:2. Вырази площади ABP и ABE через площадь ABC. У этих треугольников общая высота к прямой BE: сравни BP и BE."],"checks":["Я обосновал AB = BD и AP = PD.","Я получил AE:EC = 1:2 по теореме о биссектрисе.","Я обосновал отношение площадей и BP = 36.","Я вычислил стороны через теорему Пифагора и отношение отрезков."],"sample":[{"work":"AD = BE = 48. Поэтому BP = AP = 24, и AB = 24√2.","question":"Из какого факта следует, что P является серединой BE? Действительно ли он дан или доказан?"}],"model":"Пусть P — пересечение AD и BE. В треугольнике ABD отрезок BP одновременно биссектриса и высота. Прямоугольные треугольники ABP и DBP равны по катету BP и прилежащему острому углу. Отсюда AP = PD = 24, AB = BD, BC = 2AB. По теореме о биссектрисе AE:EC = AB:BC = 1:2. Обозначим площадь ABC через S. Площадь ABD равна S/2 (D — середина BC); площадь ABP равна S/4 (P — середина AD). Площадь ABE равна S/3 (AE = AC/3). У ABP и ABE общая высота к BE, поэтому BP/BE = (S/4)/(S/3) = 3/4. Значит, BP = 36, PE = 12. По Пифагору AB = √(36² + 24²) = 12√13, AE = √(24² + 12²) = 12√5. Итак, AB = 12√13, BC = 24√13, AC = 36√5."},{"id":"p25-tangent-trapezoid","no":25,"phase":"Многошаговое обоснование","title":"Трапеция с окружностью","condition":"В равнобедренную трапецию ABCD с основаниями AD > BC вписана окружность. Периметр трапеции равен 40, площадь равна 80. O — точка пересечения диагоналей. Найдите расстояние от O до меньшего основания BC.","points":{"A":[30,180],"B":[120,60],"C":[180,60],"D":[270,180],"O":[150,84]},"segments":["AB","BC","CD","DA","AC","BD"],"circle":[150,120,60],"right":[],"labels":{"A":[-15,18],"B":[-12,-10],"C":[5,-10],"D":[8,18],"O":[8,10]},"hints":["Что известно о суммах противоположных сторон четырёхугольника, описанного около окружности? Как получить высоту из площади?","Проведи высоты к большему основанию. Найди разность оснований через теорему Пифагора. Затем сравни подобные треугольники у точки пересечения диагоналей."],"checks":["Я вывел AD + BC = 20 и AB = CD = 10.","Я получил высоту 8 и разность оснований 12.","Я обосновал подобие BOC и DOA.","Я объяснил отношение высот подобных треугольников и нашёл расстояние."],"sample":[{"work":"Высота трапеции 8, значит расстояние от точки пересечения диагоналей до основания равно 4.","question":"Всегда ли диагонали трапеции делят её высоту пополам? Какое отношение определяется основаниями?"}],"model":"Суммы противоположных сторон описанного четырёхугольника равны (касательные из одной точки равны). Поэтому AD + BC = AB + CD = 20, а AB = CD = 10. Из 80 = (AD + BC)·h/2 получаем h = 8. Если опустить высоты из B и C на AD, проекции обеих боковых сторон равны √(10² − 8²) = 6; разность оснований равна 12. Отсюда AD = 16, BC = 4. Треугольники BOC и DOA подобны по двум углам (вертикальные и углы при параллельных основаниях); BC/AD = 1/4. Их высоты к основаниям относятся так же. Сумма высот равна 8, значит расстояние от O до BC равно 8·1/5 = 8/5."}],function newRecord(){return {draft:"",first:null,attempts:[],help:[],checks:[]}},function saveRecord(r,value,unable=false){value=String(value).slice(0,6000);r.draft=value;if(!value.trim()&&!unable)return false;if(r.attempts.length>=100)return false;if(r.attempts.length&&r.attempts.at(-1).text===value&&r.attempts.at(-1).unable===unable)return false;const item={text:value,unable:!!unable,at:new Date().toISOString(),helpBefore:r.help.map(x=>x.kind)};if(r.first===null)r.first=item;r.attempts.push(item);return true},function reveal(r,kind){if(r.first===null)return false;if(!["hint1","hint2","samples","checklist","model"].includes(kind))return false;if(!r.help.some(x=>x.kind===kind))r.help.push({kind,at:new Date().toISOString()});return true},function status(r){if(!r.first)return "Первая запись ещё не зафиксирована";const last=r.attempts.at(-1);if(r.help.length)return r.help.some(x=>x.kind==="model")?"Открыт образец; самостоятельность последующих записей не подтверждена":"Открыта учебная опора; записи сохранены раздельно";if(last.unable)return "Начать пока не получилось — это тоже наблюдение";if(r.attempts.length>1)return "Повторная запись без открытой помощи; правильность не проверена";return "Первая запись без открытой помощи; правильность не проверена"});</script></body></html>

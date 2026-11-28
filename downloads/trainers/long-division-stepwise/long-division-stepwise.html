@@ -954,6 +954,78 @@ nav.oge-wayfinding[hidden]{display:none!important}
   }
 })();
 
+/* These links open a supported joint exercise, independent of individual progress. */
+(function () {
+  'use strict';
+  const cards = {
+    start:'whole', oneDigit:'whole', zero:'whole',
+    decimalNatural:'tenths', decimalDivisor:'shift'
+  };
+  const fileTopics = {
+    'long-division-one-digit.html':'oneDigit',
+    'decimal-division-natural.html':'decimalNatural',
+    'decimal-divisor-shift.html':'decimalDivisor'
+  };
+  function boardHost() {
+    try {
+      if (parent !== window && parent.location.origin === location.origin &&
+          /\/trainers\/(?:trainer-board|group-board)\.html$/.test(parent.location.pathname)) return parent;
+    } catch (_) { /* Cabinet embeds can have a different origin. */ }
+    return null;
+  }
+  function addBoardLink(container, topic) {
+    const task = cards[topic] && 'ratio-division-' + cards[topic];
+    const previous = container.querySelector('[data-division-board]');
+    if (previous?.dataset.divisionBoard === task) return;
+    previous?.remove();
+    if (!task) return;
+    const host = boardHost();
+    const link = document.createElement(host ? 'button' : 'a');
+    link.dataset.divisionBoard = task;
+    link.className = 'button';
+    link.textContent = 'На общую доску';
+    if (host) {
+      link.type = 'button';
+      link.onclick = () => {
+        if (host.openGrade6LessonTask?.(window, task)) return;
+        let status = container.querySelector('[data-division-status]');
+        if (!status) {
+          status = document.createElement('span');
+          status.dataset.divisionStatus = '';
+          status.setAttribute('role', 'status');
+          container.append(status);
+        }
+        status.textContent = 'Карточку выбирает учитель, когда доска подключена и управление у него.';
+      };
+    } else {
+      const origin = location.protocol === 'file:' ? 'https://mathexam.space' : location.origin;
+      const board = new URL('/trainers/trainer-board.html', origin);
+      board.searchParams.set('trainer', '/trainers/vilenkin6-proportion/index.html?task=' + task);
+      link.href = board.href;
+      link.target = '_blank';
+      link.rel = 'noopener';
+    }
+    container.append(link);
+  }
+  function showGuided(topic) {
+    const nav = document.getElementById('division-learning-route');
+    if (nav) addBoardLink(nav, topic);
+  }
+  document.addEventListener('mathexam:division-step', e => showGuided(e.detail?.topic));
+  function initialize() {
+    const state = window.__divisionGuidedDebug?.state();
+    if (state) showGuided(state.active);
+    for (const anchor of document.querySelectorAll('.path-step [data-guided]')) {
+      addBoardLink(anchor.parentElement, anchor.dataset.guided);
+    }
+    const topic = fileTopics[location.pathname.split('/').pop()];
+    const container = document.querySelector('.topbar-in');
+    if (container && topic) addBoardLink(container, topic);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, {once:true});
+  else initialize();
+})();
+
 </script>
 <script data-inline-source="/trainers/oge-basics/multiplication-division/decimal-shift.js">
 (function (root) {
@@ -1676,7 +1748,16 @@ nav.oge-wayfinding[hidden]{display:none!important}
   const inCourse = parameters.get('course') === 'preoge';
   let buildMultiples = parameters.get('multiples') === 'build';
   const $ = id => document.getElementById(id);
-  const KEY = 'mathExamBasics.guidedDivision.v1';
+  const fractionPilot = parameters.get('practice') === 'fraction-zeros';
+  const ratioPractice = parameters.get('practice') === 'ratio-division';
+  const ratioStages = {
+    oneDigit: { pair: ['72', '3'], question: 'Сколько троек поместится в 72? Назови две круглые границы и проверь их умножением на 3.', proof: '3 · 20 = 60, 3 · 30 = 90. Значит, частное больше 20 и меньше 30.' },
+    zero: { pair: ['1005', '5'], question: 'Как решить, может ли частное быть двузначным, ещё до деления?', proof: '5 · 200 = 1000, 5 · 210 = 1050. Частное между 200 и 210. Проверь место для десятков в уголке.' },
+    decimalNatural: { pair: ['7,2', '3'], question: '7,2 литра поровну разливают по трём банкам. Сколько литров в одной банке? Назови две целые границы.', proof: 'По 2 л в трёх банках дадут 6 л, по 3 л — 9 л. На одну банку приходится больше 2 и меньше 3 л.' },
+    decimalDivisor: { pair: ['7,2', '0,3'], question: 'Есть 7,2 литра и стаканы по 0,3 литра. Хватит ли 10 стаканов? А 30? Обоснуй обе границы.', proof: 'В 10 стаканах 3 л, в 30 стаканах 9 л. Число стаканов между 10 и 30. Можно считать в десятых литра: тогда обе величины увеличивают своё числовое значение в 10 раз.' }
+  };
+  const KEY = ratioPractice ? 'mathExamBasics.ratioDivision.v1' :
+    fractionPilot ? 'mathExamBasics.fractionZeros.v1' : 'mathExamBasics.guidedDivision.v1';
   const esc = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const topicIds = new Set(G.topics.map(t => t.id));
   const names = { start:'Первое неполное делимое', count:'Намечаем места для ответа', digit:'Находим цифру ответа', product:'Умножаем', subtract:'Вычитаем', 'remainder-check':'Проверяем остаток', bring:'Сносим одну цифру', partial:'Читаем новое неполное делимое', comma:'Ставим запятую', answer:'Читаем ответ', 'final-remainder':'Записываем остаток', verify:'Проверяем решение', 'shift-count':'Готовим делитель', 'shift-factor':'Меняем оба числа одинаково', 'shift-divisor':'Меняем делитель', 'shift-dividend':'Меняем делимое' };
@@ -1698,7 +1779,7 @@ nav.oge-wayfinding[hidden]{display:none!important}
     contextualHost.hidden=false;$('help-toggle').hidden=true;
     const content=$('help-content');content.hidden=false;
     if($('multiplication-refresh').parentElement!==content)content.append($('multiplication-refresh'));
-    contextualHelp.update({host:contextualHost,identity:s.id+':'+s.step,contentId:'multiplication-division/long-division-from-simple-to-decimals',context:{prompt:a.prompt,kind:a.kind},rootContent:content,onUse:()=>{s.hints=Math.min(1000000,s.hints+1);helpOpen=true;save();}});
+    contextualHelp.update({host:contextualHost,identity:s.id+':'+s.step,contentId:'multiplication-division/long-division-from-simple-to-decimals',context:{prompt:a.prompt,kind:a.kind},rootContent:content,onUse:()=>{recordSupport(s,'hint');helpOpen=true;save();}});
   }
 
   function notice(text) { $('storage-notice').hidden = false; $('storage-notice').textContent = text; }
@@ -1711,9 +1792,46 @@ nav.oge-wayfinding[hidden]{display:none!important}
         !whole(mistake.digit, 9) || G.check(String(mistake.digit), plan.actions[mistake.step])) throw Error('Неверная запись подбора цифры.');
     return {step:mistake.step, high:mistake.high, low:mistake.low, digit:mistake.digit};
   }
+  const outcomes = ['first','corrected','hint','revealed'];
+  function recordSupport(s, kind) {
+    const field = kind === 'revealed' ? 'reveals' : 'hints';
+    s[field] = Math.min(1000000, s[field] + 1);
+    if (s.stepEvidence && s.stepEvidence[s.step] !== 'revealed') s.stepEvidence[s.step] = kind;
+  }
+  function restoreEvidence(source, target, lastStep) {
+    if (source.stepEvidence === undefined) return;
+    if (!source.stepEvidence || Array.isArray(source.stepEvidence) || typeof source.stepEvidence !== 'object' ||
+        !Object.entries(source.stepEvidence).every(([i,v]) => /^(0|[1-9]\d*)$/.test(i) && Number(i)<=lastStep && outcomes.includes(v)))
+      throw Error('Неверная запись помощи к шагу.');
+    target.stepEvidence = {...source.stepEvidence};
+  }
+  function restoreEstimate(source, target) {
+    const e=source.estimate;
+    if (fractionPilot && e && typeof e.input==='string' && e.input.length<=30 &&
+        ['wrong','correct','guided','guidedCorrect','editing'].includes(e.status)) {
+      target.estimate={input:e.input, status:e.status, missedZero:!!e.missedZero, hint:!!e.hint, retried:!!e.retried};
+    }
+  }
+  function resultText(r) {
+    if (r.reveals) return 'с помощью готового ответа к шагу';
+    if (r.hints) return 'с помощью подсказки';
+    if (r.errors) return 'после своих исправлений без дополнительной подсказки';
+    return r.repeated ? 'повтор знакомого примера без подсказок' : 'пошагово без ошибок и дополнительных подсказок, новое условие';
+  }
+  function tenthsReport(record) {
+    if (!record.stepEvidence) return '';
+    const plan=G.plan(record.task);
+    const index=plan.actions.findIndex(a=>a.kind==='digit' && a.answer==='0' &&
+      plan.cycles[a.cycle].sourceIndex === plan.intLen);
+    const outcome=record.stepEvidence[index];
+    if (!outcome || (record.answers && index>=record.answers.length)) return '';
+    return 'Ноль в десятых: '+({first:'вписан с первой попытки', corrected:'исправлен самостоятельно',
+      hint:'вписан после подсказки', revealed:'вписан после показа ответа'})[outcome]+'.';
+  }
   function validate(raw) {
     if (!raw || raw.version !== 1 || !topicIds.has(raw.active) || !whole(raw.serial) || !raw.sessions || typeof raw.sessions !== 'object' || !raw.next || typeof raw.next !== 'object' || !Array.isArray(raw.records) || raw.records.length > 10000) throw Error('Неверная запись');
     const out = {version:1, active:raw.active, serial:raw.serial, next:{}, sessions:{}, records:[]};
+    if (fractionPilot && raw.comparison && ['wrong','correct','corrected'].includes(raw.comparison)) out.comparison=raw.comparison;
     if (raw.digitSkill !== undefined) {
       const skill = raw.digitSkill;
       if (!skill || typeof skill.verified !== 'boolean' || !Array.isArray(skill.seen) || skill.seen.length > 440 ||
@@ -1731,6 +1849,8 @@ nav.oge-wayfinding[hidden]{display:none!important}
       const count = s.step + (s.accepted ? 1 : 0);
       if (s.step >= p.actions.length || count !== s.answers.length || s.done !== (count === p.actions.length) || !s.answers.every((v, i) => typeof v === 'string' && G.check(v, p.actions[i]))) throw Error('Ответы не совпали');
       out.sessions[id] = {id:s.id, task:p.task, step:s.step, answers:[...s.answers], accepted:s.accepted, done:s.done, draft:s.draft, errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated};
+      restoreEstimate(s, out.sessions[id]);
+      restoreEvidence(s, out.sessions[id], s.step);
       if (s.digitMistake !== undefined) out.sessions[id].digitMistake = readDigitMistake(s.digitMistake, p, s.step);
       if (s.multiples !== undefined) {
         const m = s.multiples;
@@ -1753,6 +1873,8 @@ nav.oge-wayfinding[hidden]{display:none!important}
       if (p.topicId !== r.topic) throw Error('Неверный итог темы');
       ids.add(r.id);
       out.records.push({id:r.id, task:p.task, topic:r.topic, at:r.at, errors:r.errors, hints:r.hints, reveals:r.reveals, repeated:r.repeated});
+      restoreEstimate(r, out.records.at(-1));
+      restoreEvidence(r, out.records.at(-1), p.actions.length-1);
       if (r.digitMistake !== undefined) out.records.at(-1).digitMistake = readDigitMistake(r.digitMistake, p, p.actions.length - 1);
     }
     for (const s of Object.values(out.sessions)) {
@@ -1795,9 +1917,18 @@ nav.oge-wayfinding[hidden]{display:none!important}
       for (let tries = 0; tries < 80 && seen.has(fingerprint(task)) && sequence < 1000000; tries++) task = G.makeProgressive(id, ++sequence, tier);
       state.next[id] = Math.min(1000000, sequence + 1);
     }
+    if (fractionPilot && id==='appendZeros' && !repeat) {
+      const completed = state.records.filter(r=>r.topic===id && !r.repeated).length;
+      const pair = [['3','40'],['2','25']][completed];
+      if (pair) task = {topicId:id, level:id, dividend:pair[0], divisor:pair[1]};
+    }
+    if (ratioPractice && ratioStages[id] && !old && !repeat) {
+      const [dividend, divisor] = ratioStages[id].pair;
+      task = {topicId:id, level:id, dividend, divisor};
+    }
     const repeated = state.records.some(r => fingerprint(r.task) === fingerprint(task));
     state.serial++;
-    state.sessions[id] = {id:state.serial, task, step:0, answers:[], accepted:false, done:false, draft:'', errors:0, hints:0, reveals:0, repeated};
+    state.sessions[id] = {id:state.serial, task, step:0, answers:[], accepted:false, done:false, draft:'', errors:0, hints:0, reveals:0, repeated, stepEvidence:{}};
     feedback = ''; helpOpen = false; revealOpen = false; multiplesFeedback = '';
     if (buildMultiples) prepareMultiples();
     save();
@@ -2063,7 +2194,7 @@ nav.oge-wayfinding[hidden]{display:none!important}
     s.multiples = {divisor:G.plan(s.task).normalizedDivisor, open:true, values:Array(9).fill(''), checked:Array(9).fill(false)};
     // A visible table is an explicit scaffold, even when filled by the pupil.
     // The existing route summaries already understand this assistance counter.
-    s.hints = Math.min(1000000, s.hints + 1);
+    recordSupport(s,'hint');
     save();
   }
   function renderMultiples(p, s) {
@@ -2094,7 +2225,7 @@ nav.oge-wayfinding[hidden]{display:none!important}
           const s = current(), m = s.multiples, index = m.checked.findIndex(v => !v);
           if (index < 0 || s.done) return;
           m.values[index] = String(m.divisor * (index + 1)); m.checked[index] = true;
-          s.reveals = Math.min(1000000, s.reveals + 1);
+          recordSupport(s,'revealed');
           multiplesFeedback = 'Показано: ' + m.divisor + ' × ' + (index + 1) + ' = ' + m.values[index] + '. Следующую строку попробуй заполнить сам.';
           save(); render();
         }
@@ -2134,6 +2265,27 @@ nav.oge-wayfinding[hidden]{display:none!important}
     if (m.open && next >= 0) multiplesHost.querySelector('[data-multiple-input="' + (next + 1) + '"]')?.focus({preventScroll:true});
     else $('answer').focus({preventScroll:true});
   }
+  function renderRatioEstimate(s) {
+    const stage = ratioStages[s.task.topicId];
+    let panel = $('ratio-estimate');
+    const show = stage && s.task.dividend === stage.pair[0] && s.task.divisor === stage.pair[1];
+    if (!show) {
+      if (panel) panel.remove();
+      return;
+    }
+    if (!panel) {
+      panel = document.createElement('section');
+      panel.id = 'ratio-estimate'; panel.className = 'workspace';
+      panel.innerHTML = '<h2>Коридор ответа</h2><p></p><details><summary>Сверить обоснование границ</summary><p></p></details>';
+      $('problem').closest('section').before(panel);
+    }
+    if (panel.dataset.session !== String(s.id)) {
+      panel.dataset.session = String(s.id);
+      panel.querySelector('p').textContent = stage.pair.join(' : ') + '. ' + stage.question;
+      panel.querySelector('details').open = false;
+      panel.querySelector('details p').textContent = stage.proof;
+    }
+  }
   function renderLearningRoute(s) {
     let nav = $('division-learning-route');
     if (!nav) {
@@ -2156,6 +2308,11 @@ nav.oge-wayfinding[hidden]{display:none!important}
     recommendation.textContent = training.ready
       ? 'Есть 3 разных решения по шагам без подсказок. Можно перейти к следующей теме или ' + (['start','quotientDigit'].includes(state.active) ? 'продолжить тренировку на новых примерах.' : 'продолжить на более сложных числах.') + ' Самостоятельная проверка — в конце маршрута.'
       : 'Перед следующей темой реши ещё ' + missing + (missing === 1 ? ' новый пример' : ' новых примера') + ' по шагам без подсказок. Тему можно сменить в любой момент.';
+    if (ratioPractice && ratioStages[state.active]) {
+      recommendation.textContent = s.task.topicId === 'decimalDivisor'
+        ? 'Теперь самостоятельно проверь похожий пример или вернись к задаче на пропорцию.'
+        : 'Можно перейти к следующему шагу урока или решить ещё один пример на этот приём.';
+    }
     if (s.multiples) recommendation.textContent += ' Этот пример выполнен с выкладкой кратных.';
     let unassisted = $('next-without-multiples');
     if (!unassisted) {
@@ -2186,7 +2343,9 @@ nav.oge-wayfinding[hidden]{display:none!important}
   function renderResults() {
     const total = state.records.length;
     const alone = state.records.filter(independent).length;
-    $('results-text').textContent = total ? 'Закончено примеров по шагам: ' + total + '. Новых, без ошибок и дополнительных подсказок: ' + alone + '. С помощью, исправлениями или повторно: ' + (total - alone) + '.' : 'Здесь появятся законченные примеры.';
+    const corrected = state.records.filter(r=>r.errors && !r.hints && !r.reveals).length;
+    const assisted = state.records.filter(r=>r.hints || r.reveals).length;
+    $('results-text').textContent = total ? 'Закончено примеров по шагам: ' + total + '. Новых, без ошибок и дополнительных подсказок: ' + alone + '. После своих исправлений без подсказок: ' + corrected + '. С подсказкой или показом ответа: ' + assisted + '. Повторов без ошибок и подсказок: ' + (total-alone-corrected-assisted) + '.' : 'Здесь появятся законченные примеры.';
   }
   function renderRouteLinks() {
     const level = route?.levelForGuided(state.active);
@@ -2283,23 +2442,77 @@ nav.oge-wayfinding[hidden]{display:none!important}
     $('multiplication-refresh').hidden = !window.MultiplicationRefresh;
     $('help-toggle').setAttribute('aria-expanded', String(helpOpen));
     $('help-content').hidden = !helpOpen;
-    $('hint-text').textContent = a.hint;
+    $('hint-text').textContent = a.kind==='digit' && a.answer==='0' && p.cycles[a.cycle].sourceIndex===p.intLen
+      ? 'У тебя '+p.cycles[a.cycle].partial+' десятых. Сколько раз '+p.normalizedDivisor+' помещается в это число?' : a.hint;
     $('multiples').hidden = a.kind !== 'digit' && a.kind !== 'product';
     if (s.multiples) $('multiples').hidden = true;
     if (!$('multiples').hidden) $('multiples').innerHTML = '<p class="table-note">Нажми на строку, чтобы подставить ' + (a.kind === 'digit' ? 'цифру' : 'произведение') + '. Затем проверь ответ.</p>' + Array.from({length:10}, (_, q) => '<button type="button" data-multiple="' + (a.kind === 'digit' ? q : p.normalizedDivisor * q) + '">' + p.normalizedDivisor + ' × <b>' + q + '</b> = ' + p.normalizedDivisor * q + '</button>').join('');
     $('revealed').textContent = revealOpen ? 'В этом шаге ответ: ' + a.answer + '. Впиши его и нажми «Проверить».' : '';
     if (s.done) {
       const answer = p.micropractice ? p.actions[0].answer : p.quotient + (s.task.level === 'remainder' ? ' (остаток ' + p.remainder + ')' : '');
-      $('completion-text').textContent = (p.micropractice ? 'Подходящая цифра: ' : 'Ответ: ') + answer + '. ' + (independent(s) ? 'Получилось без ошибок и подсказок.' : s.repeated && !s.hints && !s.reveals && !s.errors ? 'Знакомый пример повторён.' : 'Пример пройден с помощью или исправлениями.');
+      $('completion-text').textContent = (p.micropractice ? 'Подходящая цифра: ' : 'Ответ: ') + answer + '. ' + (independent(s) ? 'Получилось без ошибок и подсказок.' : s.repeated && !s.hints && !s.reveals && !s.errors ? 'Знакомый пример повторён.' : 'Пример пройден '+resultText(s)+'.');
     }
     const nextTopic = followingTopic();
     $('next-topic').hidden = !s.done || !nextTopic;
     if (nextTopic) $('next-topic').textContent = (state.sessions[nextTopic.id] && !state.sessions[nextTopic.id].done ? 'Продолжить тему: ' : 'Следующая тема: ') + nextTopic.title;
     $('save-note').textContent = blocked || !storageAvailable ? 'Можно закончить на сегодня. Отправь учителю результат или снимок экрана: сохранение сейчас недоступно.' : 'Можно закончить на сегодня. Результат сохранится в этом браузере.';
+    renderFractionEstimate(s);
+    if (ratioPractice) renderRatioEstimate(s);
     renderResults();
     renderRouteLinks();
     updateContextualHelp(s,a);
-    document.dispatchEvent(new CustomEvent('mathexam:division-step', {detail:{kind:a.kind, done:s.done}}));
+    document.dispatchEvent(new CustomEvent('mathexam:division-step', {detail:{kind:a.kind, done:s.done, topic:state.active}}));
+  }
+  function renderFractionEstimate(s) {
+    let box=$('fraction-estimate');
+    if (!fractionPilot || s.step>0 || s.done || s.task.dividend!=='3' || s.task.divisor!=='40') {
+      if (box) { box.hidden=true; $('problem').closest('section').hidden=false; }
+      return;
+    }
+    if (!box) {
+      box=document.createElement('section'); box.id='fraction-estimate'; box.className='workspace';
+      box.innerHTML='<h2>Запиши 3/40 десятичной дробью</h2><form><label for="fraction-guess">Твоя запись</label> <input id="fraction-guess" inputmode="decimal" maxlength="30"> <button>Проверить дробь</button></form><p role="status"></p><button type="button" data-fraction-hint>Помочь с десятыми</button> <button type="button" data-fraction-write>Перейти к делению уголком</button>';
+      $('problem').closest('section').before(box);
+      const input=$('fraction-guess');
+      input.oninput=()=>{
+        const session=current(),e=session.estimate;
+        session.estimate={...e,input:input.value,status:'editing'}; save();
+      };
+      box.querySelector('form').onsubmit=event=>{
+        event.preventDefault();
+        const session=current(), raw=input.value.trim().replace('.',',');
+        if (!raw) { input.focus(); return; }
+        const firstWrong=!session.estimate?.retried;
+        const correct=G.equal(raw,G.plan(session.task).quotient);
+        session.estimate={...session.estimate,input:input.value,status:correct?'correct':'wrong',
+          retried:!!session.estimate?.retried || !correct,
+          missedZero:!!session.estimate?.missedZero || (!correct && firstWrong && G.equal(raw,'0,75'))};
+        if (!correct) session.errors=Math.min(1000000,session.errors+1);
+        save(); renderFractionEstimate(session);
+      };
+      box.querySelector('[data-fraction-hint]').onclick=()=>{
+        const session=current();session.estimate={...session.estimate,input:input.value,hint:true,status:session.estimate?.status || 'editing'};
+        session.hints=Math.min(1000000,session.hints+1);save();renderFractionEstimate(session);input.focus();
+      };
+      box.querySelector('[data-fraction-write]').onclick=()=>{
+        const session=current();
+        session.estimate={...session.estimate,input:input.value,status:session.estimate?.status==='correct'?'guidedCorrect':'guided'};
+        save();render();moveFocus();
+      };
+    }
+    const e=s.estimate;
+    const visible=!e || !['guided','guidedCorrect'].includes(e.status);
+    box.hidden=!visible;
+    $('problem').closest('section').hidden=visible;
+    if (!visible) return;
+    $('fraction-guess').value=e?.input || '';
+    $('fraction-guess').readOnly=e?.status==='correct';
+    const correct=e?.status==='correct';
+    box.querySelector('form button').disabled=correct;
+    box.querySelector('[data-fraction-hint]').hidden=correct;
+    box.querySelector('[role="status"]').textContent=correct?'Верно. Теперь можно проверить запись делением уголком.'
+      : e?.hint?'После запятой у тебя 30 десятых. Сколько раз 40 помещается в 30?'
+      : e?.status==='wrong'?'Проверь запись. Можно исправить её или попросить один вопрос.':'';
   }
   function moveFocus() {
     const s = current(), a = G.plan(s.task).actions[s.step];
@@ -2365,25 +2578,29 @@ nav.oge-wayfinding[hidden]{display:none!important}
     if (!G.check(raw, a)) {
       const identity = s.id + ':' + s.step;
       if (identity !== errorStep) { errorStep = identity; stepErrors = 0; }
-      if (raw) { s.errors = Math.min(1000000, s.errors + 1); stepErrors++; }
-      feedback = errorText(raw, p, a);
+      if (raw) { s.errors = Math.min(1000000, s.errors + 1); stepErrors++; if (s.stepEvidence && !s.stepEvidence[s.step]) s.stepEvidence[s.step]='corrected'; }
+      feedback = fractionPilot && a.kind==='digit' && a.answer==='0' && p.cycles[a.cycle].sourceIndex===p.intLen && raw
+        ? 'Проверь цифру десятых. Можно исправить запись или открыть подсказку.' : errorText(raw, p, a);
       if (!p.micropractice && a.kind === 'digit' && /^\d$/.test(raw)) {
         if (s.digitMistake?.step !== s.step) s.digitMistake = {step:s.step, high:0, low:0, digit:Number(raw)};
         const mistake = s.digitMistake;
         const side = Number(raw) > Number(a.answer) ? 'high' : 'low';
         mistake[side] = Math.min(1000000, mistake[side] + 1);
         mistake.digit = Number(raw);
-        if (digitErrors(mistake) === 2) s.hints = Math.min(1000000, s.hints + 1);
+        if (digitErrors(mistake) === 2) recordSupport(s,'hint');
         if (digitErrors(mistake) >= 2) feedback = digitHint(p, a, mistake.digit);
       } else if (stepErrors >= 2) feedback += ' Если трудно, открой подсказку к этому шагу.';
       feedbackKind = 'error'; save(); render(); return;
     }
+    if (s.stepEvidence && !s.stepEvidence[s.step]) s.stepEvidence[s.step]='first';
     s.answers.push(raw); s.accepted = true;
     feedback = 'Предыдущий шаг выполнен: ' + raw + '. Ответ записан.'; feedbackKind = 'good';
     helpOpen = false; revealOpen = false; errorStep = ''; stepErrors = 0;
     s.done = s.answers.length === p.actions.length;
     if (s.done && !state.records.some(r => r.id === s.id)) {
       const record = {id:s.id, task:s.task, topic:state.active, at:Date.now(), errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated};
+      restoreEstimate(s, record);
+      if (s.stepEvidence) record.stepEvidence={...s.stepEvidence};
       if (s.digitMistake) record.digitMistake = {...s.digitMistake};
       state.records.push(record);
     }
@@ -2428,22 +2645,25 @@ nav.oge-wayfinding[hidden]{display:none!important}
     if (!multiplicationRefresh) multiplicationRefresh = window.MultiplicationRefresh.create({onHelp() {
       const s = current();
       if (!s || s.done) return;
-      s.hints = Math.min(1000000, s.hints + 1);
+      recordSupport(s,'hint');
       save();
     }});
     const p = G.plan(current().task);
     multiplicationRefresh?.open(p.normalizedDivisor >= 2 && p.normalizedDivisor <= 9 ? p.normalizedDivisor : undefined);
   };
   $('help-toggle').onclick = () => {
-    if (!helpOpen) current().hints = Math.min(1000000, current().hints + 1);
+    if (!helpOpen) recordSupport(current(),'hint');
     helpOpen = !helpOpen; save(); render();
   };
   $('reveal').onclick = () => {
-    if (!revealOpen) current().reveals = Math.min(1000000, current().reveals + 1);
+    if (!revealOpen) recordSupport(current(),'revealed');
     revealOpen = true; save(); render();
   };
   function followingTopic() {
-    const route = G.topics.filter(t => !t.optional), index = route.findIndex(t => t.id === state.active);
+    const route = ratioPractice && ratioStages[state.active]
+      ? Object.keys(ratioStages).map(id => G.topics.find(t => t.id === id))
+      : G.topics.filter(t => !t.optional);
+    const index = route.findIndex(t => t.id === state.active);
     return index >= 0 ? route[index + 1] : null;
   }
   function showTopics() {
@@ -2485,7 +2705,13 @@ nav.oge-wayfinding[hidden]{display:none!important}
     const lines = ['Деление уголком · MathExam', $('results-text').textContent];
     if (state.digitSkill?.verified) lines.push('Подбор цифры частного проверен самостоятельно на отдельном примере.');
     for (const r of state.records.slice(-12)) {
-      lines.push(r.task.dividend + ' : ' + r.task.divisor + ' — ' + (independent(r) ? 'пошагово без ошибок и дополнительных подсказок, новое условие' : r.repeated ? 'повтор знакомого примера' : 'с помощью или исправлениями'));
+      lines.push(r.task.dividend + ' : ' + r.task.divisor + ' — ' + resultText(r) + (r.repeated && (r.errors || r.hints || r.reveals) ? ' (повтор)' : ''));
+      if (r.estimate?.missedZero) {
+        const e=r.estimate;
+        lines.push('Первая запись — 0,75 вместо 0,075. '+(['correct','guidedCorrect'].includes(e.status) ?
+          (e.hint?'Исправлено после вопроса о десятых.':'Исправлено самостоятельно.') : 'Продолжение в уголке.'));
+      }
+      const tenths=tenthsReport(r); if (tenths) lines.push(tenths);
       if (r.digitMistake) lines.push(digitReport(r.digitMistake));
     }
     const s = current();
@@ -2493,6 +2719,9 @@ nav.oge-wayfinding[hidden]{display:none!important}
       lines.push('Начато: ' + s.task.dividend + ' : ' + s.task.divisor + ', шаг ' + (s.step + 1) + '.');
       if (s.digitMistake) lines.push(digitReport(s.digitMistake));
     }
+    if (fractionPilot && state.comparison) lines.push('Сравнение 3/40 и 0,08: '+({
+      wrong:'пока требуется исправление',correct:'верно с первой попытки',corrected:'верно после исправления'
+    })[state.comparison]+'.');
     return lines.join('\n');
   }
   $('report-copy').onclick = async () => {
@@ -2508,7 +2737,7 @@ nav.oge-wayfinding[hidden]{display:none!important}
   };
   document.addEventListener('mathexam:skill-support', event => {
     const s = current(); if (!s || s.done) return;
-    s.hints = Math.min(1000000, s.hints + 1); save();
+    recordSupport(s,'hint'); save();
     if (blocked || !storageAvailable) event.preventDefault();
   });
   window.addEventListener('storage', event => {
@@ -2524,7 +2753,41 @@ nav.oge-wayfinding[hidden]{display:none!important}
     helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
     save(); render();
   });
-  const requested = location.hash.slice(1);
+  // Open the fraction route in its own saved notebook, so an unfinished
+  // ordinary division is still on its original row after returning.
+  const pilotURL = new URL(location.href);
+  pilotURL.searchParams.set('practice','fraction-zeros'); pilotURL.hash='appendZeros';
+  if (!fractionPilot) {
+    if (!ratioPractice) {
+      const line = document.createElement('p'), link = document.createElement('a');
+      const url = new URL(location.href);
+      url.searchParams.set('practice', 'ratio-division'); url.hash = 'oneDigit';
+      link.href = url.href; link.textContent = 'Отношения и деление: от целых чисел к десятичным';
+      line.append(link); $('topics-list').after(line);
+    }
+    const link=document.createElement('a');
+    link.href=pilotURL.href; link.textContent='Дробь в десятичную: ноль в десятых';
+    const line=document.createElement('p'); line.append(link); $('topics-list').after(line);
+  } else {
+    const compare=document.createElement('details');
+    compare.innerHTML='<summary>На следующем уроке · сравни дроби</summary><p>Какой знак поставить между 3/40 и 0,08?</p><div></div><p role="status"></p>';
+    const feedback=compare.lastElementChild;
+    const messages={wrong:'Попробуй ещё раз. Можно записать обе дроби в тысячных.',correct:'Верно: 75 тысячных меньше 80 тысячных.',corrected:'Исправлено: 75 тысячных меньше 80 тысячных.'};
+    function renderComparison() {
+      feedback.textContent=messages[state.comparison] || '';
+      for (const button of compare.querySelectorAll('button')) button.disabled=['correct','corrected'].includes(state.comparison);
+    }
+    for (const sign of ['<','=','>']) {
+      const button=document.createElement('button'); button.type='button'; button.textContent=sign;
+      button.setAttribute('aria-label',({'<':'Меньше','=':'Равно','>':'Больше'})[sign]);
+      button.onclick=()=>{state.comparison=sign==='<'?(state.comparison==='wrong'?'corrected':'correct'):'wrong'; save(); renderComparison();};
+      compare.querySelector('div').append(button);
+    }
+    compare.id='fraction-review'; compare.open=parameters.get('review')==='1';
+    $('problem').closest('section').before(compare); renderComparison();
+    if (compare.open) compare.querySelector('summary').focus();
+  }
+  const requested = location.hash.slice(1) || (fractionPilot ? 'appendZeros' : ratioPractice ? 'oneDigit' : '');
   if (topicIds.has(requested)) state.active = requested;
   if (!current()) newSession(state.active, false);
   else { if (buildMultiples) prepareMultiples(); save(); }

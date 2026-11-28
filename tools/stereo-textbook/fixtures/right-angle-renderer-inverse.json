@@ -1,0 +1,65 @@
+[
+  {
+    "start": 19,
+    "remove": 241,
+    "restore": []
+  },
+  {
+    "start": 383,
+    "remove": 1,
+    "restore": [
+      "  function prepare(source) {"
+    ]
+  },
+  {
+    "start": 421,
+    "remove": 34,
+    "restore": []
+  },
+  {
+    "start": 516,
+    "remove": 10,
+    "restore": [
+      "    const data = prepare(source);"
+    ]
+  },
+  {
+    "start": 588,
+    "remove": 7,
+    "restore": []
+  },
+  {
+    "start": 596,
+    "remove": 1,
+    "restore": [
+      "      const description = element('desc', { id: id + '-description' }, [view.label, view.segments.length ? 'Выделены отрезки: ' + view.segments.map(segment => segment.map(displayName).join(' — ')).join(', ') + '.' : '', view.polygon.length ? 'Выделена часть плоскости: ' + view.polygon.map(displayName).join(', ') + '.' : '', 'Это проекция точной пространственной конфигурации.'].filter(Boolean).join(' '), true);"
+    ]
+  },
+  {
+    "start": 606,
+    "remove": 2,
+    "restore": [
+      "      function drawLine(names, className, extra, arrow) {",
+      "        const a = data.points[names[0]], b = data.points[names[1]];"
+    ]
+  },
+  {
+    "start": 644,
+    "remove": 1,
+    "restore": [
+      "      view.segments.forEach(segment => drawLine(segment, 'am-segment', { 'data-highlight': 'segment', 'data-segment': segment.join('-') }));"
+    ]
+  },
+  {
+    "start": 646,
+    "remove": 28,
+    "restore": []
+  },
+  {
+    "start": 700,
+    "remove": 1,
+    "restore": [
+      "      const occupied = [], padding = 3, margin = 7;"
+    ]
+  }
+]

@@ -7,9 +7,9 @@ const { JSDOM } = require('jsdom');
 
 // Exercise the shipped inline handlers with controllable timers, not copies of
 // the scoring code. A cancelled callback can still be delivered to test restarts.
-function fixture(name, kind = 'num') {
-  const html = fs.readFileSync(path.join(__dirname, '../ege-profil/trainers/', name + '.html'), 'utf8');
-  const dom = new JSDOM(html, { url: 'https://mathexam.space/ege-profil/trainers/' + name + '.html', runScripts: 'outside-only' });
+function fixture(name, kind = 'num', route = name) {
+  const html = fs.readFileSync(path.join(__dirname, '../ege-profil/trainers/', route + '.html'), 'utf8');
+  const dom = new JSDOM(html, { url: 'https://mathexam.space/ege-profil/trainers/' + route + '.html', runScripts: 'outside-only' });
   const w = dom.window, d = w.document, timers = new Map();
   let nextId = 0, drawn = 0;
   w.HTMLElement.prototype.scrollIntoView = () => {};
@@ -51,9 +51,10 @@ function fixture(name, kind = 'num') {
   };
 }
 
-for (const name of ['parameters-t18', 'numbers-t19']) {
-  test(name + ': repeated clicks and Enter cannot award a test from one condition', () => {
-    const f = fixture(name);
+for (const route of ['parameters-t18', 'parameters-18/graphic', 'numbers-t19']) {
+  const name = route === 'parameters-18/graphic' ? 'parameters-t18' : route;
+  test(route + ': repeated clicks and Enter cannot award a test from one condition', () => {
+    const f = fixture(name, 'num', route);
     try {
       f.click('zStart');
       f.submit();
@@ -71,8 +72,8 @@ for (const name of ['parameters-t18', 'numbers-t19']) {
     } finally { f.close(); }
   });
 
-  test(name + ': correction cannot replace a first test error, seven fresh successes still pass', () => {
-    const f = fixture(name);
+  test(route + ': correction cannot replace a first test error, seven fresh successes still pass', () => {
+    const f = fixture(name, 'num', route);
     try {
       f.click('zStart'); f.submit(false);
       for (let i = 0; i < 8; i++) f.repeat(true);
@@ -86,8 +87,8 @@ for (const name of ['parameters-t18', 'numbers-t19']) {
     } finally { f.close(); }
   });
 
-  test(name + ': restarting invalidates a pending transition and keeps the new draft', () => {
-    const f = fixture(name);
+  test(route + ': restarting invalidates a pending transition and keeps the new draft', () => {
+    const f = fixture(name, 'num', route);
     try {
       f.click('zStart'); f.submit();
       const stale = [...f.timers.values()][0];
@@ -104,8 +105,8 @@ for (const name of ['parameters-t18', 'numbers-t19']) {
     } finally { f.close(); }
   });
 
-  test(name + ': free practice can correct an error but counts a success once', () => {
-    const f = fixture(name);
+  test(route + ': free practice can correct an error but counts a success once', () => {
+    const f = fixture(name, 'num', route);
     try {
       f.submit(false);
       assert.equal(f.get('dCheck').disabled, false, 'a free-practice correction stays available');
@@ -146,8 +147,14 @@ function setParameter(f, value) {
   f.get('tSlider').dispatchEvent(new f.w.Event('input'));
 }
 
-test('circle and line: the whole decimal slider agrees with the discriminant, including ±4.2', () => {
-  const f = fixture('parameters-t18');
+function testParameterEntries(title, run) {
+  for (const route of ['parameters-t18', 'parameters-18/graphic']) {
+    test(route + ' · ' + title, () => run(route));
+  }
+}
+
+testParameterEntries('circle and line: the whole decimal slider agrees with the discriminant, including ±4.2', route => {
+  const f = fixture('parameters-t18', 'num', route);
   try {
     openTask(f, 1);
     assert.equal(f.get('tExactControls').hidden, false);
@@ -161,8 +168,8 @@ test('circle and line: the whole decimal slider agrees with the discriminant, in
   } finally { f.close(); }
 });
 
-test('exact ±3√2 controls reach both tangencies; moving the slider and changing task clear exact mode', () => {
-  const f = fixture('parameters-t18');
+testParameterEntries('exact ±3√2 controls reach both tangencies; moving the slider and changing task clear exact mode', route => {
+  const f = fixture('parameters-t18', 'num', route);
   try {
     openTask(f, 1);
     for (const [id, sign, label] of [['tExactMinus', -1, '−3√2'], ['tExactPlus', 1, '3√2']]) {
@@ -184,8 +191,8 @@ test('exact ±3√2 controls reach both tangencies; moving the slider and changi
   } finally { f.close(); }
 });
 
-test('cubic key asks for a positive integer; its curve includes the extreme slider intersections', () => {
-  const f = fixture('parameters-t18');
+testParameterEntries('cubic key asks for a positive integer; its curve includes the extreme slider intersections', route => {
+  const f = fixture('parameters-t18', 'num', route);
   try {
     openTask(f, 4);
     assert.match(f.get('tKeyQ').textContent, /Наименьшее положительное целое a/);
@@ -202,6 +209,51 @@ test('cubic key asks for a positive integer; its curve includes the extreme slid
         if (commands[i][1] === 'L' && (Number(commands[i - 1][3]) - level) * (Number(commands[i][3]) - level) < 0) crossings++;
       }
       assert.equal(crossings, 1, 'the displayed cubic visibly crosses y=' + a);
+    }
+  } finally { f.close(); }
+});
+
+
+test('difference-of-squares examples agree with all positive factor pairs of 2025', () => {
+  const f = fixture('numbers-t19');
+  try {
+    const expected = new Set();
+    for (let a = 1; a*a < 2025; a += 2) {
+      if (2025 % a === 0) expected.add((a + 2025/a)/2);
+    }
+    const accepts = f.w.N19.PRED.p6a;
+    for (let n = 1; n <= 1100; n++) assert.equal(accepts(n), expected.has(n), String(n));
+    assert.equal(accepts(10000000000), false);
+    f.get('dAnswer').value = '1 2'; f.click('dCheck');
+    assert.match(f.get('dFb').textContent, /Введите одно число/);
+    assert.equal(f.get('dStreak').textContent, '0');
+  } finally { f.close(); }
+});
+
+test('every generated positive group answer displays a complete equal-sum partition', () => {
+  const f = fixture('numbers-t19');
+  try {
+    for (let n = 6; n <= 14; n++) {
+      const total = n*(n + 1)/2;
+      const sizes = Array.from({length:n-1}, (_, i) => i+2).filter(k => total%k === 0 && total/k >= n);
+      for (const [i, k] of sizes.entries()) {
+        const draws = [(n-6+.5)/9, 0, (i+.5)/sizes.length];
+        f.w.Math.random = () => draws.shift();
+        const exercise = f.w.N19.GENS.groups();
+        assert.equal(exercise.p.n, n); assert.equal(exercise.p.k, k); assert.equal(exercise.answer, true);
+        const used = [];
+        const example = exercise.sol.match(/Пример: (.+?)\./)[1];
+        const groups = example.split('; ');
+        assert.equal(groups.length, k);
+        for (const group of groups) {
+          const [lhs, rhs] = group.split(' = ');
+          const terms = lhs.split(' + ').map(Number);
+          assert.equal(terms.reduce((sum, x) => sum+x, 0), total/k);
+          assert.equal(Number(rhs), total/k);
+          used.push(...terms);
+        }
+        assert.deepEqual(used.sort((a,b) => a-b), Array.from({length:n}, (_, j) => j+1));
+      }
     }
   } finally { f.close(); }
 });

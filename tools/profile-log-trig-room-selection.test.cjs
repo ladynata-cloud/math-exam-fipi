@@ -11,9 +11,24 @@ function part(start, end) {
   const from = source.indexOf(start), to = source.indexOf(end, from + start.length);
   assert(from >= 0 && to > from, start); return source.slice(from, to);
 }
+const adapters = new Map([
+  ['ege-profile-circle', ['__profileCircleBoard', '#task/prep-negative/guided']],
+  ['ege-profile-log-trig', ['__profileLogTrigBoard', '#practice/expr-logarithms/guided']],
+  ['ege-profile-planimetry', ['__profilePlanimetryBoard', '#practice/geo-right/guided']],
+  ['ege-profile-vectors', ['__profileVectorsBoard', '#practice/vec-length/guided']],
+  ['ege-profile-stereometry', ['__profileStereoBoard', '#practice/stereo-box/guided']],
+  ['ege-profile-probability', ['__profileProbabilityBoard', '#practice/prob-count/guided']],
+  ['ege-profile-equations', ['__profileEquationsBoard', '#practice/eq-linear/guided']],
+  ['ege-profile-expressions', ['__profileExpressionsBoard', '#practice/expr-powers/guided']],
+  ['ege-profile-compound-probability', ['__profileCompoundProbabilityBoard', '#practice/prob-independent/guided']],
+  ['ege-profile-derivative', ['__profileDerivativeBoard', '#practice/calc-tangent/guided']],
+  ['ege-profile-formulas', ['__profileFormulasBoard', '#practice/applied-formula/guided']],
+  ['ege-profile-word-problems', ['__profileWordProblemsBoard', '#practice/applied-motion/guided']],
+  ['ege-profile-functions', ['__profileFunctionsBoard', '#practice/fn-line/guided']],
+  ['ege-profile-extrema', ['__profileExtremaBoard', '#practice/calc-extreme/guided']]
+]);
 function fixture(id) {
-  const file = 'trainers/' + id + '.html', key = id === 'ege-profile-circle' ? '__profileCircleBoard' : '__profileLogTrigBoard';
-  const route = id === 'ege-profile-circle' ? '#task/prep-negative/guided' : '#practice/expr-logarithms/guided';
+  const file = 'trainers/' + id + '.html', [key, route] = adapters.get(id);
   const selected = {route, progress:{taskId:'second-selected-task',draft:'private synthetic draft'}, view:{hintOpen:true}};
   const child = {location:new URL(origin + '/' + file + '?child-only=omit' + route),[key]:{getState:()=>selected,validateState:value=>value === selected}};
   const entry = {trainerId:id,file,trainerVersion:'1.0.0',protocolVersion:1,stateSchemaVersion:1,allowLegacyHtml:false};
@@ -29,6 +44,7 @@ function fixture(id) {
   vm.runInContext([
     part('const TRAINER_PATH_LIMITS=', 'const trainerRegistry='),
     part('function unsafePathText(', 'function validateTrainerRegistryResponse('),
+    part('function protectedPetersonId(', 'function trainerSelectionForRegistry('),
     part('function mirrorEntryFromPayload(', 'function trustedTrainerOrigin('),
     part('function canWrite(){', 'function readonly(){'),
     part('function addBoardSeedToTrainerUrl(', 'function compatLabel('),
@@ -61,7 +77,7 @@ test('unrelated trainer room creation remains independent of a pending registry 
   assert.equal(p.shared.preparedProfileTrainer,null);
   assert.equal(p.state.trainerUrl,'negative-numbers-line.html?seed=fixture-seed#local-draft');
 });
-for (const id of ['ege-profile-log-trig','ege-profile-circle']) {
+for (const id of adapters.keys()) {
   test(id + ': room creation waits for the registry and then captures the latest selected work', async () => {
     const {p,selected,route}=fixture(id);
     p.trainerRegistry.status='pending';

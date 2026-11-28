@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="180" viewBox="0 0 340 180" role="img" aria-labelledby="title">
+<title id="title">Четырёхугольник ABCD с равными сторонами AB и AD, BC и DC и проведённой диагональю AC</title>
+<style>
+ .edge,.aux,.dash,.mark {fill:none;stroke:#243b50;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+ .aux,.dash {stroke:#216282} .dash {stroke-dasharray:5 5} .mark {stroke:#a33a35}
+ circle {fill:#243b50} text {font:italic 18px Georgia,serif; fill:#122f42}
+</style>
+<polyline class="edge" points="38,87 147,24 290,87 147,150 38,87"/>
+<polyline class="aux" points="38,87 290,87"/>
+<polyline class="mark" points="94.5016,58.9632 90.4984,52.0368"/>
+<polyline class="mark" points="90.4984,121.963 94.5016,115.037"/>
+<polyline class="mark" points="214.142,57.951 217.367,50.63"/>
+<polyline class="mark" points="219.633,60.37 222.858,53.049"/>
+<polyline class="mark" points="217.367,123.37 214.142,116.049"/>
+<polyline class="mark" points="222.858,120.951 219.633,113.63"/>
+<circle cx="38" cy="87" r="3"/><text x="20" y="93">A</text>
+<circle cx="147" cy="24" r="3"/><text x="143" y="19">B</text>
+<circle cx="290" cy="87" r="3"/><text x="297" y="93">C</text>
+<circle cx="147" cy="150" r="3"/><text x="143" y="173">D</text>
+</svg>

@@ -112,6 +112,11 @@ body.board-divider-dragging #trainerFrame { pointer-events: none !important; }
 #lesson .pen-widths button[data-pen-size="5"] > i { width: 6px; height: 6px; }
 #lesson .pen-widths button[data-pen-size="9"] > span,
 #lesson .pen-widths button[data-pen-size="9"] > i { width: 10px; height: 10px; }
+/* The same three compact controls become named eraser widths, without adding
+   another toolbar row or changing the width of the pen presets. */
+#lesson .pen-widths[data-active-tool="eraser"] button[data-eraser-size] > span { display: none; }
+#lesson .pen-widths[data-active-tool="eraser"] button[data-eraser-size]::after { content: attr(data-eraser-size); font-size: 11px; font-weight: 700; }
+#lesson .pen-widths button[aria-pressed="true"] { border-color: #86ad96; background: #eaf4ee; }
 #lesson .board-tools button:disabled,
 #lesson .board-tools input:disabled { opacity: .45; cursor: default; }
 .student-mode:not(.control-owner) #lesson .board-tools { display: none; }
@@ -128,6 +133,8 @@ body.board-divider-dragging #trainerFrame { pointer-events: none !important; }
 #lesson .board-viewbar .tool svg { width: 15px; height: 15px; }
 #lesson .board-viewbar .tool span { font-size: 11px; }
 #lesson .board-viewbar [data-tool="hand"] { margin-right: auto; }
+#lesson #followWriting[hidden] { display: none; }
+#lesson #followWriting[aria-pressed="true"] { color: #1a684b; background: #eaf4ee; border-color: #96bea7; }
 #lesson .board-viewbar .zoom-controls { display: flex; align-items: center; gap: 2px; }
 #lesson .board-viewbar [aria-live],
 #lesson .board-viewbar output { min-width: 34px; text-align: center; font-variant-numeric: tabular-nums; }

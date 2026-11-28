@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
 
 const source = fs.readFileSync(path.join(__dirname, '../trainers/oge-task7-number-line.html'), 'utf8');
 function between(start, end) {
@@ -268,12 +269,58 @@ test('DOM: native one- and two-field routes reject zero denominators on click an
   }
 });
 
+test('seeded book mathematics stays unchanged when the source adds its prerequisite link', async () => {
+  const {JSDOM, VirtualConsole} = require('jsdom');
+  const {createHash} = require('node:crypto');
+  const fixture = require('./fixtures/oge-book-exam-math.json').fixtures['68'];
+  const {sourceVariant, ...frozen} = fixture;
+  const label = 'Повторить сравнение чисел на прямой и противоположные числа ↗';
+  const anchor = '← Курс ОГЭ ОГЭ №7 · Координатная прямая ';
+  assert.deepEqual(sourceVariant, {...frozen,
+    visibleText: frozen.visibleText.replace(anchor, anchor + label + ' ')},
+  'only the source navigation caption changes; frozen context, prompts, geometry and answers remain sealed');
+  const route = '/trainers/oge-task7-number-line.html';
+  let seed = createHash('sha256').update('oge-book-edition-20261031-v1' + route).digest().readUInt32LE(0) || 1;
+  const dom = new JSDOM(source, {
+    url: 'https://mathexam.test' + route, runScripts: 'dangerously',
+    pretendToBeVisual: true, virtualConsole: new VirtualConsole(),
+    beforeParse(w) {
+      w.scrollTo = () => {};
+      w.HTMLElement.prototype.scrollIntoView = () => {};
+      w.TextEncoder = TextEncoder;
+      w.Math.random = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return (seed >>> 0) / 4294967296; };
+    }
+  });
+  try {
+    await new Promise(resolve => dom.window.addEventListener('load', resolve, {once: true}));
+    const d = dom.window.document;
+    assert.equal(d.querySelector('header h1 + p a').textContent, label);
+    assert.equal(d.querySelector('header h1 + p a').getAttribute('href'), './oge-basics/negative-number-line.html');
+    // Use the displayed coordinates, never BANK keys or the production checker.
+    const labels = Object.fromEntries([...d.querySelectorAll('#marTask svg text')]
+      .filter(e => ['0', '1', 'a'].includes(e.textContent))
+      .map(e => [e.textContent, Number(e.getAttribute('x'))]));
+    const a = (labels.a - labels['0']) / (labels['1'] - labels['0']);
+    assert(Math.abs(a + 4.5) < 1e-8);
+    assert.deepEqual([a + 4 > 0, a + 5 < 0, 2 - a > 0, 3 - a < 0], [false, false, true, false]);
+    assert.equal(sourceVariant.oracles[0].expected, 3);
+  } finally { dom.window.close(); }
+});
+
 test('the exact input receipt preserves the full pinned source and rejects every other change', () => {
   const {createHash} = require('node:crypto');
   const {restoreOge7Input, BEFORE, AFTER} = require('./oge7-number-input-preservation.cjs');
   const sha = value => createHash('sha256').update(value).digest('hex');
+  const heading = '  <h1>Задание 7 ОГЭ. Координатная прямая</h1>\n';
+  const supportLink = '  <p><a href="./oge-basics/negative-number-line.html" target="_blank" rel="noopener">Повторить сравнение чисел на прямой и противоположные числа ↗</a></p>\n';
+  const restoreSource = html => {
+    const document = restoreOge7Input(restoreTrainerDownload('trainers/oge-task7-number-line.html', html));
+    assert.equal(document.split(supportLink).length, 2, 'OGE7 support: exactly one reviewed link');
+    assert(document.includes(heading + supportLink), 'OGE7 support: link follows the heading');
+    return document.replace(heading + supportLink, heading);
+  };
   const originalHash = '327b041bf929619f3ced888e576ce12c560def6fd918aa637fc967ee355504ca';
-  assert.equal(sha(restoreOge7Input(source)), originalHash, 'all original main198 HTML bytes recovered');
+  assert.equal(sha(restoreSource(source)), originalHash, 'all original main198 HTML bytes recovered');
   const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
     .filter(x => !(/\bsrc\s*=/.test(x[1]))).map(x => x[2]).join('\n');
   assert.equal(sha(restoreOge7Input(scripts)),
@@ -286,7 +333,16 @@ test('the exact input receipt preserves the full pinned source and rejects every
     source + BEFORE
   ]) {
     assert.notEqual(altered, source, 'effective missing/duplicate/modified fragment probe');
-    assert.throws(() => restoreOge7Input(altered), /OGE7 input:/);
+    assert.throws(() => restoreSource(altered), /OGE7 input:/);
+  }
+  for (const altered of [
+    source.replace(supportLink, ''),
+    source + supportLink,
+    source.replace(supportLink, supportLink.replace('negative-number-line.html', 'rounding.html')),
+    source.replace(heading + supportLink, supportLink + heading)
+  ]) {
+    assert.notEqual(altered, source, 'effective missing/duplicate/modified/moved link probe');
+    assert.throws(() => restoreSource(altered), /OGE7 support:/);
   }
   for (const altered of [
     source + '\n<!-- unreviewed source -->',
@@ -294,7 +350,7 @@ test('the exact input receipt preserves the full pinned source and rejects every
     source.replace('if(d===0n) throw new Error("den=0");', 'if(d===0n) return null;')
   ]) {
     assert.notEqual(altered, source, 'effective extra/source/arithmetic change probe');
-    assert.notEqual(sha(restoreOge7Input(altered)), originalHash,
+    assert.notEqual(sha(restoreSource(altered)), originalHash,
       'known guard inversion must not absorb an unrelated byte or arithmetic change');
   }
 });

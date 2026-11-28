@@ -1,0 +1,44 @@
+{
+  "reviewerName": "Codex — независимая проверка геометрии",
+  "reviewer": "/root/audits/independent",
+  "reviewedAt": "2026-11-17T21:17:07Z",
+  "scope": "Три исправленные карточки раздела «Метод сечений».",
+  "sourceEvidence": {
+    "sourceSha256": "bc50e2e2871ca872f4abeb5dcff406a1fd07caab622aeaf8a19523fe502db6a3",
+    "verification": "Мерзляк и др., Геометрия 10 (базовый уровень, 2022), стр. 30, страница PDF 31. Независимый проверяющий заново сверил задания с оригиналом. Условия совпадают с прежней проверенной версией."
+  },
+  "verdict": "PASS",
+  "unresolved": [],
+  "cards": [
+    {
+      "lessonId": "research-sections-001",
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+      "sha256": "f9a98dda440d1ee90f3406054dbaa74fb1e206347247eda3672cc46e8de8e69b",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "mathCheck": "Параметры X на CD и Y на AB равны 9/5 и −6/5; Z на BD имеет параметр 11/15. На гранях лежат KZ и MZ.",
+      "pedagogyCheck": "Чертёж через Y и Z охватывает M. Через Z проходят все три изображённых прямых. Промежуточный рисунок показывает отрезок NX с отмеченной точкой M."
+    },
+    {
+      "lessonId": "research-sections-002",
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+      "sha256": "da3a6eabd18ab35daa7e49cc46d5bcc8470645c476161caa626036a05ac74a93",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "mathCheck": "Шесть точек являются серединами названных рёбер и лежат в одной плоскости. O — середина MQ, NR и PS.",
+      "pedagogyCheck": "На исходном кубе отмечены M, N, P, Q, R, S и две опорные вершины. Вспомогательная точка и шестиугольник раскрываются позже."
+    },
+    {
+      "lessonId": "research-sections-005",
+      "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+      "sha256": "83f007e059672c1cfe9623190312afed1b42b2634ca3870890811b93d8bf7327",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS",
+      "mathCheck": "Параметры T, U и R на ориентированных прямых A₁C₁, D₁C₁ и DC равны 2, 2 и 4/3. Точка P делит BC в отношении 3:1. Проверены принадлежность и порядок вершин APNQM.",
+      "pedagogyCheck": "Указаны направления продолжений за нужную вершину. Ученик отличает вспомогательные внешние точки от вершин сечения и находит AP внутри нижней грани."
+    }
+  ]
+}

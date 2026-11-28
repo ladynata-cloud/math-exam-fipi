@@ -85,6 +85,29 @@ def validate(data, coverage, source_digest):
         check(bool(re.fullmatch(r"[a-z0-9-]+", identifier)), f"Invalid {kind} id: {identifier}")
         seen.add(identifier)
 
+    def check_figure(item, item_id, geometry, counter):
+        if not item.get("svg"):
+            check(not (geometry or item.get("requiresDiagram")), f"Missing geometry drawing: {item_id}")
+            return
+        try:
+            svg = ET.fromstring(item["svg"])
+            check(svg.tag.rsplit("}", 1)[-1] == "svg", f"SVG root: {item_id}")
+            check("viewBox" in svg.attrib, f"SVG viewBox: {item_id}")
+            check(svg.attrib.get("role") == "img" and bool(svg.attrib.get("aria-label")), f"SVG accessible label: {item_id}")
+            drawables = {"circle", "ellipse", "rect", "line", "polyline", "polygon", "path"}
+            check(any(el.tag.rsplit("}", 1)[-1] in drawables for el in svg.iter()), f"Empty drawing: {item_id}")
+            for element in svg.iter():
+                name = element.tag.rsplit("}", 1)[-1].lower()
+                check(name not in {"script", "foreignobject", "iframe", "image", "object", "embed"}, f"Active SVG element: {item_id}")
+                for attribute in element.attrib:
+                    key = attribute.rsplit("}", 1)[-1].lower()
+                    check(not key.startswith("on") and key not in {"href", "src"}, f"Active SVG attribute: {item_id}")
+            check(not re.search(r"@import|url\(\s*['\"]?(?!#)[a-z]+:", item["svg"], re.I), f"External SVG resource: {item_id}")
+            counts[counter] += 1
+        except (ET.ParseError, TypeError) as error:
+            failures.append(f"Malformed SVG {item_id}: {error}")
+
+
     check(set(routes) == EXPECTED_ROUTES, "The seven approved routes must be present exactly once")
     check(len(routes) == len(data["routes"]), "Duplicate route id")
     check(data["sources"]["year"] == 2027, "Official source year must be 2027")
@@ -102,6 +125,8 @@ def validate(data, coverage, source_digest):
         check(all(lesson.get(field) for field in ["section", "title", "goal", "theory", "example"]), f"Incomplete lesson: {identifier}")
         check(all(isinstance(text, str) and text.strip() for text in lesson["theory"]), f"Empty theory: {identifier}")
         check(all(lesson["example"].get(field) for field in ["prompt", "steps", "answer"]), f"Incomplete example: {identifier}")
+        geometry = bool(re.search("геометрия|координаты", lesson["section"], re.I))
+        check_figure(lesson["example"], identifier + "-example", geometry, "example_svg")
         levels = collections.Counter(task["level"] for task in lesson["tasks"])
         check(levels == {"start": 2, "practice": 2, "exam": 2}, f"Difficulty progression: {identifier}")
 
@@ -115,22 +140,7 @@ def validate(data, coverage, source_digest):
             for flag in ["assessAllSteps", "requiresWrittenSolution"]:
                 check(flag not in task or isinstance(task[flag], bool), f"Invalid {flag}: {task_id}")
 
-            if task.get("svg"):
-                try:
-                    svg = ET.fromstring(task["svg"])
-                    check(svg.tag.rsplit("}", 1)[-1] == "svg", f"SVG root: {task_id}")
-                    check("viewBox" in svg.attrib, f"SVG viewBox: {task_id}")
-                    check(svg.attrib.get("role") == "img" and bool(svg.attrib.get("aria-label")), f"SVG accessible label: {task_id}")
-                    for element in svg.iter():
-                        name = element.tag.rsplit("}", 1)[-1].lower()
-                        check(name not in {"script", "foreignobject", "iframe", "image", "object", "embed"}, f"Active SVG element: {task_id}")
-                        for attribute in element.attrib:
-                            key = attribute.rsplit("}", 1)[-1].lower()
-                            check(not key.startswith("on") and key not in {"href", "src"}, f"Active SVG attribute: {task_id}")
-                    check(not re.search(r"@import|url\(\s*['\"]?(?!#)[a-z]+:", task["svg"], re.I), f"External SVG resource: {task_id}")
-                    counts["svg"] += 1
-                except (ET.ParseError, TypeError) as error:
-                    failures.append(f"Malformed SVG {task_id}: {error}")
+            check_figure(task, task_id, geometry, "svg")
 
             if task.get("plot"):
                 plot = task["plot"]

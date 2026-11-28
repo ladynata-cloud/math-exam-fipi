@@ -72,14 +72,14 @@ test('combined START wrapper loads existing canonical lesson assets, bridge and 
   const html = fs.readFileSync(path.join(ROOT, start.path), 'utf8');
   const scripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
   const source = require('./public-page-script.cjs').sourceForProfileBoard(ROOT, html);
-  // This wrapper retains the reviewed 2026-11-06 functions-task stamp.
-  // Keep that exact exception instead of discarding every query string.
+  // Keep the unchanged reviewed function-task stamp; H02 app and board-session
+  // use the same new exact versions as the other START wrappers.
   const boardStamps = new Map([
     ['functions-tasks.js?v=20261009-calm', 'functions-tasks.js?v=20261106-log-trig']
   ]);
   const canonical = require('./public-page-script.cjs').canonicalProfileLearningScripts(source, html).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + (boardStamps.get(src) || src));
   const home = '/assets/assistant/home-link.js?v=20261110';
-  assert.deepEqual(scripts.filter(src => src !== '/trainers/board-bridge.js' && src !== '/ege-profil/start/board-session.js?v=20261106-log-trig'), [...canonical, home]);
+  assert.deepEqual(scripts.filter(src => src !== '/trainers/board-bridge.js' && src !== '/ege-profil/start/board-session.js?v=20261128-first-part'), [...canonical, home]);
   assert.equal(scripts.at(-1), home, 'Only the exact standalone home script follows the canonical assets');
   assert.match(html, /<script defer src="\/assets\/assistant\/home-link\.js\?v=20261110"><\/script>\s*<\/body>/);
   assert.match(html, /data-profile-board="log-trig"/); assert.match(html, /href="#course"/);

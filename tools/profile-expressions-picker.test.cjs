@@ -53,7 +53,7 @@ test('only the six expressions lessons resolve to their wrapper; unknown routes 
     assert.equal(normalize(sourcePath + hash), wrapperPath + hash, hash);
   }
   for (const hash of [
-    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/5', '#calm/9',
+    '', '#home', '#calm', '#progress', '#checkpoint', '#exam/0', '#calm/9',
     '#lesson/trig-unregistered', '#example/bridge-fractions', '#repair-task/expr-powers',
     '#practice/expr-powers', '#practice/expr-powers/other',
     '#practice/expr-powers/guided/extra', '#lesson/expr-powers/extra',
@@ -116,7 +116,7 @@ test('the wrapper reuses the original scripts in order without a base, redirect,
     .map(src => '/ege-profil/start/' + src);
   const wrapperScripts = scripts(wrapper);
   const bridge = '/trainers/board-bridge.js';
-  const adapter = '/ege-profil/start/board-session.js?v=20261101-trainer-repair';
+  const adapter = '/ege-profil/start/board-session.js?v=20261128-first-part';
   const home = '/assets/assistant/home-link.js?v=20261110';
   assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), [...canonicalScripts, home]);
   assert.equal(wrapperScripts.at(-1), home, 'Only the exact standalone home script follows the canonical assets');
@@ -126,7 +126,7 @@ test('the wrapper reuses the original scripts in order without a base, redirect,
   assert.doesNotMatch(wrapper, /<base\b|<iframe\b|http-equiv\s*=\s*["']refresh|location\.(?:replace|assign)/i);
   assert.match(wrapper, /<body data-profile-board="expressions">/);
   for (const id of ['main', 'storage-warning', 'calm-toggle']) assert.match(wrapper, new RegExp('id="' + id + '"'));
-  assert.match(wrapper, /href="#exam\/8">Темы №8<\/a>/);
+  assert.match(wrapper, /href="#exam\/8">Темы №7<\/a>/);
   assert.doesNotMatch(wrapper, /Результаты хранятся в этом браузере/);
 });
 
@@ -135,7 +135,7 @@ test('the picker has one searchable expressions overview and the registry keeps 
   const catalog = JSON.parse(fs.readFileSync(path.join(root, 'trainers/board-picker-data.json'), 'utf8'));
   const overview = catalog.entries.filter(entry => canonical(entry.href) === wrapperPath + '#exam/8');
   assert.equal(overview.length, 1);
-  assert.match(overview[0].title, /ЕГЭ профиль №8.*степени.*корни.*дроби.*логарифмы.*тригонометрия/);
+  assert.match(overview[0].title, /ЕГЭ профиль №7.*степени.*корни.*дроби.*логарифмы.*тригонометрия/);
   const { canonicalTrainerFile, loadTrainerRegistry } = require('../board-server/trainer-registry');
   assert.equal(canonicalTrainerFile(sourcePath.slice(1)), null);
   assert.equal(canonicalTrainerFile(wrapperPath.slice(1)), wrapperPath.slice(1));

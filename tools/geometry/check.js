@@ -48,7 +48,9 @@ try{
   store.import({version:1,units:{segments:{written:'Older import',updated:1},angles:{written:'Imported work',updated:3}}});
   assert.equal(store.export().units.segments.written,'Further work');assert.equal(store.export().units.angles.written,'Imported work');
   assert.equal(JSON.parse(disk.get(S.KEY)).units.segments.written,'Old work');
-  assert.equal(reads,readsAtFailure);assert.equal(writes,1);assert.ok(warnings.length);
+  // Reread after quota denial to protect newer work from another tab.
+  // Only the three explicit put/import operations retry writing; get/all/export are read-only.
+  assert.ok(reads>readsAtFailure);assert.equal(writes,3);assert.ok(warnings.length);
  }
  // A read failure also falls back to the most recently read snapshot.
  let raw=JSON.stringify({version:1,units:{segments:{written:'Initial work',updated:1}}}),deny=false;

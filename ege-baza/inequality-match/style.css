@@ -1,0 +1,98 @@
+:root {
+  color-scheme: light;
+  --ink: #192f2a;
+  --muted: #425d54;
+  --green: #135b49;
+  --rule: #c4d4ca;
+  --paper: #fffef9;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  line-height: 1.6;
+  color: var(--ink);
+  background: #f0f4ed;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; }
+a { color: var(--green); text-underline-offset: .18em; }
+button, input, select { font: inherit; }
+button, summary, select { cursor: pointer; }
+:focus-visible { outline: 3px solid #b24c19; outline-offset: 3px; }
+.skip { position: absolute; top: .5rem; left: .5rem; padding: .4rem 1rem; background: white; }
+.skip:not(:focus) { clip-path: inset(50%); }
+header { border-bottom: 1px solid var(--rule); }
+nav, main { width: min(calc(100% - 2rem), 52rem); margin: 0 auto; }
+nav { display: flex; flex-wrap: wrap; gap: .15rem 1.3rem; padding: .55rem 0; }
+nav a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+nav a:first-child { font-weight: 700; }
+main { padding-bottom: 3.5rem; }
+.intro { padding: clamp(1.75rem, 5vw, 3.25rem) 0 .85rem; }
+.intro > p:last-child { max-width: 65ch; font-size: 1.15rem; }
+.kicker { color: var(--muted); font-weight: 650; margin: 0 0 .4rem; }
+h1, h2, h3 { line-height: 1.2; text-wrap: balance; }
+h1, h2 { font-family: "PT Serif", Georgia, serif; font-weight: 600; }
+h1 { margin: 0; font-size: clamp(2.05rem, 6vw, 3.8rem); }
+h2 { margin: 0 0 .8rem; font-size: clamp(1.45rem, 4vw, 2rem); }
+h3 { font-size: 1.12rem; margin: 1.5rem 0 .4rem; }
+section {
+  margin: 1rem 0;
+  padding: clamp(1rem, 4vw, 1.8rem);
+  border: 1px solid var(--rule);
+  border-radius: .8rem;
+  background: var(--paper);
+}
+section > :last-child, details > :last-child { margin-bottom: 0; }
+section > p, details > p, .steps { max-width: 68ch; }
+.formula, .display-formula { font-family: "STIX Two Text", Georgia, serif; }
+.formula { display: inline-block; }
+.display-formula { margin: .6rem 0; font-size: 1.4rem; }
+ol, ul { padding-inline-start: 1.6rem; }
+li + li { margin-top: .42rem; }
+.steps li::marker { color: var(--green); font-weight: bold; }
+.inequalities { list-style: none; padding-left: 0; }
+details { margin: .6rem 0; }
+summary { width: fit-content; padding: .45rem .2rem; color: var(--green); font-weight: 650; }
+details[open] > p { margin-top: .3rem; }
+.model-controls, .match-columns { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+.model-controls { align-items: end; }
+.model-controls label { display: block; font-weight: 650; }
+.model-controls select, .model-controls input { display: block; width: 100%; margin-top: .35rem; }
+select, input:not([type="range"]), button {
+  min-height: 2.75rem;
+  max-width: 100%;
+  border: 1px solid #6f8a7d;
+  border-radius: .4rem;
+  padding: .4rem .65rem;
+  color: var(--ink);
+  background: white;
+}
+input[type="range"] { accent-color: var(--green); min-height: 2.75rem; }
+#model-line { display: block; width: 100%; height: auto; margin-top: .8rem; }
+.axis-key { color: var(--muted); margin-top: .2rem; }
+#model-readout { padding: .6rem .85rem; background: #edf4e9; border-left: .22rem solid var(--green); }
+.match-columns > * { min-width: 0; }
+.match-columns :is(ol, ul) { margin-block: .45rem; }
+.match-rows, .match-options { list-style: none; padding-left: 0; line-height: 1.7; }
+button { font-weight: 650; color: var(--green); }
+button[type="submit"] { border-color: var(--green); background: var(--green); color: white; }
+button:disabled, input:disabled { opacity: .65; cursor: default; }
+.exercise-actions, .hint-controls, [data-exercise] form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .6rem;
+  margin-block: .8rem;
+}
+.answer-label { font-weight: 650; }
+.exercise-feedback { color: var(--muted); font-weight: 600; }
+.links { margin: .6rem 0; }
+footer { padding-block: 1rem; font-weight: 650; }
+@media (max-width: 42rem) {
+  .model-controls, .match-columns { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 25rem) {
+  nav, main { width: calc(100% - 1.25rem); }
+  nav { gap: .05rem .6rem; }
+  section { padding: .85rem; }
+  .intro > p:last-child { font-size: 1rem; }
+  #model-line text { font-size: 28px; }
+}

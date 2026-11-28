@@ -255,6 +255,36 @@ test('external course help prevents independent credit in old planimetry and vec
   }finally{vector.dom.window.close();}
 });
 
+test('Yashchenko answer entry preserves fractions and distinguishes exact answers from near misses', () => {
+  for(const file of ['planimetry-yashchenko-t1.html','vectors-yashchenko-t2.html']){
+    const {dom,window:w,document:d}=boot(file);
+    try{
+      for(const raw of ['1/0','0/0','1 2','1. 2','1/2/3','1e2','']){
+        assert(Number.isNaN(w.parseNum(raw)),file+' '+raw);
+      }
+      assert.equal(w.parseNum('−1,5 / −2'),.75);
+      assert(w.matchesAnswer('+0,3 / .1',3));
+      assert(!w.matchesAnswer('3.00000000000000001',3));
+      assert(!w.matchesAnswer('0.2999999',.3));
+      const bank=w.eval(file.startsWith('planimetry')?'YB1':'YB2');
+      bank.srand(314);
+      for(const type of bank.items){
+        for(let trial=0;trial<24;trial++){
+          const task=bank.make(type.id);
+          assert(w.matchesAnswer(bank.num(task.ans),task.ans),file+' '+type.id+' '+task.ans);
+        }
+      }
+      const check=()=>d.querySelector('[data-action="check"]').click();
+      d.querySelector('#taskArea input.num').value='1/0';check();
+      assert.equal(w.eval('state.fails'),0);
+      w.eval("setMode('exam');startExam();");
+      d.querySelector('#taskArea input.num').value='1 2';
+      d.querySelector('[data-action="exam-check"]').click();
+      assert.equal(w.eval('state.z.i'),0);
+    }finally{dom.window.close();}
+  }
+});
+
 test('both Yashchenko banks exclude externally assisted practice and exam answers while retaining earned bests', () => {
   for(const file of ['planimetry-yashchenko-t1.html','vectors-yashchenko-t2.html']){
     const {dom,window:w,document:d,errors}=boot(file);

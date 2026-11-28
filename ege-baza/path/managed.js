@@ -32,6 +32,23 @@
     main.dataset.readOnly = String(readonly);
     model?.setReadOnly?.(readonly);
   }
+  function guidedCopy(spec) {
+    const saved = spec.task;
+    const formerQuestion = {
+      'practice-pour': 'Новая высота воды, см?',
+      'practice-right-ratio': 'Нужное отношение?',
+      'practice-displacement': 'Объём детали, см³?',
+      'practice-cone-area': 'Отношение площадей?',
+      'practice-similar-volume': 'Объём большого конуса?'
+    }[saved.id];
+    if (!formerQuestion || saved.steps.at(-1)?.q !== formerQuestion) return saved;
+    const current = D.task(saved.id, spec.seed);
+    if (!Object.keys(current.params).every(key => saved.params?.[key] === current.params[key]) ||
+        current.steps.length !== saved.steps.length || current.steps.some((step, i) => step.a !== saved.steps[i].a)) return saved;
+    // The assignment and grading keys stay in the saved spec. Refresh only the
+    // wording of this matching, previously issued version in the learner view.
+    return { ...saved, steps: saved.steps.map((step, i) => ({ ...step, q: current.steps[i].q, why: current.steps[i].why })) };
+  }
   function applyState(envelope) {
     if (!envelope || !envelope.taskSpec) throw new TypeError('Не передано условие задачи.');
     const spec = envelope.taskSpec, id = spec.id || spec.contentId;
@@ -44,7 +61,7 @@
     const selection = active && typeof active.selectionStart === 'number' ? [active.selectionStart, active.selectionEnd] : null;
     applying = true;
     try {
-      taskSpec = clone({ ...spec, id }); task = taskSpec.task; state = incoming;
+      taskSpec = clone({ ...spec, id }); task = guidedCopy(taskSpec); state = incoming;
       render();
       if (!readonly && focusId) {
         const field = document.getElementById(focusId);
@@ -175,7 +192,9 @@
     main.querySelector('[data-geometry-check]')?.addEventListener('click', () => changeStage(3));
     const box = document.getElementById('lesson');
     const condition = `<p class="task">${M(task.q)}</p>`;
-    const support = root.PathPracticeView.markup(task, work.stage === 1 && ['polygon-build','pre7-lab','grade7-construction'].includes(task.model.kind));
+    const support = task.id === 'practice-pour' && work.stage !== 1 && root.PathStereoFigures?.supports(task)
+      ? root.PathStereoFigures.visual(task)
+      : root.PathPracticeView.markup(task, work.stage === 1 && ['polygon-build','pre7-lab','grade7-construction'].includes(task.model.kind));
     if (work.stage === 0) {
       box.innerHTML = `<section class="panel"><h2>Главная идея</h2><p class="lead">${M(meta.idea)}</p><div class="callout"><b>Перед вычислением спроси себя</b><p>Что дано, что неизвестно и какая связь между ними? Какие единицы нужны в ответе?</p></div>${condition}${support}<button id="next" class="primary">Исследовать модель →</button></section>`;
       document.getElementById('next').onclick = () => changeStage(1);
@@ -186,11 +205,21 @@
       document.getElementById('next').onclick = () => changeStage(2);
     } else if (work.stage === 2) {
       const finished = work.step >= task.steps.length;
-      box.innerHTML = `<section class="panel">${condition}${support}<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${M(step.q)} <b>${M(step.a === undefined ? 'Условия выполнены' : root.PathPracticeView.answerText(step))}</b><br>${M(step.why)}</li>`).join('')}</ol>${finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${M(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
+      const history = `<ol class="steps">${task.steps.slice(0, work.step).map(step => `<li>${M(step.q)} <b>${M(step.a === undefined ? 'Условия выполнены' : root.PathPracticeView.answerText(step))}</b><br>${M(step.why)}</li>`).join('')}</ol>`;
+      const question = finished ? '<h2>Разбор завершён</h2><p>Проверь себя на новом условии.</p><button id="new" class="primary">Новый самостоятельный вариант</button>' : `<div class="callout"><b>Шаг ${work.step + 1}/${task.steps.length}</b><p>${M(task.steps[work.step].q)}</p></div>${form()}<button id="hint">Подсказать смысл шага</button><p id="hintText"></p>`;
+      let body = support + history + question;
+      if (root.PathPlanePractice?.supports(task)) {
+        const frame = root.PathPlanePractice.frame(task, work.step);
+        const formula = frame.equation ? `<p class="working-equation">${M(frame.equation)}</p>` : '';
+        const previous = work.step ? `<details class="plane-history"${finished ? ' open' : ''}><summary>Решение в тетради</summary>${history}</details>` : '';
+        body = `<div class="plane-work"><div>${frame.svg}</div><div>${formula}${question}</div></div>${previous}`;
+      }
+      box.innerHTML = `<section class="panel">${condition}${body}<details id="gap"><summary>Мешает пробел в основе?</summary><p>Обсуди с Натальей Михайловной, какое действие затрудняет решение: знак, дробь, единицы или выбор формулы. Эта попытка сохранит текущий шаг.</p></details></section>`;
       if (finished && photoTask()) { box.querySelector('h2 + p').textContent = 'Теперь объясни доказательство своими словами. Для нового условия выбери похожий урок в маршруте.'; document.getElementById('new').textContent = 'Повторить этот рисунок'; }
       if (finished) document.getElementById('new').onclick = () => newTask();
       else {
-        bindAnswer('step'); document.getElementById('hintText').innerHTML = M(state.view.hintText);
+        bindAnswer('step');
+        if (state.view.hintText) document.getElementById('hintText').innerHTML = M(task.steps[work.step].why);
         document.getElementById('hint').onclick = () => { work.help = true; state.view.hintText = task.steps[work.step].why; document.getElementById('hintText').innerHTML = M(state.view.hintText); emit('hint', { level: 1, step: work.step }); };
       }
       const gap = document.getElementById('gap'); gap.open = state.view.gapOpen;

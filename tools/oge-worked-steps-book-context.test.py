@@ -7,6 +7,7 @@ import subprocess
 import unittest
 from unittest.mock import patch
 from oge_worked_steps_book_context import ROOT, PINS, OLD_HELP, NEW_HELP, PAN, matches_worked_steps_ui
+from oge_video_models_book_context import without_download_controls, restore_quadrilateral_angles, QUADRILATERAL_ANGLES
 
 spec = importlib.util.spec_from_file_location('book_math', ROOT / 'tools/oge-book-exam-math.py')
 math = importlib.util.module_from_spec(spec)
@@ -21,7 +22,8 @@ def case(ident, width):
     text = original.replace('Хочешь подсказку?', 'Разобрать по шагам')
     if ident in ('59', '60') and width == 1280:
         text = text.replace('Если рисунок не помещается, прокрути его пальцем или кнопками. Стрелки клавиатуры тоже работают. ← ВлевоВправо → ', '')
-    hashes = {pin['route']: pin['sha256'], **PINS['assets']}
+    hashes = {route: hashlib.sha256((ROOT / route[1:]).read_bytes()).hexdigest()
+              for route in [pin['route'], *PINS['assets']]}
     record = dict(id=ident, width=width, prefix='', route=pin['route'], finalPath=pin['route'],
                   resources={p: dict(status=200, sha256=h) for p, h in hashes.items()},
                   initialVisibleText=text, visibleSvgLabels=[])
@@ -35,7 +37,34 @@ class WorkedStepContext(unittest.TestCase):
         for route, expected in {**{v['route']: v['sha256'] for v in PINS['pages'].values()}, **PINS['assets']}.items():
             committed = subprocess.check_output(['git', 'show', PINS['sourceCommit'] + ':' + route[1:]], cwd=ROOT)
             self.assertEqual(hashlib.sha256(committed).hexdigest(), expected)
-            self.assertEqual((ROOT / route[1:]).read_bytes(), committed)
+            raw = (ROOT / route[1:]).read_bytes()
+            restored = without_download_controls(route[1:], raw)
+            self.assertEqual(restore_quadrilateral_angles(route[1:], restored), committed)
+            if route[1:] == QUADRILATERAL_ANGLES['file']:
+                for frag in QUADRILATERAL_ANGLES['fragments']:
+                    changed = restored.replace(frag['after'].encode(), frag['before'].encode(), 1)
+                    self.assertNotEqual(changed, restored)
+                    self.assertEqual(restore_quadrilateral_angles(route[1:], changed), changed)
+                    self.assertNotEqual(changed, committed)
+
+    def test_receipt_requires_served_bytes_and_original_exercise(self):
+        record, text, original, _ = case('59', 320)
+        route = record['route']
+        file = ROOT / route[1:]
+        raw = file.read_bytes()
+        stale = copy.deepcopy(record)
+        stale['resources'][route]['sha256'] = PINS['pages']['59']['sha256']
+        self.assertNotEqual(stale['resources'][route]['sha256'], record['resources'][route]['sha256'])
+        self.assertFalse(matches_worked_steps_ui(stale, text, [original]))
+        for changed in (raw.replace(b'<title>', b'<title>Extra ', 1),
+                        raw.replace(b'<section class="download-panel"', b'<section class="download-panel" extra', 1)
+                           .replace(b'data-trainer-download=', b'data-trainer-export=', 1)):
+            self.assertNotEqual(changed, raw)
+            wrong = copy.deepcopy(record)
+            wrong['resources'][route]['sha256'] = hashlib.sha256(changed).hexdigest()
+            read = type(file).read_bytes
+            with patch.object(type(file), 'read_bytes', lambda p: changed if p == file else read(p)):
+                self.assertFalse(matches_worked_steps_ui(wrong, text, [original]))
 
     def test_nine_exact_ui_deltas_and_no_other_text_changes(self):
         for ident in ('58', '59', '60'):

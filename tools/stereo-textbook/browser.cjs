@@ -130,6 +130,7 @@ function hostStatic(){
 function watch(target){target.on('pageerror',error=>evidence.errors.push({case:activeCase,message:error.message}));target.on('response',response=>{const url=new URL(response.url());if(response.status()>=400&&url.origin===new URL(base).origin&&url.pathname!=='/favicon.ico')evidence.errors.push({case:activeCase,status:response.status(),url:response.url()});});}
 async function settle(target=page){await target.evaluate(async()=>{if(document.fonts)await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});}
 async function textWithFractions(locator){return locator.evaluate(node=>{const copy=node.cloneNode(true);[...copy.querySelectorAll('.stereo-fraction')].reverse().forEach(f=>f.replaceWith(f.querySelector(':scope > .stereo-numerator').textContent+'/'+f.querySelector(':scope > .stereo-denominator').textContent));return copy.textContent;});}
+const {wrongStepAnswers}=require('./wrong-step-answers.cjs');
 async function camera(target=page,selector='[data-main-model] svg'){return target.locator(selector).evaluate(svg=>({yaw:svg.dataset.yaw,pitch:svg.dataset.pitch}));}
 async function readRecord(target,lesson){return target.evaluate(key=>JSON.parse(localStorage.getItem(key)),stateKey(lesson));}
 async function isOpen(locator){return locator.evaluate(node=>node.open);}
@@ -366,7 +367,23 @@ async function card(lesson,width){
   const explanation=step.locator(':scope > details');await openDetails(explanation);assert.equal(await textWithFractions(explanation.locator(':scope > p')),authoredStep.explanation);await openDetails(explanation.locator(':scope > details'));
   assert.equal(await explanation.locator(':scope > details > p').count(),authoredStep.justifications.length);
   for(let j=0;j<authoredStep.justifications.length;j++)assert.equal(await textWithFractions(explanation.locator(':scope > details > p').nth(j)),authoredStep.justifications[j].text);
-  if(authoredStep.input){const field=step.locator('input');assert.equal(await textWithFractions(step.locator('label')),authoredStep.input.prompt);await field.fill('промежуточный '+authoredStep.id);await step.locator('form button').click();const feedback=step.locator('form [role=status]');assert.equal(await textWithFractions(feedback),authoredStep.input.feedback,lesson.id+' authored feedback preserved');if(lesson.id==='ex-main-0063-b'){assert.equal(await feedback.locator('.stereo-fraction').count(),1,'alternate-order numerical hint has a fraction bar');}}
+  if(authoredStep.input){
+   const field=step.locator('input'),feedback=step.locator('form [role=status]'),stepDraft='промежуточный '+authoredStep.id;
+   assert.equal(await textWithFractions(step.locator('label')),authoredStep.input.prompt);
+   const beforeInput=await readRecord(page,lesson);await field.fill(stepDraft);await step.locator('form button').click();
+   const mixed=authoredStep.input.accepted.some(answer=>/^[а-яё]+$/iu.test(answer));
+   assert.equal(await feedback.getAttribute('data-answer-status'),mixed?'wrong':'invalid',lesson.id+' draft is classified without treating bad numeric syntax as a wrong answer');
+   if(!mixed)assert.notEqual(await textWithFractions(feedback),authoredStep.input.feedback,lesson.id+' invalid step input does not reveal the authored answer');
+   const afterDraft=await readRecord(page,lesson);for(const key of ['wrongAttempts','firstAttempt','checked','checkedWith','assisted'])assert.deepEqual(afterDraft[key],beforeInput[key],lesson.id+' intermediate draft retains '+key);
+   // Help was explicitly opened above. Its authored mathematical feedback is
+   // tested with a well-formed wrong answer, including real wrong number words.
+   for(const wrong of wrongStepAnswers(lesson.id,authoredStep)){
+    await field.fill(wrong);await step.locator('form button').click();assert.equal(await feedback.getAttribute('data-answer-status'),'wrong',lesson.id+' mathematically wrong step answer '+wrong);
+    assert.equal(await textWithFractions(feedback),authoredStep.input.feedback,lesson.id+' authored feedback preserved');
+    if(lesson.id==='ex-main-0063-b')assert.equal(await feedback.locator('.stereo-fraction').count(),1,'alternate-order numerical hint has a fraction bar');
+   }
+   await field.fill(stepDraft); // Keep the original draft/reload contract below.
+  }
   await step.getByRole('button',{name:'Показать на рисунке',exact:true}).click();await settle();assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),authoredStep.view||'neutral');await preserveCheck(lesson,keptCamera,draft);await checkLabels(lesson.id,width,authoredStep.id);await noOverflow();await takeScreenshot(lesson,width,authoredStep.id);
  }
  const modalChecked=await theoryModal(lesson,width,keptCamera,draft);await preserveCheck(lesson,keptCamera,draft);

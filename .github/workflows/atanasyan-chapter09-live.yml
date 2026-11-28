@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'geometry-course/textbook/**'
+      - 'assets/geometry-step-views.js'
       - 'tools/geometry-textbook/chapter09-live.browser.cjs'
       - 'tools/geometry-textbook/caption_expectations.cjs'
       - '.github/workflows/atanasyan-chapter09-live.yml'
@@ -10,6 +11,7 @@ on:
     branches: [main]
     paths:
       - 'geometry-course/textbook/**'
+      - 'assets/geometry-step-views.js'
       - 'tools/geometry-textbook/chapter09-live.browser.cjs'
       - 'tools/geometry-textbook/caption_expectations.cjs'
       - '.github/workflows/atanasyan-chapter09-live.yml'

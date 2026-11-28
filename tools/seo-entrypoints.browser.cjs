@@ -75,8 +75,9 @@ async function checkVilenkinEntrances(page, origin, javaScriptEnabled) {
     assert(lesson.startsWith(`v${grade}f-`), `${id}: expected a lesson from this course`);
     const savedUrl = `${origin}/school/index.html?course=${id}#lesson/${lesson}`;
     await Promise.all([page.waitForURL(savedUrl), next.click()]);
-    await page.getByRole('button', { name: 'Тренировка', exact: true }).click();
-    await page.locator('#answer').fill('ошибочный ответ');
+    await page.locator('[data-cmd="mode"][data-value="practice"]').click();
+    // A recognized, wrong number records a mathematical attempt; a format error does not.
+    await page.locator('#answer').fill('-999');
     await page.getByRole('button', { name: 'Проверить', exact: true }).click();
     const savedAttempt = () => page.evaluate(() =>
       JSON.parse(localStorage.getItem(window.WorkshopState.KEY)).events.at(-1));
@@ -96,6 +97,54 @@ async function checkVilenkinEntrances(page, origin, javaScriptEnabled) {
   console.log(`SEO_VILENKIN_ENTRANCES_OK: two catalog entrances, eight topic links and original workshop routes, JavaScript ${javaScriptEnabled}`);
 }
 
+async function checkLearningEntries(page, origin, javaScriptEnabled) {
+  const textbook = '/courses/vilenkin-6-part-1/textbook.html';
+  const units = ['units-A', 'units-B', 'units-C', 'units-D', 'supplement-lcm-multi'].flatMap(name =>
+    JSON.parse(fs.readFileSync(path.join(root, 'courses/vilenkin-6-part-1/textbook-data', name + '.json'), 'utf8')));
+  await page.setViewportSize({width: 360, height: 800});
+  await page.goto(origin + textbook);
+  if (!javaScriptEnabled) {
+    const links = page.locator('#book a[href^="#unit/"]');
+    assert.deepEqual(await links.evaluateAll(items => items.map(a => a.hash)), units.map(u => '#unit/' + u.id));
+    for (const unit of units) {
+      const content = await page.locator('[id="unit/' + unit.id + '"]').innerText();
+      const rule = unit.rules[0].text.replace(/\[\[([^\]]+)\]\]/g, '$1');
+      assert(content.includes(unit.title) && content.includes(rule), 'static unit ' + unit.id);
+    }
+  }
+  for (const id of [1, 19, 1008]) {
+    const unit = units.find(u => u.id === id);
+    await page.goto(origin + textbook + '#unit/' + id);
+    const heading = javaScriptEnabled ? page.locator('main h1') : page.locator(':target h3');
+    await page.waitForFunction(title => document.querySelector('main h1')?.textContent === title ||
+      document.querySelector(':target h3')?.textContent.includes(title), unit.title);
+    assert((await heading.innerText()).includes(unit.title));
+  }
+
+  const decimal = '/trainers/desyatichnye-drobi-level-1.html';
+  await page.goto(origin + '/topics/');
+  await page.locator('a[href="' + decimal + '"]').click();
+  assert.equal(new URL(page.url()).pathname, decimal);
+  assert.equal(await page.locator('#quiz').isVisible(), javaScriptEnabled);
+  if (javaScriptEnabled) {
+    await page.locator('#ans').fill('12,4');
+    await page.locator('#check').click();
+    assert.equal(await page.locator('#fb').innerText(), 'Верно!');
+  }
+  await page.getByText('Сверить решение', {exact: true}).click();
+  assert((await page.locator('details[open]').innerText()).includes('3,45'));
+  await page.locator('a[href="/trainers/oge-basics/decimal-add-subtract.html"]').click();
+  assert.equal(new URL(page.url()).pathname, '/trainers/oge-basics/decimal-add-subtract.html');
+
+  for (const destination of ['/equations/linear-pilot/', '/trainers/oge-task9-equations.html']) {
+    await page.goto(origin + '/topics/lineynye-uravneniya/');
+    await page.locator('.topic-hero a[href="' + destination + '"]').click();
+    assert.equal(new URL(page.url()).pathname, destination);
+    assert.match(await page.locator('h1').first().innerText(), /уравнен/i);
+  }
+  console.log('SEO_FIRST_LEARNING_ENTRIES_OK: JavaScript ' + javaScriptEnabled);
+}
+
 (async () => {
   let browser;
   try {
@@ -108,6 +157,7 @@ async function checkVilenkinEntrances(page, origin, javaScriptEnabled) {
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
+      await checkLearningEntries(page, origin, javaScriptEnabled);
       await checkVilenkinEntrances(page, origin, javaScriptEnabled);
       for (let i = 0; i < legacy.length; i++) {
         await page.goto(`${origin}/trainers/multiplication-table/${legacy[i]}?source=compat-check#saved-route`, { waitUntil: 'commit' });

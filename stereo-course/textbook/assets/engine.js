@@ -5,6 +5,78 @@ const idOK=x=>typeof x==='string'&&/^[a-z][a-z0-9-]*$/.test(x)&&!reserved.has(x)
 const textOK=x=>typeof x==='string'&&x.trim().length>0;
 const stable=x=>JSON.stringify(x&&typeof x==='object'?Array.isArray(x)?x.map(v=>JSON.parse(stable(v))):Object.fromEntries(Object.keys(x).sort().map(k=>[k,JSON.parse(stable(x[k]))])):x);
 const normalized=x=>String(x).trim().replace(/\s+/g,' ').replace(/−/g,'-');
+// The authored bank stays unchanged. Numeric equivalents are checked by this
+// bounded parser, never by executing learner input. Every intermediate result
+// must be real and finite: a later ^0 cannot hide division by zero or sqrt(-4).
+function numericAnswer(value){
+ let source=String(value).trim().replace(/[−–]/g,'-').replace(/,/g,'.').replace(/[·×]/g,'*').replace(/:/g,'/').replace(/π/gi,'pi').replace(/²/g,'^2').replace(/³/g,'^3');
+ const fail=(status,message)=>{const error=new Error(message);error.answerStatus=status;throw error;};
+ if(!source)fail('empty','Сначала запиши ответ.');
+ if(source.length>180)fail('invalid','Запись слишком длинная. Сократи выражение.');
+ const mixed=source.match(/^([+-]?)(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+ if(mixed)source=mixed[1]+'('+mixed[2]+'+'+mixed[3]+'/'+mixed[4]+')';
+ const tokens=[];let offset=0;
+ while(offset<source.length){
+  if(/\s/.test(source[offset])){offset++;continue;}
+  const match=/^(?:sqrt|pi|\d+(?:\.\d*)?|\.\d+|[()+\-*/^√])/i.exec(source.slice(offset));
+  if(!match)fail('invalid','Не удалось прочитать запись. Используй числа, дроби, sqrt(...) или √.');
+  tokens.push(match[0].toLowerCase());offset+=match[0].length;
+ }
+ let index=0,depth=0;
+ const finite=value=>{if(!Number.isFinite(value)||Math.abs(value)>1e12)fail('domain','На промежуточном шаге нет допустимого конечного числа. Проверь операции.');return value;};
+ const enter=()=>{if(++depth>40)fail('invalid','Слишком много вложенных действий. Упрости запись.');};
+ function primary(){
+  enter();const token=tokens[index++];let out;
+  if(token==='('){out=expression();if(tokens[index++]!==')')fail('incomplete','Закрой скобку, чтобы проверить ответ.');}
+  else if(token==='sqrt'||token==='√'){
+   let radicand;
+   if(tokens[index]==='('){index++;radicand=expression();if(tokens[index++]!==')')fail('incomplete','Закрой скобку под корнем.');}
+   else if(token==='√'){const sign=tokens[index]==='-'?(index++,-1):1;radicand=sign*primary();}
+   else fail('incomplete','Запиши корень в виде sqrt(...).');
+   if(radicand<0)fail('domain','Под квадратным корнем должно быть неотрицательное число.');
+   out=Math.sqrt(radicand);
+  }else if(token==='pi')out=Math.PI;
+  else if(token&&/^(?:\d|\.)/.test(token))out=Number(token);
+  else if(token===undefined)fail('incomplete','Запись не закончена. Допиши число или выражение.');
+  else fail('invalid','Проверь порядок чисел, скобок и знаков действий.');
+  depth--;return finite(out);
+ }
+ function power(){let out=primary();if(tokens[index]==='^'){index++;const exponent=unary();if(Math.abs(exponent)>1000)fail('invalid','Слишком большой показатель степени.');if(out===0&&exponent<=0)fail('domain','Ноль нельзя возводить в нулевую или отрицательную степень.');if(out<0&&!Number.isInteger(exponent))fail('domain','Для отрицательного основания здесь нужен целый показатель степени.');out=finite(Math.pow(out,exponent));}return out;}
+ function unary(){enter();let out;if(tokens[index]==='+'||tokens[index]==='-'){const sign=tokens[index++]==='-'?-1:1;out=finite(sign*unary());}else out=power();depth--;return out;}
+ function product(){
+  let out=unary();
+  while(index<tokens.length){
+   const token=tokens[index],implicit=['(','sqrt','√','pi'].includes(token);
+   if(token!=='*'&&token!=='/'&&!implicit)break;
+   if(!implicit)index++;const right=unary();if(token==='/'&&right===0)fail('domain','Делить на ноль нельзя. Проверь знаменатель.');out=finite(token==='/'?out/right:out*right);
+  }return out;
+ }
+ function expression(){let out=product();while(tokens[index]==='+'||tokens[index]==='-'){const sign=tokens[index++],right=product();out=finite(sign==='+'?out+right:out-right);}return out;}
+ const result=expression();if(index!==tokens.length)fail('invalid','Между числами нужен знак действия. Проверь запись.');return result;
+}
+function numericParts(value){
+ return String(value).split(';').map(part=>{
+  const suffix=part.match(/\s*(см(?:[²³]|\^[23])?|мм(?:[²³]|\^[23])?|дм(?:[²³]|\^[23])?|м(?:[²³]|\^[23])?|°|градус(?:а|ов)?)\s*$/iu);
+  const unit=suffix?suffix[1].toLowerCase().replace(/градус(?:а|ов)?/u,'°').replace(/\^2/g,'²').replace(/\^3/g,'³'):'';
+  return {value:numericAnswer(suffix?part.slice(0,suffix.index):part),unit};
+ });
+}
+function classifyAnswer(value,accepted){
+ if(!String(value).trim())return {status:'empty',message:'Сначала запиши ответ. Это ещё не попытка решения.'};
+ if(accepted.some(answer=>normalized(answer)===normalized(value)))return {status:'correct'};
+ const numeric=[];
+ for(const answer of accepted){try{numeric.push(numericParts(answer));}catch{}}
+ if(!numeric.length)return {status:'wrong'}; // Named objects/arguments retain their authored text contract.
+ let parts;try{parts=numericParts(value);}catch(error){const numericInput=/^[+\-−–(√\d.,]|^(?:sqrt|pi|π)/i.test(String(value).trim());return numeric.length===accepted.length||numericInput?{status:error.answerStatus||'invalid',message:error.message}:{status:'wrong'};}
+ const shaped=numeric.filter(target=>target.length===parts.length);
+ if(!shaped.length)return {status:'invalid',message:'Запиши все требуемые значения через точку с запятой.'};
+ // Units may be omitted when an authored variant omits them, or supplied when
+ // the same authored unit exists. Do not silently treat metres as centimetres.
+ const compatible=shaped.filter(target=>target.every((item,i)=>item.unit===parts[i].unit));
+ if(!compatible.length)return {status:'invalid',message:'Проверь единицы измерения. Используй единицы, указанные в поле ответа.'};
+ const equal=(a,b)=>Math.abs(a-b)<=1e-10*Math.max(1,Math.abs(a),Math.abs(b));
+ return {status:compatible.some(target=>target.every((item,i)=>equal(item.value,parts[i].value)))?'correct':'wrong'};
+}
 const localChapter=source=>['main','theory'].includes(source.collection)?null:source.chapter||null;
 const sourceGroup=entry=>stable([entry.kind,entry.source.bookId,entry.source.collection,localChapter(entry.source),entry.source.examTask||null,entry.kind==='theory'?entry.source.point:entry.source.exercise,entry.source.collection==='example'?entry.source.point||null:null]);
 function coverageGroups(entries,available){
@@ -153,13 +225,14 @@ function createApp(root,options){
  const navigation=doc.querySelector('.textbook-navigation');
  const theoryTrail=[];
  const cache=new Map();
+ let catalogReturn=null;
  function el(tag,text,attrs={}){const node=doc.createElement(tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);if(text!==undefined)math.appendText(node,String(text));return node;}
  function setDisplayText(node,text){node.replaceChildren();math.appendText(node,String(text));}
  const alerts=el('div',undefined,{class:'course-alerts','aria-live':'polite'}),view=el('main');root.replaceChildren(alerts,view);
  function status(text){if(![...alerts.children].some(node=>node.tagName==='P'&&node.textContent===text))alerts.append(el('p',text));}
  function safeRead(k){try{return storage?.getItem(k)||null;}catch{status('Сохранение в браузере недоступно. Оставь страницу открытой, чтобы сохранить текущие записи.');return null;}}
- function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null};}
- function readState(raw){try{const saved=JSON.parse(raw);if(!saved||typeof saved!=='object')return initial();return {draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'?saved.stepDrafts:{},revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,current.steps.length)):0,assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null};}catch{return initial();}}
+ function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null,wrongAttempts:0,firstAttempt:null,checkedWith:null};}
+ function readState(raw){try{const saved=JSON.parse(raw);if(!saved||typeof saved!=='object')return initial();return {draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'?saved.stepDrafts:{},revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,current.steps.length)):0,assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null,wrongAttempts:Number.isInteger(saved.wrongAttempts)?Math.max(0,Math.min(saved.wrongAttempts,10000)):0,firstAttempt:saved.firstAttempt&&typeof saved.firstAttempt.input==='string'&&['correct','wrong'].includes(saved.firstAttempt.status)?{input:saved.firstAttempt.input.slice(0,1000),status:saved.firstAttempt.status}:null,checkedWith:['independent','corrected','assisted'].includes(saved.checkedWith)?saved.checkedWith:null};}catch{return initial();}}
  function freeze(){
   if(locked)return;locked=true;
   const note=el('section',undefined,{class:'course-conflict'});note.append(el('strong','В другом окне уже сохранена новая работа. Твои записи ниже можно скопировать.'),el('p',current.statement.text));
@@ -213,7 +286,7 @@ function createApp(root,options){
   dialog.append(close,companionNode(lesson,true),title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
   const nestedHelp=el('div');mountHelp(lesson.help,nestedHelp,()=>({setView:selectTheoryView}));dialog.append(nestedHelp);
   const steps=el('div');for(const step of lesson.steps){const d=el('details');d.append(el('summary',step.title),el('p',step.prompt),el('p',step.explanation));justifications(step,d);d.addEventListener('toggle',()=>{if(d.isConnected&&d.open)selectTheoryView(step.view||'neutral');});steps.append(d);}dialog.append(steps);root.append(dialog);
-  dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:backState?.camera});
+  dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{lessonId:lesson.id,savedCamera:backState?.camera});
   if(backState){
    const details=[...dialog.querySelectorAll('details')],pendingToggles=new Set((backState.opened||[]).map(index=>details[index]).filter(Boolean));
    const restoreSelected=()=>{if(dialog!==shownDialog)return;restoring=false;selectTheoryView(backState.view||'neutral');};
@@ -233,6 +306,12 @@ function createApp(root,options){
  }
  function open(id){
   if(destroyed||locked)return false;const lesson=available.get(id);if(!lesson){status('Этот материал ещё не прошёл все проверки.');return false;}
+  if(!current&&view.querySelector('.catalog-filters')){
+   const content=doc.createDocumentFragment();
+   const button=view.querySelector('[data-lesson="'+lesson.id+'"]');
+   content.append(...view.childNodes);
+   catalogReturn={content,button};
+  }
   destroyScene();if(navigation)root.after(navigation);current=lesson;key='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
   win.history?.replaceState(null,'','#'+lesson.id);
   const back=el('button','← Все материалы',{type:'button','aria-label':'← Все материалы курса'});back.addEventListener('click',home);
@@ -249,26 +328,51 @@ function createApp(root,options){
     // Open native disclosures count as help even before their queued toggle fires.
     if(side.querySelector('details[open]'))state.assisted=true;
     if(!save())return;
-    if(lesson.answer.mode==='manual'){setDisplayText(feedback,'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.');return;}
-    const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
-    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;save();
+    if(lesson.answer.mode==='manual'){setDisplayText(feedback,input.value.trim()?'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.':'Сначала запиши свой довод или вопрос. Пустое поле ещё не является рассуждением.');return;}
+    const result=classifyAnswer(input.value,lesson.answer.accepted);feedback.dataset.answerStatus=result.status;
+    if(!['correct','wrong'].includes(result.status)){setDisplayText(feedback,result.message);return;}
+    if(!state.firstAttempt)state.firstAttempt={input:input.value.slice(0,1000),status:result.status};
+    if(result.status==='correct'){
+     setDisplayText(feedback,state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':state.wrongAttempts?'Ответ совпал. Ты исправил(а) решение самостоятельно.':'Ответ совпал с проверенным. Решено самостоятельно.');
+     if(!state.checked)state.checkedWith=state.assisted?'assisted':state.wrongAttempts?'corrected':'independent';state.checked=true;
+    }else{
+     state.wrongAttempts++;
+     const question=lesson.help[0]?.question||'Проверь, какой объект и какую величину нужно найти.';
+     setDisplayText(feedback,'Пока не совпало. '+question+(state.wrongAttempts>=2?' Можно открыть «Хочешь подсказку?» и разобрать решение по шагам.':''));
+    }save();
    });form.append(label,input,check,feedback);main.append(form);
   }
   const help=el('details',undefined,{'data-main-help':''}),summary=el('summary','Хочешь подсказку?'),helpBody=el('div');summary.addEventListener('click',event=>{if(!help.open&&!assisted())event.preventDefault();});help.addEventListener('toggle',()=>{if(help.isConnected&&help.open)assisted();});help.append(summary,helpBody);mountHelp(lesson.help,helpBody);
   const steps=el('section',undefined,{'data-steps':''}),next=el('button','Разобрать по шагам',{type:'button'});helpBody.append(steps,next);
   function addStep(index){const step=lesson.steps[index],section=el('section',undefined,{class:'textbook-step','data-step':step.id});section.append(el('h3',step.title),el('p',step.prompt));const explain=el('details');explain.append(el('summary','Показать объяснение'),el('p',step.explanation));justifications(step,explain);section.append(explain);
-   if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(!assisted())return;setDisplayText(feedback,step.input.accepted.some(value=>normalized(value)===normalized(input.value))?'Ответ на этот шаг совпал.':step.input.feedback);});section.append(form);}
+   if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(locked)return;const result=classifyAnswer(input.value,step.input.accepted);feedback.dataset.answerStatus=result.status;if(!['correct','wrong'].includes(result.status)){setDisplayText(feedback,result.message);return;}if(!assisted())return;setDisplayText(feedback,result.status==='correct'?'Ответ на этот шаг совпал.':step.input.feedback);});section.append(form);}
    const onModel=el('button','Показать на рисунке',{type:'button'});onModel.addEventListener('click',()=>{if(assisted())viewer?.setView(step.view||'neutral');});section.append(onModel);steps.append(section);
   }
   for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;state.assisted=true;}
   function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
-  side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});
+  if(lesson.answer?.mode==='exact'&&lesson.answer.feedback){const explanation=el('button','Сверить с объяснением ответа',{type:'button','data-answer-explanation':''});explanation.addEventListener('click',()=>{if(assisted())setDisplayText(main.querySelector('[data-final-feedback]'),lesson.answer.feedback);});helpBody.append(explanation);}
+  side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{
+   lessonId:lesson.id,
+   // Volume lessons have a reviewed phone layout that keeps their full diagram above the fold.
+   get compactPreview(){
+    return lesson.source.chapter === 'V. Объёмы тел' && model.clientWidth > 0 && model.clientWidth < 400;
+   },
+   savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}
+  });
   const guide=el('details',undefined,{class:'textbook-model-guide'});guide.append(el('summary','Как работать с рисунком'));for(const note of model.querySelectorAll('.am-help,.am-note'))guide.append(note);guide.append(el('p',lesson.visualization.caption));main.insertBefore(guide,main.querySelector('[data-final-form]'));
   if(cached&&cached.base!==expected)freeze();
   return true;
  }
- function home(){if(destroyed||locked)return;destroyScene();if(navigation)root.before(navigation);current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1','Курс к учебнику «'+catalog.book.title+'»'),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
+ function home(){if(destroyed||locked)return;destroyScene();if(navigation)root.before(navigation);current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);
+  if(catalogReturn){
+   const {content,button}=catalogReturn;
+   catalogReturn=null;
+   view.append(content);
+   button?.focus();
+   return;
+  }
+  view.append(el('h1','Курс к учебнику «'+catalog.book.title+'»'),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
   if(!coverage.inventoryComplete)view.append(el('p','Список учебника ещё дополняется. Эти числа пока не означают полное покрытие книги.',{class:'course-note'}));
   if(!available.size)view.append(el('p','Проверенные материалы пока не опубликованы.'));
   const controls=el('section',undefined,{class:'catalog-filters','aria-label':'Найти материал'}),search=el('input',undefined,{id:'catalog-search',type:'search',placeholder:'Номер задачи, пункт, параграф или тема'});
@@ -302,7 +406,7 @@ function createApp(root,options){
  }
  function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();}
  win.addEventListener('storage',onStorage);const start=win.location.hash.slice(1);if(start&&available.has(start))open(start);else home();
- return {open,home,coverage,issues,destroy(){destroyed=true;destroyScene();if(navigation)root.before(navigation);root.classList.remove('textbook-reading');win.removeEventListener('storage',onStorage);root.replaceChildren();}};
+ return {open,home,coverage,issues,destroy(){destroyed=true;catalogReturn=null;destroyScene();if(navigation)root.before(navigation);root.classList.remove('textbook-reading');win.removeEventListener('storage',onStorage);root.replaceChildren();}};
 }
-const api={validateLesson,inspectBundle,createApp};global.StereoTextbook=api;if(typeof module!=='undefined')module.exports=api;
+const api={validateLesson,inspectBundle,createApp,numericAnswer,classifyAnswer};global.StereoTextbook=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

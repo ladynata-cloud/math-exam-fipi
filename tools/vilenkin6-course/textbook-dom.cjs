@@ -171,5 +171,44 @@ function url(unit,task){return `#unit/${unit.id}/task/${task.id}`;}
   assert.equal(record.reviewedAfter,false,'unfinished work cannot claim a post-answer review');
   assert.equal(record.wrongCounts.final,10000);assert.equal(record.wrongCounts.bad,undefined);
   assert(!ctx.d.querySelector('.solution'));ctx.w.close();
-  console.log(JSON.stringify({ok:true,views,sourceFigures:figures,journeys:['step-reload','wrong-hint-reload','assisted','independent','repeat','reset','guided','manual','progress','book','corrupt-state','step-reveal-reload','stale-submit','bounded-input','hidden-hint','rules-help','source-help','unit-zero-resume','preserve-unreadable-state','stale-repeat-reset-navigation-continue','reconcile-help-evidence','reconcile-completed-answers','validate-step-prefix','hint-reset-remains-familiar','optional-help-after-two-errors','self-correction-without-help','review-after-completion-reload','stale-post-answer-review','step-specific-errors','bounded-errors-and-valid-review']}));
+  // Both ways of opening source material count as consultation; a detached
+  // link and the right-button context menu cannot change saved work.
+  ctx=await open(url(independent.u,independent.t));
+  draft=ctx.d.querySelector('#answer');draft.value='123';draft.dispatchEvent(new ctx.w.Event('input',{bubbles:true}));
+  let pdfLink=ctx.d.querySelector('.source a');
+  before=ctx.w.localStorage.getItem(KEY);
+  pdfLink.dispatchEvent(new ctx.w.MouseEvent('auxclick',{bubbles:true,cancelable:true,button:2}));
+  assert.equal(ctx.w.localStorage.getItem(KEY),before,'opening a context menu alone does not count as consultation');
+  const middleClick=new ctx.w.MouseEvent('auxclick',{bubbles:true,cancelable:true,button:1});
+  pdfLink.dispatchEvent(middleClick);
+  assert.equal(middleClick.defaultPrevented,false,'a live source link remains available in a new tab');
+  record=JSON.parse(ctx.w.localStorage.getItem(KEY)).tasks[independent.t.id];
+  assert.equal(record.helped,true,'middle-button PDF consultation records help');assert.equal(record.draft,'123');assert.equal(record.attempts,0);
+  let sourceSaved=ctx.w.localStorage.getItem(KEY);ctx.w.close();ctx=await open(url(independent.u,independent.t),sourceSaved);
+  submit(ctx,firstAnswer(independent.t));assert.equal(JSON.parse(ctx.w.localStorage.getItem(KEY)).tasks[independent.t.id].status,'assisted','source consultation survives reload');
+  pdfLink=ctx.d.querySelector('.source a');before=ctx.w.localStorage.getItem(KEY);
+  pdfLink.dispatchEvent(new ctx.w.MouseEvent('auxclick',{bubbles:true,cancelable:true,button:1}));
+  assert.equal(ctx.w.localStorage.getItem(KEY),before,'consultation after completion preserves the earned result');
+  await go(ctx,url(other.u,other.t));before=ctx.w.localStorage.getItem(KEY);
+  const staleMiddle=new ctx.w.MouseEvent('auxclick',{bubbles:true,cancelable:true,button:1});pdfLink.dispatchEvent(staleMiddle);
+  assert(staleMiddle.defaultPrevented,'detached middle-button navigation must be cancelled');
+  assert.equal(ctx.w.localStorage.getItem(KEY),before,'detached source consultation cannot mutate old or current work');ctx.w.close();
+
+  // Practice is study material too: leaving an unfinished check for practice
+  // keeps its draft but cannot later claim an unassisted check result.
+  ctx=await open(url(independent.u,independent.t));
+  draft=ctx.d.querySelector('#answer');draft.value='123';draft.dispatchEvent(new ctx.w.Event('input',{bubbles:true}));
+  await go(ctx,url(workUnit,task));
+  record=JSON.parse(ctx.w.localStorage.getItem(KEY)).tasks[independent.t.id];
+  assert.equal(record.helped,true,'practice detour marks the unfinished check as assisted');assert.equal(record.draft,'123');assert.equal(record.attempts,0);
+  click(ctx,'[data-action="hint"]');click(ctx,'[data-action="solution"]');
+  const practiceSaved=ctx.w.localStorage.getItem(KEY);ctx.w.close();ctx=await open(url(independent.u,independent.t),practiceSaved);
+  assert.equal(ctx.d.querySelector('#answer').value,'123');submit(ctx,firstAnswer(independent.t));
+  assert.equal(JSON.parse(ctx.w.localStorage.getItem(KEY)).tasks[independent.t.id].status,'assisted');
+  await go(ctx,url(workUnit,task));await go(ctx,url(independent.u,independent.t));
+  assert.equal(JSON.parse(ctx.w.localStorage.getItem(KEY)).tasks[independent.t.id].status,'assisted','completed result remains stable across later navigation');ctx.w.close();
+  const secondCheck=units.flatMap(u=>u.tasks.map(t=>({u,t}))).find(({t})=>t.role==='check'&&t.id!==independent.t.id);
+  ctx=await open(url(independent.u,independent.t));await go(ctx,url(secondCheck.u,secondCheck.t));
+  assert.equal(JSON.parse(ctx.w.localStorage.getItem(KEY)).tasks[independent.t.id].helped,false,'another independent check alone is not study help');ctx.w.close();
+  console.log(JSON.stringify({ok:true,views,sourceFigures:figures,journeys:['step-reload','wrong-hint-reload','assisted','independent','repeat','reset','guided','manual','progress','book','corrupt-state','step-reveal-reload','stale-submit','bounded-input','hidden-hint','rules-help','source-help','unit-zero-resume','preserve-unreadable-state','stale-repeat-reset-navigation-continue','reconcile-help-evidence','reconcile-completed-answers','validate-step-prefix','hint-reset-remains-familiar','optional-help-after-two-errors','self-correction-without-help','review-after-completion-reload','stale-post-answer-review','step-specific-errors','bounded-errors-and-valid-review','source-middle-click-reload-stale','practice-consultation-reload','check-to-check-no-help']}));
 })().catch(error=>{console.error(error);process.exitCode=1;});

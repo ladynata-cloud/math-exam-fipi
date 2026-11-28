@@ -178,7 +178,8 @@ test('a corrupt sibling rejected by the real all-or-nothing loader disables ever
   assert.equal(result.sources.path.resumeStatus, 'rejected'); assert.equal(find(result, 'box').independentCount, 1);
   assert.equal(find(result, 'box').resume, false); assert.equal(result.checks.active, null);
   assert(result.lines.flatMap(line => line.items).filter(item => item.source === 'path').every(item => !item.resume));
-  assert.equal(result.recommendation.kind, 'recovery'); assert(result.recommendation.href.startsWith('/ege-baza/index.html#'));
+  assert.equal(result.recommendation.kind, 'recovery'); assert.equal(result.recommendation.href, '/ege-baza/path/index.html?practice=recovery#practice=box&previous=123');
+  assert.equal(result.recommendation.resultsHref, '/ege-baza/index.html#line?line=m05');
   assert(!result.recommendation.reason.includes('сохранит текущее условие'));
   assert.equal(JSON.stringify(store.text), before); assert.equal(store.writes, 0);
 });
@@ -197,6 +198,7 @@ test('unavailable localStorage does not throw or attempt to establish another pe
   const result = ctx.EgeBazaJourney.snapshot();
   assert.equal(result.status, 'blocked'); assert.equal(result.recommendation.kind, 'recovery');
   assert.equal(result.lines[0].independent, null);
+  assert.equal(result.recommendation.href, '/ege-baza/path/index.html?practice=recovery#practice=round');
 });
 
 
@@ -214,4 +216,12 @@ test('optional personal learning-cycle fields resume safely and malformed siblin
     assert.equal(result.recommendation.kind, 'recovery');
     assert.equal(JSON.stringify(store.text), before);
   }
+});
+
+test('only the packaging lesson can resume a saved second-generation condition', () => {
+  const ctx = runtime(), key = ctx.EgeBazaJourney.keys.path;
+  const project = lessons => ctx.EgeBazaJourney.snapshot(storage({ [key]: pathSave(lessons) }));
+  assert.equal(project({ round: lesson({ roundVersion: 2, draft: '3' }) }).recommendation.kind, 'resume');
+  assert.equal(project({ round: lesson({ roundVersion: 9, draft: '3' }) }).sources.path.resumeCompatible, false);
+  assert.equal(project({ box: lesson({ roundVersion: 2, draft: '3' }) }).sources.path.resumeCompatible, false);
 });

@@ -1,0 +1,1688 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:">
+<script data-offline-runtime>
+(/* Inlined only in the downloaded HTML. */
+(function standaloneTrainer(config) {
+  'use strict';
+  const source = new URL(config.source);
+  const current = new URL(location.href);
+  const indexPath = source.pathname.endsWith('/index.html') ? source.pathname.slice(0, -'index.html'.length) : null;
+
+  function link(href) {
+    if (!href || href.startsWith('#') || /^(?:mailto:|tel:|data:|blob:)/i.test(href)) return href;
+    const url = new URL(href, source);
+    // Some course helpers have already resolved site paths using the file URL.
+    if (url.protocol === 'file:') {
+      if (url.pathname === current.pathname) return href;
+      url.href = new URL(url.pathname + url.search + url.hash, source.origin).href;
+    }
+    if (url.origin !== source.origin) return href;
+    if (url.pathname === source.pathname || url.pathname === indexPath) {
+      const local = new URL(current.href);
+      local.search = url.search;
+      local.hash = url.hash;
+      return local.href;
+    }
+    return url.href;
+  }
+
+  function update(anchor) {
+    if (anchor.namespaceURI !== 'http://www.w3.org/1999/xhtml') return;
+    const href = anchor.getAttribute('href');
+    const fixed = link(href);
+    if (fixed !== href) anchor.setAttribute('href', fixed);
+  }
+
+  window.MathExamTrainerOffline = Object.freeze({
+    origin: source.origin,
+    media: pathname => config.media[pathname] || pathname
+  });
+
+  // Practice views create and replace links as the learner switches tasks.
+  const anchors = 'a[href]';
+  new MutationObserver(records => {
+    for (const record of records) {
+      if (record.type === 'attributes' && record.target.matches(anchors)) update(record.target);
+      for (const node of record.addedNodes) {
+        if (node.nodeType !== Node.ELEMENT_NODE) continue;
+        if (node.matches(anchors)) update(node);
+        node.querySelectorAll(anchors).forEach(update);
+      }
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+})
+)({"source":"https://mathexam.space/ege-profil/azbuka-metodov/index.html","media":{}});
+</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Основы и методы профильной математики. Короткие объяснения, практика и самостоятельные проверки.">
+  <title>Основы и методы · MathExam</title>
+  <style data-inline-source="/ege-profil/azbuka-metodov/styles.css">
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #24283c;
+  background: #f7f8fc;
+  --muted: #53596f;
+  --accent: #493aba;
+  --border: #e0e1ed;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 280px; }
+a { color: var(--accent); text-underline-offset: .18em; }
+a:hover { color: #32248f; }
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+  outline: 2px solid #6956e8;
+  outline-offset: 3px;
+}
+[tabindex="-1"]:focus { outline: 0; }
+[hidden] { display: none !important; }
+h1, h2, p { margin: 0; }
+p { line-height: 1.55; }
+.az-header { background: white; border-bottom: 1px solid var(--border); }
+.az-header > div, .az-wrap { width: min(1080px, calc(100% - 40px)); margin-inline: auto; }
+.az-header > div { display: flex; min-height: 58px; align-items: center; justify-content: space-between; gap: 16px; }
+.az-header a { font-size: .875rem; font-weight: 700; }
+.az-header .az-brand { display: inline-flex; align-items: center; min-height: 44px; color: #28223c; text-decoration: none; font-size: 1.25rem; letter-spacing: -.04em; }
+.az-wrap { padding-block: clamp(22px, 5vw, 52px); }
+.az-kicker { margin-bottom: 6px; color: #5346ad; font-size: .84rem; font-weight: 750; }
+h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing: -.045em; overflow-wrap: anywhere; }
+.az-lead { max-width: 48rem; margin-top: 9px; color: var(--muted); }
+.az-panel { padding: clamp(14px, 2.4vw, 24px); border: 1px solid var(--border); border-radius: 16px; background: white; min-width: 0; }
+.az-panel h2 { font-size: 1.12rem; line-height: 1.35; }
+.az-catalog { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; margin-top: 20px; }
+.az-card { display: flex; flex-direction: column; gap: 6px; color: inherit; text-decoration: none; }
+.az-card:hover { background: #f5f2ff; border-color: #c9c1f4; }
+.az-card p, .az-count { color: var(--muted); font-size: .9rem; }
+.az-count { margin-top: auto; padding-top: 7px; }
+.az-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .64fr); align-items: start; gap: 14px; margin-top: 17px; }
+.az-work, .az-aside { display: grid; min-width: 0; gap: 12px; }
+.az-navigation, .az-actions, .az-numbers { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.az-navigation { margin-bottom: 13px; font-size: .9rem; }
+.az-navigation a:first-child { margin-right: auto; }
+.az-button { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 8px 13px; border: 1px solid transparent; border-radius: 9px; font: inherit; font-size: .875rem; font-weight: 700; text-decoration: none; cursor: pointer; }
+.az-button.primary { background: var(--accent); color: white; }
+.az-button.primary:hover { background: #38299e; }
+.az-button.secondary { border-color: #d9d3f6; background: #f4f1ff; color: #3e3199; }
+.az-button.secondary:hover { background: #eae4ff; }
+.az-skill-list ul, .az-resources ul { padding: 0; list-style: none; margin: 9px 0 0; }
+.az-skill-list a { display: grid; gap: 4px; padding: 9px; border: 1px solid var(--border); border-radius: 8px; font-size: .9rem; text-decoration: none; }
+.az-skill-list li + li { margin-top: 7px; }
+.az-skill-list a[aria-current], .az-skill-list a:hover { background: #f3efff; border-color: #d1c8f5; }
+.az-status { font-size: .8rem; color: var(--muted); }
+.az-verified { color: #11644d; font-weight: 730; }
+.az-supported { color: #82450e; }
+.az-resources h2:not(:first-child) { margin-top: 16px; }
+.az-resources li + li { margin-top: 7px; }
+.az-numbers { margin-top: 8px; }
+.az-numbers a { padding: 5px 9px; border: 1px solid #e3def8; border-radius: 6px; font-weight: 700; text-decoration: none; }
+.az-exercise h2 { margin-bottom: 12px; font-size: clamp(1.03rem, 2.7vw, 1.37rem); }
+.az-exercise label { display: block; margin: 10px 0 5px; font-size: .88rem; font-weight: 700; }
+.az-exercise input { width: min(100%, 360px); min-height: 44px; padding: 8px 10px; border: 1px solid #bfb8de; border-radius: 8px; color: inherit; background: #fbfaff; font: inherit; }
+.az-feedback:not(:empty), .az-hint { margin-top: 8px; padding: 8px 10px; border-radius: 8px; font-size: .9rem; }
+.az-hint { background: #fff3df; color: #704319; }
+.az-feedback.ok { background: #e8f6ef; color: #145e49; }
+.az-feedback.retry { background: #fceef2; color: #8e2c4d; }
+.az-actions { margin-top: 11px; }
+.az-support { margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--border); }
+.az-support p { margin-top: 7px; font-size: .92rem; }
+.az-support summary, .az-history summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+.az-history ol { margin-bottom: 0; padding-left: 1.35rem; }
+.az-history li { margin-top: 5px; overflow-wrap: anywhere; font-size: .87rem; }
+.az-diagram { display: block; width: min(100%, 300px); height: auto; background: #f6f5fe; border-radius: 8px; }
+.az-diagram path, .az-diagram circle { fill: none; stroke: #403c68; stroke-width: 1.5; stroke-linejoin: round; }
+.az-diagram .hidden-edge { stroke-dasharray: 4 3; }
+.az-diagram .accent-edge { stroke: #5141cb; stroke-width: 1.9; }
+.az-diagram text { fill: #292747; font: 13px system-ui, sans-serif; }
+@media (max-width: 650px) {
+  .az-grid { grid-template-columns: 1fr; }
+  .az-header > div, .az-wrap { width: calc(100% - 26px); }
+  .az-header > div { min-height: 50px; }
+}
+
+.az-notes label, .az-notes p { display: block; margin-top: 7px; color: var(--muted); font-size: .875rem; }
+.az-notes textarea { display: block; width: 100%; min-height: 90px; margin-top: 8px; padding: 9px; border: 1px solid #bfb8de; border-radius: 8px; color: inherit; background: #fbfaff; font: inherit; resize: vertical; }
+
+.az-atlas { margin-top: 16px; display: grid; gap: 8px; max-width: 560px; }
+.az-atlas label { font-size: .9rem; font-weight: 700; }
+.az-atlas select { width: 100%; min-height: 44px; padding-inline: 8px; border: 1px solid #bfb8de; border-radius: 8px; background: white; color: inherit; font: inherit; }
+.az-atlas input { width: 100%; min-height: 32px; accent-color: var(--accent); }
+.az-atlas svg { display: block; width: 100%; height: auto; border-radius: 8px; background: #f7f6fc; }
+.az-atlas svg text { fill: #514d69; font: 11px system-ui, sans-serif; }
+.atlas-grid { stroke: #dedbec; }
+.atlas-axis { stroke: #77708d; stroke-width: 1.5; }
+.atlas-curve { fill: none; stroke: #493aba; stroke-width: 2; }
+.atlas-point { fill: #493aba; stroke: #493aba; stroke-width: 1.5; }
+.atlas-open { fill: white; }
+.atlas-level { stroke: #a85510; stroke-width: 2; stroke-dasharray: 5 4; }
+.az-atlas summary { color: var(--accent); cursor: pointer; font-weight: 700; }
+.az-atlas-properties p, .az-atlas-count { font-size: .9rem; }
+
+.az-parameter-plane { display: grid; gap: 6px; max-width: 370px; margin-bottom: 12px; }
+.az-parameter-plane p { font-size: .875rem; }
+.az-parameter-plane svg { display: block; width: 100%; max-width: 256px; height: auto; background: #f7f6fc; border-radius: 8px; }
+.az-skill-heading { font-size: clamp(1.55rem, 3.6vw, 2.45rem); }
+.az-parameter-plane svg text { fill: #484459; font: 12px system-ui, sans-serif; }
+.az-parameter-plane .plane-area { fill: #d1e9de; }
+.az-parameter-plane path:not(.plane-area) { fill: none; stroke-width: 2; }
+.az-parameter-plane .plane-lower { color: #4838a2; stroke: #4838a2; }
+.az-parameter-plane .plane-upper { color: #075e52; stroke: #075e52; }
+.az-parameter-plane .plane-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.plane-legend span::before { content: ''; display: inline-block; width: 14px; margin-right: 5px; vertical-align: middle; border-top: 2px solid; }
+.az-parameter-plane [data-plane-slice] { stroke: #9c440a; stroke-width: 4; fill: #9c440a; stroke-linecap: round; }
+.az-parameter-plane label { margin-block: 2px 0; }
+.az-parameter-plane input { min-height: 36px; padding: 0; accent-color: var(--accent); }
+.az-parameter-plane fieldset { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+.az-parameter-plane legend { margin-bottom: 4px; padding: 0; font-size: .875rem; font-weight: 700; }
+.az-plane-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; }
+.az-plane-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.az-plane-buttons .az-button { min-width: 60px; }
+.az-plane-buttons [aria-pressed="true"] { background: var(--accent); color: white; }
+.az-plane-buttons [aria-pressed="true"]:hover { background: #38299e; }
+.az-parameter-plane :is(.az-button, input):focus-visible { outline-offset: 2px; }
+
+</style>
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+  <header class="az-header"><div><a class="az-brand" href="/" target="_self" data-mathexam-home-link aria-label="На главную MathExam">MathExam</a><a href="/ege-profil/#profile-clock">Пещера сокровищ ЕГЭ</a></div></header>
+  <div class="az-wrap">
+    <p id="az-storage" class="az-hint" role="status" hidden>Сохранение в браузере недоступно. Работа видна до закрытия страницы.</p>
+    <main id="alphabet-main" tabindex="-1">
+      <noscript><h1>Основы и методы</h1><p>Для проверки ответов включи JavaScript. <a href="/ege-profil/">К курсу ЕГЭ</a>.</p></noscript>
+    </main>
+  </div>
+<script data-inline-source="/ege-profil/exam-map.js">
+(function (root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.ProfileExamMap = api;
+})(typeof globalThis === 'object' ? globalThis : this, function () {
+  'use strict';
+
+  // Official display numbers are not routing, lesson or saved-progress keys.
+  // Source: FIPI 2027 mathematics specification; approved H02 task table.
+  const YEAR = 2027;
+  const teachingEntry = {1: 'geo-right', 6: 'eq-linear', 7: 'expr-powers'};
+  const define = (number, id, title, source, legacy, lessonIds, preparationIds = []) => Object.freeze({
+    year: YEAR, number, id, title, source,
+    part: number == null ? null : number <= 12 ? 1 : 2,
+    points: number == null ? null : number <= 12 ? 1 : [2, 3, 2, 2, 3, 4, 4][number - 13],
+    legacyStart: source === 'start' ? legacy : number === 15 ? 16 : null,
+    legacyPartTwo: source === 'part-two' ? legacy : null,
+    lessonIds: Object.freeze(lessonIds), preparationIds: Object.freeze(preparationIds),
+    entry: teachingEntry[number] || lessonIds[0]
+  });
+  const entries = Object.freeze([
+    define(1, 'planimetry', 'Планиметрия', 'start', 1,
+      ['geo-angles', 'geo-right', 'geo-similarity', 'geo-area', 'geo-quadrilaterals', 'geo-circle']),
+    define(2, 'vectors', 'Векторы', 'start', 2,
+      ['vec-coordinates', 'vec-length', 'vec-operations', 'vec-dot'],
+      ['vec-basics-reading', 'vec-basics-equality', 'vec-basics-triangle', 'vec-basics-parallelogram',
+        'vec-basics-difference', 'vec-basics-scale', 'vec-basics-coordinates', 'vec-basics-length', 'vec-basics-dot']),
+    define(3, 'stereometry', 'Стереометрия', 'start', 3,
+      ['stereo-box', 'stereo-cube', 'stereo-prism', 'stereo-pyramid', 'stereo-cylinder', 'stereo-cone', 'stereo-sphere', 'stereo-compound']),
+    define(4, 'probability', 'Простая вероятность', 'start', 4,
+      ['prob-count', 'prob-complement', 'prob-range']),
+    define(5, 'compound-probability', 'Вероятности сложных событий', 'start', 5,
+      ['prob-independent', 'prob-conditional', 'prob-exact']),
+    define(6, 'equations', 'Уравнения первой части', 'start', 7,
+      ['algebra-exponential', 'algebra-logarithmic', 'eq-linear', 'eq-rational', 'eq-quadratic', 'eq-root']),
+    define(7, 'expressions', 'Вычисления и преобразования', 'start', 8,
+      ['algebra-cosine', 'algebra-double-angle', 'expr-powers', 'expr-roots', 'expr-fractions', 'expr-logarithms'],
+      ['trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent']),
+    define(8, 'derivative', 'Производная и первообразная', 'start', 9,
+      ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-integral'], ['calc-value', 'calc-special']),
+    define(9, 'formulas', 'Прикладные формулы', 'start', 10,
+      ['applied-formula', 'applied-formula-limit']),
+    define(10, 'word-problems', 'Текстовые задачи', 'start', 11,
+      ['applied-motion', 'applied-work', 'applied-mixture']),
+    define(11, 'functions', 'Функции и графики', 'start', 12,
+      ['fn-line', 'fn-parabola', 'fn-hyperbola', 'fn-explog']),
+    define(12, 'extrema', 'Наибольшее и наименьшее значение', 'start', 9,
+      ['calc-extreme'], ['calc-value', 'calc-special']),
+    define(13, 'part-two-equations', 'Уравнения второй части', 'part-two', 14,
+      ['p14-circle-selection', 'p14-trig-factors', 'p14-exponential-substitution', 'p14-log-domain', 'p14-radical-check', 'p14-rational-hole']),
+    define(14, 'part-two-stereometry', 'Стереометрия с доказательством', 'part-two', 15,
+      ['p2-15-projection', 'p2-15-line-plane', 'p2-15-dihedral', 'p2-15-distance', 'p2-15-section-volume', 'p2-15-coordinate-angle']),
+    define(15, 'inequalities', 'Неравенства', 'part-two', 16,
+      ['p16-repeated-root', 'p16-exponential-interval', 'p16-fixed-log', 'p16-variable-base', 'p16-radical-inequality', 'p16-cancelled-hole']),
+    define(16, 'finance', 'Экономическая задача', 'start', 13,
+      ['applied-percent', 'applied-loan-linear', 'applied-loan-equal',
+        'finance-lesson-01-ledger', 'finance-lesson-02-deposits', 'finance-lesson-03-interest-progression',
+        'finance-lesson-04-first-last-payment', 'finance-lesson-05-balance-tables', 'finance-lesson-06-payment-bounds',
+        'finance-lesson-07-equal-payments', 'finance-lesson-08-unknown-in-ledger', 'finance-lesson-09-rates',
+        'finance-lesson-10-inverse-equal-payments', 'finance-lesson-11-changing-conditions', 'finance-lesson-12-calendar',
+        'finance-lesson-13-two-stages']),
+    define(17, 'part-two-planimetry', 'Планиметрия с доказательством', 'part-two', 18,
+      ['p2-18-similarity', 'p2-18-tangents', 'p2-18-cyclic', 'p2-18-bisector', 'p2-18-cevians', 'p2-18-altitude']),
+    define(18, 'parameters', 'Задачи с параметром', 'part-two', 19,
+      ['param-linear', 'param-positive-roots', 'param-modules', 'param-hole', 'param-tangent', 'param-system']),
+    define(19, 'numbers', 'Числа и их свойства', 'part-two', 20,
+      ['numbers-remainders', 'numbers-digits', 'numbers-extremum', 'numbers-counterexample', 'numbers-invariant', 'numbers-diophantine'])
+  ]);
+  const extras = Object.freeze([
+    define(null, 'random-variables', 'Случайные величины', 'start', 6,
+      ['prob-distribution', 'prob-variance', 'prob-continuous']),
+    define(null, 'optimization', 'Моделирование и оптимизация', 'part-two', 17,
+      ['model-fence', 'model-revenue', 'model-boundary', 'model-discrete', 'model-box', 'model-motion'])
+  ]);
+  // Keep the earlier topic URL as an exact entrance to the same lesson.
+  const integral = define(8, 'integral', 'Первообразная и площадь', 'start', 9, ['calc-integral']);
+  const calculus = define(null, 'calculus-legacy', 'Производная, экстремумы и первообразная', 'start', 9,
+    ['calc-tangent', 'calc-sign', 'calc-graph', 'calc-value', 'calc-special', 'calc-extreme', 'calc-integral']);
+  const all = [...entries, ...extras];
+  const numberValue = value => typeof value === 'number' && Number.isInteger(value) ? value :
+    typeof value === 'string' && /^(?:[1-9]|1[0-9]|20)$/.test(value) ? Number(value) : null;
+  const get = number => entries.find(item => item.number === numberValue(number)) || null;
+  const topics = [...all, calculus, integral];
+  const topic = id => typeof id === 'string' ? topics.find(item => item.id === id) || null : null;
+  const resolve = value => value && typeof value === 'object' ? topic(value.id) : get(value) || topic(value);
+  const fromLegacyStart = value => {
+    const number = numberValue(value);
+    if (number === 9) return calculus;
+    return number == null ? null : all.find(item => item.legacyStart === number) || null;
+  };
+  const fromLegacyPartTwo = value => {
+    const number = numberValue(value);
+    return number == null ? null : all.find(item => item.legacyPartTwo === number) || null;
+  };
+  const forLesson = id => typeof id === 'string' ? all.find(item => item.lessonIds.includes(id)) ||
+    all.find(item => item.preparationIds.includes(id)) || null : null;
+  const label = value => { const item = resolve(value); return item ? item.number == null ? 'Дополнительная тема' : '№ ' + item.number : ''; };
+  const hash = value => {
+    const item = resolve(value);
+    return item ? item.number == null ? '#topic/' + item.id : '#fipi/' + YEAR + '/' + item.number : '';
+  };
+  const href = value => {
+    const item = resolve(value);
+    return item ? '/ege-profil/' + item.source + '/' + hash(item) : '';
+  };
+  return Object.freeze({YEAR, entries, extras, get, topic, fromLegacyStart, fromLegacyPartTwo, forLesson, label, hash, href});
+});
+
+</script>
+<script data-inline-source="/ege-profil/azbuka-metodov/catalog.js">
+(() => {
+  'use strict';
+
+  const list = [
+    {
+      id: 'random-variables', title: 'Случайные величины', short: 'Случайные величины', numbers: [6],
+      description: 'От исходов и таблицы вероятностей к ожиданию и разбросу.',
+      skills: {
+        distribution: { title: 'Собираю распределение', numbers: [6] },
+        expectation: { title: 'Нахожу математическое ожидание', numbers: [6] },
+        variance: { title: 'Считаю дисперсию и стандартное отклонение', numbers: [6] }
+      },
+      refs: [['Вероятность, №4–5', '/ege-profil/trainers/probability-t45.html']]
+    },
+    {
+      id: 'modeling', title: 'Математическое моделирование', short: 'Моделирование', numbers: [10, 11, 13, 17],
+      description: 'Переведи условие в математическую запись и проверь результат.',
+      skills: {
+        'choose-variable': { title: 'Выражаю величину через переменную', numbers: [10, 11, 13, 17] },
+        constraints: { title: 'Учитываю ограничения из условия', numbers: [10, 11, 13, 17] },
+        optimum: { title: 'Выбираю лучший допустимый вариант', numbers: [17] }
+      },
+      refs: [['Производная и первообразная · №8; экстремумы · №12', '/ege-profil/start/index.html#calm/9']]
+    },
+    {
+      id: 'domain', title: 'ОДЗ и отбор решений', short: 'ОДЗ и отбор', numbers: [7, 14, 16, 19],
+      description: 'Запиши ограничения и проверь кандидатов в исходной задаче.',
+      skills: {
+        denominator: { title: 'Исключаю нули знаменателя', numbers: [7, 14, 16, 19] },
+        squaring: { title: 'Проверяю корни после возведения в квадрат', numbers: [7, 14] },
+        'root-selection': { title: 'Отбираю корни на заданном отрезке', numbers: [14] }
+      },
+      refs: [['Тригонометрия и отбор корней', '/ege-profil/trigonometry/']]
+    },
+    {
+      id: 'interval-signs', title: 'Знаки и метод интервалов', short: 'Метод интервалов', numbers: [16, 19],
+      description: 'Отметь границы, проверь знаки и собери ответ с учётом ОДЗ.',
+      skills: {
+        'mark-points': { title: 'Различаю нули и исключённые точки', numbers: [16, 19] },
+        'test-sign': { title: 'Определяю знак между границами', numbers: [16, 19] },
+        'intersect-domain': { title: 'Пересекаю ответ с ограничениями', numbers: [16, 19] }
+      },
+      refs: [
+        ['Тренажёр метода интервалов', '/ege-profil/trainers/interval-method.html'],
+        ['Логарифмические неравенства', '/trainers/ege-profile/log-inequalities/']
+      ]
+    },
+    {
+      id: 'transformations', title: 'Алгебраические преобразования', short: 'Преобразования', numbers: [8, 14, 16],
+      description: 'Разложи выражение, сократи дробь или введи замену.',
+      skills: {
+        'common-factor': { title: 'Выношу общий множитель', numbers: [8, 14, 16] },
+        'difference-squares': { title: 'Сокращаю через разность квадратов', numbers: [8, 14, 16] },
+        substitution: { title: 'Делаю замену переменной', numbers: [14, 16] }
+      },
+      refs: [['Практикум по выражениям, №7', '/ege-profil/start/index.html#fipi/2027/7']]
+    },
+    {
+      id: 'space-drawing', title: 'Чтение пространственного чертежа', short: 'Чертёж в 3D', numbers: [3, 15],
+      description: 'Найди грань, проекцию и угол с плоскостью на чертеже.',
+      skills: {
+        'find-face': { title: 'Нахожу диагональ грани', numbers: [3, 15] },
+        projection: { title: 'Строю ортогональную проекцию', numbers: [3, 15] },
+        'line-plane-angle': { title: 'Нахожу угол прямой с плоскостью', numbers: [3, 15] }
+      },
+      refs: [
+        ['Атанасян 10–11', '/ege-profil/atanasyan-10-11/'],
+        ['Сечения с нуля', '/stereo-course/sections/']
+      ]
+    },
+    {
+      id: 'plane-constructions', title: 'Дополнительные построения в планиметрии', short: 'Построения', numbers: [1, 18],
+      description: 'Проведи линию, которая даёт нужное свойство или новый треугольник.',
+      skills: {
+        height: { title: 'Провожу высоту к нужной стороне', numbers: [1, 18] },
+        parallel: { title: 'Использую параллельную прямую для подобия', numbers: [1, 18] },
+        radius: { title: 'Провожу радиус к точке касания', numbers: [1, 18] }
+      },
+      refs: [
+        ['Планиметрия с доказательством', '/ege-profil/trainers/planimetry-t17.html'],
+        ['Атанасян 7–9', '/geometry-course/textbook/']
+      ]
+    },
+    {
+      id: 'written-solution', title: 'Запись развёрнутого решения', short: 'Запись решения', numbers: [14, 15, 16, 17, 18, 19, 20],
+      description: 'Обоснуй переход, проверь полноту разбора и запиши доказательство границы.',
+      skills: {
+        'justify-step': { title: 'Обосновываю переход в доказательстве', numbers: [15, 18] },
+        'exhaust-cases': { title: 'Разбираю исключительные случаи', numbers: [14, 16, 17, 19] },
+        'bound-and-example': { title: 'Доказываю границу и даю пример', numbers: [20] }
+      },
+      refs: [
+        ['Оценка плюс пример · 8 уроков', '/trainers/ege-methods.html'],
+        ['Тренажёр «Проверь как эксперт»', '/ege-profil/trainers/expert.html']
+      ]
+    },
+    {
+      id: 'coordinate-method', title: 'Метод координат в стереометрии', short: 'Метод координат', numbers: [15],
+      description: 'Выбери оси, запиши координаты, найди углы и расстояние до плоскости.',
+      route: true,
+      skills: {
+        axes: { title: 'Выбираю оси и читаю координаты', numbers: [15] },
+        vector: { title: 'Нахожу координаты и длину вектора', numbers: [15] },
+        normal: { title: 'Нахожу нормаль к плоскости', numbers: [15] },
+        plane: { title: 'Составляю уравнение плоскости', numbers: [15] },
+        'line-angle': { title: 'Нахожу угол прямой с плоскостью', numbers: [15] },
+        'plane-angle': { title: 'Нахожу острый или прямой угол между плоскостями', numbers: [15] },
+        distance: { title: 'Вычисляю расстояние до плоскости', numbers: [15] }
+      },
+      refs: [
+        ['Векторы с нуля', '/ege-profil/start/index.html#calm/2'],
+        ['Атанасян 10–11', '/ege-profil/atanasyan-10-11/'],
+        ['№15 · угол прямой с плоскостью', '/ege-profil/part-two/index.html#lesson/p2-15-line-plane'],
+        ['№15 · расстояние до плоскости', '/ege-profil/part-two/index.html#lesson/p2-15-distance']
+      ]
+    },
+    {
+      id: 'function-atlas', title: 'Функции и графики для задач с параметром', short: 'Функции и графики', numbers: [19],
+      description: 'Найди допустимые x и возможные y. Проследи, как меняется график и число пересечений с горизонталью.',
+      route: true,
+      atlas: true,
+      next: 'parameter-methods',
+      skills: {
+        reading: { title: 'Читаю точки графика', numbers: [19] },
+        domain: { title: 'Нахожу общую область определения', numbers: [19] },
+        shifts: { title: 'Учитываю сдвиг и отражение графика', numbers: [19] },
+        range: { title: 'Проверяю возможные значения функции', numbers: [19] }
+      },
+      refs: [
+        ['Функции и графики · №11', '/ege-profil/start/index.html#fipi/2027/11'],
+        ['Функции в формулах и на графиках', '/ege-profil/trainers/functions-t1112.html']
+      ]
+    },
+    {
+      id: 'parameter-methods', title: 'Методы решения задач с параметром', short: 'Методы параметров', numbers: [19],
+      description: 'Определи, где меняется число решений. Проверь особые значения и вернись к исходному условию.',
+      route: true,
+      atlas: true,
+      skills: {
+        level: { title: 'Считаю пересечения графика с уровнем', numbers: [19] },
+        divide: { title: 'Проверяю нулевой коэффициент до деления', numbers: [19] },
+        degree: { title: 'Различаю потерю степени и двойной корень', numbers: [19] },
+        'root-position': { title: 'Проверяю, где лежат корни', numbers: [19] },
+        plateau: { title: 'Распознаю горизонтальный участок графика', numbers: [19] },
+        hole: { title: 'Исключаю выколотую точку', numbers: [19] },
+        tangent: { title: 'Проверяю касание прямой и окружности', numbers: [19] },
+        restore: { title: 'Возвращаюсь от замены к исходным решениям', numbers: [19] },
+        plane: { title: 'Нахожу параметры по общей области', numbers: [19] }
+      },
+      refs: [
+        ['Прежний практикум по задачам с параметром', '/ege-profil/trainers/parameters-18/'],
+        ['№18 · дискриминант и положительные корни', '/ege-profil/part-two/index.html#lesson/param-positive-roots'],
+        ['№18 · модули и число решений', '/ege-profil/part-two/index.html#lesson/param-modules'],
+        ['№18 · касание', '/ege-profil/part-two/index.html#lesson/param-tangent'],
+        ['№18 · системы', '/ege-profil/part-two/index.html#lesson/param-system']
+      ]
+    }
+  ];
+
+  const path = '/ege-profil/azbuka-metodov/';
+  const index = Object.fromEntries(list.map(alphabet => [alphabet.id, alphabet]));
+  const numbers = number => Number.isInteger(number) && number >= 1 && number <= 20;
+  const exactTask = /^#task\/[a-z0-9-]+\/(?:guided|plan|independent)$/;
+  const sourceTask = /^#(?:calm|example|exam)\/[a-z0-9-]+$|^#(?:lesson\/[a-z0-9-]+|(?:practice|repair)\/[a-z0-9-]+\/(?:guided|plan|independent))$/;
+  const trainerPath = /^\/ege-profil\/trainers\/(?:[a-z0-9-]+\.html|[a-z0-9-]+\/index\.html)$|^\/trainers\/ege-profile\/[a-z0-9-]+(?:\.html|\/(?:index\.html)?)$/;
+
+  // Catalog numbers are legacy topic identities, shared with existing skill-map keys.
+  function legacyEntry(number) {
+    const map = globalThis.ProfileExamMap;
+    return Number(number) <= 13 ? map?.fromLegacyStart(number) : map?.fromLegacyPartTwo(number);
+  }
+
+  function legacyNumber(entry) {
+    return entry?.legacyPartTwo ?? entry?.legacyStart ?? NaN;
+  }
+
+  function displayLabel(number) {
+    if (Number(number) === 9) return '№8 и №12';
+    const entry = legacyEntry(number);
+    return entry ? entry.number == null ? 'Дополнительная тема: ' + entry.title : globalThis.ProfileExamMap.label(entry) : 'Учебная тема';
+  }
+
+  function examHref(number) {
+    const entry = legacyEntry(number);
+    if (entry && Number(number) !== 9) return globalThis.ProfileExamMap.href(entry);
+    return number <= 13 ? '/ege-profil/start/index.html#calm/' + number :
+      '/ege-profil/part-two/index.html#exam/' + number;
+  }
+
+  function readContext(input) {
+    const params = input?.get ? input : new URLSearchParams(input);
+    const map = globalThis.ProfileExamMap;
+    if (params.has('fipi')) {
+      const match = /^2027\/([1-9]|1[0-9])$/.exec(params.get('fipi'));
+      const entry = match ? map?.get(Number(match[1])) : null;
+      return { kind: 'fipi', number: legacyNumber(entry), entry };
+    }
+    if (params.has('topic')) {
+      const entry = map?.topic(params.get('topic'));
+      return { kind: 'topic', number: legacyNumber(entry), entry };
+    }
+    const number = Number(params.get('exam'));
+    return { kind: 'legacy', number: numbers(number) ? number : NaN, entry: legacyEntry(number) };
+  }
+
+  function safeBack(input) {
+    if (typeof input !== 'string' || !input.startsWith('/') || input.length > 320) return '';
+    const origin = 'https://mathexam.space';
+    let url;
+    try { url = new URL(input, origin); } catch { return ''; }
+    if (url.origin !== origin) return '';
+    if (url.searchParams.has('skills')) url.searchParams.delete('skills');
+    const partTwo = ['/ege-profil/part-two/', '/ege-profil/part-two/index.html'].includes(url.pathname);
+    const start = ['/ege-profil/start/', '/ege-profil/start/index.html'].includes(url.pathname);
+    const mapped = /^#fipi\/2027\/(?:[1-9]|1[0-9])$|^#topic\/[a-z0-9-]+$/.test(url.hash);
+    const safePartTwo = partTwo && (exactTask.test(url.hash) || mapped || /^#(?:exam\/\d{1,2}|lesson\/[a-z0-9-]+|map|progress)$/.test(url.hash));
+    if (!safePartTwo && !(start && (sourceTask.test(url.hash) || mapped)) && !trainerPath.test(url.pathname)) return '';
+    return url.pathname + url.search + url.hash;
+  }
+
+  function href(id = '', skill = '', number, back = '', base = path) {
+    const query = new URLSearchParams();
+    if (number && typeof number === 'object') {
+      const entry = number.entry || (number.id ? number : null);
+      if (number.kind === 'legacy' && numbers(number.number)) query.set('exam', String(number.number));
+      else if (entry?.number) query.set('fipi', '2027/' + entry.number);
+      else if (entry?.id) query.set('topic', entry.id);
+    } else if (numbers(Number(number))) query.set('exam', String(number));
+    const returnPath = safeBack(back);
+    if (returnPath) query.set('back', returnPath);
+    return base + (query.size ? '?' + query : '') + (id ? '#/' + id + (skill ? '/' + skill : '') : '');
+  }
+
+  function forNumber(number) {
+    return list.filter(alphabet => alphabet.numbers.includes(Number(number)));
+  }
+
+  function forOfficial(number) {
+    return forNumber(legacyNumber(globalThis.ProfileExamMap?.get(number)));
+  }
+
+  function officialHref(id = '', skill = '', number, back = '', base = path) {
+    return href(id, skill, { kind: 'fipi', entry: globalThis.ProfileExamMap?.get(number) }, back, base);
+  }
+
+  globalThis.ProfileAlphabetCatalog = { path, list, index, examHref, href, forNumber, safeBack, displayLabel, readContext, forOfficial, officialHref };
+})();
+
+</script>
+<script data-inline-source="/ege-profil/azbuka-metodov/data.js">
+(() => {
+  'use strict';
+
+  const task = (prompt, label, answers, hint, explanation, diagram) =>
+    ({ prompt, label, answers, hint, explanation, diagram });
+  const skill = (rule, example, practice, ...checks) => ({ rule, example, practice, checks });
+
+  globalThis.ProfileAlphabetLessons = {
+    'random-variables': {
+      distribution: skill(
+        'Случайная величина — число, которое ставим в соответствие исходу. Сложи вероятности всех исходов, дающих одно и то же значение.',
+        'На карточках написано 0, 0, 0, 2, 2. При случайном выборе P(X = 0) = 3/5, P(X = 2) = 2/5. Вместе вероятности дают 1.',
+        task('На шести одинаковых карточках написано 0, 0, 1, 1, 1, 2. Найди вероятность получить 1.', 'P(X = 1)', ['1/2'], 'Сколько карточек дают значение 1? Раздели их число на 6.', 'Три из шести карточек дают 1.'),
+        task('На восьми одинаковых карточках написано −1, −1, 0, 0, 0, 2, 2, 2. Запиши вероятность получить 0.', 'P(X = 0)', ['3/8'], 'Собери все исходы с нулём.', 'Нулей три, поэтому P(X = 0) = 3/8.'),
+        task('Из семи одинаковых карточек три дают 5 очков, две дают 1 очко и две дают 0. Запиши вероятность получить 5 очков.', 'P(X = 5)', ['3/7'], 'При равновероятных карточках вес одного исхода равен 1/7.', 'Пять очков дают три карточки из семи.')),
+      expectation: skill(
+        'Умножь каждое значение случайной величины на его вероятность и сложи произведения.',
+        'Если 1 очко выпадает с вероятностью 3/4, а 5 очков — с вероятностью 1/4, средний выигрыш равен 1 · 3/4 + 5 · 1/4 = 2.',
+        task('Игра даёт 0 очков с вероятностью 3/5 и 10 очков с вероятностью 2/5. Найди математическое ожидание.', 'Средний выигрыш', ['4'], 'Вклад нулевого значения равен нулю.', '0 · 3/5 + 10 · 2/5 = 4.'),
+        task('Изменение счёта равно −2 с вероятностью 1/4 и 8 с вероятностью 3/4. Запиши математическое ожидание.', 'Среднее изменение', ['11/2'], 'Учти отрицательное слагаемое.', '−2 · 1/4 + 8 · 3/4 = 22/4 = 5,5.'),
+        task('В игре дают 2 очка с вероятностью 3/5 и 12 очков с вероятностью 2/5. Запиши математическое ожидание.', 'Средний выигрыш', ['6'], 'У двух значений разные веса.', '2 · 3/5 + 12 · 2/5 = 6.')),
+      variance: skill(
+        'Чтобы найти дисперсию, усредни квадраты отклонений от математического ожидания с учётом вероятностей. Корень из дисперсии — стандартное отклонение.',
+        'Для равновероятных значений 2 и 8 среднее равно 5. Оба квадрата отклонений равны 9, поэтому дисперсия равна 9, а стандартное отклонение — 3.',
+        task('Равновероятны 1 и 5. Среднее равно 3. Найди дисперсию.', 'Дисперсия', ['4'], 'Квадраты отклонений равны (1 − 3)² и (5 − 3)².', 'Оба квадрата равны 4, значит их среднее равно 4.'),
+        task('Равновероятны −3 и 7. Среднее равно 2. Найди стандартное отклонение.', 'Стандартное отклонение', ['5'], 'Найди средний квадрат отклонений, затем извлеки корень.', 'Дисперсия равна 25, её квадратный корень равен 5.'),
+        task('Значение 0 выпадает с вероятностью 3/4, значение 4 — с вероятностью 1/4. Среднее равно 1. Найди дисперсию.', 'Дисперсия', ['3'], 'Взвесь квадраты 1 и 9 с указанными вероятностями.', 'D = 1 · 3/4 + 9 · 1/4 = 3.'))
+    },
+    modeling: {
+      'choose-variable': skill(
+        'Назови переменную с единицей измерения. Вырази остальные величины через неё.',
+        'Если t — время поездки в часах, а скорость 12 км/ч, путь в километрах равен 12t.',
+        task('В баке было 30 л воды. Каждую минуту вытекает 2 л. Запиши объём через t минут до опустошения.', 'Выражение через t', ['30-2t', '30-2*t', '30-2·t', '-2t+30'], 'Каждую минуту объём уменьшается на 2.', 'За t минут вытечет 2t литров. Остаток равен 30 − 2t.'),
+        task('Доставка стоит 120 рублей и ещё 15 рублей за каждый километр. Запиши полную стоимость для x километров.', 'Выражение через x', ['120+15x', '120+15*x', '120+15·x', '15x+120', '15*x+120'], 'Вычисли плату за километры и прибавь фиксированную часть.', 'Стоимость равна 120 + 15x рублей.'),
+        task('В коробке 48 деталей. Для сборки каждого изделия нужны 3 детали. Запиши остаток после сборки n изделий.', 'Выражение через n', ['48-3n', '48-3*n', '48-3·n', '-3n+48'], 'Расход растёт на 3 при увеличении n на 1.', 'Из 48 нужно вычесть 3n деталей.')),
+      constraints: skill(
+        'Переведи слова «не больше», «хотя бы» и требования к величине в ограничения. Количество предметов может быть только целым.',
+        'Пять одинаковых коробок по x кг вместе весят не больше 30 кг. Поэтому 5x ≤ 30 и x ≤ 6.',
+        task('Одна тетрадь стоит 7 рублей. Есть 30 рублей. Запиши верхнюю целую границу числа покупаемых тетрадей.', 'Наибольшее количество', ['4'], 'Из 7n ≤ 30 возьми ближайшее допустимое целое снизу.', 'Четыре стоят 28 рублей, а пять стоят 35.'),
+        task('Из листа длиной 28 см отрезают равные куски по 5 см. Запиши наибольшее число полных кусков.', 'Целая верхняя граница', ['5'], 'Проверь, сколько сантиметров потребуют пять и шесть кусков.', '5 · 5 ≤ 28, но 6 · 5 > 28.'),
+        task('Для заказа нужна как минимум 41 деталь. В каждой упаковке 8 деталей. Запиши наименьшее число упаковок.', 'Целая нижняя граница', ['6'], 'Из 8n ≥ 41 возьми ближайшее допустимое целое сверху.', 'Пять упаковок дают 40 деталей, шесть дают 48.')),
+      optimum: skill(
+        'Найди кандидатов на лучший результат и проверь, какие из них допустимы. На отрезке учитывай его концы, при целых значениях — соседей непрерывного максимума или минимума.',
+        'У 25 − (x − 4)² максимум при x = 4. Если разрешено только 0 ≤ x ≤ 3, лучшее значение достигается на границе x = 3.',
+        task('Прибыль задаётся формулой P = 20 − (x − 4)². Разрешены только целые x от 0 до 3. При каком x прибыль максимальна?', 'Значение x', ['3'], 'Возьми допустимое число, ближайшее к 4.', 'Из разрешённых значений к 4 ближе всего 3.'),
+        task('Площадь прямоугольника равна x(14 − x), где 2 ≤ x ≤ 6. При каком x площадь максимальна?', 'Значение x', ['6'], 'Перепиши площадь как 49 − (x − 7)².', 'К 7 на допустимом отрезке ближе всего его правый конец 6.'),
+        task('Стоимость C = (2x − 7)² + 3. Разрешены целые x от 0 до 7. Запиши оба значения x, при которых достигается минимум, от меньшего к большему через точку с запятой.', 'Два значения x', ['3;4', '3,4', '3 и 4'], 'Вещественный минимум при x = 3,5. Проверь обоих соседей.', 'У чисел 3 и 4 значение 2x − 7 равно −1 и 1. Квадраты одинаковы.'))
+    },
+    domain: {
+      denominator: skill(
+        'Сначала запиши, где исходный знаменатель равен нулю. Запрет остаётся даже после сокращения общего множителя.',
+        'Для (x² − 4)/(x − 2) условие x ≠ 2 остаётся и после сокращения до x + 2.',
+        task('Дана дробь (x² − 9)/(x − 3). Какое значение нужно исключить до сокращения?', 'Запрещённое x', ['3'], 'При каком x знаменатель x − 3 равен нулю?', 'При x = 3 исходная дробь не определена.'),
+        task('Запиши ограничение на x для дроби (x² − 25)/(x + 5) в виде x ≠ число.', 'Ограничение на x', ['x≠-5', 'x!=-5', 'x<>-5', 'x не равно -5'], 'Реши x + 5 = 0 и исключи найденное значение.', 'При x = −5 знаменатель равен нулю, значит x ≠ −5.'),
+        task('Запиши ограничение на x для дроби (x² − 16)/(x − 4) в виде x ≠ число.', 'Ограничение на x', ['x≠4', 'x!=4', 'x<>4', 'x не равно 4'], 'Ищи нуль исходного знаменателя.', 'x − 4 равно нулю при x = 4, значит x ≠ 4.')),
+      squaring: skill(
+        'Квадратный корень неотрицателен. После возведения уравнения в квадрат проверь кандидатов в исходном равенстве.',
+        'Для √x = x − 2 после возведения в квадрат получаются кандидаты 1 и 4. Подходит 4: при x = 1 справа −1.',
+        task('После возведения √x = x − 6 в квадрат получены кандидаты 4 и 9. Какой из них подходит?', 'Корень исходного уравнения', ['9'], 'Подставь оба значения в правую часть до возведения в квадрат.', 'При x = 4 справа −2. При x = 9 обе части равны 3.'),
+        task('После возведения √x = 6 − x в квадрат кандидаты равны 4 и 9. Запиши корень исходного уравнения.', 'Допустимый корень', ['4'], 'В исходном уравнении проверь знак 6 − x.', 'При x = 4 обе части равны 2. При x = 9 справа −3.'),
+        task('Для √(x + 1) = x − 1 после возведения в квадрат получили кандидаты 0 и 3. Запиши корень исходного уравнения.', 'Допустимый корень', ['3'], 'Подставь каждый кандидат в исходное равенство.', 'При x = 0 справа −1. При x = 3 получаем 2 = 2.')),
+      'root-selection': skill(
+        'Если задан отрезок, после решения выпиши только корни, которые ему принадлежат. Оба конца отрезка включаются.',
+        'Из корней −2, 1 и 3 на отрезке [1; 3] остаются 1 и 3.',
+        task('Из корней −4, 0, 3 и 6 оставь те, что входят в отрезок [0; 4]. Запиши их по возрастанию через точку с запятой.', 'Отобранные корни', ['0;3', '0,3', '0 и 3'], 'Сравни каждый корень с обеими границами. Ноль включается.', 'Подходят 0 и 3.'),
+        task('Уравнение x² = 9 имеет два корня. Запиши тот, который лежит на отрезке [−5; 2].', 'Отобранный корень', ['-3'], 'У квадрата 9 два возможных основания: 3 и −3.', 'Из −3 и 3 отрезку принадлежит только −3.'),
+        task('Уравнение sin x = 0 имеет корни x = πk, где k — целое. Какие k подходят для отрезка [π; 2π]? Запиши по возрастанию через точку с запятой.', 'Значения k', ['1;2', '1,2', '1 и 2'], 'Раздели условие π ≤ πk ≤ 2π на положительное π.', 'Оба конца отрезка включены, поэтому подходят k = 1 и k = 2.'))
+    },
+    'interval-signs': {
+      'mark-points': skill(
+        'На числовой прямой отмечают нули числителя и знаменателя. Нуль знаменателя всегда выколот. Нуль числителя включают при нестрогом знаке, если выражение там определено.',
+        'Для (x − 1)/(x − 4) ≥ 0 число 1 входит в ответ, а число 4 исключается.',
+        task('Какая из граничных точек −2 и 5 включается в ответ (x + 2)/(x − 5) ≤ 0?', 'Включённая граница', ['-2'], 'На какой границе дробь равна нулю и определена?', 'При x = −2 числитель нулевой, при x = 5 знаменатель нулевой.'),
+        task('Для (x − 3)/(x + 1) ≥ 0 запиши включённую граничную точку.', 'Включённая граница', ['3'], 'У нестрогого знака может войти нуль числителя.', 'При 3 дробь равна нулю. При −1 она не определена.'),
+        task('Для (x + 4)/(x − 2) ≤ 0 запиши включённую граничную точку.', 'Включённая граница', ['-4'], 'Сравни роли двух множителей.', 'Число −4 обнуляет только числитель.')),
+      'test-sign': skill(
+        'Между соседними отмеченными точками можно взять одно пробное число. Квадрат ненулевого множителя положителен по обе стороны его корня.',
+        'У (x − 1)²(x − 3) знак по обе стороны от 1 одинаков. Например, при x = 0 и x = 2 произведение отрицательно.',
+        task('Какой знак имеет (x − 2)²(x − 5) на (2; 5)? Запиши + или −.', 'Знак', ['-', 'отрицательный'], 'Возьми x = 3. Первый множитель — квадрат.', 'Квадрат положителен, x − 5 отрицателен.'),
+        task('Чтобы определить знак (x − 4)²(x − 1) на (1; 4), подставь x = 2. Запиши значение выражения со знаком.', 'Значение в пробной точке', ['4'], 'Возведи −2 в квадрат и умножь на 1.', 'Получаем (−2)² · 1 = 4. Знак положительный на всём промежутке.'),
+        task('Чтобы определить знак (x + 2)²/(x − 3) на (−2; 3), подставь x = 0. Запиши значение выражения со знаком.', 'Значение в пробной точке', ['-4/3'], 'Числитель положителен, знаменатель отрицателен.', 'Получаем 4/(−3) = −4/3. Знак отрицательный на всём промежутке.')),
+      'intersect-domain': skill(
+        'Пересечение оставляет только числа, которые подходят обоим условиям. После преобразования вернись к исходным ограничениям.',
+        'Пересечение x ≥ 2 и x < 6 равно [2; 6).',
+        task('У промежуточного ответа x ≤ 5 есть ограничение x > 1. Запиши ответ скобками, через точку с запятой.', 'Итоговый промежуток', ['(1;5]', '1<x<=5', '1<x≤5'], 'Левая граница строгая, правая включена.', 'Действует 1 < x ≤ 5, то есть (1; 5].'),
+        task('После преобразования получилось x ≥ −1, а исходное условие требует x < 4. Запиши итоговый промежуток.', 'Итоговый промежуток', ['[-1;4)', '-1<=x<4', '-1≤x<4'], 'Учти, что −1 подходит, а 4 исключено.', 'Итоговый промежуток [−1; 4).'),
+        task('Пересеки x > −3 с −5 ≤ x ≤ 2. Запиши итоговый промежуток.', 'Итоговый промежуток', ['(-3;2]', '-3<x<=2', '-3<x≤2'], 'Выбери более сильную нижнюю границу.', 'Условия вместе дают (−3; 2].'))
+    },
+    transformations: {
+      'common-factor': skill(
+        'Общий множитель делит каждое слагаемое. Чтобы проверить разложение, раскрой скобки обратно.',
+        '12x² − 8x = 4x(3x − 2). Каждый член исходного выражения делится на 4x.',
+        task('Заполни скобку: 15x² + 10x = 5x( … ).', 'Выражение в скобке', ['3x+2', '2+3x', '3*x+2', '2+3*x'], 'Подели каждый член на 5x.', 'Получаем 5x(3x + 2).'),
+        task('Заполни скобку: 14x² − 21x = 7x( … ).', 'Выражение в скобке', ['2x-3', '2*x-3', '-3+2x', '-3+2*x'], 'Раздели 14x² и −21x на 7x.', 'В скобке остаётся 2x − 3.'),
+        task('Заполни скобку: 24x² + 18x = 6x( … ).', 'Выражение в скобке', ['4x+3', '3+4x', '4*x+3', '3+4*x'], 'Каждое слагаемое раздели на 6x.', 'В скобке получается 4x + 3.')),
+      'difference-squares': skill(
+        'Разность квадратов раскладывается по формуле a² − b² = (a − b)(a + b). Это помогает найти общий множитель дроби.',
+        'В дроби (x² − 49)/(x − 7) сокращаем множитель x − 7 на ОДЗ x ≠ 7. Остаётся x + 7.',
+        task('Упрости (x² − 36)/(x − 6) на ОДЗ. Запиши оставшееся выражение.', 'Выражение на ОДЗ', ['x+6', '6+x'], 'Разложи x² − 6².', 'Сокращаем x − 6, остаётся x + 6.'),
+        task('Упрости (x² − 81)/(x + 9) на ОДЗ. Запиши оставшееся выражение.', 'Выражение на ОДЗ', ['x-9', '-9+x'], 'После разложения сократится множитель x + 9.', 'Останется второй множитель x − 9.'),
+        task('Упрости (x² − 16)/(x + 4) на ОДЗ. Запиши оставшееся выражение.', 'Выражение на ОДЗ', ['x-4', '-4+x'], 'Представь 16 как 4².', 'После сокращения остаётся x − 4.')),
+      substitution: skill(
+        'Повторяющееся выражение можно обозначить одной буквой. Запиши ограничения на новую переменную и вернись к исходной.',
+        'Если t = x², то t ≥ 0. Выражение x⁴ − 5x² + 4 становится t² − 5t + 4.',
+        task('Пусть t = 2ˣ. Как запишется 4ˣ − 3 · 2ˣ + 2? Используй t^2 для квадрата.', 'Выражение через t', ['t^2-3t+2', 't^2-3*t+2', 't²-3t+2'], 'Заметь, что 4ˣ = (2ˣ)².', 'После замены получаем t² − 3t + 2.'),
+        task('Пусть t = x². Запиши x⁴ + 2x² − 8 через t. Для квадрата подойдёт t^2.', 'Выражение через t', ['t^2+2t-8', 't^2+2*t-8', 't²+2t-8'], 'Замени x⁴ на квадрат новой переменной.', 'Выражение равно t² + 2t − 8.'),
+        task('Пусть t = 3ˣ. Запиши 9ˣ + 4 · 3ˣ − 5 через t. Для квадрата подойдёт t^2.', 'Выражение через t', ['t^2+4t-5', 't^2+4*t-5', 't²+4t-5'], '9ˣ = (3ˣ)².', 'Выражение равно t² + 4t − 5.'))
+    },
+    'space-drawing': {
+      'find-face': skill(
+        'Найди плоскость по вершинам. Для диагонали грани обе вершины принадлежат одной грани, но не лежат на одном ребре.',
+        'В параллелепипеде ABCDA₁B₁C₁D₁ отрезок AC — диагональ нижней грани.',
+        task('Запиши диагональ нижней грани, выходящую из вершины B. Назови сначала B.', 'Диагональ', ['bd', 'бд'], 'На нижней грани найди вершину, противоположную B.', 'Противоположная B вершина — D. Диагональ BD.', 'box'),
+        task('Запиши диагональ грани ABB₁A₁, выходящую из A. Используй обозначение A1 для A₁, если удобно.', 'Диагональ от A', ['ab1', 'ab₁', 'аб1'], 'Нужна вершина этой грани, не соседняя с A.', 'Это AB₁. Отрезки AB и AA₁ — рёбра.', 'box'),
+        task('Запиши диагональ грани DCC₁D₁, выходящую из D. Для индекса можно ввести 1.', 'Диагональ от D', ['dc1', 'dc₁', 'дс1'], 'В грани DCC₁D₁ найди вершину напротив D.', 'Это DC₁, а DC и DD₁ — рёбра.', 'box')),
+      projection: skill(
+        'Опусти перпендикуляры из концов отрезка на плоскость. Отрезок между их основаниями — ортогональная проекция.',
+        'На нижнюю грань параллелепипеда A₁ проектируется в A, C₁ — в C. Проекция A₁C₁ равна AC.',
+        task('Запиши проекцию отрезка A₁B на плоскость ABCD, начиная с A.', 'Проекция', ['ab', 'аб'], 'Точка B уже лежит в плоскости. Куда проецируется A₁?', 'A₁ опускается в A, B остаётся на месте. Проекция AB.', 'box'),
+        task('Запиши проекцию B₁D на плоскость ABCD, начиная с B.', 'Проекция', ['bd', 'бд'], 'Первая точка проецируется по вертикальному ребру.', 'B₁ проецируется в B, D уже в плоскости. Проекция BD.', 'box'),
+        task('Запиши проекцию D₁C на плоскость ABCD, начиная с D.', 'Проекция', ['dc', 'дс'], 'Сохрани вершину C на основании.', 'D₁ переходит в D. Проекция DC.', 'box')),
+      'line-plane-angle': skill(
+        'Угол наклонной с плоскостью — острый угол между наклонной и её ортогональной проекцией. Найди их общую вершину.',
+        'У наклонной A₁B проекция AB. Общая вершина B, поэтому угол между A₁B и основанием — ∠A₁BA.',
+        task('Запиши угол между A₁D и плоскостью ABCD тремя буквами. Индекс можно ввести цифрой 1.', 'Угол с основанием', ['a1da', 'ada1', '∠a1da', '∠ada1'], 'Наклонная и проекция AD встречаются в D.', 'Искомый угол A₁DA.', 'box'),
+        task('Запиши угол между C₁A и плоскостью ABCD тремя буквами. Индекс можно ввести цифрой 1.', 'Угол с основанием', ['c1ac', 'cac1', '∠c1ac', '∠cac1'], 'Проекция наклонной C₁A — CA, общая вершина A.', 'Угол C₁AC или CAC₁.', 'box'),
+        task('Запиши угол между D₁B и плоскостью ABCD тремя буквами. Индекс можно ввести цифрой 1.', 'Угол с основанием', ['d1bd', 'dbd1', '∠d1bd', '∠dbd1'], 'Проекция — DB, вершина угла — B.', 'Угол D₁BD или DBD₁.', 'box'))
+    },
+    'plane-constructions': {
+      height: skill(
+        'Чтобы связать площадь с основанием или выделить прямоугольный треугольник, проведи высоту к выбранной стороне.',
+        'В треугольнике ABC высота к BC идёт из A. Если её основание H, то S = BC · AH/2.',
+        task('В остроугольном ABC точка H — основание высоты на BC. Запиши обозначение высоты, начиная с A.', 'Высота', ['ah', 'ан'], 'Высота выходит из вершины напротив BC.', 'Высота из A — AH.', 'triangle'),
+        task('У треугольника ABC площадь 30 см², BC = 12 см. Найди длину проведённой высоты AH.', 'Длина AH, см', ['5'], 'Подставь данные в S = BC · AH/2.', 'AH = 2 · 30 / 12 = 5 см.', 'triangle'),
+        task('В равнобедренном ABC основание BC равно 10, высота AH равна 12. Найди AB.', 'Длина AB', ['13'], 'В равнобедренном треугольнике H делит основание пополам.', 'В прямоугольном ABH катеты 5 и 12, поэтому AB = 13.', 'triangle')),
+      parallel: skill(
+        'Прямая, параллельная одной стороне треугольника, образует внутри подобный треугольник. Сопоставь вершины по равным углам.',
+        'Если D лежит на AB, E на AC и DE ∥ BC, то треугольники ADE и ABC подобны, а DE/BC = AD/AB.',
+        task('На рисунке DE ∥ BC, AD = 2, AB = 6. Найди отношение DE/BC.', 'Отношение сторон', ['1/3'], 'Соответствующие стороны AD и AB дают тот же коэффициент.', 'DE/BC = AD/AB = 2/6 = 1/3.', 'parallel'),
+        task('В ABC через D на AB и E на AC проведено DE ∥ BC. AD = 3, AB = 9 и BC = 12. Найди DE.', 'Длина DE', ['4'], 'Умножь BC на коэффициент подобия AD/AB.', 'DE = 12 · 3/9 = 4.', 'parallel'),
+        task('На рисунке DE ∥ BC, AE = 4, AC = 10 и BC = 15. Найди DE.', 'Длина DE', ['6'], 'Сравни соответствующие отрезки AE и AC.', 'DE = 15 · 4/10 = 6.', 'parallel')),
+      radius: skill(
+        'Проведи радиус к точке касания. Он перпендикулярен касательной, поэтому появляется прямоугольный треугольник.',
+        'Касательная из M касается окружности в T. Тогда OT ⟂ MT, и OM² = OT² + MT².',
+        task('На рисунке касательная касается окружности в T. Какой угол прямой? Назови его тремя буквами.', 'Прямой угол', ['otm', 'mto', '∠otm', '∠mto'], 'Радиус к точке касания и касательная пересекаются в T.', 'Угол OTM равен 90°.', 'tangent'),
+        task('На рисунке OT = 6, OM = 10. Запиши длину касательной MT.', 'Длина MT', ['8'], 'Используй прямоугольный треугольник OTM.', 'MT = √(100 − 36) = 8.', 'tangent'),
+        task('На рисунке MT = 12, OM = 13. Запиши длину радиуса OT.', 'Длина OT', ['5'], 'Радиус — второй катет.', 'OT = √(169 − 144) = 5.', 'tangent'))
+    },
+    'written-solution': {
+      'justify-step': skill(
+        'После утверждения укажи факт, из которого оно следует. Для подобия, например, нужны два равных угла или другой признак.',
+        'Если в двух треугольниках есть по прямому углу и общий острый угол, треугольники подобны по двум углам.',
+        task('В треугольниках ADE и ABC, где D лежит на AB, E на AC, DE ∥ BC, угол A общий. Запиши угол большого треугольника, равный ∠ADE.', 'Соответствующий угол', ['abc', 'cba', '∠abc', '∠cba'], 'Используй параллельные DE и BC и секущую AB.', '∠ADE = ∠ABC. Вместе с общим углом A это даёт подобие.', 'parallel'),
+        task('В тех же обозначениях треугольники ADE и ABC подобны: DE ∥ BC. Запиши угол большого треугольника, который соответствует ∠AED.', 'Соответствующий угол', ['acb', 'bca', '∠acb', '∠bca'], 'Используй секущую AC.', '∠AED = ∠ACB. Это одна из пар углов для обоснования подобия.', 'parallel'),
+        task('На рисунке отрезок AB — диаметр окружности, P — точка на окружности, отличная от A и B. Запиши величину ∠APB в градусах.', 'Величина угла', ['90'], 'На какую дугу опирается вписанный угол APB?', 'Угол опирается на полуокружность в 180°, поэтому равен 90°.', 'diameter')),
+      'exhaust-cases': skill(
+        'Перед делением на выражение с параметром выпиши, когда оно равно нулю. В этом случае вернись к исходному уравнению.',
+        'Для (a − 3)x = 2 при a = 3 получается 0x = 2, решений нет. При остальных a можно разделить на a − 3.',
+        task('Перед делением в (a + 2)x = 5 какое значение a нужно разобрать отдельно?', 'Особое значение a', ['-2'], 'При каком a коэффициент при x обращается в ноль?', 'Особый случай a = −2.'),
+        task('Запиши значение a, которое нужно выделить до деления в (2a − 6)x = 0.', 'Особое значение a', ['3'], 'Реши 2a − 6 = 0.', 'При a = 3 уравнение 0x = 0 верно при любом x.'),
+        task('Запиши значение a, при котором в уравнении (3a + 12)x = 7 исчезает коэффициент при x.', 'Особое значение a', ['-4'], 'В особом случае 3a + 12 = 0.', 'При a = −4 получаем 0x = 7, значит решений нет.')),
+      'bound-and-example': skill(
+        'Чтобы обосновать максимум, покажи верхнюю границу для всех вариантов и предъяви допустимый пример, который её достигает.',
+        'Из 17 фишек максимум 4 полные стопки по 4: на пятую нужно 20. Четыре стопки используют 16 фишек.',
+        task('Сумма трёх различных положительных целых чисел как минимум 1 + 2 + 3. Запиши минимальную сумму четырёх таких чисел — шаг для проверки границы.', 'Нижняя оценка для четырёх', ['10'], 'Возьми четыре наименьших различных положительных целых числа.', '1 + 2 + 3 + 4 = 10.'),
+        task('Из 19 одинаковых фишек собирают полные стопки по 6. Запиши, сколько фишек потребовал бы вариант с четырьмя стопками.', 'Расход на четыре стопки', ['24'], 'Умножь число стопок на их размер.', 'Четыре стопки потребовали бы 24 фишки. Для достижения границы можно собрать три стопки из 18.'),
+        task('Из 23 фишек максимум 4 полные стопки по 5, поскольку для пяти нужны 25. Запиши число фишек, использованных в примере, который достигает этой границы.', 'Расход в достигающем примере', ['20'], 'Построй ровно четыре полные стопки.', 'Четыре стопки по пять используют 20 фишек. Остаются три.'))
+    }
+  };
+})();
+
+</script>
+<script data-inline-source="/ege-profil/azbuka-metodov/routes.js">
+(() => {
+  'use strict';
+
+  const task = (prompt, label, answers, hint, explanation, diagram) =>
+    ({ prompt, label, answers, hint, explanation, diagram });
+  const skill = (rule, example, practice, ...checks) => ({ rule, example, practice, checks });
+  const coordinates = (...values) => [values.join(';'), '(' + values.join(';') + ')'];
+  const infinitelyMany = ['бесконечно много', 'бесконечно', '∞'];
+
+  Object.assign(globalThis.ProfileAlphabetLessons, {
+    'coordinate-method': {
+      axes: skill(
+        'Возьми начало в вершине, из которой выходят три попарно перпендикулярных ребра. Координаты показывают перемещения вдоль осей x, y и z.',
+        'Если OA идёт вдоль оси x и его длина 4, то A(4; 0; 0). Над A на высоте 2 находится P(4; 0; 2).',
+        task('В параллелепипеде OA = 3, OB = 2, OC = 4. Запиши координаты дальней верхней вершины Q через точку с запятой.', 'Координаты Q', coordinates(3, 2, 4),
+          'Дойди от O до Q по трём рёбрам параллельно осям x, y и z.', 'Q получаем сдвигами на 3 по x, на 2 по y и на 4 по z.', 'coordinate-box'),
+        task('Пусть OA = 5, OB = 4, OC = 2. Точка P находится прямо над A на верхней грани. Запиши координаты P через точку с запятой.', 'Координаты P', coordinates(5, 0, 2),
+          'У точки P та же координата y, что у точки A.', 'P(5; 0; 2). По y движения нет, а высота равна 2.', 'coordinate-box'),
+        task('У куба ребро 6. Начало O перенесено в основание, ось z направлена вверх. Назови координату x середины ребра OA, если A(6; 0; 0).', 'Координата x', ['3'],
+          'У середины отрезка каждая координата равна среднему арифметическому координат концов.', '(0 + 6)/2 = 3.')),
+      vector: skill(
+        'Координаты вектора AB равны координатам B минус координаты A. Длина равна корню из суммы квадратов трёх компонент.',
+        'Для A(1; 2; 0) и B(4; 2; 4) получаем AB = (3; 0; 4) и |AB| = 5.',
+        task('Даны A(1; 1; 0) и B(4; 5; 0). Найди длину AB.', 'Длина AB', ['5'],
+          'Вычти координаты A из координат B. Третья разность равна нулю.', 'AB = (3; 4; 0), поэтому |AB| = √25 = 5.'),
+        task('Даны M(3; −1; 5) и N(1; 2; 1). Запиши координаты вектора MN через точку с запятой.', 'Координаты MN', coordinates(-2, 3, -4),
+          'Первая компонента равна 1 − 3. Сохрани порядок N минус M.', 'MN = (1 − 3; 2 − (−1); 1 − 5) = (−2; 3; −4).'),
+        task('Даны K(1; 0; −1) и L(3; 1; 1). Найди длину KL.', 'Длина KL', ['3'],
+          'Сначала найди все три разности координат. У квадрата длины три слагаемых.', 'KL = (2; 1; 2), поэтому |KL| = √(4 + 1 + 4) = 3.')),
+      normal: skill(
+        'В уравнении Ax + By + Cz = D вектор (A; B; C) перпендикулярен плоскости. Если уравнения ещё нет, ищи вектор с нулевым скалярным произведением с двумя непараллельными направлениями плоскости.',
+        'Плоскость x + 2y − z = 4 имеет нормаль (1; 2; −1). Любой ненулевой кратный ей вектор тоже будет нормалью.',
+        task('Для плоскости 2x − y + 3z = 5 запиши коэффициенты при x, y, z через точку с запятой.', 'Координаты нормали', coordinates(2, -1, 3),
+          'У y коэффициент −1, а число в правой части не входит в нормаль.', 'Коэффициенты дают нормаль (2; −1; 3).'),
+        task('В плоскости лежат направления u = (1; 0; 2) и v = (0; 1; −3). Найди нормаль вида (a; b; 1). Запиши три компоненты через точку с запятой.', 'Координаты нормали', coordinates(-2, 3, 1),
+          'Приравняй к нулю отдельно n · u и n · v.', 'Из a + 2 = 0 и b − 3 = 0 получается (−2; 3; 1).'),
+        task('Плоскость параллельна векторам (2; −4; 0) и (0; 2; −1). Нормаль имеет вид (a; 1; 2). Найди a.', 'Первая компонента', ['2'],
+          'Используй скалярное произведение с первым вектором. Со вторым оно уже равно нулю.', '2a − 4 = 0, поэтому a = 2.')),
+      plane: skill(
+        'Когда известна нормаль n = (A; B; C), запиши Ax + By + Cz = D. Подставь точку плоскости, чтобы найти D. Если заданы три точки, проверь каждую.',
+        'При n = (1; 2; 1) и P(2; 0; 3) получаем x + 2y + z = 5.',
+        task('Плоскость с нормалью (1; 2; 3) проходит через P(1; 2; 1). Найди D в уравнении x + 2y + 3z = D.', 'Правая часть D', ['8'],
+          'Подставь координаты P в левую часть.', 'D = 1 + 2·2 + 3·1 = 8.'),
+        task('Три точки плоскости имеют координаты (2; 0; 0), (0; 3; 0), (0; 0; 6). Найди D в уравнении 3x + 2y + z = D.', 'Правая часть D', ['6'],
+          'Точки лежат на разных осях. Подстановка любой точки должна дать один и тот же результат.', 'Подстановки дают 3·2 = 2·3 = 6.'),
+        task('Плоскость ax + by + z = 12 пересекает оси в точках (3; 0; 0), (0; 4; 0), (0; 0; 12). Найди a и b. Запиши их через точку с запятой.', 'Коэффициенты a и b', coordinates(4, 3),
+          'Сначала подставь точку на оси x, затем точку на оси y.', '3a = 12 и 4b = 12. Значит, a = 4, b = 3.')),
+      'line-angle': skill(
+        'Для угла φ прямой с плоскостью sin φ = |v · n|/(|v|·|n|), где v направлен вдоль прямой, n — нормаль к плоскости.',
+        'У v = (4; 0; 3) над горизонтальной плоскостью вертикальная составляющая 3, вся длина 5. Поэтому sin φ = 3/5.',
+        task('Для v = (3; 0; 4) и плоскости z = 0 найди sin φ.', 'Синус угла', ['4/5'],
+          'Нормаль (0; 0; 1) выделяет вертикальную компоненту вектора.', 'v · n = 4, |v| = 5, |n| = 1, значит sin φ = 4/5.'),
+        task('Направление прямой v = (0; 3; 4), плоскость y = 2. Найди синус угла между ними.', 'Синус угла', ['3/5'],
+          'Нормаль выделяет координату y. Число 2 задаёт положение плоскости.', 'v · n = 3, |v| = 5. Отношение равно 3/5.'),
+        task('Даны направление v = (2; 1; 2) и плоскость x + 2y + 2z = 6. Найди синус угла между прямой и плоскостью.', 'Синус угла', ['8/9'],
+          'Нормаль n = (1; 2; 2). Вычисли одно скалярное произведение и две длины.', 'v · n = 2 + 2 + 4 = 8. Обе длины равны 3, поэтому синус равен 8/9.')),
+      'plane-angle': skill(
+        'Косинус меньшего угла между плоскостями равен |n₁ · n₂|/(|n₁|·|n₂|). Если спрашивают конкретный двугранный угол, по сечению проверь, какой из смежных углов нужен.',
+        'Для x = 0 и x = 2 нормали параллельны, поэтому угол между плоскостями равен 0°.',
+        task('У плоскостей нормали (0; 0; 1) и (0; 4; 3). Найди косинус меньшего угла между плоскостями.', 'Косинус угла', ['3/5'],
+          'Скалярное произведение равно 3. Одна нормаль единичная.', 'Длина второй нормали 5. Косинус равен 3/5.'),
+        task('Плоскости заданы уравнениями x + y = 2 и x − y = 5. Найди косинус угла между ними.', 'Косинус угла', ['0'],
+          'Проверь скалярное произведение нормалей (1; 1; 0) и (1; −1; 0).', 'Скалярное произведение равно 0, угол прямой.'),
+        task('Нормали двух плоскостей равны (1; 2; 2) и (2; 2; 1). Найди косинус меньшего угла.', 'Косинус угла', ['8/9'],
+          'Числитель складывается из трёх попарных произведений. Найди длины нормалей.', 'Скалярное произведение равно 8, обе длины равны 3. Косинус равен 8/9.')),
+      distance: skill(
+        'Для точки P подставь её координаты в левую часть Ax + By + Cz + D = 0. Раздели модуль результата на длину нормали.',
+        'Расстояние от (0; 0; 4) до z − 1 = 0 равно |4 − 1|/1 = 3.',
+        task('Найди расстояние от P(2; −1; 5) до плоскости z = 2.', 'Расстояние', ['3'],
+          'Перенеси 2 влево. Длина нормали (0; 0; 1) равна 1.', 'Расстояние равно |5 − 2| = 3.'),
+        task('Найди расстояние от (2; 1; 2) до плоскости 2x − y + 2z = 6.', 'Расстояние', ['1/3'],
+          'В числителе подставь координаты в 2x − y + 2z − 6. В знаменателе длина вектора (2; −1; 2).', 'Получаем |4 − 1 + 4 − 6|/√(4 + 1 + 4) = 1/3.'),
+        task('Найди расстояние от начала координат до плоскости 2x + 3y + 6z = 14.', 'Расстояние', ['2'],
+          'При подстановке нулей останется −14. Возьми модуль и раздели на длину нормали.', 'Расстояние равно 14/√(4 + 9 + 36) = 14/7 = 2.'))
+    },
+    'function-atlas': {
+      reading: skill(
+        'У точки на графике первая координата — аргумент x, вторая — значение f(x). У одной вертикали с графиком функции может быть не больше одной общей точки.',
+        'Если точка (1; 4) лежит на графике y = f(x), то f(1) = 4.',
+        task('На графике y = f(x) лежит точка (2; −3). Чему равно f(2)?', 'Значение f(2)', ['-3'],
+          'Ищи вторую координату точки.', 'Аргумент равен 2, значение равно −3.'),
+        task('На графике отмечены (−1; 4) и (4; 2). Найди f(−1) − f(4).', 'Разность значений', ['2'],
+          'Подставляй x из первой координаты. Не перепутай значение функции с аргументом.', 'f(−1) − f(4) = 4 − 2 = 2.'),
+        task('Известно f(5) = −2 и f(−2) = 3. Запиши координаты точки с абсциссой −2 через точку с запятой.', 'Координаты точки', coordinates(-2, 3),
+          'Возьми то равенство, где −2 стоит в скобках.', 'По f(−2) = 3 получаем точку (−2; 3).')),
+      domain: skill(
+        'Выпиши ограничения по отдельности и оставь только те x, которые удовлетворяют всем. Для корня нужна неотрицательность, для знаменателя исключаются нули, для логарифма аргумент положителен.',
+        'У √(x − 2)/(x − 3) подходят x ≥ 2, кроме 3. Граничная точка x = 2 входит в область определения.',
+        task('Из чисел 1, 2 и 3 выбери одно допустимое значение x для √(x − 2)/(x − 3).', 'Допустимое x', ['2'],
+          'Проверь сперва корень, затем знаменатель. Ноль под корнем допустим.', '1 даёт отрицательное подкоренное выражение, 3 обращает знаменатель в ноль, 2 подходит.'),
+        task('Из чисел 3, 4, 5 выбери допустимое x для log₂(x − 3)/(x − 4).', 'Допустимое x', ['5'],
+          'Аргумент логарифма должен быть строго положительным, знаменатель отличен от нуля.', '3 исключает логарифм, 4 исключает знаменатель. Подходит 5.'),
+        task('Найди наименьшее целое x из области определения √(x + 1)/(x + 1).', 'Наименьшее целое x', ['0'],
+          'У корня допустима граница −1. Проверь её одновременно в знаменателе.', 'Корень требует x ≥ −1, а знаменатель исключает −1. Первое целое x равно 0.')),
+      shifts: skill(
+        'В y = f(x − h) + k точка (x₀; y₀) переходит в (x₀ + h; y₀ + k). Знак минус перед функцией отражает её относительно оси x.',
+        'Для y = f(x + 2) − 1 график смещается на 2 влево и на 1 вниз.',
+        task('Точка (1; 4) лежит на графике f. Запиши соответствующую точку графика y = −f(x + 2) + 3 через точку с запятой.', 'Координаты точки', coordinates(-1, -1),
+          'Чтобы аргумент стал равен 1, реши x + 2 = 1. Новая высота равна −4 + 3.', 'Соответствующая точка (−1; −1).'),
+        task('Найди абсциссу вершины параболы y = (x + 2)² − 1.', 'Абсцисса вершины', ['-2'],
+          'Квадрат принимает минимум, когда выражение в скобках равно нулю.', 'x + 2 = 0, значит x = −2.'),
+        task('Запиши координаты вершины графика y = |x − 4| − 3 через точку с запятой.', 'Координаты вершины', coordinates(4, -3),
+          'Найди, при каком x модуль равен нулю, и вычисли y.', 'При x = 4 модуль равен 0, поэтому вершина (4; −3).')),
+      range: skill(
+        'Проверь, может ли функция вообще принять нужный уровень. Квадрат и арифметический корень неотрицательны, а показательная функция всегда положительна.',
+        'График y = 2ˣ лежит выше оси x. Уровень 0 не даёт пересечений, какой бы x мы ни взяли.',
+        task('Чему равно наименьшее значение y = (x − 1)² − 2 на всех действительных x?', 'Наименьшее значение', ['-2'],
+          'Квадрат может быть равен нулю, меньших значений у него нет.', 'При x = 1 квадрат равен 0, минимальное значение равно −2.'),
+        task('Из уровней −1, 0, 4 выбери один, которого достигает y = 2ˣ.', 'Возможный уровень', ['4'],
+          'Показательная функция всегда принимает строго положительные значения.', '4 положительно и действительно достигается при x = 2.'),
+        task('Каков максимум верхней полуокружности y = √(9 − x²) на отрезке [−3; 3]?', 'Наибольшее значение', ['3'],
+          'Найди, при каком x выражение под корнем максимально.', 'При x = 0 получаем квадратный корень из 9, то есть 3.'))
+    },
+    'parameter-methods': {
+      level: skill(
+        'Зафиксируй a и найди общие точки графика y = f(x) с горизонталью y = a в области определения. Каждая различная абсцисса даёт один корень.',
+        'У |x − 1| = 0 горизонталь проходит через вершину, поэтому подходит ровно x = 1.',
+        task('Сколько решений у |x − 1| = 2?', 'Число решений', ['2'],
+          'Горизонталь лежит выше вершины графика модуля. Посмотри на обе ветви.', 'Подходят x = −1 и x = 3.'),
+        task('Сколько действительных решений у √x = −1?', 'Число решений', ['0'],
+          'Подумай, может ли арифметический квадратный корень принимать отрицательное значение.', '√x ≥ 0 на своей области определения, поэтому решений нет.'),
+        task('Сколько решений у (x + 1)² − 4 = −4?', 'Число решений', ['1'],
+          'Уровень совпадает с минимальным значением. Найди абсциссу вершины.', 'Квадрат равен нулю при x = −1. Это одна точка.')),
+      divide: skill(
+        'Прежде чем делить на коэффициент при x, проверь, когда он равен нулю. При подстановке особого a получится либо 0·x = 0, либо 0·x = ненулевому числу.',
+        'При a = 1 выражение (a − 1)x = 3 превращается в 0·x = 3. Корней нет.',
+        task('Сколько действительных решений у (a − 2)x = 2(a − 2) при a = 2? Запиши число или «бесконечно много».', 'Число решений', infinitelyMany,
+          'Подставь a = 2 в обе части до деления.', 'Получается 0·x = 0. Подходит любое действительное x.'),
+        task('Сколько решений у (a + 3)x = 7 при a = −3?', 'Число решений', ['0'],
+          'Проверь, одинаковы ли левая и правая части после подстановки.', 'Получается невозможное равенство 0·x = 7. Решений нет.'),
+        task('Найди x из (a − 2)x = a + 1 при a = 5.', 'Корень x', ['2'],
+          'Проверь коэффициент при x, затем дели обе части на одно и то же число.', 'При a = 5 получаем 3x = 6. Отсюда x = 2.')),
+      degree: skill(
+        'Сначала выясни, при каких a старший коэффициент равен нулю. При остальных a применяй дискриминант. Нулевой дискриминант у квадратного уравнения даёт один различный корень.',
+        'У x² − 2x + a = 0 дискриминант равен 4(1 − a). При a = 1 есть один корень x = 1, а уравнение остаётся квадратным.',
+        task('Найди корень уравнения ax² + x − 1 = 0 при a = 0.', 'Корень x', ['1'],
+          'Подставь a = 0 до вычисления дискриминанта.', 'Остаётся линейное уравнение x − 1 = 0. Корень равен 1.'),
+        task('При каком a уравнение x² − 4x + a = 0 имеет двойной корень?', 'Значение a', ['4'],
+          'Коэффициент при x² равен 1. Приравняй дискриминант 16 − 4a к нулю.', 'Из 16 − 4a = 0 получаем a = 4, корень x = 2.'),
+        task('Найди корень (a − 3)x² + 2x + 1 = 0 при a = 3.', 'Корень x', ['-1/2'],
+          'Проверь, какое слагаемое исчезает при a = 3.', 'Остаётся 2x + 1 = 0, откуда x = −1/2.')),
+      'root-position': skill(
+        'Для двух различных положительных корней квадратного уравнения нужны положительный дискриминант, положительная сумма корней и положительное произведение. Границу x = 0 проверяй отдельно.',
+        'У x² − 3x + 2 = 0 корни 1 и 2. Их сумма и произведение положительны.',
+        task('Сколько положительных корней у x² − 5x + 6 = 0?', 'Число положительных корней', ['2'],
+          'Проверь дискриминант, сумму 5 и произведение 6 либо разложи трёхчлен.', 'Корни 2 и 3 положительны.'),
+        task('Сколько положительных корней у x² + 4x + 3 = 0?', 'Число положительных корней', ['0'],
+          'У суммы знак минус, произведение положительно. Что это говорит о знаках двух корней?', 'Корни −1 и −3. Положительных нет.'),
+        task('Сколько положительных корней у x² − x − 6 = 0?', 'Число положительных корней', ['1'],
+          'Произведение отрицательно. Действительные корни разных знаков.', 'Корни −2 и 3. Один из них положителен.')),
+      plateau: skill(
+        'Горизонтальный участок функции может целиком совпасть с уровнем. Сначала найди минимум и участок постоянства, затем сравни с уровнем.',
+        'Между −1 и 1 сумма расстояний от x до этих точек равна 2. Поэтому на отрезке [−1; 1] график |x − 1| + |x + 1| горизонтален.',
+        task('Сколько решений у |x − 1| + |x + 1| = 2? Запиши число или «бесконечно много».', 'Число решений', infinitelyMany,
+          'Рассмотри x между −1 и 1, включая концы. Раскрой модули на этом отрезке.', 'На всём отрезке [−1; 1] сумма равна 2. Все его точки подходят.'),
+        task('Сколько решений у |x − 2| + |x + 2| = 3?', 'Число решений', ['0'],
+          'На отрезке [−2; 2] сумма равна расстоянию между концами. Вне отрезка она больше.', 'Минимум равен 4, поэтому уровня 3 нет.'),
+        task('Сколько решений у |x − 3| + |x + 3| = 8?', 'Число решений', ['2'],
+          'Сравни 8 с высотой горизонтального участка, затем посмотри на две внешние ветви.', 'Высота участка 6. Уровень 8 пересекает обе ветви при x = −4 и x = 4.')),
+      hole: skill(
+        'Запомни ограничения исходного знаменателя до сокращения. Сокращённая формула может дать пересечение, которого нет на исходном графике.',
+        'Функция (x² − 4)/(x − 2) совпадает с x + 2 при x ≠ 2. Из графика исключена точка (2; 4).',
+        task('Сколько решений у (x² − 1)/(x − 1) = 2?', 'Число решений', ['0'],
+          'После сокращения реши x + 1 = 2. Проверь полученный x в исходном знаменателе.', 'Остаётся x = 1, но исходная дробь в этой точке не определена.'),
+        task('Найди x из (x² − 4)/(x − 2) = 6. Проверь ограничение исходной дроби.', 'Допустимый корень', ['4'],
+          'При x ≠ 2 дробь равна x + 2.', 'x + 2 = 6 даёт x = 4. Знаменатель не равен нулю.'),
+        task('При каком единственном a уравнение (x² − 9)/(x + 3) = a не имеет решений?', 'Пропущенный уровень a', ['-6'],
+          'Сократи дробь и вычисли уровень в исключённой точке x = −3.', 'x − 3 = a не может дать допустимый x при a = −6.')),
+      tangent: skill(
+        'Сравни расстояние от центра окружности до прямой с радиусом. Снаружи нет общих точек, при касании одна, внутри две.',
+        'У окружности x² + y² = 25 радиус 5. От центра до y = 2 расстояние 2, значит есть две общие точки.',
+        task('Сколько решений у системы x² + y² = 9, y = −3?', 'Число решений', ['1'],
+          'Сравни расстояние от (0; 0) до горизонтали с радиусом 3.', 'Расстояние равно радиусу, есть одна точка касания (0; −3).'),
+        task('Сколько общих точек у окружности (x − 2)² + (y + 1)² = 16 и прямой y = 4?', 'Число общих точек', ['0'],
+          'Ордината центра равна −1. Найди разность высот.', 'Расстояние 5 больше радиуса 4. Общих точек нет.'),
+        task('Сколько решений у системы x² + y² = 25, y = 4?', 'Число решений', ['2'],
+          'Можно сравнить 4 с радиусом 5 или подставить y и посчитать различные x.', 'x² = 25 − 16 = 9, откуда x = −3 или x = 3.')),
+      restore: skill(
+        'После замены найди допустимые исходные x, восстанови вторую координату системы и проверь все условия. Одно значение замены может дать несколько исходных решений.',
+        'Из u = x² = 9 получаем x = −3 и x = 3. Если в условии x ≥ 0, остаётся x = 3.',
+        task('Сколько пар (x; y) подходит для |x| = 2 и y = x + 1?', 'Число пар', ['2'],
+          'Восстанови оба значения x из |x| = 2, затем найди y у каждого.', 'Подходят (−2; −1) и (2; 3).'),
+        task('Сколько пар (x; y) удовлетворяет x² = 0 и y = x + 3?', 'Число пар', ['1'],
+          'Для u = 0 значения x = √u и x = −√u совпадают.', 'Получается только пара (0; 3).'),
+        task('Даны x² = 4, x > 0 и y = x + 2. Найди ординату допустимой пары.', 'Значение y', ['4'],
+          'После извлечения корня оставь только положительное x. Подставь его в y = x + 2.', 'Подходит x = 2, поэтому y = 4.')),
+      plane: {
+        ...skill(
+          'Запиши оба неравенства как ограничения на a. Отметь общую область. На каждой горизонтали a = const абсциссы общих точек дают допустимые x.',
+          'Для 0 ≤ a ≤ x при −1 ≤ x ≤ 2 подходят уровни от 0 до 2. Верхняя граница следует из a ≤ x ≤ 2, а x = 2 годится для каждого a из этого отрезка.',
+          task('При каких a система x² ≤ a и (x + 1)² ≤ 1 − a имеет хотя бы одно решение x?',
+            'Запиши отрезок или неравенство для a', ['[0;1]', 'a∈[0;1]', '0≤a≤1', '0<=a<=1', '0≤a<=1', '0<=a≤1', '1≥a≥0', '1>=a>=0'],
+            'Сравни обе правые части с нулём. Для каждого a между границами попробуй x = −a.',
+            'Из неотрицательности квадратов следует 0 ≤ a ≤ 1. Для каждого такого a подходит x = −a, поскольку a² ≤ a и (1 − a)² ≤ 1 − a.', 'parameter-plane'),
+          task('При каких a система x² < a и (x + 1)² ≤ 2 − a имеет хотя бы одно решение x?',
+            'Запиши промежуток или неравенство для a', ['(0;2]', 'a∈(0;2]', '0<a≤2', '0<a<=2', '2≥a>0', '2>=a>0'],
+            'Проверь, какое из двух неравенств строгое. Для доказательства достаточности возьми x = −a/2.',
+            'Необходимы 0 < a ≤ 2. При x = −a/2 первый квадрат не превосходит a/2, а второй не превосходит (2 − a)/2. Значит, подходят все эти a, в том числе 2.'),
+          task('При каких a система x² ≤ a и (x − 2)² ≤ 2 − a имеет хотя бы одно решение x?',
+            'Множество значений a', ['1', 'a=1', '{1}', 'a∈{1}', '[1;1]'],
+            'Сложи неравенства и выдели полный квадрат в выражении x² + (x − 2)².',
+            'Сумма даёт 2(x − 1)² + 2 ≤ 2, поэтому x = 1. Подстановка даёт 1 ≤ a и a ≤ 1. Пара x = 1, a = 1 удовлетворяет обоим условиям.')),
+        reasoning: [
+          'Объясни, почему другие a не подходят и как получить хотя бы одно x для каждого подходящего a.',
+          'Обоснуй, какая граница входит в ответ. Покажи, почему подходит каждое a из найденного промежутка.',
+          'Докажи, что возможна только одна пара (x; a), и проверь её подстановкой.'
+        ]
+      }
+    }
+  });
+})();
+
+</script>
+<script data-inline-source="/ege-profil/azbuka-metodov/engine.js">
+(() => {
+  'use strict';
+
+  const storageKey = 'mathexam.profile-alphabets.v1.';
+  const normalize = value => String(value).replaceAll('²', '^2').normalize('NFKC').toLowerCase().trim()
+    .replace(/[−–—]/g, '-').replace(/[·×*]/g, '').replace(/\s+/g, '')
+    .replace(/[\u0430\u0432\u0441\u0435\u043e\u0442\u043c\u043d\u0440\u0445]/g,
+      letter => ({ а: 'a', в: 'b', с: 'c', е: 'e', о: 'o', т: 't', м: 'm', н: 'h', р: 'p', х: 'x' })[letter]);
+
+  function fraction(value) {
+    const ratio = /^([+-]?\d+)\/([+-]?\d+)$/.exec(value);
+    if (ratio) return BigInt(ratio[2]) ? [BigInt(ratio[1]), BigInt(ratio[2])] : null;
+    const decimal = /^([+-]?)(\d*)(?:[,.](\d*))?$/.exec(value);
+    if (!decimal || !(decimal[2] || decimal[3])) return null;
+    const digits = decimal[3] || '';
+    return [BigInt(decimal[1] + decimal[2] + digits), 10n ** BigInt(digits.length)];
+  }
+
+  function matches(raw, answers) {
+    if (typeof raw !== 'string' || raw.length > 120) return false;
+    // A typed multiplication sign belongs to algebraic text, not to a number.
+    const numeric = value => String(value).normalize('NFKC').replace(/[−–—]/g, '-').trim().replace(/\s*\/\s*/g, '/');
+    const input = normalize(raw);
+    if (!input) return false;
+    const value = fraction(numeric(raw));
+    return answers.some(answer => {
+      const expected = fraction(numeric(answer));
+      return expected ? Boolean(value && value[0] * expected[1] === expected[0] * value[1]) : input === normalize(answer);
+    });
+  }
+
+  function fresh() {
+    return { phase: 0, attempts: [], helped: false, draft: '', events: [], independent: false };
+  }
+
+  function create(storage) {
+    let available = Boolean(storage);
+    const memory = new Map();
+
+    function read(id) {
+      if (available) {
+        try {
+          const raw = storage.getItem(storageKey + id);
+          const value = raw && JSON.parse(raw);
+          if (value && Number.isInteger(value.phase) && value.phase >= 0 &&
+              Array.isArray(value.attempts) && Array.isArray(value.events) &&
+              typeof value.draft === 'string' && typeof value.helped === 'boolean' &&
+              typeof value.independent === 'boolean') return value;
+        } catch {
+          available = false;
+        }
+      }
+      return memory.get(id) ?? fresh();
+    }
+
+    function save(id, state) {
+      memory.set(id, state);
+      if (available) {
+        try {
+          storage.setItem(storageKey + id, JSON.stringify(state));
+        } catch {
+          available = false;
+        }
+      }
+      return state;
+    }
+
+    return { read, save, available: () => available };
+  }
+
+  function progress(record, lesson) {
+    if (record.independent) return 'verified';
+    if (record.phase > lesson.checks.length || record.helped || record.attempts.includes(false)) return 'supported';
+    return record.phase || record.draft || record.attempts.length ? 'started' : 'new';
+  }
+
+  function question(record, lesson) {
+    return record.phase === 0 ? lesson.practice : lesson.checks[record.phase - 1];
+  }
+
+  function addEvent(record, type, extra = {}) {
+    record.events.push({ type, phase: record.phase, at: new Date().toISOString(), ...extra });
+  }
+
+  function check(record, lesson, raw) {
+    const current = question(record, lesson);
+    if (!current || !raw.trim() || record.attempts.at(-1) === true) return null;
+    const correct = matches(raw, current.answers);
+    const familiar = record.events.some(event => event.phase === record.phase &&
+      ['correct', 'wrong', 'hint'].includes(event.type));
+    record.draft = raw;
+    record.attempts.push(correct);
+    addEvent(record, correct ? 'correct' : 'wrong', { answer: raw, helped: record.helped });
+    if (record.phase && correct && !familiar && !record.helped) record.independent = true;
+    return correct;
+  }
+
+  function hint(record, lesson) {
+    if (!question(record, lesson) || record.helped || record.attempts.at(-1) === true) return;
+    record.helped = true;
+    addEvent(record, 'hint');
+  }
+
+  function advance(record, lesson) {
+    if (record.attempts.at(-1) !== true) return;
+    record.phase = record.phase && record.independent ? lesson.checks.length + 1 : record.phase + 1;
+    record.attempts = [];
+    record.draft = '';
+    record.helped = false;
+    addEvent(record, 'advance');
+  }
+
+  function restart(record) {
+    if (!record.phase) return;
+    const reset = { ...fresh(), events: record.events, independent: record.independent, note: record.note };
+    addEvent(reset, 'repeat');
+    return reset;
+  }
+
+  globalThis.ProfileAlphabetEngine = { storageKey, create, matches, progress, question, check, hint, advance, restart };
+})();
+
+</script>
+<script data-inline-source="/ege-profil/azbuka-metodov/diagrams.js">
+(() => {
+  'use strict';
+
+  const views = {
+    'coordinate-box': ['Из вершины O ребро OA идёт вдоль оси x, OB вдоль оси y, OC вдоль оси z. P прямо над A. Q — верхняя вершина, противоположная O.',
+      '<path d="M48 102H148L190 72H90ZM48 102V40H148L190 10H90L48 40M148 40V102M190 72V10M90 10V72"/><path class="accent-edge" d="M148 102H162M90 72l16-11M48 40V27"/><text x="32" y="115">O</text><text x="144" y="121">A</text><text x="90" y="92">B</text><text x="30" y="42">C</text><text x="138" y="34">P</text><text x="194" y="17">Q</text><text x="164" y="107">x</text><text x="109" y="67">y</text><text x="44" y="22">z</text>'],
+    box: ['Прямоугольный параллелепипед. Нижняя грань ABCD, верхняя A₁B₁C₁D₁.',
+      '<path class="hidden-edge" d="M44 105 79 76H203M79 76V26"/><path d="M44 105H169L203 76V26H79L44 55ZM44 55H169L203 26M169 55V105"/><text x="26" y="118">A</text><text x="174" y="120">B</text><text x="207" y="84">C</text><text x="67" y="73">D</text><text x="23" y="56">A₁</text><text x="152" y="52">B₁</text><text x="205" y="23">C₁</text><text x="61" y="21">D₁</text>'],
+    triangle: ['Треугольник ABC с высотой AH к основанию BC.',
+      '<path d="M110 18 30 104H202Z"/><path class="accent-edge" d="M110 18V104M110 95h9v9"/><text x="104" y="15">A</text><text x="15" y="120">B</text><text x="204" y="120">C</text><text x="104" y="120">H</text>'],
+    parallel: ['Треугольник ABC. Точки D и E лежат на сторонах AB и AC. DE параллелен BC.',
+      '<path d="M110 18 30 104H202Z"/><path class="accent-edge" d="M73 58H153"/><text x="104" y="15">A</text><text x="15" y="120">B</text><text x="204" y="120">C</text><text x="55" y="59">D</text><text x="158" y="59">E</text>'],
+    tangent: ['Окружность с центром O. Прямая через M касается окружности в T.',
+      '<circle cx="91" cy="61" r="38"/><path d="M70 23H207M91 61l100-38"/><path class="accent-edge" d="M91 61V23"/><text x="78" y="76">O</text><text x="86" y="18">T</text><text x="186" y="18">M</text>'],
+    diameter: ['Отрезок AB — диаметр окружности, P — точка на окружности.',
+      '<circle cx="115" cy="65" r="44"/><path d="M71 65h88L115 21Z"/><text x="55" y="69">A</text><text x="165" y="69">B</text><text x="109" y="17">P</text>']
+  };
+
+  globalThis.ProfileAlphabetDiagram = id => {
+    if (!Object.hasOwn(views, id)) return '';
+    const [label, drawing] = views[id];
+    return '<svg class="alphabet-diagram az-diagram" role="img" aria-label="' + label + '" viewBox="0 0 230 128">' + drawing + '</svg>';
+  };
+})();
+
+</script>
+<script data-inline-source="/ege-profil/azbuka-metodov/function-atlas.js">
+(() => {
+  'use strict';
+
+  const all = 'все действительные числа';
+  const types = {
+    constant: { value: () => 2, count: a => a === 2 ? Infinity : 0 },
+    line: { value: x => x + 1, count: () => 1 },
+    mod: { value: Math.abs, count: a => a < 0 ? 0 : a === 0 ? 1 : 2 },
+    quadratic: { value: x => (x - 1) ** 2 - 2, count: a => a < -2 ? 0 : a === -2 ? 1 : 2 },
+    cubic: { value: x => x ** 3, count: () => 1 },
+    quartic: { value: x => x ** 4, count: a => a < 0 ? 0 : a === 0 ? 1 : 2 },
+    root: { value: Math.sqrt, count: a => a < 0 ? 0 : 1, ends: [[0, 0]] },
+    cubeRoot: { value: Math.cbrt, count: () => 1 },
+    inverse: { value: x => 2 / x, count: a => a === 0 ? 0 : 1, cuts: [0] },
+    rational: { value: x => 1 + 2 / (x - 1), count: a => a === 1 ? 0 : 1, cuts: [1] },
+    hole: { value: x => x === 1 ? NaN : x + 1, count: a => a === 2 ? 0 : 1, cuts: [1], ends: [[1, 2, true]] },
+    exp: { value: x => 2 ** x, count: a => a > 0 ? 1 : 0 },
+    expDown: { value: x => 0.5 ** x, count: a => a > 0 ? 1 : 0 },
+    log: { value: Math.log2, count: () => 1, cuts: [0] },
+    logDown: { value: x => -Math.log2(x), count: () => 1, cuts: [0] },
+    sin: { value: Math.sin, count: a => Math.abs(a) <= 1 ? Infinity : 0 },
+    cos: { value: Math.cos, count: a => Math.abs(a) <= 1 ? Infinity : 0 },
+    tan: { value: Math.tan, count: () => Infinity, cuts: [-3 * Math.PI / 2, -Math.PI / 2, Math.PI / 2, 3 * Math.PI / 2] },
+    cot: { value: x => 1 / Math.tan(x), count: () => Infinity, cuts: [-Math.PI, 0, Math.PI] },
+    piece: { value: x => x < 0 ? x : 1, count: a => a === 1 ? Infinity : a < 0 ? 1 : 0, cuts: [0], ends: [[0, 0, true], [0, 1]] },
+    absOut: { value: x => Math.abs(x * x - 2), count: a => a < 0 ? 0 : a === 0 ? 2 : a < 2 ? 4 : a === 2 ? 3 : 2 },
+    absIn: { value: x => (Math.abs(x) - 1) ** 2, count: a => a < 0 ? 0 : a === 0 ? 2 : a < 1 ? 4 : a === 1 ? 3 : 2 },
+    plateau: { value: x => Math.abs(x - 1) + Math.abs(x + 1), count: a => a < 2 ? 0 : a === 2 ? Infinity : 2 },
+    radical: { value: x => Math.sqrt(x * x - 1), count: a => a < 0 ? 0 : 2, ends: [[-1, 0], [1, 0]] },
+    semicircle: { value: x => Math.sqrt(9 - x * x), count: a => a < 0 || a > 3 ? 0 : a === 3 ? 1 : 2, ends: [[-3, 0], [3, 0]] }
+  };
+
+  const entries = [
+    ['constant', 'Постоянная', 'y = 2', all, '{2}'],
+    ['line', 'Линейная', 'y = x + 1', all, all],
+    ['mod', 'Модуль', 'y = |x|', all, 'y ≥ 0'],
+    ['quadratic', 'Квадратичная', 'y = (x − 1)² − 2', all, 'y ≥ −2'],
+    ['cubic', 'Кубическая', 'y = x³', all, all],
+    ['quartic', 'Чётная степень', 'y = x⁴', all, 'y ≥ 0'],
+    ['root', 'Квадратный корень', 'y = √x', 'x ≥ 0', 'y ≥ 0'],
+    ['cubeRoot', 'Кубический корень', 'y = ∛x', all, all],
+    ['inverse', 'Обратная пропорциональность', 'y = 2/x', 'x ≠ 0', 'y ≠ 0'],
+    ['rational', 'Дробно-линейная', 'y = 1 + 2/(x − 1)', 'x ≠ 1', 'y ≠ 1'],
+    ['hole', 'Выколотая точка', 'y = (x² − 1)/(x − 1)', 'x ≠ 1', 'y ≠ 2'],
+    ['exp', 'Показательная возрастающая', 'y = 2ˣ', all, 'y > 0'],
+    ['expDown', 'Показательная убывающая', 'y = (1/2)ˣ', all, 'y > 0'],
+    ['log', 'Логарифм по основанию 2', 'y = log₂ x', 'x > 0', all],
+    ['logDown', 'Логарифм по основанию 1/2', 'y = log₁⁄₂ x', 'x > 0', all],
+    ['sin', 'Синус', 'y = sin x', all, '−1 ≤ y ≤ 1'],
+    ['cos', 'Косинус', 'y = cos x', all, '−1 ≤ y ≤ 1'],
+    ['tan', 'Тангенс', 'y = tg x', 'x ≠ π/2 + πk, k ∈ ℤ', all],
+    ['cot', 'Котангенс', 'y = ctg x', 'x ≠ πk, k ∈ ℤ', all],
+    ['piece', 'Кусочная', 'y = x при x < 0, y = 1 при x ≥ 0', all, 'y < 0 или y = 1'],
+    ['absOut', 'Модуль значения', 'y = |x² − 2|', all, 'y ≥ 0'],
+    ['absIn', 'Модуль аргумента', 'y = (|x| − 1)²', all, 'y ≥ 0'],
+    ['plateau', 'Сумма модулей', 'y = |x − 1| + |x + 1|', all, 'y ≥ 2'],
+    ['radical', 'Корень от квадратного выражения', 'y = √(x² − 1)', 'x ≤ −1 или x ≥ 1', 'y ≥ 0'],
+    ['semicircle', 'Верхняя полуокружность', 'y = √(9 − x²)', '−3 ≤ x ≤ 3', '0 ≤ y ≤ 3']
+  ];
+
+  const limit = 5;
+  const scale = 33;
+  const xPixel = x => 180 + scale * x;
+  const yPixel = y => 172 - scale * y;
+  const format = value => String(value).replace('-', '−').replace('.', ',');
+  const line = (x1, y1, x2, y2, kind) =>
+    '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" class="' + kind + '"/>';
+  const grid = Array.from({ length: 11 }, (_, i) => {
+    const n = i - 5;
+    const kind = n ? 'atlas-grid' : 'atlas-axis';
+    return line(xPixel(n), yPixel(-limit), xPixel(n), yPixel(limit), kind) +
+      line(xPixel(-limit), yPixel(n), xPixel(limit), yPixel(n), kind) +
+      (n ? '<text x="' + (xPixel(n) + 3) + '" y="189">' + format(n) + '</text>' +
+        '<text x="157" y="' + (yPixel(n) - 3) + '">' + format(n) + '</text>' : '');
+  }).join('') + '<text x="347" y="164">x</text><text x="188" y="18">y</text>';
+
+  function curve(type) {
+    let path = '';
+    let previousX;
+    for (let index = -500; index <= 500; index++) {
+      const x = index / 100;
+      const y = type.value(x);
+      if (!Number.isFinite(y) || Math.abs(y) > limit + 0.2) {
+        previousX = undefined;
+        continue;
+      }
+      const join = previousX !== undefined && !type.cuts?.some(cut => previousX < cut && cut <= x);
+      path += (join ? 'L' : 'M') + xPixel(x).toFixed(2) + ' ' + yPixel(y).toFixed(2);
+      previousX = x;
+    }
+    return '<path class="atlas-curve" d="' + path + '"/>';
+  }
+
+  function mount(container, initial = 'mod') {
+    container.innerHTML = '<section class="az-panel az-atlas"><h2>Атлас функций</h2>' +
+      '<label for="az-atlas-function">Функция</label><select id="az-atlas-function">' +
+      entries.map(([id, title]) => '<option value="' + id + '">' + title + '</option>').join('') +
+      '</select><label for="az-atlas-level">Уровень y = <output for="az-atlas-level"></output></label>' +
+      '<input id="az-atlas-level" type="range" min="-4" max="4" value="2" step="0.5">' +
+      '<svg viewBox="0 0 360 345" role="img"></svg><div class="az-atlas-properties"></div>' +
+      '<details><summary>Проверить число решений</summary><p class="az-atlas-count"></p></details></section>';
+    const select = container.querySelector('select');
+    const input = container.querySelector('input');
+    const svg = container.querySelector('svg');
+    const output = container.querySelector('output');
+    const count = container.querySelector('.az-atlas-count');
+    const properties = container.querySelector('.az-atlas-properties');
+    const disclosure = container.querySelector('details');
+    select.value = Object.hasOwn(types, initial) ? initial : 'mod';
+    let drawing, markers;
+
+    function refreshLevel() {
+      const level = Number(input.value);
+      const [, , formula] = entries[select.selectedIndex];
+      output.value = format(level);
+      svg.setAttribute('aria-label', formula + ' и горизонталь y = ' + format(level) + ' на отрезке от −5 до 5');
+      const type = types[select.value];
+      // Keep the marked exclusion legible when the horizontal line hits it.
+      svg.innerHTML = grid + drawing + line(xPixel(-limit), yPixel(level), xPixel(limit), yPixel(level), 'atlas-level') + markers;
+      const solutions = type.count(level);
+      count.textContent = 'На всей области определения число решений ' +
+        (solutions === Infinity ? 'бесконечно.' : 'равно ' + solutions + '.');
+    }
+
+    function refreshFunction() {
+      const [key, , formula, domain, range] = entries[select.selectedIndex];
+      properties.innerHTML = '<p><strong>' + formula + '</strong></p><p>Допустимые x — ' + domain +
+        '.</p><p>Значения y — ' + range + '.</p>';
+      const type = types[key];
+      drawing = curve(type);
+      markers = (type.ends ?? []).map(([x, y, open]) => '<circle class="atlas-point' + (open ? ' atlas-open' : '') +
+        '" cx="' + xPixel(x) + '" cy="' + yPixel(y) + '" r="4"/>').join('');
+      disclosure.open = false;
+      refreshLevel();
+    }
+
+    select.addEventListener('change', refreshFunction);
+    input.addEventListener('input', () => {
+      disclosure.open = false;
+      refreshLevel();
+    });
+    refreshFunction();
+  }
+
+  globalThis.ProfileFunctionAtlas = { entries, count: (id, level) => types[id].count(level), mount };
+})();
+
+</script>
+<script data-inline-source="/ege-profil/azbuka-metodov/parameter-plane.js">
+(() => {
+  'use strict';
+
+  const xPixel = x => 212 + 118 * x;
+  const yPixel = a => 194 - 118 * a;
+  const plot = { left: xPixel(-1.5), right: xPixel(0.5), top: yPixel(1.5), bottom: yPixel(-0.5) };
+  const format = value => String(value).replace('-', '−').replace('.', ',');
+  const lower = x => x ** 2;
+  const upper = x => 1 - (x + 1) ** 2;
+  const point = (x, a) => `${xPixel(x)} ${yPixel(a)}`;
+
+  function arc(f, from, to) {
+    const mid = (from + to) / 2;
+    const control = 2 * f(mid) - (f(from) + f(to)) / 2;
+    return `Q${point(mid, control)} ${point(to, f(to))}`;
+  }
+
+  function sliceAt(a) {
+    if (!Number.isFinite(a) || a < 0 || a > 1) return null;
+    if (a === 0) return { left: 0, right: 0 };
+    // Rationalize √(1 − a) − 1 to keep the right endpoint accurate near a = 0.
+    return { left: -Math.sqrt(a), right: -a / (1 + Math.sqrt(1 - a)) };
+  }
+
+  function axes() {
+    const { left, right, top, bottom } = plot;
+    const line = (x1, y1, x2, y2, kind) =>
+      `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${kind}"/>`;
+    const vertical = [-1.5, -1, -0.5, 0, 0.5].map(x => {
+      const px = xPixel(x);
+      return line(px, top, px, bottom, x === 0 ? 'atlas-axis' : 'atlas-grid') +
+        (x ? `<text x="${px}" y="${bottom + 16}" text-anchor="middle">${format(x)}</text>` : '');
+    }).join('');
+    const horizontal = [-0.5, 0, 0.5, 1, 1.5].map(a => {
+      const py = yPixel(a);
+      return line(left, py, right, py, a === 0 ? 'atlas-axis' : 'atlas-grid') +
+        `<text x="${left - 7}" y="${py + 4}" text-anchor="end">${format(a)}</text>`;
+    }).join('');
+    return vertical + horizontal + `<text x="${right + 9}" y="${yPixel(0) + 4}">x</text>` +
+      `<text x="${xPixel(0) + 6}" y="${top - 4}">a</text>`;
+  }
+
+  function drawing() {
+    const { left, right, top, bottom } = plot;
+    return `<defs><clipPath id="parameter-plane-clip"><rect x="${left}" y="${top}" ` +
+      `width="${right - left}" height="${bottom - top}"/></clipPath></defs>${axes()}` +
+      '<g clip-path="url(#parameter-plane-clip)">' +
+      `<path class="plane-area" d="M${point(-1, 1)} ${arc(lower, -1, 0)} ${arc(upper, 0, -1)} Z"/>` +
+      `<path class="plane-lower" d="M${point(-1.5, lower(-1.5))} ${arc(lower, -1.5, 0.5)}"/>` +
+      `<path class="plane-upper" d="M${point(-1.5, upper(-1.5))} ${arc(upper, -1.5, 0.5)}"/>` +
+      `<line x1="${left}" x2="${right}" class="atlas-level" data-plane-level/>` +
+      '<g data-plane-slice></g></g>' +
+      `<text x="${xPixel(-1.12)}" y="${yPixel(lower(-1.12)) - 7}">1</text>` +
+      `<text x="${xPixel(-1.25)}" y="${yPixel(upper(-1.25)) - 8}">2</text>`;
+  }
+
+  function mount(container) {
+    container.innerHTML = '<div class="az-parameter-plane"><p>Заливка — общая область.</p>' +
+      `<svg viewBox="0 0 290 280" role="img">${drawing()}</svg>` +
+      '<p class="plane-legend"><span class="plane-lower">1. a ≥ x²</span><span class="plane-upper">2. a ≤ 1 − (x + 1)²</span></p>' +
+      '<div class="az-plane-controls"><label for="az-plane-level">Уровень a = <output for="az-plane-level"></output></label>' +
+      '<div class="az-plane-buttons"><button type="button" class="az-button secondary" data-plane-exact="0">a = 0</button>' +
+      '<button type="button" class="az-button secondary" data-plane-exact="1">a = 1</button></div></div>' +
+      '<input id="az-plane-level" type="range" min="-0.5" max="1.5" step="0.05" value="0.5">' +
+      '<fieldset><legend>На этом уровне есть решение?</legend><div class="az-plane-buttons">' +
+      '<button type="button" class="az-button secondary" aria-pressed="false" data-plane-predict="yes">Есть</button>' +
+      '<button type="button" class="az-button secondary" aria-pressed="false" data-plane-predict="no">Нет</button></div></fieldset>' +
+      '<p class="az-feedback" role="status" data-plane-feedback></p></div>';
+    const svg = container.querySelector('svg');
+    const input = container.querySelector('input');
+    const output = container.querySelector('output');
+    const levelLine = svg.querySelector('[data-plane-level]');
+    const segment = svg.querySelector('[data-plane-slice]');
+    const feedback = container.querySelector('[data-plane-feedback]');
+    const choices = [...container.querySelectorAll('[data-plane-predict]')];
+    let a;
+
+    function moveLevel() {
+      const next = input.valueAsNumber;
+      if (next === a) return;
+      a = next;
+      const y = yPixel(a);
+      output.value = format(a);
+      svg.setAttribute('aria-label', `Плоскость (x, a). Две параболы, общая область и горизонталь a = ${format(a)}`);
+      levelLine.setAttribute('y1', y);
+      levelLine.setAttribute('y2', y);
+      segment.replaceChildren();
+      feedback.textContent = '';
+      feedback.className = 'az-feedback';
+      for (const button of choices) button.setAttribute('aria-pressed', 'false');
+    }
+
+    function check(button) {
+      const slice = sliceAt(a);
+      const correct = (button.dataset.planePredict === 'yes') === Boolean(slice);
+      const result = !slice ? 'Горизонталь проходит мимо общей области.' : slice.left === slice.right ?
+        `Общая точка одна. Подходит x = ${format(slice.left)}.` : 'Горизонталь пересекает общую область по отрезку. Все его x подходят.';
+      for (const choice of choices) choice.setAttribute('aria-pressed', String(choice === button));
+      feedback.className = 'az-feedback ' + (correct ? 'ok' : 'retry');
+      feedback.textContent = (correct ? 'Верно. ' : 'Сверь с рисунком. ') + result;
+      if (slice) {
+        const left = xPixel(slice.left);
+        const right = xPixel(slice.right);
+        const y = yPixel(a);
+        segment.innerHTML = left === right ? `<circle cx="${left}" cy="${y}" r="4"/>` :
+          `<line x1="${left}" x2="${right}" y1="${y}" y2="${y}"/>`;
+      }
+    }
+
+    input.addEventListener('input', moveLevel);
+    for (const button of container.querySelectorAll('[data-plane-exact]')) {
+      button.addEventListener('click', () => {
+        input.value = button.dataset.planeExact;
+        moveLevel();
+      });
+    }
+    for (const button of choices) button.addEventListener('click', () => check(button));
+    moveLevel();
+  }
+
+  globalThis.ProfileParameterPlane = { sliceAt, mount };
+})();
+
+</script>
+<script data-inline-source="/ege-profil/azbuka-metodov/app.js">
+(() => {
+  'use strict';
+
+  const catalog = globalThis.ProfileAlphabetCatalog;
+  const lessons = globalThis.ProfileAlphabetLessons;
+  const engine = globalThis.ProfileAlphabetEngine;
+  const main = document.querySelector('#alphabet-main');
+  const site = main.dataset.mathSite || '';
+  const base = location.protocol === 'file:' ? new URL(location.pathname, location.href).href : location.pathname;
+  let storage;
+  try { storage = localStorage; } catch { /* The page can still be used for the current session. */ }
+  const store = engine.create(storage);
+  const params = new URLSearchParams(location.search);
+  const context = catalog.readContext(params);
+  const number = context.number;
+  const contextLabel = context.kind !== 'legacy' && context.entry ? globalThis.ProfileExamMap.label(context.entry) : catalog.displayLabel(number);
+  const back = catalog.safeBack(params.get('back'));
+  const inCabinet = Boolean(site);
+  const teacher = inCabinet && params.get('mode') === 'teacher';
+  const keyFor = (alphabetId, skillId) => (teacher ? 'teacher/' : '') + alphabetId + '/' + skillId;
+  const status = {
+    new: 'Можно начать', started: 'В работе', supported: 'Нужна новая проверка',
+    verified: 'Самостоятельно'
+  };
+  const escape = value => String(value ?? '').replace(/[&<>"']/g, letter =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[letter]);
+  const linkTo = (id, skill) => {
+    const url = new URL(catalog.href(id, skill, context, back, base), location.href);
+    if (teacher) url.searchParams.set('mode', 'teacher');
+    return url.protocol === 'file:' ? url.href : url.pathname + url.search + url.hash;
+  };
+  const examLink = n => site + catalog.examHref(n);
+  const labels = { wrong: 'Ошибка', hint: 'Подсказка', correct: 'Верно', repeat: 'Начато повторение' };
+  const date = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  const parameterGraphs = {
+    plateau: {
+      lesson: 'param-modules', title: 'Горизонтальный участок',
+      prompt: 'Поставьте горизонталь ниже участка, на его уровне и выше. Каждый раз сначала назовите число решений, затем откройте проверку.',
+      hints: ['Сравните уровень горизонтали с высотой участка. Включать ли саму границу?',
+        'При совпадении горизонтали с участком проверьте, какие его точки удовлетворяют уравнению.']
+    },
+    hole: {
+      lesson: 'param-hole', title: 'Выколотая точка',
+      prompt: 'Переместите горизонталь через выколотую точку и чуть выше. Предскажите, сколько пересечений в каждом случае, затем откройте проверку.',
+      hints: ['В своём условии выразите x через a и найдите, при каком уровне кандидат равен нулю.',
+        'Возьмите запрещённый x из исходного знаменателя и найдите соответствующий уровень горизонтали.']
+    }
+  };
+
+  function statusOf(alphabetId, skillId) {
+    const lesson = lessons[alphabetId][skillId];
+    return engine.progress(store.read(keyFor(alphabetId, skillId)), lesson);
+  }
+
+  function returnLinks(alphabet) {
+    const selected = alphabet?.numbers.includes(number) ? number : null;
+    const returnLink = back ? '<a class="az-button secondary" href="' + escape(site + back) + '">Вернуться к исходному заданию</a>' :
+      selected ? '<a class="az-button secondary" href="' + examLink(selected) + '">Вернуться: ' + catalog.displayLabel(selected) + '</a>' : '';
+    return '<nav class="az-navigation" aria-label="Навигация по теме">' +
+      '<a href="' + escape(linkTo('')) + '">← К списку тем</a>' +
+      (alphabet && location.hash.split('/').length === 3 ? '<a href="' + escape(linkTo(alphabet.id)) + '">К навыкам темы</a>' : '') +
+      returnLink + '</nav>';
+  }
+
+  function modeLink(alphabet, id) {
+    if (!inCabinet) return '';
+    const query = new URLSearchParams(params);
+    if (teacher) query.delete('mode');
+    else query.set('mode', 'teacher');
+    const href = base + (query.size ? '?' + query : '') + '#/' + alphabet.id + '/' + id;
+    return '<a class="az-button secondary" href="' + escape(href) + '">' +
+      (teacher ? 'Самостоятельно' : 'Разобрать с преподавателем') + '</a>';
+  }
+
+  function resources(alphabet) {
+    return '<section class="az-panel az-resources"><h2>Подготовка к экзамену и дополнительные темы</h2><div class="az-numbers">' +
+      alphabet.numbers.map(n => '<a href="' + examLink(n) + '">' + catalog.displayLabel(n) + '</a>').join('') +
+      '</div><h2>Материалы MathExam</h2><ul>' +
+      alphabet.refs.map(([label, url]) => '<li><a href="' + site + url + '">' + label + '</a></li>').join('') +
+      '</ul></section>';
+  }
+
+  function routeStart(alphabet, ids) {
+    const available = ids.map(id => {
+      const record = store.read(keyFor(alphabet.id, id));
+      return { id, record };
+    }).filter(({ id, record }) => engine.question(record, lessons[alphabet.id][id]));
+    return available.find(({ record }) => record.phase || record.attempts.length || record.draft || record.helped)?.id ??
+      available.find(({ record }) => !record.independent)?.id ?? ids[0];
+  }
+
+  function routeContinuation(alphabet, current) {
+    if (!alphabet.route) return '';
+    const ids = Object.keys(alphabet.skills);
+    const nextId = ids[ids.indexOf(current) + 1];
+    const target = nextId ? linkTo(alphabet.id, nextId) : alphabet.next ?
+      linkTo(alphabet.next) : examLink(alphabet.numbers[0]);
+    const label = nextId ? 'Следующий шаг' : alphabet.next ? 'К методам решения задач с параметром' :
+      'К подготовке: ' + catalog.displayLabel(alphabet.numbers[0]);
+    return '<a class="az-button primary" href="' + escape(target) + '">' + label + '</a>';
+  }
+
+  function renderCatalog() {
+    const selected = catalog.forNumber(number);
+    const title = selected.length ? context.entry?.number == null ? 'Основы: ' + (context.entry?.title || contextLabel) : 'Основы для ' + contextLabel : 'Основы и методы';
+    main.innerHTML = (selected.length ? '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' +
+      escape(base) + '">← Все темы</a><a class="az-button secondary" href="' + examLink(number) + '">К подготовке: ' +
+      contextLabel + '</a></nav>' : '') + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' + title + '</h1>' +
+      '<p class="az-lead">Разбери один приём, проверь себя на другом примере и переходи к задачам ЕГЭ.</p>' +
+      '<div class="az-catalog">' + (selected.length ? selected : catalog.list).map(alphabet => {
+        const total = Object.keys(alphabet.skills).length;
+        const count = Object.keys(alphabet.skills).filter(id => statusOf(alphabet.id, id) === 'verified').length;
+        return '<a class="az-panel az-card" href="' + escape(linkTo(alphabet.id)) + '"><span class="az-kicker">' +
+          alphabet.numbers.map(catalog.displayLabel).join(' · ') + '</span><h2>' + alphabet.title + '</h2><p>' +
+          alphabet.description + '</p><span class="az-count">Самостоятельно: ' + count + ' из ' + total + '</span></a>';
+      }).join('') + '</div>';
+  }
+
+  function skillList(alphabet, current) {
+    const entries = Object.entries(alphabet.skills);
+    const relevant = entries.filter(([, skill]) => skill.numbers.includes(number));
+    const items = [...relevant, ...entries.filter(entry => !entry[1].numbers.includes(number))];
+    return '<section class="az-panel az-skill-list"><h2>Карта навыков</h2><ul>' +
+      items.map(([id, skill]) => {
+        const state = statusOf(alphabet.id, id);
+        return '<li><a href="' + escape(linkTo(alphabet.id, id)) + '"' + (id === current ? ' aria-current="page"' : '') +
+        '><strong>' + skill.title + '</strong><span class="az-status az-' + state + '">' + status[state] + '</span></a></li>';
+      }).join('') + '</ul></section>';
+  }
+
+  function journal(record) {
+    const entries = record.events.filter(event => Object.hasOwn(labels, event.type));
+    if (!entries.length) return '';
+    return '<details class="az-panel az-history"><summary>Журнал попыток</summary><ol>' +
+      [...entries].reverse().map(event => {
+        const time = new Date(event.at);
+        return '<li><span>' + (Number.isFinite(+time) ? date.format(time) + ' · ' : '') + labels[event.type] +
+          (event.answer ? ' · ' + escape(event.answer) : '') + (event.helped ? ' · с подсказкой' : '') + '</span></li>';
+      }).join('') + '</ol></details>';
+  }
+
+  function exerciseMarkup(record, lesson, alphabet, id) {
+    const current = engine.question(record, lesson);
+    if (!current) {
+      return '<section class="az-panel az-exercise"><h2>' +
+        (record.independent ? 'Самостоятельная проверка пройдена' : 'Тренировка завершена') + '</h2><p>' +
+        (record.independent ? 'Ключевой шаг получился на отдельном условии с первой попытки без подсказки.' :
+          'В проверке были ошибки или подсказки. К навыку можно вернуться и потренироваться ещё.') +
+        '</p><div class="az-actions">' + routeContinuation(alphabet, id) +
+        '<button class="az-button secondary" type="button" data-restart>Повторить навык</button></div></section>';
+    }
+    const solved = record.attempts.at(-1) === true;
+    const stage = record.phase ? (teacher ? 'Проверка после разбора' : 'Самопроверка') : (teacher ? 'Шаг для урока' : 'Учебный шаг');
+    const diagram = current.diagram === 'parameter-plane' ?
+      '<div data-parameter-plane><p>Общая область лежит между a ≥ x² и a ≤ 1 − (x + 1)².</p></div>' :
+      globalThis.ProfileAlphabetDiagram(current.diagram);
+    const support = !record.phase ? '<details class="az-support"><summary>Правило и пример</summary><p>' +
+      lesson.rule + '</p><p>' + lesson.example + '</p></details>' : '';
+    const message = solved ? 'Верно. ' + current.explanation : record.attempts.includes(false) ?
+      'Пока не сходится. ' + (record.attempts.length >= 2 ? 'Можно открыть подсказку.' : 'Сверь запись с условием.') : '';
+    return '<section class="az-panel az-exercise" aria-label="' + stage + '"><p class="az-kicker">' + stage + '</p>' +
+      '<h2 id="az-question" tabindex="-1">' + current.prompt + '</h2>' + diagram +
+      '<form id="az-form" novalidate><label for="az-answer">' + current.label + '</label>' +
+      '<input id="az-answer" name="answer" type="text" maxlength="120" autocomplete="off" spellcheck="false" value="' +
+      escape(record.draft) + '"' + (solved ? ' readonly' : '') + ' aria-describedby="az-feedback">' +
+      '<p id="az-feedback" role="status" class="az-feedback ' + (solved ? 'ok' : message ? 'retry' : '') + '">' + message + '</p>' +
+      (record.helped && !solved ? '<p class="az-hint">' + current.hint + '</p>' : '') +
+      '<div class="az-actions">' + (solved ? '<button class="az-button primary" type="button" data-advance>' +
+        (record.phase ? record.independent || record.phase === lesson.checks.length ? 'Завершить' : 'Решить другое условие' : 'Проверить себя на новом условии') +
+        '</button>' : '<button class="az-button primary" type="submit">Проверить</button>' +
+        (record.helped ? '' : '<button class="az-button secondary" type="button" data-hint>Подсказка</button>')) +
+      '</div></form>' + support + '</section>';
+  }
+
+  function renderSkill(alphabet, id, previousPlane) {
+    const lesson = lessons[alphabet.id][id];
+    const key = keyFor(alphabet.id, id);
+    const record = store.read(key);
+    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">' + alphabet.short + '</p><h1' +
+      (lesson.reasoning ? ' class="az-skill-heading"' : '') + '>' +
+      alphabet.skills[id].title + '</h1><div class="az-grid"><div class="az-work">' +
+      exerciseMarkup(record, lesson, alphabet, id) + (teacher || alphabet.id === 'written-solution' || lesson.reasoning ?
+        '<section class="az-panel az-notes"><h2>' + (lesson.reasoning ? 'Черновик обоснований' : 'Запиши обоснование') + '</h2><label for="az-note">' +
+        (lesson.reasoning?.[Math.min(record.phase, lesson.checks.length)] ||
+          'Запиши свой ход рассуждений. Затем сверь существенный шаг с разбором.') + '</label>' +
+        '<textarea id="az-note" maxlength="4000">' + escape(record.note) + '</textarea><p>Запись сохраняется в браузере. Полное доказательство можно проверить с преподавателем.</p></section>' : '') +
+      journal(record) + '</div><aside class="az-aside">' +
+      modeLink(alphabet, id) + skillList(alphabet, id) + resources(alphabet) + '</aside></div>';
+    const form = main.querySelector('#az-form');
+    const input = main.querySelector('#az-answer');
+    const planePlaceholder = main.querySelector('[data-parameter-plane]');
+    const plane = planePlaceholder && (previousPlane || planePlaceholder);
+    if (planePlaceholder && previousPlane) planePlaceholder.replaceWith(previousPlane);
+    else if (plane) globalThis.ProfileParameterPlane?.mount(plane);
+
+    function update(change, focus) {
+      const latest = store.read(key);
+      if (latest.phase === record.phase) {
+        store.save(key, change(latest) ?? latest);
+      }
+      const open = main.querySelector('.az-support')?.open;
+      renderSkill(alphabet, id, plane);
+      const detail = main.querySelector('.az-support');
+      if (detail && open) detail.open = true;
+      main.querySelector(focus)?.focus({ preventScroll: true });
+      updateStorageMessage();
+    }
+
+    input?.addEventListener('input', () => {
+      const latest = store.read(key);
+      if (latest.phase !== record.phase || latest.attempts.at(-1) === true) return;
+      latest.draft = input.value;
+      store.save(key, latest);
+      updateStorageMessage();
+    });
+    main.querySelector('#az-note')?.addEventListener('input', event => {
+      const latest = store.read(key);
+      latest.note = event.target.value;
+      store.save(key, latest);
+      updateStorageMessage();
+    });
+    form?.addEventListener('submit', event => {
+      event.preventDefault();
+      const value = input.value.trim();
+      if (!value) {
+        const feedback = main.querySelector('#az-feedback');
+        feedback.className = 'az-feedback retry';
+        feedback.textContent = 'Введи ответ, чтобы проверить шаг.';
+        input.focus();
+        return;
+      }
+      const correct = engine.matches(value, engine.question(record, lesson).answers);
+      update(latest => { engine.check(latest, lesson, value); }, correct ? '[data-advance]' : '#az-answer');
+    });
+    main.querySelector('[data-hint]')?.addEventListener('click', () => {
+      update(latest => engine.hint(latest, lesson), '#az-answer');
+    });
+    main.querySelector('[data-advance]')?.addEventListener('click', () => {
+      update(latest => engine.advance(latest, lesson), '#az-question, [data-restart]');
+    });
+    main.querySelector('[data-restart]')?.addEventListener('click', () => {
+      update(engine.restart, '#az-question');
+    });
+  }
+
+  function updateStorageMessage() {
+    document.querySelector('#az-storage').hidden = store.available();
+  }
+
+  function renderParameterGraph() {
+    const key = params.get('graph');
+    if (inCabinet || number !== 19 || !back || !Object.hasOwn(parameterGraphs, key) || !globalThis.ProfileFunctionAtlas) return false;
+    const graph = parameterGraphs[key];
+    const target = new URL(back, location.href);
+    if (!['/ege-profil/part-two/', '/ege-profil/part-two/index.html'].includes(target.pathname)) return false;
+    const task = new RegExp('^#task/' + graph.lesson + '-[456]/independent$').test(target.hash);
+    if (!task && target.hash !== '#lesson/' + graph.lesson) return false;
+    const help = params.get('help');
+    const assisted = task && ['1', '2', '12'].includes(help);
+    const tips = assisted ? '<p class="az-hint">' + [...help].map(field => graph.hints[Number(field) - 1]).join(' ') + '</p>' : '';
+    const label = assisted ? 'Вернуться к своему условию' : task ? 'К самостоятельному условию' : 'К условиям темы';
+    main.innerHTML = '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' + examLink(19) +
+      '">← Задачи №18</a></nav><h1>' + graph.title + '</h1><p class="az-lead">' + graph.prompt + '</p>' +
+      tips + '<div data-az-atlas></div><div class="az-actions"><a class="az-button primary" href="' + escape(back) +
+      '">' + label + '</a><a href="' + escape(catalog.href('function-atlas', '', 19)) + '">Полный атлас функций</a></div>';
+    globalThis.ProfileFunctionAtlas.mount(main.querySelector('[data-az-atlas]'), key);
+    return true;
+  }
+
+  function renderRoute(alphabet) {
+    if (alphabet.atlas && renderParameterGraph()) return;
+    const nav = alphabet.route ? (() => {
+      const ids = Object.keys(alphabet.skills);
+      const done = ids.filter(id => statusOf(alphabet.id, id) === 'verified').length;
+      const id = routeStart(alphabet, ids);
+      const records = ids.map(skill => store.read(keyFor(alphabet.id, skill)));
+      const inProgress = records.some(record => record.draft || record.attempts.length || record.helped);
+      const label = done === ids.length && !inProgress ? 'Повторить маршрут' :
+        ids.some(skill => statusOf(alphabet.id, skill) !== 'new') ? 'Продолжить маршрут' : 'Начать маршрут';
+      return '<div class="az-actions"><a class="az-button primary" href="' + escape(linkTo(alphabet.id, id)) + '">' +
+        label + '</a><span class="az-count">Самостоятельно: ' + done + ' из ' + ids.length + '</span></div>';
+    })() : '';
+    const atlas = alphabet.atlas ? '<div data-az-atlas></div>' : '';
+    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' +
+      alphabet.title + '</h1><p class="az-lead">' + alphabet.description + '</p>' + nav + atlas + '<div class="az-grid">' +
+      skillList(alphabet) + resources(alphabet) + '</div>';
+    if (alphabet.atlas) globalThis.ProfileFunctionAtlas?.mount(main.querySelector('[data-az-atlas]'));
+  }
+
+  function render() {
+    const [id, skill] = location.hash.replace(/^#\/?/, '').split('/');
+    const alphabet = Object.hasOwn(catalog.index, id) ? catalog.index[id] : null;
+    if (!alphabet) renderCatalog();
+    else if (Object.hasOwn(alphabet.skills, skill)) renderSkill(alphabet, skill);
+    else renderRoute(alphabet);
+    updateStorageMessage();
+    document.title = main.querySelector('h1').textContent + ' · MathExam';
+  }
+
+  addEventListener('hashchange', () => {
+    render();
+    scrollTo(0, 0);
+    main.focus({ preventScroll: true });
+  });
+  addEventListener('pageshow', event => { if (event.persisted) render(); });
+  render();
+})();
+
+</script>
+</body>
+</html>

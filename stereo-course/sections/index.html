@@ -16,6 +16,9 @@
 
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#lesson-title">К заданию</a>
@@ -23,5 +26,28 @@
   <noscript><p>Для интерактивных моделей и пошаговых построений включите JavaScript в браузере.</p></noscript>
   <script src="/stereo-course/sections/assets/course-data.js"></script>
   <script src="/stereo-course/sections/assets/app.js"></script>
+<!-- download-panel:start:ege-profil-sections-from-zero -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-sections-from-zero">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Перепиши подсказку в карточке «Наклонный срез: правило то же». Попроси назвать рёбра с точками M и N, затем назвать общую грань."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-sections-from-zero -->
 </body>
 </html>

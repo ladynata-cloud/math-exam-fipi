@@ -333,3 +333,31 @@ test('canonical course and query flag cannot impersonate the registered wrapper'
     assert.equal(f.w.SECTIONS_APP.getState().current, 'starter-03', 'personal course retains its ordinary storage');
   } finally { await f.close(); }
 });
+
+test('the short cut starts with MN, mirrors a trial diagonal, and accepts both sides from M on recall',async()=>{
+  const teacher=boot({hash:'#starter-18'}), pupil=boot();
+  try {
+    assert.equal(teacher.doc.querySelector('[data-segment="M-N"]')?.getAttribute('data-kind'),'section');
+    assert.equal(teacher.doc.querySelector('[data-recall-face]'),null);
+    click(teacher,'[data-recall-point="Q"]');
+    const trial=teacher.snapshot();
+    assert(teacher.valid(trial));
+    pupil.apply(trial);
+    assert(pupil.doc.querySelector('[data-construction-preview="N-Q"]'));
+    assert.equal(pupil.snapshot().work.revealed,0);
+    click(teacher,'[data-recall-point="P"]');
+    click(teacher,'[data-recall-face="BFGC"]');
+    assert.match(teacher.doc.querySelector('[data-section-recall]').textContent,/Верно/);
+    click(teacher,'[data-recall-repeat]');
+    assert.equal(teacher.doc.querySelector('[data-segment="M-N"]'),null);
+    for(const [point,face] of [['N','AEFB'],['Q','DHEA']]){
+      click(teacher,'[data-recall-point="'+point+'"]');
+      click(teacher,'[data-recall-face="'+face+'"]');
+      const solved=teacher.snapshot();assert(teacher.valid(solved));pupil.apply(solved);
+      assert.match(pupil.doc.querySelector('[data-section-recall]').textContent,/Верно/);
+    }
+    click(teacher,'[data-recall-close]');
+    assert.equal(teacher.doc.querySelector('[data-section-recall]'),null);
+    assert(teacher.valid(teacher.snapshot()));
+  } finally { await teacher.close();await pupil.close(); }
+});

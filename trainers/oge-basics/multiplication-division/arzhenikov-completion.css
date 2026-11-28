@@ -1,0 +1,30 @@
+#arz-courses .completion-path { margin:24px 0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+#arz-courses .completion-path a { display:flex; flex-direction:column; gap:8px; padding:20px; min-height:130px; background:#eef2fa; border:1px solid #b9c7dc; border-radius:14px; text-decoration:none; }
+#arz-courses .completion-path span { color:#465c70; font-size:.9rem; line-height:1.5; }
+#arz-courses .completion-progress { width:100%; height:12px; accent-color:#245e4e; margin-bottom:24px; }
+#arz-courses .completion-prompt { font-size:clamp(1.15rem,3vw,1.45rem); max-width:65ch; margin:12px 0 24px; line-height:1.8; }
+#arz-courses .completion-answer-form { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; max-width:620px; }
+#arz-courses .completion-answer-form label,#arz-courses .completion-format { grid-column:1/-1; }
+#arz-courses .completion-answer-form label { font-weight:750; }
+#arz-courses #completion-answer { min-width:0; width:100%; min-height:50px; padding:10px 14px; background:#fff; color:#273f38; border:2px solid #86a492; border-radius:10px; font:1.25rem Georgia,serif; grid-column:1; }
+#arz-courses .completion-answer-form button { grid-column:2; grid-row:2; }
+#arz-courses .completion-format { color:#52685e; font-size:.88rem; }
+#arz-courses .completion-help { margin:20px 0; }
+#arz-courses .completion-familiar,#arz-courses .completion-empty { background:#f5ead8; border-left:4px solid #af7b38; padding:14px 18px; margin:12px 0 20px; }
+#arz-courses .completion-reason fieldset { border:0; padding:0; margin:20px 0; min-width:0; }
+#arz-courses .completion-reason legend { font-weight:750; line-height:1.7; margin-bottom:12px; }
+#arz-courses .completion-choice { display:flex; align-items:center; gap:12px; min-height:52px; margin:8px 0; padding:12px 16px; background:#f2f5e9; border:1px solid #c7d4b9; border-radius:10px; line-height:1.5; cursor:pointer; }
+#arz-courses .completion-choice input { flex:0 0 20px; width:20px; height:20px; accent-color:#245e4e; }
+#arz-courses .completion-recommendations { margin:28px 0; }
+#arz-courses .completion-recommendations a { display:inline-flex; min-height:44px; align-items:center; }
+#arz-courses .completion-record { margin:24px 0; border:1px solid #c8d7c0; border-radius:14px; padding:16px; }
+#arz-courses .completion-record summary { cursor:pointer; min-height:44px; padding:8px 0; }
+#arz-courses .completion-record section { border-top:1px solid #d7dfd0; padding:20px 0; }
+#arz-courses .completion-record h3 { font-size:1rem; margin-bottom:12px; }
+#arz-courses .completion-record p { margin:10px 0; }
+#arz-courses .completion-fraction { display:inline-flex; flex-direction:column; vertical-align:middle; text-align:center; line-height:1.1; margin:0 .15em; font-family:Georgia,serif; }
+#arz-courses .completion-fraction > span { padding:.04em .2em; }
+#arz-courses .completion-fraction > span:first-child { border-bottom:1px solid currentColor; }
+#arz-courses .course-track-card[data-track="connections"] { background:#edf0fa; border-color:#bec8df; }
+@media(max-width:720px) { #arz-courses .completion-path { grid-template-columns:1fr; } #arz-courses .completion-path a { min-height:0; } }
+@media(max-width:420px) { #arz-courses .completion-answer-form { grid-template-columns:1fr; } #arz-courses .completion-answer-form button { grid-column:1; grid-row:auto; } }

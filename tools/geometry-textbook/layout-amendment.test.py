@@ -1,14 +1,14 @@
 """The layout exception is exact and reversible, never a wildcard hash bypass."""
 import hashlib,json,shutil,tempfile,unittest
 from pathlib import Path
-from layout_amendment import BASE,PATCH,historical_bytes
+from layout_amendment import BASE,PATCH,historical_bytes,before_quantity_check
 from build_course import ROOT,COURSE,compose
 
 class LayoutAmendment(unittest.TestCase):
  def test_exact_two_file_boundary_and_original_bytes(self):
   patch=json.loads(PATCH.read_text());self.assertEqual(set(patch['files']),set(BASE))
   for name,item in patch['files'].items():
-   current=(COURSE/name).read_bytes();self.assertEqual(hashlib.sha256(current).hexdigest(),item['afterSha256'])
+   current=before_quantity_check(COURSE/name,(COURSE/name).read_bytes());self.assertEqual(hashlib.sha256(current).hexdigest(),item['afterSha256'])
    original=historical_bytes(COURSE/name);self.assertEqual(hashlib.sha256(original).hexdigest(),BASE[name])
    self.assertEqual(historical_bytes(COURSE/name,original),original)
    if name.endswith('.css'):

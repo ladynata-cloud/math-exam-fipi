@@ -1,7 +1,7 @@
-// Reviewed source SHA-256: 15511e2d45d3ab847ca31a9a65e2549245c17801021b35fce8ab08a5ef1c5817
-/* Board-only projection of the reviewed planar engine. The published personal
- * engine and its source-review fingerprint remain unchanged. Scoped additions
- * are marked ATANASYAN_GRADE7_BOARD and follow the existing Merzlyak adapter. */
+// Reviewed source SHA-256: 50d8ef944320f6c5f135597caf39899e1c75906e25e01453871ef75714ad6959
+/* Board-only projection. Shared feedback is serialized by the room v1 contract.
+ * The personal numerical self-check has transient feedback and is omitted here.
+ * Board changes are marked ATANASYAN_GRADE7_BOARD. */
 (function(global){'use strict';
 const collections=['main','ege','practical','research','selfcheck','theory','example'];
 const reserved=new Set(['__proto__','prototype','constructor']);

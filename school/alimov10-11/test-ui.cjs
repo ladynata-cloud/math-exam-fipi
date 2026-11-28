@@ -12,6 +12,10 @@ const state=()=>api.getState();
 assert(d.querySelector('h1').textContent.includes('Разобраться'));let renders=0,walkedSteps=0;
 for(const l of w.AlimovCourse.lessons){for(let i=0;i<l.tasks.length;i++){
  const t=l.tasks[i];nav('#lesson/'+l.id+'/'+i);assert(d.querySelector('.prompt'),t.id);assert(!d.querySelector('.error-page'));assert(d.querySelector('#model').textContent.trim(),l.id+' model');assert(d.querySelector('.answer-form label').textContent.trim());
+ if(i===l.tasks.length-1){
+  const next=w.AlimovCourse.lessons[l.order];
+  assert.equal(d.querySelector('.navigation a').getAttribute('href'),next?'#lesson/'+next.id:'#progress',l.id+' next topic');
+ }
  click('[data-action="guided"]');
  for(let k=0;k<t.steps.length;k++){
   const final=t.lastStepIsFinal&&k===t.steps.length-1;

@@ -50,9 +50,35 @@ test('non-numeric trigonometry foundations connect to exam eight without masquer
 });
 
 test('both browser and Node exports are data-only and preserve task banks',()=>{
-  const context={};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../ege-profil/start/calm-data.js'),'utf8'),context);
+  const context={};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../ege-profil/exam-map.js'),'utf8'),context);vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../ege-profil/start/calm-data.js'),'utf8'),context);
   assert.ok(context.ProfileCalmData);
   assert.equal(JSON.stringify(context.ProfileCalmData),JSON.stringify(map));
   assert.equal(context.ProfileLessons,undefined,'presentation map must not mutate banks');
   assert.equal(JSON.stringify(map).includes('"answer"'),false,'no answer keys in presentation map');
+});
+
+
+test('official START projection separates derivative, extrema, finance and extra topics without renumbering legacy groups',()=>{
+ const registry=require('../ege-profil/exam-map.js');
+ assert.deepEqual(map.official.map(entry=>entry.number),[1,2,3,4,5,6,7,8,9,10,11,12,16]);
+ assert.deepEqual(map.official.find(entry=>entry.number===8).lessonIds,['calc-tangent','calc-sign','calc-graph','calc-integral']);
+ assert.deepEqual(map.official.find(entry=>entry.number===12).lessonIds,['calc-extreme']);
+ assert.equal(map.official.find(entry=>entry.number===12).entry,'calc-extreme');
+ assert.equal(map.official.find(entry=>entry.number===16).lessonIds.length,16);
+ assert.match(map.official.find(entry=>entry.number===16).coverage,/подготовительные числовые.*письменное решение.*не проверяются/);
+ assert.deepEqual(map.extras.map(entry=>entry.id),['random-variables']);
+ assert.deepEqual(map.project(registry.topic('integral')).lessonIds,['calc-integral']);
+ assert.equal(map.fromLegacy(6).id,'random-variables');
+ assert.equal(map.fromLegacy(7).number,6);
+ assert.equal(map.fromLegacy(13).number,16);
+ assert.equal(map.fromLegacy(9).number,null);
+ assert.deepEqual(map.fromLegacy(9).lessonIds,map.exams[8].lessonIds);
+ assert.equal(map.hash(map.fromLegacy(9)),'#calm/9');
+ for(const entry of map.official)assert.equal(map.hash(entry),registry.hash(entry));
+ for(const entry of [...map.official,...map.extras]){
+  assert(entry.lessonIds.includes(entry.entry));
+  for(const id of entry.lessonIds)assert(byId.has(id),'known unchanged lesson '+id);
+ }
+ const publicLessons=[...lessons,...require('../ege-profil/start/vector-basics-data.js')];
+ assert.equal(publicLessons.length,90);assert.equal(publicLessons.reduce((n,lesson)=>n+lesson.tasks.length,0),540);
 });

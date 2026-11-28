@@ -17,7 +17,8 @@ const courses = [
 ];
 
 function fixture(key, options = {}) {
-  const adapter = key === 'expressions' ? boards : boards[key], html = readFileSync(resolve(ROOT, '.' + adapter.path), 'utf8');
+  const adapter = key === 'expressions' ? boards : boards[key] || boards.firstPartBoardAdapters.find(item => item.marker === key);
+  const html = readFileSync(resolve(ROOT, '.' + adapter.path), 'utf8');
   const dom = new JSDOM(html, {
     url: 'https://local.example' + (options.path || adapter.path) + adapter.defaultRoute,
     runScripts: 'outside-only', pretendToBeVisual: true
@@ -113,6 +114,85 @@ function fixture(key, options = {}) {
   }
   return { dom, w, api, adapter, registration, accesses, actions, state, apply, valid, query, navigate, roundtrip, draft, submit, currentTask, selectTask };
 }
+
+test('№10 guided micro-steps survive hydration and navigation without changing personal work', async () => {
+  const f = fixture('word-problems');
+  const route = '#practice/applied-motion/guided';
+  try {
+    await f.navigate(route);
+    const session = f.state().progress.sessions['applied-motion:guided'];
+    const task = f.currentTask('applied-motion', 'guided');
+    const questions = f.w.ProfileCalmMicro.steps(task, session.step);
+    assert.equal(questions.length, 4);
+    const key = [task.id, session.started, session.step].join('|');
+    const record = () => f.state().preferences.micro[key];
+    const input = value => {
+      const control = f.query('#micro-answer');
+      control.value = String(value);
+      control.dispatchEvent(new f.w.Event('input', { bubbles: true }));
+    };
+    const submit = () => f.query('#micro-form').dispatchEvent(new f.w.Event('submit', { bubbles: true, cancelable: true }));
+    const closed = f.state();
+    assert.deepEqual(closed.preferences.micro, {});
+    f.query('#micro-start').click();
+    assert.deepEqual(record(), { answers: [], draft: '', feedback: 'none' });
+    f.roundtrip('opening an empty micro-step');
+    submit();
+    assert.equal(record().feedback, 'empty');
+    f.roundtrip('empty micro-answer feedback');
+    const wrong = questions[0].choices.find(choice => choice !== questions[0].answer);
+    input(wrong);
+    assert.equal(record().draft, wrong);
+    f.roundtrip('draft choice');
+    submit();
+    assert.equal(record().feedback, 'wrong');
+    f.roundtrip('wrong choice feedback');
+    await f.navigate(f.adapter.defaultRoute);
+    f.roundtrip('route away with an active micro-step');
+    await f.navigate(route);
+    assert.equal(f.query('#micro-answer').value, wrong);
+    assert.equal(f.query('#micro-feedback').textContent, questions[0].hint);
+
+    for (const question of questions) {
+      if (!question.choices) {
+        input('<x>' + '1'.repeat(240));
+        assert.equal(record().draft, '‹x›' + '1'.repeat(197));
+        assert.equal(f.query('#micro-answer').value, record().draft);
+        f.roundtrip('pasted markup in numeric draft');
+        f.query('#micro-answer').value = '<x>';
+        submit();
+        assert.equal(record().draft, '‹x›');
+        assert.equal(record().feedback, 'format');
+        f.roundtrip('invalid numeric format feedback');
+      }
+      input(question.answer);
+      submit();
+    }
+    assert.deepEqual(record(), { answers: Array.from(questions, q => String(q.answer)), draft: '', feedback: 'none' });
+    assert.equal(f.query('#answer-form').hidden, false);
+    assert.equal(f.query('#micro-form'), null);
+    f.roundtrip('completed micro-steps with main question still unanswered');
+    const complete = f.state();
+    for (const change of [
+      r => { r[key].answers[0] = wrong; },
+      r => { r[key + '-another-session'] = r[key]; },
+      r => { r[key].feedback = 'wrong'; },
+      r => { r[key].answers = []; r[key].draft = 'unlisted choice'; }
+    ]) {
+      const bad = copy(complete);
+      change(bad.preferences.micro);
+      assert.equal(f.valid(bad), false);
+      assert.throws(() => f.apply(bad), /Invalid/);
+      assert.deepEqual(f.state(), complete);
+    }
+    f.submit(task.steps[session.step].answer);
+    assert.deepEqual(f.state().preferences.micro, {}, 'answered main step drops its old panel');
+    f.apply(closed);
+    assert(f.query('#micro-start'), 'older snapshot with empty micro map restores a closed panel');
+    assert.equal(f.query('#micro-answer'), null);
+    assert.deepEqual(f.accesses, { local: 0, session: 0 });
+  } finally { f.dom.window.close(); }
+});
 
 test('optional recovery, checkpoint and mistake records preserve old room snapshots and strict task scope', async () => {
   for (const course of [...courses, { key: 'stereometry', entry: 'stereo-box' }, { key: 'expressions', entry: 'expr-powers' }]) {
@@ -334,4 +414,22 @@ test('cross-course, malformed and descriptor states are rejected before memory o
       assert.deepEqual(f.accesses, { local: 0, session: 0 });
     }
   } finally { fixtures.forEach(f => f.dom.window.close()); }
+});
+
+test('official and extra-topic aliases retain registered board scope and hydrate calm disclosures',async()=>{
+ const map=require('../ege-profil/exam-map.js');
+ for(const [key,legacy] of [['planimetry',1],['vectors',2],['stereometry',3],['probability',4],['randomVariables',6],['equations',7],['expressions',8]]){
+  const f=fixture(key),entry=map.fromLegacyStart(legacy),hash=map.hash(entry);
+  try{
+   const before=f.state().progress;
+   await f.navigate(hash);
+   assert.equal(f.w.location.hash,hash,key+': current entry stays in this wrapper');
+   assert.deepEqual(f.state().progress,before,key+': opening the alias does not change task identities or evidence');
+   const help=f.query('.calm-start-help');assert(help,key+': current entry presents the calm route');help.open=true;
+   const basics=f.query('.calm-number-foundations');if(basics)basics.open=true;
+   f.roundtrip(key+' canonical calm alias');
+   const invalid=f.state();invalid.route=key==='equations'?'#fipi/2027/7':'#fipi/2027/6';
+   assert.equal(f.valid(invalid),false,key+': foreign canonical scope stays rejected');
+  }finally{f.w.close();}
+ }
 });

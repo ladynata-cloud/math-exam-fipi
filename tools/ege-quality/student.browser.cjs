@@ -22,15 +22,36 @@ assert.equal(after.seed,before.seed);
 assert.equal(after.step,before.step);
 assert.equal(await p.locator('#stepAnswer').inputValue(),'1/0');
 assert.equal(after.independent,0);
+// Separate practice returns to its own attempt, without opening the course save.
+await p.goto(base+'/ege-baza/path/index.html?practice=recovery#lesson=practice-fraction-add');
+const courseBeforeSeparate=await p.evaluate(()=>localStorage.getItem('mathexam.ege-baza.path.v1'));
+assert.equal(await p.evaluate(()=>PathCourse.KEY),'mathexam.ege-baza.path.v1.separate');
+await openSteps(p);
+const separateBefore=await p.evaluate(()=>PathCourse.state().lessons['practice-fraction-add']);
+await p.fill('#stepAnswer','1/0');
+await p.click('#stepAnswerForm button[type=submit]');
+const detour=new URL(await p.locator('#ege-remediation a').getAttribute('href'));
+assert.equal(detour.searchParams.get('returnTo'),'/ege-baza/path/index.html?practice=recovery#lesson=practice-fraction-add');
+await p.locator('#ege-remediation a').click();
+await p.locator('#ege-return a').click();
+await p.waitForLoadState('load');
+assert.equal(new URL(p.url()).search,'?practice=recovery');
+assert.equal(await p.evaluate(()=>PathCourse.KEY),'mathexam.ege-baza.path.v1.separate');
+const separateAfter=await p.evaluate(()=>PathCourse.state().lessons['practice-fraction-add']);
+assert.equal(separateAfter.seed,separateBefore.seed);
+assert.equal(separateAfter.step,separateBefore.step);
+assert.equal(separateAfter.independent,separateBefore.independent);
+assert.equal(await p.locator('#stepAnswer').inputValue(),'1/0');
+assert.equal(await p.evaluate(()=>localStorage.getItem('mathexam.ege-baza.path.v1')),courseBeforeSeparate);
 // Sign mistake: same magnitude, opposite sign gets sign practice, not harder equations.
 await p.goto(base+'/ege-baza/path/index.html#lesson=equations');await openSteps(p);before=await p.evaluate(()=>PathCourse.state().lessons.equations);let t=D.task('equations',before.seed);await p.fill('#stepAnswer',String(-t.steps[0].a));await p.click('#stepAnswerForm button[type=submit]');assert.match(await p.locator('#ege-remediation a').innerText(),/разными знаками/);
 // Wrong percentage base: targeted percentage change practice.
 await p.goto(base+'/ege-baza/path/index.html#lesson=percent');await openSteps(p);await p.fill('#stepAnswer','1');await p.click('#stepAnswerForm button[type=submit]');assert.match(await p.locator('#ege-remediation a').innerText(),/новая база/);
 // Every return control must work without writing unrelated student keys.
-await p.evaluate(()=>localStorage.setItem('student.unrelated','keep'));for(const skill of Object.values(R.skills)){await p.goto(base+skill.path+'?returnTo='+encodeURIComponent('/ege-baza/path/index.html#lesson=percent'));assert(await p.locator('#ege-return a').isVisible(),skill.path);assert.equal(await p.evaluate(()=>localStorage.getItem('student.unrelated')),'keep');assert(await p.evaluate(()=>document.querySelector('#ege-return').getBoundingClientRect().right<=innerWidth+1),'return control phone overflow');}
+await p.evaluate(()=>localStorage.setItem('student.unrelated','keep'));for(const skill of Object.values(R.skills)){const target=new URL(skill.path,base);target.searchParams.set('returnTo','/ege-baza/path/index.html#lesson=percent');await p.goto(target.href);assert(await p.locator('#ege-return a').isVisible(),skill.path);assert.equal(await p.evaluate(()=>localStorage.getItem('student.unrelated')),'keep');assert(await p.evaluate(()=>document.querySelector('#ege-return').getBoundingClientRect().right<=innerWidth+1),'return control phone overflow');}
 // Reject an attacker-controlled external return target.
 await p.goto(base+R.skills.signs.path+'?returnTo='+encodeURIComponent('https://example.com/'));assert.equal(await p.locator('#ege-return').count(),0);
 // Work-rate learner: confusing hours and work gets the meaning-of-fraction route.
 await p.goto(base+'/ege-baza/work-rate/index.html#practice');await p.fill('#answer','18');await p.click('button[type=submit]');assert.match(await p.locator('#ege-remediation a').innerText(),/Смысл дроби/);await p.locator('#ege-remediation a').click();await p.locator('#ege-return a').click();assert.equal(await p.locator('#answer').inputValue(),'18');assert.equal(await p.evaluate(()=>WorkRateCourse.state().activities.practice.help),true);
-assert.deepEqual(errors,[]);console.log('VIRTUAL_STUDENT_PASS: fractions, signs, percentage base, work/time confusion, nine old trainers, same-step return, no false mastery, unrelated keys, safe return URLs.');
+assert.deepEqual(errors,[]);console.log('VIRTUAL_STUDENT_PASS: fractions, signs, percentage base, work/time confusion, all registered foundation trainers, same-step return, no false mastery, unrelated keys, safe return URLs.');
 }finally{await browser.close();server.close();}})().catch(e=>{console.error(e);process.exit(1)});

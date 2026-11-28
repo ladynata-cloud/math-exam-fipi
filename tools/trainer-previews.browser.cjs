@@ -26,9 +26,25 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'t
    assert.equal(await page.locator('h1').count(),1);
    assert(await page.locator('link[rel=canonical]').getAttribute('href'));
    if(file==='trainers/index.html') {
-    assert.equal(await page.locator('#catalog [data-card]').count(),60);
-    assert.equal(await page.locator('#catalog [data-card] a[href="./college-logarithms/"]').count(),1);
-    const vprCard=page.locator('#catalog [data-card]').filter({has:page.locator('a[href="/vpr/"]')});
+    const catalogCards=page.locator('#catalog [data-card]');
+    const arzhenikovHref='/topics/metod-arzhenikova/';
+    const arzhenikovLink=page.locator('a[href="'+arzhenikovHref+'"]');
+    const previousCards=catalogCards.filter({hasNot:arzhenikovLink});
+    const arzhenikovCard=catalogCards.filter({has:arzhenikovLink});
+    const grade5Hrefs=['/school/peterson5/','/courses/vilenkin-5-part-1/'];
+    const grade5Links=grade5Hrefs.map(href=>'a[href="'+href+'"]');
+    assert.equal(await previousCards.filter({hasNot:page.locator(grade5Links.join(','))}).count(),60);
+    for(const selector of grade5Links) assert.equal(await previousCards.locator(selector).count(),1);
+    assert.equal(await previousCards.count(),62,'all retained catalogue cards remain');
+    assert.equal(await catalogCards.count(),63);
+    assert.equal(await catalogCards.locator('a[href$="/long-division.html"]').count(),0,'retired notebook trainer is absent');
+    assert.equal(await arzhenikovCard.count(),1,'one new Arzhenikov catalogue card');
+    assert.equal(await arzhenikovCard.locator('h3').innerText(),'Арифметика по мотивам Арженикова');
+    assert.equal(await arzhenikovCard.locator('.actions a[href="'+arzhenikovHref+'"]').count(),1);
+    assert(await arzhenikovCard.locator('.actions a[href="'+arzhenikovHref+'"]').isVisible(),'Arzhenikov catalogue entry is visible');
+    assert.equal(await previousCards.locator('a[href="./college-logarithms/"]').count(),1);
+    assert.equal(await previousCards.locator('a[href="./college-stereometry/"]').count(),1);
+    const vprCard=previousCards.filter({has:page.locator('a[href="/vpr/"]')});
     assert.equal(await vprCard.count(),1,'one VPR course catalogue card');
     assert.equal(await vprCard.locator('h3').innerText(),'ВПР по математике: 5–8 и 10 классы');
     assert.equal(await vprCard.locator('.actions a[href="/vpr/"]').count(),1);

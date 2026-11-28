@@ -250,7 +250,8 @@
     if(q!==spec.steps?.[step]||!(C?.has(spec.contentId)||spec.contentId==='multiplication-division/quotient-estimate'))return null;
     const value=text(q.prompt),arith=arithmeticPresentation(q,answer);if(arith)return arith;
     let hint='',m;
-    if(q.kind==='round'&&(m=value.match(/округли (\d+)/i))&&sameAnswer(q,Math.floor((+m[1]+5)/10)*10))hint=+m[1]%10===0?'Число '+m[1]+' уже оканчивается на 0. Ничего не меняй.':'Посмотри на последнюю цифру числа '+m[1]+'. Если это 1–4, иди к круглому числу вниз. Если 5–9 — вверх.';
+    if(q.kind==='round'&&(m=value.match(/округли (\d+) до сотен/i))&&sameAnswer(q,Math.floor((+m[1]+50)/100)*100))hint='Найди цифру десятков в числе '+m[1]+'. Если это 0–4, оставь сотни как есть. Если 5–9, прибавь одну сотню. Замени десятки и единицы нулями.';
+    else if(q.kind==='round'&&(m=value.match(/округли (\d+)/i))&&sameAnswer(q,Math.floor((+m[1]+5)/10)*10))hint=+m[1]%10===0?'Число '+m[1]+' уже оканчивается на 0. Ничего не меняй.':'Посмотри на последнюю цифру числа '+m[1]+'. Если это 1–4, иди к круглому числу вниз. Если 5–9 — вверх.';
     else if(q.kind==='digit'&&/Уменьши проверенную цифру на 1|Увеличь проверенную цифру на 1/.test(value)){
       const previous=spec.steps[step-1],trial=text(previous?.prompt).match(/(\d+) × \d+ = \?/),direction=/Уменьши/.test(value)?-1:1;
       if(trial&&sameAnswer(q,+trial[1]+direction))hint=(direction<0?'Уменьши':'Увеличь')+' последнюю проверенную цифру на 1: '+trial[1]+(direction<0?' − ':' + ')+'1 = ?.';

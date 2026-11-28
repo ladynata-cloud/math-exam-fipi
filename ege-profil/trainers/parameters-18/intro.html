@@ -39,6 +39,7 @@
   .btn{display:inline-block;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;
     min-height:44px;padding:9px 16px;font:700 14.5px/1 inherit;cursor:pointer;text-decoration:none}
   .btn:hover{background:var(--ink-strong)}
+  .btn[hidden]{display:none}
   .btn.ghost{background:transparent;color:var(--ink)}
   .btn.ghost:hover{background:var(--ink);color:#fff}
   .btn:disabled{opacity:.45;cursor:default}
@@ -157,7 +158,8 @@
         <button class="btn ghost" data-t="none">Корней нет</button>
         <button class="btn ghost" data-t="inf">Бесконечно много</button>
       </div>
-      <div class="feedback" id="tFb"></div>
+      <div class="feedback" id="tFb" role="status"></div>
+      <button type="button" class="btn ghost" id="tNew" hidden>Следующее уравнение</button>
       <p class="score" style="margin-top:10px">верных подряд: <b id="tStreak">0</b> · рекорд серии: <b id="tBest">0</b></p>
     </div>
 
@@ -222,6 +224,7 @@
   </section>
 </div>
 
+<script src="number-input.js"></script>
 <script>
 (function(){
   "use strict";
@@ -268,13 +271,6 @@
     });
   });
 
-  function pnum(v){
-    v=(v==null?"":(""+v)).trim().replace(",",".");
-    if(v==="") return null;
-    var m=v.match(/^(-?)(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);
-    if(m){ var n=parseFloat(m[2])/parseFloat(m[3]); return m[1]?-n:n; }
-    var n2=parseFloat(v); return isNaN(n2)?NaN:n2;
-  }
   function sg(n){ return n<0 ? "−"+(-n) : ""+n; }
   function fmt(x){ return Number.isInteger(x)?(""+x):(""+(Math.round(x*100)/100)).replace(".",","); }
   function rint(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
@@ -322,7 +318,7 @@
     }
     wa.addEventListener("input",render); render();
     $("#wCheck").addEventListener("click",function(){
-      var n=pnum($("#wAns").value), fb=$("#wFb");
+      var n=parseParameterNumber($("#wAns").value), fb=$("#wFb");
       if(n===null){ fb.className="feedback warn on"; fb.textContent="Впиши значение a."; return; }
       if(!isNaN(n)&&Math.abs(n)<1e-9){
         fb.className="feedback ok on";
@@ -359,6 +355,8 @@
       cur={k:k,b:b,ans:ans};
       eq.textContent=sg(k)+"·x = "+sg(b);
       fb.className="feedback"; lock=false;
+      $("#tNew").hidden=true;
+      $$("[data-t]").forEach(function(btn){btn.disabled=false;});
     }
     function explain(){
       if(cur.ans==="one") return "k = "+sg(cur.k)+" ≠ 0 → единственный корень x = "+frac(cur.b,cur.k)+".";
@@ -369,19 +367,21 @@
       btn.addEventListener("click",function(){
         if(lock||!cur) return;
         lock=true;
+        $$("[data-t]").forEach(function(choice){choice.disabled=true;});
+        $("#tNew").hidden=false;
+        $("#tNew").focus();
         var right=(btn.dataset.t===cur.ans);
         if(right){
           streak++; if(streak>best){best=streak; save({drillBest:best});}
           $("#tStreak").textContent=streak; $("#tBest").textContent=best;
           fb.className="feedback ok on"; fb.textContent="Верно. "+explain();
-          setTimeout(gen,700);
         } else {
           streak=0; $("#tStreak").textContent=0;
           fb.className="feedback bad on"; fb.textContent="Нет. "+explain();
-          setTimeout(gen,1600);
         }
       });
     });
+    $("#tNew").addEventListener("click",function(){ gen(); $("[data-t]").focus(); });
     gen();
   })();
 
@@ -423,7 +423,7 @@
     }
     ga.addEventListener("input",render); render();
     $("#gCheck").addEventListener("click",function(){
-      var n=pnum($("#gAns").value), fb=$("#gFb");
+      var n=parseParameterNumber($("#gAns").value), fb=$("#gFb");
       if(n===null){ fb.className="feedback warn on"; fb.textContent="Впиши значение a."; return; }
       if(!isNaN(n)&&Math.abs(n)<1e-9){
         fb.className="feedback ok on";
@@ -523,7 +523,7 @@
     $("#quizCheck").addEventListener("click",function(){
       var right=0, filled=0;
       $$("input[data-i]",list).forEach(function(inp,i){
-        var n=pnum(inp.value); var d=dots.children[i];
+        var n=parseParameterNumber(inp.value); var d=dots.children[i];
         d.className="";
         if(n===null) return;
         filled++;

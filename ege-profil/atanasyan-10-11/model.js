@@ -133,7 +133,7 @@
   }
 
   // BEGIN GENERATED SURFACE PREPARATION
-  function prepare(source) {
+  function prepare(source, textbookMarks = {}) {
     if (!source || !source.points || !Object.keys(source.points).length) throw new TypeError('У модели нет точек.');
     const points = {};
     Object.entries(source.points).forEach(([name, point]) => {
@@ -171,6 +171,40 @@
     const values = Object.values(points);
     const center = [0, 1, 2].map(i => (Math.min(...values.map(p => p[i])) + Math.max(...values.map(p => p[i]))) / 2);
     const radius = Math.max(...values.map(p => Math.hypot(...sub(p, center))), 0.001);
+    for (const [key, view] of Object.entries(views)) {
+      const authored = [...(source.rightAngles || []), ...(source.views?.[key]?.rightAngles || []),
+        ...(textbookMarks['*'] || []), ...(textbookMarks[key] || [])];
+      view.rightAngles = [];
+      if (!authored.length) continue;
+      const polygon = view.polygon.map((name, i) => [name, view.polygon[(i + 1) % view.polygon.length]]);
+      const strokes = [...edges, ...arrows, ...view.segments, ...polygon];
+      const tolerance = radius * 1e-7;
+
+      function ray(vertex, end) {
+        const origin = points[vertex], delta = sub(points[end], origin), length = Math.hypot(...delta);
+        if (length <= tolerance) return null;
+        const direction = mul(delta, 1 / length);
+        // The vertex can be inside a drawn segment, e.g. H on BC.
+        let reach = 0;
+        for (const [from, to] of strokes) {
+          const a = sub(points[from], origin), b = sub(points[to], origin);
+          if (Math.hypot(...cross(a, direction)) > tolerance || Math.hypot(...cross(b, direction)) > tolerance) continue;
+          const start = dot(a, direction), end = dot(b, direction);
+          if (Math.min(start, end) <= tolerance) reach = Math.max(reach, start, end);
+        }
+        return reach > tolerance ? { direction, length: Math.min(length, reach) } : null;
+      }
+      const seen = new Set();
+      for (const names of authored) {
+        if (!Array.isArray(names) || names.length !== 3 || !names.every(exists)) continue;
+        const [a, vertex, b] = names, id = JSON.stringify([vertex, ...[a, b].sort()]);
+        if (seen.has(id)) continue;
+        const first = ray(vertex, a), second = ray(vertex, b);
+        if (!first || !second || Math.abs(dot(first.direction, second.direction)) > 1e-6) continue;
+        seen.add(id);
+        view.rightAngles.push({ names, vertex: points[vertex], first, second });
+      }
+    }
     function prepareSurface(faces, spheres) {
     faces = faces.map(face => checked(face, 3, 'грань'));
     const bodyNames = [...new Set(faces.flat())];
@@ -232,7 +266,7 @@
 
   // END GENERATED SURFACE PREPARATION
 
-  function mount(container, source) {
+  function mount(container, source, options = {}) {
     if (!container || typeof container.replaceChildren !== 'function') throw new TypeError('Нужен контейнер модели.');
     const data = prepare(source);
     if (instances.has(container)) instances.get(container).destroy();
@@ -280,6 +314,7 @@
     function render() {
       if (destroyed) return;
       const view = data.views[selected];
+      const visibleSegments = view.segments;
       const title = element('title', { id: id + '-title' }, source.title || 'Пространственная модель задачи', true);
       const description = element('desc', { id: id + '-description' }, [view.label, view.segments.length ? 'Выделены отрезки: ' + view.segments.map(segment => segment.map(displayName).join(' — ')).join(', ') + '.' : '', view.polygon.length ? 'Выделена часть плоскости: ' + view.polygon.map(displayName).join(', ') + '.' : '', 'Это проекция точной пространственной конфигурации.'].filter(Boolean).join(' '), true);
   // BEGIN GENERATED LINE DRAWING
@@ -292,12 +327,17 @@
         normal: rotated(face.normal), vertices: face.names.map(name => rotated(sub(data.points[name], data.center)))
       }));
       const lines = [];
-      function drawLine(names, className, extra, arrow) {
-        const a = data.points[names[0]], b = data.points[names[1]];
+      function drawLine(names, className, extra, arrow, coordinates) {
+        const [a, b] = coordinates || names.map(name => data.points[name]);
         const sphereSurfaces = source.planar ? [] : geometry.spheres.map(sphere => ({
           sphere: { center: rotated(sub(sphere.center, data.center)), radius: sphere.radius }, surface: sphere.surfaceEdges.has(edgeKey(...names))
         }));
-        const parts = visibilityParts(rotated(sub(a, data.center)), rotated(sub(b, data.center)), [...surfaces, ...sphereSurfaces], data.radius * 1e-8);
+        // A polygon cannot hide its own boundary. Rounded world coordinates on
+        // a nearly edge-on face can otherwise move that boundary behind its
+        // supporting plane. Other faces still occlude it normally.
+        const incident = coordinates ? undefined : geometry.adjacency.get(edgeKey(...names));
+        const occluders = incident ? surfaces.filter((_, index) => !incident.includes(index)) : surfaces;
+        const parts = visibilityParts(rotated(sub(a, data.center)), rotated(sub(b, data.center)), [...occluders, ...sphereSurfaces], data.radius * 1e-8);
         for (const part of parts) {
           const p = project(add(a, mul(sub(b, a), part.start))), q = project(add(a, mul(sub(b, a), part.end)));
           const attrs = Object.assign({
@@ -330,8 +370,36 @@
         const side = [name, view.polygon[(index + 1) % view.polygon.length]];
         drawLine(side, 'am-plane-border', { 'data-boundary': side.join('-') });
       });
-      view.segments.forEach(segment => drawLine(segment, 'am-segment', { 'data-highlight': 'segment', 'data-segment': segment.join('-') }));
+      visibleSegments.forEach(segment => drawLine(segment, 'am-segment', { 'data-highlight': 'segment', 'data-segment': segment.join('-') }));
       data.arrows.forEach(segment => drawLine(segment, 'am-segment', { 'data-vector': segment.join('-') }, true));
+      const angleBoxes = [];
+      for (const { names, vertex, first, second } of view.rightAngles) {
+        const screen = project(vertex);
+        const projectedUnit = ray => sub(project(add(vertex, ray.direction)), screen).slice(0, 2);
+        const u = projectedUnit(first), v = projectedUnit(second);
+        const side = Math.min(15 / Math.max(Math.hypot(...u), Math.hypot(...v)),
+          first.length / 4, second.length / 4);
+        // Build the square in its own plane, then project it with the drawing.
+        // At an edge-on view the mark has no readable area.
+        if (side * side * Math.abs(u[0] * v[1] - u[1] * v[0]) < 5) continue;
+        const left = add(vertex, mul(first.direction, side)), right = add(vertex, mul(second.direction, side));
+        const corner = add(left, mul(second.direction, side));
+        const props = { 'data-right-angle': names.join(' '), fill: 'none', stroke: '#36594e',
+          'stroke-width': 1.8, 'stroke-linecap': 'round', 'pointer-events': 'none' };
+        drawLine([], 'am-right-angle', props, false, [left, corner]);
+        drawLine([], 'am-right-angle', props, false, [corner, right]);
+        const pixels = [screen, project(left), project(corner), project(right)];
+        angleBoxes.push({ left: Math.min(...pixels.map(p => p[0])) - 1, right: Math.max(...pixels.map(p => p[0])) + 1,
+          top: Math.min(...pixels.map(p => p[1])) - 1, bottom: Math.max(...pixels.map(p => p[1])) + 1 });
+      }
+      if (view.rightAngles.length) {
+        const names = view.rightAngles.map(mark => {
+          if (options.lessonId === 'merz-ex-10-032' && source.labels?.M === 'm' && mark.names.join(' ') === 'M A H')
+            return 'между прямой m и AH';
+          return '∠' + mark.names.map(name => source.labels?.[name] || displayName(name)).join('');
+        });
+        description.textContent += ' Прямые углы: ' + names.join(', ') + '.';
+      }
       // Draw all hidden strokes before visible strokes. A rear construction must
       // never paint over a visible silhouette at a projected crossing.
       lines.sort((a, b) => Number(b.hidden) - Number(a.hidden)).forEach(line => drawing.append(line.node));
@@ -341,7 +409,7 @@
       const projected = visible.map(name => ({ name, point: project(data.points[name]), focused: focused.has(name) }));
       // Greedy screen-space label placement avoids fixed offsets that overlap at
       // particular angles. Labels never change the actual point positions.
-      const occupied = [];
+      const occupied = angleBoxes.slice();
       projected.sort((a, b) => Number(b.focused) - Number(a.focused)).forEach(item => {
         const [x, y] = item.point;
         const name = displayName(item.name);

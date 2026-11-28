@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 532" role="img" aria-labelledby="title desc">
+<title id="title">Два треугольника с одинаковыми данными</title>
+<desc id="desc">Окружность радиуса 4 см с центром B пересекает луч из A в двух точках C₁ и C₂. У обеих фигур общий угол при A, равные стороны AB и BC, но разные длины AC.</desc>
+<style>text{font:21px Arial,sans-serif;fill:#213f49}.pt{font:italic 24px Georgia,serif}.side{fill:none;stroke:#213f49;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.aux{fill:none;stroke:#a44d38;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.known{fill:none;stroke:#16695e;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.guide{fill:none;stroke:#637b7d;stroke-width:2;stroke-dasharray:7 6}.small{font:18px Arial,sans-serif}</style>
+<rect width="640" height="532" rx="18" fill="#f5f6ef"/>
+<circle class="guide" cx="390" cy="307" r="200"/>
+<path class="side" d="M90 307 H390 M90 307 L540 47.19"/>
+<path class="known" d="M200.44 243.24 L390 307"/>
+<path class="aux" d="M390 307 L429.56 110.95"/>
+<path class="side" d="M151 307 A61 61 0 0 0 142.83 276.5"/>
+<text x="155" y="292">30°</text><text x="196" y="339">AB = 6 см</text>
+<circle cx="90.00" cy="307.00" r="4" fill="#213f49"/><circle cx="390.00" cy="307.00" r="4" fill="#213f49"/><circle cx="200.44" cy="243.24" r="4" fill="#213f49"/><circle cx="429.56" cy="110.95" r="4" fill="#213f49"/>
+<text class="pt" x="66.00" y="324.00">A</text><text class="pt" x="394.00" y="334.00">B</text><text class="pt" x="164.44" y="240.24">C₁</text><text class="pt" x="391.56" y="101.95">C₂</text>
+<text x="262" y="460">BC₁ = BC₂ = 4 см</text>
+</svg>

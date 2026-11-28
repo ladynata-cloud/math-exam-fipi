@@ -1,0 +1,25 @@
+/* Only the optional fraction bridge, never the legacy lesson screens. */
+#fraction-bridge{margin-block:18px 28px;scroll-margin-top:12px}
+#fraction-bridge>summary{min-height:44px;display:flex;align-items:center;color:var(--deep);cursor:pointer}
+#fraction-bridge>summary::before{content:"＋";font-weight:800;margin-inline-end:10px}
+#fraction-bridge[open]>summary::before{content:"−"}
+#fraction-bridge .fb-eyebrow{font-size:.8rem;font-weight:750;color:var(--muted);margin-top:12px}
+#fraction-bridge h3:focus{outline:2px solid var(--green);outline-offset:4px}
+#fraction-bridge h4{font-size:1rem;margin:12px 0 4px}
+#fraction-bridge .fb-equation{font-size:clamp(1.25rem,5vw,1.75rem);font-weight:780;background:var(--pale);border-radius:12px;padding:12px;text-align:center;overflow-wrap:anywhere}
+#fraction-bridge .fb-context{border-left:3px solid var(--green);padding-inline-start:10px}
+#fraction-bridge .fb-feedback,#fraction-bridge .fb-solution,#fraction-bridge .fb-model{border:1px solid var(--line);background:#f6f9f3;border-radius:12px;padding:12px;margin:12px 0;overflow-wrap:anywhere}
+#fraction-bridge .fb-solution p{margin:.35em 0}
+#fraction-bridge .fb-remediation{display:grid;gap:8px;border-top:1px solid var(--line);margin-top:12px;padding-top:8px;justify-items:start}
+#fraction-bridge .fb-remediation button{text-align:start;width:100%}
+#fraction-bridge .fb-check{display:flex;align-items:flex-start;gap:8px;margin:8px 0;font-weight:500}
+#fraction-bridge .fb-check input{flex:none}
+#fraction-bridge select{max-width:100%;width:100%;min-height:44px;font:inherit;padding:8px;border:1px solid #a8bbae;border-radius:10px;background:#fff}
+#fraction-bridge .fb-strip{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+#fraction-bridge .fb-piece{flex:1 1 70px;min-width:0;max-width:100%;padding:10px 4px;border:1px dashed #a8bbae;border-radius:7px;text-align:center;overflow-wrap:anywhere}
+#fraction-bridge .fb-piece.filled{border-style:solid;background:#dceee0;color:var(--deep);font-weight:750}
+#fraction-bridge .fb-links,#fraction-bridge .fb-history{padding-inline-start:22px}
+#fraction-bridge .fb-links li,#fraction-bridge .fb-history li{margin-bottom:9px}
+#fraction-bridge .fb-message:empty{display:none}
+#fraction-bridge .fb-message{color:#8a470f}
+@media(max-width:400px){#fraction-bridge .actions{align-items:stretch}#fraction-bridge .actions button{flex:1 1 100%}}

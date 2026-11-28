@@ -7,26 +7,47 @@
   // Arithmetic only: recursive descent, no eval, Function, property access or JS.
   function parse(raw) {
     if (typeof raw !== 'string' || raw.length > 180 || !raw.trim()) return NaN;
-    let s=raw.trim().toLowerCase().replace(/\s/g,'').replace(/,/g,'.').replace(/[−–]/g,'-').replace(/[×·]/g,'*').replace(/[÷:]/g,'/').replace(/π/g,'pi');
-    s=s.replace(/√\(([^()]*)\)/g,'sqrt($1)').replace(/√(\d+(?:\.\d+)?)/g,'sqrt($1)').replace(/²/g,'^2').replace(/³/g,'^3');
-    s=s.replace(/(\d|\))(?=pi|sqrt|\()/g,'$1*').replace(/pi(?=\d|\()/g,'pi*');
-    const tokens=s.match(/sqrt|pi|\d+(?:\.\d*)?|\.\d+|[()+\-*/^]/g);
-    if(!tokens || tokens.join('')!==s || tokens.length>100) return NaN;
+    const source=raw.trim().toLowerCase().replace(/,/g,'.').replace(/[−–]/g,'-').replace(/[×·]/g,'*').replace(/[÷:]/g,'/').replace(/π/g,'pi').replace(/²/g,'^2').replace(/³/g,'^3');
+    let s=source.replace(/(?:\d+(?:\.\d*)?|\.\d+)(?:\s+(?:\d+(?:\.\d*)?|\.\d+))+/g,
+      group=>/^\d{1,3}(?:[ \u00a0\u202f]+\d{3})+(?:\.\d*)?$/.test(group)?group.replace(/\s+/g,''):group);
+    // A proper mixed fraction may conflict with a spaced numerator, as in 1 234/567.
+    const mixed=source.match(/^([+-]?)(\d+)[ \u00a0\u202f]+(\d+)\s*\/\s*(\d+)$/);
+    if(mixed&&Number(mixed[3])>0&&Number(mixed[3])<Number(mixed[4])){
+      if(s!==source)return NaN;
+      s=mixed[1]+'('+mixed[2]+'+'+mixed[3]+'/'+mixed[4]+')';
+    }
+    const tokens=s.match(/sqrt|pi|√|\d+(?:\.\d*)?|\.\d+|[()+\-*/^]/g);
+    if(!tokens || tokens.join('')!==s.replace(/\s/g,'') || tokens.length>100) return NaN;
     let i=0, depth=0;
+    function finite(n){if(!Number.isFinite(n))throw Error('domain');return n;}
     function atom(){
       if(++depth>25)throw Error('depth');
       const t=tokens[i++];let v;
       if(t==='('){v=sum();if(tokens[i++]!==')')throw Error(')');}
-      else if(t==='sqrt'){if(tokens[i++]!=='(')throw Error('(');v=Math.sqrt(sum());if(tokens[i++]!==')')throw Error(')');}
+      else if(t==='sqrt'||t==='√'){
+        if(tokens[i]!=='('&&!(t==='√'&&/^(?:\d|\.)/.test(tokens[i]||'')))throw Error('(');
+        v=Math.sqrt(atom());
+      }
       else if(t==='pi')v=Math.PI;
       else if(t && /^(?:\d|\.)/.test(t))v=Number(t);
       else throw Error('number');
-      --depth;return v;
+      --depth;return finite(v);
     }
-    function power(){let v=atom();if(tokens[i]==='^'){i++;const e=unary();if(Math.abs(e)>12)throw Error('power');v=v**e;}return v;}
+    function power(){let v=atom();if(tokens[i]==='^'){i++;const e=unary();if(Math.abs(e)>12||(v===0&&e<=0))throw Error('power');v=finite(v**e);}return v;}
     function unary(){if(tokens[i]==='+'){i++;return unary();}if(tokens[i]==='-'){i++;return -unary();}return power();}
-    function product(){let v=unary();while(tokens[i]==='*'||tokens[i]==='/'){const op=tokens[i++],w=unary();v=op==='*'?v*w:v/w;}return v;}
-    function sum(){let v=product();while(tokens[i]==='+'||tokens[i]==='-'){const op=tokens[i++],w=product();v=op==='+'?v+w:v-w;}return v;}
+    function product(){
+      let v=unary();
+      while(i<tokens.length){
+        let op=tokens[i];
+        if(op==='*'||op==='/')i++;
+        else if(['pi','sqrt','√','('].includes(op)||(tokens[i-1]==='pi'&&/^(?:\d|\.)/.test(op)))op='*';
+        else break;
+        const w=unary();
+        v=finite(op==='*'?v*w:v/w);
+      }
+      return v;
+    }
+    function sum(){let v=product();while(tokens[i]==='+'||tokens[i]==='-'){const op=tokens[i++],w=product();v=finite(op==='+'?v+w:v-w);}return v;}
     try {const v=sum();return i===tokens.length&&Number.isFinite(v)&&Math.abs(v)<1e15?v:NaN;}catch{return NaN;}
   }
   function check(raw,item){

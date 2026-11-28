@@ -350,6 +350,7 @@
         {
           "id": "p2-04-2",
           "number": "197б",
+          "transfer": {"skill": "unlike-fraction-subtract", "level": 1},
           "page": 41,
           "prompt": "Вычисли: 1/4 − 1/5.",
           "answer": "1/20",
@@ -1389,6 +1390,7 @@
         },
         {
           "number": "836е",
+          "transfer": {"skill": "decimal-place-subtract", "level": 1},
           "page": 179,
           "prompt": "Вычисли: 48,9 − 4,82.",
           "answer": "44,08",
@@ -1412,6 +1414,7 @@
         },
         {
           "number": "836з",
+          "transfer": {"skill": "decimal-place-subtract", "level": 2},
           "page": 179,
           "prompt": "Вычисли: 91,9 − 0,919.",
           "answer": "90,981",

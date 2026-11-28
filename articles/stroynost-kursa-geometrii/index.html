@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Стройность школьной планиметрии: Атанасян, Погорелов, Мерзляк | MathExam</title>
-<meta name="description" content="Серия статей Алябьевой Натальи Михайловны: сравнительный аудит того, как устроена школьная планиметрия 7–9 классов в курсах Атанасяна, Погорелова и Мерзляка — доказательства, порядок тем, система задач и чертежи.">
+<meta name="description" content="Наталья Алябьева сопоставляет доказательства и порядок тем у Атанасяна, Погорелова и Мерзляка. В 12 статьях — страницы учебников, чертежи и задачи для урока геометрии.">
 <link rel="canonical" href="https://mathexam.space/articles/stroynost-kursa-geometrii/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Стройность школьного курса геометрии: планиметрия 7–9 классов">
@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="./assets/series.css">
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Стройность школьного курса геометрии: планиметрия 7–9 классов", "description": "Сравнительный аудит планиметрической части учебников Атанасяна, Погорелова и Мерзляка", "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/", "author": {"@type": "Person", "name": "Алябьева Наталья Михайловна"}, "datePublished": "2026-09-04"}
+{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Стройность школьного курса геометрии: планиметрия 7–9 классов", "description": "Сравнительный аудит планиметрической части учебников Атанасяна, Погорелова и Мерзляка", "url": "https://mathexam.space/articles/stroynost-kursa-geometrii/", "author": {"@type": "Person", "name": "Алябьева Наталья Михайловна"}, "datePublished": "2026-09-04", "dateModified": "2026-11-19"}
 </script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
@@ -38,21 +38,47 @@
 <header class="series-header">
 <p class="series-label">Исследовательский цикл</p>
 <h1>Стройность школьного курса геометрии: планиметрия 7–9 классов</h1>
-<p class="lead">Сравнительный аудит того, как устроена школьная планиметрия в учебниках Л. С. Атанасяна, А. В. Погорелова и А. Г. Мерзляка: определения, доказательства, порядок тем, система задач и обучение самостоятельному рассуждению.</p>
+<p class="lead">Ученик провёл биссектрису и сказал, что она разделила основание треугольника пополам. Какую строчку он пропустил? Ответ зависит и от условия задачи, и от того, до какой страницы учебника дошёл класс. С этого вопроса я предлагаю начать сравнение Атанасяна, Погорелова и Мерзляка.</p>
 <p class="byline">Алябьева Наталья Михайловна, преподаватель математики, автор проекта MathExam</p>
+<p><a href="#vse-stati">Перейти к 12 статьям и задачам для урока</a></p>
 </header>
 
 <h2>Планиметрия в 7–9 классах</h2>
 
-<p>Основной предмет этого цикла — планиметрия, то есть раздел геометрии, изучающий фигуры на плоскости. Именно планиметрическая часть составляет ядро курса 7–9 классов и даёт школьнику первый опыт систематической доказательной математики. Элементы стереометрии, включённые в некоторые из рассматриваемых учебников, отмечаются отдельно.</p>
+<p>Я разбираю планиметрию 7–9 классов. В каждом выпуске беру небольшой фрагмент учебника и прослеживаю путь от определения до задачи, которую ученик может решить самостоятельно.</p>
 
 <p><a href="/geometry-course/first-steps/">Планиметрия 7 класса: от первых понятий к задачам →</a></p>
 
-<p class="tagline">Меня интересует не вопрос «какой учебник лучше вообще», а более полезный: где именно каждый курс строит математическую систему особенно хорошо, а где связь между основаниями, доказательством и практикой ослабевает.</p>
-
-<aside class="series-note warning">
-<h3>Границы исследования</h3>
-<p>Выводы относятся к указанным изданиям. Это качественный архитектурный аудит, а не подсчёт всех теорем и задач. По мере подготовки тематических продолжений отдельные оценки могут уточняться; дата обновления будет сохраняться на странице.</p>
+<section aria-labelledby="bisector-comparison">
+<h2 id="bisector-comparison">Одна задача на полях трёх учебников</h2>
+<p>В треугольнике ABC стороны AB и AC равны. Биссектриса угла A пересекает основание BC в точке D. Почему BD = DC? Для начала отметьте на рисунке только то, что дано.</p>
+<figure class="series-figure" style="max-width:24rem">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 175" role="img" aria-labelledby="bisector-title" style="display:block;width:100%;height:auto">
+<title id="bisector-title">Треугольник ABC. На сторонах AB и AC одинаковые штрихи. Луч AD делит угол при A пополам. На основании BC отметок нет.</title>
+<g fill="none" stroke="#243654" stroke-width="2.5" stroke-linejoin="round"><path d="M120 22 L30 142 H210 Z"/><path d="M69 78 l12 9 M159 87 l12 -9"/></g>
+<g fill="none" stroke="#9d3829" stroke-width="2.5"><path d="M120 22 V142"/><path d="M103.2 44.4 A28 28 0 0 0 120 50 A28 28 0 0 0 136.8 44.4"/></g>
+<g fill="#243654" font-size="16" font-family="sans-serif"><text x="115" y="16">A</text><text x="15" y="157">B</text><text x="212" y="157">C</text><text x="115" y="162">D</text></g>
+</svg>
+<figcaption>Засечки на основании можно добавить после доказательства. Пока равенство этих отрезков — вопрос.</figcaption>
+</figure>
+<details class="series-note"><summary>Открыть доказательство</summary>
+<p>Сравним треугольники ABD и ACD. У них AB = AC по условию, сторона AD общая, а углы BAD и DAC равны по определению биссектрисы. Это углы между выбранными сторонами. По первому признаку треугольники равны, значит, равны и соответствующие стороны BD и CD.</p>
+<p>Если ученик сразу называет AD медианой, я уточню, какую теорему он использовал. На уроке, где свойство биссектрисы равнобедренного треугольника только доказывают, именно этот переход и требует обоснования.</p>
+</details>
+<table><caption>Что уже доказано к первому разбору свойств равнобедренного треугольника</caption>
+<thead><tr><th scope="col">Учебник</th><th scope="col">Куда заглянуть</th><th scope="col">На что может сослаться класс</th></tr></thead>
+<tbody>
+<tr><th scope="row">Атанасян и соавторы</th><td>Издание 2023 года, гл. II, §§ 1–3, в особенности п. 18.</td><td>Первый признак уже доказан. Второй и третий будут после свойств равнобедренного треугольника.</td></tr>
+<tr><th scope="row">Погорелов</th><td>§ 3, пп. 20–23 и 27. В п. 21 специально разобрано, какие аксиомы понадобились.</td><td>До равнобедренного треугольника разобраны первый и второй признаки. Третий ещё впереди.</td></tr>
+<tr><th scope="row">Мерзляк, Полонский, Якир</th><td>«Геометрия. 7 класс», «Вентана-Граф», 2015, пп. 8–11.</td><td>В п. 8 введены сразу два признака. В п. 9 начинаются свойства равнобедренного треугольника, третий признак появляется в п. 11.</td></tr>
+</tbody></table>
+<p>Для этой задачи всем трём классам хватает первого признака. А теперь вместо биссектрисы проведём медиану. Что ученик вправе отметить сразу? Теперь известны BD = DC, зато равенство углов при A предстоит доказать. Привычное решение по трём сторонам допустимо позже, когда класс дойдёт до третьего признака.</p>
+<details class="series-note"><summary>Как обойтись первым признаком и во второй задаче?</summary><p>Из вершины A проведём также биссектрису и обозначим точку её пересечения с BC буквой K. Мы только что обосновали, что BK = KC. У отрезка BC одна середина, поэтому K совпадает с D. Значит, данная медиана AD совпадает с биссектрисой и делит угол при вершине пополам.</p></details>
+<p>Первый признак подробнее разобран <a href="./05-pervyi-priznak-ravenstva/">в пятой статье</a>. Порядок тем у Атанасяна и Погорелова можно дополнительно сверить по <a href="https://events.prosv.ru/uploads/2021/10/additions/RZeLWiMGnxFTfpMVZeshuNDJSf9GG1cV50cwMjhp.pdf" rel="noopener">сборнику рабочих программ «Просвещения», с. 14–15 и 24–26</a>.</p>
+</section>
+<aside class="series-note">
+<h3>Как проверить выводы</h3>
+<p>Ссылки на главы, пункты и страницы показывают, что именно и в каком порядке предлагают авторы. Вопросы для обсуждения и варианты ответов учеников — мои методические примеры. По одному параграфу можно восстановить ход доказательства. О том, как его понял конкретный класс, скажет самостоятельное решение следующей задачи. Обновлено <time datetime="2026-11-19">19 ноября 2026 года</time>.</p>
 </aside>
 
 <figure class="series-figure infographic">
@@ -61,68 +87,68 @@
 </figure>
 
 <section>
-<h2>Все статьи цикла</h2>
+<h2 id="vse-stati">Все статьи цикла</h2>
 <div class="series-grid">
 <article class="series-card">
 <span class="number">01</span>
 <h2><a href="./01-chto-takoe-stroynost/">Что значит «стройный курс геометрии»</a></h2>
 <p>Критерии, по которым можно сравнивать учебники, не сводя всё к вкусу и привычке.</p>
-<a href="./01-chto-takoe-stroynost/">Читать статью →</a>
+<a href="./01-chto-takoe-stroynost/#praktikum">Что известно о медиане →</a>
 </article><article class="series-card">
 <span class="number">02</span>
 <h2><a href="./02-vhod-v-geometriyu/">Что ученик приносит в 7 класс</a></h2>
-<p>Как наглядная геометрия Виленкина готовит систематический курс — и чего от неё нельзя требовать.</p>
-<a href="./02-vhod-v-geometriyu/">Читать статью →</a>
+<p>Как проверить, какие действия с линейкой и бумажным сгибом ученик уже умеет объяснять.</p>
+<a href="./02-vhod-v-geometriyu/#praktikum">Предсказание перед сгибом →</a>
 </article><article class="series-card">
 <span class="number">03</span>
 <h2><a href="./03-akciomy-i-pravila-igry/">Определение, аксиома, теорема: правила игры в школьной планиметрии</a></h2>
 <p>Три способа объяснить школьнику правила доказательной геометрии.</p>
-<a href="./03-akciomy-i-pravila-igry/">Читать статью →</a>
+<a href="./03-akciomy-i-pravila-igry/#praktikum">Основание равенства углов →</a>
 </article><article class="series-card">
 <span class="number">04</span>
 <h2><a href="./04-ravenstvo-nalozhenie-dvizhenie/">Наложение, перегибание и движение</a></h2>
 <p>Как меняется смысл равенства фигур от бумажной модели до преобразования плоскости.</p>
-<a href="./04-ravenstvo-nalozhenie-dvizhenie/">Читать статью →</a>
+<a href="./04-ravenstvo-nalozhenie-dvizhenie/#praktikum">Образ отрезка →</a>
 </article><article class="series-card">
 <span class="number">05</span>
 <h2><a href="./05-pervyi-priznak-ravenstva/">Первый признак равенства треугольников</a></h2>
 <p>Построчный разбор доказательств у Атанасяна, Погорелова и Мерзляка.</p>
-<a href="./05-pervyi-priznak-ravenstva/">Читать статью →</a>
+<a href="./05-pervyi-priznak-ravenstva/#praktikum">Угол между сторонами →</a>
 </article><article class="series-card">
 <span class="number">06</span>
 <h2><a href="./06-kak-uchat-dokazyvat/">Как учебники планиметрии учат доказывать</a></h2>
 <p>Готовое доказательство, самостоятельное рассуждение и ступени между ними.</p>
-<a href="./06-kak-uchat-dokazyvat/">Читать статью →</a>
+<a href="./06-kak-uchat-dokazyvat/#praktikum">Выбор диагонали →</a>
 </article><article class="series-card">
 <span class="number">07</span>
 <h2><a href="./07-neobhodimo-i-dostatochno/">Необходимо и достаточно</a></h2>
 <p>Почему язык прямой и обратной теоремы должен появляться не эпизодом, а работать во всём курсе.</p>
-<a href="./07-neobhodimo-i-dostatochno/">Читать статью →</a>
+<a href="./07-neobhodimo-i-dostatochno/#praktikum">Контрпример с трапецией →</a>
 </article><article class="series-card">
 <span class="number">08</span>
 <h2><a href="./08-sistema-zadach/">Система задач по планиметрии: как теория превращается в умение</a></h2>
-<p>Сравнение систем задач: уровни, ключевые задачи, практические работы и перенос.</p>
-<a href="./08-sistema-zadach/">Читать статью →</a>
+<p>Что меняется, когда знакомая теорема возвращается в задаче с другим условием.</p>
+<a href="./08-sistema-zadach/#praktikum">Как снять одно условие →</a>
 </article><article class="series-card">
 <span class="number">09</span>
 <h2><a href="./09-chertezh-i-dokazatelstvo/">Чертёж в планиметрии: помощник или источник ложной очевидности</a></h2>
 <p>Что можно увидеть на рисунке и что всё равно требуется доказать.</p>
-<a href="./09-chertezh-i-dokazatelstvo/">Читать статью →</a>
+<a href="./09-chertezh-i-dokazatelstvo/#praktikum">Высота вне треугольника →</a>
 </article><article class="series-card">
 <span class="number">10</span>
 <h2><a href="./10-tri-arhitektury-kursa/">Три архитектуры школьного курса планиметрии</a></h2>
 <p>Макроструктура планиметрической части курсов Атанасяна, Погорелова и Мерзляка.</p>
-<a href="./10-tri-arhitektury-kursa/">Читать статью →</a>
+<a href="./10-tri-arhitektury-kursa/#praktikum">Что понадобится для параллельности →</a>
 </article><article class="series-card">
 <span class="number">11</span>
 <h2><a href="./11-bazovyi-i-uglublennyi-merzlyak/">Базовый и углублённый Мерзляк</a></h2>
-<p>Что меняется при настоящем углублении: содержание, методы и длина доказательных цепочек.</p>
-<a href="./11-bazovyi-i-uglublennyi-merzlyak/">Читать статью →</a>
+<p>Какие новые методы появляются в книгах разных авторских коллективов и что они дают для решения одной задачи.</p>
+<a href="./11-bazovyi-i-uglublennyi-merzlyak/#praktikum">Семейство прямых →</a>
 </article><article class="series-card">
 <span class="number">12</span>
 <h2><a href="./12-kak-sobrat-stroinyi-kurs/">Как собрать более стройный курс школьной планиметрии</a></h2>
-<p>Что стоит сохранить у трёх авторов и какие разрывы придётся устранить.</p>
-<a href="./12-kak-sobrat-stroinyi-kurs/">Читать статью →</a>
+<p>Как спланировать следующий урок по тому, какой шаг ученик уже может обосновать.</p>
+<a href="./12-kak-sobrat-stroinyi-kurs/#praktikum">Два направления доказательства →</a>
 </article>
 </div>
 </section>
@@ -130,20 +156,20 @@
 <section>
 <h2>Как читать серию</h2>
 <div class="article-summary">
-<div class="summary-card"><strong>Для учителя</strong><p>Можно начинать с любой конкретной темы: наложение, первый признак, задачи, чертёж.</p></div>
-<div class="summary-card"><strong>Для методиста</strong><p>Первые три статьи задают критерии и язык всего аудита.</p></div>
-<div class="summary-card"><strong>Для автора курса</strong><p>Статьи 10–12 переходят от критики учебников к проектированию новой структуры.</p></div>
+<div class="summary-card"><strong>Для учителя</strong><p>Для урока о равенстве треугольников откройте <a href="./05-pervyi-priznak-ravenstva/#praktikum">задачу на первый признак</a>. В <a href="./08-sistema-zadach/#praktikum">выпуске 8</a> та же конфигурация возвращается с изменённым условием.</p></div>
+<div class="summary-card"><strong>Для методиста</strong><p>Сопоставьте <a href="./02-vhod-v-geometriyu/#praktikum">бумажный сгиб</a> с <a href="./12-kak-sobrat-stroinyi-kurs/#praktikum">доказательством о равноудалённых точках</a>. Какие знания успел приобрести ученик между этими заданиями?</p></div>
+<div class="summary-card"><strong>Для автора курса</strong><p>Сверьте <a href="./10-tri-arhitektury-kursa/#praktikum">порядок введения трёх теорем</a>, затем сравните <a href="./11-bazovyi-i-uglublennyi-merzlyak/#praktikum">два уровня задачи о расстояниях</a>.</p></div>
 </div>
 </section>
 
 <section>
 <h2>Корпус учебников</h2>
 <div class="corpus-grid">
-<div class="corpus-item"><h3>Л. С. Атанасян и соавторы</h3><p>«Математика. Геометрия. 7–9 классы. Базовый уровень», 14-е переработанное издание, 2023.</p><p><a href="/geometry-course/textbook/">Тренажёры к задачам учебника Атанасяна для 7–9 классов</a></p><a href="https://prosv.ru/product/geometriya-7-9-klass-uchebnik101/" rel="noopener">Официальная страница учебника →</a></div>
-<div class="corpus-item"><h3>А. В. Погорелов</h3><p>«Геометрия. 7–9 классы», 11-е стереотипное издание, 2022.</p><a href="https://prosv.ru/product/geometriya-7-9-klass-uchebnik301/" rel="noopener">Официальная страница учебника →</a></div>
-<div class="corpus-item"><h3>А. Г. Мерзляк, В. Б. Полонский, М. С. Якир</h3><p>Базовая линия для 7, 8 и 9 классов.</p><a href="https://prosv.ru/catalog/geometriya-merzlyak-a-g-7-9-bazovii/" rel="noopener">Официальный каталог линии →</a></div>
-<div class="corpus-item"><h3>А. Г. Мерзляк, В. М. Поляков</h3><p>Углублённая линия для 7, 8 и 9 классов — внутренний контроль глубины курса.</p><a href="https://prosv.ru/product/geometriya-7-klass-uglublyonnii-uroven-elektronnaya-forma-uchebnika02/" rel="noopener">Официальная страница линии →</a></div>
-<div class="corpus-item"><h3>Н. Я. Виленкин и соавторы</h3><p>Математика 5–6 классов — для проверки того, с каким геометрическим опытом ученик приходит в 7 класс.</p><a href="https://prosv.ru/product/matematika-5-klass-uchebnik-v-2-ch-chast-101/" rel="noopener">5 класс →</a> · <a href="https://prosv.ru/product/matematika-6-klass-uchebnik-v-2-ch-chast-101/" rel="noopener">6 класс →</a></div>
+<div class="corpus-item"><h3>Л. С. Атанасян и соавторы</h3><p>«Математика. Геометрия. 7–9 классы. Базовый уровень», 14-е переработанное издание, 2023. ISBN печатной книги 978-5-09-102538-5.</p><p><a href="/geometry-course/textbook/">Тренажёры к задачам учебника Атанасяна для 7–9 классов</a></p><a href="https://media.prosv.ru/content/item/12884/" rel="noopener">Электронная форма 2023 года у издателя →</a></div>
+<div class="corpus-item"><h3>А. В. Погорелов</h3><p>«Геометрия. 7–9 классы», 11-е стереотипное издание, 2022. ISBN печатной книги 978-5-09-087755-8.</p><a href="/geometry-pogorelov/">Уроки и задачи по Погорелову →</a></div>
+<div class="corpus-item"><h3>А. Г. Мерзляк, В. Б. Полонский, М. С. Якир</h3><p>Базовая линия для 7, 8 и 9 классов. Для сопоставления порядка первых признаков выше использована «Геометрия. 7 класс», «Вентана-Граф», 2015.</p><p><a href="/geometry-merzlyak/">Курсы по геометрии Мерзляка</a></p><a href="https://prosv.ru/catalog/geometriya-merzlyak-a-g-7-9-bazovii/" rel="noopener">Официальный каталог линии →</a></div>
+<div class="corpus-item"><h3>А. Г. Мерзляк, В. М. Поляков</h3><p>Углублённая линия для 7, 8 и 9 классов. В выпуске 11 отдельно сопоставлены два авторских коллектива.</p><a href="https://media.prosv.ru/content/item/10521/" rel="noopener">Учебник для 9 класса у издателя →</a></div>
+<div class="corpus-item"><h3>Н. Я. Виленкин и соавторы</h3><p>В выпуске 2 задания из математики 5–6 классов служат примерами того, какие действия с фигурами могли встречаться до начала геометрии.</p><a href="https://prosv.ru/product/matematika-5-klass-uchebnik-v-2-ch-chast-101/" rel="noopener">5 класс →</a> · <a href="https://prosv.ru/product/matematika-6-klass-uchebnik-v-2-ch-chast-101/" rel="noopener">6 класс →</a></div>
 </div>
 </section>
 

@@ -180,6 +180,32 @@ test('generated runtime bank equals the canonical input with only authoring evid
   }
 });
 
+test('a geometry problem opens on its drawing and builds the auxiliary segment after justification', async () => {
+  const ui = open();
+  try {
+    const item = BY_ID.get('g8-circle-3');
+    await ui.task(item);
+    const figure = () => ui.find('.task-card > :first-child');
+    assert.ok(figure().matches('figure.diagram'));
+    assert.ok(figure().nextElementSibling.matches('.task-prompt'));
+    assert.ok(figure().querySelector('[data-segment="right-angle"]'));
+    assert.ok(figure().querySelector('[data-construction="OP"]'));
+    assert.ok(!figure().classList.contains('constructed'));
+    ui.check(item.task.steps[0], 0);
+    assert.ok(figure().classList.contains('constructed'));
+    assert.match(figure().querySelector('figcaption').textContent, /Соединяем O и P/);
+    await ui.task(item, 'solo');
+    assert.ok(figure().querySelector('svg[role="img"]'));
+    assert.ok(!figure().classList.contains('constructed'));
+    await ui.task(item);
+    assert.ok(figure().classList.contains('constructed'));
+    assert.ok(ui.find('.worked-example .diagram').nextElementSibling.matches('p'));
+    ui.click('[data-action="restart"]');
+    assert.ok(!figure().classList.contains('constructed'));
+    ui.assertClean();
+  } finally { ui.close(); }
+});
+
 test('all 492 tasks complete through real inputs in learning and independent modes', {timeout: 300000}, async () => {
   const ui = open();
   let learned = 0, learningSteps = 0, independent = 0, independentSteps = 0;
@@ -189,6 +215,8 @@ test('all 492 tasks complete through real inputs in learning and independent mod
       const task = item.task;
       await ui.task(item);
       ui.click('[data-action="restart"]');
+      const geometry = /геометрия|координаты/i.test(item.lesson.section) || task.requiresDiagram;
+      if (geometry) assert.ok(ui.find('.task-card > figure:first-child + .task-prompt'), task.id);
       for (const [index, step] of task.steps.entries()) {
         ui.check(step, index);
         learningSteps++;
@@ -199,6 +227,7 @@ test('all 492 tasks complete through real inputs in learning and independent mod
       await ui.task(item, 'solo');
       ui.click('[data-action="restart"]');
       assert.equal(ui.d.querySelectorAll('.theory,.hint-area,.hint-text,.plot-lab').length, 0, task.id + ': no solo hints');
+      if (geometry) assert.ok(ui.find('.task-card > figure:first-child + .task-prompt'), task.id);
       const indices = task.assessAllSteps ? task.steps.map((_, index) => index) : [task.steps.length - 1];
       for (const index of indices) {
         ui.check(task.steps[index], index);
@@ -367,12 +396,15 @@ test('diagnostic hides correctness, counts skips, saves results and rotates the 
   try {
     const session = await startDiagnostic(ui, 'g5');
     assert.equal(session.ids.length, Data.routes.find(route => route.id === 'g5').lessonIds.length);
+    const geometryIds = session.ids.filter(id => /геометрия|координаты/i.test(BY_ID.get(id).lesson.section));
     for (let index = 0; index < session.ids.length; index++) {
       assert.equal(ui.d.querySelectorAll('.theory,.hint-area,.hint-text,.correct-answer,.solution-note,.result-score').length, 0);
+      if (geometryIds.includes(session.ids[index])) assert.ok(ui.find('.task-card > figure:first-child + .task-prompt'));
       if (index === 0) ui.click('[data-action="diagnostic-skip"]');
       else submitDiagnostic(ui);
     }
     assert.equal(ui.find('.result-score').textContent, `${session.ids.length - 1} / ${session.ids.length}`);
+    assert.ok(ui.d.querySelectorAll('.result-item details > figure + .task-prompt').length >= geometryIds.length);
     assert.equal(ui.state().diagnostics.g5.finished, true);
     assert.equal(ui.state().pendingSessions.g5, undefined);
     assert.equal(ui.w.VPRApp.stats().done, 0, 'Diagnostic does not grant course completion');

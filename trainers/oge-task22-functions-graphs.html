@@ -222,6 +222,9 @@ button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.bt
 <script defer src="oge-video-graphs.js"></script>
 <script defer src="oge-video-geometry.js"></script>
 <script defer src="oge-video-models.js" data-oge-video-task="22"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
@@ -749,17 +752,16 @@ class Grapher{
     if(holeX!=null){const hy=fn(holeX);const px=this.X(holeX),py=this.Y(hy);
       if(px>=0&&px<=this.W&&py>=0&&py<=this.H)this.svg.appendChild(svgEl('circle',{cx:px,cy:py,r:4.5,class:'dot-open'}));}
   }
-  addMeasureH(m,pieces,extraCount){
+  addMeasureH(m,pieces,extraXs){
     // draw y=m line + intersection markers; return count
     const py=this.Y(m);
     const ln=svgEl('line',{x1:this.X(this.xmin),y1:py,x2:this.X(this.xmax),y2:py,class:'measure'});
     this.svg.appendChild(ln);this._mline=ln;
     // markers
     const g=svgEl('g');this.svg.appendChild(g);this._mmarks=g;
-    const xs=this.intersectH(pieces,m);
+    const xs=extraXs??this.intersectH(pieces,m);
     for(const x of xs){g.appendChild(svgEl('circle',{cx:this.X(x),cy:py,r:5,class:'xmark'}));}
     // count badge
-    const cnt=(extraCount!=null)?extraCount:countH(pieces,Frac.fromNum(m.toFixed(4)));
     const badge=svgEl('g');this.svg.appendChild(badge);this._mbadge=badge;
     const bx=this.W-96,by=14;
     badge.appendChild(svgEl('rect',{x:bx,y:by,width:86,height:38,rx:6,class:'badge-bg'}));
@@ -967,7 +969,7 @@ function drawWithMeasure(g,problem,val){
   const spec=drawStatic(g,problem);
   if(spec.type==='pieces')g.addMeasureH(val,spec.pieces);
   else if(spec.measure==='K')g.addLineK(val,spec.intersectK);
-  else g.addMeasureH(val,[],spec.intersectHm(val).length),g.svg.appendChild(svgEl('g')); // count already set
+  else g.addMeasureH(val,[],spec.intersectHm(val));
   return spec;
 }
 function makeGraphView(withSlider,measureKind){
@@ -991,7 +993,7 @@ function makeGraphView(withSlider,measureKind){
     const v=parseFloat(slider.value);
     if(spec.type==='pieces'){drawStatic(g,problem);g.addMeasureH(v,spec.pieces);label.innerHTML=(spec.measure==='H'?'y = ':'y = ')+fmtNum(v);}
     else if(spec.measure==='K'){drawStatic(g,problem);g.addLineK(v,spec.intersectK);label.innerHTML='y = '+fmtNum(v)+'·x';}
-    else{drawStatic(g,problem);g.addMeasureH(v,[],spec.intersectHm(v).length);label.innerHTML='y = '+fmtNum(v);}
+    else{drawStatic(g,problem);g.addMeasureH(v,[],spec.intersectHm(v));label.innerHTML='y = '+fmtNum(v);}
   }
   function fmtNum(v){return (Math.round(v*100)/100).toString();}
   return {el:box,
@@ -1539,5 +1541,28 @@ if(window.OgeCourseSharedMode){
 <script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="22"></script>
 <script src="board-bridge.js"></script>
 <script src="oge-20-22-board.js?v=20261025"></script>
+<!-- download-panel:start:oge-task22-functions-graphs -->
+<section class="download-panel" id="download" data-trainer-download="oge-task22-functions-graphs">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь авторский пример y = 3 − (x−2)/(x²−2x). Покажи x ≠ 0, 2, выколотую точку (2; 2,5) и найди все m, при которых y = m не пересекает график."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-graph">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:oge-task22-functions-graphs -->
 </body>
 </html>
